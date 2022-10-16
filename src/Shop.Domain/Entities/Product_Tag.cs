@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Entities;
 
-public class Product_Tag : Entity
+public sealed class Product_Tag : Entity
 {
     public virtual Product? Product { get; set; }
     public int? ProductId { get; set; }

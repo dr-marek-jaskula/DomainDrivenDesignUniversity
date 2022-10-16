@@ -3,7 +3,7 @@ using Shopway.Domain.Primitives;
 
 namespace Shopway.Domain.Entities;
 
-public class Order : AggregateRoot
+public sealed class Order : AggregateRoot
 {
     public int Amount { get; set; }
     public Status Status { get; set; }

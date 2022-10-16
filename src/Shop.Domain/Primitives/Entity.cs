@@ -7,10 +7,6 @@ public abstract class Entity : IEquatable<Entity>
         Id = id;
     }
 
-    protected Entity()
-    {
-    }
-
     public Guid Id { get; private init; }
 
     public static bool operator ==(Entity? first, Entity? second)
@@ -61,7 +57,7 @@ public abstract class Entity : IEquatable<Entity>
         return entity.Id == Id;
     }
 
-    //Hash multiplied by a prime number. This prime number must be different than ones specified below (primes)
+    //Hash multiplied by a prime number. This prime number must differ from ones that are specified below (primes)
     public override int GetHashCode()
     {
         return Id.GetHashCode() * 41;

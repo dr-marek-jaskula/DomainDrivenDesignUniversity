@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Entities;
 
-public class Shop : AggregateRoot
+public sealed class Shop : AggregateRoot
 {
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; } = string.Empty;

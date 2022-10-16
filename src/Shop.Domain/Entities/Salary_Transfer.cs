@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Entities;
 
-public class Salary_Transfer : Entity
+public sealed class Salary_Transfer : Entity
 {
     public DateTime Date { get; set; }
     public bool IsDiscretionaryBonus { get; set; }

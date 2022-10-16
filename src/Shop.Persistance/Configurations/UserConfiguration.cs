@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Persistence.Configurations;
 
-public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
+public sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {

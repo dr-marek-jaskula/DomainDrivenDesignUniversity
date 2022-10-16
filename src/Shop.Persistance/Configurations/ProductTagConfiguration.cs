@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Persistence.Configurations;
 
-public class Product_TagEntityTypeConfiguration : IEntityTypeConfiguration<Product_Tag>
+public sealed class Product_TagEntityTypeConfiguration : IEntityTypeConfiguration<Product_Tag>
 {
     public void Configure(EntityTypeBuilder<Product_Tag> builder)
     {

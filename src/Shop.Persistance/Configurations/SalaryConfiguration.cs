@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Persistence.Configurations;
 
-public class SalaryEntityTypeConfiguration : IEntityTypeConfiguration<Salary>
+public sealed class SalaryEntityTypeConfiguration : IEntityTypeConfiguration<Salary>
 {
     public void Configure(EntityTypeBuilder<Salary> builder)
     {

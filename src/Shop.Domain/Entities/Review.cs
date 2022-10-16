@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Entities;
 
-public class Review : Entity
+public sealed class Review : Entity
 {
     public string UserName { get; set; } = string.Empty;
     public int Stars { get; set; }

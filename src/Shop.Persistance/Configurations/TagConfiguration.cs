@@ -5,7 +5,7 @@ using Shopway.Domain.Enums;
 
 namespace Shopway.Persistence.Configurations;
 
-public class TagEntityTypeConfiguration : IEntityTypeConfiguration<Tag>
+public sealed class TagEntityTypeConfiguration : IEntityTypeConfiguration<Tag>
 {
     public void Configure(EntityTypeBuilder<Tag> builder)
     {

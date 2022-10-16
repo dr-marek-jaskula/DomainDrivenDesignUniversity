@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Entities;
 
-public class WorkTask : WorkItem
+public sealed class WorkTask : WorkItem
 {
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }

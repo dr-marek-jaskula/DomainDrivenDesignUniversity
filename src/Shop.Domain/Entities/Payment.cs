@@ -3,7 +3,7 @@ using Shopway.Domain.Primitives;
 
 namespace Shopway.Domain.Entities;
 
-public class Payment : Entity
+public sealed class Payment : Entity
 {
     public decimal? Discount { get; set; }
     public decimal Total { get; set; }

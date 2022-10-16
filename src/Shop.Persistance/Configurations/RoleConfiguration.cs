@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Persistence.Configurations;
 
-public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
+public sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
@@ -13,7 +13,7 @@ public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id).HasColumnType("TINYINT").UseIdentityColumn();
 
-        builder.Property(r => r.Name)
+        builder.Property(r => r.RoleName)
             .HasDefaultValue("Customer")
             .HasColumnType("VARCHAR(13)")
             .HasComment("Customer, Employee, Manager, Administrator");
@@ -24,10 +24,10 @@ public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
 
         //Inserting static data (data that are not related to other)
         builder.HasData(
-            new Role() { Id = Guid.NewGuid(), Name = "Customer" },
-            new Role() { Id = Guid.NewGuid(), Name = "Employee" },
-            new Role() { Id = Guid.NewGuid(), Name = "Manager" },
-            new Role() { Id = Guid.NewGuid(), Name = "Administrator" }
+            new Role(Guid.NewGuid(), ) { Id = Guid.NewGuid(), Name = "Customer" },
+            new Role(Guid.NewGuid(), ) { Id = Guid.NewGuid(), Name = "Employee" },
+            new Role(Guid.NewGuid(), ) { Id = Guid.NewGuid(), Name = "Manager" },
+            new Role(Guid.NewGuid(), ) { Id = Guid.NewGuid(), Name = "Administrator" }
             );
     }
 }

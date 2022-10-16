@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Persistence.Configurations;
 
-public class SalaryTransferEntityTypeConfiguration : IEntityTypeConfiguration<Salary_Transfer>
+public sealed class SalaryTransferEntityTypeConfiguration : IEntityTypeConfiguration<Salary_Transfer>
 {
     public void Configure(EntityTypeBuilder<Salary_Transfer> builder)
     {

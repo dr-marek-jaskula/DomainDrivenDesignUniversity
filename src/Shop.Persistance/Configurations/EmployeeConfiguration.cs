@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Persistence.Configurations;
 
-public class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employee>
+public sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {

@@ -5,7 +5,7 @@ using Shopway.Domain.Enums;
 
 namespace Shopway.Persistence.Configurations;
 
-public class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<Payment>
+public sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<Payment>
 {
     public void Configure(EntityTypeBuilder<Payment> builder)
     {

@@ -3,7 +3,7 @@ using Shopway.Domain.Enums;
 
 namespace Shopway.Domain.Entities;
 
-public class Customer : Person
+public sealed class Customer : Person
 {
     public Rank Rank { get; set; }
     public virtual List<Order> Orders { get; set; } = new();

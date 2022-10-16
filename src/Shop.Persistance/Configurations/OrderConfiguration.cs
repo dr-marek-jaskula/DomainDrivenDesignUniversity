@@ -5,7 +5,7 @@ using Shopway.Domain.Enums;
 
 namespace Shopway.Persistence.Configurations;
 
-public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
+public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {

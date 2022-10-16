@@ -1,9 +1,9 @@
 ﻿namespace Shopway.Domain.Primitives;
 
-//The AggregateRoot is an Entity or a group of Entities that will be allowed to be queried from the database directly.
+//The AggregateRoot is an Entity or a group of Entities that will be allowed to be directly queried from the database.
 //AggragateRoot is always queried as a whole.
 //Entities that are not AggrageteRoot will be queried only as a part of a AggregateRoot
-//The example AggregateRoot is the Order, and the Entity is the Payment (we cannot query the Payment without the Order).
+//The instance AggregateRoot = Order, but the Entity = Payment (we cannot query the Payment without the Order).
 public abstract class AggregateRoot : Entity
 {
     //This allow us to rise the different type of DomainEvents (it is only for AggregateRoots)
@@ -11,10 +11,6 @@ public abstract class AggregateRoot : Entity
 
     protected AggregateRoot(Guid id)
         : base(id)
-    {
-    }
-
-    protected AggregateRoot()
     {
     }
 

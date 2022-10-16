@@ -5,7 +5,7 @@ using Shopway.Domain.Enums;
 
 namespace Shopway.Persistence.Configurations;
 
-public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
+public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {

@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Entities;
 
-public class Employee : Person
+public sealed class Employee : Person
 {
     //Properties that defines the database relations should be mark as virtual
     public DateTime HireDate { get; set; }

@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Persistence.Configurations;
 
-public class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Review>
+public sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {

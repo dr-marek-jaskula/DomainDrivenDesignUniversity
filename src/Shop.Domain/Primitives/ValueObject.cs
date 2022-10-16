@@ -2,7 +2,7 @@
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {
-    //For instance the atomic values of a Email is a single character
+    //For instance the atomic value of a Email is a single character
     public abstract IEnumerable<object> GetAtomicValues();
 
     //ValueObjects are equal when their values are equal

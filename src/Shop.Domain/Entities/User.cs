@@ -3,7 +3,7 @@ using Shopway.Domain.Primitives;
 
 namespace Shopway.Domain.Entities;
 
-public class User : AggregateRoot
+public sealed class User : AggregateRoot
 {
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;

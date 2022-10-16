@@ -4,7 +4,7 @@ using Shopway.Domain.Primitives;
 
 namespace Shopway.Domain.Entities;
 
-public class Address : Entity
+public sealed class Address : Entity
 {
     public string? City { get; set; } = string.Empty;
     public string? Country { get; set; } = string.Empty;

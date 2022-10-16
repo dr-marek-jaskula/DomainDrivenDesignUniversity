@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Entities;
 
-public class Salary : Entity
+public sealed class Salary : Entity
 {
     public int BaseSalary { get; set; }
     public int DiscretionaryBonus { get; set; }
