@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "EXkJUsUlV1VU9gUt0lWOjnKiTNNXh7o6iujHOfZjVCZsxH6O/OuuWBZECpe/2hahKwEoA24rsyrfbtQtJQZ9dQ==",
+  "dgSpecHash": "vx9FAdyyJQjfBUJxW8cH+Q+iaG1B87F7ciV7gKvhqdhy4vnhBw2TCXWEeEDpbbJk7W/1raFgor8t0hyf6WNL+g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Marek\\source\\repos\\dr-marek-jaskula\\DomainDrivenDesignUniversity\\src\\Shop.Domain\\Shop.Domain.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Marek\\source\\repos\\dr-marek-jaskula\\DomainDrivenDesignUniversity\\src\\Shop.Domain\\Shopway.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Marek\\.nuget\\packages\\mediatr\\11.0.0\\mediatr.11.0.0.nupkg.sha512",
+    "C:\\Users\\Marek\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

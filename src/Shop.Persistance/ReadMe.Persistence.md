@@ -1,3 +1,3 @@
-# Persistance Project
+# Persistence Project
 
 The domain project...
