@@ -15,4 +15,15 @@ public sealed class Role : Entity
     {
         RoleName = roleName;
     }
+
+    public static Role Create(
+        Guid id,
+        RoleName roleName)
+    {
+        var role = new Role(
+            id,
+            roleName);
+
+        return role;
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Shopway.Domain.Primitives;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 

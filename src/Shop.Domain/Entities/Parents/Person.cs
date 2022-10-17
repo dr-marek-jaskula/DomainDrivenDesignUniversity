@@ -1,23 +1,48 @@
 ﻿using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities.Parents;
 
 //Table-per-type approach
 public class Person : AggregateRoot
 {
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public Gender Gender { get; set; }
+    public Person(
+        Guid id, 
+        FirstName firstName, 
+        LastName lastName, 
+        Gender gender, 
+        DateOnly? dateOfBirth,
+        PhoneNumber contactNumber,
+        Email email, 
+        Address? address, 
+        int? addressId, 
+        User? user)
+        : base(id)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Gender = gender;
+        DateOfBirth = dateOfBirth;
+        ContactNumber = contactNumber;
+        Email = email;
+        Address = address;
+        AddressId = addressId;
+        User = user;
+    }
+
+    public FirstName FirstName { get; private set; }
+    public LastName LastName { get; private set; }
+    public Gender Gender { get; private set; }
 
     //DateOnly property needs a conversion to SQL Server DATE format
-    public DateOnly? DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; private set; }
 
-    public string ContactNumber { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public Address? Address { get; set; }
-    public int? AddressId { get; set; }
+    public PhoneNumber ContactNumber { get; private set; }
+    public Email Email { get; private set; }
+    public Address? Address { get; private set; }
+    public int? AddressId { get; private set; }
 
     //One to one relationship with User table (User, UserId)
-    public virtual User? User { get; set; }
+    public virtual User? User { get; private set; }
 }

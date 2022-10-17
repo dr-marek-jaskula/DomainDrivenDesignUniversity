@@ -3,7 +3,7 @@
 //The static class that gathers all domain errors in one place
 public static class DomainErrors
 {
-    public static class RoleName
+    public static class RoleNameError
     {
         public static readonly Error Empty = new(
             "RoleName.Empty",
@@ -14,7 +14,7 @@ public static class DomainErrors
             $"RoleName name must be: {string.Join(',', ValueObjects.RoleName.AllowedRoles)}");
     }
 
-    public static class FirstName
+    public static class FirstNameError
     {
         public static readonly Error Empty = new(
             "FirstName.Empty",
@@ -25,7 +25,7 @@ public static class DomainErrors
             "FirstName name is too long");
     }
 
-    public static class LastName
+    public static class LastNameError
     {
         public static readonly Error Empty = new(
             "LastName.Empty",
@@ -36,19 +36,45 @@ public static class DomainErrors
             "Last name is too long");
     }
 
-    public static class Member
+    public static class EmailError
+    {
+        public static readonly Error Empty = new(
+            "Email.Empty",
+            "Email is empty");
+
+        public static readonly Error Invalid = new(
+            "Email.Invalid",
+            $"Email must start from a letter, contain '@' and after that '.'");
+    }
+
+    public static class PhoneNumberError
+    {
+        public static readonly Error Empty = new(
+            "PhoneNumber.Empty",
+            "PhoneNumber is empty");
+
+        public static readonly Error Invalid = new(
+            "PhoneNumber.Invalid",
+            $"PhoneNumber must consist of nine digits and cannot start from zero");
+    }
+
+    public static class AddressError
+    {
+        public static readonly Error EmptyCity = new(
+            "Address.EmptyCity",
+            "City is empty");
+
+        public static readonly Error Invalid = new(
+            "Address.Invalid",
+            $"Address must consist of nine digits and cannot start from zero");
+    }
+
+    public static class GatheringError
     {
         public static readonly Error EmailAlreadyInUse = new(
             "Member.EmailAlreadyInUse",
             "The specified email is already in use");
 
-        public static readonly Func<Guid, Error> NotFound = id => new Error(
-            "Member.NotFound",
-            $"The member with the identifier {id} was not found.");
-    }
-
-    public static class Gathering
-    {
         public static readonly Func<Guid, Error> NotFound = id => new Error(
             "Gathering.NotFound",
             $"The gathering with the identifier {id} was not found.");
@@ -64,16 +90,5 @@ public static class DomainErrors
         public static readonly Error Expired = new(
             "Gathering.Expired",
             "Can't accept invitation for expired gathering");
-    }
-
-    public static class Email
-    {
-        public static readonly Error Empty = new(
-            "Email.Empty",
-            "Email is empty");
-
-        public static readonly Error InvalidFormat = new(
-            "Email.InvalidFormat",
-            "Email format is invalid");
     }
 }

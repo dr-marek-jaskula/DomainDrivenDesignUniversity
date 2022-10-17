@@ -23,12 +23,12 @@ public sealed class RoleName : ValueObject
     {
         if (string.IsNullOrWhiteSpace(roleName))
         {
-            return Result.Failure<RoleName>(DomainErrors.RoleName.Empty);
+            return Result.Failure<RoleName>(DomainErrors.RoleNameError.Empty);
         }
 
         if (!AllowedRoles.Contains(roleName))
         {
-            return Result.Failure<RoleName>(DomainErrors.RoleName.Invalid);
+            return Result.Failure<RoleName>(DomainErrors.RoleNameError.Invalid);
         }
 
         return new RoleName(roleName);
