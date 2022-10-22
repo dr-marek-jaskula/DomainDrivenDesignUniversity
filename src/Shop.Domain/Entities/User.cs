@@ -11,7 +11,7 @@ public sealed class User : AggregateRoot, IAuditableEntity
     public Email Email { get; set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
-    public string PasswordHash { get; set; } = string.Empty;
+    public PasswordHash PasswordHash { get; set; }
     public int RoleId { get; set; }
     public Role? Role { get; set; }
     public int? PersonId { get; set; }
@@ -21,7 +21,7 @@ public sealed class User : AggregateRoot, IAuditableEntity
         Guid id,
         Username username,
         Email email,
-        string passwordHash)
+        PasswordHash passwordHash)
         : base(id)
     {
         Username = username;
@@ -38,7 +38,7 @@ public sealed class User : AggregateRoot, IAuditableEntity
         Guid id,
         Username username,
         Email email,
-        string passwordHash)
+        PasswordHash passwordHash)
     {
         var user = new User(
             id,

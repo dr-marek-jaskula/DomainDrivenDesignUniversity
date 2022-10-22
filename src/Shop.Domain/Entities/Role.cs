@@ -8,6 +8,7 @@ public sealed class Role : Entity
     private readonly List<User> _users = new();
 
     public RoleName RoleName { get; private set; }
+    //TODO consider is it good?
     public IReadOnlyCollection<User> Users => _users;
 
     internal Role(Guid Id, RoleName roleName)

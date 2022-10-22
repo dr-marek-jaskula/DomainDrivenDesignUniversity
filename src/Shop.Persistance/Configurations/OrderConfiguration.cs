@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
+using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -9,10 +10,11 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.ToTable("Order");
+        builder.ToTable(TableNames.Order);
 
         builder.HasKey(o => o.Id);
-        builder.Property(o => o.Id).UseIdentityColumn();
+        builder.Property(o => o.Id)
+            .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(o => o.Amount)
             .IsRequired(true)
@@ -21,10 +23,10 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
         builder.Property(o => o.Status)
             .IsRequired(true)
             .HasColumnType("VARCHAR(10)")
-            .HasDefaultValue(Status.Received)
+            .HasDefaultValue(Status.New)
             .HasConversion(status => status.ToString(),
              s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("Received, InProgress, Done or Rejected");
+            .HasComment("New, InProgress, Done or Rejected");
 
         builder.Property(o => o.Deadline)
             .HasColumnType("DATE");

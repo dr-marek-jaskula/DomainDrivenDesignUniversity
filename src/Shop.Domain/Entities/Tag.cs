@@ -16,5 +16,6 @@ public sealed class Tag : Entity
     }
 
     public ProductTag ProductTag { get; private set; }
+    //TODO this is good? (IReadOnlyCollection)
     public List<Product> Products { get; private set; } = new();
 }

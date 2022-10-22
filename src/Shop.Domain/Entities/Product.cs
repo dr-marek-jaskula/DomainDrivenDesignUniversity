@@ -1,13 +1,16 @@
 ﻿using Shopway.Domain.Primitives;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
 public sealed class Product : Entity
 {
-    public Product(Guid id, string name, decimal price) : base(id)
+    public Product(Guid id, ProductName productName, Price price, UomCode uomCode, Revision revision) : base(id)
     {
-        Name = name;
+        ProductName = productName;
         Price = price;
+        UomCode = uomCode;
+        Revision = revision;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -15,10 +18,11 @@ public sealed class Product : Entity
     {
     }
 
-    public string Name { get; private set; } = string.Empty;
-    public decimal Price { get; private set; }
+    public ProductName ProductName { get; private set; }
+    public Revision Revision { get; private set; }
+    public Price Price { get; private set; }
+    public UomCode UomCode { get; private set; }
     public List<Tag> Tags { get; private set; } = new();
     public List<Review> Reviews { get; private set; } = new();
-    public List<Shop> Shops { get; private set; } = new();
     public List<Order> Orders { get; private set; } = new();
 }

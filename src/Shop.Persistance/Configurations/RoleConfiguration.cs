@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
+using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -9,10 +10,11 @@ public sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
-        builder.ToTable("Role");
+        builder.ToTable(TableNames.Role);
 
         builder.HasKey(r => r.Id);
-        builder.Property(r => r.Id).HasColumnType("TINYINT").UseIdentityColumn();
+        builder.Property(r => r.Id)
+            .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(r => r.RoleName)
             .HasDefaultValue("Customer")

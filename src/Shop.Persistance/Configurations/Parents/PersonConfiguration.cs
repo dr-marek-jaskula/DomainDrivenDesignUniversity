@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
+using Shopway.Persistence.Constants;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
@@ -9,26 +11,27 @@ public class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 {
     public void Configure(EntityTypeBuilder<Person> builder)
     {
-        builder.ToTable("Person");
+        builder.ToTable(TableNames.Person);
 
         builder.HasKey(p => p.Id);
-        builder.Property(p => p.Id).HasColumnType("SMALLINT").UseIdentityColumn();
+        builder.Property(p => p.Id)
+            .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(p => p.FirstName)
-            .IsRequired(true)
-            .HasMaxLength(50);
+            .HasConversion(x => x.Value, v => FirstName.Create(v).Value)
+            .HasMaxLength(FirstName.MaxLength);
 
         builder.Property(p => p.LastName)
-            .IsRequired(true)
-            .HasMaxLength(50);
+            .HasConversion(x => x.Value, v => LastName.Create(v).Value)
+            .HasMaxLength(LastName.MaxLength);
 
         builder.Property(p => p.Email)
-            .IsRequired(true)
-            .HasMaxLength(50);
+            .HasConversion(x => x.Value, v => Email.Create(v).Value)
+            .HasMaxLength(Email.MaxLength);
 
         builder.Property(p => p.ContactNumber)
-            .IsRequired(true)
-            .HasColumnType("VARCHAR(30)");
+            .HasConversion(x => x.Value, v => PhoneNumber.Create(v).Value)
+            .HasMaxLength(9);
 
         builder.Property(p => p.DateOfBirth)
             .HasConversion<DateOnlyConverter, DateOnlyComparer>()
@@ -61,6 +64,30 @@ public class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
                 //Sets the properties that make up the primary key for this owned entity type.
                 addressNavigationBuilder
                     .HasKey("Id"); //Shadow Primary Key
+
+                addressNavigationBuilder
+                    .Property(p => p.Street)
+                    .HasMaxLength(100);
+
+                addressNavigationBuilder
+                    .Property(p => p.Building)
+                    .HasColumnType("TINYINT");
+
+                addressNavigationBuilder
+                    .Property(p => p.Flat)
+                    .HasColumnType("TINYINT");
+
+                addressNavigationBuilder
+                    .Property(p => p.Country)
+                    .HasMaxLength(100);
+
+                addressNavigationBuilder
+                    .Property(p => p.City)
+                    .HasMaxLength(100);
+
+                addressNavigationBuilder
+                    .Property(p => p.ZipCode)
+                    .HasMaxLength(5);
             });
 
         //Indexes

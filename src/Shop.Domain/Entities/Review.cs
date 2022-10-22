@@ -1,12 +1,13 @@
 ﻿using Shopway.Domain.Primitives;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
 public sealed class Review : Entity, IAuditableEntity
 {
-    public Review(Guid id, string userName, int stars, DateTime createdDate, DateTime updatedDate) : base(id)
+    public Review(Guid id, Username username, int stars, DateTime createdDate, DateTime updatedDate) : base(id)
     {
-        UserName = userName;
+        Username = username;
         Stars = stars;
         CreatedOn = createdDate;
         UpdatedOn = updatedDate;
@@ -16,13 +17,13 @@ public sealed class Review : Entity, IAuditableEntity
     private Review()
     {
     }
-
-    public string UserName { get; private set; } = string.Empty;
+    //TODO something here also (Stars)
+    public Username Username { get; private set; }
     public int Stars { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
-    public string Title { get; private set; } = string.Empty;
-    public string? Description { get; private set; } = string.Empty;
+    public Title Title { get; private set; }
+    public Description? Description { get; private set; }
     public Product? Product { get; private set; }
     public int? ProductId { get; private set; }
     public Employee? Employee { get; private set; }

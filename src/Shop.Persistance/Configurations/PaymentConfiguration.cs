@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
+using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -9,10 +10,11 @@ public sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<Pa
 {
     public void Configure(EntityTypeBuilder<Payment> builder)
     {
-        builder.ToTable("Payment");
+        builder.ToTable(TableNames.Payment);
 
         builder.HasKey(p => p.Id);
-        builder.Property(p => p.Id).UseIdentityColumn();
+        builder.Property(p => p.Id)
+            .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(p => p.Discount)
             .HasPrecision(3, 2);

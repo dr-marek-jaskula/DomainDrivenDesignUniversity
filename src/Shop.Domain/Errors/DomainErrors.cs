@@ -96,11 +96,41 @@ public static class DomainErrors
             "LastName contains digit");
     }
 
+    public static class ProductNameError
+    {
+        public static readonly Error Empty = new(
+            "ProductName.Empty",
+            "ProductName is empty");
+
+        public static readonly Error TooLong = new(
+            "ProductName.TooLong",
+            $"ProductName must be at most {ProductName.MaxLength} characters long");
+
+        public static readonly Error ContainsIllegalCharacter = new(
+            "ProductName.ContainsIllegalCharacter",
+            "ProductName contains illegal character");
+    }
+
+    public static class RevisionError
+    {
+        public static readonly Error Empty = new(
+            "Revision.Empty",
+            "Revision is empty");
+
+        public static readonly Error TooLong = new(
+            "Revision.TooLong",
+            $"Revision must be at most {Revision.MaxLength} characters long");
+    }
+
     public static class EmailError
     {
         public static readonly Error Empty = new(
             "Email.Empty",
             "Email is empty");
+
+        public static readonly Error TooLong = new(
+            "Email.TooLong",
+            $"Email must be at most {Email.MaxLength} characters long");
 
         public static readonly Error Invalid = new(
             "Email.Invalid",
@@ -146,11 +176,11 @@ public static class DomainErrors
 
         public static readonly Error WrongBuildingNumber = new(
             "Address.WrongBuildingNumber",
-            $"Building number must be positive and at most {Address.MaxBuildingNumber}");
+            $"Building number must be positive and at most {Address.MaxBuildingNumber} and at least {Address.MinBuildingNumber}");
 
         public static readonly Error WrongFlatNumber = new(
             "Address.WrongFlatNumber",
-            $"Flat number must be positive and at most {Address.MaxFlatNumber}");
+            $"Flat number must be positive and at most {Address.MaxFlatNumber} and at least {Address.MinFlatNumber}");
 
         public static readonly Error Invalid = new(
             "Address.Invalid",
@@ -177,5 +207,63 @@ public static class DomainErrors
         public static readonly Error TooLong = new(
             "Title.TooLong",
             $"Title needs to be at most {Title.MaxLength} characters long");
+    }
+
+    public static class PriorityError
+    {
+        public static readonly Error TooHigh = new(
+            "Priority.TooHigh",
+            $"Priority must be at least {Priority.HighestPriority}");
+
+        public static readonly Error TooLow = new(
+            "Priority.TooLow",
+            $"Priority must be at most {Priority.LowestPriority}");
+    }
+
+    public static class StoryPointsError
+    {
+        public static readonly Error TooLow = new(
+            "StoryPoints.TooLow",
+            $"StoryPoints must be at least {StoryPoints.MinStoryPoints}");
+
+        public static readonly Error TooHigh = new(
+            "StoryPoints.TooHigh",
+            $"StoryPoints must be at most {StoryPoints.MaxStoryPoints}");
+    }
+
+    public static class AmountError
+    {
+        public static readonly Error TooLow = new(
+            "Amount.TooLow",
+            $"Amount must be at least {Amount.MinAmount}");
+
+        public static readonly Error TooHigh = new(
+            "Amount.TooHigh",
+            $"Amount must be at most {Amount.MaxAmount}");
+    }
+
+    public static class UomCodeError
+    {
+        public static readonly Error Invalid = new(
+            "UomCode.Invalid",
+            $"UomCode name must be: {string.Join(',', ValueObjects.UomCode.AllowedUomCodes)}");
+    }
+
+    public static class WorkItemError
+    {
+        public static readonly Error AlreadyAssigned = new(
+            "WorkItem.AlreadyAssigned",
+            "Can't assign the same WorkItem twice");
+    }
+
+    public static class PriceError
+    {
+        public static readonly Error TooLow = new(
+            "Price.TooLow",
+            $"Price must be at least {Price.MinPrice}");
+
+        public static readonly Error TooHigh = new(
+            "Price.TooHigh",
+            $"Price must be at most {Price.MaxPrice}");
     }
 }

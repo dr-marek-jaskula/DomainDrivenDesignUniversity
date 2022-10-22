@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
+using Shopway.Domain.Entities;
+using Shopway.Persistence.Constants;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
@@ -9,29 +12,34 @@ public class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkItem
 {
     public void Configure(EntityTypeBuilder<WorkItem> builder)
     {
-        builder.ToTable("WorkItem");
+        builder.ToTable(TableNames.WorkItem);
 
         builder.HasKey(wi => wi.Id);
         builder.Property(wi => wi.Id)
-            .HasColumnType("uniqueidentifier");
+            .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(wi => wi.Priority)
-            .HasDefaultValue(1);
+            .HasConversion(x => x.Value, v => Priority.Create(v).Value)
+            .HasDefaultValue(Priority.HighestPriority);
 
         builder.Property(wi => wi.Status)
             .IsRequired(true)
             .HasColumnType("VARCHAR(10)")
-            .HasDefaultValue(Status.Received)
+            .HasDefaultValue(Status.New)
             .HasConversion(status => status.ToString(),
              s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("Received, InProgress, Done or Rejected");
+            .HasComment("New, InProgress, Done or Rejected");
 
         builder.Property(wi => wi.Title)
-            .HasColumnType("VARCHAR(45)")
-            .IsRequired(true);
+            .HasConversion(x => x.Value, v => Title.Create(v).Value)
+            .HasMaxLength(Title.MaxLength);
 
         builder.Property(wi => wi.Description)
-            .HasColumnType("VARCHAR(600)")
-            .IsRequired(true);
+            .HasConversion(x => x.Value, v => Description.Create(v).Value)
+            .HasMaxLength(Description.MaxLength);
+
+        builder.Property(wi => wi.StoryPoints)
+            .HasConversion(x => x.Value, v => StoryPoints.Create(v).Value)
+            .HasDefaultValue(StoryPoints.MinStoryPoints);
     }
 }

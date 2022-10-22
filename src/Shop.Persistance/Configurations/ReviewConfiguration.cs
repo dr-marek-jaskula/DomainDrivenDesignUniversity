@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
+using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -8,12 +9,13 @@ public sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Rev
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
-        builder.ToTable("Review");
+        builder.ToTable(TableNames.Review);
 
         builder.HasKey(r => r.Id);
-        builder.Property(r => r.Id).UseIdentityColumn();
+        builder.Property(r => r.Id)
+            .HasColumnType("UNIQUEIDENTIFIER");
 
-        builder.Property(r => r.UserName)
+        builder.Property(r => r.Username)
             .IsRequired(true)
             .HasMaxLength(100);
 

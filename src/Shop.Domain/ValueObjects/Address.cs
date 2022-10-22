@@ -10,6 +10,8 @@ public sealed class Address : ValueObject
 {
     public const int MaxFlatNumber = 1000;
     public const int MaxBuildingNumber = 1000;
+    public const int MinFlatNumber = 1;
+    public const int MinBuildingNumber = 1;
     public static readonly string[] AvailableCountries = new string[4] { "Poland", "Germany", "England", "Russia" };
     private static readonly Regex _zipCodeRegex = new(@"^\d{5}?$", RegexOptions.Compiled);
 
@@ -131,7 +133,7 @@ public sealed class Address : ValueObject
     {
         return building switch
         {
-            <= 0 or > MaxBuildingNumber => (false, DomainErrors.AddressError.WrongBuildingNumber),
+            < MinBuildingNumber or > MaxBuildingNumber => (false, DomainErrors.AddressError.WrongBuildingNumber),
             _ => (true, Error.None)
         };
     }
@@ -141,7 +143,7 @@ public sealed class Address : ValueObject
         return flat switch
         {
             null => (true, Error.None),
-            <= 0 or > MaxFlatNumber => (false, DomainErrors.AddressError.WrongFlatNumber),
+            < MinFlatNumber or > MaxFlatNumber => (false, DomainErrors.AddressError.WrongFlatNumber),
             _ => (true, Error.None)
         };
     }

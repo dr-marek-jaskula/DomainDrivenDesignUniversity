@@ -1,17 +1,17 @@
 ﻿using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
 public sealed class Employee : Person
 {
-    public DateOnly HireDate { get; private set; }
+    private readonly List<WorkItem> _workItems = new();
 
-    //One to many relationship with Shop table (Shop, ShopId)
-    public Shop? Shop { get; private set; }
-    public Guid? ShopId { get; private set; }
+    public DateOnly HireDate { get; private set; }
 
     //Many to many relationship with customers (rest is in Customer class)
     public List<Customer> Customers { get; private set; } = new();
@@ -21,13 +21,11 @@ public sealed class Employee : Person
 
     //One to many relationship with same table (ManagerId, Manager, Subordinates)
     public Guid? ManagerId { get; private set; }
-
     public Employee? Manager { get; private set; }
     public List<Employee>? Subordinates { get; private set; } = new();
 
     //WorkItems relations
-    public WorkTask? CurrentTask { get; private set; }
-    public Project? Project { get; private set; }
+    public IReadOnlyCollection<WorkItem> WorkItems => _workItems;
 
     private Employee(
         Guid id,
@@ -77,5 +75,17 @@ public sealed class Employee : Person
         employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id));
 
         return employee;
+    }
+
+    public Result<WorkItem> AssignWrokItem(WorkItem workItem)
+    {
+        if (_workItems.Contains(workItem))
+        {
+            return Result.Failure<WorkItem>(DomainErrors.WorkItemError.AlreadyAssigned);
+        }
+
+        _workItems.Add(workItem);
+
+        return workItem;
     }
 }

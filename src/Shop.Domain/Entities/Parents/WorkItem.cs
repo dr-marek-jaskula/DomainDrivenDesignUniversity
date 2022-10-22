@@ -10,17 +10,21 @@ namespace Shopway.Domain.Entities.Parents;
 public abstract class WorkItem : AggregateRoot
 {
     protected WorkItem(
-        Guid id, 
-        int priority, 
-        Status status, 
-        string title,
-        Description description) 
+        Guid id,
+        Title title,
+        Description description,
+        Priority priority,
+        StoryPoints storyPoints,
+        Status status,
+        Guid? employeeId)
         : base(id)
     {
         Priority = priority;
         Status = status;
         Title = title;
         Description = description;
+        EmployeeId = employeeId;
+        StoryPoints = storyPoints;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -28,8 +32,11 @@ public abstract class WorkItem : AggregateRoot
     {
     }
 
-    public int Priority { get; private set; }
+    public Priority Priority { get; private set; }
     public Status Status { get; private set; }
-    public string Title { get; private set; }
+    public Title Title { get; private set; }
     public Description Description { get; private set; }
+    public StoryPoints StoryPoints { get; private set; }
+    public Guid? EmployeeId { get; private set; }
+    public Employee? Employee { get; private set; }
 }

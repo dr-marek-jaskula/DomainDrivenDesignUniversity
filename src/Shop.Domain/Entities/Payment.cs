@@ -18,6 +18,7 @@ public sealed class Payment : Entity
     {
     }
 
+    //TODO something here and in Order
     public decimal? Discount { get; private set; }
     public decimal Total { get; private set; }
     public Status Status { get; private set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
+using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -8,12 +9,13 @@ public sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Pr
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.ToTable("Product");
+        builder.ToTable(TableNames.Product);
 
         builder.HasKey(p => p.Id);
-        builder.Property(p => p.Id).UseIdentityColumn();
+        builder.Property(p => p.Id)
+            .HasColumnType("UNIQUEIDENTIFIER");
 
-        builder.Property(p => p.Name)
+        builder.Property(p => p.ProductName)
             .IsRequired(true)
             .HasMaxLength(128);
 
