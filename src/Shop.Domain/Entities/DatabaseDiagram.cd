@@ -10,19 +10,16 @@
   <Class Name="Shopway.Domain.Entities.Customer" Collapsed="true">
     <Position X="14.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEBAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Customer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Shopway.Domain.Entities.Employee" Collapsed="true">
     <Position X="8" Y="5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>QAEAAGAAAAAAAAAAAAAICAAAACGAhAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAEAAEAAAAAAAAAAAAAICAAAACCAhEAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Employee.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Salary" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Shopway.Domain.Entities.Issue" Collapsed="true">
     <Position X="4.5" Y="8.75" Width="1.5" />
@@ -38,9 +35,9 @@
       <FileName>Entities\Order.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Property Name="Product" />
       <Property Name="Payment" />
       <Property Name="Customer" />
-      <Property Name="Product" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Shopway.Domain.Entities.Payment" Collapsed="true">
@@ -64,8 +61,8 @@
       <FileName>Entities\Product_Amount.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Shop" />
       <Property Name="Product" />
+      <Property Name="Shop" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Shopway.Domain.Entities.Product_Tag" Collapsed="true">
@@ -103,26 +100,9 @@
   <Class Name="Shopway.Domain.Entities.Role" Collapsed="true">
     <Position X="14.75" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAEAAAAAA=</HashCode>
       <FileName>Entities\Role.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Shopway.Domain.Entities.Salary" Collapsed="true">
-    <Position X="9.25" Y="6.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAQAAAAAAACAAAAAAAIAAAACAgAAAAAAAAAAAAAAEA=</HashCode>
-      <FileName>Entities\Salary.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Shopway.Domain.Entities.Salary_Transfer" Collapsed="true">
-    <Position X="9.25" Y="8" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAACADAAAAAAAAAAAAAAAgAAEAAAABAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\Salary_Transfer.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Salary" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Shopway.Domain.Entities.Shop" Collapsed="true">
     <Position X="10" Y="0.5" Width="1.5" />
@@ -130,9 +110,6 @@
       <HashCode>QAEAAAAAAAAgAAAAAAAAAAQACAAAAAACAAAAAAAAAAQ=</HashCode>
       <FileName>Entities\Shop.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Address" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Employees" />
     </ShowAsCollectionAssociation>
@@ -167,12 +144,9 @@
   <Class Name="Shopway.Domain.Entities.Parents.Person" Collapsed="true">
     <Position X="14.75" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAABAFAAACAAAACAAAAAAAAAAAAQAAACAAAAAAAAAAg=</HashCode>
+      <HashCode>AAABAFAAACAAAACAAAAAAAAAAAAQAEACAAAAAAAAAAg=</HashCode>
       <FileName>Entities\Parents\Person.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Address" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Shopway.Domain.Entities.Parents.WorkItem" Collapsed="true">
     <Position X="1.25" Y="7" Width="1.5" />

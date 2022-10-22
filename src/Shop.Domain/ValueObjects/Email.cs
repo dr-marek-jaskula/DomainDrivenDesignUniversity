@@ -7,9 +7,7 @@ namespace Shopway.Domain.ValueObjects;
 
 public sealed class Email : ValueObject
 {
-    private static readonly Regex _regex = new(@"^([a-zA-Z])([a-zA-Z0-9]+)\.?([a-zA-Z0-9]+)@([a-z]+)\.[a-z]{2,3}$",
-    //This option boots the performance of the regex
-    RegexOptions.Compiled);
+    private static readonly Regex _regex = new(@"^([a-zA-Z])([a-zA-Z0-9]+)\.?([a-zA-Z0-9]+)@([a-z]+)\.[a-z]{2,3}$", RegexOptions.Compiled);
 
     public string Value { get; }
 

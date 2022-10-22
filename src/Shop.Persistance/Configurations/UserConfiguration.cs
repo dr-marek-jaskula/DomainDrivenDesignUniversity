@@ -21,7 +21,7 @@ public sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .IsRequired(true)
             .HasColumnType("VARCHAR(40)");
 
-        builder.Property(u => u.CreatedDate)
+        builder.Property(u => u.CreatedOn)
             .HasConversion<DateOnlyConverter, DateOnlyComparer>()
             .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
             .HasColumnType("DATE");

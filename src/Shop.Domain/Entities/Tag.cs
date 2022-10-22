@@ -5,6 +5,11 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Tag : Entity
 {
-    public ProductTag ProductTag { get; set; }
-    public virtual List<Product> Products { get; set; } = new();
+    public Tag(Guid id, ProductTag productTag) : base(id)
+    {
+        ProductTag = productTag;
+    }
+
+    public ProductTag ProductTag { get; private set; }
+    public List<Product> Products { get; private set; } = new();
 }

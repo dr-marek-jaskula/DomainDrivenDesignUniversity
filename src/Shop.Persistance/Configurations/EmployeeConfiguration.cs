@@ -16,9 +16,6 @@ public sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<E
 
         //Defining the relations: (rest are in Customer and Review classes)
 
-        builder.HasOne(e => e.Salary)
-            .WithOne(s => s.Employee)
-            .HasForeignKey<Employee>(e => e.SalaryId);
 
         builder.HasOne(e => e.Manager)
             .WithMany(x => x.Subordinates)

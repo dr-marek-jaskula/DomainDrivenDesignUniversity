@@ -5,15 +5,15 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Order : AggregateRoot
 {
-    public int Amount { get; set; }
-    public Status Status { get; set; }
-    public DateTime Deadline { get; set; }
-    public virtual Product? Product { get; set; }
-    public int? ProductId { get; set; }
-    public virtual Payment? Payment { get; set; }
-    public int? PaymentId { get; set; }
-    public virtual Shop? Shop { get; set; }
-    public int? ShopId { get; set; }
-    public virtual Customer? Customer { get; set; }
-    public int? CustomerId { get; set; }
+    public int Amount { get; private set; }
+    public Status Status { get; private set; }
+    public DateTime Deadline { get; private set; }
+    public virtual Product? Product { get; private set; }
+    public int? ProductId { get; private set; }
+    public virtual Payment? Payment { get; private set; }
+    public int? PaymentId { get; private set; }
+    public virtual Shop? Shop { get; private set; }
+    public int? ShopId { get; private set; }
+    public virtual Customer? Customer { get; private set; }
+    public int? CustomerId { get; private set; }
 }

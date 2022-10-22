@@ -1,36 +1,76 @@
-﻿using Shopway.Domain.Entities.Parents;
+﻿using Shopway.Domain.DomainEvents;
+using Shopway.Domain.Entities.Parents;
+using Shopway.Domain.Enums;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
 public sealed class Employee : Person
 {
-    //Properties that defines the database relations should be mark as virtual
-    public DateTime HireDate { get; set; }
+    private Employee(
+        Guid id, 
+        FirstName firstName, 
+        LastName lastName, 
+        Gender gender, 
+        DateOnly? dateOfBirth, 
+        PhoneNumber contactNumber, 
+        Email email, 
+        Address? address, 
+        User? user, 
+        DateTime hireDate)
+        : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
+    {
+        HireDate = hireDate;
+    }
 
-    //One to one relationship with Salary table (Salary, SalaryId)
-    public virtual Salary? Salary { get; set; }
-
-    public int? SalaryId { get; set; }
+    public DateTime HireDate { get; private set; }
 
     //One to many relationship with Shop table (Shop, ShopId)
-    public virtual Shop? Shop { get; set; }
-
-    public int? ShopId { get; set; }
+    public Shop? Shop { get; private set; }
+    public Guid? ShopId { get; private set; }
 
     //Many to many relationship with customers (rest is in Customer class)
-    public virtual List<Customer> Customers { get; set; } = new();
+    public List<Customer> Customers { get; private set; } = new();
 
     //Many to many relationship with Reviews (rest is in Reviews class)
-    public virtual List<Review> Reviews { get; set; } = new();
+    public List<Review> Reviews { get; private set; } = new();
 
     //One to many relationship with same table (ManagerId, Manager, Subordinates)
-    public virtual int? ManagerId { get; set; }
+    public Guid? ManagerId { get; private set; }
 
-    public virtual Employee? Manager { get; set; }
-    public virtual List<Employee>? Subordinates { get; set; } = new();
+    public Employee? Manager { get; private set; }
+    public List<Employee>? Subordinates { get; private set; } = new();
 
     //WorkItems relations
-    public virtual WorkTask? CurrentTask { get; set; }
+    public WorkTask? CurrentTask { get; private set; }
+    public Project? Project { get; private set; }
 
-    public virtual Project? Project { get; set; }
+    public static Employee Create(
+        Guid id,
+        FirstName firstName,
+        LastName lastName,
+        Gender gender,
+        DateOnly? dateOfBirth,
+        PhoneNumber contactNumber,
+        Email email,
+        Address? address,
+        User? user,
+        DateTime hireDate)
+    {
+        var employee = new Employee(
+            id,
+            firstName,
+            lastName,
+            gender,
+            dateOfBirth,
+            contactNumber,
+            email,
+            address,
+            user,
+            hireDate);
+
+        employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id));
+
+        return employee;
+    }
 }

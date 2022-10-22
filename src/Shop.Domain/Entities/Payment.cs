@@ -5,9 +5,17 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Payment : Entity
 {
-    public decimal? Discount { get; set; }
-    public decimal Total { get; set; }
-    public Status Status { get; set; }
-    public DateTime Deadline { get; set; }
-    public virtual Order? Order { get; set; }
+    public Payment(Guid id, decimal? discount, decimal total, Status status, DateTime deadline) : base(id)
+    {
+        Discount = discount;
+        Total = total;
+        Status = status;
+        Deadline = deadline;
+    }
+
+    public decimal? Discount { get; private set; }
+    public decimal Total { get; private set; }
+    public Status Status { get; private set; }
+    public DateTime Deadline { get; private set; }
+    public Order? Order { get; private set; }
 }

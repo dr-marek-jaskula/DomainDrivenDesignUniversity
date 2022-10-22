@@ -4,14 +4,22 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Review : Entity
 {
-    public string UserName { get; set; } = string.Empty;
-    public int Stars { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public DateTime UpdatedDate { get; set; }
-    public string Title { get; set; } = string.Empty;
-    public string? Description { get; set; } = string.Empty;
-    public virtual Product? Product { get; set; }
-    public int? ProductId { get; set; }
-    public virtual Employee? Employee { get; set; }
-    public int? EmployeeId { get; set; }
+    public Review(Guid id, string userName, int stars, DateTime createdDate, DateTime updatedDate) : base(id)
+    {
+        UserName = userName;
+        Stars = stars;
+        CreatedOn = createdDate;
+        UpdatedOn = updatedDate;
+    }
+
+    public string UserName { get; private set; } = string.Empty;
+    public int Stars { get; private set; }
+    public DateTime CreatedOn { get; private set; }
+    public DateTime UpdatedOn { get; private set; }
+    public string Title { get; private set; } = string.Empty;
+    public string? Description { get; private set; } = string.Empty;
+    public Product? Product { get; private set; }
+    public int? ProductId { get; private set; }
+    public Employee? Employee { get; private set; }
+    public int? EmployeeId { get; private set; }
 }

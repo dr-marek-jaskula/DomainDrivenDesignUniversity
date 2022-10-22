@@ -60,9 +60,37 @@ public static class DomainErrors
 
     public static class AddressError
     {
+        public static readonly Error EmptyCountry = new(
+            "Address.EmptyCountry",
+            "Country is empty");
+
+        public static readonly Error UnsupportedCountry = new(
+            "Address.UnsupportedCountry",
+            "This country is unsupported");
+
         public static readonly Error EmptyCity = new(
             "Address.EmptyCity",
             "City is empty");
+
+        public static readonly Error ContainsIllegalCharacterOrDigit = new(
+            "Address.ContainsIllegalCharacterOrDigit",
+            "City contains illegal character or digit");
+
+        public static readonly Error ZipCodeDoesNotMatch = new(
+            "Address.ContainsIllegalCharacterOrDigit",
+            "Zip code must consist of 5 digits");
+
+        public static readonly Error ContainsIllegalCharacter = new(
+            "Address.ContainsIllegalCharacter",
+            "Street contains illegal character");
+
+        public static readonly Error WrongBuildingNumber = new(
+            "Address.WrongBuildingNumber",
+            "Building number must be positive and less than 1000");
+
+        public static readonly Error WrongFlatNumber = new(
+            "Address.WrongFlatNumber",
+            "Flat number must be positive and less than 1000");
 
         public static readonly Error Invalid = new(
             "Address.Invalid",

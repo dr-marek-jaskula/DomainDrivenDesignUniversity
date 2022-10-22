@@ -21,11 +21,11 @@ public sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Rev
             .IsRequired(true)
             .HasColumnType("TINYINT");
 
-        builder.Property(u => u.CreatedDate)
+        builder.Property(u => u.CreatedOn)
             .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
             .HasColumnType("DATETIME2");
 
-        builder.Property(u => u.UpdatedDate)
+        builder.Property(u => u.UpdatedOn)
             .ValueGeneratedOnAddOrUpdate() //Generate the value when the update is made and when data is added
             .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
             .HasColumnType("DATETIME2");
