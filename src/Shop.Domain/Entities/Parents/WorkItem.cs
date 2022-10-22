@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities.Parents;
 
@@ -12,8 +13,8 @@ public abstract class WorkItem : AggregateRoot
         Guid id, 
         int priority, 
         Status status, 
-        string title, 
-        string description) 
+        string title,
+        Description description) 
         : base(id)
     {
         Priority = priority;
@@ -22,8 +23,13 @@ public abstract class WorkItem : AggregateRoot
         Description = description;
     }
 
+    // Empty constructor in this case is required by EF Core
+    protected WorkItem()
+    {
+    }
+
     public int Priority { get; private set; }
     public Status Status { get; private set; }
-    public string Title { get; private set; } = string.Empty;
-    public string Description { get; private set; } = string.Empty;
+    public string Title { get; private set; }
+    public Description Description { get; private set; }
 }

@@ -14,6 +14,10 @@ public abstract class AggregateRoot : Entity
     {
     }
 
+    protected AggregateRoot()
+    {
+    }
+
     public IReadOnlyCollection<IDomainEvent> GetDomainEvents()
     {
         return _domainEvents.ToList();

@@ -11,40 +11,57 @@ public class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
     {
         builder.ToTable("Person");
 
-        builder.HasKey(c => c.Id);
-        builder.Property(c => c.Id).HasColumnType("SMALLINT").UseIdentityColumn();
+        builder.HasKey(p => p.Id);
+        builder.Property(p => p.Id).HasColumnType("SMALLINT").UseIdentityColumn();
 
-        builder.Property(c => c.FirstName)
+        builder.Property(p => p.FirstName)
             .IsRequired(true)
             .HasMaxLength(50);
 
-        builder.Property(c => c.LastName)
+        builder.Property(p => p.LastName)
             .IsRequired(true)
             .HasMaxLength(50);
 
-        builder.Property(c => c.Email)
+        builder.Property(p => p.Email)
             .IsRequired(true)
             .HasMaxLength(50);
 
-        builder.Property(c => c.ContactNumber)
+        builder.Property(p => p.ContactNumber)
             .IsRequired(true)
             .HasColumnType("VARCHAR(30)");
 
-        builder.Property(c => c.DateOfBirth)
+        builder.Property(p => p.DateOfBirth)
             .HasConversion<DateOnlyConverter, DateOnlyComparer>()
             .HasColumnType("DATE")
             .HasDefaultValue(null);
 
-        builder.Property(c => c.Gender)
+        builder.Property(p => p.Gender)
             .IsRequired(true)
             .HasColumnType("VARCHAR(7)")
             .HasConversion(g => g.ToString(),
             s => (Gender)Enum.Parse(typeof(Gender), s))
             .HasComment("Male, Female or Unknown");
 
-        builder.HasOne(c => c.Address)
-            .WithOne(a => a.Person)
-            .HasForeignKey<Person>(c => c.AddressId);
+        builder.OwnsOne(
+            p => p.Address,
+            addressNavigationBuilder =>
+            {
+                //Configures a different table that the entity type maps to when targeting a relational database.
+                addressNavigationBuilder.ToTable("Address");
+
+                //Configures the relationship to the owner, and indicates the Foreign Key.
+                addressNavigationBuilder
+                    .WithOwner()
+                    .HasForeignKey("PersonId"); //Shadow Foreign Key
+
+                //Configure a property of the owned entity type, in this case the to be used as Primary Key
+                addressNavigationBuilder
+                    .Property<Guid>("Id"); //Shadow property
+
+                //Sets the properties that make up the primary key for this owned entity type.
+                addressNavigationBuilder
+                    .HasKey("Id"); //Shadow Primary Key
+            });
 
         //Indexes
         builder.HasIndex(p => p.Email, "UX_Person_Email")

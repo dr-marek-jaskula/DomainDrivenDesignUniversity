@@ -7,6 +7,10 @@ public abstract class Entity : IEquatable<Entity>
         Id = id;
     }
 
+    protected Entity()
+    {
+    }
+
     public Guid Id { get; private init; }
 
     public static bool operator ==(Entity? first, Entity? second)

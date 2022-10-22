@@ -10,6 +10,11 @@ public sealed class Product : Entity
         Price = price;
     }
 
+    // Empty constructor in this case is required by EF Core
+    private Product()
+    {
+    }
+
     public string Name { get; private set; } = string.Empty;
     public decimal Price { get; private set; }
     public List<Tag> Tags { get; private set; } = new();

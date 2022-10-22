@@ -7,23 +7,7 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Employee : Person
 {
-    private Employee(
-        Guid id, 
-        FirstName firstName, 
-        LastName lastName, 
-        Gender gender, 
-        DateOnly? dateOfBirth, 
-        PhoneNumber contactNumber, 
-        Email email, 
-        Address? address, 
-        User? user, 
-        DateTime hireDate)
-        : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
-    {
-        HireDate = hireDate;
-    }
-
-    public DateTime HireDate { get; private set; }
+    public DateOnly HireDate { get; private set; }
 
     //One to many relationship with Shop table (Shop, ShopId)
     public Shop? Shop { get; private set; }
@@ -45,6 +29,27 @@ public sealed class Employee : Person
     public WorkTask? CurrentTask { get; private set; }
     public Project? Project { get; private set; }
 
+    private Employee(
+        Guid id,
+        FirstName firstName,
+        LastName lastName,
+        Gender gender,
+        DateOnly? dateOfBirth,
+        PhoneNumber contactNumber,
+        Email email,
+        Address? address,
+        User? user,
+        DateOnly hireDate)
+    : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
+    {
+        HireDate = hireDate;
+    }
+
+    // Empty constructor in this case is required by EF Core
+    private Employee()
+    {
+    }
+
     public static Employee Create(
         Guid id,
         FirstName firstName,
@@ -55,7 +60,7 @@ public sealed class Employee : Person
         Email email,
         Address? address,
         User? user,
-        DateTime hireDate)
+        DateOnly hireDate)
     {
         var employee = new Employee(
             id,

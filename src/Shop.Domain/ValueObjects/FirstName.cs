@@ -1,4 +1,5 @@
 ﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Extensions;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 
@@ -25,6 +26,16 @@ public sealed class FirstName : ValueObject
         if (firstName.Length > MaxLength)
         {
             return Result.Failure<FirstName>(DomainErrors.FirstNameError.TooLong);
+        }
+
+        if (firstName.ContainsIllegalCharacter())
+        {
+            return Result.Failure<FirstName>(DomainErrors.FirstNameError.ContainsIllegalCharacter);
+        }
+
+        if (firstName.ContainsDigit())
+        {
+            return Result.Failure<FirstName>(DomainErrors.FirstNameError.ContainsDigit);
         }
 
         return new FirstName(firstName);

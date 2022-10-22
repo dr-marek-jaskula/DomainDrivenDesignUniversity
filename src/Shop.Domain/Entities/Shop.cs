@@ -11,6 +11,11 @@ public sealed class Shop : AggregateRoot
         Description = description;
     }
 
+    // Empty constructor in this case is required by EF Core
+    private Shop()
+    {
+    }
+
     public string Name { get; private set; } = string.Empty;
     public string? Description { get; private set; } = string.Empty;
     public Address? Address { get; private set; }

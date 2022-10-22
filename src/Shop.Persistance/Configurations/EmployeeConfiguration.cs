@@ -11,6 +11,7 @@ public sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<E
         builder.ToTable("Employee");
 
         builder.Property(e => e.HireDate)
+            .HasConversion<DateOnlyConverter, DateOnlyComparer>()
             .HasColumnType("DATE")
             .HasDefaultValue(null);
 

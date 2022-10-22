@@ -8,7 +8,9 @@ namespace Shopway.Domain.ValueObjects;
 
 public sealed class Address : ValueObject
 {
-    private static readonly string[] _availableCountries = new string[4] { "Poland", "Germany", "England", "Russia" };
+    public const int MaxFlatNumber = 1000;
+    public const int MaxBuildingNumber = 1000;
+    public static readonly string[] AvailableCountries = new string[4] { "Poland", "Germany", "England", "Russia" };
     private static readonly Regex _zipCodeRegex = new(@"^\d{5}?$", RegexOptions.Compiled);
 
     public string City { get; }
@@ -26,6 +28,11 @@ public sealed class Address : ValueObject
         Street = street;
         Building = building;
         Flat = flat;
+    }
+
+    //Empty constructor in this case is required by EF Core, because has a complex type as a parameter in the default constructor.
+    private Address() 
+    { 
     }
 
     //TODO ask Milan about my validation
@@ -84,7 +91,7 @@ public sealed class Address : ValueObject
         return country switch
         {
             string when country.IsNullOrEmptyOrWhiteSpace() => (false, DomainErrors.AddressError.EmptyCountry),
-            string when _availableCountries.Contains(country) => (false, DomainErrors.AddressError.UnsupportedCountry),
+            string when AvailableCountries.Contains(country) => (false, DomainErrors.AddressError.UnsupportedCountry),
             _ => (true, Error.None)
         };
     }
@@ -124,7 +131,7 @@ public sealed class Address : ValueObject
     {
         return building switch
         {
-            <= 0 or > 1000 => (false, DomainErrors.AddressError.WrongBuildingNumber),
+            <= 0 or > MaxBuildingNumber => (false, DomainErrors.AddressError.WrongBuildingNumber),
             _ => (true, Error.None)
         };
     }
@@ -134,7 +141,7 @@ public sealed class Address : ValueObject
         return flat switch
         {
             null => (true, Error.None),
-            <= 0 or > 1000 => (false, DomainErrors.AddressError.WrongFlatNumber),
+            <= 0 or > MaxFlatNumber => (false, DomainErrors.AddressError.WrongFlatNumber),
             _ => (true, Error.None)
         };
     }

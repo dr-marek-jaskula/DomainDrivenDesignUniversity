@@ -1,26 +1,14 @@
+using CustomTools;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.ValueObjects;
-using System.Diagnostics.Metrics;
 
 namespace Shopway.Domain.Entities;
 
 public sealed class User : AggregateRoot, IAuditableEntity
 {
-    private User(
-        Guid id, 
-        string username, 
-        string email, 
-        string passwordHash) 
-        : base(id)
-    {
-        Username = username;
-        Email = email;
-        PasswordHash = passwordHash;
-    }
-
-    public string Username { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
+    public Username Username { get; set; }
+    public Email Email { get; set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
     public string PasswordHash { get; set; } = string.Empty;
@@ -29,23 +17,35 @@ public sealed class User : AggregateRoot, IAuditableEntity
     public int? PersonId { get; set; }
     public Person? Person { get; set; }
 
+    private User(
+        Guid id,
+        Username username,
+        Email email,
+        string passwordHash)
+        : base(id)
+    {
+        Username = username;
+        Email = email;
+        PasswordHash = passwordHash;
+    }
+
+    // Empty constructor in this case is required by EF Core
+    private User()
+    {
+    }
+
     public static User Create(
-    Guid id,
-    Email email,
-    FirstName firstName,
-    LastName lastName)
+        Guid id,
+        Username username,
+        Email email,
+        string passwordHash)
     {
         var user = new User(
             id,
+            username,
             email,
-            firstName,
-            lastName);
+            passwordHash);
 
         return user;
-    }
-
-    public void ChangeName(FirstName username)
-    {
-        Username = username;
     }
 }

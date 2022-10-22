@@ -13,6 +13,11 @@ public sealed class Payment : Entity
         Deadline = deadline;
     }
 
+    // Empty constructor in this case is required by EF Core
+    private Payment()
+    {
+    }
+
     public decimal? Discount { get; private set; }
     public decimal Total { get; private set; }
     public Status Status { get; private set; }

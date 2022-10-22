@@ -10,6 +10,11 @@ public sealed class Tag : Entity
         ProductTag = productTag;
     }
 
+    // Empty constructor in this case is required by EF Core
+    private Tag()
+    {
+    }
+
     public ProductTag ProductTag { get; private set; }
     public List<Product> Products { get; private set; } = new();
 }

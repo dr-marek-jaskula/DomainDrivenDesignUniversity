@@ -21,11 +21,6 @@ public sealed class RoleName : ValueObject
 
     public static Result<RoleName> Create(string roleName)
     {
-        if (string.IsNullOrWhiteSpace(roleName))
-        {
-            return Result.Failure<RoleName>(DomainErrors.RoleNameError.Empty);
-        }
-
         if (!AllowedRoles.Contains(roleName))
         {
             return Result.Failure<RoleName>(DomainErrors.RoleNameError.Invalid);

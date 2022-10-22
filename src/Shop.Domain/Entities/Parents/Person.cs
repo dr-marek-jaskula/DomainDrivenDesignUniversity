@@ -30,6 +30,11 @@ public class Person : AggregateRoot
         User = user;
     }
 
+    // Empty constructor in this case is required by EF Core
+    protected Person()
+    {
+    }
+
     public FirstName FirstName { get; private set; }
     public LastName LastName { get; private set; }
     public Gender Gender { get; private set; }

@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
 
 namespace Shopway.Domain.ValueObjects;
@@ -14,7 +15,7 @@ public sealed class Email : ValueObject
     private Email(string value)
     {
         Value = value;
-    } 
+    }
 
     public static Result<Email> Create(string email)
     {

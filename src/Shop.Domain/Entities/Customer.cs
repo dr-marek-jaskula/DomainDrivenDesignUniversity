@@ -7,24 +7,29 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Customer : Person
 {
+    public Rank Rank { get; private set; }
+    public List<Order> Orders { get; set; } = new();
+
     private Customer(
-        Guid id, 
-        FirstName firstName, 
-        LastName lastName, 
-        Gender gender, 
-        DateOnly? dateOfBirth, 
-        PhoneNumber contactNumber, 
-        Email email, 
-        Address? address, 
-        User? user, 
-        Rank rank) 
-        : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
+        Guid id,
+        FirstName firstName,
+        LastName lastName,
+        Gender gender,
+        DateOnly? dateOfBirth,
+        PhoneNumber contactNumber,
+        Email email,
+        Address? address,
+        User? user,
+        Rank rank)
+    : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
     {
         Rank = rank;
     }
 
-    public Rank Rank { get; private set; }
-    public List<Order> Orders { get; set; } = new();
+    // Empty constructor in this case is required by EF Core
+    private Customer()
+    {
+    }
 
     public static Customer Create(
         Guid id,

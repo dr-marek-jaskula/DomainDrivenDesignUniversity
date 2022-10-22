@@ -16,6 +16,11 @@ public sealed class Role : Entity
         RoleName = roleName;
     }
 
+    // Empty constructor in this case is required by EF Core
+    private Role()
+    {
+    }
+
     public static Role Create(
         Guid id,
         RoleName roleName)

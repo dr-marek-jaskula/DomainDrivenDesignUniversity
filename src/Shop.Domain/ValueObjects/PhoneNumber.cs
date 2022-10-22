@@ -13,7 +13,7 @@ public sealed class PhoneNumber : ValueObject
     private PhoneNumber(string value)
     {
         Value = value;
-    } 
+    }
 
     public static Result<PhoneNumber> Create(string number)
     {
