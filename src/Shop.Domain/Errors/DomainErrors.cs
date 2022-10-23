@@ -231,6 +231,13 @@ public static class DomainErrors
             $"StoryPoints must be at most {StoryPoints.MaxStoryPoints}");
     }
 
+    public static class StarsError
+    {
+        public static readonly Error Invalid = new(
+            "Stars.TooLow",
+            $"Stars name must be: {string.Join(',', Stars.AdmissibleStars)}");
+    }
+
     public static class AmountError
     {
         public static readonly Error TooLow = new(
@@ -246,7 +253,7 @@ public static class DomainErrors
     {
         public static readonly Error Invalid = new(
             "UomCode.Invalid",
-            $"UomCode name must be: {string.Join(',', ValueObjects.UomCode.AllowedUomCodes)}");
+            $"UomCode name must be: {string.Join(',', UomCode.AllowedUomCodes)}");
     }
 
     public static class WorkItemError
@@ -265,5 +272,16 @@ public static class DomainErrors
         public static readonly Error TooHigh = new(
             "Price.TooHigh",
             $"Price must be at most {Price.MaxPrice}");
+    }
+
+    public static class DiscountError
+    {
+        public static readonly Error TooLow = new(
+            "Discount.TooLow",
+            $"Discount must be at least {Discount.MinDiscount}");
+
+        public static readonly Error TooHigh = new(
+            "Discount.TooHigh",
+            $"Discount must be at most {Discount.MaxDiscount}");
     }
 }

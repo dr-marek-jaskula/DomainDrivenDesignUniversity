@@ -6,7 +6,7 @@ using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
-public sealed class TagEntityTypeConfiguration : IEntityTypeConfiguration<Tag>
+internal sealed class TagEntityTypeConfiguration : IEntityTypeConfiguration<Tag>
 {
     public void Configure(EntityTypeBuilder<Tag> builder)
     {

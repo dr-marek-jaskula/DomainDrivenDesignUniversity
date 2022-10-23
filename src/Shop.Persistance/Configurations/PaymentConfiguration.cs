@@ -6,7 +6,7 @@ using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
-public sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<Payment>
+internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<Payment>
 {
     public void Configure(EntityTypeBuilder<Payment> builder)
     {

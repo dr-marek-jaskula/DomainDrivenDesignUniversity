@@ -1,4 +1,6 @@
-﻿namespace Shopway.Domain.Primitives;
+﻿using Shopway.Domain.DomainEvents;
+
+namespace Shopway.Domain.Primitives;
 
 //The AggregateRoot is an Entity or a group of Entities that will be allowed to be directly queried from the database.
 //AggragateRoot is always queried as a whole.

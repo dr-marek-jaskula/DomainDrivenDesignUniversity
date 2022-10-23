@@ -8,7 +8,7 @@ using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
-public class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkItem>
+internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkItem>
 {
     public void Configure(EntityTypeBuilder<WorkItem> builder)
     {

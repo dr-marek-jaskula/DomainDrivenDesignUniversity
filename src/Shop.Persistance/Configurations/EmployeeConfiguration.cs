@@ -2,10 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
-public sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employee>
+internal sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {

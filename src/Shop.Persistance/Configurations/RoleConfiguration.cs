@@ -6,7 +6,7 @@ using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
-public sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
+internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {

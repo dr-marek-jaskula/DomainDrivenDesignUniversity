@@ -1,6 +1,4 @@
-﻿using Shopway.Domain.Primitives;
-
-namespace Shopway.Domain.DomainEvents;
+﻿namespace Shopway.Domain.DomainEvents;
 
 //DomainEvents are records of something that already occurred in our system
 //For instance: UserCreatedDomainEvent, OrderCreatedDomainEvent, PaymentSucceededDomainEvent

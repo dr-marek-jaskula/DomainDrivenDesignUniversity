@@ -5,7 +5,7 @@ using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
-public sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Review>
+internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
@@ -38,9 +38,5 @@ public sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Rev
         builder.HasOne(r => r.Product)
             .WithMany(p => p.Reviews)
             .HasForeignKey(r => r.ProductId);
-
-        builder.HasOne(r => r.Employee)
-            .WithMany(p => p.Reviews)
-            .HasForeignKey(r => r.EmployeeId);
     }
 }

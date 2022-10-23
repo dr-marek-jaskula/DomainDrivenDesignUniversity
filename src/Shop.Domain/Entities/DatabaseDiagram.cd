@@ -1,30 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Shopway.Domain.Entities.Customer" Collapsed="true">
-    <Position X="14.75" Y="3.75" Width="1.5" />
+    <Position X="14.75" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEBAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Customer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Shopway.Domain.Entities.Employee" Collapsed="true">
-    <Position X="8" Y="5" Width="2.75" />
+    <Position X="11" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAEAAEAAAAgAAAAABAAIAAAAACCAhEAAAAAAAAAAgAA=</HashCode>
+      <HashCode>AAEAAAAAAAgAAAAABAAIAAAAACAAhEAAAAAAAAAAgAA=</HashCode>
       <FileName>Entities\Employee.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Shopway.Domain.Entities.Bug" Collapsed="true">
-    <Position X="10.5" Y="8.5" Width="1.5" />
+    <Position X="11" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Bug.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Shopway.Domain.Entities.Order" Collapsed="true">
     <Position X="12" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>UAECAAAEAAAAAAAAAIAAAACAAACAABAAAAEAAAAAAAA=</HashCode>
+      <HashCode>EAECAAAEAAAAAAAAAIAAAACAAAAAAFAAAAEAAAAAAAA=</HashCode>
       <FileName>Entities\Order.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -34,7 +34,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Shopway.Domain.Entities.Payment" Collapsed="true">
-    <Position X="14.75" Y="2.25" Width="1.5" />
+    <Position X="12" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEAAAAEAAAAAAAAAAAAAAAAAAAAQAAAAgEAAAAAAAA=</HashCode>
       <FileName>Entities\Payment.cs</FileName>
@@ -43,7 +43,7 @@
   <Class Name="Shopway.Domain.Entities.Product" Collapsed="true">
     <Position X="7.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAEAAAQAAAAAAEAAAAAQAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAEAAAQAAAAAAAAAAAAAAAEAAAEIAAAAAAAAIAAA=</HashCode>
       <FileName>Entities\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -61,17 +61,16 @@
   <Class Name="Shopway.Domain.Entities.Review" Collapsed="true">
     <Position X="7.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EEACAAAAAAAgAEAAAQAAAAAACAACAAAAIAAAAAACAAA=</HashCode>
+      <HashCode>EEACAAAAAAAgAEAAAQAAAAAAAAACAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Entities\Review.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Product" />
-      <Property Name="Employee" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Shopway.Domain.Entities.Role" Collapsed="true">
-    <Position X="14.75" Y="8" Width="1.5" />
+    <Position X="14.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAEAAAAAA=</HashCode>
       <FileName>Entities\Role.cs</FileName>
@@ -85,7 +84,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Shopway.Domain.Entities.User" Collapsed="true">
-    <Position X="14.75" Y="6.5" Width="1.5" />
+    <Position X="13.5" Y="5.75" Width="4" />
     <TypeIdentifier>
       <HashCode>AICAAAIAACAAAAAEEQAAAAAAAAACAEAAIAAAAAAAAAA=</HashCode>
       <FileName>Entities\User.cs</FileName>
@@ -96,25 +95,31 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Shopway.Domain.Entities.Feature" Collapsed="true">
-    <Position X="10.5" Y="6.75" Width="1.5" />
+    <Position X="8.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Feature.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Shopway.Domain.Entities.Parents.Person" Collapsed="true">
-    <Position X="14.75" Y="5" Width="1.5" />
+    <Position X="14.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAFAAACAAAACAAAAAAAAAAAAQAEACAAAAAAAAAAg=</HashCode>
       <FileName>Entities\Parents\Person.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Shopway.Domain.Entities.Parents.WorkItem" Collapsed="true">
-    <Position X="7.75" Y="6.75" Width="1.5" />
+    <Position X="11" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAAAAEAAAgAEAEAAAAAAAACAAAAAAAAAAAAAACAAA=</HashCode>
       <FileName>Entities\Parents\WorkItem.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Employee" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

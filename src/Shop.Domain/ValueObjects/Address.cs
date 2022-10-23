@@ -74,6 +74,7 @@ public sealed class Address : ValueObject
         return new Address(city, country, zipCode, street, building, flat);
     }
 
+    /// <returns>Street, City, Country, ZipCode, Building and Flat if not null</returns>
     public override IEnumerable<object> GetAtomicValues()
     {
         yield return Street;

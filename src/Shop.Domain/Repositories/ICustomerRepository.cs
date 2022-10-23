@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Shopway.Domain.Repositories;
 
-internal interface ICustomerRepository
+public interface ICustomerRepository
 {
     Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Shopway.Persistence;
+namespace Shopway.Persistence.Converters;
 
 //Used for conversion from DateTime to DateOnly and backwards.
 //The example of use is done in PersonConfiguration

@@ -16,5 +16,6 @@ internal static class TableNames
     internal const string Tag = "Tag";
     internal const string User = "User";
     internal const string WorkItem = "WorkItem";
+    internal const string OutboxMessage = "OutboxMessage";
+    internal const string OutboxMessageConsumer = "OutboxMessageConsumer";
 }
-

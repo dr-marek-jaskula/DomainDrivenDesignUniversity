@@ -16,9 +16,6 @@ public sealed class Employee : Person
     //Many to many relationship with customers (rest is in Customer class)
     public List<Customer> Customers { get; private set; } = new();
 
-    //Many to many relationship with Reviews (rest is in Reviews class)
-    public List<Review> Reviews { get; private set; } = new();
-
     //One to many relationship with same table (ManagerId, Manager, Subordinates)
     public Guid? ManagerId { get; private set; }
     public Employee? Manager { get; private set; }

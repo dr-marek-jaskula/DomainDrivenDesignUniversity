@@ -1,8 +1,7 @@
 ﻿using MediatR;
 
-namespace Shopway.Domain.Primitives;
+namespace Shopway.Domain.DomainEvents;
 
-//See Shopway.Domain -> DomainEvents -> DomainEvent
 public interface IDomainEvent : INotification
 {
     public Guid Id { get; init; }

@@ -6,7 +6,7 @@ using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
-public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
+internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {

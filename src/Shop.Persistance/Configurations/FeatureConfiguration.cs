@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Persistence.Configurations;
 
-public sealed class FeatureEntityTypeConfiguration : IEntityTypeConfiguration<Feature>
+internal sealed class FeatureEntityTypeConfiguration : IEntityTypeConfiguration<Feature>
 {
     public void Configure(EntityTypeBuilder<Feature> builder)
     {

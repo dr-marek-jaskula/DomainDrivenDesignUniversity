@@ -4,10 +4,11 @@ using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
-public class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
+internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 {
     public void Configure(EntityTypeBuilder<Person> builder)
     {
