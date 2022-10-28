@@ -1,81 +1,112 @@
-using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Interceptors;
 using Shopway.Persistence;
-using Shopway.App.Middlewares;
+using Shopway.App.Registration;
+using Serilog.Events;
+using Serilog;
+using Shopway.Presentation.Exceptions;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .WriteTo.Console() 
+            .CreateBootstrapLogger();
 
-builder
-    .Services
-    .Scan(
-        selector => selector
-            .FromAssemblies(
-                Shopway.Infrastructure.AssemblyReference.Assembly,
-                Shopway.Persistence.AssemblyReference.Assembly)
-            .AddClasses(false)
-            .AsImplementedInterfaces()
-            .WithScopedLifetime());
+try
+{
+    Log.Information("Staring the web host");
+    
+    //Initial configuration
 
-builder.Services.AddMediatR(Shopway.Application.AssemblyReference.Assembly);
-
-//TODO validation pipeline and the other one for domain events
-builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-
-builder.Services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
-
-builder.Services.AddValidatorsFromAssembly(
-    Shopway.Application.AssemblyReference.Assembly,
-    includeInternalTypes: true);
-
-builder.Services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
-
-builder.Services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
-
-//TODO to registration and other object
-string connectionString = builder.Configuration.GetConnectionString("Database");
-
-builder.Services.AddDbContext<ApplicationDbContext>(
-    (sp, optionsBuilder) =>
+    var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     {
-        var outboxInterceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
-        var auditableInterceptor = sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
-
-        optionsBuilder.UseSqlServer(connectionString)
-            .AddInterceptors(
-                outboxInterceptor,
-                auditableInterceptor);
+        Args = args,
+        ContentRootPath = Directory.GetCurrentDirectory()
     });
 
-//TODO something like quartz????????? (logging here and other stuff) QUARTZ is for backgorund jobs?
+    builder.Host.UseSerilog((context, services, configuration) => configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext());
 
-builder
-    .Services
-    .AddControllers()
-    .AddApplicationPart(Shopway.Presentation.AssemblyReference.Assembly);
+    //Configure Services
 
-builder.Services.AddSwaggerGen();
+    builder.Services.AddControllers()
+        .AddApplicationPart(Shopway.Presentation.AssemblyReference.Assembly);
 
-//TODO go serilog + seq or just serilog to json
-builder.Services.AddLogging();
+    builder.Services.RegisterOptions();
 
-builder.Services.AddTransient<ErrorHandlingMiddleware>();
+    builder.Services.RegisterFluentValidation();
 
-WebApplication app = builder.Build();
+    builder.Services.RegisterMediator();
 
-if (app.Environment.IsDevelopment())
+    builder.Services.RegisterDatabaseContext(builder.Environment.IsDevelopment());
+
+    builder.Services.RegisterServices();
+
+    builder.Services.RegisterServiceDecorators();
+
+    //TODO something like quartz????????? (logging here and other stuff) QUARTZ is for background jobs?
+
+    builder.Services.RegisterMiddlewares();
+
+    builder.Services.AddSwaggerGen();
+
+    //Build the application
+
+    WebApplication app = builder.Build();
+
+    //Configure HTTP request pipeline
+
+    app.UseSerilogRequestLogging(options =>
+    {
+        options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} ({UserId}) responded {StatusCode} in {Elapsed:0.0000}ms";
+    });
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseMiddlewares();
+
+    app.UseHttpsRedirection();
+
+    #region Apply Migrations
+    
+    var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+
+    using (var applyMigrationsScope = serviceScopeFactory.CreateScope())
+    {
+        var dbContext = applyMigrationsScope.ServiceProvider.GetService<ApplicationDbContext>();
+
+        if (dbContext is null)
+            throw new UnavailableException("Database is not available");
+
+        var pendingMigrations = dbContext.Database.GetPendingMigrations();
+
+        if (pendingMigrations.Any())
+            dbContext.Database.Migrate();
+    }
+
+    #endregion Apply Migrations
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+}
+catch (Exception ex)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Fatal(ex, "Host terminated unexpectedly");
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
 }
 
-app.UseHttpsRedirection();
+return 0;
 
-app.UseAuthorization();
-
-app.UseMiddleware<ErrorHandlingMiddleware>();
-
-app.MapControllers();
-
-app.Run();
+sealed partial class Program { }
