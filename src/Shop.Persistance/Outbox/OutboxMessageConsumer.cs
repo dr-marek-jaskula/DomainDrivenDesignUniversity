@@ -6,4 +6,3 @@ public sealed class OutboxMessageConsumer
 
     public string Name { get; set; } = string.Empty;
 }
-

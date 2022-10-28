@@ -1,3 +1,11 @@
-# Domain Project
+# Domain Layer
 
-The domain project contains all the entities and value objects
+- Entities
+- Aggregates
+- Value Objects
+- Domain Events
+- Erros
+- Enums
+- Results
+- Constants
+- IRepositories

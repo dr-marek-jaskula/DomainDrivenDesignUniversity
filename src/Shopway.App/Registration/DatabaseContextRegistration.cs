@@ -26,12 +26,12 @@ public static class DatabaseContextRegistration
                     databaseOptions.MaxRetryCount,
                     TimeSpan.FromSeconds(databaseOptions.MaxRetryDelay),
                     Array.Empty<int>());
+
             }).AddInterceptors(outboxInterceptor, auditableInterceptor);
 
             if (isDevelopment)
             {
                 optionsBuilder.EnableDetailedErrors();
-                //DO NOT USE "EnableSensitiveDataLogging" IN PRODUCTION!
                 optionsBuilder.EnableSensitiveDataLogging(); //DO NOT USE THIS IN PRODUCTIN! Used to get parameter values. DO NOT USE THIS IN PRODUCTIN!
                 optionsBuilder.ConfigureWarnings(warningAction =>
                 {
