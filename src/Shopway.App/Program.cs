@@ -30,8 +30,7 @@ try
 
     //Configure Services
 
-    builder.Services.AddControllers()
-        .AddApplicationPart(Shopway.Presentation.AssemblyReference.Assembly);
+    builder.Services.RegisterControllers();
 
     builder.Services.RegisterOptions();
 
@@ -43,9 +42,9 @@ try
 
     builder.Services.RegisterServices();
 
-    builder.Services.RegisterServiceDecorators();
+    builder.Services.RegisterBackgroundServices();
 
-    //TODO something like quartz????????? (logging here and other stuff) QUARTZ is for background jobs?
+    builder.Services.RegisterServiceDecorators();
 
     builder.Services.RegisterMiddlewares();
 

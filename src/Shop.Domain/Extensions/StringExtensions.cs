@@ -1,6 +1,6 @@
 ﻿namespace Shopway.Domain.Extensions;
 
-public static class Extensions
+public static class StringExtensions
 {
     private static readonly char[] _illegalCharacter = 
         { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 
