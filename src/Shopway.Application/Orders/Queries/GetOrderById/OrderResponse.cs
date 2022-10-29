@@ -9,7 +9,7 @@ public sealed record OrderResponse
     Guid Id,
     Amount Amount,
     Status Status,
-    DateTime Deadline,
+    DateTimeOffset Deadline,
     Product Product,
     Payment Payment,
     Customer Customer

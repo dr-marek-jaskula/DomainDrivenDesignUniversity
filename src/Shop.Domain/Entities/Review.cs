@@ -20,8 +20,8 @@ public sealed class Review : AggregateRoot, IAuditableEntity
         Description description,
         Username username,
         Stars stars,
-        DateTime createdDate,
-        DateTime updatedDate)
+        DateTimeOffset createdDate,
+        DateTimeOffset updatedDate)
         : base(id)
     {
         Username = username;

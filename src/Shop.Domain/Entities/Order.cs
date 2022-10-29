@@ -10,7 +10,7 @@ public sealed class Order : AggregateRoot
     public Amount Amount { get; private set; }
     public Status Status { get; private set; }
     //TODO HANDLE deadlines both for Order and Payment
-    public DateTime Deadline { get; private set; }
+    public DateTimeOffset Deadline { get; private set; }
     public Product Product { get; private set; }
     public Guid ProductId { get; private set; }
     public Payment Payment { get; private set; }

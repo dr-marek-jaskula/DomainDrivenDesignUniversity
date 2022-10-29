@@ -3,13 +3,12 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Shopway.Persistence.Converters;
 
-//Used for conversion from DateTime to DateOnly and backwards.
+//Used for conversion from DateTimeOffset to DateOnly and backwards.
 //The example of use is done in PersonConfiguration
 
-//TODO DateTimeOffset!
-public sealed class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
+public sealed class DateOnlyConverter : ValueConverter<DateOnly, DateTimeOffset>
 {
-    public DateOnlyConverter() : base(dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue), dateTime => DateOnly.FromDateTime(dateTime))
+    public DateOnlyConverter() : base(dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue), dateTime => DateOnly.FromDateTime(dateTime.DateTime))
     {
     }
 }
