@@ -7,10 +7,13 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Customer : Person
 {
-    public Rank Rank { get; private set; }
-    public List<Order> Orders { get; set; } = new();
+    private readonly List<Order> _orders = new();
 
-    internal Customer(
+    public Rank Rank { get; private set; }
+    public IReadOnlyCollection<Order> Orders => _orders;
+
+    internal Customer
+    (
         Guid id,
         FirstName firstName,
         LastName lastName,
@@ -20,8 +23,9 @@ public sealed class Customer : Person
         Email email,
         Address? address,
         User? user,
-        Rank rank)
-    : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
+        Rank rank
+    )
+        : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
     {
         Rank = rank;
     }

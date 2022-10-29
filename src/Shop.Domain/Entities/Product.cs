@@ -6,20 +6,27 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Product : AggregateRoot
 {
+    private readonly List<Tag> _tags = new();
+    private readonly List<Review> _reviews = new();
+    private readonly List<Order> _orders = new();
+
     public ProductName ProductName { get; private set; }
     public Revision Revision { get; private set; }
     public Price Price { get; private set; }
     public UomCode UomCode { get; private set; }
-    public List<Tag> Tags { get; private set; } = new();
-    public List<Review> Reviews { get; private set; } = new();
-    public List<Order> Orders { get; private set; } = new();
+    
+    public IReadOnlyCollection<Tag> Tags => _tags;
+    public IReadOnlyCollection<Review> Reviews => _reviews;
+    public IReadOnlyCollection<Order> Orders => _orders;
 
-    internal Product(
+    internal Product
+    (
         Guid id,
         ProductName productName,
         Price price,
         UomCode uomCode,
-        Revision revision) 
+        Revision revision
+    )
         : base(id)
     {
         ProductName = productName;
@@ -33,19 +40,23 @@ public sealed class Product : AggregateRoot
     {
     }
 
-    public static Product Create(
+    public static Product Create
+    (
         Guid id,
         ProductName productName,
         Price price,
         UomCode uomCode,
-        Revision revision)
+        Revision revision
+    )
     {
-        var product = new Product(
+        var product = new Product
+        (
             id,
             productName,
             price,
             uomCode,
-            revision);
+            revision
+        );
 
         product.RaiseDomainEvent(new ProductCreatedDomainEvent(Guid.NewGuid(), product.Id));
 

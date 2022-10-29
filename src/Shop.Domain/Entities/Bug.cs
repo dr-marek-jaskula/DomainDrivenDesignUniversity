@@ -7,7 +7,8 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Bug : WorkItem
 {
-    internal Bug(
+    internal Bug
+    (
         Guid id,
         Title title,
         Description description,
@@ -24,7 +25,8 @@ public sealed class Bug : WorkItem
     {
     }
 
-    public static Bug Create(
+    public static Bug Create
+    (
         Guid id,
         Title title,
         Description description,
@@ -33,14 +35,16 @@ public sealed class Bug : WorkItem
         Status status,
         Guid? employeeId)
     {
-        var bug = new Bug(
+        var bug = new Bug
+        (
             id,
             title,
             description,
             priority,
             storyPoints,
             status,
-            employeeId);
+            employeeId
+        );
 
         bug.RaiseDomainEvent(new BugRegisteredDomainEvent(Guid.NewGuid(), bug.Id));
 

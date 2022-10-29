@@ -3,7 +3,7 @@ using Shopway.Domain.Primitives;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
-//TODO make field private or internal!!?
+
 public sealed class Payment : Entity
 {
     public Discount Discount { get; private set; }
@@ -12,11 +12,13 @@ public sealed class Payment : Entity
     public Guid OrderId { get; private set; }
     public Order Order { get; private set; }
 
-    internal Payment(
+    internal Payment
+    (
         Guid id,
         Discount discount,
         Status status,
-        Guid orderId)
+        Guid orderId
+    )
         : base(id)
     {
         Discount = discount;

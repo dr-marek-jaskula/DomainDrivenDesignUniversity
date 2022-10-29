@@ -28,7 +28,7 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
              s => (Status)Enum.Parse(typeof(Status), s))
             .HasComment("New, InProgress, Done or Rejected");
 
-        builder.Property(o => o.Deadline)
+        builder.Property(o => o.DeliveriedOn)
             .HasColumnType("DATE");
 
         builder.HasOne(o => o.Product)
@@ -40,8 +40,8 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
             .HasForeignKey(p => p.CustomerId);
 
         //Indexes
-        builder.HasIndex(o => new { o.Deadline, o.Status }, "IX_Order_Deadline_Status")
-            .IncludeProperties(o => new { o.Amount, o.ProductId })
+        builder.HasIndex(o => new { o.ProductId, o.Status }, "IX_Order_ProductId_Status")
+            .IncludeProperties(o => new { o.Amount, o.CustomerId })
             .HasFilter("Status IN ('Received', 'InProgress')");
     }
 }

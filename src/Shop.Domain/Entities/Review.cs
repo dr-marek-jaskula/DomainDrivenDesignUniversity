@@ -14,14 +14,16 @@ public sealed class Review : AggregateRoot, IAuditableEntity
     public Product? Product { get; private set; }
     public Guid? ProductId { get; private set; }
 
-    internal Review(
+    internal Review
+    (
         Guid id,
         Title title,
         Description description,
         Username username,
         Stars stars,
         DateTimeOffset createdDate,
-        DateTimeOffset updatedDate)
+        DateTimeOffset updatedDate
+    )
         : base(id)
     {
         Username = username;

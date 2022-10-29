@@ -5,6 +5,8 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Tag : Entity
 {
+    private readonly List<Product> _products = new();
+
     internal Tag(Guid id, ProductTag productTag) 
         : base(id)
     {
@@ -17,6 +19,5 @@ public sealed class Tag : Entity
     }
 
     public ProductTag ProductTag { get; private set; }
-    //TODO this is good? (IReadOnlyCollection)
-    public List<Product> Products { get; private set; } = new();
+    public IReadOnlyCollection<Product> Products => _products;
 }

@@ -29,7 +29,7 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
             Id: order.Id, 
             Amount: order.Amount, 
             Status: order.Status, 
-            Deadline: order.Deadline, 
+            Deadline: order.DeliveriedOn, 
             Product: order.Product, 
             Payment: order.Payment, 
             Customer: order.Customer);

@@ -1,5 +1,4 @@
-﻿using Shopway.Domain.DomainEvents;
-using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.ValueObjects;
 
@@ -8,7 +7,8 @@ namespace Shopway.Domain.Entities.Parents;
 //Table-per-type approach
 public class Person : AggregateRoot
 {
-    protected Person(
+    protected Person
+    (
         Guid id, 
         FirstName firstName, 
         LastName lastName, 
@@ -17,7 +17,8 @@ public class Person : AggregateRoot
         PhoneNumber contactNumber,
         Email email, 
         Address? address, 
-        User? user)
+        User? user
+    )
         : base(id)
     {
         FirstName = firstName;
@@ -49,7 +50,8 @@ public class Person : AggregateRoot
     //One to one relationship with User table (User, UserId)
     public User? User { get; private set; }
 
-    public static Person Create(
+    public static Person Create
+    (
         Guid id,
         FirstName firstName,
         LastName lastName,
@@ -58,7 +60,8 @@ public class Person : AggregateRoot
         PhoneNumber contactNumber,
         Email email,
         Address? address,
-        User? user)
+        User? user
+    )
     {
         var person = new Person(
             id,

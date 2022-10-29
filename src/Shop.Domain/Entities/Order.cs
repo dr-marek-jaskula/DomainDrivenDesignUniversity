@@ -9,8 +9,7 @@ public sealed class Order : AggregateRoot
 {
     public Amount Amount { get; private set; }
     public Status Status { get; private set; }
-    //TODO HANDLE deadlines both for Order and Payment
-    public DateTimeOffset Deadline { get; private set; }
+    public DateTimeOffset DeliveriedOn { get; private set; }
     public Product Product { get; private set; }
     public Guid ProductId { get; private set; }
     public Payment Payment { get; private set; }
@@ -18,12 +17,14 @@ public sealed class Order : AggregateRoot
     public Customer Customer { get; private set; }
     public Guid CustomerId { get; private set; }
 
-    internal Order(
+    internal Order
+    (
         Guid id,
         Guid productId,
         Amount amount,
         Guid customerId,
-        Discount discount)
+        Discount discount
+    )
         : base(id)
     {
         ProductId = productId;
@@ -38,12 +39,14 @@ public sealed class Order : AggregateRoot
     {
     }
 
-    public static Order Create(
+    public static Order Create
+    (
         Guid id,
         Guid productId,
         Amount amount,
         Guid customerId,
-        Discount discount)
+        Discount discount
+    )
     {
         var order = new Order(
             id,

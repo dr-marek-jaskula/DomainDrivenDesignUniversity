@@ -8,7 +8,6 @@ public sealed class Role : Entity
     private readonly List<User> _users = new();
 
     public RoleName RoleName { get; private set; }
-    //TODO consider is it good?
     public IReadOnlyCollection<User> Users => _users;
 
     internal Role(Guid Id, RoleName roleName)
@@ -22,13 +21,9 @@ public sealed class Role : Entity
     {
     }
 
-    public static Role Create(
-        Guid id,
-        RoleName roleName)
+    public static Role Create(Guid id, RoleName roleName)
     {
-        var role = new Role(
-            id,
-            roleName);
+        var role = new Role(id, roleName);
 
         return role;
     }

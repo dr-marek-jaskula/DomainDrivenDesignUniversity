@@ -10,6 +10,7 @@ namespace Shopway.Domain.Entities;
 public sealed class Employee : Person
 {
     private readonly List<WorkItem> _workItems = new();
+    private readonly List<Employee> _subordinates = new();
 
     public DateOnly HireDate { get; private set; }
 
@@ -19,12 +20,14 @@ public sealed class Employee : Person
     //One to many relationship with same table (ManagerId, Manager, Subordinates)
     public Guid? ManagerId { get; private set; }
     public Employee? Manager { get; private set; }
-    public List<Employee>? Subordinates { get; private set; } = new();
+
+    public IReadOnlyCollection<Employee> Subordinates => _subordinates;
 
     //WorkItems relations
     public IReadOnlyCollection<WorkItem> WorkItems => _workItems;
 
-    internal Employee(
+    internal Employee
+    (
         Guid id,
         FirstName firstName,
         LastName lastName,
@@ -34,8 +37,9 @@ public sealed class Employee : Person
         Email email,
         Address? address,
         User? user,
-        DateOnly hireDate)
-    : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
+        DateOnly hireDate
+    )
+        : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
     {
         HireDate = hireDate;
     }
@@ -45,7 +49,8 @@ public sealed class Employee : Person
     {
     }
 
-    public static Employee Create(
+    public static Employee Create
+    (
         Guid id,
         FirstName firstName,
         LastName lastName,
@@ -55,9 +60,11 @@ public sealed class Employee : Person
         Email email,
         Address? address,
         User? user,
-        DateOnly hireDate)
+        DateOnly hireDate
+    )
     {
-        var employee = new Employee(
+        var employee = new Employee
+        (
             id,
             firstName,
             lastName,
@@ -67,7 +74,8 @@ public sealed class Employee : Person
             email,
             address,
             user,
-            hireDate);
+            hireDate
+        );
 
         employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id));
 
