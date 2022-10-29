@@ -37,7 +37,6 @@ public sealed class Address : ValueObject
     { 
     }
 
-    //TODO ask Milan about my validation
     public static Result<Address> Create(string city, string country, string zipCode, string street, int building, int? flat)
     {
 

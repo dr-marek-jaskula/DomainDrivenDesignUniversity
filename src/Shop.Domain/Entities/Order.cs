@@ -23,8 +23,7 @@ public sealed class Order : AggregateRoot
         Guid productId,
         Amount amount,
         Guid customerId,
-        Discount discount,
-        DateTimeOffset paymentDeadline)
+        Discount discount)
         : base(id)
     {
         ProductId = productId;
@@ -63,14 +62,13 @@ public sealed class Order : AggregateRoot
         return Math.Round(Product.Price.Value * Amount.Value * (1 - Payment.Discount.Value), 2);
     }
 
-    private static Payment CreateNewPayment(Guid orderId, Discount discount, DateTimeOffset deadline)
+    private static Payment CreateNewPayment(Guid orderId, Discount discount)
     {
         return new Payment
         (
             id: Guid.NewGuid(),
             discount: discount,
             status: Status.New,
-            deadline: deadline,
             orderId: orderId
         );
     }
