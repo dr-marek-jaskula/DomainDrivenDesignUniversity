@@ -25,7 +25,14 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
                 $"The order with Id: {request.OrderId} was not found"));
         }
 
-        var response = new OrderResponse(order.Id);
+        var response = new OrderResponse(
+            Id: order.Id, 
+            Amount: order.Amount, 
+            Status: order.Status, 
+            Deadline: order.Deadline, 
+            Product: order.Product, 
+            Payment: order.Payment, 
+            Customer: order.Customer);
 
         return response;
     }

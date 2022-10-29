@@ -27,28 +27,29 @@ public sealed class OrderController : ApiController
         return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
     }
 
-    //[HttpPost]
-    //public async Task<IActionResult> CreateOrder(
-    //    [FromBody] CreateOrderRequest request,
-    //    CancellationToken cancellationToken)
-    //{
-    //    var command = new CreateOrderCommand(
-    //        request.Email,
-    //        request.FirstName,
-    //        request.LastName);
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder(
+        [FromBody] CreateOrderRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new CreateOrderCommand(
+            request.ProductId,
+            request.Amount,
+            request.CustomerId,
+            request.Discount);
 
-    //    Result<Guid> result = await Sender.Send(command, cancellationToken);
+        Result<Guid> result = await Sender.Send(command, cancellationToken);
 
-    //    if (result.IsFailure)
-    //    {
-    //        return HandleFailure(result);
-    //    }
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
 
-    //    return CreatedAtAction(
-    //        nameof(GetOrderById),
-    //        new { id = result.Value },
-    //        result.Value);
-    //}
+        return CreatedAtAction(
+            nameof(GetOrderById),
+            new { id = result.Value },
+            result.Value);
+    }
 
     //[HttpPut("{id:guid}")]
     //public async Task<IActionResult> UpdateOrder(

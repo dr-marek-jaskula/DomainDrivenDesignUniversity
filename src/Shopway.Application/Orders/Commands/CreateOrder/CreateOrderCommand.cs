@@ -1,6 +1,11 @@
-﻿namespace Shopway.Application.Orders.Commands.CreateOrder;
+﻿using Shopway.Application.Abstractions.CQRS;
+namespace Shopway.Application.Orders.Commands.CreateOrder;
 
-public sealed class CreateOrderCommand
-{
-}
+public sealed record CreateOrderCommand
+(
+    Guid ProductId,
+    int Amount,
+    Guid CustomerId,
+    decimal? Discount
+) : ICommand<Guid>;
 

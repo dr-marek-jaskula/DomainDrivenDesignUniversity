@@ -6,7 +6,7 @@ namespace Shopway.Domain.ValueObjects;
 
 public sealed class Discount : ValueObject
 {
-    public const decimal MaxDiscount = 1;
+    public const decimal MaxDiscount = 0.5m;
     public const decimal MinDiscount = 0;
 
     public decimal Value { get; }

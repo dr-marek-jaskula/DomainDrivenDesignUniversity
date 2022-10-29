@@ -8,21 +8,22 @@ public sealed class Payment : Entity
 {
     public Discount Discount { get; private set; }
     public Status Status { get; private set; }
-    public DateTime Deadline { get; private set; }
+    public DateTimeOffset Deadline { get; private set; }
+    public Guid OrderId { get; private set; }
     public Order Order { get; private set; }
 
-    public Payment(
+    internal Payment(
         Guid id,
         Discount discount,
         Status status,
-        DateTime deadline,
-        Order order)
+        DateTimeOffset deadline,
+        Guid orderId)
         : base(id)
     {
         Discount = discount;
         Status = status;
         Deadline = deadline;
-        Order = order;
+        OrderId = orderId;
     }
 
     // Empty constructor in this case is required by EF Core

@@ -1,4 +1,6 @@
-﻿namespace Shopway.Infrastructure.Providers;
+﻿using Shopway.Application.Abstractions;
+
+namespace Shopway.Infrastructure.Providers;
 
 public sealed class DateTimeProvider : IDateTimeProvider
 {

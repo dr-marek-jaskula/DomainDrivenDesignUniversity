@@ -10,7 +10,7 @@ public sealed class Customer : Person
     public Rank Rank { get; private set; }
     public List<Order> Orders { get; set; } = new();
 
-    private Customer(
+    internal Customer(
         Guid id,
         FirstName firstName,
         LastName lastName,

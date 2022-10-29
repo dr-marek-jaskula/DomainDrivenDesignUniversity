@@ -1,7 +1,7 @@
 ﻿using Polly;
 using Polly.Retry;
 
-namespace Shopway.Infrastructure.Polly;
+namespace Shopway.Infrastructure.Policies;
 
 public static class PollyPolicies
 {

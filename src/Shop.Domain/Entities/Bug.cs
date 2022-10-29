@@ -7,7 +7,7 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Bug : WorkItem
 {
-    public Bug(
+    internal Bug(
         Guid id,
         Title title,
         Description description,

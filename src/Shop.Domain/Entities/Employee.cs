@@ -24,7 +24,7 @@ public sealed class Employee : Person
     //WorkItems relations
     public IReadOnlyCollection<WorkItem> WorkItems => _workItems;
 
-    private Employee(
+    internal Employee(
         Guid id,
         FirstName firstName,
         LastName lastName,

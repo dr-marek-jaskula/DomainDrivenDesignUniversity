@@ -14,7 +14,7 @@ public sealed class Review : AggregateRoot, IAuditableEntity
     public Product? Product { get; private set; }
     public Guid? ProductId { get; private set; }
 
-    public Review(
+    internal Review(
         Guid id,
         Title title,
         Description description,

@@ -5,7 +5,8 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Tag : Entity
 {
-    public Tag(Guid id, ProductTag productTag) : base(id)
+    internal Tag(Guid id, ProductTag productTag) 
+        : base(id)
     {
         ProductTag = productTag;
     }

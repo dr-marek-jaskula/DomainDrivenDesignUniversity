@@ -2,6 +2,7 @@
 using Shopway.Infrastructure.Providers;
 using Shopway.Infrastructure.Adapters;
 using Shopway.Persistence.Interceptors;
+using Shopway.Application.Abstractions;
 
 namespace Shopway.App.Registration;
 

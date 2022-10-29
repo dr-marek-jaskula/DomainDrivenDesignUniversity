@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Shopway.Application.Abstractions;
 
 namespace Shopway.Infrastructure.Adapters;
 

@@ -9,28 +9,29 @@ public sealed class Order : AggregateRoot
 {
     public Amount Amount { get; private set; }
     public Status Status { get; private set; }
+    //TODO HANDLE deadlines both for Order and Payment
     public DateTime Deadline { get; private set; }
     public Product Product { get; private set; }
-    public int ProductId { get; private set; }
+    public Guid ProductId { get; private set; }
     public Payment Payment { get; private set; }
-    public int PaymentId { get; private set; }
+    public Guid PaymentId { get; private set; }
     public Customer Customer { get; private set; }
-    public int CustomerId { get; private set; }
+    public Guid CustomerId { get; private set; }
 
-    public Order(
+    internal Order(
         Guid id,
-        Product product,
+        Guid productId,
         Amount amount,
-        Customer customer,
-        Payment payment,
-        Status status)
+        Guid customerId,
+        Discount discount,
+        DateTimeOffset paymentDeadline)
         : base(id)
     {
-        Product = product;
+        ProductId = productId;
         Amount = amount;
-        Customer = customer;
-        Payment = payment;
-        Status = status;
+        CustomerId = customerId;
+        Payment = CreateNewPayment(id, discount);
+        Status = Status.New;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -40,21 +41,19 @@ public sealed class Order : AggregateRoot
 
     public static Order Create(
         Guid id,
-        Product product,
+        Guid productId,
         Amount amount,
-        Customer customer,
-        Payment payment,
-        Status status)
+        Guid customerId,
+        Discount discount)
     {
         var order = new Order(
             id,
-            product,
+            productId,
             amount,
-            customer,
-            payment,
-            status);
+            customerId,
+            discount);
 
-        order.RaiseDomainEvent(new OrderRegisteredDomainEvent(Guid.NewGuid(), order.Id));
+        order.RaiseDomainEvent(new OrderCreatedDomainEvent(Guid.NewGuid(), order.Id));
 
         return order;
     }
@@ -62,5 +61,17 @@ public sealed class Order : AggregateRoot
     internal decimal CalculateTotal()
     {
         return Math.Round(Product.Price.Value * Amount.Value * (1 - Payment.Discount.Value), 2);
+    }
+
+    private static Payment CreateNewPayment(Guid orderId, Discount discount, DateTimeOffset deadline)
+    {
+        return new Payment
+        (
+            id: Guid.NewGuid(),
+            discount: discount,
+            status: Status.New,
+            deadline: deadline,
+            orderId: orderId
+        );
     }
 }

@@ -4,10 +4,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using Quartz;
+using Shopway.Application.Abstractions;
 using Shopway.Domain.DomainEvents;
-using Shopway.Infrastructure.Adapters;
-using Shopway.Infrastructure.Polly;
-using Shopway.Infrastructure.Providers;
+using Shopway.Infrastructure.Policies;
 using Shopway.Persistence;
 using Shopway.Persistence.Outbox;
 

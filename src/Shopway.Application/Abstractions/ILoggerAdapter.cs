@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Shopway.Infrastructure.Adapters;
+namespace Shopway.Application.Abstractions;
 
 public interface ILoggerAdapter<TType>
 {

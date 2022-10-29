@@ -17,7 +17,7 @@ public sealed class User : AggregateRoot, IAuditableEntity
     public int? PersonId { get; set; }
     public Person? Person { get; set; }
 
-    private User(
+    internal User(
         Guid id,
         Username username,
         Email email,

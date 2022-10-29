@@ -7,7 +7,7 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Feature : WorkItem
 {
-    public Feature(
+    internal Feature(
         Guid id,
         Title title,
         Description description,
@@ -20,7 +20,7 @@ public sealed class Feature : WorkItem
     }
 
     // Empty constructor in this case is required by EF Core
-    public Feature()
+    private Feature()
     {
     }
 

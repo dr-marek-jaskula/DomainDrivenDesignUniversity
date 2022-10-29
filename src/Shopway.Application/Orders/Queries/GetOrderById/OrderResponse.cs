@@ -1,3 +1,16 @@
-﻿namespace Shopway.Application.Orders.Queries.GetOrderById;
+﻿using Shopway.Domain.Entities;
+using Shopway.Domain.Enums;
+using Shopway.Domain.ValueObjects;
 
-public sealed record OrderResponse(Guid Id);
+namespace Shopway.Application.Orders.Queries.GetOrderById;
+
+public sealed record OrderResponse
+(
+    Guid Id,
+    Amount Amount,
+    Status Status,
+    DateTime Deadline,
+    Product Product,
+    Payment Payment,
+    Customer Customer
+);
