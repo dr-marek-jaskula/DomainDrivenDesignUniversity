@@ -24,15 +24,11 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasMaxLength(10)
             .HasConversion(status => status.ToString(),
             s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("Received, InProgress, Done or Rejected");
+            .HasComment("New, InProgress, Done or Rejected");
 
         builder.Property(p => p.OccurredOn)
             .HasColumnType("DATE")
             .IsRequired(false);
-
-        builder.HasOne(p => p.Order)
-            .WithOne(o => o.Payment)
-            .HasForeignKey<Order>(o => o.PaymentId);
 
         //Indexes
         builder.HasIndex(o => new { o.OrderId, o.Status }, "IX_Payment_OrderId_Status")

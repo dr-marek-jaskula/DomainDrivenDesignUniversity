@@ -34,9 +34,5 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
 
         builder.Property(r => r.Description)
             .HasMaxLength(1000);
-
-        builder.HasOne(r => r.Product)
-            .WithMany(p => p.Reviews)
-            .HasForeignKey(r => r.ProductId);
     }
 }

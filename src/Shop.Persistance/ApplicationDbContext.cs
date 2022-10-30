@@ -16,14 +16,5 @@ public sealed class ApplicationDbContext : DbContext
         builder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
 
         //Here is configure all many to many relationships
-        
-        //Product_Tag
-        builder.Entity<Product>(entityBuilder =>
-        {
-            entityBuilder
-                .HasMany(p => p.Tags)
-                .WithMany(t => t.Products)
-                .UsingEntity(j => j.ToTable(TableNames.ProductTag));
-        });
     }
 }

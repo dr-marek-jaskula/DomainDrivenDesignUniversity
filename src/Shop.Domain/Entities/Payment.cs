@@ -10,7 +10,6 @@ public sealed class Payment : Entity
     public Status Status { get; private set; }
     public DateTimeOffset? OccurredOn { get; private set; }
     public Guid OrderId { get; private set; }
-    public Order Order { get; private set; }
 
     internal Payment
     (
@@ -23,7 +22,6 @@ public sealed class Payment : Entity
     {
         Discount = discount;
         Status = status;
-        OccurredOn = null;
         OrderId = orderId;
     }
 
@@ -32,5 +30,14 @@ public sealed class Payment : Entity
     {
     }
 
-    public decimal Total => Order.CalculateTotal();
+    internal static Payment Create(Guid orderId, Discount discount)
+    {
+        return new Payment
+        (
+            id: Guid.NewGuid(),
+            discount: discount,
+            status: Status.New,
+            orderId: orderId
+        );
+    }
 }

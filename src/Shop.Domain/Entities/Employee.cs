@@ -26,8 +26,7 @@ public sealed class Employee : Person
     //WorkItems relations
     public IReadOnlyCollection<WorkItem> WorkItems => _workItems;
 
-    internal Employee
-    (
+    internal Employee(
         Guid id,
         FirstName firstName,
         LastName lastName,
@@ -37,8 +36,7 @@ public sealed class Employee : Person
         Email email,
         Address? address,
         User? user,
-        DateOnly hireDate
-    )
+        DateOnly hireDate)
         : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
     {
         HireDate = hireDate;
@@ -49,8 +47,7 @@ public sealed class Employee : Person
     {
     }
 
-    public static Employee Create
-    (
+    public static Employee Create(
         Guid id,
         FirstName firstName,
         LastName lastName,
@@ -60,11 +57,9 @@ public sealed class Employee : Person
         Email email,
         Address? address,
         User? user,
-        DateOnly hireDate
-    )
+        DateOnly hireDate)
     {
-        var employee = new Employee
-        (
+        var employee = new Employee(
             id,
             firstName,
             lastName,
@@ -74,8 +69,7 @@ public sealed class Employee : Person
             email,
             address,
             user,
-            hireDate
-        );
+            hireDate);
 
         employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id));
 

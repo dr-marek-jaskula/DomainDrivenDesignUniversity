@@ -13,7 +13,7 @@ namespace Shopway.Presentation.Controllers;
 public sealed class OrderController : ApiController
 {
     public OrderController(ISender sender)
-    : base(sender)
+        : base(sender)
     {
     }
 

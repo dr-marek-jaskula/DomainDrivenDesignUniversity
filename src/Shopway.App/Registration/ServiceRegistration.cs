@@ -10,6 +10,7 @@ public static class ServiceRegistration
 {
     public static void RegisterServices(this IServiceCollection services)
     {
+        //TODO this scpans also for adapters and providers?
         services.Scan(selector => selector
                     .FromAssemblies(
                         Shopway.Infrastructure.AssemblyReference.Assembly,

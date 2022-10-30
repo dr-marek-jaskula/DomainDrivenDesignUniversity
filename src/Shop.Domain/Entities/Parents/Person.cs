@@ -50,8 +50,7 @@ public class Person : AggregateRoot
     //One to one relationship with User table (User, UserId)
     public User? User { get; private set; }
 
-    public static Person Create
-    (
+    public static Person Create(
         Guid id,
         FirstName firstName,
         LastName lastName,
@@ -60,8 +59,7 @@ public class Person : AggregateRoot
         PhoneNumber contactNumber,
         Email email,
         Address? address,
-        User? user
-    )
+        User? user)
     {
         var person = new Person(
             id,

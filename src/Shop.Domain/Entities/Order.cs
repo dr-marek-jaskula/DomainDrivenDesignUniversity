@@ -5,11 +5,12 @@ using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Order : AggregateRoot
+public sealed class Order : AggregateRoot, IAuditableEntity
 {
     public Amount Amount { get; private set; }
     public Status Status { get; private set; }
-    public DateTimeOffset DeliveriedOn { get; private set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? UpdatedOn { get; set; }
     public Product Product { get; private set; }
     public Guid ProductId { get; private set; }
     public Payment Payment { get; private set; }
@@ -17,20 +18,18 @@ public sealed class Order : AggregateRoot
     public Customer Customer { get; private set; }
     public Guid CustomerId { get; private set; }
 
-    internal Order
-    (
+    internal Order(
         Guid id,
         Guid productId,
         Amount amount,
         Guid customerId,
-        Discount discount
-    )
+        Discount discount)
         : base(id)
     {
         ProductId = productId;
         Amount = amount;
         CustomerId = customerId;
-        Payment = CreateNewPayment(id, discount);
+        Payment = Payment.Create(id, discount);
         Status = Status.New;
     }
 
@@ -39,14 +38,12 @@ public sealed class Order : AggregateRoot
     {
     }
 
-    public static Order Create
-    (
+    public static Order Create(
         Guid id,
         Guid productId,
         Amount amount,
         Guid customerId,
-        Discount discount
-    )
+        Discount discount)
     {
         var order = new Order(
             id,
@@ -60,19 +57,8 @@ public sealed class Order : AggregateRoot
         return order;
     }
 
-    internal decimal CalculateTotal()
+    public decimal CalculateTotalPayment()
     {
         return Math.Round(Product.Price.Value * Amount.Value * (1 - Payment.Discount.Value), 2);
-    }
-
-    private static Payment CreateNewPayment(Guid orderId, Discount discount)
-    {
-        return new Payment
-        (
-            id: Guid.NewGuid(),
-            discount: discount,
-            status: Status.New,
-            orderId: orderId
-        );
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Enums;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;

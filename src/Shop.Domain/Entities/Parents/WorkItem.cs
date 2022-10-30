@@ -9,16 +9,14 @@ namespace Shopway.Domain.Entities.Parents;
 //The additional "Discriminator" column to distinguish the different children of a WorkItem
 public abstract class WorkItem : AggregateRoot
 {
-    protected WorkItem
-    (
+    protected WorkItem(
         Guid id,
         Title title,
         Description description,
         Priority priority,
         StoryPoints storyPoints,
         Status status,
-        Guid? employeeId
-    )
+        Guid? employeeId)
         : base(id)
     {
         Priority = priority;

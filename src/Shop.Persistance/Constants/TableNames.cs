@@ -9,8 +9,6 @@ internal static class TableNames
     internal const string Payment = "Payment";
     internal const string Person = "Person";
     internal const string Product = "Product";
-    internal const string ProductAmount = "Product_Amount";
-    internal const string ProductTag = "Product_Tag";
     internal const string Review = "Review";
     internal const string Role = "Role";
     internal const string Tag = "Tag";

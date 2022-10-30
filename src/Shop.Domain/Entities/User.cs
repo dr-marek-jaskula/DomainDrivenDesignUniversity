@@ -17,13 +17,11 @@ public sealed class User : AggregateRoot, IAuditableEntity
     public int? PersonId { get; set; }
     public Person? Person { get; set; }
 
-    internal User
-    (
+    internal User(
         Guid id,
         Username username,
         Email email,
-        PasswordHash passwordHash
-    )
+        PasswordHash passwordHash)
         : base(id)
     {
         Username = username;
@@ -36,13 +34,11 @@ public sealed class User : AggregateRoot, IAuditableEntity
     {
     }
 
-    public static User Create
-    (
+    public static User Create(
         Guid id,
         Username username,
         Email email,
-        PasswordHash passwordHash
-    )
+        PasswordHash passwordHash)
     {
         var user = new User
         (

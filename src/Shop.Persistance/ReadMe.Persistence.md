@@ -9,6 +9,7 @@ In this project we store components connected to the ORM and database operations
 - Migrations
 - SaveChanges Interceptors
 - Outbox pattern classes
+- Database Diagram
 
 ## Outbox pattern
 

@@ -4,11 +4,10 @@ Application layer contains:
 
 - Abstractions/Contracts/Interfaces
 - Application Services/Handlers
-- Commands and Queries
+- Commands, Queries and Events + Validators
 - Exceptions
 - Models (DTOs)
 - Mappers
-- Validators
 - Behaviors
 - Specifications
 
