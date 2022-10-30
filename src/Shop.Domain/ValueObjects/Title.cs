@@ -13,6 +13,11 @@ public sealed class Title : ValueObject
         Value = value;
     }
 
+    //For EF Core
+    private Title()
+    {
+    }
+
     public string Value { get; }
 
     public static Result<Title> Create(string title)

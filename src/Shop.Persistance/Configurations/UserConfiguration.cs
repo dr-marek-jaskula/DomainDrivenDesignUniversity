@@ -25,9 +25,8 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .HasColumnType("VARCHAR(40)");
 
         builder.Property(u => u.CreatedOn)
-            .HasConversion<DateOnlyConverter, DateOnlyComparer>()
             .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
-            .HasColumnType("DATE");
+            .HasColumnType("DATETIME2");
 
         builder.Property(u => u.PasswordHash)
             .HasColumnType("NCHAR(514)"); //512 + 2 for 'N' characters

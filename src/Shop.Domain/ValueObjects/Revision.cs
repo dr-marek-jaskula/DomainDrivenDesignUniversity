@@ -15,6 +15,11 @@ public sealed class Revision : ValueObject
         Value = value;
     }
 
+    //For EF Core
+    private Revision()
+    {
+    }
+
     public static Result<Revision> Create(string revision)
     {
         if (string.IsNullOrWhiteSpace(revision))

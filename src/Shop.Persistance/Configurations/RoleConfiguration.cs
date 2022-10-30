@@ -17,7 +17,8 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(r => r.RoleName)
-            .HasDefaultValue("Customer")
+            .HasConversion(x => x.Value, v => RoleName.Create(v).Value)
+            .HasDefaultValue(RoleName.Create(RoleName.AllowedRoles.First()).Value)
             .HasColumnType("VARCHAR(13)")
             .HasComment("Customer, Employee, Manager, Administrator");
 

@@ -14,6 +14,11 @@ public sealed class UomCode : ValueObject
         Value = value;
     }
 
+    //For EF Core
+    private UomCode()
+    {
+    }
+
     public override IEnumerable<object> GetAtomicValues()
     {
         yield return Value;

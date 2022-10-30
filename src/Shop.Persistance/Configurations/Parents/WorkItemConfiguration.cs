@@ -20,7 +20,7 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
 
         builder.Property(wi => wi.Priority)
             .HasConversion(x => x.Value, v => Priority.Create(v).Value)
-            .HasDefaultValue(Priority.HighestPriority);
+            .HasDefaultValue(Priority.Create(Priority.HighestPriority).Value);
 
         builder.Property(wi => wi.Status)
             .IsRequired(true)
@@ -40,6 +40,6 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
 
         builder.Property(wi => wi.StoryPoints)
             .HasConversion(x => x.Value, v => StoryPoints.Create(v).Value)
-            .HasDefaultValue(StoryPoints.MinStoryPoints);
+            .HasDefaultValue(StoryPoints.Create(StoryPoints.MinStoryPoints).Value);
     }
 }

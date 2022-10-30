@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Entities;
-using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence;
 
