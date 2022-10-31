@@ -3,7 +3,7 @@ using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Review : AggregateRoot, IAuditableEntity
+public sealed class Review : Entity, IAuditableEntity
 {
     public Username Username { get; private set; }
     public Stars Stars { get; private set; }

@@ -49,4 +49,10 @@ public sealed class ProductController : ApiController
             new { id = result.Value },
             result.Value);
     }
+
+    [HttpGet()]
+    public IActionResult Ping()
+    {
+        return Ok("Pong");
+    }
 }

@@ -13,9 +13,9 @@ In this project we store components connected to the ORM and database operations
 
 ## Outbox pattern
 
-This pattern is used to publish a domain events. 
+This pattern is used to publish domain events. 
 
-This pattern is useful if we want to be sure that our transaction completes in anatomic way.
+It is useful if we want to ensure that our transaction completes in a anatomic way.
 
 Inside the transaction we generate one or more outbox messages and we save them in the outbox. 
 Later, we process the outbox and publish the messages one by one, so they are handled by they respective consumers.
@@ -26,6 +26,8 @@ Later, we process the outbox and publish the messages one by one, so they are ha
 var outboxMessages = dbContext.ChangeTracker
 	.Entries<AggregateRoot>()
 ```
+
+The OutboxMessageConsumer is explained in ReadMe.Infrastructur.md chapter **Idempotency**
 
 ## Serialize the domain event
 

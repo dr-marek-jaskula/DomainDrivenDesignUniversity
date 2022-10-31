@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -17,6 +18,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(p => p.Discount)
+            .HasConversion(x => x.Value, v => Discount.Create(v).Value)
             .HasPrecision(3, 2);
 
         builder.Property(p => p.Status)
@@ -27,7 +29,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasComment("New, InProgress, Done or Rejected");
 
         builder.Property(p => p.OccurredOn)
-            .HasColumnType("DATE")
+            .HasColumnType("datetimeoffset(2)")
             .IsRequired(false);
 
         //Indexes

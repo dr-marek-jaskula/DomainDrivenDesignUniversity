@@ -41,5 +41,9 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
         builder.Property(wi => wi.StoryPoints)
             .HasConversion(x => x.Value, v => StoryPoints.Create(v).Value)
             .HasDefaultValue(StoryPoints.Create(StoryPoints.MinStoryPoints).Value);
+
+        builder.HasOne(wi => wi.Employee)
+            .WithMany(e => e.WorkItems)
+            .HasForeignKey(wi => wi.EmployeeId);
     }
 }

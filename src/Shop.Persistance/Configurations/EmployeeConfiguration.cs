@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
-using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -13,8 +12,7 @@ internal sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration
         builder.ToTable(TableNames.Employee);
 
         builder.Property(e => e.HireDate)
-            .HasConversion<DateOnlyConverter, DateOnlyComparer>()
-            .HasColumnType("DATE")
+            .HasColumnType("datetimeoffset(2)")
             .HasDefaultValue(null);
 
         //Defining the relations: (rest are in Customer and Review classes)

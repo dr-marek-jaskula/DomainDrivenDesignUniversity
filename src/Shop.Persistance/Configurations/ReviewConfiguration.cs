@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -16,23 +17,28 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(r => r.Username)
+            .HasConversion(x => x.Value, v => Username.Create(v).Value)
             .IsRequired(true)
             .HasMaxLength(100);
 
+        builder.Property(s => s.Title)
+            .HasConversion(x => x.Value, v => Title.Create(v).Value)
+            .IsRequired(true)
+            .HasMaxLength(128);
+
         builder.Property(s => s.Stars)
+            .HasConversion(x => x.Value, v => Stars.Create(v).Value)
             .IsRequired(true)
             .HasColumnType("TINYINT");
 
         builder.Property(u => u.CreatedOn)
-            .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
-            .HasColumnType("DATETIME2");
+            .HasColumnType("datetimeoffset(2)");
 
         builder.Property(u => u.UpdatedOn)
-            .ValueGeneratedOnAddOrUpdate() //Generate the value when the update is made and when data is added
-            .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
-            .HasColumnType("DATETIME2");
+            .HasColumnType("datetimeoffset(2)");
 
         builder.Property(r => r.Description)
+            .HasConversion(x => x.Value, v => Description.Create(v).Value)
             .HasMaxLength(1000);
     }
 }

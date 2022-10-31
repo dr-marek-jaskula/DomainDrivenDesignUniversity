@@ -38,6 +38,11 @@ public sealed class ProcessOutboxMessagesJob : IJob
             .Take(20)
             .ToListAsync(context.CancellationToken);
 
+        if (!messages.Any())
+        {
+            return;
+        }
+
         foreach (var message in messages)
         {
             var domainEvent = JsonConvert

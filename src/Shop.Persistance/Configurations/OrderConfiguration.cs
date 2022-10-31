@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -18,6 +19,7 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
 
         builder.Property(o => o.Amount)
             .IsRequired(true)
+            .HasConversion(x => x.Value, v => Amount.Create(v).Value)
             .HasColumnType("INT");
 
         builder.Property(o => o.Status)
@@ -29,13 +31,10 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
             .HasComment("New, InProgress, Done or Rejected");
 
         builder.Property(o => o.CreatedOn)
-            .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
-            .HasColumnType("DATETIME2");
+            .HasColumnType("datetimeoffset(2)");
 
         builder.Property(o => o.UpdatedOn)
-            .ValueGeneratedOnAddOrUpdate() //Generate the value when the update is made and when data is added
-            .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
-            .HasColumnType("DATETIME2");
+            .HasColumnType("datetimeoffset(2)");
 
         builder.HasOne(o => o.Product)
             .WithMany()

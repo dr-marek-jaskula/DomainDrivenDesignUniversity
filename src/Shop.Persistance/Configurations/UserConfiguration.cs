@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Persistence.Converters;
+using Shopway.Domain.ValueObjects;
+using CustomTools;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -17,22 +19,28 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(u => u.Username)
+            .HasConversion(x => x.Value, v => Username.Create(v).Value)
             .HasColumnType("VARCHAR(60)")
             .IsRequired(true);
 
         builder.Property(u => u.Email)
+            .HasConversion(x => x.Value, v => Email.Create(v).Value)
             .IsRequired(true)
             .HasColumnType("VARCHAR(40)");
 
         builder.Property(u => u.CreatedOn)
-            .HasDefaultValueSql("getutcdate()") //need to use HasDefaultValueSql with "getutcdate" because it need to be the sql command
-            .HasColumnType("DATETIME2");
+            .HasColumnType("datetimeoffset(2)");
 
         builder.Property(u => u.PasswordHash)
+            .HasConversion(x => x.Value, v => PasswordHash.Create(v).Value)
             .HasColumnType("NCHAR(514)"); //512 + 2 for 'N' characters
 
         builder.Property(u => u.RoleId)
-            .HasColumnType("TINYINT");
+            .HasColumnType("UNIQUEIDENTIFIER");
+
+        builder.HasOne(u => u.Role)
+            .WithMany(r => r.Users)
+            .HasForeignKey(u => u.RoleId);
 
         builder.HasOne(u => u.Person)
             .WithOne(c => c.User)

@@ -12,9 +12,9 @@ public sealed class User : AggregateRoot, IAuditableEntity
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
     public PasswordHash PasswordHash { get; set; }
-    public int RoleId { get; set; }
+    public Guid RoleId { get; set; }
     public Role? Role { get; set; }
-    public int? PersonId { get; set; }
+    public Guid? PersonId { get; set; }
     public Person? Person { get; set; }
 
     internal User(

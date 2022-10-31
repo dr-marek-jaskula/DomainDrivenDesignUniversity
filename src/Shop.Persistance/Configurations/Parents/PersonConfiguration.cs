@@ -36,7 +36,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 
         builder.Property(p => p.DateOfBirth)
             .HasConversion<DateOnlyConverter, DateOnlyComparer>()
-            .HasColumnType("DATE")
+            .HasColumnType("datetimeoffset(2)")
             .HasDefaultValue(null);
 
         builder.Property(p => p.Gender)

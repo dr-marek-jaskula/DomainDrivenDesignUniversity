@@ -2,6 +2,7 @@
 
 namespace Shopway.Persistence;
 
+//TODO use Bogus to seed database
 public sealed class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions options)
@@ -12,7 +13,5 @@ public sealed class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
-
-        //Here is configure all many to many relationships
     }
 }

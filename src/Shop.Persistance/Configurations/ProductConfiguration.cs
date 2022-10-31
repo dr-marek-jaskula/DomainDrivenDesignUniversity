@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -18,10 +19,24 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
 
         builder
             .Property(p => p.ProductName)
+            .HasConversion(x => x.Value, v => ProductName.Create(v).Value)
             .IsRequired(true)
             .HasMaxLength(128);
 
+        builder
+            .Property(p => p.Revision)
+            .HasConversion(x => x.Value, v => Revision.Create(v).Value)
+            .IsRequired(true)
+            .HasMaxLength(64);
+
+        builder
+            .Property(p => p.UomCode)
+            .HasConversion(x => x.Value, v => UomCode.Create(v).Value)
+            .IsRequired(true)
+            .HasMaxLength(8);
+
         builder.Property(p => p.Price)
+            .HasConversion(x => x.Value, v => Price.Create(v).Value)
             .IsRequired(true)
             .HasPrecision(10, 2);
 

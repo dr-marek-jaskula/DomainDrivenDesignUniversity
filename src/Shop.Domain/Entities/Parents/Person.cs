@@ -7,6 +7,20 @@ namespace Shopway.Domain.Entities.Parents;
 //Table-per-type approach
 public class Person : AggregateRoot
 {
+    public FirstName FirstName { get; private set; }
+    public LastName LastName { get; private set; }
+    public Gender Gender { get; private set; }
+
+    //DateOnly property needs a conversion to SQL Server DATE format
+    public DateOnly? DateOfBirth { get; private set; }
+
+    public PhoneNumber ContactNumber { get; private set; }
+    public Email Email { get; private set; }
+    public Address? Address { get; private set; }
+
+    //One to one relationship with User table (User, UserId)
+    public User? User { get; private set; }
+
     protected Person
     (
         Guid id, 
@@ -35,20 +49,6 @@ public class Person : AggregateRoot
     protected Person()
     {
     }
-
-    public FirstName FirstName { get; private set; }
-    public LastName LastName { get; private set; }
-    public Gender Gender { get; private set; }
-
-    //DateOnly property needs a conversion to SQL Server DATE format
-    public DateOnly? DateOfBirth { get; private set; }
-
-    public PhoneNumber ContactNumber { get; private set; }
-    public Email Email { get; private set; }
-    public Address? Address { get; private set; }
-
-    //One to one relationship with User table (User, UserId)
-    public User? User { get; private set; }
 
     public static Person Create(
         Guid id,

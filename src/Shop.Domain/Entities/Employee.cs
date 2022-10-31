@@ -12,7 +12,7 @@ public sealed class Employee : Person
     private readonly List<WorkItem> _workItems = new();
     private readonly List<Employee> _subordinates = new();
 
-    public DateOnly HireDate { get; private set; }
+    public DateTimeOffset HireDate { get; private set; }
 
     //Many to many relationship with customers (rest is in Customer class)
     public List<Customer> Customers { get; private set; } = new();
@@ -36,7 +36,7 @@ public sealed class Employee : Person
         Email email,
         Address? address,
         User? user,
-        DateOnly hireDate)
+        DateTimeOffset hireDate)
         : base(id, firstName, lastName, gender, dateOfBirth, contactNumber, email, address, user)
     {
         HireDate = hireDate;
@@ -57,7 +57,7 @@ public sealed class Employee : Person
         Email email,
         Address? address,
         User? user,
-        DateOnly hireDate)
+        DateTimeOffset hireDate)
     {
         var employee = new Employee(
             id,
