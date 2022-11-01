@@ -2,4 +2,4 @@
 
 namespace Shopway.Application.Products.Queries.GetProductById;
 
-public sealed record GetProductByIdQuery(Guid ProductId) : IQuery<ProductResponse>;
+public sealed record GetProductByIdQuery(Guid Id) : IQuery<ProductResponse>;

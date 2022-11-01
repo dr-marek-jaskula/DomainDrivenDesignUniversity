@@ -50,7 +50,7 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
         }
         catch
         {
-            return Result.Failure<Guid>(new("Product.NotFound", $"Product with Id: {command.Id} was not found"));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.Id));
         }
     }
 }

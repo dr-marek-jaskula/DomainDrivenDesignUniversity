@@ -34,7 +34,7 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
 
         if (productToUpdate is null)
         {
-            return Result.Failure<Guid>(new("Product.NotFound", $"Product with Id: {command.Id} was not found"));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.Id));
         }
 
         productToUpdate.UpdatePrice(priceResult.Value);

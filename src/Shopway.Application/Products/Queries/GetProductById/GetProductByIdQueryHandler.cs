@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
@@ -14,15 +15,13 @@ internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQ
         _productRepository = productRepository;
     }
 
-    public async Task<Result<ProductResponse>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<ProductResponse>> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(request.ProductId, cancellationToken);
+        var product = await _productRepository.GetByIdAsync(query.Id, cancellationToken);
 
         if (product is null)
         {
-            return Result.Failure<ProductResponse>(new Error(
-                "Product.NotFound",
-                $"The product with Id: {request.ProductId} was not found"));
+            return Result.Failure<ProductResponse>(HttpErrors.NotFound(nameof(Product), query.Id));
         }
 
         var response = new ProductResponse(

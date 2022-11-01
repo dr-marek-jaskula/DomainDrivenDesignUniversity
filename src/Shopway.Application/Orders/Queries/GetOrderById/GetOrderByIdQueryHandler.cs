@@ -1,4 +1,6 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Products.Queries.GetProductById;
+using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
@@ -14,15 +16,13 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
         _orderRepository = orderRepository;
     }
 
-    public async Task<Result<OrderResponse>> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<OrderResponse>> Handle(GetOrderByIdQuery query, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(request.OrderId, cancellationToken);
+        var order = await _orderRepository.GetByIdAsync(query.Id, cancellationToken);
 
         if (order is null)
         {
-            return Result.Failure<OrderResponse>(new Error(
-                "Order.NotFound",
-                $"The order with Id: {request.OrderId} was not found"));
+            return Result.Failure<OrderResponse>(HttpErrors.NotFound(nameof(Order), query.Id));
         }
 
         var response = new OrderResponse(
