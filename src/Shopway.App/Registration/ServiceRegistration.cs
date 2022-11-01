@@ -3,6 +3,10 @@ using Shopway.Infrastructure.Providers;
 using Shopway.Infrastructure.Adapters;
 using Shopway.Persistence.Interceptors;
 using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
+using Microsoft.Extensions.Logging;
+using Shopway.Domain.Repositories;
+using Shopway.Persistence.Repositories;
 
 namespace Shopway.App.Registration;
 
@@ -19,6 +23,11 @@ public static class ServiceRegistration
                     .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                     .AsImplementedInterfaces()
                     .WithScopedLifetime());
+
+        //Repositories
+
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
 
         //Interceptors
 

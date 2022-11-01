@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Entities;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
@@ -23,6 +24,13 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         Result<Price> priceResult = Price.Create(command.Price);
         Result<UomCode> uomCodeResult = UomCode.Create(command.UomCode);
         Result<Revision> revisionResult = Revision.Create(command.Revision);
+
+        Error error = ErrorHandler.FindFirstValueObjectError(productNameResult, priceResult, uomCodeResult, revisionResult);
+
+        if (error != Error.None)
+        {
+            return Result.Failure<Guid>(new(error.Code, error.Message));
+        }
 
         var product = Product.Create(
             Guid.NewGuid(),

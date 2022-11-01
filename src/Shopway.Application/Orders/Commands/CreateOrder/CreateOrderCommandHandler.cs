@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Entities;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
@@ -21,6 +22,13 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
     {
         Result<Amount> amountResult = Amount.Create(command.Amount);
         Result<Discount> discountResult = Discount.Create(command.Discount ?? 0);
+
+        Error error = ErrorHandler.FindFirstValueObjectError(amountResult, discountResult);
+
+        if (error != Error.None)
+        {
+            return Result.Failure<Guid>(new(error.Code, error.Message));
+        }
 
         var order = Order.Create(
             Guid.NewGuid(),

@@ -13,5 +13,5 @@ public interface IProductRepository
 
     void Update(Product order);
 
-    void Remove(Product order);
+    void Remove(Product product);
 }

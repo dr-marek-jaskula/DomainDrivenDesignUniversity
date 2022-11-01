@@ -38,6 +38,8 @@ try
 
     builder.Services.RegisterMediator();
 
+    builder.Services.AddMemoryCache();
+
     builder.Services.RegisterDatabaseContext(builder.Environment.IsDevelopment());
 
     builder.Services.RegisterServices();

@@ -46,7 +46,12 @@ public sealed class ProcessOutboxMessagesJob : IJob
         foreach (var message in messages)
         {
             var domainEvent = JsonConvert
-                .DeserializeObject<IDomainEvent>(message.Content);
+                .DeserializeObject<IDomainEvent>(
+                message.Content,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                });
 
             if (domainEvent is null)
             {

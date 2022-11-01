@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Products.Commands.CreateProduct;
+using Shopway.Application.Products.Commands.RemoveProduct;
 using Shopway.Application.Products.Queries.GetProductById;
 using Shopway.Domain.Results;
 using Shopway.Presentation.Abstractions;
@@ -8,7 +9,7 @@ using Shopway.Presentation.Requests.Products;
 
 namespace Shopway.Presentation.Controllers;
 
-[Route("api/product")]
+[Route("api/[controller]")]
 public sealed class ProductController : ApiController
 {
     public ProductController(ISender sender)
@@ -17,7 +18,9 @@ public sealed class ProductController : ApiController
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetProductById(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProductById(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
         var query = new GetProductByIdQuery(id);
 
@@ -50,9 +53,20 @@ public sealed class ProductController : ApiController
             result.Value);
     }
 
-    [HttpGet()]
-    public IActionResult Ping()
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> RemoveProduct(
+        Guid id,
+        CancellationToken cancellationToken)
     {
-        return Ok("Pong");
+        var command = new RemoveProductCommand(id);
+
+        Result<Guid> result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return NoContent();
     }
 }

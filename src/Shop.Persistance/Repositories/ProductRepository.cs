@@ -59,8 +59,10 @@ public sealed class ProductRepository : IProductRepository
 
     public void Remove(Product product)
     {
-        _dbContext
+        var entry = _dbContext
             .Set<Product>()
-            .Remove(product);
+            .Attach(product);
+
+        entry.State = EntityState.Deleted;
     }
 }
