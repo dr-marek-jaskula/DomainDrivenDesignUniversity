@@ -21,12 +21,13 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
 
     public async Task<Result<Guid>> Handle(RemoveProductCommand command, CancellationToken cancellationToken)
     {
+        //Data to create product that will be attached to database context
         Result<ProductName> productNameResult = ProductName.Create("ToDelete");
         Result<Price> priceResult = Price.Create(1m);
         Result<UomCode> uomCodeResult = UomCode.Create("kg");
         Result<Revision> revisionResult = Revision.Create("0");
 
-        Error error = ErrorHandler.FindFirstValueObjectError(productNameResult, priceResult, uomCodeResult, revisionResult);
+        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(productNameResult, priceResult, uomCodeResult, revisionResult);
 
         if (error != Error.None)
         {
@@ -49,7 +50,7 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
         }
         catch
         {
-            return Result.Failure<Guid>(new("Error.NotFound", $"Product with Id: {command.Id} was not found"));
+            return Result.Failure<Guid>(new("Product.NotFound", $"Product with Id: {command.Id} was not found"));
         }
     }
 }

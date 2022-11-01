@@ -22,7 +22,7 @@ internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQ
         {
             return Result.Failure<ProductResponse>(new Error(
                 "Product.NotFound",
-                $"The order with Id: {request.ProductId} was not found"));
+                $"The product with Id: {request.ProductId} was not found"));
         }
 
         var response = new ProductResponse(

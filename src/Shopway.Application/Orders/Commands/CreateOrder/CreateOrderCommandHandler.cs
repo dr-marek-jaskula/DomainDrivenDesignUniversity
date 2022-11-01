@@ -23,7 +23,7 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
         Result<Amount> amountResult = Amount.Create(command.Amount);
         Result<Discount> discountResult = Discount.Create(command.Discount ?? 0);
 
-        Error error = ErrorHandler.FindFirstValueObjectError(amountResult, discountResult);
+        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(amountResult, discountResult);
 
         if (error != Error.None)
         {

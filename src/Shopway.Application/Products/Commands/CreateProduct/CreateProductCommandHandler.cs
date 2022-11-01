@@ -25,7 +25,7 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         Result<UomCode> uomCodeResult = UomCode.Create(command.UomCode);
         Result<Revision> revisionResult = Revision.Create(command.Revision);
 
-        Error error = ErrorHandler.FindFirstValueObjectError(productNameResult, priceResult, uomCodeResult, revisionResult);
+        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(productNameResult, priceResult, uomCodeResult, revisionResult);
 
         if (error != Error.None)
         {
