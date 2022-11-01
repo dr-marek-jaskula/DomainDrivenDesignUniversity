@@ -3,7 +3,7 @@
 public sealed record CreateProductRequest
 (
     string ProductName,
-    int Price,
+    decimal Price,
     string UomCode,
     string Revision
 );

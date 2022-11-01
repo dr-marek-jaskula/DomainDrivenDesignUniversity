@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Products.Commands.CreateProduct;
 using Shopway.Application.Products.Commands.RemoveProduct;
+using Shopway.Application.Products.Commands.UpdateProduct;
 using Shopway.Application.Products.Queries.GetProductById;
 using Shopway.Domain.Results;
 using Shopway.Presentation.Abstractions;
@@ -18,7 +19,7 @@ public sealed class ProductController : ApiController
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetProductById(
+    public async Task<IActionResult> GetById(
         Guid id, 
         CancellationToken cancellationToken)
     {
@@ -30,7 +31,7 @@ public sealed class ProductController : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProduct(
+    public async Task<IActionResult> Create(
         [FromBody] CreateProductRequest request,
         CancellationToken cancellationToken)
     {
@@ -48,13 +49,36 @@ public sealed class ProductController : ApiController
         }
 
         return CreatedAtAction(
-            nameof(GetProductById),
+            nameof(GetById),
             new { id = result.Value },
             result.Value);
     }
 
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(
+    Guid id,
+    [FromBody] UpdateProductRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = new UpdateProductCommand(
+            id,
+            request.ProductName,
+            request.Price,
+            request.UomCode,
+            request.Revision);
+
+        Result<Guid> result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return NoContent();
+    }
+
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> RemoveProduct(
+    public async Task<IActionResult> Remove(
         Guid id,
         CancellationToken cancellationToken)
     {
