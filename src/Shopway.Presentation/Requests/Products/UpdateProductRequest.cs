@@ -2,8 +2,5 @@
 
 public sealed record UpdateProductRequest
 (
-    string? ProductName,
-    int? Price,
-    string? UomCode,
-    string? Revision
+    decimal Price
 );

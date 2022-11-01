@@ -62,10 +62,7 @@ public sealed class ProductController : ApiController
     {
         var command = new UpdateProductCommand(
             id,
-            request.ProductName,
-            request.Price,
-            request.UomCode,
-            request.Revision);
+            request.Price);
 
         Result<Guid> result = await Sender.Send(command, cancellationToken);
 
@@ -74,7 +71,7 @@ public sealed class ProductController : ApiController
             return HandleFailure(result);
         }
 
-        return NoContent();
+        return Ok(result.Value);
     }
 
     [HttpDelete("{id:guid}")]

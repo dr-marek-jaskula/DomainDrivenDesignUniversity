@@ -21,27 +21,9 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
 
     public async Task<Result<Guid>> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
-        if (command.ProductName is not null)
-        {
-            Result<ProductName> productNameResult = ProductName.Create(command.ProductName);
-        }
+        Result<Price> priceResult = Price.Create(command.Price);
 
-        if (command.Price is not null)
-        {
-            Result<Price> priceResult = Price.Create((decimal)command.Price);
-        }
-
-        if (command.UomCode is not null)
-        {
-            Result<UomCode> productNameResult = UomCode.Create(command.UomCode);
-        }
-
-        if (command.Revision is not null)
-        {
-            Result<Revision> productNameResult = Revision.Create(command.Revision);
-        }
-
-        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(productNameResult, priceResult, uomCodeResult, revisionResult);
+        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(priceResult);
 
         if (error != Error.None)
         {
@@ -54,6 +36,8 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
         {
             return Result.Failure<Guid>(new("Product.NotFound", $"Product with Id: {command.Id} was not found"));
         }
+
+        productToUpdate.UpdatePrice(priceResult.Value);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return productToUpdate.Id;

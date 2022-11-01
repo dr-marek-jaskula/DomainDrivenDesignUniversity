@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.ValueObjects;
+using System.Runtime.InteropServices;
 
 namespace Shopway.Domain.Entities;
 
@@ -61,5 +62,10 @@ public sealed class Product : AggregateRoot
     public bool RemoveReview(Review review)
     {
         return _reviews.Remove(review);
+    }
+
+    public void UpdatePrice(Price price)
+    {
+        Price = price;
     }
 }
