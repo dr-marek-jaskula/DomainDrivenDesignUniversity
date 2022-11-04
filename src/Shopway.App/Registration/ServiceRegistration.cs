@@ -30,9 +30,10 @@ public static class ServiceRegistration
         services.AddScoped<IProductRepository, ProductRepository>();
 
         //Interceptors
+        //I use the UnitOfWork instead of interceptors, but they are an alternate way of doing things
 
-        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
-        services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
+        //services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        //services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
 
         //Providers
 

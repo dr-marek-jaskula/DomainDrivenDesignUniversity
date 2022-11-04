@@ -23,9 +23,9 @@ public sealed class UpdateAuditableEntitiesInterceptor : SaveChangesInterceptor
         }
 
         IEnumerable<EntityEntry<IAuditableEntity>> entries =
-            dbContext
-                .ChangeTracker
-                .Entries<IAuditableEntity>();
+        dbContext
+            .ChangeTracker
+            .Entries<IAuditableEntity>();
 
         foreach (EntityEntry<IAuditableEntity> entityEntry in entries)
         {

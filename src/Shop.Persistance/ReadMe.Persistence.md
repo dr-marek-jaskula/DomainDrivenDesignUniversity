@@ -11,6 +11,12 @@ In this project we store components connected to the ORM and database operations
 - Outbox pattern classes
 - Database Diagram
 
+## Interceptors
+
+Interceptors are not used in this application, but they are shown to demonstrate the alternative way.
+
+The logic from interceptors were move to the UnitOfWork
+
 ## Outbox pattern
 
 This pattern is used to publish domain events. 

@@ -15,8 +15,9 @@ public static class DatabaseContextRegistration
         {
             var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
 
-            var outboxInterceptor = serviceProvider.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
-            var auditableInterceptor = serviceProvider.GetService<UpdateAuditableEntitiesInterceptor>()!;
+            //I use the UnitOfWork instead of interceptors, but they are an alternate way of doing things
+            //var outboxInterceptor = serviceProvider.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
+            //var auditableInterceptor = serviceProvider.GetService<UpdateAuditableEntitiesInterceptor>()!;
 
             optionsBuilder.UseSqlServer(databaseOptions.ConnectionString, options =>
             {
@@ -27,7 +28,7 @@ public static class DatabaseContextRegistration
                     TimeSpan.FromSeconds(databaseOptions.MaxRetryDelay),
                     Array.Empty<int>());
 
-            }).AddInterceptors(outboxInterceptor, auditableInterceptor);
+            });//.AddInterceptors(outboxInterceptor, auditableInterceptor);
 
             if (isDevelopment)
             {
