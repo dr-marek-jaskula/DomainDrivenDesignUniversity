@@ -56,13 +56,11 @@ public sealed class ProductController : ApiController
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(
-    Guid id,
-    [FromBody] UpdateProductRequest request,
-    CancellationToken cancellationToken)
+        Guid id,
+        [FromBody] UpdateProductRequest request,
+        CancellationToken cancellationToken)
     {
-        var command = new UpdateProductCommand(
-            id,
-            request.Price);
+        var command = new UpdateProductCommand(id, request.Price);
 
         Result<Guid> result = await Sender.Send(command, cancellationToken);
 

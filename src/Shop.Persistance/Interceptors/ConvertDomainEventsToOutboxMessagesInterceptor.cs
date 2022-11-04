@@ -6,6 +6,7 @@ using Shopway.Persistence.Outbox;
 
 namespace Shopway.Persistence.Interceptors;
 
+//This is not used in the program (see UnitOfWork)
 public sealed class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(

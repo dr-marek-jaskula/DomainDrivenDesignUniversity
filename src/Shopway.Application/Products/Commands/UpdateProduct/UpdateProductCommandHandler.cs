@@ -1,5 +1,4 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Products.Commands.RemoveProduct;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;

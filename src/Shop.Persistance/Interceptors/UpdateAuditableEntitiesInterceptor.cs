@@ -5,6 +5,7 @@ using Shopway.Domain.Primitives;
 
 namespace Shopway.Persistence.Interceptors;
 
+//This is not used in the program (see UnitOfWork)
 public sealed class UpdateAuditableEntitiesInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
