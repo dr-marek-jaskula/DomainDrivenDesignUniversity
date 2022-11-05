@@ -53,3 +53,7 @@ This will help to deserialize object (when we are consuming the OutboxMessages) 
 ## Process the domain events in the background
 
 We create a background job using the Quartz NuGet Package. This will be a part of a Shopway.Infrastructure layer.
+
+## Specification Pattern
+
+We represent the requirement that our database entities are supposed to meet, in order to satisfy the specification and to be returned from the database.

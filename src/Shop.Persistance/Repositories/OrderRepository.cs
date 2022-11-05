@@ -5,13 +5,10 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OrderRepository : IOrderRepository
+public sealed class OrderRepository : BaseRepository, IOrderRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public OrderRepository(ApplicationDbContext dbContext)
+    public OrderRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
-        _dbContext = dbContext;
     }
 
     public async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)

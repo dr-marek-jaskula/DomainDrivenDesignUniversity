@@ -1,28 +1,32 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
+using Shopway.Persistence.Specifications;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class ProductRepository : IProductRepository
+public sealed class ProductRepository : BaseRepository, IProductRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public ProductRepository(ApplicationDbContext dbContext)
+    public ProductRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
-        _dbContext = dbContext;
     }
 
     public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext
-            .Set<Product>()
-            .AsSplitQuery()
-            .Include(x => x.Reviews)
-            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        var specification = new ProductByIdWithReviewsSpecification(id);
+
+        return await ApplySpecification(specification)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// An alternate way for specifications. Just include what we need - includes are specified as params
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <param name="includes"></param>
+    /// <returns></returns>
     public async Task<Product?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Product, object?>>[] includes)
     {
         var baseQuery = _dbContext
