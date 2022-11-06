@@ -14,7 +14,7 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
 
     public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var specification = new ProductByIdWithReviewsSpecification(id);
+        var specification = ProductByIdWithReviewsSpecification.Create(id);
 
         return await ApplySpecification(specification)
             .FirstOrDefaultAsync(cancellationToken);
