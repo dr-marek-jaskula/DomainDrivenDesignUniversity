@@ -20,18 +20,19 @@ public abstract class BaseRepository
         return GetQuery(_dbContext.Set<TEntity>(), specification);
     }
 
-    //This is a static method that is able to take the concrete specification and produce the IQueryable that can execute with EF Core
+    /// <summary>
+    /// Converts the specification into the IQueryable
+    /// </summary>
+    /// <typeparam name="TEntity">Entity type</typeparam>
+    /// <param name="inputQueryable">_dbContext.Set<TEntity>()</param>
+    /// <param name="specification">Concrete specification</param>
+    /// <returns></returns>
     private static IQueryable<TEntity> GetQuery<TEntity>(
         IQueryable<TEntity> inputQueryable,
         Specification<TEntity> specification)
         where TEntity : Entity
     {
         IQueryable<TEntity> queryable = inputQueryable;
-
-        //TODO: why no loop here?
-        //queryable = specification.IncludeExpressions.Aggregate(
-        //    queryable,
-        //    (current, includeExpression) => current.Include(includeExpression));
 
         foreach (var inlcudeExression in specification.IncludeExpressions)
         {
@@ -45,9 +46,18 @@ public abstract class BaseRepository
 
         foreach (var sortExpression in specification.SortByExpressions)
         {
+            if (sortExpression == specification.SortByExpressions.First())
+            {
+                queryable = sortExpression.SortDirection is SortDirection.Ascending
+                    ? queryable.OrderBy(sortExpression.SortBy)
+                    : queryable.OrderByDescending(sortExpression.SortBy);
+
+                continue;
+            }
+
             queryable = sortExpression.SortDirection is SortDirection.Ascending 
-                ? queryable.OrderBy(sortExpression.SortBy) 
-                : queryable.OrderByDescending(sortExpression.SortBy);
+                ? ((IOrderedQueryable<TEntity>)queryable).ThenBy(sortExpression.SortBy) 
+                : ((IOrderedQueryable<TEntity>)queryable).ThenByDescending(sortExpression.SortBy);
         }
 
         if (specification.IsSplitQuery)

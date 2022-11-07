@@ -4,7 +4,12 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications;
 
-public abstract class Specification<TEntity>
+public interface ISortBy<TEntity>
+{
+    public ISortBy<TEntity> ThenByWithDirection(Expression<Func<TEntity, object>> orderByExpression, SortDirection sortDirection);
+}
+
+public abstract class Specification<TEntity> : ISortBy<TEntity>
     where TEntity : Entity
 {
     //Flags
@@ -41,18 +46,28 @@ public abstract class Specification<TEntity>
         }
     }
 
-    protected void AddOrderByWithDirection(Expression<Func<TEntity, object>> orderByExpression, SortDirection sortDirection = SortDirection.Ascending)
+    /// <summary>
+    /// Use this method only once. Afterwards, use ThenByWithDirection to chain sorting.
+    /// </summary>
+    /// <param name="orderByExpression"></param>
+    /// <param name="sortDirection"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    protected ISortBy<TEntity> OrderByWithDirection(Expression<Func<TEntity, object>> orderByExpression, SortDirection sortDirection = SortDirection.Ascending)
     {
+        if (SortByExpressions.Any())
+        {
+            throw new InvalidOperationException($"{nameof(OrderByWithDirection)} for {nameof(TEntity)} was called twice. Use {nameof(ISortBy<TEntity>.ThenByWithDirection)} to chain sorting.");
+        }
+
         SortByExpressions.Add((orderByExpression, sortDirection));
+        return this;
     }
 
-    //Intellisense is working bad
-    protected void AddOrderByWithDirections(params ValueTuple<Expression<Func<TEntity, object>>, SortDirection>[] tuples)
+    ISortBy<TEntity> ISortBy<TEntity>.ThenByWithDirection(Expression<Func<TEntity, object>> orderByExpression, SortDirection sortDirection)
     {
-        foreach ((Expression<Func<TEntity, object>>, SortDirection) item in tuples)
-        {
-            AddOrderByWithDirection(item.Item1, item.Item2);
-        }
+        SortByExpressions.Add((orderByExpression, sortDirection));
+        return this;
     }
 
     protected void AddPagination(int take, int skip, int pageSize, int pageNumber)

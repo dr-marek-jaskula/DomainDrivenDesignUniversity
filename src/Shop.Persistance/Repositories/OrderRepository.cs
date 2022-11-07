@@ -22,7 +22,7 @@ public sealed class OrderRepository : BaseRepository, IOrderRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<Order?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Order, object?>>[] includes)
+    public async Task<Order?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Order, object>>[] includes)
     {
         var baseQuery = _dbContext
             .Set<Order>()

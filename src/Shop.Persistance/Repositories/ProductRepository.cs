@@ -20,31 +20,12 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    /// <summary>
-    /// An alternate way for specifications. Just include what we need - includes are specified as params
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <param name="includes"></param>
-    /// <returns></returns>
-    public async Task<Product?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Product, object?>>[] includes)
+    public async Task<Product?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
     {
-        var baseQuery = _dbContext
-            .Set<Product>()
-            .AsQueryable();
+        var specification = ProductByIdWithIncludesSpecification.Create(id, includes);
 
-        if (includes.Any())
-        {
-            foreach (var include in includes)
-            {
-                baseQuery = baseQuery.Include(include);
-            }
-        }
-
-        Product? order = await baseQuery
-            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-
-        return order;
+        return await ApplySpecification(specification)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public void Create(Product product)

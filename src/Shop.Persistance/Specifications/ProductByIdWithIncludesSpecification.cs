@@ -1,23 +1,25 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
+using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications;
 
-public sealed class ProductByIdWithReviewsSpecification : Specification<Product>
+public sealed class ProductByIdWithIncludesSpecification : Specification<Product>
 {
-    private ProductByIdWithReviewsSpecification()
+    private ProductByIdWithIncludesSpecification()
     {
     }
 
-    public static Specification<Product> Create(Guid productId)
+    public static Specification<Product> Create(Guid productId, params Expression<Func<Product, object>>[] includes)
     {
-        var specification = new ProductByIdWithReviewsSpecification();
+        var specification = new ProductByIdWithIncludesSpecification();
 
         specification.AddFilters(product => product.Id == productId);
 
-        specification.AddIncludes(product => product.Reviews);
+        specification.AddIncludes(includes);
 
         specification.IsAsNoTracking = true;
+        specification.IsSplitQuery = true;
 
         specification
             .OrderByWithDirection(x => x.ProductName, SortDirection.Ascending)
