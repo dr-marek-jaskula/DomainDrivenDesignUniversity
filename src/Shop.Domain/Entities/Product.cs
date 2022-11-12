@@ -1,7 +1,8 @@
 ﻿using Shopway.Domain.DomainEvents;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
-using System.Runtime.InteropServices;
 
 namespace Shopway.Domain.Entities;
 
@@ -54,9 +55,15 @@ public sealed class Product : AggregateRoot
         return product;
     }
 
-    public void AddReview(Review review)
+    public Review AddReview(Title title, Description description, Username username, Stars stars)
     {
-        _reviews.Add(review);
+        Review reviewToAdd = Review.Create(Guid.NewGuid(), Id, title, description, username, stars);
+
+        _reviews.Add(reviewToAdd);
+        
+        RaiseDomainEvent(new ReviewAddedDomainEvent(Guid.NewGuid(), reviewToAdd.Id, Id));
+
+        return reviewToAdd;
     }
 
     public bool RemoveReview(Review review)

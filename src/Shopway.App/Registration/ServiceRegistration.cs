@@ -7,6 +7,7 @@ using Shopway.Application.Abstractions.CQRS;
 using Microsoft.Extensions.Logging;
 using Shopway.Domain.Repositories;
 using Shopway.Persistence.Repositories;
+using Shopway.Persistence.Specifications.Products;
 
 namespace Shopway.App.Registration;
 
@@ -14,16 +15,6 @@ public static class ServiceRegistration
 {
     public static void RegisterServices(this IServiceCollection services)
     {
-        //TODO this scans also for adapters and providers?
-        services.Scan(selector => selector
-                    .FromAssemblies(
-                        Shopway.Infrastructure.AssemblyReference.Assembly,
-                        Shopway.Persistence.AssemblyReference.Assembly)
-                    .AddClasses(false)
-                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-                    .AsImplementedInterfaces()
-                    .WithScopedLifetime());
-
         //Repositories
 
         services.AddScoped<IOrderRepository, OrderRepository>();
@@ -42,5 +33,21 @@ public static class ServiceRegistration
         //Adapters
 
         services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
+
+        //Specification
+
+        services.AddScoped<ProductByIdWithIncludesSpecification>();
+        services.AddScoped<ProductByIdWithReviewsSpecification>();
+
+        //Scan for the rest
+
+        services.Scan(selector => selector
+            .FromAssemblies(
+                Shopway.Infrastructure.AssemblyReference.Assembly,
+                Shopway.Persistence.AssemblyReference.Assembly)
+            .AddClasses(false)
+            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
     }
 }

@@ -1,15 +1,11 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 
-namespace Shopway.Persistence.Specifications;
+namespace Shopway.Persistence.Specifications.Products;
 
-public sealed class ProductByIdWithReviewsSpecification : Specification<Product>
+public sealed class ProductByIdWithReviewsSpecification : BaseSpecification<Product>
 {
-    private ProductByIdWithReviewsSpecification()
-    {
-    }
-
-    public static Specification<Product> Create(Guid productId)
+    public static BaseSpecification<Product> Create(Guid productId)
     {
         var specification = new ProductByIdWithReviewsSpecification();
 

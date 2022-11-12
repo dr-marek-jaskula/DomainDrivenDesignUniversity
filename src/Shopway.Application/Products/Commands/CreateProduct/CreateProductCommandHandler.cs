@@ -29,7 +29,7 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
 
         if (error != Error.None)
         {
-            return Result.Failure<Guid>(new(error.Code, error.Message));
+            return Result.Failure<Guid>(error);
         }
 
         var product = Product.Create(

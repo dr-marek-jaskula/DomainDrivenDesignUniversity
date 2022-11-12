@@ -4,11 +4,11 @@ using Shopway.Domain.Repositories;
 
 namespace Shopway.Application.Orders.Events;
 
-internal sealed class DisplyMessageWhenProductCreatedDomainEventHandler : IDomainEventHandler<ProductCreatedDomainEvent>
+internal sealed class DisplayMessageWhenProductCreatedDomainEventHandler : IDomainEventHandler<ProductCreatedDomainEvent>
 {
     private readonly IProductRepository _productRepository;
 
-    public DisplyMessageWhenProductCreatedDomainEventHandler(IProductRepository productRepository)
+    public DisplayMessageWhenProductCreatedDomainEventHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
     }

@@ -9,7 +9,7 @@ public interface ISortBy<TEntity>
     public ISortBy<TEntity> ThenByWithDirection(Expression<Func<TEntity, object>> orderByExpression, SortDirection sortDirection);
 }
 
-public abstract class Specification<TEntity> : ISortBy<TEntity>
+public abstract class BaseSpecification<TEntity> : ISortBy<TEntity>
     where TEntity : Entity
 {
     //Flags

@@ -31,7 +31,7 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
 
         if (error != Error.None)
         {
-            return Result.Failure<Guid>(new(error.Code, error.Message));
+            return Result.Failure<Guid>(error);
         }
 
         var productToDelete = Product.Create(

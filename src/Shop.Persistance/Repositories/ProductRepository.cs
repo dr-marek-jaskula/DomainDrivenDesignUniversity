@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
-using Shopway.Persistence.Specifications;
+using Shopway.Persistence.Specifications.Products;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;

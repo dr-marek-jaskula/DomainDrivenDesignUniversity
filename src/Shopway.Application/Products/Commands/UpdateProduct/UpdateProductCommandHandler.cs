@@ -26,7 +26,7 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
 
         if (error != Error.None)
         {
-            return Result.Failure<Guid>(new(error.Code, error.Message));
+            return Result.Failure<Guid>(error);
         }
 
         var productToUpdate = await _productRepository.GetByIdAsync(command.Id, cancellationToken);

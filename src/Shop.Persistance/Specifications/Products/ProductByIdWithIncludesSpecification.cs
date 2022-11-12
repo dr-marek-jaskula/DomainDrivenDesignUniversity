@@ -2,15 +2,11 @@
 using Shopway.Domain.Enums;
 using System.Linq.Expressions;
 
-namespace Shopway.Persistence.Specifications;
+namespace Shopway.Persistence.Specifications.Products;
 
-public sealed class ProductByIdWithIncludesSpecification : Specification<Product>
+public sealed class ProductByIdWithIncludesSpecification : BaseSpecification<Product>
 {
-    private ProductByIdWithIncludesSpecification()
-    {
-    }
-
-    public static Specification<Product> Create(Guid productId, params Expression<Func<Product, object>>[] includes)
+    public static BaseSpecification<Product> Create(Guid productId, params Expression<Func<Product, object>>[] includes)
     {
         var specification = new ProductByIdWithIncludesSpecification();
 

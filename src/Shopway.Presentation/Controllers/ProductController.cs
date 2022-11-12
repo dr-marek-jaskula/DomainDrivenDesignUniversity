@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shopway.Application.Products.Commands.AddReview;
 using Shopway.Application.Products.Commands.CreateProduct;
+using Shopway.Application.Products.Commands.RemoveReview;
 using Shopway.Application.Products.Commands.RemoveProduct;
 using Shopway.Application.Products.Commands.UpdateProduct;
 using Shopway.Application.Products.Queries.GetProductById;
@@ -87,5 +89,59 @@ public sealed class ProductController : ApiController
         }
 
         return NoContent();
+    }
+
+    [HttpPost("{id:guid}/review")]
+    public async Task<IActionResult> AddReview(
+    Guid id,
+    [FromBody] AddReviewRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = new AddReviewCommand(id, request.Username, request.Stars, request.Title, request.Description);
+
+        Result<Guid> result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return Ok(result.Value);
+    }
+
+    //[HttpPatch("{id:guid}/review")]
+    //public async Task<IActionResult> UpdateReview(
+    //Guid id,
+    //[FromBody] AddReviewRequest request,
+    //CancellationToken cancellationToken)
+    //{
+    //    var command = new AddReviewCommand(id, request.Username, request.Stars, request.Title, request.Description);
+
+    //    Result<Guid> result = await Sender.Send(command, cancellationToken);
+
+    //    if (result.IsFailure)
+    //    {
+    //        return HandleFailure(result);
+    //    }
+
+    //    return Ok(result.Value);
+    //}
+
+    [HttpDelete("{productId:guid}/review/{reviewId:guid}")]
+    public async Task<IActionResult> RemoveReview(
+    Guid productId,
+    Guid reviewId,
+    CancellationToken cancellationToken)
+    {
+        var command = new RemoveReviewCommand(productId, reviewId);
+
+        Result<Guid> result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return Ok(result.Value);
     }
 }

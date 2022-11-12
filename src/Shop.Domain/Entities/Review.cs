@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Primitives;
+﻿using Shopway.Domain.DomainEvents;
+using Shopway.Domain.Primitives;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
@@ -13,26 +14,37 @@ public sealed class Review : Entity, IAuditableEntity
     public Description Description { get; private set; }
     public Guid? ProductId { get; private set; }
 
-    internal Review(
-        Guid id,
+    private Review(
+        Guid reviewId,
+        Guid productId,
         Title title,
         Description description,
         Username username,
-        Stars stars,
-        DateTimeOffset createdDate,
-        DateTimeOffset updatedDate)
-        : base(id)
+        Stars stars)
+    : base(reviewId)
     {
         Username = username;
         Stars = stars;
-        CreatedOn = createdDate;
-        UpdatedOn = updatedDate;
         Title = title;
         Description = description;
+        ProductId = productId;
     }
 
     // Empty constructor in this case is required by EF Core
     private Review()
     {
+    }
+
+    internal static Review Create(
+        Guid reviewId,
+        Guid productId,
+        Title title,
+        Description description,
+        Username username,
+        Stars stars)
+    {
+        var review = new Review(reviewId, productId, title, description, username, stars);
+
+        return review;
     }
 }
