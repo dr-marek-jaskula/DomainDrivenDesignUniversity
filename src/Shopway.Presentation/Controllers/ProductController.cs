@@ -9,6 +9,7 @@ using Shopway.Application.Products.Queries.GetProductById;
 using Shopway.Domain.Results;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Products;
+using Shopway.Application.Products.Commands.Reviews.UpdateReview;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -109,23 +110,24 @@ public sealed class ProductController : ApiController
         return Ok(result.Value);
     }
 
-    //[HttpPatch("{id:guid}/review")]
-    //public async Task<IActionResult> UpdateReview(
-    //Guid id,
-    //[FromBody] AddReviewRequest request,
-    //CancellationToken cancellationToken)
-    //{
-    //    var command = new AddReviewCommand(id, request.Username, request.Stars, request.Title, request.Description);
+    [HttpPatch("{productId:guid}/review/{reviewId:guid}")]
+    public async Task<IActionResult> UpdateReview(
+    Guid productId,
+    Guid reviewId,
+    [FromBody] UpdateReviewRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = new UpdateReviewCommand(productId, reviewId, request.Stars, request.Description);
 
-    //    Result<Guid> result = await Sender.Send(command, cancellationToken);
+        Result<Guid> result = await Sender.Send(command, cancellationToken);
 
-    //    if (result.IsFailure)
-    //    {
-    //        return HandleFailure(result);
-    //    }
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
 
-    //    return Ok(result.Value);
-    //}
+        return Ok(result.Value);
+    }
 
     [HttpDelete("{productId:guid}/review/{reviewId:guid}")]
     public async Task<IActionResult> RemoveReview(
