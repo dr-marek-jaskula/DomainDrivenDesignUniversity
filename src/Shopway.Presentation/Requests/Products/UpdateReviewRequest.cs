@@ -2,6 +2,6 @@
 
 public sealed record UpdateReviewRequest
 (
-    decimal Stars,
-    string Description
+    decimal? Stars,
+    string? Description
 );

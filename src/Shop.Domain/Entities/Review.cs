@@ -47,4 +47,14 @@ public sealed class Review : Entity, IAuditableEntity
 
         return review;
     }
+
+    public void UpdateDescription(Description description)
+    {
+        Description= description;
+    }
+
+    public void UpdateStars(Stars stars)
+    {
+        Stars = stars;
+    }
 }
