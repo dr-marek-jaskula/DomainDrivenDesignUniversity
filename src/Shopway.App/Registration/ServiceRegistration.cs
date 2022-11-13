@@ -8,6 +8,10 @@ using Microsoft.Extensions.Logging;
 using Shopway.Domain.Repositories;
 using Shopway.Persistence.Repositories;
 using Shopway.Persistence.Specifications.Products;
+using Shopway.Persistence.Specifications;
+using System.Linq;
+using Shopway.Domain.Primitives;
+using Shopway.Domain.Entities;
 
 namespace Shopway.App.Registration;
 
@@ -33,11 +37,6 @@ public static class ServiceRegistration
         //Adapters
 
         services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
-
-        //Specification
-
-        services.AddScoped<ProductByIdWithIncludesSpecification>();
-        services.AddScoped<ProductByIdWithReviewsSpecification>();
 
         //Scan for the rest
 

@@ -4,12 +4,12 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications;
 
-public interface ISortBy<TEntity>
+public abstract class SortBy<TEntity>
 {
-    public ISortBy<TEntity> ThenByWithDirection(Expression<Func<TEntity, object>> orderByExpression, SortDirection sortDirection);
+    public abstract SortBy<TEntity> ThenByWithDirection(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection);
 }
 
-public abstract class BaseSpecification<TEntity> : ISortBy<TEntity>
+public abstract class BaseSpecification<TEntity> : SortBy<TEntity>
     where TEntity : Entity
 {
     //Flags
@@ -49,24 +49,24 @@ public abstract class BaseSpecification<TEntity> : ISortBy<TEntity>
     /// <summary>
     /// Use this method only once. Afterwards, use ThenByWithDirection to chain sorting.
     /// </summary>
-    /// <param name="orderByExpression"></param>
+    /// <param name="sortByExpression"></param>
     /// <param name="sortDirection"></param>
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"></exception>
-    protected ISortBy<TEntity> OrderByWithDirection(Expression<Func<TEntity, object>> orderByExpression, SortDirection sortDirection = SortDirection.Ascending)
+    protected SortBy<TEntity> OrderByWithDirection(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection = SortDirection.Ascending)
     {
         if (SortByExpressions.Any())
         {
-            throw new InvalidOperationException($"{nameof(OrderByWithDirection)} for {nameof(TEntity)} was called twice. Use {nameof(ISortBy<TEntity>.ThenByWithDirection)} to chain sorting.");
+            throw new InvalidOperationException($"{nameof(OrderByWithDirection)} for {nameof(TEntity)} was called twice. Use {nameof(SortBy<TEntity>.ThenByWithDirection)} to chain sorting.");
         }
 
-        SortByExpressions.Add((orderByExpression, sortDirection));
+        SortByExpressions.Add((sortByExpression, sortDirection));
         return this;
     }
 
-    ISortBy<TEntity> ISortBy<TEntity>.ThenByWithDirection(Expression<Func<TEntity, object>> orderByExpression, SortDirection sortDirection)
+    public override SortBy<TEntity> ThenByWithDirection(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
     {
-        SortByExpressions.Add((orderByExpression, sortDirection));
+        SortByExpressions.Add((sortByExpression, sortDirection));
         return this;
     }
 

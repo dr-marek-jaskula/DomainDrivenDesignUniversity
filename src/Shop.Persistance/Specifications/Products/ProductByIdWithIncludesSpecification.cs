@@ -4,8 +4,12 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-public sealed class ProductByIdWithIncludesSpecification : BaseSpecification<Product>
+internal sealed class ProductByIdWithIncludesSpecification : BaseSpecification<Product>
 {
+    private ProductByIdWithIncludesSpecification()
+    {
+    }
+
     public static BaseSpecification<Product> Create(Guid productId, params Expression<Func<Product, object>>[] includes)
     {
         var specification = new ProductByIdWithIncludesSpecification();

@@ -14,7 +14,7 @@ namespace Shopway.Persistence;
 //a) since we use the repository pattern with UnitOfWork, the repositories do not contain SaveChanges method.
 //This force us to call SaveChanges at the end of our business transactions from the UnitOfWork.
 //So this removes the responsibility of SavingChanges from the repositories and moves it to the UnitOfWork
-//b) since we use IUnitOfWork interface we can provide a moq for this interface
+//b) since we use IUnitOfWork interface we can provide a mock for this interface
 //3. Move the logic from the interceptors to the UnitOfWork
 internal sealed class UnitOfWork : IUnitOfWork
 {
