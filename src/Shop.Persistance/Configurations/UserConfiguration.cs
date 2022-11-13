@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
-using Shopway.Persistence.Converters;
 using Shopway.Domain.ValueObjects;
-using CustomTools;
 
 namespace Shopway.Persistence.Configurations;
 

@@ -1,5 +1,4 @@
 ﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Extensions;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 

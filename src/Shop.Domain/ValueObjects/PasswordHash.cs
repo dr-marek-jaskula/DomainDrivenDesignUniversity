@@ -3,7 +3,7 @@ using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 using System.Text;
 
-namespace CustomTools;
+namespace Shopway.Domain.ValueObjects;
 
 public sealed class PasswordHash : ValueObject
 {
