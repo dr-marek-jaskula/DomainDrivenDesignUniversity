@@ -94,9 +94,9 @@ public sealed class ProductController : ApiController
 
     [HttpPost("{id:guid}/review")]
     public async Task<IActionResult> AddReview(
-    Guid id,
-    [FromBody] AddReviewRequest request,
-    CancellationToken cancellationToken)
+        Guid id,
+        [FromBody] AddReviewRequest request,
+        CancellationToken cancellationToken)
     {
         var command = new AddReviewCommand(id, request.Username, request.Stars, request.Title, request.Description);
 
@@ -112,9 +112,9 @@ public sealed class ProductController : ApiController
 
     [HttpPatch("{productId:guid}/review/{reviewId:guid}")]
     public async Task<IActionResult> UpdateReview(
-    Guid productId,
-    Guid reviewId,
-    [FromBody] UpdateReviewRequest request,
+        Guid productId,
+        Guid reviewId,
+        [FromBody] UpdateReviewRequest request,
     CancellationToken cancellationToken)
     {
         var command = new UpdateReviewCommand(productId, reviewId, request.Stars, request.Description);

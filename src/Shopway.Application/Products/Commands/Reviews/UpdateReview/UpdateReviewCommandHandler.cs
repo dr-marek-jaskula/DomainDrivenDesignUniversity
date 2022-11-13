@@ -64,6 +64,8 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
             reviewToUpdate.UpdateStars(starsResult.Value);
         }
 
+        _reviewRepository.Update(reviewToUpdate);
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return reviewToUpdate.Id;

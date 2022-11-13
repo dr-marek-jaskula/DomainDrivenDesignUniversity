@@ -7,4 +7,6 @@ public interface IReviewRepository
     void Add(Review review);
 
     void Remove(Review review);
+
+    void Update(Review review);
 }

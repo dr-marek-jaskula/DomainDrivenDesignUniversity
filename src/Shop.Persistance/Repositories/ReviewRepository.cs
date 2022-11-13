@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
 
 namespace Shopway.Persistence.Repositories;
@@ -21,5 +22,12 @@ public sealed class ReviewRepository : BaseRepository, IReviewRepository
         _dbContext
             .Set<Review>()
             .Remove(review);
+    }
+
+    public void Update(Review review)
+    {
+        _dbContext
+            .Set<Review>()
+            .Update(review);
     }
 }
