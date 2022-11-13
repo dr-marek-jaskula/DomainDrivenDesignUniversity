@@ -30,7 +30,7 @@ public class Result
 
     public Error Error { get; }
 
-    protected internal Result(bool isSuccess, Error error)
+    private protected Result(bool isSuccess, Error error)
     {
         bool successWithError = isSuccess && error != Error.None;
 
