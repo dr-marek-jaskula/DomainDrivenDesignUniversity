@@ -19,7 +19,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
     //Make a hash using the whole AtomicValues collection (and the initial value of default(int) which is zero)
     public override int GetHashCode()
     {
-        return GetAtomicValues() //TODO: when the .NET 7 rises, than use int.Zero
+        return GetAtomicValues()
             .Aggregate(default(int), HashCode.Combine);
     }
 
