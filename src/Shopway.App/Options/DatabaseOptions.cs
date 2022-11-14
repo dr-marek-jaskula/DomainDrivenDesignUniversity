@@ -4,7 +4,7 @@
 //The mapping and binding will be done using "DatabaseOptionsSetup" class
 public class DatabaseOptions
 {
-    public string ConnectionString { get; set; } = string.Empty;
+    public string? ConnectionString { get; set; } = string.Empty;
     public int MaxRetryCount { get; set; }
     public int MaxRetryDelay { get; set; }
     public int CommandTimeout { get; set; }

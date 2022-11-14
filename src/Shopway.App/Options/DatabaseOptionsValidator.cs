@@ -5,11 +5,11 @@ namespace Shopway.App.Options;
 
 public class DatabaseOptionsValidator : IValidateOptions<DatabaseOptions>
 {
-    public ValidateOptionsResult Validate(string name, DatabaseOptions options)
+    public ValidateOptionsResult Validate(string? name, DatabaseOptions options)
     {
         var validationResult = string.Empty;
 
-        if(options.ConnectionString.IsNullOrEmptyOrWhiteSpace())
+        if (options.ConnectionString.IsNullOrEmptyOrWhiteSpace())
         {
             validationResult += "Connection string is missing";
         }

@@ -55,6 +55,6 @@ public class ErrorHandlingMiddleware : IMiddleware
         };
         
         problemDetails.Extensions.Add("RequestId", context.TraceIdentifier);
-        await context.Response.WriteAsJsonAsync(problemDetails, problemDetails.GetType(), null, contentType: "application/problem+json");
+        await context.Response.WriteAsJsonAsync(problemDetails, problemDetails.GetType(), options: null, contentType: "application/problem+json");
     }
 }
