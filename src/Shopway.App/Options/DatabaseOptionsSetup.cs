@@ -2,7 +2,7 @@
 
 namespace Shopway.App.Options;
 
-public class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
+public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
 {
     private readonly IConfiguration _configuration;
 

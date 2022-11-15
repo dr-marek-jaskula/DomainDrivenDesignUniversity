@@ -3,7 +3,7 @@ using Shopway.Domain.Extensions;
 
 namespace Shopway.App.Options;
 
-public class DatabaseOptionsValidator : IValidateOptions<DatabaseOptions>
+public sealed class DatabaseOptionsValidator : IValidateOptions<DatabaseOptions>
 {
     public ValidateOptionsResult Validate(string? name, DatabaseOptions options)
     {

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Shopway.App.Options;
 using Shopway.Persistence;
-using Shopway.Persistence.Interceptors;
 
 namespace Shopway.App.Registration;
 
@@ -19,7 +18,7 @@ public static class DatabaseContextRegistration
             //var outboxInterceptor = serviceProvider.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
             //var auditableInterceptor = serviceProvider.GetService<UpdateAuditableEntitiesInterceptor>()!;
 
-            optionsBuilder.UseSqlServer(databaseOptions.ConnectionString, options =>
+            optionsBuilder.UseSqlServer(databaseOptions.ConnectionString!, options =>
             {
                 options.CommandTimeout(databaseOptions.CommandTimeout);
 

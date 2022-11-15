@@ -1,17 +1,9 @@
 ﻿using Scrutor;
 using Shopway.Infrastructure.Providers;
 using Shopway.Infrastructure.Adapters;
-using Shopway.Persistence.Interceptors;
 using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
-using Microsoft.Extensions.Logging;
 using Shopway.Domain.Repositories;
 using Shopway.Persistence.Repositories;
-using Shopway.Persistence.Specifications.Products;
-using Shopway.Persistence.Specifications;
-using System.Linq;
-using Shopway.Domain.Primitives;
-using Shopway.Domain.Entities;
 
 namespace Shopway.App.Registration;
 
