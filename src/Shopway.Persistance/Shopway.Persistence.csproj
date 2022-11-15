@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shop.Domain\Shopway.Domain.csproj" />
+    <ProjectReference Include="..\Shopway.Domain\Shopway.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

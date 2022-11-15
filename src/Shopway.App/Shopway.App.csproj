@@ -32,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shop.Persistance\Shopway.Persistence.csproj" />
     <ProjectReference Include="..\Shopway.Application\Shopway.Application.csproj" />
     <ProjectReference Include="..\Shopway.Infrastructure\Shopway.Infrastructure.csproj" />
+    <ProjectReference Include="..\Shopway.Persistance\Shopway.Persistence.csproj" />
     <ProjectReference Include="..\Shopway.Presentation\Shopway.Presentation.csproj" />
   </ItemGroup>
 

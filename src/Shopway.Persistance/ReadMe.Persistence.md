@@ -7,15 +7,8 @@ In this project we store components connected to the ORM and database operations
 - Configurations
 - Repositories
 - Migrations
-- SaveChanges Interceptors
 - Outbox pattern classes
 - Database Diagram
-
-## Interceptors
-
-Interceptors are not used in this application, but they are shown to demonstrate the alternative way.
-
-The logic from interceptors were move to the UnitOfWork
 
 ## Outbox pattern
 

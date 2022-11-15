@@ -7,22 +7,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{870F975D-0EF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{49B6585D-AE10-4FC1-8798-4623D3AE0006}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Persistence", "src\Shop.Persistance\Shopway.Persistence.csproj", "{DD6BABBB-AC10-416F-BEC5-EB0627ACA9A0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Domain", "src\Shop.Domain\Shopway.Domain.csproj", "{D939DC0C-01C0-4B20-9FF7-B02427558A73}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63AD0D7C-F45A-4430-BCCB-4980C8BC2FD7}"
 	ProjectSection(SolutionItems) = preProject
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopway.Presentation", "src\Shopway.Presentation\Shopway.Presentation.csproj", "{07C172D7-4405-4A08-B54E-0BA926DD4FA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Presentation", "src\Shopway.Presentation\Shopway.Presentation.csproj", "{07C172D7-4405-4A08-B54E-0BA926DD4FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopway.App", "src\Shopway.App\Shopway.App.csproj", "{BBFD67C9-78A8-48A3-9C0A-123D492D86C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.App", "src\Shopway.App\Shopway.App.csproj", "{BBFD67C9-78A8-48A3-9C0A-123D492D86C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopway.Application", "src\Shopway.Application\Shopway.Application.csproj", "{9E7E8535-0892-4212-B0F8-C6C486CAC809}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Application", "src\Shopway.Application\Shopway.Application.csproj", "{9E7E8535-0892-4212-B0F8-C6C486CAC809}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopway.Infrastructure", "src\Shopway.Infrastructure\Shopway.Infrastructure.csproj", "{62FD3B46-D954-4868-BC3C-64651F462D9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Infrastructure", "src\Shopway.Infrastructure\Shopway.Infrastructure.csproj", "{62FD3B46-D954-4868-BC3C-64651F462D9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Domain", "src\Shopway.Domain\Shopway.Domain.csproj", "{4F94EB5E-89F7-455C-B08F-3F85AAD04166}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Persistence", "src\Shopway.Persistance\Shopway.Persistence.csproj", "{BCFAD6D7-137A-4A05-B45F-61D6C018C21B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,14 +30,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD6BABBB-AC10-416F-BEC5-EB0627ACA9A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD6BABBB-AC10-416F-BEC5-EB0627ACA9A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD6BABBB-AC10-416F-BEC5-EB0627ACA9A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD6BABBB-AC10-416F-BEC5-EB0627ACA9A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D939DC0C-01C0-4B20-9FF7-B02427558A73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D939DC0C-01C0-4B20-9FF7-B02427558A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D939DC0C-01C0-4B20-9FF7-B02427558A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D939DC0C-01C0-4B20-9FF7-B02427558A73}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07C172D7-4405-4A08-B54E-0BA926DD4FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07C172D7-4405-4A08-B54E-0BA926DD4FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07C172D7-4405-4A08-B54E-0BA926DD4FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,17 +46,25 @@ Global
 		{62FD3B46-D954-4868-BC3C-64651F462D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62FD3B46-D954-4868-BC3C-64651F462D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62FD3B46-D954-4868-BC3C-64651F462D9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F94EB5E-89F7-455C-B08F-3F85AAD04166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F94EB5E-89F7-455C-B08F-3F85AAD04166}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F94EB5E-89F7-455C-B08F-3F85AAD04166}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F94EB5E-89F7-455C-B08F-3F85AAD04166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCFAD6D7-137A-4A05-B45F-61D6C018C21B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCFAD6D7-137A-4A05-B45F-61D6C018C21B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCFAD6D7-137A-4A05-B45F-61D6C018C21B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCFAD6D7-137A-4A05-B45F-61D6C018C21B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{DD6BABBB-AC10-416F-BEC5-EB0627ACA9A0} = {870F975D-0EFA-46C9-A591-C563ED5BEE65}
-		{D939DC0C-01C0-4B20-9FF7-B02427558A73} = {870F975D-0EFA-46C9-A591-C563ED5BEE65}
 		{07C172D7-4405-4A08-B54E-0BA926DD4FA2} = {870F975D-0EFA-46C9-A591-C563ED5BEE65}
 		{BBFD67C9-78A8-48A3-9C0A-123D492D86C6} = {870F975D-0EFA-46C9-A591-C563ED5BEE65}
 		{9E7E8535-0892-4212-B0F8-C6C486CAC809} = {870F975D-0EFA-46C9-A591-C563ED5BEE65}
 		{62FD3B46-D954-4868-BC3C-64651F462D9A} = {870F975D-0EFA-46C9-A591-C563ED5BEE65}
+		{4F94EB5E-89F7-455C-B08F-3F85AAD04166} = {870F975D-0EFA-46C9-A591-C563ED5BEE65}
+		{BCFAD6D7-137A-4A05-B45F-61D6C018C21B} = {870F975D-0EFA-46C9-A591-C563ED5BEE65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {611D72BD-9F9B-485C-A4B7-14B98649BA32}
