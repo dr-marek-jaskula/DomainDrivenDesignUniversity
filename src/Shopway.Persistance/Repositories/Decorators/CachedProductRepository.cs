@@ -1,25 +1,37 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Extensions;
 using Shopway.Domain.Repositories;
+using Shopway.Persistence.Resolvers;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
 public sealed class CachedProductRepository : IProductRepository
 {
+    //In order to reuse the same settings we store in a private static field
+    private static readonly JsonSerializerSettings _jsonSerializerSettings = new()
+    {
+        //Use private parameterless constructor to deserialize object
+        ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+        //We also need to use PrivateResoler to be able to deal with properties private setters
+        ContractResolver = new PrivateResolver()
+    };
+
     private readonly IProductRepository _decorated;
     //basic way to implement cache
     //private readonly IMemoryCache _memoryCache;
     //Cache with Redis
     private readonly IDistributedCache _distributedCache;
+    //This is if we need to track the entity, when it is obtained from the Redis Cache
+    private readonly ApplicationDbContext _context;
 
-    public CachedProductRepository(IProductRepository decorated, IDistributedCache distributedCache)
+    public CachedProductRepository(IProductRepository decorated, IDistributedCache distributedCache, ApplicationDbContext context)
     {
         _decorated = decorated;
         _distributedCache = distributedCache;
+        _context = context;
     }
 
     public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -59,13 +71,13 @@ public sealed class CachedProductRepository : IProductRepository
             return product;
         }
 
-        product = JsonConvert.DeserializeObject<Product>(
-            cachedProduct,
-            new JsonSerializerSettings
-            {
-                //Use private parameterless constructor to deserialize object
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
-            });
+        product = JsonConvert.DeserializeObject<Product>(cachedProduct, _jsonSerializerSettings);
+
+        //Make EF Core track the obtained entity if it is not null
+        if (product is not null)
+        {
+            _context.Set<Product>().Attach(product);
+        }
 
         return product;
     }
