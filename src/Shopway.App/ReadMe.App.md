@@ -18,7 +18,7 @@ To configure Quartz background jobs we need Quartz.Extensions.Hosting NuGet Pack
 3. Use caching in the decorator (see CachedProductRepository)
 4. Add PrivateResolver (in Shopway.Persistance) to be able to deserialized object with private setters
 
-IMemory cache is faster, but the Redis cache can be resued between multiple instance of our application.
+IMemory cache is faster, but the Redis cache can be reused between multiple instance of our application.
 
 If we do not want to use decorator pattern for cache, we can use create a CacheService
 
