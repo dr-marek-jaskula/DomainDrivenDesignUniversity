@@ -1,9 +1,10 @@
 using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Role : Entity
+public sealed class Role : Entity<RoleId>
 {
     private readonly List<User> _users = new();
 

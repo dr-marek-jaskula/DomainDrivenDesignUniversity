@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Specifications;
 
 namespace Shopway.Persistence.Repositories;
@@ -14,8 +15,9 @@ public abstract class BaseRepository
         _dbContext = dbContext;
     }
 
-    protected IQueryable<TEntity> ApplySpecification<TEntity>(BaseSpecification<TEntity> specification) 
-        where TEntity : Entity
+    protected IQueryable<TEntity> ApplySpecification<TEntity, TEntityId>(BaseSpecification<TEntity, TEntityId> specification)
+        where TEntityId : IEntityId, new()
+        where TEntity : Entity<TEntityId>
     {
         return GetQuery(_dbContext.Set<TEntity>(), specification);
     }
@@ -27,10 +29,11 @@ public abstract class BaseRepository
     /// <param name="inputQueryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Concrete specification</param>
     /// <returns></returns>
-    private static IQueryable<TEntity> GetQuery<TEntity>(
+    private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(
         IQueryable<TEntity> inputQueryable,
-        BaseSpecification<TEntity> specification)
-        where TEntity : Entity
+        BaseSpecification<TEntity, TEntityId> specification)
+        where TEntityId : IEntityId, new()
+        where TEntity : Entity<TEntityId>
     {
         IQueryable<TEntity> queryable = inputQueryable;
 

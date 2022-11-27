@@ -1,16 +1,17 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
+using Shopway.Domain.StronglyTypedIds;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductByIdWithIncludesSpecification : BaseSpecification<Product>
+internal sealed class ProductByIdWithIncludesSpecification : BaseSpecification<Product, ProductId>
 {
     private ProductByIdWithIncludesSpecification()
     {
     }
 
-    public static BaseSpecification<Product> Create(Guid productId, params Expression<Func<Product, object>>[] includes)
+    public static BaseSpecification<Product, ProductId> Create(ProductId productId, params Expression<Func<Product, object>>[] includes)
     {
         var specification = new ProductByIdWithIncludesSpecification();
 

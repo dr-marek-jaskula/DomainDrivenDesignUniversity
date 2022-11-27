@@ -57,7 +57,7 @@ public sealed class Customer : Person
             user,
             rank);
 
-        customer.RaiseDomainEvent(new CustomerRegisteredDomainEvent(Guid.NewGuid(), customer.Id));
+        customer.RaiseDomainEvent(new CustomerRegisteredDomainEvent(Guid.NewGuid(), customer.Id.Value));
 
         return customer;
     }

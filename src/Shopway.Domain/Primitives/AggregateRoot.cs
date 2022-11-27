@@ -1,4 +1,5 @@
 ﻿using Shopway.Domain.DomainEvents;
+using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Domain.Primitives;
 
@@ -6,7 +7,8 @@ namespace Shopway.Domain.Primitives;
 //AggragateRoot is always queried as a whole.
 //Entities that are not AggrageteRoot will be queried only as a part of a AggregateRoot
 //The instance AggregateRoot = Order, but the Entity = Payment (we cannot query the Payment without the Order).
-public abstract class AggregateRoot : Entity
+public abstract class AggregateRoot<TEntityId> : Entity<TEntityId>, IAggregateRoot
+    where TEntityId : IEntityId, new()
 {
     //This allow us to rise the different type of DomainEvents (it is only for AggregateRoots)
     private readonly List<IDomainEvent> _domainEvents = new();

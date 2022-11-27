@@ -42,7 +42,7 @@ public sealed class Feature : WorkItem
             status,
             employeeId);
 
-        feature.RaiseDomainEvent(new FeatureRegisteredDomainEvent(Guid.NewGuid(), feature.Id));
+        feature.RaiseDomainEvent(new FeatureRegisteredDomainEvent(Guid.NewGuid(), feature.Id.Value));
 
         return feature;
     }

@@ -1,10 +1,11 @@
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class User : AggregateRoot, IAuditableEntity
+public sealed class User : AggregateRoot<UserId>, IAuditableEntity
 {
     public Username Username { get; set; }
     public Email Email { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities.Parents;
@@ -7,7 +8,7 @@ namespace Shopway.Domain.Entities.Parents;
 //Table-per-hierarchy approach (abstract class)
 
 //The additional "Discriminator" column to distinguish the different children of a WorkItem
-public abstract class WorkItem : AggregateRoot
+public abstract class WorkItem : AggregateRoot<WorkItemId>
 {
     protected WorkItem(
         Guid id,

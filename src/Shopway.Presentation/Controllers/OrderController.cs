@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Orders.Commands.CreateOrder;
-using Shopway.Application.Orders.Commands.UpdateOrder;
 using Shopway.Application.Orders.Queries.GetOrderById;
 using Shopway.Domain.Results;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Orders;
 
@@ -20,7 +20,9 @@ public sealed class OrderController : ApiController
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetOrderById(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetOrderByIdQuery(id);
+        var orderId = new OrderId() { Value = id };
+
+        var query = new GetOrderByIdQuery(orderId);
 
         Result<OrderResponse> response = await Sender.Send(query, cancellationToken);
 

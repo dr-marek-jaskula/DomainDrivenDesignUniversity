@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
+using Shopway.Domain.StronglyTypedIds;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
@@ -11,7 +12,7 @@ public sealed class OrderRepository : BaseRepository, IOrderRepository
     {
     }
 
-    public async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Order?> GetByIdAsync(OrderId id, CancellationToken cancellationToken = default)
     {
         return await _dbContext
             .Set<Order>()
@@ -22,7 +23,7 @@ public sealed class OrderRepository : BaseRepository, IOrderRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<Order?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Order, object>>[] includes)
+    public async Task<Order?> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken = default, params Expression<Func<Order, object>>[] includes)
     {
         var baseQuery = _dbContext
             .Set<Order>()

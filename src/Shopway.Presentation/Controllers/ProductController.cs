@@ -10,6 +10,7 @@ using Shopway.Domain.Results;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Products;
 using Shopway.Application.Products.Commands.Reviews.UpdateReview;
+using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -26,7 +27,9 @@ public sealed class ProductController : ApiController
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var query = new GetProductByIdQuery(id);
+        var productId = new ProductId() { Value = id };
+
+        var query = new GetProductByIdQuery(productId);
 
         Result<ProductResponse> response = await Sender.Send(query, cancellationToken);
 
@@ -63,7 +66,9 @@ public sealed class ProductController : ApiController
         [FromBody] UpdateProductRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateProductCommand(id, request.Price);
+        var productId = new ProductId() { Value = id };
+
+        var command = new UpdateProductCommand(productId, request.Price);
 
         Result<Guid> result = await Sender.Send(command, cancellationToken);
 
@@ -80,7 +85,9 @@ public sealed class ProductController : ApiController
         Guid id,
         CancellationToken cancellationToken)
     {
-        var command = new RemoveProductCommand(id);
+        var productId = new ProductId() { Value = id };
+
+        var command = new RemoveProductCommand(productId);
 
         Result<Guid> result = await Sender.Send(command, cancellationToken);
 
@@ -98,7 +105,9 @@ public sealed class ProductController : ApiController
         [FromBody] AddReviewRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new AddReviewCommand(id, request.Username, request.Stars, request.Title, request.Description);
+        var productId = new ProductId() { Value = id };
+
+        var command = new AddReviewCommand(productId, request.Username, request.Stars, request.Title, request.Description);
 
         Result<Guid> result = await Sender.Send(command, cancellationToken);
 
@@ -117,7 +126,10 @@ public sealed class ProductController : ApiController
         [FromBody] UpdateReviewRequest request,
     CancellationToken cancellationToken)
     {
-        var command = new UpdateReviewCommand(productId, reviewId, request.Stars, request.Description);
+        var productIdType = new ProductId() { Value = productId };
+        var reviewIdType = new ReviewId() { Value = reviewId };
+
+        var command = new UpdateReviewCommand(productIdType, reviewIdType, request.Stars, request.Description);
 
         Result<Guid> result = await Sender.Send(command, cancellationToken);
 
@@ -131,11 +143,14 @@ public sealed class ProductController : ApiController
 
     [HttpDelete("{productId:guid}/review/{reviewId:guid}")]
     public async Task<IActionResult> RemoveReview(
-    Guid productId,
-    Guid reviewId,
-    CancellationToken cancellationToken)
+        Guid productId,
+        Guid reviewId,
+        CancellationToken cancellationToken)
     {
-        var command = new RemoveReviewCommand(productId, reviewId);
+        var productIdType = new ProductId() { Value = productId };
+        var reviewIdType = new ReviewId() { Value = reviewId };
+
+        var command = new RemoveReviewCommand(productIdType, reviewIdType);
 
         Result<Guid> result = await Sender.Send(command, cancellationToken);
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
+using Shopway.Domain.StronglyTypedIds;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories.Decorators;
@@ -16,7 +17,7 @@ public sealed class CachedOrderRepository : IOrderRepository
         _memoryCache = memoryCache;
     }
 
-    public Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public Task<Order?> GetByIdAsync(OrderId id, CancellationToken cancellationToken = default)
     {
         string key = $"order-{id}";
 
@@ -30,7 +31,7 @@ public sealed class CachedOrderRepository : IOrderRepository
             });
     }
 
-    public Task<Order?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Order, object>>[] includes)
+    public Task<Order?> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken = default, params Expression<Func<Order, object>>[] includes)
     {
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }

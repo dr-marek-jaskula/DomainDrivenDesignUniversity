@@ -15,7 +15,7 @@ public sealed class Employee : Person
     public DateTimeOffset HireDate { get; private set; }
 
     //Many to many relationship with customers (rest is in Customer class)
-    public List<Customer> Customers { get; private set; } = new();
+    public List<Person> Customers { get; private set; } = new();
 
     //One to many relationship with same table (ManagerId, Manager, Subordinates)
     public Guid? ManagerId { get; private set; }
@@ -71,7 +71,7 @@ public sealed class Employee : Person
             user,
             hireDate);
 
-        employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id));
+        employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id.Value));
 
         return employee;
     }

@@ -1,13 +1,14 @@
 ﻿using Shopway.Domain.Entities;
+using Shopway.Domain.StronglyTypedIds;
 using System.Linq.Expressions;
 
 namespace Shopway.Domain.Repositories;
 
 public interface IProductRepository
 {
-    Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Product?> GetByIdAsync(ProductId id, CancellationToken cancellationToken = default);
 
-    Task<Product?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes);
+    Task<Product?> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes);
 
     void Create(Product order);
 

@@ -25,14 +25,14 @@ internal sealed class RemoveReviewCommandHandler : ICommandHandler<RemoveReviewC
 
         if (product is null)
         {
-            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.ProductId));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.ProductId.Value));
         }
 
-        var reviewToRemove = product.Reviews.FirstOrDefault(x => x.Id == command.ReviewId);
+        var reviewToRemove = product.Reviews.FirstOrDefault(x => x.Id.Value == command.ReviewId.Value);
 
         if (reviewToRemove is null)
         {
-            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Review), command.ReviewId));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Review), command.ReviewId.Value));
         }
 
         product.RemoveReview(reviewToRemove);
@@ -41,7 +41,7 @@ internal sealed class RemoveReviewCommandHandler : ICommandHandler<RemoveReviewC
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return command.ReviewId;
+        return command.ReviewId.Value;
      }
 }
 

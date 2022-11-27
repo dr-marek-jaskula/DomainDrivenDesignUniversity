@@ -1,11 +1,12 @@
 ﻿using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Order : AggregateRoot, IAuditableEntity
+public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
 {
     public Amount Amount { get; private set; }
     public Status Status { get; private set; }

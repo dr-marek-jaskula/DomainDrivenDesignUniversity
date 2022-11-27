@@ -22,7 +22,7 @@ internal sealed class DisplayMessageWhenReviewAddedDomainEventHandler : IDomainE
             return;
         }
 
-        if (notification.ReviewId == Guid.Empty)
+        if (notification.ReviewId.Value == Guid.Empty)
         {
             return;
         }

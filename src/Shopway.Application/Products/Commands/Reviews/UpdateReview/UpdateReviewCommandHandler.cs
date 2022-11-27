@@ -26,14 +26,14 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
 
         if (product is null)
         {
-            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.ProductId));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.ProductId.Value));
         }
 
-        var reviewToUpdate = product.Reviews.FirstOrDefault(x => x.Id == command.ReviewId);
+        var reviewToUpdate = product.Reviews.FirstOrDefault(x => x.Id.Value == command.ReviewId.Value);
 
         if (reviewToUpdate is null)
         {
-            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Review), command.ReviewId));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Review), command.ReviewId.Value));
         }
 
         Error error = Error.None;
@@ -68,6 +68,6 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return reviewToUpdate.Id;
+        return reviewToUpdate.Id.Value;
     }
 }

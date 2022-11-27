@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications;
@@ -9,8 +10,9 @@ public abstract class SortBy<TEntity>
     public abstract SortBy<TEntity> ThenByWithDirection(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection);
 }
 
-public abstract class BaseSpecification<TEntity> : SortBy<TEntity>
-    where TEntity : Entity
+public abstract class BaseSpecification<TEntity, TEntityId> : SortBy<TEntity>
+    where TEntityId : IEntityId, new()
+    where TEntity : Entity<TEntityId>
 {
     //Flags
     public bool IsSplitQuery { get; protected set; }

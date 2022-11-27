@@ -1,12 +1,11 @@
 ﻿using Shopway.Domain.DomainEvents;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
-using Shopway.Domain.Results;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Product : AggregateRoot
+public sealed class Product : AggregateRoot<ProductId>
 {
     private readonly List<Review> _reviews = new();
 
@@ -37,14 +36,14 @@ public sealed class Product : AggregateRoot
     }
 
     public static Product Create(
-        Guid id,
+        ProductId id,
         ProductName productName,
         Price price,
         UomCode uomCode,
         Revision revision)
     {
         var product = new Product(
-            id,
+            id.Value,
             productName,
             price,
             uomCode,
@@ -57,7 +56,7 @@ public sealed class Product : AggregateRoot
 
     public Review AddReview(Title title, Description description, Username username, Stars stars)
     {
-        Review reviewToAdd = Review.Create(Guid.NewGuid(), Id, title, description, username, stars);
+        Review reviewToAdd = Review.Create(Guid.NewGuid(), Id.Value, title, description, username, stars);
 
         _reviews.Add(reviewToAdd);
         

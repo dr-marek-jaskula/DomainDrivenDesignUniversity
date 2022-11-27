@@ -21,11 +21,11 @@ internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQ
 
         if (product is null)
         {
-            return Result.Failure<ProductResponse>(HttpErrors.NotFound(nameof(Product), query.Id));
+            return Result.Failure<ProductResponse>(HttpErrors.NotFound(nameof(Product), query.Id.Value));
         }
 
         var response = new ProductResponse(
-            Id: product.Id,
+            Id: product.Id.Value,
             ProductName: product.ProductName,
             Revision: product.Revision,
             Price: product.Price,

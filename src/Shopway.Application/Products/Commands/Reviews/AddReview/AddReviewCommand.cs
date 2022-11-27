@@ -1,10 +1,11 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Application.Products.Commands.AddReview;
 
 public sealed record AddReviewCommand
 (
-    Guid ProductId,
+    ProductId ProductId,
     string Username,
     decimal Stars,
     string Title,

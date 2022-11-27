@@ -1,10 +1,11 @@
 ﻿using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Payment : Entity
+public sealed class Payment : Entity<PaymentId>
 {
     public Discount Discount { get; private set; }
     public Status Status { get; private set; }

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Extensions;
 using Shopway.Domain.Repositories;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Resolvers;
 using System.Linq.Expressions;
 
@@ -34,7 +35,7 @@ public sealed class CachedProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Product?> GetByIdAsync(ProductId id, CancellationToken cancellationToken = default)
     {
         string key = $"product-{id}";
 
@@ -82,7 +83,7 @@ public sealed class CachedProductRepository : IProductRepository
         return product;
     }
 
-    public Task<Product?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
+    public Task<Product?> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
     {
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }

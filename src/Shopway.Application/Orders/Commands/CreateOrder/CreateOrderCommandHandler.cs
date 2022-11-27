@@ -41,6 +41,6 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return order.Id;
+        return order.Id.Value;
     }
 }

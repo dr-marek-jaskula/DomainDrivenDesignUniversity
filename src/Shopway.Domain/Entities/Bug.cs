@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
@@ -42,7 +43,7 @@ public sealed class Bug : WorkItem
             status,
             employeeId);
 
-        bug.RaiseDomainEvent(new BugRegisteredDomainEvent(Guid.NewGuid(), bug.Id));
+        bug.RaiseDomainEvent(new BugRegisteredDomainEvent(Guid.NewGuid(), bug.Id.Value));
 
         return bug;
     }

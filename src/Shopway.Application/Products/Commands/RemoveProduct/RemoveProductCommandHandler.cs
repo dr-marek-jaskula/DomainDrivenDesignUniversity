@@ -4,6 +4,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Application.Products.Commands.RemoveProduct;
@@ -46,11 +47,11 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
         try
         {
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return productToDelete.Id;
+            return productToDelete.Id.Value;
         }
         catch
         {
-            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.Id));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.Id.Value));
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using Shopway.Domain.DomainEvents;
-using Shopway.Domain.Primitives;
+﻿using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Review : Entity, IAuditableEntity
+public sealed class Review : Entity<ReviewId>, IAuditableEntity
 {
     public Username Username { get; private set; }
     public Stars Stars { get; private set; }

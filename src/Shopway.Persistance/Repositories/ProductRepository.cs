@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Specifications.Products;
 using System.Linq.Expressions;
 
@@ -12,7 +13,7 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
     {
     }
 
-    public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Product?> GetByIdAsync(ProductId id, CancellationToken cancellationToken = default)
     {
         var specification = ProductByIdWithReviewsSpecification.Create(id);
 
@@ -20,7 +21,7 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Product?> GetByIdWithIncludesAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
+    public async Task<Product?> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
     {
         var specification = ProductByIdWithIncludesSpecification.Create(id, includes);
 

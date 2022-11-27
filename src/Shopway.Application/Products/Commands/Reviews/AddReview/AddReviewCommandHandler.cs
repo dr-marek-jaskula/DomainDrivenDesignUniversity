@@ -28,7 +28,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
 
         if (product is null)
         {
-            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.ProductId));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.ProductId.Value));
         }
 
         Result<Title> titleResult = Title.Create(command.Title);
@@ -49,7 +49,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return revievAdded.Id;
+        return revievAdded.Id.Value;
     }
 }
 

@@ -1,3 +1,5 @@
-﻿namespace Shopway.Domain.DomainEvents;
+﻿using Shopway.Domain.StronglyTypedIds;
 
-public sealed record OrderCreatedDomainEvent(Guid Id, Guid OrderId) : DomainEvent(Id);
+namespace Shopway.Domain.DomainEvents;
+
+public sealed record OrderCreatedDomainEvent(Guid Id, OrderId OrderId) : DomainEvent(Id);

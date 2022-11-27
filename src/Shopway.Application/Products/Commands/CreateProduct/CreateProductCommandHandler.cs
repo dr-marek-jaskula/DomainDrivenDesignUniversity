@@ -3,6 +3,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Application.Products.Commands.CreateProduct;
@@ -32,8 +33,13 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
             return Result.Failure<Guid>(error);
         }
 
+        var productId = new ProductId()
+        {
+            Value = Guid.NewGuid()
+        };
+
         var product = Product.Create(
-            Guid.NewGuid(),
+            productId,
             productNameResult.Value,
             priceResult.Value,
             uomCodeResult.Value,
@@ -43,6 +49,6 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return product.Id;
+        return product.Id.Value;
     }
 }

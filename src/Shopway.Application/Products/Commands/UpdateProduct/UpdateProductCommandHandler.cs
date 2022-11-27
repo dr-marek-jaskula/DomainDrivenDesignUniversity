@@ -33,12 +33,12 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
 
         if (productToUpdate is null)
         {
-            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.Id));
+            return Result.Failure<Guid>(HttpErrors.NotFound(nameof(Product), command.Id.Value));
         }
 
         productToUpdate.UpdatePrice(priceResult.Value);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return productToUpdate.Id;
+        return productToUpdate.Id.Value;
     }
 }

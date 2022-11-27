@@ -1,11 +1,12 @@
 ﻿using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities.Parents;
 
 //Table-per-type approach
-public class Person : AggregateRoot
+public class Person : AggregateRoot<PersonId>
 {
     public FirstName FirstName { get; private set; }
     public LastName LastName { get; private set; }

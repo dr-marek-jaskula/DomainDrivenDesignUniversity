@@ -22,11 +22,11 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
 
         if (order is null)
         {
-            return Result.Failure<OrderResponse>(HttpErrors.NotFound(nameof(Order), query.Id));
+            return Result.Failure<OrderResponse>(HttpErrors.NotFound(nameof(Order), query.Id.Value));
         }
 
         var response = new OrderResponse(
-            Id: order.Id, 
+            Id: order.Id.Value, 
             Amount: order.Amount, 
             Status: order.Status, 
             Product: order.Product,
