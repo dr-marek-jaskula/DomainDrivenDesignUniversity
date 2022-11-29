@@ -4,6 +4,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -15,6 +16,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
 
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
+            .HasConversion(p => p.Value, p => new PaymentId() { Value = p })
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(p => p.Discount)

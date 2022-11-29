@@ -5,6 +5,7 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Converters;
+using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
@@ -16,6 +17,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
+            .HasConversion(p => p.Value, p => new PersonId() { Value = p })
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(p => p.FirstName)

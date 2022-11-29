@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -13,7 +14,9 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
         builder.ToTable(TableNames.User);
 
         builder.HasKey(u => u.Id);
+
         builder.Property(u => u.Id)
+            .HasConversion(p => p.Value, p => new UserId() { Value = p })
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(u => u.Username)

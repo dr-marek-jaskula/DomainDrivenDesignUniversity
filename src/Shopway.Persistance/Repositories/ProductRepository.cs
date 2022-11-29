@@ -15,7 +15,7 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
 
     public async Task<Product?> GetByIdAsync(ProductId id, CancellationToken cancellationToken = default)
     {
-        var specification = ProductByIdWithReviewsSpecification.Create(id);
+        var specification = ProductByIdWithReviewsQuerySpecification.Create(id);
 
         return await ApplySpecification(specification)
             .FirstOrDefaultAsync(cancellationToken);
@@ -23,7 +23,7 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
 
     public async Task<Product?> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
     {
-        var specification = ProductByIdWithIncludesSpecification.Create(id, includes);
+        var specification = ProductByIdWithIncludesQuerySpecification.Create(id, includes);
 
         return await ApplySpecification(specification)
             .FirstOrDefaultAsync(cancellationToken);

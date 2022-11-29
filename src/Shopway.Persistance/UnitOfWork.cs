@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
-using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Repositories;
-using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Outbox;
-using System.Reflection;
 
 namespace Shopway.Persistence;
 
@@ -36,7 +33,6 @@ internal sealed class UnitOfWork : IUnitOfWork
         return _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    //Logic from ConvertDomainEventsToOutboxMessagesInterceptor 
     private void ConvertDomainEventsToOutboxMessages()
     {
         var outboxMessages = _dbContext.ChangeTracker
@@ -69,7 +65,6 @@ internal sealed class UnitOfWork : IUnitOfWork
             .AddRange(outboxMessages);
     }
 
-    //Logic from UpdateAuditableEntitiesInterceptor 
     private void UpdateAuditableEntities()
     {
         IEnumerable<EntityEntry<IAuditableEntity>> entries =

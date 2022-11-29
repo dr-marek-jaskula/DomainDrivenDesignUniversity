@@ -5,21 +5,20 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductByIdWithIncludesSpecification : BaseSpecification<Product, ProductId>
+internal sealed class ProductByIdWithIncludesQuerySpecification : BaseQuerySpecification<Product, ProductId>
 {
-    private ProductByIdWithIncludesSpecification()
+    private ProductByIdWithIncludesQuerySpecification() : base()
     {
     }
 
     public static BaseSpecification<Product, ProductId> Create(ProductId productId, params Expression<Func<Product, object>>[] includes)
     {
-        var specification = new ProductByIdWithIncludesSpecification();
+        var specification = new ProductByIdWithIncludesQuerySpecification();
 
         specification.AddFilters(product => product.Id == productId);
 
         specification.AddIncludes(includes);
 
-        specification.IsAsNoTracking = true;
         specification.IsSplitQuery = true;
 
         specification

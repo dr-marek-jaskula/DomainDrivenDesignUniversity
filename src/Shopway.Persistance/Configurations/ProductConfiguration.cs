@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -15,6 +16,7 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
+            .HasConversion(p => p.Value, p => new ProductId() { Value = p })
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder

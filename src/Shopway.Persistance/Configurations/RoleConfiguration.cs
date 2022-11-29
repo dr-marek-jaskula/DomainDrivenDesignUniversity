@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Constants;
+using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -13,7 +14,9 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
         builder.ToTable(TableNames.Role);
 
         builder.HasKey(r => r.Id);
+
         builder.Property(r => r.Id)
+            .HasConversion(p => p.Value, p => new RoleId() { Value = p })
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(r => r.RoleName)
