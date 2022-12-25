@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shopway.Application\Shopway.Application.csproj" />
+    <ProjectReference Include="..\Shopway.Domain\Shopway.Domain.csproj" />
     <ProjectReference Include="..\Shopway.Infrastructure\Shopway.Infrastructure.csproj" />
     <ProjectReference Include="..\Shopway.Persistance\Shopway.Persistence.csproj" />
     <ProjectReference Include="..\Shopway.Presentation\Shopway.Presentation.csproj" />
