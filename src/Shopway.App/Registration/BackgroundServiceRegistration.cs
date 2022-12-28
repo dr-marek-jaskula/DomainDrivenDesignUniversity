@@ -5,7 +5,7 @@ namespace Shopway.App.Registration;
 
 public static class BackgroundServiceRegistration
 {
-    public static void RegisterBackgroundServices(this IServiceCollection services)
+    public static IServiceCollection RegisterBackgroundServices(this IServiceCollection services)
     {
         services.AddQuartz(configure =>
         {
@@ -25,5 +25,7 @@ public static class BackgroundServiceRegistration
         });
 
         services.AddQuartzHostedService();
+
+        return services;
     }
 }

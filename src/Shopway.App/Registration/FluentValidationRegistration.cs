@@ -5,7 +5,7 @@ namespace Shopway.App.Registration;
 
 public static class FluentValidationRegistration
 {
-    public static void RegisterFluentValidation(this IServiceCollection services)
+    public static IServiceCollection RegisterFluentValidation(this IServiceCollection services)
     {
         services
             .AddFluentValidationAutoValidation(options => //Fluent Validation (Models -> Validators)
@@ -17,5 +17,7 @@ public static class FluentValidationRegistration
             .AddValidatorsFromAssembly(
                 Shopway.Application.AssemblyReference.Assembly,
                 includeInternalTypes: true);
+
+        return services;
     }
 }

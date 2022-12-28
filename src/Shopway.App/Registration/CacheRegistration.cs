@@ -6,7 +6,7 @@ namespace Shopway.App.Registration;
 
 public static class CacheRegistration
 {
-    public static void RegisterCache(this IServiceCollection services)
+    public static IServiceCollection RegisterCache(this IServiceCollection services)
     {
         var serviceProvider = services.BuildServiceProvider();
 
@@ -18,5 +18,7 @@ public static class CacheRegistration
 
             redisOptions.Configuration = connection;
         });
+
+        return services;
     }
 }

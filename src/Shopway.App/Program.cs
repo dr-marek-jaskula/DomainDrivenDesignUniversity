@@ -30,27 +30,18 @@ try
 
     //Configure Services
 
-    builder.Services.RegisterControllers();
-
-    builder.Services.RegisterOptions();
-
-    builder.Services.RegisterFluentValidation();
-
-    builder.Services.RegisterMediator();
-
-    builder.Services.AddMemoryCache();
-
-    builder.Services.RegisterDatabaseContext(builder.Environment.IsDevelopment());
-
-    builder.Services.RegisterServices();
-
-    builder.Services.RegisterBackgroundServices();
-
-    builder.Services.RegisterServiceDecorators();
-
-    builder.Services.RegisterMiddlewares();
-
-    builder.Services.AddSwaggerGen();
+    builder.Services
+        .RegisterControllers()
+        .RegisterOptions()
+        .RegisterFluentValidation()
+        .RegisterMediator()
+        .AddMemoryCache()
+        .RegisterDatabaseContext(builder.Environment.IsDevelopment())
+        .RegisterServices()
+        .RegisterBackgroundServices()
+        .RegisterServiceDecorators()
+        .RegisterMiddlewares()
+        .AddSwaggerGen();
 
     //Build the application
 
@@ -69,9 +60,9 @@ try
         app.UseSwaggerUI();
     }
 
-    app.UseMiddlewares();
-
-    app.UseHttpsRedirection();
+    app
+        .UseMiddlewares()
+        .UseHttpsRedirection();
 
     #region Apply Migrations
     

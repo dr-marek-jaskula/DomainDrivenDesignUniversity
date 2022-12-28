@@ -8,7 +8,7 @@ namespace Shopway.App.Registration;
 
 public static class DatabaseContextRegistration
 {
-    public static void RegisterDatabaseContext(this IServiceCollection services, bool isDevelopment)
+    public static IServiceCollection RegisterDatabaseContext(this IServiceCollection services, bool isDevelopment)
     {
         services.AddDbContextPool<ApplicationDbContext>((serviceProvider, optionsBuilder) =>
         {
@@ -39,5 +39,7 @@ public static class DatabaseContextRegistration
                 });
             }
         });
+
+        return services;
     }
 }

@@ -5,12 +5,14 @@ namespace Shopway.App.Registration;
 
 public static class MediatorRegistration
 {
-    public static void RegisterMediator(this IServiceCollection services)
+    public static IServiceCollection RegisterMediator(this IServiceCollection services)
     {
         services.AddMediatR(Shopway.Application.AssemblyReference.Assembly);
 
         //Register Pipeline Behaviors
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+
+        return services;
     }
 }

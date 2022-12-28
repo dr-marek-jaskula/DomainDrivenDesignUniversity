@@ -9,7 +9,7 @@ namespace Shopway.App.Registration;
 
 public static class ServiceRegistration
 {
-    public static void RegisterServices(this IServiceCollection services)
+    public static IServiceCollection RegisterServices(this IServiceCollection services)
     {
         //Repositories
 
@@ -34,5 +34,7 @@ public static class ServiceRegistration
             .UsingRegistrationStrategy(RegistrationStrategy.Skip)
             .AsImplementedInterfaces()
             .WithScopedLifetime());
+
+        return services;
     }
 }
