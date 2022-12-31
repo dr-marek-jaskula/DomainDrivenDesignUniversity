@@ -1,4 +1,6 @@
-﻿using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -12,12 +14,14 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
     private readonly IProductRepository _productRepository;
     private readonly IReviewRepository _reviewRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator _validator;
 
-    public UpdateReviewCommandHandler(IProductRepository productRepository, IReviewRepository reviewRepository, IUnitOfWork unitOfWork)
+    public UpdateReviewCommandHandler(IProductRepository productRepository, IReviewRepository reviewRepository, IUnitOfWork unitOfWork, IValidator validator)
     {
         _productRepository = productRepository;
         _reviewRepository = reviewRepository;
         _unitOfWork = unitOfWork;
+        _validator=validator;
     }
 
     public async Task<IResult<UpdateReviewResponse>> Handle(UpdateReviewCommand command, CancellationToken cancellationToken)
@@ -41,11 +45,12 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
         if (command.Description is not null)
         {
             Result<Description> descriptionResult = Description.Create(command.Description);
-            error = ErrorHandler.FirstValueObjectErrorOrErrorNone(descriptionResult);
 
-            if (error != Error.None)
+            _validator.Validate(descriptionResult);
+
+            if (_validator.IsInvalid)
             {
-                return Result.Failure<UpdateReviewResponse>(error);
+                return Result.Failure<UpdateReviewResponse>(_validator.Error);
             }
 
             reviewToUpdate.UpdateDescription(descriptionResult.Value);
@@ -54,11 +59,12 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
         if (command.Stars is not null)
         {
             Result<Stars> starsResult = Stars.Create((decimal)command.Stars);
-            error = ErrorHandler.FirstValueObjectErrorOrErrorNone(starsResult);
 
-            if (error != Error.None)
+            _validator.Validate(starsResult);
+
+            if (_validator.IsInvalid)
             {
-                return Result.Failure<UpdateReviewResponse>(error);
+                return Result.Failure<UpdateReviewResponse>(_validator.Error);
             }
 
             reviewToUpdate.UpdateStars(starsResult.Value);

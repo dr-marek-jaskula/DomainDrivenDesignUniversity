@@ -9,4 +9,4 @@ public sealed record UpdateReviewCommand
     ReviewId ReviewId,
     decimal? Stars,
     string? Description
-) : ICommand<Guid>;
+) : ICommand<UpdateReviewResponse>;

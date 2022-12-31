@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
@@ -13,12 +14,14 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
     private readonly IProductRepository _productRepository;
     private readonly IReviewRepository _reviewRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator _validator;
 
-    public AddReviewCommandHandler(IProductRepository productRepository, IReviewRepository reviewRepository, IUnitOfWork unitOfWork)
+    public AddReviewCommandHandler(IProductRepository productRepository, IReviewRepository reviewRepository, IUnitOfWork unitOfWork, IValidator validator)
     {
         _productRepository = productRepository;
         _reviewRepository = reviewRepository;
         _unitOfWork = unitOfWork;
+        _validator=validator;
     }
 
     public async Task<IResult<AddReviewResponse>> Handle(AddReviewCommand command, CancellationToken cancellationToken)
@@ -35,11 +38,15 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
         Result<Username> usernameResult = Username.Create(command.Username);
         Result<Stars> starsResult = Stars.Create(command.Stars);
 
-        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(titleResult, descriptionResult, usernameResult, starsResult);
+        _validator
+            .Validate(titleResult)
+            .Validate(descriptionResult)
+            .Validate(usernameResult)
+            .Validate(starsResult);
 
-        if (error != Error.None)
+        if (_validator.IsInvalid)
         {
-            return Result.Failure<AddReviewResponse>(error);
+            return Result.Failure<AddReviewResponse>(_validator.Error);
         }
 
         var reviewAdded = product.AddReview(titleResult.Value, descriptionResult.Value, usernameResult.Value, starsResult.Value);

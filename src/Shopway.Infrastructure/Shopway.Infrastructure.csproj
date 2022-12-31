@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Abstractions\**" />
+    <EmbeddedResource Remove="Abstractions\**" />
+    <None Remove="Abstractions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Polly" Version="7.2.3" />
     <PackageReference Include="Quartz" Version="3.5.0" />
   </ItemGroup>
@@ -14,10 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Shopway.Application\Shopway.Application.csproj" />
     <ProjectReference Include="..\Shopway.Persistance\Shopway.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Abstractions\" />
   </ItemGroup>
 
 </Project>

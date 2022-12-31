@@ -10,4 +10,4 @@ public sealed record AddReviewCommand
     decimal Stars,
     string Title,
     string Description
-) : ICommand<Guid>;
+) : ICommand<AddReviewResponse>;

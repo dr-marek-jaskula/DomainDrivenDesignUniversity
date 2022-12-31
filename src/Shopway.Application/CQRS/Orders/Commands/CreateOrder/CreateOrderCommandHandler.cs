@@ -1,4 +1,6 @@
-﻿using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -11,11 +13,13 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator _validator;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork, IValidator validator)
     {
         _orderRepository = orderRepository;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
     public async Task<IResult<CreateOrderResponse>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
@@ -23,11 +27,13 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
         Result<Amount> amountResult = Amount.Create(command.Amount);
         Result<Discount> discountResult = Discount.Create(command.Discount ?? 0);
 
-        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(amountResult, discountResult);
+        _validator
+            .Validate(amountResult)
+            .Validate(discountResult);
 
-        if (error != Error.None)
+        if (_validator.IsInvalid)
         {
-            return Result.Failure<CreateOrderResponse>(error);
+            return Result.Failure<CreateOrderResponse>(_validator.Error);
         }
 
         var order = Order.Create(

@@ -10,6 +10,7 @@ In this project we store components connected to :
 - Providers
 - Adapters
 - Decorators
+- Validators
 ///
 
 - Identity Services
