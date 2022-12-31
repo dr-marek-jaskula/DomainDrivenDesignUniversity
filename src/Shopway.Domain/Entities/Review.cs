@@ -12,7 +12,7 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
     public DateTimeOffset? UpdatedOn { get; set; }
     public Title Title { get; private set; }
     public Description Description { get; private set; }
-    public Guid? ProductId { get; private set; }
+    public ProductId? ProductId { get; private set; }
 
     private Review(
         Guid reviewId,
@@ -27,7 +27,7 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
         Stars = stars;
         Title = title;
         Description = description;
-        ProductId = productId;
+        ProductId = new ProductId() { Value = productId };
     }
 
     // Empty constructor in this case is required by EF Core

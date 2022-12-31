@@ -10,7 +10,7 @@ public sealed class Payment : Entity<PaymentId>
     public Discount Discount { get; private set; }
     public Status Status { get; private set; }
     public DateTimeOffset? OccurredOn { get; private set; }
-    public Guid OrderId { get; private set; }
+    public OrderId OrderId { get; private set; }
 
     internal Payment
     (
@@ -23,7 +23,7 @@ public sealed class Payment : Entity<PaymentId>
     {
         Discount = discount;
         Status = status;
-        OrderId = orderId;
+        OrderId = new OrderId() { Value = orderId };
     }
 
     // Empty constructor in this case is required by EF Core

@@ -2,11 +2,17 @@
 
 public readonly record struct ReviewId : IEntityId
 {
-    public ReviewId()
+    private ReviewId(Guid id)
     {
+        Value = id;
     }
 
     public Guid Value { get; init; }
+
+    public static IEntityId Create(Guid id)
+    {
+        return new ReviewId(id);
+    }
 
     public override int GetHashCode()
     {

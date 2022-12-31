@@ -17,7 +17,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
-            .HasConversion(p => p.Value, p => new PersonId() { Value = p })
+            .HasConversion<StronglyTypedIdConverter<PersonId>>()
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(p => p.FirstName)

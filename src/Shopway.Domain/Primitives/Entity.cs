@@ -7,10 +7,7 @@ public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>
 {
     protected Entity(Guid id)
     {
-        Id = new TEntityId()
-        {
-            Value = id
-        };
+        Id = (TEntityId)TEntityId.Create(id);
     }
 
     protected Entity()

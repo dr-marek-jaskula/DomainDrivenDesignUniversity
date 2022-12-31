@@ -13,11 +13,11 @@ public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
     public Product Product { get; private set; }
-    public Guid ProductId { get; private set; }
+    public ProductId ProductId { get; private set; }
     public Payment Payment { get; private set; }
-    public Guid PaymentId { get; private set; }
+    public PaymentId PaymentId { get; private set; }
     public Customer Customer { get; private set; }
-    public Guid CustomerId { get; private set; }
+    public PersonId CustomerId { get; private set; }
 
     internal Order(
         Guid id,
@@ -27,9 +27,9 @@ public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
         Discount discount)
         : base(id)
     {
-        ProductId = productId;
+        ProductId = new ProductId() { Value = productId };
         Amount = amount;
-        CustomerId = customerId;
+        CustomerId = new PersonId() { Value = customerId };
         Payment = Payment.Create(id, discount);
         Status = Status.New;
     }

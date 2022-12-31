@@ -2,16 +2,17 @@
 
 public readonly record struct WorkItemId : IEntityId
 {
-    public WorkItemId(Guid id)
+    private WorkItemId(Guid id)
     {
         Value = id;
     }
 
-    public WorkItemId()
-    {
-    }
-
     public Guid Value { get; init; }
+
+    public static IEntityId Create(Guid id)
+    {
+        return new WorkItemId(id);
+    }
 
     public override int GetHashCode()
     {

@@ -3,6 +3,7 @@ using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
@@ -18,7 +19,7 @@ public sealed class Employee : Person
     public List<Person> Customers { get; private set; } = new();
 
     //One to many relationship with same table (ManagerId, Manager, Subordinates)
-    public Guid? ManagerId { get; private set; }
+    public PersonId? ManagerId { get; private set; }
     public Employee? Manager { get; private set; }
 
     public IReadOnlyCollection<Employee> Subordinates => _subordinates;

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Shopway.Persistance\Shopway.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+  </ItemGroup>
+
 </Project>

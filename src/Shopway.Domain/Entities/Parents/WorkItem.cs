@@ -24,7 +24,12 @@ public abstract class WorkItem : AggregateRoot<WorkItemId>
         Status = status;
         Title = title;
         Description = description;
-        EmployeeId = employeeId;
+
+        if (employeeId is not null)
+        {
+            EmployeeId = new PersonId() { Value = (Guid)employeeId };
+        }
+
         StoryPoints = storyPoints;
     }
 
@@ -38,6 +43,6 @@ public abstract class WorkItem : AggregateRoot<WorkItemId>
     public Title Title { get; private set; }
     public Description Description { get; private set; }
     public StoryPoints StoryPoints { get; private set; }
-    public Guid? EmployeeId { get; private set; }
+    public PersonId? EmployeeId { get; private set; }
     public Employee? Employee { get; private set; }
 }

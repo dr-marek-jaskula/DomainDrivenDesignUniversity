@@ -6,6 +6,7 @@ using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
@@ -18,7 +19,7 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
         builder.HasKey(wi => wi.Id);
 
         builder.Property(wi => wi.Id)
-            .HasConversion(p => p.Value, p => new WorkItemId() { Value = p })
+            .HasConversion<StronglyTypedIdConverter<WorkItemId>>()
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(wi => wi.Priority)

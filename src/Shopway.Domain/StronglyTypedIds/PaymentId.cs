@@ -2,11 +2,17 @@
 
 public readonly record struct PaymentId : IEntityId
 {
-    public PaymentId()
+    private PaymentId(Guid id)
     {
+        Value = id;
     }
 
     public Guid Value { get; init; }
+
+    public static IEntityId Create(Guid id)
+    {
+        return new PaymentId(id);
+    }
 
     public override int GetHashCode()
     {

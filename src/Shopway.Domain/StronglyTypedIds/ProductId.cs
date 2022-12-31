@@ -2,11 +2,17 @@
 
 public readonly record struct ProductId : IEntityId
 {
-    public ProductId()
+    private ProductId(Guid id)
     {
+        Value = id;
     }
 
     public Guid Value { get; init; }
+
+    public static IEntityId Create(Guid id)
+    {
+        return new ProductId(id);
+    }
 
     public override int GetHashCode()
     {

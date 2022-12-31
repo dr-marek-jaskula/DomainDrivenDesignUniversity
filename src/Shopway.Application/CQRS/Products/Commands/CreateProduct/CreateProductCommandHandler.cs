@@ -1,4 +1,5 @@
-﻿using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -12,9 +13,9 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
 {
     private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly Validator _validator;
+    private readonly IValidator _validator;
 
-    public CreateProductCommandHandler(IProductRepository productRepository, IUnitOfWork unitOfWork, Validator validator)
+    public CreateProductCommandHandler(IProductRepository productRepository, IUnitOfWork unitOfWork, IValidator validator)
     {
         _productRepository = productRepository;
         _unitOfWork = unitOfWork;
@@ -29,12 +30,14 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         Result<Revision> revisionResult = Revision.Create(command.Revision);
 
         _validator
-            .
-        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(productNameResult, priceResult, uomCodeResult, revisionResult);
+            .Validate(productNameResult)
+            .Validate(priceResult)
+            .Validate(uomCodeResult)
+            .Validate(revisionResult);
 
-        if (error != Error.None)
+        if (_validator.IsInvalid)
         {
-            return Result.Failure<CreateProductResponse>(error);
+            return Result.Failure<CreateProductResponse>(_validator.Error);
         }
 
         var productId = new ProductId()

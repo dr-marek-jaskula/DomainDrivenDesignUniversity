@@ -5,6 +5,7 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -16,7 +17,7 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
 
         builder.HasKey(o => o.Id);
         builder.Property(o => o.Id)
-            .HasConversion(p => p.Value, p => new OrderId() { Value = p })
+            .HasConversion<StronglyTypedIdConverter<OrderId>>()
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(o => o.Amount)
