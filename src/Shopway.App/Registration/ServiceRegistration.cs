@@ -5,6 +5,7 @@ using Shopway.Application.Abstractions;
 using Shopway.Domain.Repositories;
 using Shopway.Persistence.Repositories;
 using CustomTools.Validator;
+using Shopway.Infrastructure.Validators;
 
 namespace Shopway.App.Registration;
 
