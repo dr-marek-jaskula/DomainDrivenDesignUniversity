@@ -4,6 +4,7 @@ using Shopway.Infrastructure.Adapters;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Repositories;
 using Shopway.Persistence.Repositories;
+using CustomTools.Validator;
 
 namespace Shopway.App.Registration;
 
@@ -15,6 +16,11 @@ public static class ServiceRegistration
 
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+
+        //Validators
+
+        services.AddScoped<Validator>();
+        services.AddScoped(typeof(Validator<>));
 
         //Providers
 

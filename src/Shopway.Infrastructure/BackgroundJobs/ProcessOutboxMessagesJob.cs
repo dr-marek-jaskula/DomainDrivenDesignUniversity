@@ -7,7 +7,7 @@ using Quartz;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.DomainEvents;
 using Shopway.Infrastructure.Policies;
-using Shopway.Persistence;
+using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;
 
 namespace Shopway.Infrastructure.BackgroundJobs;

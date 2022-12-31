@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using IResult = Shopway.Domain.Results.IResult;
 
 namespace Shopway.Presentation.Abstractions;
 
@@ -16,7 +17,7 @@ public abstract class ApiController : ControllerBase
         Sender = sender;
     }
 
-    protected IActionResult HandleFailure(Result result)
+    protected IActionResult HandleFailure(IResult result)
     {
         return result switch
         {

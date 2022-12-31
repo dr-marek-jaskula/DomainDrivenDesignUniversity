@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence;
 using Shopway.App.Registration;
 using Serilog.Events;
 using Serilog;
 using Shopway.Presentation.Exceptions;
+using Shopway.Persistence.Framework;
 
 Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)

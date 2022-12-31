@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Repositories;
+using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;
 
 namespace Shopway.Persistence;
@@ -23,6 +25,22 @@ internal sealed class UnitOfWork : IUnitOfWork
     public UnitOfWork(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
+    }
+
+    public ApplicationDbContext Context => _dbContext;
+
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        return Context
+            .Database
+            .BeginTransactionAsync(cancellationToken);
+    }
+
+    public IExecutionStrategy CreateExecutionStrategy()
+    {
+        return Context
+            .Database
+            .CreateExecutionStrategy();
     }
 
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)

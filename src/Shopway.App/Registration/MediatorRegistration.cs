@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Shopway.Application.Behaviors;
+using Shopway.Application.Pipelines;
 
 namespace Shopway.App.Registration;
 

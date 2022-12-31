@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Shopway.App.Options;
-using Shopway.Persistence;
+using Shopway.Persistence.Framework;
 
 namespace Shopway.App.Registration;
 

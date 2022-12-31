@@ -1,16 +1,16 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Application.Products.Commands.AddReview;
-using Shopway.Application.Products.Commands.CreateProduct;
-using Shopway.Application.Products.Commands.RemoveReview;
-using Shopway.Application.Products.Commands.RemoveProduct;
-using Shopway.Application.Products.Commands.UpdateProduct;
-using Shopway.Application.Products.Queries.GetProductById;
 using Shopway.Domain.Results;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Products;
-using Shopway.Application.Products.Commands.Reviews.UpdateReview;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Application.CQRS.Products.Queries.GetProductById;
+using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
+using Shopway.Application.CQRS.Products.Commands.CreateProduct;
+using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
+using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
+using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
+using Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -31,7 +31,7 @@ public sealed class ProductController : ApiController
 
         var query = new GetProductByIdQuery(productId);
 
-        Result<ProductResponse> response = await Sender.Send(query, cancellationToken);
+        var response = await Sender.Send(query, cancellationToken);
 
         return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
     }
@@ -47,7 +47,7 @@ public sealed class ProductController : ApiController
             request.UomCode,
             request.Revision);
 
-        Result<Guid> result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)
         {
@@ -70,7 +70,7 @@ public sealed class ProductController : ApiController
 
         var command = new UpdateProductCommand(productId, request.Price);
 
-        Result<Guid> result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)
         {
@@ -89,7 +89,7 @@ public sealed class ProductController : ApiController
 
         var command = new RemoveProductCommand(productId);
 
-        Result<Guid> result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)
         {
@@ -109,7 +109,7 @@ public sealed class ProductController : ApiController
 
         var command = new AddReviewCommand(productId, request.Username, request.Stars, request.Title, request.Description);
 
-        Result<Guid> result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)
         {
@@ -131,7 +131,7 @@ public sealed class ProductController : ApiController
 
         var command = new UpdateReviewCommand(productIdType, reviewIdType, request.Stars, request.Description);
 
-        Result<Guid> result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)
         {
@@ -152,7 +152,7 @@ public sealed class ProductController : ApiController
 
         var command = new RemoveReviewCommand(productIdType, reviewIdType);
 
-        Result<Guid> result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)
         {

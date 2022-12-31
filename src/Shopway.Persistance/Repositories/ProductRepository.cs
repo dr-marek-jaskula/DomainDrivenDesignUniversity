@@ -2,6 +2,7 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications.Products;
 using System.Linq.Expressions;
 

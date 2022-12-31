@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Results;
 
-public class Result<TValue> : Result
+public class Result<TValue> : Result, IResult<TValue>
 {
     private readonly TValue? _value;
 
@@ -22,7 +22,7 @@ public class Result<TValue> : Result
     }
 }
 
-public class Result
+public class Result : IResult
 {
     public bool IsSuccess { get; }
 

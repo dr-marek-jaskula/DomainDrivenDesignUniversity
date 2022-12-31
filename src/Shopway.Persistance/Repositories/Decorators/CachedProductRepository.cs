@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Extensions;
+using Shopway.Domain.Utilities;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Resolvers;
 using System.Linq.Expressions;
+using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 

@@ -9,7 +9,6 @@ Application layer contains:
 - Models (DTOs)
 - Mappers
 - Behaviors
-- Specifications
 
 ## Validators
 

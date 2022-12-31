@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using Shopway.Domain.Extensions;
+using Shopway.Domain.Utilities;
 
 namespace Shopway.App.Options;
 

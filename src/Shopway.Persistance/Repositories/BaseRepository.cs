@@ -2,6 +2,7 @@
 using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
 
 namespace Shopway.Persistence.Repositories;

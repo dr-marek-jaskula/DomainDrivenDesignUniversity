@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shopway.Domain\Shopway.Domain.csproj" />
+    <ProjectReference Include="..\Shopway.Persistance\Shopway.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

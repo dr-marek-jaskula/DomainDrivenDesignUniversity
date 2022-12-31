@@ -30,8 +30,8 @@ public sealed class ValidationResult : Result, IValidationResult
     public Error[] Errors { get; }
 
     //This is the way to create the ValidationResult
-    public static ValidationResult WithErrors(Error[] errors)
+    public static ValidationResult WithErrors(ICollection<Error> errors)
     {
-        return new(errors);
+        return new(errors.ToArray());
     }
 }

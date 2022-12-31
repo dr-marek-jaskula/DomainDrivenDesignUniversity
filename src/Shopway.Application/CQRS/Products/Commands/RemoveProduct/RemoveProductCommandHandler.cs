@@ -1,0 +1,57 @@
+﻿using MediatR;
+using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Entities;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Repositories;
+using Shopway.Domain.Results;
+using Shopway.Domain.ValueObjects;
+
+namespace Shopway.Application.CQRS.Products.Commands.RemoveProduct;
+
+internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProductCommand, RemoveProductResponse>
+{
+    private readonly IProductRepository _productRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public RemoveProductCommandHandler(IProductRepository productRepository, IUnitOfWork unitOfWork)
+    {
+        _productRepository = productRepository;
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<IResult<RemoveProductResponse>> Handle(RemoveProductCommand command, CancellationToken cancellationToken)
+    {
+        //Data to create product that will be attached to database context
+        Result<ProductName> productNameResult = ProductName.Create("ToDelete");
+        Result<Price> priceResult = Price.Create(1m);
+        Result<UomCode> uomCodeResult = UomCode.Create("kg");
+        Result<Revision> revisionResult = Revision.Create("0");
+
+        Error error = ErrorHandler.FirstValueObjectErrorOrErrorNone(productNameResult, priceResult, uomCodeResult, revisionResult);
+
+        if (error != Error.None)
+        {
+            return Result.Failure<RemoveProductResponse>(error);
+        }
+
+        var productToDelete = Product.Create(
+            command.Id,
+            productNameResult.Value,
+            priceResult.Value,
+            uomCodeResult.Value,
+            revisionResult.Value);
+
+        _productRepository.Remove(productToDelete);
+
+        try
+        {
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            var response = new RemoveProductResponse(productToDelete.Id.Value);
+            return Result.Create(response);
+        }
+        catch
+        {
+            return Result.Failure<RemoveProductResponse>(HttpErrors.NotFound(nameof(Product), command.Id.Value));
+        }
+    }
+}

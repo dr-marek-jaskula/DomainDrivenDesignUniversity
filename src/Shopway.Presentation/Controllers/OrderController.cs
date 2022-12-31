@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 using Shopway.Application.Orders.Commands.CreateOrder;
-using Shopway.Application.Orders.Queries.GetOrderById;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Presentation.Abstractions;
