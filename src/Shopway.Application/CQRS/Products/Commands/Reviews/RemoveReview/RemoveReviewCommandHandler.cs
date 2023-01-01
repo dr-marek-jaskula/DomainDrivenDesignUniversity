@@ -39,16 +39,16 @@ internal sealed class RemoveReviewCommandHandler : ICommandHandler<RemoveReviewC
         var reviewToRemove = product!.Reviews.FirstOrDefault(x => x.Id.Value == command.ReviewId.Value);
 
         _validator
-            .If(reviewToRemove is null, HttpErrors.NotFound(nameof(Review), command.ReviewId.Value));
+            .If(reviewToRemove is null, HttpErrors.NotFound(nameof(Review), command.ReviewId));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<RemoveReviewResponse>();
         }
 
-        product.RemoveReview(reviewToRemove);
+        product.RemoveReview(reviewToRemove!);
 
-        _reviewRepository.Remove(reviewToRemove);
+        _reviewRepository.Remove(reviewToRemove!);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

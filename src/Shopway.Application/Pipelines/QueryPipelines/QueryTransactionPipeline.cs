@@ -1,5 +1,4 @@
-﻿using Azure;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;

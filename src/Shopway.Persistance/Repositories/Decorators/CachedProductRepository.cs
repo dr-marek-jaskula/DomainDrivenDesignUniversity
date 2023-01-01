@@ -73,7 +73,7 @@ public sealed class CachedProductRepository : IProductRepository
             return product;
         }
 
-        product = JsonConvert.DeserializeObject<Product>(cachedProduct, _jsonSerializerSettings);
+        product = JsonConvert.DeserializeObject<Product>(cachedProduct!, _jsonSerializerSettings);
 
         //Make EF Core track the obtained entity if it is not null
         if (product is not null)
@@ -104,4 +104,3 @@ public sealed class CachedProductRepository : IProductRepository
         _decorated.Update(product);
     }
 }
-

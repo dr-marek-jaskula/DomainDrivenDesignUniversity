@@ -59,7 +59,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
                 return _validator.Failure<UpdateReviewResponse>();
             }
 
-            reviewToUpdate.UpdateDescription(descriptionResult.Value);
+            reviewToUpdate!.UpdateDescription(descriptionResult.Value);
         }
 
         if (command.Stars is not null)
@@ -73,10 +73,10 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
                 return _validator.Failure<UpdateReviewResponse>();
             }
 
-            reviewToUpdate.UpdateStars(starsResult.Value);
+            reviewToUpdate!.UpdateStars(starsResult.Value);
         }
 
-        _reviewRepository.Update(reviewToUpdate);
+        _reviewRepository.Update(reviewToUpdate!);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

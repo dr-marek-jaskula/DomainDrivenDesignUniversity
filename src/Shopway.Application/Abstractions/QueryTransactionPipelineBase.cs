@@ -3,7 +3,7 @@ using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using static Microsoft.EntityFrameworkCore.QueryTrackingBehavior;
 
-namespace Shopway.Application.Pipelines.QueryPipelines;
+namespace Shopway.Application.Abstractions;
 
 public abstract class QueryTransactionPipelineBase<TQueryResponse>
     where TQueryResponse : IResult
