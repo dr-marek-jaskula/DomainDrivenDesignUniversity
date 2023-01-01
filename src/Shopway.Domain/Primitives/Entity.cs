@@ -3,11 +3,11 @@
 namespace Shopway.Domain.Primitives;
 
 public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>
-    where TEntityId : IEntityId, new()
+    where TEntityId : IEntityId<TEntityId>, new()
 {
-    protected Entity(Guid id)
+    protected Entity(TEntityId id)
     {
-        Id = (TEntityId)TEntityId.Create(id);
+        Id = id;
     }
 
     protected Entity()

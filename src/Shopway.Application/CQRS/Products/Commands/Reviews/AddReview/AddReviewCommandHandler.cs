@@ -46,7 +46,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
 
         if (_validator.IsInvalid)
         {
-            return Result.Failure<AddReviewResponse>(_validator.Error);
+            return _validator.Failure<AddReviewResponse>();
         }
 
         var reviewAdded = product.AddReview(titleResult.Value, descriptionResult.Value, usernameResult.Value, starsResult.Value);

@@ -1,10 +1,9 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Application.CQRS.Orders.Commands.CreateOrder;
@@ -33,14 +32,14 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
 
         if (_validator.IsInvalid)
         {
-            return Result.Failure<CreateOrderResponse>(_validator.Error);
+            return _validator.Failure<CreateOrderResponse>();
         }
 
         var order = Order.Create(
-            Guid.NewGuid(),
-            command.ProductId,
+            OrderId.New(),
+            ProductId.New(command.ProductId),
             amountResult.Value,
-            command.CustomerId,
+            PersonId.New(command.CustomerId),
             discountResult.Value);
 
         _orderRepository.Create(order);

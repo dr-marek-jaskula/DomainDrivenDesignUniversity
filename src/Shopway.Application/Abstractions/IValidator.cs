@@ -9,8 +9,10 @@ public interface IValidator
     bool IsValid { get; }
     bool IsInvalid { get; }
 
-    public IValidator If(bool invalid, Error thenError);
+    IValidator If(bool invalid, Error thenError);
     IValidator If(Func<bool> validate, Error thenError);
-    public IValidator Validate(Result<object> valueObject);
-    Error Error { get; }
+    IValidator Validate<TValueObject>(Result<TValueObject> valueObject) 
+        where TValueObject : ValueObject;
+    ValidationResult<TResponse> Failure<TResponse>()
+            where TResponse : IResponse;
 }

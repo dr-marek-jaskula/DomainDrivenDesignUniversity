@@ -15,8 +15,8 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
     public ProductId? ProductId { get; private set; }
 
     private Review(
-        Guid reviewId,
-        Guid productId,
+        ReviewId reviewId,
+        ProductId productId,
         Title title,
         Description description,
         Username username,
@@ -27,7 +27,7 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
         Stars = stars;
         Title = title;
         Description = description;
-        ProductId = new ProductId() { Value = productId };
+        ProductId = productId;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -36,8 +36,8 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
     }
 
     internal static Review Create(
-        Guid reviewId,
-        Guid productId,
+        ReviewId reviewId,
+        ProductId productId,
         Title title,
         Description description,
         Username username,

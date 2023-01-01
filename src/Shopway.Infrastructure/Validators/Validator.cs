@@ -1,5 +1,8 @@
-﻿using Shopway.Application.Abstractions;
+﻿using Microsoft.AspNetCore.Authentication.OAuth;
+using Shopway.Application.Abstractions;
+using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Domain.Errors;
+using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 using Shopway.Domain.Utilities;
 
@@ -35,7 +38,8 @@ public sealed class Validator : IValidator
         return If(validate(), thenError);
     }
 
-    public IValidator Validate(Result<object> valueObject)
+    public IValidator Validate<TValueObject>(Result<TValueObject> valueObject)
+        where TValueObject : ValueObject
     {
         if (valueObject.IsSuccess)
         {
@@ -47,5 +51,9 @@ public sealed class Validator : IValidator
         return this;
     }
 
-    public Error Error => _errors.CreateValidationResult<ValidationResult>().Error;
+    public ValidationResult<TResponse> Failure<TResponse>()
+        where TResponse : IResponse
+    {
+        return ValidationResult<TResponse>.WithErrors(_errors.ToArray());
+    }
 }

@@ -1,7 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
@@ -37,16 +36,11 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
 
         if (_validator.IsInvalid)
         {
-            return Result.Failure<CreateProductResponse>(_validator.Error);
+            return _validator.Failure<CreateProductResponse>();
         }
 
-        var productId = new ProductId()
-        {
-            Value = Guid.NewGuid()
-        };
-
         var product = Product.Create(
-            productId,
+            ProductId.New(),
             productNameResult.Value,
             priceResult.Value,
             uomCodeResult.Value,

@@ -11,7 +11,7 @@ public sealed class Role : Entity<RoleId>
     public RoleName RoleName { get; private set; }
     public IReadOnlyCollection<User> Users => _users;
 
-    internal Role(Guid Id, RoleName roleName)
+    internal Role(RoleId Id, RoleName roleName)
         : base(Id)
     {
         RoleName = roleName;
@@ -22,7 +22,7 @@ public sealed class Role : Entity<RoleId>
     {
     }
 
-    public static Role Create(Guid id, RoleName roleName)
+    public static Role Create(RoleId id, RoleName roleName)
     {
         var role = new Role(id, roleName);
 

@@ -5,8 +5,8 @@ using static Microsoft.EntityFrameworkCore.QueryTrackingBehavior;
 
 namespace Shopway.Application.Pipelines.QueryPipelines;
 
-public abstract class QueryTransactionPipelineBase<TQueryResult>
-    where TQueryResult : IResult
+public abstract class QueryTransactionPipelineBase<TQueryResponse>
+    where TQueryResponse : IResult
 {
     protected readonly IUnitOfWork UnitOfWork;
 
@@ -19,7 +19,7 @@ public abstract class QueryTransactionPipelineBase<TQueryResult>
             .QueryTrackingBehavior = NoTracking;
     }
 
-    protected async Task<TQueryResult> BeginTransactionAsync(RequestHandlerDelegate<TQueryResult> next, CancellationToken cancellationToken)
+    protected async Task<TQueryResponse> BeginTransactionAsync(RequestHandlerDelegate<TQueryResponse> next, CancellationToken cancellationToken)
     {
         using var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
         return await next();

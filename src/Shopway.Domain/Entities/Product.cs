@@ -17,7 +17,7 @@ public sealed class Product : AggregateRoot<ProductId>
     public IReadOnlyCollection<Review> Reviews => _reviews;
 
     internal Product(
-        Guid id,
+        ProductId id,
         ProductName productName,
         Price price,
         UomCode uomCode,
@@ -43,7 +43,7 @@ public sealed class Product : AggregateRoot<ProductId>
         Revision revision)
     {
         var product = new Product(
-            id.Value,
+            id,
             productName,
             price,
             uomCode,
@@ -56,7 +56,13 @@ public sealed class Product : AggregateRoot<ProductId>
 
     public Review AddReview(Title title, Description description, Username username, Stars stars)
     {
-        Review reviewToAdd = Review.Create(Guid.NewGuid(), Id.Value, title, description, username, stars);
+        Review reviewToAdd = Review.Create(
+            ReviewId.New(),
+            Id, 
+            title, 
+            description, 
+            username, 
+            stars);
 
         _reviews.Add(reviewToAdd);
         

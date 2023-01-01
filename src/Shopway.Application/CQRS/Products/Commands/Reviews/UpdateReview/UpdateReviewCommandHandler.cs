@@ -1,6 +1,5 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -50,7 +49,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
 
             if (_validator.IsInvalid)
             {
-                return Result.Failure<UpdateReviewResponse>(_validator.Error);
+                return _validator.Failure<UpdateReviewResponse>();
             }
 
             reviewToUpdate.UpdateDescription(descriptionResult.Value);
@@ -64,7 +63,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
 
             if (_validator.IsInvalid)
             {
-                return Result.Failure<UpdateReviewResponse>(_validator.Error);
+                return _validator.Failure<UpdateReviewResponse>();
             }
 
             reviewToUpdate.UpdateStars(starsResult.Value);

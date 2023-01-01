@@ -9,7 +9,7 @@ namespace Shopway.Domain.Entities;
 public sealed class Bug : WorkItem
 {
     internal Bug(
-        Guid id,
+        WorkItemId id,
         Title title,
         Description description,
         Priority priority,
@@ -26,7 +26,7 @@ public sealed class Bug : WorkItem
     }
 
     public static Bug Create(
-        Guid id,
+        WorkItemId id,
         Title title,
         Description description,
         Priority priority,
@@ -43,7 +43,7 @@ public sealed class Bug : WorkItem
             status,
             employeeId);
 
-        bug.RaiseDomainEvent(new BugRegisteredDomainEvent(Guid.NewGuid(), bug.Id.Value));
+        bug.RaiseDomainEvent(new BugRegisteredDomainEvent(Guid.NewGuid(), bug.Id));
 
         return bug;
     }

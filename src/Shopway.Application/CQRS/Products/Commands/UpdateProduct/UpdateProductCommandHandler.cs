@@ -30,7 +30,7 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
 
         if (_validator.IsInvalid)
         {
-            return Result.Failure<UpdateProductResponse>(_validator.Error);
+            return _validator.Failure<UpdateProductResponse>();
         }
 
         var productToUpdate = await _productRepository.GetByIdAsync(command.Id, cancellationToken);

@@ -20,16 +20,16 @@ public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
     public PersonId CustomerId { get; private set; }
 
     internal Order(
-        Guid id,
-        Guid productId,
+        OrderId id,
+        ProductId productId,
         Amount amount,
-        Guid customerId,
+        PersonId customerId,
         Discount discount)
         : base(id)
     {
-        ProductId = new ProductId() { Value = productId };
+        ProductId = productId;
         Amount = amount;
-        CustomerId = new PersonId() { Value = customerId };
+        CustomerId = customerId;
         Payment = Payment.Create(id, discount);
         Status = Status.New;
     }
@@ -40,10 +40,10 @@ public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
     }
 
     public static Order Create(
-        Guid id,
-        Guid productId,
+        OrderId id,
+        ProductId productId,
         Amount amount,
-        Guid customerId,
+        PersonId customerId,
         Discount discount)
     {
         var order = new Order(

@@ -28,7 +28,7 @@ public sealed class Employee : Person
     public IReadOnlyCollection<WorkItem> WorkItems => _workItems;
 
     internal Employee(
-        Guid id,
+        PersonId id,
         FirstName firstName,
         LastName lastName,
         Gender gender,
@@ -49,7 +49,7 @@ public sealed class Employee : Person
     }
 
     public static Employee Create(
-        Guid id,
+        PersonId id,
         FirstName firstName,
         LastName lastName,
         Gender gender,
@@ -72,7 +72,7 @@ public sealed class Employee : Person
             user,
             hireDate);
 
-        employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id.Value));
+        employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id));
 
         return employee;
     }

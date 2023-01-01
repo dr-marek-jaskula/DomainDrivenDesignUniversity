@@ -1,3 +1,5 @@
-﻿namespace Shopway.Domain.DomainEvents;
+﻿using Shopway.Domain.StronglyTypedIds;
 
-public sealed record BugRegisteredDomainEvent(Guid Id, Guid BugId) : DomainEvent(Id);
+namespace Shopway.Domain.DomainEvents;
+
+public sealed record BugRegisteredDomainEvent(Guid Id, WorkItemId BugId) : DomainEvent(Id);

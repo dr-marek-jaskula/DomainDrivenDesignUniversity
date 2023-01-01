@@ -4,7 +4,7 @@ using Shopway.Domain.StronglyTypedIds;
 namespace Shopway.Persistence.Converters;
 
 public class StronglyTypedIdConverter<TEntityId> : ValueConverter<TEntityId, Guid>
-    where TEntityId : IEntityId, new()
+    where TEntityId : IEntityId<TEntityId>, new()
 {
     public StronglyTypedIdConverter()
         : base(

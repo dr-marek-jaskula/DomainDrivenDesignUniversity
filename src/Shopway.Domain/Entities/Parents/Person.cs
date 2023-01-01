@@ -24,7 +24,7 @@ public class Person : AggregateRoot<PersonId>
 
     protected Person
     (
-        Guid id, 
+        PersonId id, 
         FirstName firstName, 
         LastName lastName, 
         Gender gender, 
@@ -52,7 +52,7 @@ public class Person : AggregateRoot<PersonId>
     }
 
     public static Person Create(
-        Guid id,
+        PersonId id,
         FirstName firstName,
         LastName lastName,
         Gender gender,

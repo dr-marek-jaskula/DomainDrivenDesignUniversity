@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Application.CQRS.Products.Commands.RemoveProduct;
@@ -39,7 +39,7 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
 
         if (_validator.IsInvalid)
         {
-            return Result.Failure<RemoveProductResponse>(_validator.Error);
+            return _validator.Failure<RemoveProductResponse>();
         }
 
         var productToDelete = Product.Create(

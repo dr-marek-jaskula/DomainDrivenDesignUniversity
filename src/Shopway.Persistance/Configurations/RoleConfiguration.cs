@@ -32,10 +32,10 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
 
         //Inserting static data (data that are not related to other)
         builder.HasData(
-            Role.Create(Guid.NewGuid(), RoleName.Create("Customer").Value),
-            Role.Create(Guid.NewGuid(), RoleName.Create("Employee").Value),
-            Role.Create(Guid.NewGuid(), RoleName.Create("Manager").Value),
-            Role.Create(Guid.NewGuid(), RoleName.Create("Administrator").Value)
+            Role.Create(RoleId.New(), RoleName.Create("Customer").Value),
+            Role.Create(RoleId.New(), RoleName.Create("Employee").Value),
+            Role.Create(RoleId.New(), RoleName.Create("Manager").Value),
+            Role.Create(RoleId.New(), RoleName.Create("Administrator").Value)
             );
     }
 }

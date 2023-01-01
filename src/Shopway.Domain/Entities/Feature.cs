@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
@@ -8,7 +9,7 @@ namespace Shopway.Domain.Entities;
 public sealed class Feature : WorkItem
 {
     internal Feature(
-        Guid id,
+        WorkItemId id,
         Title title,
         Description description,
         Priority priority,
@@ -25,7 +26,7 @@ public sealed class Feature : WorkItem
     }
 
     public static Feature Create(
-        Guid id,
+        WorkItemId id,
         Title title,
         Description description,
         Priority priority,
@@ -42,7 +43,7 @@ public sealed class Feature : WorkItem
             status,
             employeeId);
 
-        feature.RaiseDomainEvent(new FeatureRegisteredDomainEvent(Guid.NewGuid(), feature.Id.Value));
+        feature.RaiseDomainEvent(new FeatureRegisteredDomainEvent(Guid.NewGuid(), feature.Id));
 
         return feature;
     }

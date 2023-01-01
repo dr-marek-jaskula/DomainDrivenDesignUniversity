@@ -1,6 +1,6 @@
 ﻿namespace Shopway.Domain.StronglyTypedIds;
 
-public readonly record struct RoleId : IEntityId
+public readonly record struct RoleId : IEntityId<RoleId>
 {
     private RoleId(Guid id)
     {
@@ -9,7 +9,12 @@ public readonly record struct RoleId : IEntityId
 
     public Guid Value { get; init; }
 
-    public static IEntityId Create(Guid id)
+    public static RoleId New()
+    {
+        return new RoleId(Guid.NewGuid());
+    }
+
+    public static RoleId New(Guid id)
     {
         return new RoleId(id);
     }

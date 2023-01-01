@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
+using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
@@ -13,7 +14,7 @@ public sealed class Customer : Person
     public IReadOnlyCollection<Order> Orders => _orders;
 
     internal Customer(
-        Guid id,
+        PersonId id,
         FirstName firstName,
         LastName lastName,
         Gender gender,
@@ -34,7 +35,7 @@ public sealed class Customer : Person
     }
 
     public static Customer Create(
-        Guid id,
+        PersonId id,
         FirstName firstName,
         LastName lastName,
         Gender gender,
@@ -57,7 +58,7 @@ public sealed class Customer : Person
             user,
             rank);
 
-        customer.RaiseDomainEvent(new CustomerRegisteredDomainEvent(Guid.NewGuid(), customer.Id.Value));
+        customer.RaiseDomainEvent(new CustomerRegisteredDomainEvent(Guid.NewGuid(), customer.Id));
 
         return customer;
     }

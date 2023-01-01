@@ -14,16 +14,16 @@ public sealed class Payment : Entity<PaymentId>
 
     internal Payment
     (
-        Guid id,
+        PaymentId id,
         Discount discount,
         Status status,
-        Guid orderId
+        OrderId orderId
     )
         : base(id)
     {
         Discount = discount;
         Status = status;
-        OrderId = new OrderId() { Value = orderId };
+        OrderId = orderId;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -31,11 +31,11 @@ public sealed class Payment : Entity<PaymentId>
     {
     }
 
-    internal static Payment Create(Guid orderId, Discount discount)
+    internal static Payment Create(OrderId orderId, Discount discount)
     {
         return new Payment
         (
-            id: Guid.NewGuid(),
+            id: PaymentId.New(),
             discount: discount,
             status: Status.New,
             orderId: orderId

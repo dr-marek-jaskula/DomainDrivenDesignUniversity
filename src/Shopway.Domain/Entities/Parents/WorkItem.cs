@@ -11,7 +11,7 @@ namespace Shopway.Domain.Entities.Parents;
 public abstract class WorkItem : AggregateRoot<WorkItemId>
 {
     protected WorkItem(
-        Guid id,
+        WorkItemId id,
         Title title,
         Description description,
         Priority priority,

@@ -1,6 +1,6 @@
 ﻿namespace Shopway.Domain.StronglyTypedIds;
 
-public readonly record struct WorkItemId : IEntityId
+public readonly record struct WorkItemId : IEntityId<WorkItemId>
 {
     private WorkItemId(Guid id)
     {
@@ -9,7 +9,12 @@ public readonly record struct WorkItemId : IEntityId
 
     public Guid Value { get; init; }
 
-    public static IEntityId Create(Guid id)
+    public static WorkItemId New()
+    {
+        return new WorkItemId(Guid.NewGuid());
+    }
+
+    public static WorkItemId New(Guid id)
     {
         return new WorkItemId(id);
     }

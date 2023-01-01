@@ -18,7 +18,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     public Person? Person { get; set; }
 
     internal User(
-        Guid id,
+        UserId id,
         Username username,
         Email email,
         PasswordHash passwordHash)
@@ -35,7 +35,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     }
 
     public static User Create(
-        Guid id,
+        UserId id,
         Username username,
         Email email,
         PasswordHash passwordHash)

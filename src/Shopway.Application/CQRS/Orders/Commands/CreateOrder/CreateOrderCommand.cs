@@ -1,5 +1,4 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 
 namespace Shopway.Application.CQRS.Orders.Commands.CreateOrder;
 
