@@ -4,7 +4,7 @@ using Shopway.Domain.StronglyTypedIds;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductByIdWithReviewsQuerySpecification : BaseQuerySpecification<Product, ProductId>
+internal sealed class ProductByIdWithReviewsQuerySpecification : BaseSpecification<Product, ProductId>
 {
     private ProductByIdWithReviewsQuerySpecification() : base()
     {

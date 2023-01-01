@@ -16,7 +16,10 @@ public abstract class BaseSpecification<TEntity, TEntityId> : SortBy<TEntity>
 {
     //Flags
     public bool IsSplitQuery { get; protected set; }
-    public bool IsAsNoTracking { get; protected set; }
+
+    //This is commented due to the use of the QueryTransactionPipeline (Application -> Pipelines -> QueryPipelines) which is in my opinion a better approach
+    //Nevertheless this approach is still a good way, so choose your own preferred methodology
+    //public bool IsAsNoTracking { get; protected set; }
 
     //Pagination
     public bool IsPaginationApplied { get; private set; }

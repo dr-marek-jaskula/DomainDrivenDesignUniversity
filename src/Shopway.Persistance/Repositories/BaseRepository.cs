@@ -69,10 +69,12 @@ public abstract class BaseRepository
             queryable = queryable.AsSplitQuery();
         }
 
-        if (specification.IsAsNoTracking)
-        {
-            queryable = queryable.AsNoTracking();
-        }
+        //This is commented due to the use of the QueryTransactionPipeline (Application -> Pipelines -> QueryPipelines) which is in my opinion a better approach
+        //Nevertheless this approach is still a good way, so choose your own preferred methodology
+        //if (specification.IsAsNoTracking)
+        //{
+        //    queryable = queryable.AsNoTracking();
+        //}
 
         if (specification.IsPaginationApplied)
         {

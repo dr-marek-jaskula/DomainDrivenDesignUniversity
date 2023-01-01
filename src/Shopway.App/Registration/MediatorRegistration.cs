@@ -11,7 +11,7 @@ public static class MediatorRegistration
 
         //Register Pipeline Behaviors
 
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipeline<,>));
 
         return services;
     }

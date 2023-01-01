@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductByIdWithIncludesQuerySpecification : BaseQuerySpecification<Product, ProductId>
+internal sealed class ProductByIdWithIncludesQuerySpecification : BaseSpecification<Product, ProductId>
 {
     private ProductByIdWithIncludesQuerySpecification() : base()
     {
