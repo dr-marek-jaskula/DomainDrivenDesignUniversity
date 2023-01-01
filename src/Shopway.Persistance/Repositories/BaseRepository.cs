@@ -17,7 +17,7 @@ public abstract class BaseRepository
     }
 
     protected IQueryable<TEntity> ApplySpecification<TEntity, TEntityId>(BaseSpecification<TEntity, TEntityId> specification)
-        where TEntityId : IEntityId, new()
+        where TEntityId : IEntityId<TEntityId>, new()
         where TEntity : Entity<TEntityId>
     {
         return GetQuery(_dbContext.Set<TEntity>(), specification);
@@ -33,7 +33,7 @@ public abstract class BaseRepository
     private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(
         IQueryable<TEntity> inputQueryable,
         BaseSpecification<TEntity, TEntityId> specification)
-        where TEntityId : IEntityId, new()
+        where TEntityId : IEntityId<TEntityId>, new()
         where TEntity : Entity<TEntityId>
     {
         IQueryable<TEntity> queryable = inputQueryable;

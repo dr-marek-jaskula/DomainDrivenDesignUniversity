@@ -11,7 +11,7 @@ public abstract class SortBy<TEntity>
 }
 
 public abstract class BaseSpecification<TEntity, TEntityId> : SortBy<TEntity>
-    where TEntityId : IEntityId, new()
+    where TEntityId : IEntityId<TEntityId>, new()
     where TEntity : Entity<TEntityId>
 {
     //Flags

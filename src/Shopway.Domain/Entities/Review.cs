@@ -12,7 +12,7 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
     public DateTimeOffset? UpdatedOn { get; set; }
     public Title Title { get; private set; }
     public Description Description { get; private set; }
-    public ProductId? ProductId { get; private set; }
+    public ProductId ProductId { get; private set; }
 
     private Review(
         ReviewId reviewId,

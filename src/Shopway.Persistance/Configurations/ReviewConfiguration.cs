@@ -4,7 +4,6 @@ using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.StronglyTypedIds;
-using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -16,7 +15,7 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
 
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
-            .HasConversion<StronglyTypedIdConverter<ReviewId>>()
+            .HasConversion(id => id.Value, guid => ReviewId.New(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(r => r.Username)
@@ -45,7 +44,7 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
             .HasMaxLength(1000);
 
         builder.Property(r => r.ProductId)
-            .HasConversion<StronglyTypedIdConverter<ProductId>>()
+            .HasConversion(id => id.Value, guid => ProductId.New(guid))
             .HasColumnType("UNIQUEIDENTIFIER")
             .IsRequired(false);
     }

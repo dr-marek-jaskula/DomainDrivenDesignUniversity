@@ -17,7 +17,7 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
 
         builder.HasKey(o => o.Id);
         builder.Property(o => o.Id)
-            .HasConversion<StronglyTypedIdConverter<OrderId>>()
+            .HasConversion(id => id.Value, guid => OrderId.New(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(o => o.Amount)

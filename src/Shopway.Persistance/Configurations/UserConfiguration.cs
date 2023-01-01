@@ -4,7 +4,6 @@ using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.StronglyTypedIds;
-using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -17,7 +16,7 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)
-            .HasConversion<StronglyTypedIdConverter<UserId>>()
+            .HasConversion(id => id.Value, guid => UserId.New(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(u => u.Username)

@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
-using Shopway.Application.Orders.Commands.CreateOrder;
-using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Orders;
@@ -24,7 +23,7 @@ public sealed class OrderController : ApiController
 
         var query = new GetOrderByIdQuery(orderId);
 
-        Result<OrderResponse> response = await Sender.Send(query, cancellationToken);
+        var response = await Sender.Send(query, cancellationToken);
 
         return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
     }
@@ -40,7 +39,7 @@ public sealed class OrderController : ApiController
             request.CustomerId,
             request.Discount);
 
-        Result<Guid> result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)
         {
@@ -52,28 +51,5 @@ public sealed class OrderController : ApiController
             new { id = result.Value },
             result.Value);
     }
-
-    //[HttpPut("{id:guid}")]
-    //public async Task<IActionResult> UpdateOrder(
-    //    Guid id,
-    //    [FromBody] UpdateOrderRequest request,
-    //    CancellationToken cancellationToken)
-    //{
-    //    var command = new UpdateOrderCommand(
-    //        id,
-    //        request.FirstName,
-    //        request.LastName);
-
-    //    Result result = await Sender.Send(
-    //        command,
-    //        cancellationToken);
-
-    //    if (result.IsFailure)
-    //    {
-    //        return HandleFailure(result);
-    //    }
-
-    //    return NoContent();
-    //}
 }
 

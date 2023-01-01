@@ -19,7 +19,7 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
         builder.HasKey(wi => wi.Id);
 
         builder.Property(wi => wi.Id)
-            .HasConversion<StronglyTypedIdConverter<WorkItemId>>()
+            .HasConversion(id => id.Value, guid => WorkItemId.New(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(wi => wi.Priority)

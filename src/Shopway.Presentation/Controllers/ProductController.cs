@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Domain.Results;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Products;
 using Shopway.Domain.StronglyTypedIds;
