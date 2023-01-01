@@ -1,6 +1,5 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -19,7 +18,7 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
     {
         _productRepository = productRepository;
         _unitOfWork = unitOfWork;
-        _validator=validator;
+        _validator = validator;
     }
 
     public async Task<IResult<UpdateProductResponse>> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
@@ -35,12 +34,15 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
 
         var productToUpdate = await _productRepository.GetByIdAsync(command.Id, cancellationToken);
 
-        if (productToUpdate is null)
+        _validator
+            .If(productToUpdate is null, HttpErrors.NotFound(nameof(Product), command.Id));
+
+        if (_validator.IsInvalid)
         {
-            return Result.Failure<UpdateProductResponse>(HttpErrors.NotFound(nameof(Product), command.Id.Value));
+            return _validator.Failure<UpdateProductResponse>();
         }
 
-        productToUpdate.UpdatePrice(priceResult.Value);
+        productToUpdate!.UpdatePrice(priceResult.Value);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

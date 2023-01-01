@@ -1,8 +1,11 @@
-﻿using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
+using Shopway.Domain.StronglyTypedIds;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
 
@@ -11,28 +14,36 @@ internal sealed class RemoveReviewCommandHandler : ICommandHandler<RemoveReviewC
     private readonly IProductRepository _productRepository;
     private readonly IReviewRepository _reviewRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator _validator;
 
-    public RemoveReviewCommandHandler(IProductRepository productRepository, IReviewRepository reviewRepository, IUnitOfWork unitOfWork)
+    public RemoveReviewCommandHandler(IProductRepository productRepository, IReviewRepository reviewRepository, IUnitOfWork unitOfWork, IValidator validator)
     {
         _productRepository = productRepository;
         _reviewRepository = reviewRepository;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
     public async Task<IResult<RemoveReviewResponse>> Handle(RemoveReviewCommand command, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
-        if (product is null)
+        _validator
+            .If(product is null, HttpErrors.NotFound(nameof(Product), command.ProductId));
+
+        if (_validator.IsInvalid)
         {
-            return Result.Failure<RemoveReviewResponse>(HttpErrors.NotFound(nameof(Product), command.ProductId.Value));
+            return _validator.Failure<RemoveReviewResponse>();
         }
 
-        var reviewToRemove = product.Reviews.FirstOrDefault(x => x.Id.Value == command.ReviewId.Value);
+        var reviewToRemove = product!.Reviews.FirstOrDefault(x => x.Id.Value == command.ReviewId.Value);
 
-        if (reviewToRemove is null)
+        _validator
+            .If(reviewToRemove is null, HttpErrors.NotFound(nameof(Review), command.ReviewId.Value));
+
+        if (_validator.IsInvalid)
         {
-            return Result.Failure<RemoveReviewResponse>(HttpErrors.NotFound(nameof(Review), command.ReviewId.Value));
+            return _validator.Failure<RemoveReviewResponse>();
         }
 
         product.RemoveReview(reviewToRemove);

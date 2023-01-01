@@ -26,7 +26,7 @@ public sealed class ProductController : ApiController
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var productId = new ProductId() { Value = id };
+        var productId = ProductId.New(id);
 
         var query = new GetProductByIdQuery(productId);
 
@@ -65,7 +65,7 @@ public sealed class ProductController : ApiController
         [FromBody] UpdateProductRequest request,
         CancellationToken cancellationToken)
     {
-        var productId = new ProductId() { Value = id };
+        var productId = ProductId.New(id);
 
         var command = new UpdateProductCommand(productId, request.Price);
 
@@ -84,7 +84,7 @@ public sealed class ProductController : ApiController
         Guid id,
         CancellationToken cancellationToken)
     {
-        var productId = new ProductId() { Value = id };
+        var productId = ProductId.New(id);
 
         var command = new RemoveProductCommand(productId);
 
@@ -104,7 +104,7 @@ public sealed class ProductController : ApiController
         [FromBody] AddReviewRequest request,
         CancellationToken cancellationToken)
     {
-        var productId = new ProductId() { Value = id };
+        var productId = ProductId.New(id);
 
         var command = new AddReviewCommand(productId, request.Username, request.Stars, request.Title, request.Description);
 
@@ -125,8 +125,8 @@ public sealed class ProductController : ApiController
         [FromBody] UpdateReviewRequest request,
     CancellationToken cancellationToken)
     {
-        var productIdType = new ProductId() { Value = productId };
-        var reviewIdType = new ReviewId() { Value = reviewId };
+        var productIdType = ProductId.New(productId);
+        var reviewIdType = ReviewId.New(reviewId);
 
         var command = new UpdateReviewCommand(productIdType, reviewIdType, request.Stars, request.Description);
 
@@ -146,8 +146,8 @@ public sealed class ProductController : ApiController
         Guid reviewId,
         CancellationToken cancellationToken)
     {
-        var productIdType = new ProductId() { Value = productId };
-        var reviewIdType = new ReviewId() { Value = reviewId };
+        var productIdType = ProductId.New(productId);
+        var reviewIdType = ReviewId.New(reviewId);
 
         var command = new RemoveReviewCommand(productIdType, reviewIdType);
 

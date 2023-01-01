@@ -59,7 +59,7 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
         }
         catch
         {
-            return Result.Failure<RemoveProductResponse>(HttpErrors.NotFound(nameof(Product), command.Id.Value));
+            return Result.Failure<RemoveProductResponse>(HttpErrors.NotFound(nameof(Product), command.Id));
         }
     }
 }

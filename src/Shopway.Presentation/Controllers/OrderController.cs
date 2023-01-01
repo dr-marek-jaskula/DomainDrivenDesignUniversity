@@ -19,7 +19,7 @@ public sealed class OrderController : ApiController
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetOrderById(Guid id, CancellationToken cancellationToken)
     {
-        var orderId = new OrderId() { Value = id };
+        var orderId = OrderId.New(id);
 
         var query = new GetOrderByIdQuery(orderId);
 

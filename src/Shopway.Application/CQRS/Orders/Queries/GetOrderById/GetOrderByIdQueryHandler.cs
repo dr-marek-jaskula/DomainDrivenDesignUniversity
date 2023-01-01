@@ -1,31 +1,39 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
+using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
 
 namespace Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 
 internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, OrderResponse>
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IValidator _validator;
 
-    public GetOrderByIdQueryHandler(IOrderRepository orderRepository)
+    public GetOrderByIdQueryHandler(IOrderRepository orderRepository, IValidator validator)
     {
         _orderRepository = orderRepository;
+        _validator = validator;
     }
 
     public async Task<IResult<OrderResponse>> Handle(GetOrderByIdQuery query, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetByIdAsync(query.Id, cancellationToken);
 
-        if (order is null)
+        _validator
+            .If(order is null, HttpErrors.NotFound(nameof(Order), query.Id));
+
+
+        if (_validator.IsInvalid)
         {
-            return Result.Failure<OrderResponse>(HttpErrors.NotFound(nameof(Order), query.Id.Value));
+            return _validator.Failure<OrderResponse>();
         }
 
         var response = new OrderResponse(
-            Id: order.Id.Value,
+            Id: order!.Id.Value,
             Amount: order.Amount,
             Status: order.Status,
             Product: order.Product,

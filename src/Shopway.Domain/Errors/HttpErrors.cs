@@ -1,4 +1,6 @@
-﻿namespace Shopway.Domain.Errors;
+﻿using Shopway.Domain.StronglyTypedIds;
+
+namespace Shopway.Domain.Errors;
 
 public static class HttpErrors
 {
@@ -8,8 +10,8 @@ public static class HttpErrors
     /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
     /// <param name="id">id of the entity that was not found</param>
     /// <returns>NotFound error</returns>
-    public static Error NotFound(string name, Guid id)
+    public static Error NotFound<TEntityId>(string name, IEntityId<TEntityId> id)
     {
-        return new Error($"{name}.NotFound", $"{name} with Id: '{id}' was not found");
+        return new Error($"{name}.NotFound", $"{name} with Id: '{id.Value}' was not found");
     }
 }
