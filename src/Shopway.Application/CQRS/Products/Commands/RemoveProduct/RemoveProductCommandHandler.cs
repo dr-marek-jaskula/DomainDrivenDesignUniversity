@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Mapping;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -42,19 +43,19 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
             return _validator.Failure<RemoveProductResponse>();
         }
 
-        var productToDelete = Product.Create(
+        var productToRemove = Product.Create(
             command.Id,
             productNameResult.Value,
             priceResult.Value,
             uomCodeResult.Value,
             revisionResult.Value);
 
-        _productRepository.Remove(productToDelete);
+        _productRepository.Remove(productToRemove);
 
         try
         {
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            var response = new RemoveProductResponse(productToDelete.Id.Value);
+            var response = productToRemove.ToRemoveResponse();
             return Result.Create(response);
         }
         catch

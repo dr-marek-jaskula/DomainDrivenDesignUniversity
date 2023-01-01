@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
-using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
+using Shopway.Application.Mapping;
 
 namespace Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 
@@ -31,13 +31,7 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
             return _validator.Failure<OrderResponse>();
         }
 
-        var response = new OrderResponse(
-            Id: order!.Id.Value,
-            Amount: order.Amount,
-            Status: order.Status,
-            Product: order.Product,
-            Payment: order.Payment,
-            Customer: order.Customer);
+        var response = order!.ToResponse();
 
         return Result.Create(response);
     }

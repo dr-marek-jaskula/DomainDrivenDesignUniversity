@@ -1,6 +1,6 @@
-﻿namespace Shopway.Domain.Results;
+﻿namespace Shopway.Application.CQRS;
 
-public sealed class PageResult<TValue>
+public sealed class PageResponse<TValue>
 {
     //Generic list that stores the pagination result
     public List<TValue> Items { get; set; }
@@ -17,7 +17,7 @@ public sealed class PageResult<TValue>
     //The last element of the certain page
     public int ItemsTo { get; set; }
 
-    public PageResult(List<TValue> items, int totalCount, int pageSize, int pageNumber)
+    public PageResponse(List<TValue> items, int totalCount, int pageSize, int pageNumber)
     {
         Items = items;
         TotalItemsCount = totalCount;

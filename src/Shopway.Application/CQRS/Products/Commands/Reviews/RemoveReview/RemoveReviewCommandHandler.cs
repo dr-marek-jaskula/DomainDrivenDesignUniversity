@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Mapping;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -52,7 +53,7 @@ internal sealed class RemoveReviewCommandHandler : ICommandHandler<RemoveReviewC
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var response = new RemoveReviewResponse(command.ReviewId.Value);
+        var response = reviewToRemove!.ToRemoveResponse();
 
         return Result.Create(response);
     }

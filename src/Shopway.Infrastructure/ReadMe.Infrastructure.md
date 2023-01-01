@@ -11,17 +11,7 @@ In this project we store components connected to :
 - Adapters
 - Decorators
 - Validators
-///
-
-- Identity Services
-- File Storage Services
-- Queue Storage Services
-- Message Bus Services
-- Payment Services
-- Third-party Services
-- Notifications
-	- Email Service
-	- Sms Service
+- Services
 
 ## Bacground jobs by Quartz
 
@@ -55,7 +45,7 @@ builder.HasKey(outboxMessageConsumer => new
 Every time we publish the domain event, before handling the actual event, we check in OutboxMessageConsumer if we already processed this message for this event handler.
 If so we want to skip it, otherwise we execute the event handler, and we add a new record to the OutboxMessageConsumer table.
 
-In fact, this wil lbe obtain by the use of the Decorator Pattern. We create **IdempotentDomainEventHandlerDecorator** that decorates INotificationHandler<IDomainEvent>.
+In fact, this will be obtain by the use of the Decorator Pattern. We create **IdempotentDomainEventHandlerDecorator** that decorates INotificationHandler<IDomainEvent>.
 
 - At first we get the name of the type of the decorated handler (this will be OutboxMessageConsumer.Name)
 - Examine if the decorated handler was already processed

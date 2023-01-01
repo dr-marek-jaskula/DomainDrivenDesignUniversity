@@ -1,6 +1,7 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
+using Shopway.Application.Mapping;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -36,7 +37,9 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
             return _validator.Failure<UpdateReviewResponse>();
         }
 
-        var reviewToUpdate = product!.Reviews.FirstOrDefault(x => x.Id.Value == command.ReviewId.Value);
+        var reviewToUpdate = product!
+            .Reviews
+            .FirstOrDefault(x => x.Id.Value == command.ReviewId.Value);
 
         _validator
             .If(reviewToUpdate is null, thenError: HttpErrors.NotFound(nameof(Review), command.ReviewId));
@@ -45,8 +48,6 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
         {
             return _validator.Failure<UpdateReviewResponse>();
         }
-
-        Error error = Error.None;
 
         if (command.Description is not null)
         {
@@ -80,7 +81,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var response = new UpdateReviewResponse(reviewToUpdate!.Id.Value);
+        var response = reviewToUpdate!.ToUpdateResponse();
 
         return Result.Create(response);
     }

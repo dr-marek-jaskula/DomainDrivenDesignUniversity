@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Mapping;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -51,13 +52,13 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
             return _validator.Failure<AddReviewResponse>();
         }
 
-        var reviewAdded = product!.AddReview(titleResult.Value, descriptionResult.Value, usernameResult.Value, starsResult.Value);
+        var reviewToAdd = product!.AddReview(titleResult.Value, descriptionResult.Value, usernameResult.Value, starsResult.Value);
 
-        _reviewRepository.Add(reviewAdded);
+        _reviewRepository.Add(reviewToAdd);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var response = new AddReviewResponse(reviewAdded.Id.Value);
+        var response = reviewToAdd.ToAddResponse();
 
         return Result.Create(response);
     }

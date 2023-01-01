@@ -2,13 +2,12 @@
 
 Application layer contains:
 
-- Abstractions/Contracts/Interfaces
+- Abstractions/Interfaces
 - Application Services/Handlers
 - Commands, Queries and Events + Validators
-- Exceptions
-- Models (DTOs)
-- Mappers
-- Behaviors
+- Responses (sometimes called DTOs or Dtos)
+- Mappers (do not use AutoMapper, use custom made mappers instead like in this project)
+- Pipelines
 
 ## Validators
 

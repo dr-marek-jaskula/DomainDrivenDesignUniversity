@@ -53,7 +53,6 @@ public abstract class ApiController : ControllerBase
             Extensions = { { nameof(errors), errors } }
         };
     }
-
 }
 
 

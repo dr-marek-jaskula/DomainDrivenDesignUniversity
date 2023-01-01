@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Mapping;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
@@ -35,18 +36,18 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
             return _validator.Failure<CreateOrderResponse>();
         }
 
-        var order = Order.Create(
+        var orderToCreate = Order.Create(
             OrderId.New(),
             ProductId.New(command.ProductId),
             amountResult.Value,
             PersonId.New(command.CustomerId),
             discountResult.Value);
 
-        _orderRepository.Create(order);
+        _orderRepository.Create(orderToCreate);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var response = new CreateOrderResponse(order.Id.Value);
+        var response = orderToCreate.ToCreateResponse();
 
         return Result.Create(response);
     }

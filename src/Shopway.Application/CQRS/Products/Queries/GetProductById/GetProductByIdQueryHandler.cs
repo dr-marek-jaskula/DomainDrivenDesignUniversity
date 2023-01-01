@@ -5,6 +5,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
+using Shopway.Application.Mapping;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductById;
 
@@ -31,13 +32,7 @@ internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQ
             return _validator.Failure<ProductResponse>();
         }
 
-        var response = new ProductResponse(
-            Id: product!.Id.Value,
-            ProductName: product!.ProductName,
-            Revision: product!.Revision,
-            Price: product!.Price,
-            UomCode: product!.UomCode,
-            Reviews: product!.Reviews);
+        var response = product!.ToResponse();
 
         return Result.Create(response);
     }

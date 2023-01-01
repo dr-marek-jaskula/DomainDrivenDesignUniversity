@@ -14,4 +14,3 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
         builder.HasKey(x => x.Id);
     }
 }
-

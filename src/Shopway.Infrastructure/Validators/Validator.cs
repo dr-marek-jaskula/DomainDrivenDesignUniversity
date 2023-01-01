@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.OAuth;
-using Shopway.Application.Abstractions;
-using Shopway.Application.CQRS.Products.Commands.CreateProduct;
+﻿using Shopway.Application.Abstractions;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
-using Shopway.Domain.Utilities;
 
 namespace Shopway.Infrastructure.Validators;
 
@@ -31,11 +28,6 @@ public sealed class Validator : IValidator
         _errors.Add(thenError);
         IsValid = false;
         return this;
-    }
-
-    public IValidator If(Func<bool> validate, Error thenError)
-    {
-        return If(validate(), thenError);
     }
 
     public IValidator Validate<TValueObject>(Result<TValueObject> valueObject)

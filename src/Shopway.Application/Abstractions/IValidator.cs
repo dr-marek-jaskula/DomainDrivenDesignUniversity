@@ -10,7 +10,6 @@ public interface IValidator
     bool IsInvalid { get; }
 
     IValidator If(bool invalid, Error thenError);
-    IValidator If(Func<bool> validate, Error thenError);
     IValidator Validate<TValueObject>(Result<TValueObject> valueObject) 
         where TValueObject : ValueObject;
     ValidationResult<TResponse> Failure<TResponse>()

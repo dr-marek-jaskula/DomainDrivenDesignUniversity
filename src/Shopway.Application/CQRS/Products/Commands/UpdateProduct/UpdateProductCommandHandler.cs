@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Mapping;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
@@ -46,7 +47,7 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var response = new UpdateProductResponse(productToUpdate.Id.Value);
+        var response = productToUpdate.ToUpdateResponse();
 
         return Result.Create(response);
     }
