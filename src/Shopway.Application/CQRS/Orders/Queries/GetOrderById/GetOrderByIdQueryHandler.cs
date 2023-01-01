@@ -24,8 +24,7 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
         var order = await _orderRepository.GetByIdAsync(query.Id, cancellationToken);
 
         _validator
-            .If(order is null, HttpErrors.NotFound(nameof(Order), query.Id));
-
+            .If(order is null, thenError: HttpErrors.NotFound(nameof(Order), query.Id));
 
         if (_validator.IsInvalid)
         {

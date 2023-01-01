@@ -28,7 +28,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         _validator
-            .If(product is null, HttpErrors.NotFound(nameof(Product), command.ProductId));
+            .If(product is null, thenError: HttpErrors.NotFound(nameof(Product), command.ProductId));
 
         if (_validator.IsInvalid)
         {

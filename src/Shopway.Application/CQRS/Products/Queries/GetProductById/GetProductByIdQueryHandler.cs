@@ -24,7 +24,7 @@ internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQ
         var product = await _productRepository.GetByIdAsync(query.Id, cancellationToken);
 
         _validator
-            .If(product is null, HttpErrors.NotFound(nameof(Product), query.Id));
+            .If(product is null, thenError: HttpErrors.NotFound(nameof(Product), query.Id));
 
         if (_validator.IsInvalid)
         {

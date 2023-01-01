@@ -46,6 +46,6 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
         builder.Property(r => r.ProductId)
             .HasConversion(id => id.Value, guid => ProductId.New(guid))
             .HasColumnType("UNIQUEIDENTIFIER")
-            .IsRequired(false);
+            .IsRequired(true);
     }
 }

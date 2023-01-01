@@ -35,7 +35,7 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
         var productToUpdate = await _productRepository.GetByIdAsync(command.Id, cancellationToken);
 
         _validator
-            .If(productToUpdate is null, HttpErrors.NotFound(nameof(Product), command.Id));
+            .If(productToUpdate is null, thenError: HttpErrors.NotFound(nameof(Product), command.Id));
 
         if (_validator.IsInvalid)
         {

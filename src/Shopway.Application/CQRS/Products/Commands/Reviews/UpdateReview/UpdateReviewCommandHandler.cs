@@ -29,7 +29,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         _validator
-            .If(product is null, HttpErrors.NotFound(nameof(Product), command.ProductId));
+            .If(product is null, thenError: HttpErrors.NotFound(nameof(Product), command.ProductId));
 
         if (_validator.IsInvalid)
         {
@@ -39,7 +39,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
         var reviewToUpdate = product!.Reviews.FirstOrDefault(x => x.Id.Value == command.ReviewId.Value);
 
         _validator
-            .If(reviewToUpdate is null, HttpErrors.NotFound(nameof(Review), command.ReviewId));
+            .If(reviewToUpdate is null, thenError: HttpErrors.NotFound(nameof(Review), command.ReviewId));
 
         if (_validator.IsInvalid)
         {
@@ -80,7 +80,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var response = new UpdateReviewResponse(reviewToUpdate.Id.Value);
+        var response = new UpdateReviewResponse(reviewToUpdate!.Id.Value);
 
         return Result.Create(response);
     }
