@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
@@ -52,6 +53,19 @@ public abstract class ApiController : ControllerBase
             Status = status,
             Extensions = { { nameof(errors), errors } }
         };
+    }
+
+    protected IActionResult QueryResult<T>(IResult<T> response)
+    {
+        return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
+    }
+
+    protected IActionResult CreatedAtActionResult<T>(IResult<T> response, string? actionName)
+    {
+        return CreatedAtAction(
+            actionName,
+            new { id = response.Value },
+            response.Value);
     }
 }
 

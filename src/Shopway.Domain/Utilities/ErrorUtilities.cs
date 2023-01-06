@@ -6,7 +6,7 @@ namespace Shopway.Domain.Utilities;
 public static class ErrorUtilities
 {
     public static TResult CreateValidationResult<TResult>(this ICollection<Error> errors)
-        where TResult : Result
+        where TResult : class, IResult
     {
         if (typeof(TResult) == typeof(Result))
         {

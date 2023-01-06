@@ -32,7 +32,7 @@ public sealed class ProductController : ApiController
 
         var response = await Sender.Send(query, cancellationToken);
 
-        return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
+        return QueryResult(response);
     }
 
     [HttpPost]
@@ -46,17 +46,14 @@ public sealed class ProductController : ApiController
             request.UomCode,
             request.Revision);
 
-        var result = await Sender.Send(command, cancellationToken);
+        var response = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
+        if (response.IsFailure)
         {
-            return HandleFailure(result);
+            return HandleFailure(response);
         }
 
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = result.Value },
-            result.Value);
+        return CreatedAtActionResult(response, nameof(GetById));
     }
 
     [HttpPut("{id:guid}")]
@@ -123,7 +120,7 @@ public sealed class ProductController : ApiController
         Guid productId,
         Guid reviewId,
         [FromBody] UpdateReviewRequest request,
-    CancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         var productIdType = ProductId.New(productId);
         var reviewIdType = ReviewId.New(reviewId);

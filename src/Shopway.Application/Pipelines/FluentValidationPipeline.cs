@@ -8,7 +8,7 @@ namespace Shopway.Application.Pipelines;
 
 public sealed class FluentValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
-    where TResponse : Result
+    where TResponse : class, IResult
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 

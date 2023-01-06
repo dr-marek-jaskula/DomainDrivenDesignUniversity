@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
-using Shopway.Application.CQRS.Products.Queries.GetProductById;
+using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 
 namespace Shopway.Application.Mapping;

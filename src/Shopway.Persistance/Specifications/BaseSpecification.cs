@@ -7,7 +7,8 @@ namespace Shopway.Persistence.Specifications;
 
 public abstract class SortBy<TEntity>
 {
-    public abstract SortBy<TEntity> ThenByWithDirection(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection);
+    public abstract SortBy<TEntity> OrderBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection);
+    public abstract SortBy<TEntity> ThenBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection);
 }
 
 public abstract class BaseSpecification<TEntity, TEntityId> : SortBy<TEntity>
@@ -58,18 +59,18 @@ public abstract class BaseSpecification<TEntity, TEntityId> : SortBy<TEntity>
     /// <param name="sortDirection"></param>
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"></exception>
-    protected SortBy<TEntity> OrderByWithDirection(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection = SortDirection.Ascending)
+    public override SortBy<TEntity> OrderBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection = SortDirection.Ascending)
     {
         if (SortByExpressions.Any())
         {
-            throw new InvalidOperationException($"{nameof(OrderByWithDirection)} for {nameof(TEntity)} was called twice. Use {nameof(SortBy<TEntity>.ThenByWithDirection)} to chain sorting.");
+            throw new InvalidOperationException($"{nameof(OrderBy)} for {nameof(TEntity)} was called twice. Use {nameof(SortBy<TEntity>.ThenBy)} to chain sorting.");
         }
 
         SortByExpressions.Add((sortByExpression, sortDirection));
         return this;
     }
 
-    public override SortBy<TEntity> ThenByWithDirection(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
+    public override SortBy<TEntity> ThenBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
     {
         SortByExpressions.Add((sortByExpression, sortDirection));
         return this;

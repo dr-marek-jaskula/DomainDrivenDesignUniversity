@@ -2,7 +2,7 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 
-namespace Shopway.Application.CQRS.Products.Queries.GetProductById;
+namespace Shopway.Application.CQRS.Products.Queries;
 
 public sealed record ProductResponse
 (
@@ -12,5 +12,5 @@ public sealed record ProductResponse
     Price Price,
     UomCode UomCode,
     IReadOnlyCollection<Review> Reviews
-) : IResponse;
-
+)
+    : IResponse;

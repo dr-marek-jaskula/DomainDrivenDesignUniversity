@@ -2,7 +2,11 @@
 
 namespace Shopway.Domain.Primitives;
 
-public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>
+public interface IEntity
+{
+}
+
+public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>, IEntity
     where TEntityId : IEntityId<TEntityId>, new()
 {
     protected Entity(TEntityId id)

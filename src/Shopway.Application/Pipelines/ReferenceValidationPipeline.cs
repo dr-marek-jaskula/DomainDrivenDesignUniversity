@@ -1,6 +1,8 @@
 ﻿using MediatR;
-using Shopway.Domain.Exceptions;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;
 using System.Reflection;
 
@@ -8,6 +10,7 @@ namespace Shopway.Application.Pipelines;
 
 public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
+    where TResponse : class, IResult
 {
 	private readonly ApplicationDbContext _context;
 
@@ -23,29 +26,38 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             .Where(prop => prop.PropertyType.GetInterfaces().Any(x => x == typeof(IEntityId)))
             .ToList();
 
-        foreach (var reference in referenceProperties)
+        Error[] errors = referenceProperties
+            .Select(async (reference) => await Validate(reference, request))
+            .Select(t => t.Result)
+            .Where(error => error != Error.None)
+            .Distinct()
+            .ToArray();
+
+        if (errors.Any())
         {
-            await Validate(reference, request);
+            return errors.CreateValidationResult<TResponse>();
         }
 
         return await next();
     }
 
-    private async Task Validate(PropertyInfo reference, TRequest request)
+    private async Task<Error> Validate(PropertyInfo reference, TRequest request)
     {
-        var entityType = GetEntityType(reference);
-
-        if (reference.GetValue(request) is not IEntityId entityId || entityId.Value == Guid.Empty)
+        if (reference.GetValue(request) is not IEntityId entityId || entityId is null || entityId.Value == Guid.Empty)
         {
-            return; //omit optional reference
+            return Error.None; //omit optional reference
         }
+
+        var entityType = GetEntityType(reference);
 
         var entity = await _context.FindAsync(entityType, entityId);
 
         if (entity is null)
         {
-            throw new ValidationException($"Invalid Entity reference {entityId.Value} for entity {entityType.Name}");
+            return new("Error.InvalidReference", $"Invalid Entity reference {entityId.Value} for entity {entityType.Name}");
         }
+
+        return Error.None;
     }
 
     private static Type GetEntityType(PropertyInfo property)

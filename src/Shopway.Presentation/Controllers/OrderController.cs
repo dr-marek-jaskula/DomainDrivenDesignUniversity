@@ -17,7 +17,9 @@ public sealed class OrderController : ApiController
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetOrderById(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetOrderById(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
         var orderId = OrderId.New(id);
 
@@ -25,7 +27,7 @@ public sealed class OrderController : ApiController
 
         var response = await Sender.Send(query, cancellationToken);
 
-        return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
+        return QueryResult(response);
     }
 
     [HttpPost]
@@ -39,17 +41,14 @@ public sealed class OrderController : ApiController
             request.CustomerId,
             request.Discount);
 
-        var result = await Sender.Send(command, cancellationToken);
+        var response = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
+        if (response.IsFailure)
         {
-            return HandleFailure(result);
+            return HandleFailure(response);
         }
 
-        return CreatedAtAction(
-            nameof(GetOrderById),
-            new { id = result.Value },
-            result.Value);
+        return CreatedAtActionResult(response, nameof(GetOrderById));
     }
 }
 

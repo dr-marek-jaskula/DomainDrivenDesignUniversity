@@ -1,9 +1,11 @@
-﻿namespace Shopway.Application.CQRS;
+﻿using Shopway.Application.Abstractions;
 
-public sealed class PageResponse<TValue>
+namespace Shopway.Application.CQRS;
+
+public sealed class PageResponse<TValue> : IResponse
 {
     //Generic list that stores the pagination result
-    public List<TValue> Items { get; set; }
+    public IList<TValue> Items { get; set; }
 
     //Total number or items
     public int TotalItemsCount { get; set; }
@@ -17,7 +19,7 @@ public sealed class PageResponse<TValue>
     //The last element of the certain page
     public int ItemsTo { get; set; }
 
-    public PageResponse(List<TValue> items, int totalCount, int pageSize, int pageNumber)
+    public PageResponse(IList<TValue> items, int totalCount, int pageSize, int pageNumber)
     {
         Items = items;
         TotalItemsCount = totalCount;

@@ -22,8 +22,8 @@ internal sealed class ProductByIdWithIncludesQuerySpecification : BaseSpecificat
         specification.IsSplitQuery = true;
 
         specification
-            .OrderByWithDirection(x => x.ProductName, SortDirection.Ascending)
-            .ThenByWithDirection(x => x.Price, SortDirection.Descending);
+            .OrderBy(x => x.ProductName, SortDirection.Ascending)
+            .ThenBy(x => x.Price, SortDirection.Descending);
 
         return specification;
     }
