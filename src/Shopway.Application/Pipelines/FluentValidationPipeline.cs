@@ -6,13 +6,13 @@ using Shopway.Domain.Utilities;
 
 namespace Shopway.Application.Pipelines;
 
-public sealed class ValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public sealed class FluentValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : Result
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public ValidationPipeline(IEnumerable<IValidator<TRequest>> validators)
+    public FluentValidationPipeline(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }

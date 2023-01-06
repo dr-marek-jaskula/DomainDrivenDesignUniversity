@@ -5,7 +5,7 @@ using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 
-namespace Shopway.Application.Pipelines.QueryPipelines;
+namespace Shopway.Application.Pipelines.CQRS;
 
 public sealed class QueryTransactionPipeline<TQueryRequest, TQueryResponse>
     : QueryTransactionPipelineBase<TQueryResponse>, IPipelineBehavior<TQueryRequest, TQueryResponse>

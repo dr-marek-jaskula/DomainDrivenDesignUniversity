@@ -1,9 +1,7 @@
 ﻿namespace Shopway.Domain.StronglyTypedIds;
 
-public interface IEntityId<out TEntity>
+public interface IEntityId<out TEntity> : IEntityId
 {
-    public Guid Value { get; init; }
-
     /// <summary>
     /// Create a new entity id using given guid
     /// </summary>
@@ -13,4 +11,9 @@ public interface IEntityId<out TEntity>
     /// Create a new entity id using randomly generated guid
     /// </summary>
     public abstract static TEntity New();
+}
+
+public interface IEntityId
+{
+    public Guid Value { get; init; }
 }
