@@ -16,9 +16,11 @@ internal sealed class ProductByIdWithIncludesQuerySpecification : BaseSpecificat
     {
         var specification = new ProductByIdWithIncludesQuerySpecification();
 
-        specification.AddFilters(product => product.Id == productId);
+        specification
+            .AddFilters(product => product.Id == productId);
 
-        specification.AddIncludes(includes);
+        specification
+            .AddIncludes(includes);
 
         specification.IsSplitQuery = true;
 

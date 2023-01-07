@@ -15,7 +15,8 @@ internal sealed class ProductQuerySpecification : BaseSpecification<Product, Pro
     {
         var specification = new ProductQuerySpecification();
 
-        specification.AddIncludes(product => product.Reviews);
+        specification
+            .AddIncludes(product => product.Reviews);
 
         specification
             .AddFilters(filter);

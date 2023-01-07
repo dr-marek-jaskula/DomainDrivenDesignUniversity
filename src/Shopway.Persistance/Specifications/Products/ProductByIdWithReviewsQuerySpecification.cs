@@ -15,9 +15,11 @@ internal sealed class ProductByIdWithReviewsQuerySpecification : BaseSpecificati
     {
         var specification = new ProductByIdWithReviewsQuerySpecification();
 
-        specification.AddFilters(product => product.Id == productId);
+        specification
+            .AddFilters(product => product.Id == productId);
 
-        specification.AddIncludes(product => product.Reviews);
+        specification
+            .AddIncludes(product => product.Reviews);
 
         specification
             .OrderBy(x => x.ProductName, SortDirection.Ascending)
