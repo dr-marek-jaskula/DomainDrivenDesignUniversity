@@ -1,9 +1,7 @@
-﻿using MediatR;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mapping;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
@@ -43,24 +41,35 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
             return _validator.Failure<RemoveProductResponse>();
         }
 
-        var productToRemove = Product.Create(
-            command.Id,
-            productNameResult.Value,
-            priceResult.Value,
-            uomCodeResult.Value,
-            revisionResult.Value);
-
-        _productRepository.Remove(productToRemove);
+        Product removedProduct = RemoveProduct(command, productNameResult, priceResult, uomCodeResult, revisionResult);
 
         try
         {
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            var response = productToRemove.ToRemoveResponse();
+            var response = removedProduct.ToRemoveResponse();
             return Result.Create(response);
         }
         catch
         {
             return Result.Failure<RemoveProductResponse>(NotFound(nameof(Product), command.Id));
         }
+    }
+
+    private Product RemoveProduct(RemoveProductCommand command, Result<ProductName> productNameResult, Result<Price> priceResult, Result<UomCode> uomCodeResult, Result<Revision> revisionResult)
+    {
+        //Create a dummy product with proper product id to remove
+        var productToRemove = Product.Create
+        (
+            id: command.Id,
+            productName: productNameResult.Value,
+            price: priceResult.Value,
+            uomCode: uomCodeResult.Value,
+            revision: revisionResult.Value
+        );
+
+        //Attach the product to the ChangeTracking and set it its status to Deleted
+        _productRepository.Remove(productToRemove);
+
+        return productToRemove;
     }
 }

@@ -7,6 +7,7 @@ using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Resolvers;
 using System.Linq.Expressions;
 using Shopway.Persistence.Framework;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -87,6 +88,11 @@ public sealed class CachedProductRepository : IProductRepository
     public Task<Product?> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
     {
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
+    }
+
+    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy? sortBy)
+    {
+        return _decorated.Queryable(filter, sortBy);
     }
 
     public void Create(Product product)

@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Specifications;
+using Shopway.Persistence.Utilities;
 
-namespace Shopway.Persistence.Repositories;
+namespace Shopway.Persistence.Abstractions;
 
 public abstract class BaseRepository
 {
@@ -48,39 +48,28 @@ public abstract class BaseRepository
             queryable = queryable.Where(filter);
         }
 
-        foreach (var sortExpression in specification.SortByExpressions)
+        if (specification.Filter is not null)
         {
-            if (sortExpression == specification.SortByExpressions.First())
+            queryable = specification.Filter.Apply(queryable);
+        }
+
+        if (specification.SortBy is not null)
+        {
+            queryable.Order(specification.SortBy);
+        }
+        else if (specification.SortByExpression is not null and var sort)
+        {
+            queryable = queryable.OrderBy(sort.Value.SortBy, sort.Value.SortDirection);
+
+            if (specification.ThenByExpression is not null and var then)
             {
-                queryable = sortExpression.SortDirection is SortDirection.Ascending
-                    ? queryable.OrderBy(sortExpression.SortBy)
-                    : queryable.OrderByDescending(sortExpression.SortBy);
-
-                continue;
+                queryable = ((IOrderedQueryable<TEntity>)queryable).ThenBy(then.Value.SortBy, then.Value.SortDirection);
             }
-
-            queryable = sortExpression.SortDirection is SortDirection.Ascending 
-                ? ((IOrderedQueryable<TEntity>)queryable).ThenBy(sortExpression.SortBy) 
-                : ((IOrderedQueryable<TEntity>)queryable).ThenByDescending(sortExpression.SortBy);
         }
 
         if (specification.IsSplitQuery)
         {
             queryable = queryable.AsSplitQuery();
-        }
-
-        //This is commented due to the use of the QueryTransactionPipeline (Application -> Pipelines -> QueryPipelines) which is in my opinion a better approach
-        //Nevertheless this approach is still a good way, so choose your own preferred methodology
-        //if (specification.IsAsNoTracking)
-        //{
-        //    queryable = queryable.AsNoTracking();
-        //}
-
-        if (specification.IsPaginationApplied)
-        {
-            queryable
-                .Skip(specification.PageSize * (specification.PageNumber - 1))
-                .Take(specification.PageSize);
         }
 
         return queryable;

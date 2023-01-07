@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications.Products;
 using System.Linq.Expressions;
@@ -30,6 +32,13 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
+    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy? sort)
+    {
+        var specification = ProductQuerySpecification.Create(filter, sort);
+
+        return ApplySpecification(specification);
+    }
+
     public void Create(Product product)
     {
         _dbContext
@@ -52,4 +61,5 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
 
         entry.State = EntityState.Deleted;
     }
+
 }

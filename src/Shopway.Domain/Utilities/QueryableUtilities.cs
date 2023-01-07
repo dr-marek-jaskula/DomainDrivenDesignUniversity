@@ -1,10 +1,34 @@
 ﻿using Shopway.Domain.Enums;
 using System.Linq.Expressions;
 
-namespace Shopway.Application.CQRS;
+namespace Shopway.Domain.Utilities;
 
 public static class QueryableUtilities
 {
+    public static IQueryable<TEntity> OrderBy<TEntity>
+    (
+        this IQueryable<TEntity> queryable,
+        Expression<Func<TEntity, object>> SortBy,
+        SortDirection SortDirection
+    )
+    {
+        return SortDirection is SortDirection.Ascending
+            ? queryable.OrderBy(SortBy)
+            : queryable.OrderByDescending(SortBy);
+    }
+
+    public static IOrderedQueryable<TEntity> ThenBy<TEntity>
+    (
+        this IOrderedQueryable<TEntity> queryable,
+        Expression<Func<TEntity, object>> SortBy,
+        SortDirection SortDirection
+    )
+    {
+        return SortDirection is SortDirection.Ascending
+            ? queryable.ThenBy(SortBy)
+            : queryable.OrderByDescending(SortBy);
+    }
+
     public static IQueryable<TEntity> Filter<TEntity>
     (
         this IQueryable<TEntity> queryable,
@@ -40,18 +64,6 @@ public static class QueryableUtilities
         return sortDirection is SortDirection.Ascending 
             ? queryable.OrderBy(expression)
             : queryable.OrderByDescending(expression);
-    }
-
-    public static IQueryable<TEntity> Page<TEntity>
-    (
-        this IQueryable<TEntity> queryable,
-        int skip,
-        int take
-    )
-    {
-        return queryable
-            .Skip(skip)
-            .Take(take);
     }
 
     public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> queryable, string propertyName)

@@ -40,19 +40,36 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
             return _validator.Failure<CreateProductResponse>();
         }
 
-        var productToCreate = Product.Create(
-            ProductId.New(),
-            productNameResult.Value,
-            priceResult.Value,
-            uomCodeResult.Value,
-            revisionResult.Value);
+        Product createdProduct = CreateProduct(productNameResult, priceResult, uomCodeResult, revisionResult);
+
+        //There is not need SaveChanges because is done in the Pipeline (transaction pipeline)
+        //This only a checkpoint
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        var response = createdProduct.ToCreateResponse();
+
+        return Result.Create(response);
+    }
+
+    private Product CreateProduct
+    (
+        Result<ProductName> productNameResult, 
+        Result<Price> priceResult, 
+        Result<UomCode> uomCodeResult, 
+        Result<Revision> revisionResult
+    )
+    {
+        var productToCreate = Product.Create
+        (
+            id: ProductId.New(),
+            productName: productNameResult.Value,
+            price: priceResult.Value,
+            uomCode: uomCodeResult.Value,
+            revision: revisionResult.Value
+        );
 
         _productRepository.Create(productToCreate);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        var response = productToCreate.ToCreateResponse();
-            
-        return Result.Create(response);
+        return productToCreate;
     }
 }

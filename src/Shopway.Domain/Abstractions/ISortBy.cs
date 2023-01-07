@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Enums;
 
-namespace Shopway.Application.Abstractions;
+namespace Shopway.Domain.Abstractions;
 
 public interface ISortBy
 {
@@ -12,8 +12,17 @@ public interface ISortBy
         params (SortDirection? SortDirection, string Property)[] items
     )
     {
-        var result = items
-            .Single(x => x.SortDirection is not null);
+        (SortDirection? SortDirection, string Property) result;
+
+        try
+        {
+            result = items
+                .Single(x => x.SortDirection is not null);
+        }
+        catch
+        {
+            throw new InvalidOperationException("Multiple SortBy properties selected.");
+        }
 
         result.Property = result.Property[2..];
 
@@ -25,8 +34,17 @@ public interface ISortBy
         params (SortDirection? SortDirection, string Property)[] items
     )
     {
-        var result = items
-            .Single(x => x.SortDirection is not null);
+        (SortDirection? SortDirection, string Property) result;
+
+        try
+        {
+            result = items
+                .Single(x => x.SortDirection is not null);
+        }
+        catch
+        {
+            throw new InvalidOperationException("Multiple ThenBy properties selected.");
+        }
 
         result.Property = result.Property[6..];
 

@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Persistence.Specifications.Products;
 

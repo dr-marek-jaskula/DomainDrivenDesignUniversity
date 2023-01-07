@@ -1,7 +1,6 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Application.Mapping;

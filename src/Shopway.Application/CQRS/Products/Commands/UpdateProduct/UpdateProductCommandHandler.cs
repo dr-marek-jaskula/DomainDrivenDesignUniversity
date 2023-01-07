@@ -27,7 +27,8 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
     {
         Result<Price> priceResult = Price.Create(command.Price);
 
-        _validator.Validate(priceResult);
+        _validator
+            .Validate(priceResult);
 
         if (_validator.IsInvalid)
         {

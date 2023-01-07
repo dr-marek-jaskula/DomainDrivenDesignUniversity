@@ -53,7 +53,8 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
         {
             Result<Description> descriptionResult = Description.Create(command.Description);
 
-            _validator.Validate(descriptionResult);
+            _validator
+                .Validate(descriptionResult);
 
             if (_validator.IsInvalid)
             {
@@ -67,7 +68,8 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
         {
             Result<Stars> starsResult = Stars.Create((decimal)command.Stars);
 
-            _validator.Validate(starsResult);
+            _validator
+                .Validate(starsResult);
 
             if (_validator.IsInvalid)
             {

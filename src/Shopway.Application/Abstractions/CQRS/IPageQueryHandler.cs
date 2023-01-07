@@ -5,13 +5,10 @@ using Shopway.Domain.Results;
 
 namespace Shopway.Application.Abstractions.CQRS;
 
-public interface IPageQuery<TResponse, TFilter, TSortBy> : IRequest<IResult<PageResponse<TResponse>>>
+public interface IPageQueryHandler<TQuery, TResponse, TFilter, TSortBy> : IRequestHandler<TQuery, IResult<PageResponse<TResponse>>>
+    where TQuery : IPageQuery<TResponse, TFilter, TSortBy>
     where TResponse : IResponse
     where TFilter : IFilter
     where TSortBy : ISortBy
 {
-    int PageNumber { get; }
-    int PageSize { get; }
-    TFilter? Filter { get; }
-    TSortBy? Order { get; }
 }

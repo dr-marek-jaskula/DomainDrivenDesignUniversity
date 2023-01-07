@@ -36,19 +36,26 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
             return _validator.Failure<CreateOrderResponse>();
         }
 
-        var orderToCreate = Order.Create(
-            OrderId.New(),
-            ProductId.New(command.ProductId),
-            amountResult.Value,
-            PersonId.New(command.CustomerId),
-            discountResult.Value);
-
-        _orderRepository.Create(orderToCreate);
+        Order createdOrder = CreateOrder(command, amountResult, discountResult);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var response = orderToCreate.ToCreateResponse();
+        var response = createdOrder.ToCreateResponse();
 
         return Result.Create(response);
+    }
+
+    private Order CreateOrder(CreateOrderCommand command, Result<Amount> amountResult, Result<Discount> discountResult)
+    {
+        var orderToCreate = Order.Create(
+            id: OrderId.New(),
+            productId: ProductId.New(command.ProductId),
+            amount: amountResult.Value,
+            customerId: PersonId.New(command.CustomerId),
+            discount: discountResult.Value);
+
+        _orderRepository.Create(orderToCreate);
+
+        return orderToCreate;
     }
 }

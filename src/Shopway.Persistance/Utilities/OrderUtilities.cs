@@ -1,9 +1,9 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.CQRS;
+﻿using Shopway.Domain.Utilities;
 using Shopway.Domain.Enums;
 using Shopway.Domain.Primitives;
+using Shopway.Domain.Abstractions;
 
-namespace Shopway.Application.Utilities;
+namespace Shopway.Persistence.Utilities;
 
 public static class OrderUtilities
 {
