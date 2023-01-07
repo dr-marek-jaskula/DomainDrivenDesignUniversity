@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.CQRS;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 

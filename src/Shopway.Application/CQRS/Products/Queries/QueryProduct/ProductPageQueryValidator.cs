@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using Shopway.Application.Abstractions;
 using Shopway.Domain.Enums;
-using static Shopway.Application.CQRS.Products.Queries.QueryProduct.ProductPageQuery;
+using Shopway.Persistence.Specifications.Products;
 
 namespace Shopway.Application.CQRS.Products.Queries.QueryProduct;
 
@@ -21,8 +20,13 @@ internal sealed class ProductPageQueryValidator : AbstractValidator<ProductPageQ
             .Must(ValidateProductPageOrder);
     }
 
-    private static bool ValidateProductPageOrder(ProductOrder productPageOrder)
+    private static bool ValidateProductPageOrder(ProductOrder? productPageOrder)
     {
+        if (productPageOrder is null)
+        {
+            return true;
+        }
+
         var sortByArray = new SortDirection?[]
         {
             productPageOrder.ByProductName,
