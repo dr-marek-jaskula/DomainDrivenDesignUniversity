@@ -4,8 +4,8 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
-using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.Mapping;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductById;
 
@@ -25,7 +25,7 @@ internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQ
         var product = await _productRepository.GetByIdAsync(query.Id, cancellationToken);
 
         _validator
-            .If(product is null, thenError: HttpErrors.NotFound(nameof(Product), query.Id));
+            .If(product is null, thenError: NotFound(nameof(Product), query.Id));
 
         if (_validator.IsInvalid)
         {

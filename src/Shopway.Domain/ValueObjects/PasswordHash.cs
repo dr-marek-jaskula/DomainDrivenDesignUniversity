@@ -2,6 +2,7 @@
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 using System.Text;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -19,14 +20,14 @@ public sealed class PasswordHash : ValueObject
     {
         if (string.IsNullOrWhiteSpace(passwordHash))
         {
-            return Result.Failure<PasswordHash>(DomainErrors.PasswordHashError.Empty);
+            return Result.Failure<PasswordHash>(PasswordHashError.Empty);
         }
 
         var numberOfbytes = Encoding.ASCII.GetByteCount(passwordHash);
 
         if (numberOfbytes is not BytesLong)
         {
-            return Result.Failure<PasswordHash>(DomainErrors.PasswordHashError.BytesLong);
+            return Result.Failure<PasswordHash>(PasswordHashError.BytesLong);
         }
 
         return new PasswordHash(passwordHash);

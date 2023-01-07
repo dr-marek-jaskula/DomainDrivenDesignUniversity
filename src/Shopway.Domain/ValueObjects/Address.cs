@@ -3,6 +3,7 @@ using Shopway.Domain.Utilities;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -83,7 +84,9 @@ public sealed class Address : ValueObject
         yield return Building;
 
         if (Flat is not null)
+        {
             yield return Flat;
+        }
     }
 
     #region Validation Methods
@@ -92,8 +95,8 @@ public sealed class Address : ValueObject
     {
         return country switch
         {
-            string when country.IsNullOrEmptyOrWhiteSpace() => (false, DomainErrors.AddressError.EmptyCountry),
-            string when AvailableCountries.Contains(country) => (false, DomainErrors.AddressError.UnsupportedCountry),
+            string when country.IsNullOrEmptyOrWhiteSpace() => (false, AddressError.EmptyCountry),
+            string when AvailableCountries.Contains(country) => (false, AddressError.UnsupportedCountry),
             _ => (true, Error.None)
         };
     }
@@ -102,8 +105,8 @@ public sealed class Address : ValueObject
     {
         return city switch
         {
-            string when city.IsNullOrEmptyOrWhiteSpace() => (false, DomainErrors.AddressError.EmptyCity),
-            string when city.ContainsIllegalCharacter() || city.ContainsDigit() => (false, DomainErrors.AddressError.ContainsIllegalCharacterOrDigit),
+            string when city.IsNullOrEmptyOrWhiteSpace() => (false, AddressError.EmptyCity),
+            string when city.ContainsIllegalCharacter() || city.ContainsDigit() => (false, AddressError.ContainsIllegalCharacterOrDigit),
             _ => (true, Error.None)
         };
     }
@@ -114,7 +117,7 @@ public sealed class Address : ValueObject
 
         return result.Success switch
         {
-            false => (false, DomainErrors.AddressError.ZipCodeDoesNotMatch),
+            false => (false, AddressError.ZipCodeDoesNotMatch),
             _ => (true, Error.None)
         };
     }
@@ -123,8 +126,8 @@ public sealed class Address : ValueObject
     {
         return street switch
         {
-            string when street.IsNullOrEmptyOrWhiteSpace() => (false, DomainErrors.AddressError.EmptyCity),
-            string when street.ContainsIllegalCharacter() => (false, DomainErrors.AddressError.ContainsIllegalCharacter),
+            string when street.IsNullOrEmptyOrWhiteSpace() => (false, AddressError.EmptyCity),
+            string when street.ContainsIllegalCharacter() => (false, AddressError.ContainsIllegalCharacter),
             _ => (true, Error.None)
         };
     }
@@ -133,7 +136,7 @@ public sealed class Address : ValueObject
     {
         return building switch
         {
-            < MinBuildingNumber or > MaxBuildingNumber => (false, DomainErrors.AddressError.WrongBuildingNumber),
+            < MinBuildingNumber or > MaxBuildingNumber => (false, AddressError.WrongBuildingNumber),
             _ => (true, Error.None)
         };
     }
@@ -143,7 +146,7 @@ public sealed class Address : ValueObject
         return flat switch
         {
             null => (true, Error.None),
-            < MinFlatNumber or > MaxFlatNumber => (false, DomainErrors.AddressError.WrongFlatNumber),
+            < MinFlatNumber or > MaxFlatNumber => (false, AddressError.WrongFlatNumber),
             _ => (true, Error.None)
         };
     }

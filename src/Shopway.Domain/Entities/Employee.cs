@@ -5,6 +5,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.Entities;
 
@@ -72,7 +73,7 @@ public sealed class Employee : Person
             user,
             hireDate);
 
-        employee.RaiseDomainEvent(new EmployeeRegisteredDomainEvent(Guid.NewGuid(), employee.Id));
+        employee.RaiseDomainEvent(EmployeeRegisteredDomainEvent.New(employee.Id));
 
         return employee;
     }
@@ -81,7 +82,7 @@ public sealed class Employee : Person
     {
         if (_workItems.Contains(workItem))
         {
-            return Result.Failure<WorkItem>(DomainErrors.WorkItemError.AlreadyAssigned);
+            return Result.Failure<WorkItem>(WorkItemError.AlreadyAssigned);
         }
 
         _workItems.Add(workItem);

@@ -5,6 +5,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Application.Mapping;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 
@@ -24,7 +25,7 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
         var order = await _orderRepository.GetByIdAsync(query.Id, cancellationToken);
 
         _validator
-            .If(order is null, thenError: HttpErrors.NotFound(nameof(Order), query.Id));
+            .If(order is null, thenError: NotFound(nameof(Order), query.Id));
 
         if (_validator.IsInvalid)
         {

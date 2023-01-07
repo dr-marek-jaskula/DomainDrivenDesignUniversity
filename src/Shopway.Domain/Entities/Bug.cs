@@ -43,7 +43,7 @@ public sealed class Bug : WorkItem
             status,
             employeeId);
 
-        bug.RaiseDomainEvent(new BugRegisteredDomainEvent(Guid.NewGuid(), bug.Id));
+        bug.RaiseDomainEvent(BugRegisteredDomainEvent.New(bug.Id));
 
         return bug;
     }

@@ -6,8 +6,8 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
-using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 
@@ -60,7 +60,7 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
         }
         catch
         {
-            return Result.Failure<RemoveProductResponse>(HttpErrors.NotFound(nameof(Product), command.Id));
+            return Result.Failure<RemoveProductResponse>(NotFound(nameof(Product), command.Id));
         }
     }
 }

@@ -2,6 +2,7 @@
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -19,12 +20,12 @@ public sealed class PhoneNumber : ValueObject
     {
         if (string.IsNullOrEmpty(number))
         {
-            return Result.Failure<PhoneNumber>(DomainErrors.PhoneNumberError.Empty);
+            return Result.Failure<PhoneNumber>(PhoneNumberError.Empty);
         }
 
         if (!_regex.IsMatch(number))
         {
-            return Result.Failure<PhoneNumber>(DomainErrors.PhoneNumberError.Invalid);
+            return Result.Failure<PhoneNumber>(PhoneNumberError.Invalid);
         }
 
         return new PhoneNumber(number);

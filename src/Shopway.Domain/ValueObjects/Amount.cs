@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -20,12 +21,12 @@ public sealed class Amount : ValueObject
     {
         if (amount < MinAmount)
         {
-            return Result.Failure<Amount>(DomainErrors.AmountError.TooLow);
+            return Result.Failure<Amount>(AmountError.TooLow);
         }
 
         if (amount > MaxAmount)
         {
-            return Result.Failure<Amount>(DomainErrors.AmountError.TooHigh);
+            return Result.Failure<Amount>(AmountError.TooHigh);
         }
 
         return new Amount(amount);

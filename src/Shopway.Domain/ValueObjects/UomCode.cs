@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -28,7 +29,7 @@ public sealed class UomCode : ValueObject
     {
         if (!AllowedUomCodes.Contains(uomCode))
         {
-            return Result.Failure<UomCode>(DomainErrors.UomCodeError.Invalid);
+            return Result.Failure<UomCode>(UomCodeError.Invalid);
         }
 
         return new UomCode(uomCode);

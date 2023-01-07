@@ -53,7 +53,7 @@ public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
             customerId,
             discount);
 
-        order.RaiseDomainEvent(new OrderCreatedDomainEvent(Guid.NewGuid(), order.Id));
+        order.RaiseDomainEvent(OrderCreatedDomainEvent.New(order.Id));
 
         return order;
     }

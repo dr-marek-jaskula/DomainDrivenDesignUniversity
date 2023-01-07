@@ -6,6 +6,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
 
@@ -29,7 +30,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         _validator
-            .If(product is null, thenError: HttpErrors.NotFound(nameof(Product), command.ProductId));
+            .If(product is null, thenError: NotFound(nameof(Product), command.ProductId));
 
         if (_validator.IsInvalid)
         {

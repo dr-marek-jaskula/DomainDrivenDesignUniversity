@@ -2,6 +2,7 @@
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -22,17 +23,17 @@ public sealed class Email : ValueObject
     {
         if (string.IsNullOrEmpty(email))
         {
-            return Result.Failure<Email>(DomainErrors.EmailError.Empty);
+            return Result.Failure<Email>(EmailError.Empty);
         }
 
         if (email.Length > MaxLength)
         {
-            return Result.Failure<Email>(DomainErrors.EmailError.Empty);
+            return Result.Failure<Email>(EmailError.Empty);
         }
 
         if (!_regex.IsMatch(email))
         {
-            return Result.Failure<Email>(DomainErrors.EmailError.Invalid);
+            return Result.Failure<Email>(EmailError.Invalid);
         }
 
         return new Email(email);

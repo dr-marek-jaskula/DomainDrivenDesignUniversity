@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -19,12 +20,12 @@ public sealed class Description : ValueObject
     {
         if (string.IsNullOrWhiteSpace(description))
         {
-            return Result.Failure<Description>(DomainErrors.DescriptionError.Empty);
+            return Result.Failure<Description>(DescriptionError.Empty);
         }
 
         if (description.Length > MaxLength)
         {
-            return Result.Failure<Description>(DomainErrors.DescriptionError.TooLong);
+            return Result.Failure<Description>(DescriptionError.TooLong);
         }
 
         return new Description(description);

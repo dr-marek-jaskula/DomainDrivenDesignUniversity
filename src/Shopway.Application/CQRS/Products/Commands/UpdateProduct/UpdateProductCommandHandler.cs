@@ -6,6 +6,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 
@@ -36,7 +37,7 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
         var productToUpdate = await _productRepository.GetByIdAsync(command.Id, cancellationToken);
 
         _validator
-            .If(productToUpdate is null, thenError: HttpErrors.NotFound(nameof(Product), command.Id));
+            .If(productToUpdate is null, thenError: NotFound(nameof(Product), command.Id));
 
         if (_validator.IsInvalid)
         {

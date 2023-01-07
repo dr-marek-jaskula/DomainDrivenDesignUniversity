@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -20,12 +21,12 @@ public sealed class Priority : ValueObject
     {
         if (priority < HighestPriority)
         {
-            return Result.Failure<Priority>(DomainErrors.PriorityError.TooHigh);
+            return Result.Failure<Priority>(PriorityError.TooHigh);
         }
 
         if (priority > LowestPriority)
         {
-            return Result.Failure<Priority>(DomainErrors.PriorityError.TooHigh);
+            return Result.Failure<Priority>(PriorityError.TooHigh);
         }
 
         return new Priority(priority);

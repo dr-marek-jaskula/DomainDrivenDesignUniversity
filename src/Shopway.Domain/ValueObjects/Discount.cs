@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -20,12 +21,12 @@ public sealed class Discount : ValueObject
     {
         if (price < MinDiscount)
         {
-            return Result.Failure<Discount>(DomainErrors.DiscountError.TooLow);
+            return Result.Failure<Discount>(DiscountError.TooLow);
         }
 
         if (price > MaxDiscount)
         {
-            return Result.Failure<Discount>(DomainErrors.DiscountError.TooHigh);
+            return Result.Failure<Discount>(DiscountError.TooHigh);
         }
 
         return new Discount(decimal.Round(price, 2));

@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -19,7 +20,7 @@ public sealed class Stars : ValueObject
     {
         if (!AdmissibleStars.Contains(stars))
         {
-            return Result.Failure<Stars>(DomainErrors.StarsError.Invalid);
+            return Result.Failure<Stars>(StarsError.Invalid);
         }
 
         return new Stars(stars);

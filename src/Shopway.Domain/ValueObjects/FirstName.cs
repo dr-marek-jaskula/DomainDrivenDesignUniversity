@@ -2,6 +2,7 @@
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -20,22 +21,22 @@ public sealed class FirstName : ValueObject
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
-            return Result.Failure<FirstName>(DomainErrors.FirstNameError.Empty);
+            return Result.Failure<FirstName>(FirstNameError.Empty);
         }
 
         if (firstName.Length > MaxLength)
         {
-            return Result.Failure<FirstName>(DomainErrors.FirstNameError.TooLong);
+            return Result.Failure<FirstName>(FirstNameError.TooLong);
         }
 
         if (firstName.ContainsIllegalCharacter())
         {
-            return Result.Failure<FirstName>(DomainErrors.FirstNameError.ContainsIllegalCharacter);
+            return Result.Failure<FirstName>(FirstNameError.ContainsIllegalCharacter);
         }
 
         if (firstName.ContainsDigit())
         {
-            return Result.Failure<FirstName>(DomainErrors.FirstNameError.ContainsDigit);
+            return Result.Failure<FirstName>(FirstNameError.ContainsDigit);
         }
 
         return new FirstName(firstName);

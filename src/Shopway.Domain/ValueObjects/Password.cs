@@ -2,6 +2,7 @@
 using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -22,22 +23,22 @@ public sealed class Password : ValueObject
     {
         if (string.IsNullOrWhiteSpace(password))
         {
-            return Result.Failure<Password>(DomainErrors.PasswordError.Empty);
+            return Result.Failure<Password>(PasswordError.Empty);
         }
 
         if (password.Length < MinLength)
         {
-            return Result.Failure<Password>(DomainErrors.PasswordError.TooShort);
+            return Result.Failure<Password>(PasswordError.TooShort);
         }
 
         if (password.Length > MaxLength)
         {
-            return Result.Failure<Password>(DomainErrors.PasswordError.TooLong);
+            return Result.Failure<Password>(PasswordError.TooLong);
         }
 
         if (!_regex.IsMatch(password))
         {
-            return Result.Failure<Password>(DomainErrors.PasswordError.Invalid);
+            return Result.Failure<Password>(PasswordError.Invalid);
         }
 
         return new Password(password);

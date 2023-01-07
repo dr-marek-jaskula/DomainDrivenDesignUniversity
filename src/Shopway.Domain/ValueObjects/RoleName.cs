@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Primitives;
+﻿using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -23,7 +23,7 @@ public sealed class RoleName : ValueObject
     {
         if (!AllowedRoles.Contains(roleName))
         {
-            return Result.Failure<RoleName>(DomainErrors.RoleNameError.Invalid);
+            return Result.Failure<RoleName>(RoleNameError.Invalid);
         }
 
         return new RoleName(roleName);

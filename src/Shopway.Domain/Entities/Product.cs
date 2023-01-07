@@ -49,7 +49,7 @@ public sealed class Product : AggregateRoot<ProductId>
             uomCode,
             revision);
 
-        product.RaiseDomainEvent(new ProductCreatedDomainEvent(Guid.NewGuid(), product.Id));
+        product.RaiseDomainEvent(ProductCreatedDomainEvent.New(product.Id));
 
         return product;
     }
@@ -66,7 +66,7 @@ public sealed class Product : AggregateRoot<ProductId>
 
         _reviews.Add(reviewToAdd);
         
-        RaiseDomainEvent(new ReviewAddedDomainEvent(Guid.NewGuid(), reviewToAdd.Id, Id));
+        RaiseDomainEvent(ReviewAddedDomainEvent.New(reviewToAdd.Id, Id));
 
         return reviewToAdd;
     }
