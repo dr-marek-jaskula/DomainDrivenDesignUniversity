@@ -27,7 +27,7 @@ public static class PageUtilities
         return Page(entities, totalCount, pageSize, pageNumber, toResponse);
     }
 
-    public static PageResponse<TRespone> Page<TEntity, TRespone>
+    private static PageResponse<TRespone> Page<TEntity, TRespone>
     (
         IEnumerable<TEntity> entities, 
         int totalCount, 

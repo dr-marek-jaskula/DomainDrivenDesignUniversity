@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Shopway.Application.Constants;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Specifications.Products;
 
@@ -8,16 +9,20 @@ internal sealed class ProductPageQueryValidator : AbstractValidator<ProductPageQ
 {
     public ProductPageQueryValidator()
     {
-        RuleFor(x => x.PageNumber)
-            .NotEmpty()
+        RuleFor(query => query.PageNumber)
             .GreaterThanOrEqualTo(1);
 
-        RuleFor(x => x.PageSize)
-            .NotEmpty()
-            .GreaterThanOrEqualTo(1);
+        RuleFor(query => query.PageSize).Custom((pageSize, context) =>
+        {
+            if (PageConstants.AllowedPageSizes.Contains(pageSize) is false)
+            { 
+                context.AddFailure($"PageSize", $"PageSize must be in: [{string.Join(",", PageConstants.AllowedPageSizes)}]");
+            }
+        });
 
-        RuleFor(x => x.Order)
-            .Must(ValidateProductPageOrder);
+        RuleFor(query => query.Order)
+            .Must(ValidateProductPageOrder)
+            .WithMessage("Multiple SortBy or ThenBy properties selected");
     }
 
     private static bool ValidateProductPageOrder(ProductOrder? productPageOrder)

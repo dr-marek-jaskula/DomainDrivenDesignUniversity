@@ -21,7 +21,7 @@ public interface ISortBy
         }
         catch
         {
-            throw new InvalidOperationException("Multiple SortBy properties selected.");
+            throw new InvalidOperationException("Multiple SortBy properties selected");
         }
 
         result.Property = result.Property[2..];
@@ -43,7 +43,7 @@ public interface ISortBy
         }
         catch
         {
-            throw new InvalidOperationException("Multiple ThenBy properties selected.");
+            throw new InvalidOperationException("Multiple ThenBy properties selected");
         }
 
         result.Property = result.Property[6..];

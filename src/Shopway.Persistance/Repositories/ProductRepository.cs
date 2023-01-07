@@ -61,5 +61,4 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
 
         entry.State = EntityState.Deleted;
     }
-
 }
