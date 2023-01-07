@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 
-namespace Shopway.App.Registration;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class FluentValidationRegistration
 {

@@ -3,7 +3,7 @@ using MediatR;
 using Shopway.Persistence.Repositories.Decorators;
 using Shopway.Domain.Repositories;
 
-namespace Shopway.App.Registration;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DecoractorsRegistration
 {

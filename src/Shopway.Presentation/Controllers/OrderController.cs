@@ -8,7 +8,7 @@ using Shopway.Presentation.Requests.Orders;
 
 namespace Shopway.Presentation.Controllers;
 
-[Route("api/order")]
+[Route("api/[controller]")]
 public sealed class OrderController : ApiController
 {
     public OrderController(ISender sender)

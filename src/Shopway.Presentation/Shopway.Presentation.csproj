@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shopway.Application\Shopway.Application.csproj" />
+    <ProjectReference Include="..\Shopway.Infrastructure\Shopway.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Shopway.Persistance\Shopway.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CQRS\Users\Events\" />
+    <Folder Include="CQRS\Users\Queries\" />
+  </ItemGroup>
+
 </Project>

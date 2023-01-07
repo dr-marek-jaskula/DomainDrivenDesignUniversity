@@ -1,4 +1,4 @@
-﻿namespace Shopway.App.Registration;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ControllerRegistration
 {

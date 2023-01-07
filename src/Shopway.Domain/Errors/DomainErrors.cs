@@ -95,6 +95,21 @@ public static class DomainErrors
             "LastName contains digit");
     }
 
+    public static class PremissionNameError
+    {
+        public static readonly Error Empty = new(
+            "PremissionName.Empty",
+            "PremissionName is empty");
+
+        public static readonly Error TooLong = new(
+            "PremissionName.TooLong",
+            $"PremissionName must be at most {PremissionName.MaxLength} characters long");
+
+        public static readonly Error ContainsIllegalCharacter = new(
+            "PremissionName.ContainsIllegalCharacter",
+            "PremissionName contains illegal character");
+    }
+
     public static class ProductNameError
     {
         public static readonly Error Empty = new(

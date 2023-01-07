@@ -1,7 +1,7 @@
 ﻿using Quartz;
 using Shopway.Infrastructure.BackgroundJobs;
 
-namespace Shopway.App.Registration;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class BackgroundServiceRegistration
 {

@@ -17,15 +17,14 @@ namespace Shopway.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Shopway.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<int>("Amount")
@@ -71,7 +70,6 @@ namespace Shopway.Persistence.Migrations
             modelBuilder.Entity("Shopway.Domain.Entities.Parents.Person", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<string>("ContactNumber")
@@ -86,6 +84,9 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
+
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -104,6 +105,8 @@ namespace Shopway.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.HasIndex(new[] { "Email" }, "IX_Person_Email")
                         .IsUnique();
 
@@ -113,12 +116,13 @@ namespace Shopway.Persistence.Migrations
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex(new[] { "Email" }, "UX_Person_Email"), new[] { "FirstName", "LastName" });
 
                     b.ToTable("Person", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Parents.WorkItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<string>("Description")
@@ -162,12 +166,13 @@ namespace Shopway.Persistence.Migrations
                     b.ToTable("WorkItem", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("WorkItem");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Payment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<decimal>("Discount")
@@ -178,7 +183,7 @@ namespace Shopway.Persistence.Migrations
                         .HasColumnType("datetimeoffset(2)");
 
                     b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -197,7 +202,6 @@ namespace Shopway.Persistence.Migrations
             modelBuilder.Entity("Shopway.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<decimal>("Price")
@@ -227,7 +231,6 @@ namespace Shopway.Persistence.Migrations
             modelBuilder.Entity("Shopway.Domain.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<DateTimeOffset>("CreatedOn")
@@ -238,7 +241,7 @@ namespace Shopway.Persistence.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<decimal>("Stars")
@@ -267,7 +270,6 @@ namespace Shopway.Persistence.Migrations
             modelBuilder.Entity("Shopway.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<string>("RoleName")
@@ -284,22 +286,22 @@ namespace Shopway.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f0529a95-7430-431c-ba09-6a232e775975"),
+                            Id = new Guid("67fc3131-eb26-499b-9535-08512efefd1a"),
                             RoleName = "Customer"
                         },
                         new
                         {
-                            Id = new Guid("9fa6f2bd-3bcb-4cef-8981-fb5197417d20"),
+                            Id = new Guid("080426a5-768b-485d-a76a-177937e756f2"),
                             RoleName = "Employee"
                         },
                         new
                         {
-                            Id = new Guid("628ceee1-45b5-4a8e-addc-2536942cd2bb"),
+                            Id = new Guid("c6e634b1-83e2-4736-8b2f-804db990c2bc"),
                             RoleName = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("1c6a2299-9842-4870-9a7a-16f4cff29407"),
+                            Id = new Guid("bdc91107-3047-4887-8754-a8ba60483a5c"),
                             RoleName = "Administrator"
                         });
                 });
@@ -307,7 +309,6 @@ namespace Shopway.Persistence.Migrations
             modelBuilder.Entity("Shopway.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<DateTimeOffset>("CreatedOn")
@@ -386,35 +387,23 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("PremissionName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id", "Name");
+                    b.HasKey("Id", "PremissionName");
 
                     b.ToTable("OutboxMessageConsumer", (string)null);
-                });
-
-            modelBuilder.Entity("Shopway.Domain.Entities.Bug", b =>
-                {
-                    b.HasBaseType("Shopway.Domain.Entities.Parents.WorkItem");
-
-                    b.HasDiscriminator().HasValue("Bug");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Customer", b =>
                 {
                     b.HasBaseType("Shopway.Domain.Entities.Parents.Person");
 
-                    b.Property<Guid?>("EmployeeId")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
                     b.Property<string>("Rank")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("VARCHAR(8)")
                         .HasDefaultValue("Standard");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -432,6 +421,13 @@ namespace Shopway.Persistence.Migrations
                     b.HasIndex("ManagerId");
 
                     b.ToTable("Employee", (string)null);
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Entities.Bug", b =>
+                {
+                    b.HasBaseType("Shopway.Domain.Entities.Parents.WorkItem");
+
+                    b.HasDiscriminator().HasValue("Bug");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Feature", b =>
@@ -470,6 +466,10 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Parents.Person", b =>
                 {
+                    b.HasOne("Shopway.Domain.Entities.Employee", null)
+                        .WithMany("Customers")
+                        .HasForeignKey("EmployeeId");
+
                     b.OwnsOne("Shopway.Domain.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -532,7 +532,9 @@ namespace Shopway.Persistence.Migrations
                 {
                     b.HasOne("Shopway.Domain.Entities.Product", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.User", b =>
@@ -554,14 +556,10 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Customer", b =>
                 {
-                    b.HasOne("Shopway.Domain.Entities.Employee", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("EmployeeId");
-
                     b.HasOne("Shopway.Domain.Entities.Parents.Person", null)
                         .WithOne()
                         .HasForeignKey("Shopway.Domain.Entities.Customer", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -570,7 +568,7 @@ namespace Shopway.Persistence.Migrations
                     b.HasOne("Shopway.Domain.Entities.Parents.Person", null)
                         .WithOne()
                         .HasForeignKey("Shopway.Domain.Entities.Employee", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Shopway.Domain.Entities.Employee", "Manager")

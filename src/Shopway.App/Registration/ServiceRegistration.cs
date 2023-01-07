@@ -6,7 +6,7 @@ using Shopway.Domain.Repositories;
 using Shopway.Persistence.Repositories;
 using Shopway.Infrastructure.Validators;
 
-namespace Shopway.App.Registration;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceRegistration
 {

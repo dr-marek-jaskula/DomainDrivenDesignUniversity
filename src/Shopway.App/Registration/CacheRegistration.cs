@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Shopway.App.Options;
 
-namespace Shopway.App.Registration;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class CacheRegistration
 {

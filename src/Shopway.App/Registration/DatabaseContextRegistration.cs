@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Shopway.App.Options;
 using Shopway.Persistence.Framework;
 
-namespace Shopway.App.Registration;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DatabaseContextRegistration
 {
