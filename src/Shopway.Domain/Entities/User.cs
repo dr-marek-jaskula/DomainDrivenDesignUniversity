@@ -1,3 +1,4 @@
+using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Primitives;
 using Shopway.Domain.StronglyTypedIds;
@@ -12,16 +13,17 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
     public PasswordHash PasswordHash { get; set; }
-    public RoleId RoleId { get; set; }
-    public Role? Role { get; set; }
     public PersonId? PersonId { get; set; }
     public Person? Person { get; set; }
+    public ICollection<Role> Roles { get; set; }
 
-    internal User(
+    internal User
+    (
         UserId id,
         Username username,
         Email email,
-        PasswordHash passwordHash)
+        PasswordHash passwordHash
+    )
         : base(id)
     {
         Username = username;
@@ -34,11 +36,13 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     {
     }
 
-    public static User Create(
+    public static User Create
+    (
         UserId id,
         Username username,
         Email email,
-        PasswordHash passwordHash)
+        PasswordHash passwordHash
+    )
     {
         var user = new User
         (
@@ -47,6 +51,8 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
             email,
             passwordHash
         );
+
+        user.RaiseDomainEvent(new UserRegisteredDomainEvent(Guid.NewGuid(), user.Id));
 
         return user;
     }

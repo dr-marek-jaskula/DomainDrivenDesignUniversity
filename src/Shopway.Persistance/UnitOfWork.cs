@@ -20,14 +20,14 @@ namespace Shopway.Persistence;
 //3. Move the logic from the interceptors to the UnitOfWork
 internal sealed class UnitOfWork : IUnitOfWork
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly ShopwayDbContext _dbContext;
 
-    public UnitOfWork(ApplicationDbContext dbContext)
+    public UnitOfWork(ShopwayDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public ApplicationDbContext Context => _dbContext;
+    public ShopwayDbContext Context => _dbContext;
 
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {

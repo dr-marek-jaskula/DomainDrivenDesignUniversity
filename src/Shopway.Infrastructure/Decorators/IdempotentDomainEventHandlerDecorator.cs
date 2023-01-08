@@ -11,11 +11,11 @@ public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent> : IDomai
     where TDomainEvent : IDomainEvent
 {
     private readonly INotificationHandler<TDomainEvent> _decorated;
-    private readonly ApplicationDbContext _dbContext;
+    private readonly ShopwayDbContext _dbContext;
 
     public IdempotentDomainEventHandlerDecorator(
         INotificationHandler<TDomainEvent> decorated,
-        ApplicationDbContext dbContext)
+        ShopwayDbContext dbContext)
     {
         _decorated = decorated;
         _dbContext = dbContext;

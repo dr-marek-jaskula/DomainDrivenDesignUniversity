@@ -16,25 +16,18 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
         builder.HasKey(r => r.Id);
 
         builder.Property(r => r.Id)
-            .HasConversion(id => id.Value, guid => RoleId.New(guid))
-            .HasColumnType("UNIQUEIDENTIFIER");
+            .HasMaxLength(128);
 
-        builder.Property(r => r.RoleName)
-            .HasConversion(x => x.Value, v => RoleName.Create(v).Value)
-            .HasDefaultValue(RoleName.Create(RoleName.AllowedRoles.First()).Value)
-            .HasColumnType("VARCHAR(13)")
-            .HasComment("Customer, Employee, Manager, Administrator");
+        builder.Property(r => r.Name)
+            .HasColumnType("VARCHAR(128)");
+
+        builder.HasMany(x => x.Permissions)
+            .WithMany();
 
         builder.HasMany(r => r.Users)
-            .WithOne(u => u.Role)
-            .HasForeignKey(u => u.RoleId);
+            .WithMany(u => u.Roles);
 
         //Inserting static data (data that are not related to other)
-        builder.HasData(
-            Role.Create(RoleId.New(), RoleName.Create("Customer").Value),
-            Role.Create(RoleId.New(), RoleName.Create("Employee").Value),
-            Role.Create(RoleId.New(), RoleName.Create("Manager").Value),
-            Role.Create(RoleId.New(), RoleName.Create("Administrator").Value)
-            );
+        builder.HasData(Role.GetValues());
     }
 }

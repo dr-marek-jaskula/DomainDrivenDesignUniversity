@@ -5,13 +5,6 @@ namespace Shopway.Domain.Errors;
 //The static class that gathers all domain errors in one place
 public static class DomainErrors
 {
-    public static class RoleNameError
-    {
-        public static readonly Error Invalid = new(
-            "RoleName.Invalid",
-            $"RoleName name must be: {string.Join(',', ValueObjects.RoleName.AllowedRoles)}");
-    }
-
     public static class UsernameError
     {
         public static readonly Error Empty = new(
@@ -93,21 +86,6 @@ public static class DomainErrors
         public static readonly Error ContainsDigit = new(
             "LastName.ContainsDigit",
             "LastName contains digit");
-    }
-
-    public static class PremissionNameError
-    {
-        public static readonly Error Empty = new(
-            "PremissionName.Empty",
-            "PremissionName is empty");
-
-        public static readonly Error TooLong = new(
-            "PremissionName.TooLong",
-            $"PremissionName must be at most {PremissionName.MaxLength} characters long");
-
-        public static readonly Error ContainsIllegalCharacter = new(
-            "PremissionName.ContainsIllegalCharacter",
-            "PremissionName contains illegal character");
     }
 
     public static class ProductNameError

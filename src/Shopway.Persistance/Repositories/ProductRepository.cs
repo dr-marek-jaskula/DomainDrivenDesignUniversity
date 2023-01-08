@@ -12,7 +12,7 @@ namespace Shopway.Persistence.Repositories;
 
 public sealed class ProductRepository : BaseRepository, IProductRepository
 {
-    public ProductRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public ProductRepository(ShopwayDbContext dbContext) : base(dbContext)
     {
     }
 

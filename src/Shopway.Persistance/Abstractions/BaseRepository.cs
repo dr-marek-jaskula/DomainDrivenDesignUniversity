@@ -9,9 +9,9 @@ namespace Shopway.Persistence.Abstractions;
 
 public abstract class BaseRepository
 {
-    protected readonly ApplicationDbContext _dbContext;
+    protected readonly ShopwayDbContext _dbContext;
 
-    protected BaseRepository(ApplicationDbContext dbContext)
+    protected BaseRepository(ShopwayDbContext dbContext)
     {
         _dbContext = dbContext;
     }

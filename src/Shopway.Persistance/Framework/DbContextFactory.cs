@@ -4,15 +4,15 @@ using Microsoft.Extensions.Configuration;
 
 namespace Shopway.Persistence.Framework;
 
-public sealed class MyDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+public sealed class MyDbContextFactory : IDesignTimeDbContextFactory<ShopwayDbContext>
 {
-    public ApplicationDbContext CreateDbContext(string[]? args = null)
+    public ShopwayDbContext CreateDbContext(string[]? args = null)
     {
         var configuration = new ConfigurationBuilder().AddJsonFile("connectionString.json").Build();
 
-        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<ShopwayDbContext>();
         optionsBuilder.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]);
 
-        return new ApplicationDbContext(optionsBuilder.Options);
+        return new ShopwayDbContext(optionsBuilder.Options);
     }
 }

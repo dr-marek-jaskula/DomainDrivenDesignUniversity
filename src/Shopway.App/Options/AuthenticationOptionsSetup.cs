@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Shopway.Infrastructure.Authentication;
 
 namespace Shopway.App.Options;
 

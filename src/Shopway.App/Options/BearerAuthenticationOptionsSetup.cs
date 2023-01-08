@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Shopway.Infrastructure.Authentication;
 using System.Text;
 
 namespace Shopway.App.Options;

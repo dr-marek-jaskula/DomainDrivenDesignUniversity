@@ -1,20 +1,17 @@
 using Shopway.Domain.Primitives;
-using Shopway.Domain.StronglyTypedIds;
-using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Role : Entity<RoleId>
+public sealed class Role : Enumeration<Permission>
 {
-    private readonly List<User> _users = new();
+    public static readonly Role Customer = new(1, nameof(Customer));
+    public static readonly Role Employee = new(2, nameof(Employee));
+    public static readonly Role Manager = new(3, nameof(Manager));
+    public static readonly Role Administrator = new(4, nameof(Administrator));
 
-    public RoleName RoleName { get; private set; }
-    public IReadOnlyCollection<User> Users => _users;
-
-    internal Role(RoleId Id, RoleName roleName)
-        : base(Id)
+    public Role(int id, string name)
+        : base(id, name)
     {
-        RoleName = roleName;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -22,10 +19,6 @@ public sealed class Role : Entity<RoleId>
     {
     }
 
-    public static Role Create(RoleId id, RoleName roleName)
-    {
-        var role = new Role(id, roleName);
-
-        return role;
-    }
+    public ICollection<User> Users { get; set; }
+    public ICollection<Permission> Permissions { get; set; }
 }

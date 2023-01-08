@@ -10,7 +10,7 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(ShopwayDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -387,10 +387,10 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PremissionName")
+                    b.Property<string>("PermissionName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id", "PremissionName");
+                    b.HasKey("Id", "PermissionName");
 
                     b.ToTable("OutboxMessageConsumer", (string)null);
                 });

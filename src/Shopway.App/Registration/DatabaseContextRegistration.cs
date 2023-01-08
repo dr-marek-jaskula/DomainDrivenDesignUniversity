@@ -10,7 +10,7 @@ public static class DatabaseContextRegistration
 {
     public static IServiceCollection RegisterDatabaseContext(this IServiceCollection services, bool isDevelopment)
     {
-        services.AddDbContextPool<ApplicationDbContext>((serviceProvider, optionsBuilder) =>
+        services.AddDbContextPool<ShopwayDbContext>((serviceProvider, optionsBuilder) =>
         {
             var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
 

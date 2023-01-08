@@ -12,9 +12,9 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     where TRequest : IRequest<TResponse>
     where TResponse : class, IResult
 {
-	private readonly ApplicationDbContext _context;
+	private readonly ShopwayDbContext _context;
 
-	public ReferenceValidationPipeline(ApplicationDbContext context)
+	public ReferenceValidationPipeline(ShopwayDbContext context)
 	{
 		_context = context;
 	}

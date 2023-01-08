@@ -2,9 +2,9 @@
 
 namespace Shopway.Persistence.Framework;
 
-public sealed class ApplicationDbContext : DbContext
+public sealed class ShopwayDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions options)
+    public ShopwayDbContext(DbContextOptions options)
         : base(options)
     {
     }

@@ -71,7 +71,7 @@ try
 
     using (var applyMigrationsScope = serviceScopeFactory.CreateScope())
     {
-        var dbContext = applyMigrationsScope.ServiceProvider.GetService<ApplicationDbContext>();
+        var dbContext = applyMigrationsScope.ServiceProvider.GetService<ShopwayDbContext>();
 
         if (dbContext is null)
             throw new UnavailableException("Database is not available");

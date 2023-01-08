@@ -36,12 +36,8 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .HasConversion(x => x.Value, v => PasswordHash.Create(v).Value)
             .HasColumnType("NCHAR(514)"); //512 + 2 for 'N' characters
 
-        builder.Property(u => u.RoleId)
-            .HasColumnType("UNIQUEIDENTIFIER");
-
-        builder.HasOne(u => u.Role)
-            .WithMany(r => r.Users)
-            .HasForeignKey(u => u.RoleId);
+        builder.HasMany(u => u.Roles)
+            .WithMany(r => r.Users);
 
         builder.HasOne(u => u.Person)
             .WithOne(c => c.User)

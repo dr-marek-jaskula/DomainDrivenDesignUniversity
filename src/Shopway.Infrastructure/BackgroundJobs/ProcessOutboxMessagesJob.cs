@@ -17,12 +17,12 @@ namespace Shopway.Infrastructure.BackgroundJobs;
 public sealed class ProcessOutboxMessagesJob : IJob
 {
     //We can inject scoped services, because Quartz jobs have scoped lifetime
-    private readonly ApplicationDbContext _dbContext;
+    private readonly ShopwayDbContext _dbContext;
     private readonly IPublisher _publisher;
     private readonly ILoggerAdapter<ProcessOutboxMessagesJob> _logger;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public ProcessOutboxMessagesJob(ApplicationDbContext dbContext, IPublisher publisher, ILoggerAdapter<ProcessOutboxMessagesJob> logger, IDateTimeProvider dateTimeProvider)
+    public ProcessOutboxMessagesJob(ShopwayDbContext dbContext, IPublisher publisher, ILoggerAdapter<ProcessOutboxMessagesJob> logger, IDateTimeProvider dateTimeProvider)
     {
         _dbContext = dbContext;
         _publisher = publisher;

@@ -8,7 +8,7 @@ namespace Shopway.Persistence.Repositories;
 
 public sealed class ReviewRepository : BaseRepository, IReviewRepository
 {
-    public ReviewRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public ReviewRepository(ShopwayDbContext dbContext) : base(dbContext)
     {
     }
 

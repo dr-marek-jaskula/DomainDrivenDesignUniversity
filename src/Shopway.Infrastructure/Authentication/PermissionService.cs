@@ -7,9 +7,9 @@ namespace Shopway.Infrastructure.Authentication;
 
 public class PermissionService : IPermissionService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ShopwayDbContext _context;
 
-    public PermissionService(ApplicationDbContext context)
+    public PermissionService(ShopwayDbContext context)
     {
         _context = context;
     }

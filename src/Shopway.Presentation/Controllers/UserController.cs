@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Shopway.Presentation.Requests.Users;
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
+using Shopway.Infrastructure.Authentication;
+using Shopway.Domain.Enums;
 
 namespace Gatherly.Presentation.Controllers;
 
@@ -16,6 +18,7 @@ public sealed class UserController : ApiController
     }
 
     [HttpPost("[action]")]
+    [HasPermission(Permission.Read)]
     public async Task<IActionResult> Login
     (
         [FromBody] LoginRequest request,

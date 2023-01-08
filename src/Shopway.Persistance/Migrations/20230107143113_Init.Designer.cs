@@ -11,7 +11,7 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(ShopwayDbContext))]
     [Migration("20230107143113_Init")]
     partial class Init
     {
@@ -390,10 +390,10 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PremissionName")
+                    b.Property<string>("PermissionName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id", "PremissionName");
+                    b.HasKey("Id", "PermissionName");
 
                     b.ToTable("OutboxMessageConsumer", (string)null);
                 });

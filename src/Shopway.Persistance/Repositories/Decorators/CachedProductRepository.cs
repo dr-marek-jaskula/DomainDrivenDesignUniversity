@@ -28,9 +28,9 @@ public sealed class CachedProductRepository : IProductRepository
     //Cache with Redis
     private readonly IDistributedCache _distributedCache;
     //This is if we need to track the entity, when it is obtained from the Redis Cache
-    private readonly ApplicationDbContext _context;
+    private readonly ShopwayDbContext _context;
 
-    public CachedProductRepository(IProductRepository decorated, IDistributedCache distributedCache, ApplicationDbContext context)
+    public CachedProductRepository(IProductRepository decorated, IDistributedCache distributedCache, ShopwayDbContext context)
     {
         _decorated = decorated;
         _distributedCache = distributedCache;
