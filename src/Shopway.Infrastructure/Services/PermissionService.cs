@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Infrastructure.Abstractions;
 
-namespace Shopway.Infrastructure.Authentication;
+namespace Shopway.Infrastructure.Services;
 
 public class PermissionService : IPermissionService
 {

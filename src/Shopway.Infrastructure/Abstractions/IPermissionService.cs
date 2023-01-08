@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.StronglyTypedIds;
 
-namespace Shopway.Infrastructure.Authentication;
+namespace Shopway.Infrastructure.Abstractions;
 
 public interface IPermissionService
 {

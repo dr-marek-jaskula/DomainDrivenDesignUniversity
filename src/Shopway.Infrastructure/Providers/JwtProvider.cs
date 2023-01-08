@@ -5,8 +5,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Entities;
+using Shopway.Infrastructure.Authentication;
+using Shopway.Infrastructure.Policies;
 
-namespace Shopway.Infrastructure.Authentication;
+namespace Shopway.Infrastructure.Providers;
 
 internal sealed class JwtProvider : IJwtProvider
 {
@@ -21,8 +23,14 @@ internal sealed class JwtProvider : IJwtProvider
     {
         var claims = new Claim[]
         {
-            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email.Value)
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Name, user.Username.Value),
+            new(JwtRegisteredClaimNames.Email, user.Email.Value),
+            new(ClaimPolicies.PersonId, user switch
+            {
+                { PersonId: not null } => $"{user.PersonId}",
+                _ => ""
+            })
         };
 
         var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));

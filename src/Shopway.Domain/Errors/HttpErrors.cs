@@ -14,4 +14,13 @@ public static class HttpErrors
     {
         return new Error($"{name}.NotFound", $"{name} with Id: '{id.Value}' was not found");
     }
+
+    /// <summary>
+    /// Create an Error describing that a password or an email are invalid
+    /// </summary>
+    /// <returns>InvalidPasswordOrEmail error</returns>
+    public static Error InvalidPasswordOrEmail()
+    {
+        return new Error($"User.InvalidPasswordOrEmail", $"Invalid password or email");
+    }
 }

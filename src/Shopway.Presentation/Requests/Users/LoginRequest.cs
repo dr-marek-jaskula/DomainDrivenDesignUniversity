@@ -2,6 +2,6 @@
 
 public sealed record LoginRequest
 (
-    string Username,
-    string Email
+    string Email,
+    string Password
 );

@@ -3,5 +3,7 @@
 public sealed record RegisterRequest
 (
     string Username,
-    string Email
+    string Email,
+    string Password,
+    string ConfirmPassword
 );

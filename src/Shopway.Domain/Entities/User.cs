@@ -1,3 +1,4 @@
+using MediatR;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Primitives;
@@ -21,14 +22,12 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     (
         UserId id,
         Username username,
-        Email email,
-        PasswordHash passwordHash
+        Email email
     )
         : base(id)
     {
         Username = username;
         Email = email;
-        PasswordHash = passwordHash;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -40,20 +39,23 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     (
         UserId id,
         Username username,
-        Email email,
-        PasswordHash passwordHash
+        Email email
     )
     {
         var user = new User
         (
             id,
             username,
-            email,
-            passwordHash
+            email
         );
 
         user.RaiseDomainEvent(new UserRegisteredDomainEvent(Guid.NewGuid(), user.Id));
 
         return user;
+    }
+
+    public void SetHashedPassword(PasswordHash passwordHash)
+    {
+        PasswordHash = passwordHash;
     }
 }

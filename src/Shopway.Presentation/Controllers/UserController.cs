@@ -2,10 +2,8 @@
 using Shopway.Presentation.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Presentation.Requests.Users;
-using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
-using Shopway.Infrastructure.Authentication;
-using Shopway.Domain.Enums;
+using Shopway.Application.CQRS.Users.Commands.CreateUser;
 
 namespace Gatherly.Presentation.Controllers;
 
@@ -18,18 +16,15 @@ public sealed class UserController : ApiController
     }
 
     [HttpPost("[action]")]
-    [HasPermission(Permission.Read)]
     public async Task<IActionResult> Login
     (
         [FromBody] LoginRequest request,
         CancellationToken cancellationToken
     )
     {
-        var command = new LogUserCommand(request.Username, request.Email);
+        var command = new LogUserCommand(request.Email, request.Password);
 
-        var response = await Sender.Send(
-            command,
-            cancellationToken);
+        var response = await Sender.Send(command, cancellationToken);
 
         if (response.IsFailure)
         {
@@ -46,7 +41,7 @@ public sealed class UserController : ApiController
         CancellationToken cancellationToken
     )
     {
-        var command = new CreateUserCommand(request.Username, request.Email);
+        var command = new CreateUserCommand(request.Username, request.Email, request.Password, request.ConfirmPassword);
 
         var result = await Sender.Send(command, cancellationToken);
 
@@ -55,6 +50,6 @@ public sealed class UserController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok();
+        return Ok(result);
     }
 }

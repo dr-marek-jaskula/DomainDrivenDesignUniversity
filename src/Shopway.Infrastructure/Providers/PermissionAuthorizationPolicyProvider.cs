@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Shopway.Infrastructure.Authentication.Requirements;
 
-namespace Shopway.Infrastructure.Authentication;
+namespace Shopway.Infrastructure.Providers;
 
 public class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
 {

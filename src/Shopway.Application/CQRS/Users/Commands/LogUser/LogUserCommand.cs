@@ -4,7 +4,7 @@ namespace Shopway.Application.CQRS.Users.Commands.LogUser;
 
 public sealed record LogUserCommand
 (
-    string Username,
-    string Email
+    string Email,
+    string Password
 )
     : ICommand<LogUserResponse>;

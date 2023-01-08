@@ -127,6 +127,10 @@ public static class DomainErrors
         public static readonly Error Invalid = new(
             "Email.Invalid",
             "Email must start from a letter, contain '@' and after that '.'");
+
+        public static readonly Error EmailAlreadyTaken = new(
+            "Email.EmailAlreadyTaken",
+            "Email is already taken");
     }
 
     public static class PhoneNumberError

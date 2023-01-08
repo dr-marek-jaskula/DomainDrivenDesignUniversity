@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Infrastructure.Abstractions;
 
 namespace Shopway.Infrastructure.Authentication.Requirements;
 

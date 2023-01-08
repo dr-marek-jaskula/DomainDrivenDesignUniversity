@@ -1,34 +1,75 @@
-﻿using Shopway.Application.Abstractions;
+﻿using Microsoft.AspNetCore.Identity;
+using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Mapping;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
+using static Shopway.Domain.Errors.DomainErrors;
 
-namespace Shopway.Application.CQRS.Products.Commands.CreateProduct;
+namespace Shopway.Application.CQRS.Users.Commands.CreateUser;
 
 internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 {
-    private readonly IProductRepository _productRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator _validator;
 
-    public CreateUserCommandHandler(IProductRepository productRepository, IUnitOfWork unitOfWork, IValidator validator)
+    public CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IValidator validator, IPasswordHasher<User> passwordHasher)
     {
-        _productRepository = productRepository;
         _unitOfWork = unitOfWork;
         _validator = validator;
+        _userRepository = userRepository;
+        _passwordHasher = passwordHasher;
     }
 
-    public Task<IResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<IResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        Result<Email> emailResult = Email.Create(request.Email);
+        Result<Username> usernameResult = Username.Create(request.Username);
+        Result<Password> passwordResult = Password.Create(request.Password);
+
+        bool emailIsUnique = await _userRepository
+            .IsEmailUniqueAsync(emailResult.Value, cancellationToken);
+
+        _validator
+            .Validate(emailResult)
+            .Validate(usernameResult)
+            .Validate(passwordResult)
+            .If(emailIsUnique is false, thenError: EmailError.EmailAlreadyTaken);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<CreateUserResponse>();
+        }
+
+        var result = AddUser(emailResult.Value, usernameResult.Value, passwordResult.Value);
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return result;
     }
 
-    private User CreateUser()
+    private IResult AddUser(Email email, Username username, Password password)
     {
-        throw new NotImplementedException();
+        var user = User.Create(UserId.New(), username, email);
+
+        Result<PasswordHash> passwordHashResult = PasswordHash.Create(_passwordHasher.HashPassword(user, password.Value));
+
+        _validator
+            .Validate(passwordHashResult);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<CreateUserResponse>();
+        }
+
+        user.SetHashedPassword(passwordHashResult.Value);
+
+        _userRepository.Add(user);
+
+        return Result.Create(user.Id);
     }
 }
