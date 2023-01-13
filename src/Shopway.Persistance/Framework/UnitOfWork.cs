@@ -5,10 +5,9 @@ using Newtonsoft.Json;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.BaseTypes;
 using Shopway.Domain.Repositories;
-using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;
 
-namespace Shopway.Persistence;
+namespace Shopway.Persistence.Framework;
 
 //The UnitOfWork class to handler transactions
 //Benefits:

@@ -7,6 +7,8 @@ public static class BackgroundServiceRegistration
 {
     public static IServiceCollection RegisterBackgroundServices(this IServiceCollection services)
     {
+        services.AddScoped<IJob, ProcessOutboxMessagesJob>();
+
         services.AddQuartz(configure =>
         {
             var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));

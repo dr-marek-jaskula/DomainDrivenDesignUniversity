@@ -14,7 +14,6 @@ public static class CacheRegistration
         services.AddStackExchangeRedisCache(redisOptions =>
         {
             string connection = cacheOptions.ConnectionString!;
-
             redisOptions.Configuration = connection;
         });
 
