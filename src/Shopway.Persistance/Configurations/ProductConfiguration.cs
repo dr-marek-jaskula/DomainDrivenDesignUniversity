@@ -11,7 +11,7 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.ToTable(TableNames.Product);
+        builder.ToTable(TableNames.Product, SchemaNames.Shopway);
 
         builder.HasKey(p => p.Id);
 

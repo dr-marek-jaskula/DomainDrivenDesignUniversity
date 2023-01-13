@@ -12,7 +12,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<Payment> builder)
     {
-        builder.ToTable(TableNames.Payment);
+        builder.ToTable(TableNames.Payment, SchemaNames.Shopway);
 
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)

@@ -13,8 +13,21 @@ namespace Shopway.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "Master");
+
+            migrationBuilder.EnsureSchema(
+                name: "Shopway");
+
+            migrationBuilder.EnsureSchema(
+                name: "Outbox");
+
+            migrationBuilder.EnsureSchema(
+                name: "Workflow");
+
             migrationBuilder.CreateTable(
                 name: "OutboxMessage",
+                schema: "Outbox",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -31,6 +44,7 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "OutboxMessageConsumer",
+                schema: "Outbox",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -43,6 +57,7 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Payment",
+                schema: "Shopway",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -57,7 +72,22 @@ namespace Shopway.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Permission",
+                schema: "Master",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permission", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
+                schema: "Shopway",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -73,10 +103,12 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Role",
+                schema: "Master",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
-                    RoleName = table.Column<string>(type: "VARCHAR(13)", nullable: false, defaultValue: "Customer", comment: "Customer, Employee, Manager, Administrator")
+                    Id = table.Column<int>(type: "int", maxLength: 128, nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "VARCHAR(128)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,6 +117,7 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Review",
+                schema: "Shopway",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -102,13 +135,42 @@ namespace Shopway.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_Review_Product_ProductId",
                         column: x => x.ProductId,
+                        principalSchema: "Shopway",
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
+                name: "PermissionRole",
+                schema: "Master",
+                columns: table => new
+                {
+                    PermissionsId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PermissionRole", x => new { x.PermissionsId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_PermissionRole_Permission_PermissionsId",
+                        column: x => x.PermissionsId,
+                        principalSchema: "Master",
+                        principalTable: "Permission",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PermissionRole_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "Master",
+                        principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Address",
+                schema: "Master",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -127,6 +189,7 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Customer",
+                schema: "Master",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -139,6 +202,7 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Order",
+                schema: "Shopway",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -156,18 +220,21 @@ namespace Shopway.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_Order_Customer_CustomerId",
                         column: x => x.CustomerId,
+                        principalSchema: "Master",
                         principalTable: "Customer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Order_Payment_PaymentId",
                         column: x => x.PaymentId,
+                        principalSchema: "Shopway",
                         principalTable: "Payment",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Order_Product_ProductId",
                         column: x => x.ProductId,
+                        principalSchema: "Shopway",
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -175,6 +242,7 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Employee",
+                schema: "Master",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -187,12 +255,14 @@ namespace Shopway.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_Employee_Employee_ManagerId",
                         column: x => x.ManagerId,
+                        principalSchema: "Master",
                         principalTable: "Employee",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Person",
+                schema: "Master",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -210,12 +280,14 @@ namespace Shopway.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_Person_Employee_EmployeeId",
                         column: x => x.EmployeeId,
+                        principalSchema: "Master",
                         principalTable: "Employee",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "WorkItem",
+                schema: "Workflow",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -233,12 +305,14 @@ namespace Shopway.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_WorkItem_Employee_EmployeeId",
                         column: x => x.EmployeeId,
+                        principalSchema: "Master",
                         principalTable: "Employee",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "User",
+                schema: "Master",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -247,7 +321,6 @@ namespace Shopway.Persistence.Migrations
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     PasswordHash = table.Column<string>(type: "NCHAR(514)", nullable: false),
-                    RoleId = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     PersonId = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true)
                 },
                 constraints: table =>
@@ -256,51 +329,91 @@ namespace Shopway.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_User_Person_PersonId",
                         column: x => x.PersonId,
+                        principalSchema: "Master",
                         principalTable: "Person",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleUser",
+                schema: "Master",
+                columns: table => new
+                {
+                    RolesId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_User_Role_RoleId",
-                        column: x => x.RoleId,
+                        name: "FK_RoleUser_Role_RolesId",
+                        column: x => x.RolesId,
+                        principalSchema: "Master",
                         principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoleUser_User_UsersId",
+                        column: x => x.UsersId,
+                        principalSchema: "Master",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Role",
-                columns: new[] { "Id", "RoleName" },
+                schema: "Master",
+                table: "Permission",
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("080426a5-768b-485d-a76a-177937e756f2"), "Employee" },
-                    { new Guid("67fc3131-eb26-499b-9535-08512efefd1a"), "Customer" },
-                    { new Guid("bdc91107-3047-4887-8754-a8ba60483a5c"), "Administrator" },
-                    { new Guid("c6e634b1-83e2-4736-8b2f-804db990c2bc"), "Manager" }
+                    { 1, "Read" },
+                    { 2, "Create" },
+                    { 3, "Update" },
+                    { 4, "Delete" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Master",
+                table: "Role",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Customer" },
+                    { 2, "Employee" },
+                    { 3, "Manager" },
+                    { 4, "Administrator" }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Address_PersonId",
+                schema: "Master",
                 table: "Address",
                 column: "PersonId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_ManagerId",
+                schema: "Master",
                 table: "Employee",
                 column: "ManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerId",
+                schema: "Shopway",
                 table: "Order",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_PaymentId",
+                schema: "Shopway",
                 table: "Order",
                 column: "PaymentId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_ProductId_Status",
+                schema: "Shopway",
                 table: "Order",
                 columns: new[] { "ProductId", "Status" },
                 filter: "Status IN ('New', 'InProgress')")
@@ -308,23 +421,33 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payment_OrderId_Status",
+                schema: "Shopway",
                 table: "Payment",
                 columns: new[] { "OrderId", "Status" },
                 filter: "Status <> 'Rejected'");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PermissionRole_RoleId",
+                schema: "Master",
+                table: "PermissionRole",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Person_Email",
+                schema: "Master",
                 table: "Person",
                 column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Person_EmployeeId",
+                schema: "Master",
                 table: "Person",
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "UX_Person_Email",
+                schema: "Master",
                 table: "Person",
                 column: "Email",
                 unique: true)
@@ -332,29 +455,34 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Review_ProductId",
+                schema: "Shopway",
                 table: "Review",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RoleUser_UsersId",
+                schema: "Master",
+                table: "RoleUser",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
+                schema: "Master",
                 table: "User",
                 column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_PersonId",
+                schema: "Master",
                 table: "User",
                 column: "PersonId",
                 unique: true,
                 filter: "[PersonId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_RoleId",
-                table: "User",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_Username",
+                schema: "Master",
                 table: "User",
                 column: "Username",
                 unique: true)
@@ -362,29 +490,36 @@ namespace Shopway.Persistence.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkItem_EmployeeId",
+                schema: "Workflow",
                 table: "WorkItem",
                 column: "EmployeeId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Address_Person_PersonId",
+                schema: "Master",
                 table: "Address",
                 column: "PersonId",
+                principalSchema: "Master",
                 principalTable: "Person",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Customer_Person_Id",
+                schema: "Master",
                 table: "Customer",
                 column: "Id",
+                principalSchema: "Master",
                 principalTable: "Person",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Employee_Person_Id",
+                schema: "Master",
                 table: "Employee",
                 column: "Id",
+                principalSchema: "Master",
                 principalTable: "Person",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
@@ -395,46 +530,72 @@ namespace Shopway.Persistence.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Employee_Person_Id",
+                schema: "Master",
                 table: "Employee");
 
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "Address",
+                schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Order",
+                schema: "Shopway");
 
             migrationBuilder.DropTable(
-                name: "OutboxMessage");
+                name: "OutboxMessage",
+                schema: "Outbox");
 
             migrationBuilder.DropTable(
-                name: "OutboxMessageConsumer");
+                name: "OutboxMessageConsumer",
+                schema: "Outbox");
 
             migrationBuilder.DropTable(
-                name: "Review");
+                name: "PermissionRole",
+                schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Review",
+                schema: "Shopway");
 
             migrationBuilder.DropTable(
-                name: "WorkItem");
+                name: "RoleUser",
+                schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "WorkItem",
+                schema: "Workflow");
 
             migrationBuilder.DropTable(
-                name: "Payment");
+                name: "Customer",
+                schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Payment",
+                schema: "Shopway");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Permission",
+                schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "Person");
+                name: "Product",
+                schema: "Shopway");
 
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "Role",
+                schema: "Master");
+
+            migrationBuilder.DropTable(
+                name: "User",
+                schema: "Master");
+
+            migrationBuilder.DropTable(
+                name: "Person",
+                schema: "Master");
+
+            migrationBuilder.DropTable(
+                name: "Employee",
+                schema: "Master");
         }
     }
 }

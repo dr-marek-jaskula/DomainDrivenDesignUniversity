@@ -11,7 +11,7 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    partial class ShopwayDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,36 @@ namespace Shopway.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("PermissionRole", b =>
+                {
+                    b.Property<int>("PermissionsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PermissionsId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("PermissionRole", "Master");
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser", "Master");
+                });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Order", b =>
                 {
@@ -64,7 +94,7 @@ namespace Shopway.Persistence.Migrations
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex(new[] { "ProductId", "Status" }, "IX_Order_ProductId_Status"), new[] { "Amount", "CustomerId" });
 
-                    b.ToTable("Order", (string)null);
+                    b.ToTable("Order", "Shopway");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Parents.Person", b =>
@@ -115,7 +145,7 @@ namespace Shopway.Persistence.Migrations
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex(new[] { "Email" }, "UX_Person_Email"), new[] { "FirstName", "LastName" });
 
-                    b.ToTable("Person", (string)null);
+                    b.ToTable("Person", "Master");
 
                     b.UseTptMappingStrategy();
                 });
@@ -163,7 +193,7 @@ namespace Shopway.Persistence.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("WorkItem", (string)null);
+                    b.ToTable("WorkItem", "Workflow");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("WorkItem");
 
@@ -196,7 +226,7 @@ namespace Shopway.Persistence.Migrations
                     b.HasIndex(new[] { "OrderId", "Status" }, "IX_Payment_OrderId_Status")
                         .HasFilter("Status <> 'Rejected'");
 
-                    b.ToTable("Payment", (string)null);
+                    b.ToTable("Payment", "Shopway");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Product", b =>
@@ -225,7 +255,7 @@ namespace Shopway.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product", "Shopway");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Review", b =>
@@ -264,46 +294,7 @@ namespace Shopway.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Review", (string)null);
-                });
-
-            modelBuilder.Entity("Shopway.Domain.Entities.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("VARCHAR(13)")
-                        .HasDefaultValue("Customer")
-                        .HasComment("Customer, Employee, Manager, Administrator");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("67fc3131-eb26-499b-9535-08512efefd1a"),
-                            RoleName = "Customer"
-                        },
-                        new
-                        {
-                            Id = new Guid("080426a5-768b-485d-a76a-177937e756f2"),
-                            RoleName = "Employee"
-                        },
-                        new
-                        {
-                            Id = new Guid("c6e634b1-83e2-4736-8b2f-804db990c2bc"),
-                            RoleName = "Manager"
-                        },
-                        new
-                        {
-                            Id = new Guid("bdc91107-3047-4887-8754-a8ba60483a5c"),
-                            RoleName = "Administrator"
-                        });
+                    b.ToTable("Review", "Shopway");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.User", b =>
@@ -325,9 +316,6 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid?>("PersonId")
                         .HasColumnType("UNIQUEIDENTIFIER");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("datetimeoffset");
 
@@ -341,8 +329,6 @@ namespace Shopway.Persistence.Migrations
                         .IsUnique()
                         .HasFilter("[PersonId] IS NOT NULL");
 
-                    b.HasIndex("RoleId");
-
                     b.HasIndex(new[] { "Email" }, "IX_User_Email")
                         .IsUnique();
 
@@ -351,7 +337,86 @@ namespace Shopway.Persistence.Migrations
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex(new[] { "Username" }, "IX_User_Username"), new[] { "Email" });
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User", "Master");
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Enumerations.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permission", "Master");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Read"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Create"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Update"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Delete"
+                        });
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Enumerations.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Role", "Master");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Customer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Employee"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Administrator"
+                        });
                 });
 
             modelBuilder.Entity("Shopway.Persistence.Outbox.OutboxMessage", b =>
@@ -379,7 +444,7 @@ namespace Shopway.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OutboxMessage", (string)null);
+                    b.ToTable("OutboxMessage", "Outbox");
                 });
 
             modelBuilder.Entity("Shopway.Persistence.Outbox.OutboxMessageConsumer", b =>
@@ -387,12 +452,12 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PermissionName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id", "PermissionName");
+                    b.HasKey("Id", "Name");
 
-                    b.ToTable("OutboxMessageConsumer", (string)null);
+                    b.ToTable("OutboxMessageConsumer", "Outbox");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Customer", b =>
@@ -405,7 +470,7 @@ namespace Shopway.Persistence.Migrations
                         .HasColumnType("VARCHAR(8)")
                         .HasDefaultValue("Standard");
 
-                    b.ToTable("Customer", (string)null);
+                    b.ToTable("Customer", "Master");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Employee", b =>
@@ -420,7 +485,7 @@ namespace Shopway.Persistence.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Employee", (string)null);
+                    b.ToTable("Employee", "Master");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Bug", b =>
@@ -435,6 +500,36 @@ namespace Shopway.Persistence.Migrations
                     b.HasBaseType("Shopway.Domain.Entities.Parents.WorkItem");
 
                     b.HasDiscriminator().HasValue("Feature");
+                });
+
+            modelBuilder.Entity("PermissionRole", b =>
+                {
+                    b.HasOne("Shopway.Domain.Enumerations.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopway.Domain.Enumerations.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("Shopway.Domain.Enumerations.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopway.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Order", b =>
@@ -510,7 +605,7 @@ namespace Shopway.Persistence.Migrations
                             b1.HasIndex("PersonId")
                                 .IsUnique();
 
-                            b1.ToTable("Address", (string)null);
+                            b1.ToTable("Address", "Master");
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId");
@@ -543,15 +638,7 @@ namespace Shopway.Persistence.Migrations
                         .WithOne("User")
                         .HasForeignKey("Shopway.Domain.Entities.User", "PersonId");
 
-                    b.HasOne("Shopway.Domain.Entities.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Person");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Customer", b =>
@@ -586,11 +673,6 @@ namespace Shopway.Persistence.Migrations
             modelBuilder.Entity("Shopway.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("Shopway.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Customer", b =>

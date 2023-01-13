@@ -9,7 +9,8 @@ namespace Shopway.Domain.Abstractions.BaseTypes;
 public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>
     where TEnum : Enumeration<TEnum>
 {
-    private static readonly Lazy<Dictionary<int, TEnum>> EnumerationsDictionary = new(() => CreateEnumerationDictionary(typeof(TEnum)));
+    private static readonly Lazy<Dictionary<int, TEnum>> EnumerationsDictionary = 
+        new(() => CreateEnumerationDictionary(typeof(TEnum)));
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Enumeration{TEnum}"/> class

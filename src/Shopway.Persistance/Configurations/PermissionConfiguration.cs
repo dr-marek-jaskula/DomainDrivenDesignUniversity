@@ -10,10 +10,9 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 {
     public void Configure(EntityTypeBuilder<Permission> builder)
     {
-        builder.ToTable(TableNames.Permission);
+        builder.ToTable(TableNames.Permission, SchemaNames.Master);
 
         builder.HasKey(p => p.Id);
-
 
         var premissionsFromEnumeration = Permission
             .GetValues()

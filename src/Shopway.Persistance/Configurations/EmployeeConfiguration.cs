@@ -9,7 +9,7 @@ internal sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.ToTable(TableNames.Employee);
+        builder.ToTable(TableNames.Employee, SchemaNames.Master);
 
         builder.Property(e => e.HireDate)
             .HasColumnType("datetimeoffset(2)")

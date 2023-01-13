@@ -9,7 +9,7 @@ internal sealed class OutboxMessageConsumerConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<OutboxMessageConsumer> builder)
     {
-        builder.ToTable(TableNames.OutboxMessageConsumer);
+        builder.ToTable(TableNames.OutboxMessageConsumer, SchemaNames.Outbox);
 
         builder.HasKey(outboxMessageConsumer => new
         {

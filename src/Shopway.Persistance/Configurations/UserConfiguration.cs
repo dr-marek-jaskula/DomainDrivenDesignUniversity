@@ -11,7 +11,7 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable(TableNames.User);
+        builder.ToTable(TableNames.User, SchemaNames.Master);
 
         builder.HasKey(u => u.Id);
 

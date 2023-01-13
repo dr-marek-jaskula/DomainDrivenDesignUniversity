@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Constants;
-using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.Enumerations;
 
 namespace Shopway.Persistence.Configurations;
@@ -11,7 +9,7 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
-        builder.ToTable(TableNames.Role);
+        builder.ToTable(TableNames.Role, SchemaNames.Master);
 
         builder.HasKey(r => r.Id);
 

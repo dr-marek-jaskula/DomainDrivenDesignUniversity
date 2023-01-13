@@ -5,7 +5,6 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.StronglyTypedIds;
-using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -13,7 +12,7 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.ToTable(TableNames.Order);
+        builder.ToTable(TableNames.Order, SchemaNames.Shopway);
 
         builder.HasKey(o => o.Id);
         builder.Property(o => o.Id)

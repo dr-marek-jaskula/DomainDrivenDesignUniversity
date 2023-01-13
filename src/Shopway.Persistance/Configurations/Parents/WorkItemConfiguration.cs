@@ -2,11 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
-using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.StronglyTypedIds;
-using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
@@ -14,7 +12,7 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
 {
     public void Configure(EntityTypeBuilder<WorkItem> builder)
     {
-        builder.ToTable(TableNames.WorkItem);
+        builder.ToTable(TableNames.WorkItem, SchemaNames.Workflow);
 
         builder.HasKey(wi => wi.Id);
 

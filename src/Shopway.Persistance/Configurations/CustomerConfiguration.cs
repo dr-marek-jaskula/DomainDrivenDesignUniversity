@@ -10,7 +10,7 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        builder.ToTable(TableNames.Customer);
+        builder.ToTable(TableNames.Customer, SchemaNames.Master);
 
         builder.Property(c => c.Rank)
             .HasDefaultValue(Rank.Standard)

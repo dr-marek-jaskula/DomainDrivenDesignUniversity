@@ -13,7 +13,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 {
     public void Configure(EntityTypeBuilder<Person> builder)
     {
-        builder.ToTable(TableNames.Person);
+        builder.ToTable(TableNames.Person, SchemaNames.Master);
 
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)

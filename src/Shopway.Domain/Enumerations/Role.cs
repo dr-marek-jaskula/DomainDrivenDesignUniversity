@@ -3,7 +3,7 @@ using Shopway.Domain.Entities;
 
 namespace Shopway.Domain.Enumerations;
 
-public sealed class Role : Enumeration<Permission>
+public sealed class Role : Enumeration<Role>
 {
     public static readonly Role Customer = new(1, nameof(Customer));
     public static readonly Role Employee = new(2, nameof(Employee));
@@ -15,7 +15,7 @@ public sealed class Role : Enumeration<Permission>
     {
     }
 
-    // Empty constructor in this case is required by EF Core
+    //Empty constructor in this case is required by EF Core
     private Role()
     {
     }
