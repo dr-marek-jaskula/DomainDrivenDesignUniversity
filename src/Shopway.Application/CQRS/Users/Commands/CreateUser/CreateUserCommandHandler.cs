@@ -4,10 +4,10 @@ using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Persistence.Framework;
 using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Application.CQRS.Users.Commands.CreateUser;

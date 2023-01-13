@@ -2,9 +2,7 @@
 using Shopway.Infrastructure.Providers;
 using Shopway.Infrastructure.Adapters;
 using Shopway.Application.Abstractions;
-using Shopway.Persistence.Repositories;
 using Shopway.Infrastructure.Validators;
-using Shopway.Domain.Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Shopway.Domain.Entities;
 
@@ -17,13 +15,6 @@ public static class ServiceRegistration
         //Services
 
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-
-        //Repositories
-
-        services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<IReviewRepository, ReviewRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
 
         //Validators
 
@@ -45,7 +36,7 @@ public static class ServiceRegistration
                 Shopway.Persistence.AssemblyReference.Assembly)
             .AddClasses(false)
             .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsImplementedInterfaces()
+            .AsMatchingInterface()
             .WithScopedLifetime());
 
         return services;

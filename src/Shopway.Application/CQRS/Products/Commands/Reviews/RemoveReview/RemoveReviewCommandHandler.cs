@@ -4,7 +4,7 @@ using Shopway.Application.Mapping;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Repositories;
+using Shopway.Persistence.Framework;
 using Shopway.Domain.Results;
 using static Shopway.Domain.Errors.HttpErrors;
 

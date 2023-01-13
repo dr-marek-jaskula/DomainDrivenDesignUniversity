@@ -16,7 +16,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
 
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
-            .HasConversion(id => id.Value, guid => PaymentId.New(guid))
+            .HasConversion(id => id.Value, guid => PaymentId.Create(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(p => p.Discount)
@@ -32,7 +32,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasMaxLength(10)
             .HasConversion(status => status.ToString(),
             s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("New, InProgress, Done or Rejected");
+            .HasComment("Create, InProgress, Done or Rejected");
 
         builder.Property(p => p.OccurredOn)
             .HasColumnType("datetimeoffset(2)")

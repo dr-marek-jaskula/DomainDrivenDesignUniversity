@@ -4,7 +4,7 @@ using Shopway.Application.Mapping;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Repositories;
+using Shopway.Persistence.Framework;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
@@ -51,9 +51,9 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
     {
         var orderToCreate = Order.Create(
             id: OrderId.New(),
-            productId: ProductId.New(command.ProductId),
+            productId: ProductId.Create(command.ProductId),
             amount: amountResult.Value,
-            customerId: PersonId.New(command.CustomerId),
+            customerId: PersonId.Create(command.CustomerId),
             discount: discountResult.Value);
 
         _orderRepository.Create(orderToCreate);

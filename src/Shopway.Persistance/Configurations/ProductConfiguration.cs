@@ -16,7 +16,7 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
-            .HasConversion(id => id.Value, guid => ProductId.New(guid))
+            .HasConversion(id => id.Value, guid => ProductId.Create(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder

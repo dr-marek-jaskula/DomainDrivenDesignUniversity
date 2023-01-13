@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.StronglyTypedIds;
 
-public readonly record struct PaymentId : IEntityId<PaymentId>, IEquatable<PaymentId>
+public readonly record struct PaymentId : IEntityId<PaymentId>
 {
     private PaymentId(Guid id)
     {
@@ -16,36 +16,9 @@ public readonly record struct PaymentId : IEntityId<PaymentId>, IEquatable<Payme
         return new PaymentId(Guid.NewGuid());
     }
 
-    public static PaymentId New(Guid id)
+    public static PaymentId Create(Guid id)
     {
         return new PaymentId(id);
-    }
-
-    public static bool operator ==(PaymentId? first, PaymentId? second)
-    {
-        return first is not null
-            && second is not null
-            && first.Equals(second);
-    }
-
-    public static bool operator !=(PaymentId? first, PaymentId? second)
-    {
-        return !(first == second);
-    }
-
-    public bool Equals(PaymentId? other)
-    {
-        if (other is null)
-        {
-            return false;
-        }
-
-        if (other.GetType() != GetType())
-        {
-            return false;
-        }
-
-        return other.Value.Value == Value;
     }
 
     public override int GetHashCode()

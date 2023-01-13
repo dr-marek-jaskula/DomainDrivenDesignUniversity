@@ -33,7 +33,7 @@ public class PermissionRequirementHandler : AuthorizationHandler<PermissionRequi
             .GetRequiredService<IPermissionService>();
 
         HashSet<string> permissions = await permissionService
-            .GetPermissionsAsync(UserId.New(parsedUserId));
+            .GetPermissionsAsync(UserId.Create(parsedUserId));
 
         if (permissions.Contains(requirement.Permission))
         {

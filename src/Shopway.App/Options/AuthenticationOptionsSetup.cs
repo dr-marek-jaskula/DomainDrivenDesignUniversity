@@ -3,9 +3,9 @@ using Shopway.Infrastructure.Authentication;
 
 namespace Shopway.App.Options;
 
-public class AuthenticationOptionsSetup : IConfigureOptions<AuthenticationOptions>
+public sealed class AuthenticationOptionsSetup : IConfigureOptions<AuthenticationOptions>
 {
-    private const string SectionName = "Authentication";
+    private readonly string _configurationSectionName = "AuthenticationOptions";
     private readonly IConfiguration _configuration;
 
     public AuthenticationOptionsSetup(IConfiguration configuration)
@@ -15,6 +15,8 @@ public class AuthenticationOptionsSetup : IConfigureOptions<AuthenticationOption
 
     public void Configure(AuthenticationOptions options)
     {
-        _configuration.GetSection(SectionName).Bind(options);
+        _configuration
+            .GetSection(_configurationSectionName)
+            .Bind(options);
     }
 }

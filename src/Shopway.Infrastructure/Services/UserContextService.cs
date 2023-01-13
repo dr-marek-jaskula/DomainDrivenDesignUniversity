@@ -21,7 +21,7 @@ public class UserContextService : IUserContextService
 
     public UserId? GetUserId => User is null 
         ? null 
-        : UserId.New(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+        : UserId.Create(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
     public PersonId? GetPersonId
     {
@@ -29,7 +29,7 @@ public class UserContextService : IUserContextService
         {
             if (User?.FindFirstValue(ClaimPolicies.PersonId) is string stringPersonId)
             {
-                return PersonId.New(Guid.Parse(stringPersonId));
+                return PersonId.Create(Guid.Parse(stringPersonId));
             }
 
             return null;

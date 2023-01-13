@@ -62,7 +62,7 @@ namespace Shopway.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false, comment: "New, InProgress, Done or Rejected"),
+                    Status = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false, comment: "Create, InProgress, Done or Rejected"),
                     OccurredOn = table.Column<DateTimeOffset>(type: "datetimeoffset(2)", nullable: true),
                     OrderId = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false)
                 },
@@ -207,7 +207,7 @@ namespace Shopway.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     Amount = table.Column<int>(type: "INT", nullable: false),
-                    Status = table.Column<string>(type: "VARCHAR(10)", nullable: false, defaultValue: "New", comment: "New, InProgress, Done or Rejected"),
+                    Status = table.Column<string>(type: "VARCHAR(10)", nullable: false, defaultValue: "Create", comment: "Create, InProgress, Done or Rejected"),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset(2)", nullable: true),
                     ProductId = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -292,7 +292,7 @@ namespace Shopway.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     Priority = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Status = table.Column<string>(type: "VARCHAR(10)", nullable: false, defaultValue: "New", comment: "New, InProgress, Done or Rejected"),
+                    Status = table.Column<string>(type: "VARCHAR(10)", nullable: false, defaultValue: "Create", comment: "Create, InProgress, Done or Rejected"),
                     Title = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(600)", maxLength: 600, nullable: false),
                     StoryPoints = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
@@ -416,7 +416,7 @@ namespace Shopway.Persistence.Migrations
                 schema: "Shopway",
                 table: "Order",
                 columns: new[] { "ProductId", "Status" },
-                filter: "Status IN ('New', 'InProgress')")
+                filter: "Status IN ('Create', 'InProgress')")
                 .Annotation("SqlServer:Include", new[] { "Amount", "CustomerId" });
 
             migrationBuilder.CreateIndex(

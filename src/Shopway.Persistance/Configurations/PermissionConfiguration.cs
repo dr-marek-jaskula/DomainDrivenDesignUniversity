@@ -29,7 +29,7 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 
         if (areEnumPremisionsEquivalentToEnumerationPremissions is false)
         {
-            throw new ConfigurationException($"{nameof(Permission)} enum values are not equivalent to {nameof(Permission)} enumeration values");
+            throw new Exception($"{nameof(Permission)} enum values are not equivalent to {nameof(Permission)} enumeration values");
         }
 
         //Inserting static data (data that are not related to other)

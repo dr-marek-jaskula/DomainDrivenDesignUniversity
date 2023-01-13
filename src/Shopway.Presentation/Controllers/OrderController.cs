@@ -21,7 +21,7 @@ public sealed class OrderController : ApiController
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var orderId = OrderId.New(id);
+        var orderId = OrderId.Create(id);
 
         var query = new GetOrderByIdQuery(orderId);
 

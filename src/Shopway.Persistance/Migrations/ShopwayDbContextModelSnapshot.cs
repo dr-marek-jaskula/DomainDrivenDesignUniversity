@@ -76,8 +76,8 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("VARCHAR(10)")
-                        .HasDefaultValue("New")
-                        .HasComment("New, InProgress, Done or Rejected");
+                        .HasDefaultValue("Create")
+                        .HasComment("Create, InProgress, Done or Rejected");
 
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("datetimeoffset(2)");
@@ -90,7 +90,7 @@ namespace Shopway.Persistence.Migrations
                         .IsUnique();
 
                     b.HasIndex(new[] { "ProductId", "Status" }, "IX_Order_ProductId_Status")
-                        .HasFilter("Status IN ('New', 'InProgress')");
+                        .HasFilter("Status IN ('Create', 'InProgress')");
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex(new[] { "ProductId", "Status" }, "IX_Order_ProductId_Status"), new[] { "Amount", "CustomerId" });
 
@@ -176,8 +176,8 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("VARCHAR(10)")
-                        .HasDefaultValue("New")
-                        .HasComment("New, InProgress, Done or Rejected");
+                        .HasDefaultValue("Create")
+                        .HasComment("Create, InProgress, Done or Rejected");
 
                     b.Property<int>("StoryPoints")
                         .ValueGeneratedOnAdd()
@@ -219,7 +219,7 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)")
-                        .HasComment("New, InProgress, Done or Rejected");
+                        .HasComment("Create, InProgress, Done or Rejected");
 
                     b.HasKey("Id");
 

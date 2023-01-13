@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.StronglyTypedIds;
 
-public readonly record struct OrderId : IEntityId<OrderId>, IEquatable<OrderId>
+public readonly record struct OrderId : IEntityId<OrderId>
 {
     private OrderId(Guid id)
     {
@@ -16,36 +16,9 @@ public readonly record struct OrderId : IEntityId<OrderId>, IEquatable<OrderId>
         return new OrderId(Guid.NewGuid());
     }
 
-    public static OrderId New(Guid id)
+    public static OrderId Create(Guid id)
     {
         return new OrderId(id);
-    }
-
-    public static bool operator ==(OrderId? first, OrderId? second)
-    {
-        return first is not null
-            && second is not null
-            && first.Equals(second);
-    }
-
-    public static bool operator !=(OrderId? first, OrderId? second)
-    {
-        return !(first == second);
-    }
-
-    public bool Equals(OrderId? other)
-    {
-        if (other is null)
-        {
-            return false;
-        }
-
-        if (other.GetType() != GetType())
-        {
-            return false;
-        }
-
-        return other.Value.Value == Value;
     }
 
     public override int GetHashCode()

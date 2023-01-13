@@ -15,7 +15,7 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
 
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
-            .HasConversion(id => id.Value, guid => ReviewId.New(guid))
+            .HasConversion(id => id.Value, guid => ReviewId.Create(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(r => r.Username)
@@ -44,7 +44,7 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
             .HasMaxLength(1000);
 
         builder.Property(r => r.ProductId)
-            .HasConversion(id => id.Value, guid => ProductId.New(guid))
+            .HasConversion(id => id.Value, guid => ProductId.Create(guid))
             .HasColumnType("UNIQUEIDENTIFIER")
             .IsRequired(true);
     }

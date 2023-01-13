@@ -17,7 +17,7 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
         builder.HasKey(wi => wi.Id);
 
         builder.Property(wi => wi.Id)
-            .HasConversion(id => id.Value, guid => WorkItemId.New(guid))
+            .HasConversion(id => id.Value, guid => WorkItemId.Create(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(wi => wi.Priority)
@@ -30,7 +30,7 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
             .HasDefaultValue(Status.New)
             .HasConversion(status => status.ToString(),
              s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("New, InProgress, Done or Rejected");
+            .HasComment("Create, InProgress, Done or Rejected");
 
         builder.Property(wi => wi.Title)
             .HasConversion(x => x.Value, v => Title.Create(v).Value)

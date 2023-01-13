@@ -16,7 +16,7 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
 
         builder.HasKey(o => o.Id);
         builder.Property(o => o.Id)
-            .HasConversion(id => id.Value, guid => OrderId.New(guid))
+            .HasConversion(id => id.Value, guid => OrderId.Create(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(o => o.Amount)
@@ -30,7 +30,7 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
             .HasDefaultValue(Status.New)
             .HasConversion(status => status.ToString(),
              s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("New, InProgress, Done or Rejected");
+            .HasComment("Create, InProgress, Done or Rejected");
 
         builder.Property(o => o.CreatedOn)
             .HasColumnType("datetimeoffset(2)");
@@ -53,6 +53,6 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
         //Indexes
         builder.HasIndex(o => new { o.ProductId, o.Status }, "IX_Order_ProductId_Status")
             .IncludeProperties(o => new { o.Amount, o.CustomerId })
-            .HasFilter("Status IN ('New', 'InProgress')");
+            .HasFilter("Status IN ('Create', 'InProgress')");
     }
 }

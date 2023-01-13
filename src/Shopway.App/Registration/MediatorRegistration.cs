@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Shopway.Application.Pipelines;
 using Shopway.Application.Pipelines.CQRS;
+using Shopway.Application.Pipelines.ValidationPipelines;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

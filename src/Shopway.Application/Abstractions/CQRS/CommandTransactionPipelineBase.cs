@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Repositories;
+using Shopway.Persistence.Framework;
 
 namespace Shopway.Application.Abstractions.CQRS;
 

@@ -13,6 +13,7 @@ public sealed class CacheOptionsSetup : IConfigureOptions<CacheOptions>
 
     public void Configure(CacheOptions options)
     {
-        options.ConnectionString = _configuration.GetConnectionString("CacheConnection");
+        options.ConnectionString = _configuration
+            .GetConnectionString("CacheConnection");
     }
 }

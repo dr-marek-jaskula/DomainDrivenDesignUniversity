@@ -16,7 +16,7 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)
-            .HasConversion(id => id.Value, guid => UserId.New(guid))
+            .HasConversion(id => id.Value, guid => UserId.Create(guid))
             .HasColumnType("UNIQUEIDENTIFIER");
 
         builder.Property(u => u.Username)

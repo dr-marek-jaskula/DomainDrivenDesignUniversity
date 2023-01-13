@@ -3,6 +3,8 @@ using Serilog.Events;
 using Serilog;
 using Shopway.Presentation.Exceptions;
 using Shopway.Persistence.Framework;
+using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Persistence.Repositories;
 
 Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -36,11 +38,12 @@ try
         .RegisterMediator()
         .AddMemoryCache()
         .RegisterDatabaseContext(builder.Environment.IsDevelopment())
-        .RegisterServices()
         .RegisterBackgroundServices()
-        .RegisterServiceDecorators()
         .RegisterMiddlewares()
         .RegisterAuthentication()
+        .RegisterServices()
+        .RegisterServiceDecorators()
+        .RegisterRepositories()
         .AddSwaggerGen();
 
     //Build the application

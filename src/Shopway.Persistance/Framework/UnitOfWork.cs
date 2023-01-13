@@ -4,10 +4,17 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.BaseTypes;
-using Shopway.Domain.Repositories;
 using Shopway.Persistence.Outbox;
 
 namespace Shopway.Persistence.Framework;
+
+public interface IUnitOfWork
+{
+    public ShopwayDbContext Context { get; }
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
+    IExecutionStrategy CreateExecutionStrategy();
+}
 
 //The UnitOfWork class to handler transactions
 //Benefits:

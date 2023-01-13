@@ -26,7 +26,7 @@ public sealed class ProductController : ApiController
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var productId = ProductId.New(id);
+        var productId = ProductId.Create(id);
 
         var query = new GetProductByIdQuery(productId);
 
@@ -53,7 +53,7 @@ public sealed class ProductController : ApiController
             return HandleFailure(response);
         }
 
-        return CreatedAtActionResult(response, nameof(GetById));
+        return CreatedAtActionResult(response, nameof(Create));
     }
 
     [HttpPut("{id:guid}")]
@@ -62,7 +62,7 @@ public sealed class ProductController : ApiController
         [FromBody] UpdateProductRequest request,
         CancellationToken cancellationToken)
     {
-        var productId = ProductId.New(id);
+        var productId = ProductId.Create(id);
 
         var command = new UpdateProductCommand(productId, request.Price);
 
@@ -81,7 +81,7 @@ public sealed class ProductController : ApiController
         Guid id,
         CancellationToken cancellationToken)
     {
-        var productId = ProductId.New(id);
+        var productId = ProductId.Create(id);
 
         var command = new RemoveProductCommand(productId);
 
@@ -101,7 +101,7 @@ public sealed class ProductController : ApiController
         [FromBody] AddReviewRequest request,
         CancellationToken cancellationToken)
     {
-        var productId = ProductId.New(id);
+        var productId = ProductId.Create(id);
 
         var command = new AddReviewCommand(productId, request.Username, request.Stars, request.Title, request.Description);
 
@@ -122,8 +122,8 @@ public sealed class ProductController : ApiController
         [FromBody] UpdateReviewRequest request,
         CancellationToken cancellationToken)
     {
-        var productIdType = ProductId.New(productId);
-        var reviewIdType = ReviewId.New(reviewId);
+        var productIdType = ProductId.Create(productId);
+        var reviewIdType = ReviewId.Create(reviewId);
 
         var command = new UpdateReviewCommand(productIdType, reviewIdType, request.Stars, request.Description);
 
@@ -143,8 +143,8 @@ public sealed class ProductController : ApiController
         Guid reviewId,
         CancellationToken cancellationToken)
     {
-        var productIdType = ProductId.New(productId);
-        var reviewIdType = ReviewId.New(reviewId);
+        var productIdType = ProductId.Create(productId);
+        var reviewIdType = ReviewId.Create(reviewId);
 
         var command = new RemoveReviewCommand(productIdType, reviewIdType);
 

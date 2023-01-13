@@ -4,7 +4,6 @@ using Shopway.Application.Mapping;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
@@ -14,17 +13,17 @@ namespace Shopway.Application.CQRS.Products.Commands.CreateProduct;
 internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, CreateProductResponse>
 {
     private readonly IProductRepository _productRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator _validator;
 
-    public CreateProductCommandHandler(IProductRepository productRepository, IUnitOfWork unitOfWork, IValidator validator)
+    public CreateProductCommandHandler(IProductRepository productRepository, IValidator validator)
     {
         _productRepository = productRepository;
-        _unitOfWork = unitOfWork;
         _validator = validator;
     }
 
-    public async Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+    //There is not need to SaveChanges because is done in the Pipeline (transaction pipeline)
+    //Therefore, we return a task, which will slightly increase the performance 
+    public Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
         Result<ProductName> productNameResult = ProductName.Create(command.ProductName);
         Result<Price> priceResult = Price.Create(command.Price);
@@ -39,25 +38,23 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<CreateProductResponse>();
+            var failure = (IResult<CreateProductResponse>)_validator.Failure<CreateProductResponse>();
+            return Task.FromResult(failure);
         }
 
         Product createdProduct = CreateProduct(productNameResult, priceResult, uomCodeResult, revisionResult);
 
-        //There is not need SaveChanges because is done in the Pipeline (transaction pipeline)
-        //This only a checkpoint
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
         var response = createdProduct.ToCreateResponse();
+        var success = (IResult<CreateProductResponse>)Result.Create(response);
 
-        return Result.Create(response);
+        return Task.FromResult(success);
     }
 
     private Product CreateProduct
     (
-        Result<ProductName> productNameResult, 
-        Result<Price> priceResult, 
-        Result<UomCode> uomCodeResult, 
+        Result<ProductName> productNameResult,
+        Result<Price> priceResult,
+        Result<UomCode> uomCodeResult,
         Result<Revision> revisionResult
     )
     {

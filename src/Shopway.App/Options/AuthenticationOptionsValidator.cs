@@ -15,7 +15,7 @@ public sealed class AuthenticationOptionsValidator : IValidateOptions<Authentica
             validationResult += $"Invalid {nameof(options.DaysToExpire)}";
         }
 
-        if (options.SecretKey.Length > 5)
+        if (options.SecretKey.Length < 5)
         {
             validationResult += $"To short {nameof(options.SecretKey)}";
         }

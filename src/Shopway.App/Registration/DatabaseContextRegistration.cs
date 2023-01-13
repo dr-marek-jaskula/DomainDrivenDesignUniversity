@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Shopway.App.Options;
+using Shopway.Domain.Entities;
 using Shopway.Persistence.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;

@@ -4,9 +4,8 @@ namespace Shopway.App.Options;
 
 public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
 {
-    private readonly IConfiguration _configuration;
-
     private readonly string _configurationSectionName = "DatabaseOptions";
+    private readonly IConfiguration _configuration;
 
     public DatabaseOptionsSetup(IConfiguration configuration)
     {
@@ -15,7 +14,11 @@ public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
 
     public void Configure(DatabaseOptions options)
     {
-        options.ConnectionString = _configuration.GetConnectionString("DefaultConnection");
-        _configuration.GetSection(_configurationSectionName).Bind(options);
+        options.ConnectionString = _configuration
+            .GetConnectionString("DefaultConnection");
+        
+        _configuration
+            .GetSection(_configurationSectionName)
+            .Bind(options);
     }
 }
