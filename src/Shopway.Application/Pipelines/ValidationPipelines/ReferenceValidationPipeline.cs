@@ -5,18 +5,18 @@ using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;
 using System.Reflection;
 
-namespace Shopway.Application.Pipelines;
+namespace Shopway.Application.Pipelines.ValidationPipelines;
 
 public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : class, IResult
 {
-	private readonly ShopwayDbContext _context;
+    private readonly ShopwayDbContext _context;
 
-	public ReferenceValidationPipeline(ShopwayDbContext context)
-	{
-		_context = context;
-	}
+    public ReferenceValidationPipeline(ShopwayDbContext context)
+    {
+        _context = context;
+    }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {

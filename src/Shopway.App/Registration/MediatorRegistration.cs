@@ -11,8 +11,8 @@ public static class MediatorRegistration
         services.AddMediatR(Shopway.Application.AssemblyReference.Assembly);
 
         //Register Pipeline Behaviors
-
         services
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipeline<,>))
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(FluentValidationPipeline<,>))
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(QueryTransactionPipeline<,>))
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(ListQueryTransactionPipeline<,>))
