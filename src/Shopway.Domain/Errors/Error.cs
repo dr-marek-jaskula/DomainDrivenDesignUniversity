@@ -1,18 +1,45 @@
 ﻿namespace Shopway.Domain.Errors;
 
+/// <summary>
+/// Represents an error that contains the informations about the failure
+/// </summary>
 public class Error : IEquatable<Error>
 {
+    /// <summary>
+    /// The empty error instance used to represent that no error has occurred
+    /// </summary>
     public static readonly Error None = new(string.Empty, string.Empty);
-    public static readonly Error NullValue = new("Error.NullValue", "The result value is null");
 
-    public string Code { get; }
-    public string Message { get; }
+    /// <summary>
+    /// The null value error instance
+    /// </summary>
+    public static readonly Error NullValue = new($"Error.{nameof(NullValue)}", "The result value is null");
 
+    /// <summary>
+    /// The condition not satisfied error instance
+    /// </summary>
+    public static readonly Error ConditionNotSatisfied = new($"Error.{nameof(ConditionNotSatisfied)}", "The specified condition was not satisfied.");
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Error"/> class
+    /// </summary>
+    /// <param name="code">The error code</param>
+    /// <param name="message">The error message</param>
     public Error(string code, string message)
     {
         Code = code;
         Message = message;
     }
+
+    /// <summary>
+    /// Gets the error code
+    /// </summary>
+    public string Code { get; }
+
+    /// <summary>
+    /// Gets the error message
+    /// </summary>
+    public string Message { get; }
 
     public static implicit operator string(Error error)
     {
@@ -36,6 +63,7 @@ public class Error : IEquatable<Error>
 
     public static bool operator !=(Error? a, Error? b) => !(a == b);
 
+    /// <inheritdoc />
     public virtual bool Equals(Error? other)
     {
         if (other is null)
@@ -46,9 +74,21 @@ public class Error : IEquatable<Error>
         return Code == other.Code && Message == other.Message;
     }
 
-    public override bool Equals(object? obj) => obj is Error error && Equals(error);
+    /// <inheritdoc />
+    public override bool Equals(object? obj)
+    {
+        return obj is Error error && Equals(error);
+    }
 
-    public override int GetHashCode() => HashCode.Combine(Code, Message);
+    /// <inheritdoc />
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Code, Message);
+    }
 
-    public override string ToString() => Code;
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return Code;
+    }
 }

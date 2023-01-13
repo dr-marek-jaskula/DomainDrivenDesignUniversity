@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Shopway.Domain.Exceptions;
+using System.Reflection;
 
 namespace Shopway.Domain.Abstractions.BaseTypes;
 
@@ -6,9 +7,10 @@ namespace Shopway.Domain.Abstractions.BaseTypes;
 /// Represents an enumeration of objects with a unique numeric identifier and a name
 /// </summary>
 /// <typeparam name="TEnum">The type of the enumeration</typeparam>
-public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>
+public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>, IComparable<Enumeration<TEnum>>
     where TEnum : Enumeration<TEnum>
 {
+    private static readonly string EnumerationName = typeof(TEnum).Name;
     private static readonly Lazy<Dictionary<int, TEnum>> EnumerationsDictionary = 
         new(() => CreateEnumerationDictionary(typeof(TEnum)));
 
@@ -32,6 +34,7 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>
     /// </remarks>
     protected Enumeration()
     {
+        Id = default;
         Name = string.Empty;
     }
 
@@ -91,7 +94,7 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>
 
         return isValueInDictionary
             ? enumeration
-            : null;
+            : throw new EnumerationNotFoundException(EnumerationName, id);
     }
 
     /// <summary>
@@ -144,6 +147,14 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>
         }
 
         return obj is Enumeration<TEnum> otherValue && otherValue.Id.Equals(Id);
+    }
+
+    /// <inheritdoc />
+    public int CompareTo(Enumeration<TEnum>? other)
+    {
+        return other is null 
+            ? 1 
+            : Id.CompareTo(other.Id);
     }
 
     /// <inheritdoc />
