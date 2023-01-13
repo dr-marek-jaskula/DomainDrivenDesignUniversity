@@ -1,10 +1,11 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Application.Mapping;
 using static Shopway.Domain.Errors.HttpErrors;
+using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductById;
 

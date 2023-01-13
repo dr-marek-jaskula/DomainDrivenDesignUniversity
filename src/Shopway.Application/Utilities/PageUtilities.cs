@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Application.Abstractions;
 using Shopway.Application.CQRS;
-using Shopway.Domain.Primitives;
+using Shopway.Domain.Abstractions.BaseTypes;
 
 namespace Shopway.Application.Utilities;
 

@@ -1,6 +1,6 @@
 ﻿using MediatR;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.Repositories;
-using Shopway.Domain.Results;
 using static Microsoft.EntityFrameworkCore.QueryTrackingBehavior;
 
 namespace Shopway.Application.Abstractions.CQRS;

@@ -1,4 +1,4 @@
-﻿namespace Shopway.Domain.StronglyTypedIds;
+﻿namespace Shopway.Domain.Abstractions;
 
 public interface IEntityId<out TEntity> : IEntityId
 {

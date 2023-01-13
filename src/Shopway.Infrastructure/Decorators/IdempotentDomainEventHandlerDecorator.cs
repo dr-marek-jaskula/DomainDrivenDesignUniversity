@@ -1,9 +1,9 @@
-﻿using Shopway.Domain.DomainEvents;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
 using Shopway.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Shopway.Persistence.Framework;
+using Shopway.Domain.Abstractions.BaseTypes;
 
 namespace Shopway.Infrastructure.Decoratos;
 

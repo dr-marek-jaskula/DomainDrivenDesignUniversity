@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.DomainEvents;
-using Shopway.Domain.Primitives;
+﻿using Shopway.Domain.Abstractions.BaseTypes;
+using Shopway.Domain.DomainEvents;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
@@ -8,13 +8,6 @@ namespace Shopway.Domain.Entities;
 public sealed class Product : AggregateRoot<ProductId>
 {
     private readonly List<Review> _reviews = new();
-
-    public ProductName ProductName { get; private set; }
-    public Revision Revision { get; private set; }
-    public Price Price { get; private set; }
-    public UomCode UomCode { get; private set; }
-    
-    public IReadOnlyCollection<Review> Reviews => _reviews;
 
     internal Product(
         ProductId id,
@@ -34,6 +27,13 @@ public sealed class Product : AggregateRoot<ProductId>
     private Product()
     {
     }
+
+    public ProductName ProductName { get; private set; }
+    public Revision Revision { get; private set; }
+    public Price Price { get; private set; }
+    public UomCode UomCode { get; private set; }
+
+    public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
 
     public static Product Create(
         ProductId id,

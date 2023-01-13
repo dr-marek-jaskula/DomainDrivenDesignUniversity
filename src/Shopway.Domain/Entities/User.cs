@@ -1,7 +1,9 @@
 using MediatR;
+using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.BaseTypes;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
-using Shopway.Domain.Primitives;
+using Shopway.Domain.Enumerations;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
@@ -9,15 +11,6 @@ namespace Shopway.Domain.Entities;
 
 public sealed class User : AggregateRoot<UserId>, IAuditableEntity
 {
-    public Username Username { get; set; }
-    public Email Email { get; set; }
-    public DateTimeOffset CreatedOn { get; set; }
-    public DateTimeOffset? UpdatedOn { get; set; }
-    public PasswordHash PasswordHash { get; set; }
-    public PersonId? PersonId { get; set; }
-    public Person? Person { get; set; }
-    public ICollection<Role> Roles { get; set; }
-
     internal User
     (
         UserId id,
@@ -34,6 +27,15 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     private User()
     {
     }
+
+    public Username Username { get; set; }
+    public Email Email { get; set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? UpdatedOn { get; set; }
+    public PasswordHash PasswordHash { get; set; }
+    public PersonId? PersonId { get; set; }
+    public Person? Person { get; set; }
+    public ICollection<Role> Roles { get; set; }
 
     public static User Create
     (

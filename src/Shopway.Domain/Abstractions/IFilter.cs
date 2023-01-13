@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Primitives;
+﻿using Shopway.Domain.Abstractions.BaseTypes;
 
 namespace Shopway.Domain.Abstractions;
 

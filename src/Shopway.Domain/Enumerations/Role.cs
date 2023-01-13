@@ -1,6 +1,7 @@
-using Shopway.Domain.Primitives;
+using Shopway.Domain.Abstractions.BaseTypes;
+using Shopway.Domain.Entities;
 
-namespace Shopway.Domain.Entities;
+namespace Shopway.Domain.Enumerations;
 
 public sealed class Role : Enumeration<Permission>
 {

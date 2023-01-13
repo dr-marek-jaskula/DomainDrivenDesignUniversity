@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.Enumerations;
 
 namespace Shopway.Persistence.Configurations;
 

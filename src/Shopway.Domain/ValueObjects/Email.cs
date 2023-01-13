@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Primitives;
+﻿using Shopway.Domain.Abstractions.BaseTypes;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
 using static Shopway.Domain.Errors.DomainErrors;

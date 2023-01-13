@@ -1,4 +1,11 @@
-﻿namespace Shopway.Domain.DomainEvents;
+﻿using MediatR;
+
+namespace Shopway.Domain.Abstractions.BaseTypes;
+
+public interface IDomainEvent : INotification
+{
+    public Guid Id { get; init; }
+}
 
 //DomainEvents are records of something that already occurred in our system
 //For instance: UserCreatedDomainEvent, OrderCreatedDomainEvent, PaymentSucceededDomainEvent

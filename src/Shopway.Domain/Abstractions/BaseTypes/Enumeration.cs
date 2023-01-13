@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Shopway.Domain.Primitives;
+namespace Shopway.Domain.Abstractions.BaseTypes;
 
 /// <summary>
 /// Represents an enumeration of objects with a unique numeric identifier and a name
@@ -89,7 +89,7 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>
             .TryGetValue(id, out TEnum? enumeration);
 
         return isValueInDictionary
-            ? enumeration 
+            ? enumeration
             : null;
     }
 

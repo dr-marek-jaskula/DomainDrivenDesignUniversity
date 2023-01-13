@@ -1,4 +1,6 @@
-﻿namespace Shopway.Domain.StronglyTypedIds;
+﻿using Shopway.Domain.Abstractions;
+
+namespace Shopway.Domain.StronglyTypedIds;
 
 public readonly record struct PersonId : IEntityId<PersonId>, IEquatable<PersonId>
 {

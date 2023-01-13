@@ -1,6 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
+using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.DomainEvents;
-using Shopway.Domain.Repositories;
 
 namespace Shopway.Application.CQRS.Orders.Events;
 

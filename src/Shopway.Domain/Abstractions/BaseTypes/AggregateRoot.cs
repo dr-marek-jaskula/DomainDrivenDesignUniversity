@@ -1,7 +1,10 @@
-﻿using Shopway.Domain.DomainEvents;
-using Shopway.Domain.StronglyTypedIds;
+﻿namespace Shopway.Domain.Abstractions.BaseTypes;
 
-namespace Shopway.Domain.Primitives;
+public interface IAggregateRoot
+{
+    IReadOnlyCollection<IDomainEvent> GetDomainEvents();
+    void ClearDomainEvents();
+}
 
 //The AggregateRoot is an Entity or a group of Entities that will be allowed to be directly queried from the database.
 //AggragateRoot is always queried as a whole.

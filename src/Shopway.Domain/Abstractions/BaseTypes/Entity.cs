@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.StronglyTypedIds;
+﻿using Shopway.Domain.Abstractions;
 
-namespace Shopway.Domain.Primitives;
+namespace Shopway.Domain.Abstractions.BaseTypes;
 
 public interface IEntity
 {

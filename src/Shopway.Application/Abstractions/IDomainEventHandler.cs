@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Shopway.Domain.DomainEvents;
+using Shopway.Domain.Abstractions.BaseTypes;
 
 namespace Shopway.Application.Abstractions;
 

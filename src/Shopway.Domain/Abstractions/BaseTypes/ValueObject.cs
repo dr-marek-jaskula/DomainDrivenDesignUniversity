@@ -1,4 +1,4 @@
-﻿namespace Shopway.Domain.Primitives;
+﻿namespace Shopway.Domain.Abstractions.BaseTypes;
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {

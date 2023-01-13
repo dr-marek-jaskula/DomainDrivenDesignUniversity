@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
@@ -13,20 +12,6 @@ public sealed class Employee : Person
 {
     private readonly List<WorkItem> _workItems = new();
     private readonly List<Employee> _subordinates = new();
-
-    public DateTimeOffset HireDate { get; private set; }
-
-    //Many to many relationship with customers (rest is in Customer class)
-    public List<Person> Customers { get; private set; } = new();
-
-    //One to many relationship with same table (ManagerId, Manager, Subordinates)
-    public PersonId? ManagerId { get; private set; }
-    public Employee? Manager { get; private set; }
-
-    public IReadOnlyCollection<Employee> Subordinates => _subordinates;
-
-    //WorkItems relations
-    public IReadOnlyCollection<WorkItem> WorkItems => _workItems;
 
     internal Employee(
         PersonId id,
@@ -48,6 +33,20 @@ public sealed class Employee : Person
     private Employee()
     {
     }
+
+    public DateTimeOffset HireDate { get; private set; }
+
+    //Many to many relationship with customers (rest is in Customer class)
+    public List<Person> Customers { get; private set; } = new();
+
+    //One to many relationship with same table (ManagerId, Manager, Subordinates)
+    public PersonId? ManagerId { get; private set; }
+    public Employee? Manager { get; private set; }
+
+    public IReadOnlyCollection<Employee> Subordinates => _subordinates.AsReadOnly();
+
+    //WorkItems relations
+    public IReadOnlyCollection<WorkItem> WorkItems => _workItems.AsReadOnly();
 
     public static Employee Create(
         PersonId id,

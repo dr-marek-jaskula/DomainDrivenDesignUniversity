@@ -1,7 +1,6 @@
 ﻿using MediatR;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.Errors;
-using Shopway.Domain.Results;
-using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;
 using System.Reflection;

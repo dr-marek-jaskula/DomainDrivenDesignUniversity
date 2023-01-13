@@ -1,6 +1,7 @@
-﻿using Shopway.Domain.DomainEvents;
+﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.BaseTypes;
+using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Enums;
-using Shopway.Domain.Primitives;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
@@ -8,17 +9,6 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
 {
-    public Amount Amount { get; private set; }
-    public Status Status { get; private set; }
-    public DateTimeOffset CreatedOn { get; set; }
-    public DateTimeOffset? UpdatedOn { get; set; }
-    public Product Product { get; private set; }
-    public ProductId ProductId { get; private set; }
-    public Payment Payment { get; private set; }
-    public PaymentId PaymentId { get; private set; }
-    public Customer Customer { get; private set; }
-    public PersonId CustomerId { get; private set; }
-
     internal Order(
         OrderId id,
         ProductId productId,
@@ -38,6 +28,17 @@ public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
     private Order()
     {
     }
+
+    public Amount Amount { get; private set; }
+    public Status Status { get; private set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? UpdatedOn { get; set; }
+    public Product Product { get; private set; }
+    public ProductId ProductId { get; private set; }
+    public Payment Payment { get; private set; }
+    public PaymentId PaymentId { get; private set; }
+    public Customer Customer { get; private set; }
+    public PersonId CustomerId { get; private set; }
 
     public static Order Create(
         OrderId id,

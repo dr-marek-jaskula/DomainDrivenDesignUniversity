@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Repositories;
 using Shopway.Domain.StronglyTypedIds;
 using System.Linq.Expressions;
 

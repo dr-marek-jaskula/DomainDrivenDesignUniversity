@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Utilities;
 using Shopway.Domain.Enums;
-using Shopway.Domain.Primitives;
 using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.BaseTypes;
 
 namespace Shopway.Persistence.Utilities;
 

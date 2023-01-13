@@ -1,6 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
+using Shopway.Domain.Abstractions.BaseTypes;
 using Shopway.Domain.Errors;
-using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 
 namespace Shopway.Infrastructure.Validators;

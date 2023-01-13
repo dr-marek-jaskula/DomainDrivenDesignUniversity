@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
-using Shopway.Domain.Primitives;
+using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.BaseTypes;
 using Shopway.Domain.Repositories;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;

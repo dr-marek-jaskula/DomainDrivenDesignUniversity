@@ -2,7 +2,7 @@
 using Shopway.Domain.StronglyTypedIds;
 using System.Linq.Expressions;
 
-namespace Shopway.Domain.Repositories;
+namespace Shopway.Domain.Abstractions.Repositories;
 
 public interface IOrderRepository
 {

@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Enums;
-using Shopway.Domain.Primitives;
+﻿using Shopway.Domain.Abstractions.BaseTypes;
+using Shopway.Domain.Enums;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 

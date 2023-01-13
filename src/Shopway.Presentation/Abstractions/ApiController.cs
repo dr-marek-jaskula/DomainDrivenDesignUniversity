@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.Errors;
-using Shopway.Domain.Results;
-using IResult = Shopway.Domain.Results.IResult;
+using IResult = Shopway.Domain.Abstractions.IResult;
 
 namespace Shopway.Presentation.Abstractions;
 

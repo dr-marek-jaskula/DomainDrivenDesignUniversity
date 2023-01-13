@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.BaseTypes;
 using Shopway.Domain.Enums;
-using Shopway.Domain.Primitives;
-using Shopway.Domain.StronglyTypedIds;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Abstractions;

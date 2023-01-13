@@ -2,12 +2,12 @@
 using Newtonsoft.Json;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
-using Shopway.Domain.Repositories;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Resolvers;
 using System.Linq.Expressions;
 using Shopway.Persistence.Framework;
 using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 

@@ -2,9 +2,9 @@
 using Shopway.Infrastructure.Providers;
 using Shopway.Infrastructure.Adapters;
 using Shopway.Application.Abstractions;
-using Shopway.Domain.Repositories;
 using Shopway.Persistence.Repositories;
 using Shopway.Infrastructure.Validators;
+using Shopway.Domain.Abstractions.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

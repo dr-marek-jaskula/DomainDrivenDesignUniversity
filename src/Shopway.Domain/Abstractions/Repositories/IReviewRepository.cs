@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Entities;
 
-namespace Shopway.Domain.Repositories;
+namespace Shopway.Domain.Abstractions.Repositories;
 
 public interface IReviewRepository
 {

@@ -1,9 +1,9 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
-using Shopway.Domain.Primitives;
 using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
 using static Shopway.Domain.Errors.DomainErrors;
+using Shopway.Domain.Abstractions.BaseTypes;
 
 namespace Shopway.Domain.ValueObjects;
 

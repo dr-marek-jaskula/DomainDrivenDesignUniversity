@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Primitives;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.BaseTypes;
 using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;

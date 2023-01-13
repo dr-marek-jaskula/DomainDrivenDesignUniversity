@@ -2,7 +2,7 @@
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
 
-namespace Shopway.Domain.Repositories;
+namespace Shopway.Domain.Abstractions.Repositories;
 
 public interface IUserRepository
 {
