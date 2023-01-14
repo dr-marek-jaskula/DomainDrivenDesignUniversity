@@ -23,4 +23,13 @@ public static class HttpErrors
     {
         return new Error($"User.InvalidPasswordOrEmail", $"Invalid password or email");
     }
+
+    /// <summary>
+    /// Create an Error describing that the provided reference is invalid
+    /// </summary>
+    /// <returns>InvalidReference error</returns>
+    public static Error InvalidReference(Guid reference, string entity)
+    {
+        return new Error($"Error.{nameof(InvalidReference)}", $"Invalid Entity reference {reference} for entity {entity}");
+    }
 }

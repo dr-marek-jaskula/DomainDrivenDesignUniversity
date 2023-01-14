@@ -4,6 +4,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;
 using System.Reflection;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.Pipelines.ValidationPipelines;
 
@@ -27,7 +28,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
         Error[] errors = referenceProperties
             .Select(async (reference) => await Validate(reference, request))
-            .Select(t => t.Result)
+            .Select(task => task.Result)
             .Where(error => error != Error.None)
             .Distinct()
             .ToArray();
@@ -42,27 +43,21 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
     private async Task<Error> Validate(PropertyInfo reference, TRequest request)
     {
+        //omit optional reference
         if (reference.GetValue(request) is not IEntityId entityId || entityId is null || entityId.Value == Guid.Empty)
         {
-            return Error.None; //omit optional reference
+            return Error.None; 
         }
 
-        var entityType = GetEntityType(reference);
+        var entityType = reference.GetEntityTypeFromEntityId();
 
         var entity = await _context.FindAsync(entityType, entityId);
 
         if (entity is null)
         {
-            return new("Error.InvalidReference", $"Invalid Entity reference {entityId.Value} for entity {entityType.Name}");
+            return InvalidReference(entityId.Value, entityType.Name);
         }
 
         return Error.None;
-    }
-
-    private static Type GetEntityType(PropertyInfo property)
-    {
-        return property.PropertyType.BaseType?.Name == typeof(IEntityId<>).Name
-            ? property.PropertyType.BaseType.GetGenericArguments().First()
-            : property.PropertyType.GetGenericArguments().First();
     }
 }
