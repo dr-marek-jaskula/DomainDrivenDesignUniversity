@@ -21,7 +21,7 @@ public sealed class ProductController : ApiController
     {
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(
         Guid id, 
         CancellationToken cancellationToken)
@@ -53,10 +53,10 @@ public sealed class ProductController : ApiController
             return HandleFailure(response);
         }
 
-        return CreatedAtActionResult(response, nameof(Create));
+        return CreatedAtActionResult(response, nameof(GetById));
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Update(
         Guid id,
         [FromBody] UpdateProductRequest request,
@@ -76,7 +76,7 @@ public sealed class ProductController : ApiController
         return Ok(result.Value);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(
         Guid id,
         CancellationToken cancellationToken)
@@ -95,7 +95,7 @@ public sealed class ProductController : ApiController
         return NoContent();
     }
 
-    [HttpPost("{id:guid}/review")]
+    [HttpPost("{id}/review")]
     public async Task<IActionResult> AddReview(
         Guid id,
         [FromBody] AddReviewRequest request,
@@ -115,7 +115,7 @@ public sealed class ProductController : ApiController
         return Ok(result.Value);
     }
 
-    [HttpPatch("{productId:guid}/review/{reviewId:guid}")]
+    [HttpPatch("{productId}/review/{reviewId}")]
     public async Task<IActionResult> UpdateReview(
         Guid productId,
         Guid reviewId,
@@ -137,7 +137,7 @@ public sealed class ProductController : ApiController
         return Ok(result.Value);
     }
 
-    [HttpDelete("{productId:guid}/review/{reviewId:guid}")]
+    [HttpDelete("{productId}/review/{reviewId}")]
     public async Task<IActionResult> RemoveReview(
         Guid productId,
         Guid reviewId,

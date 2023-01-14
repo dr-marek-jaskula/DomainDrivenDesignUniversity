@@ -16,7 +16,7 @@ public sealed class OrderController : ApiController
     {
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetOrderById(
         Guid id, 
         CancellationToken cancellationToken)
