@@ -1,11 +1,8 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Abstractions;
-using Shopway.Domain.Entities;
-using Shopway.Domain.Results;
 using Shopway.Application.Mapping;
-using static Shopway.Domain.Errors.HttpErrors;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Abstractions;
+using Shopway.Application.Utilities;
 
 namespace Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 
@@ -22,8 +19,8 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
     {
         var order = await _orderRepository.GetByIdAsync(query.Id, cancellationToken);
 
-        var response = order!.ToResponse();
-
-        return Result.Create(response);
+        return order
+            .ToResponse()
+            .ToResult();
     }
 }

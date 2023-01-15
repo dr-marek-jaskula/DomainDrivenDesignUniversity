@@ -16,20 +16,20 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
     {
     }
 
-    public async Task<Product?> GetByIdAsync(ProductId id, CancellationToken cancellationToken = default)
+    public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken = default)
     {
         var specification = ProductByIdWithReviewsQuerySpecification.Create(id);
 
         return await ApplySpecification(specification)
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstAsync(cancellationToken);
     }
 
-    public async Task<Product?> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
+    public async Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
     {
         var specification = ProductByIdWithIncludesQuerySpecification.Create(id, includes);
 
         return await ApplySpecification(specification)
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstAsync(cancellationToken);
     }
 
     public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy? sort)

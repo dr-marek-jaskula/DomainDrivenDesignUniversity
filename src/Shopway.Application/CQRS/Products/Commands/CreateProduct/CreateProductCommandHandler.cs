@@ -1,11 +1,13 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mapping;
+using Shopway.Application.Utilities;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.Utilities;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Application.CQRS.Products.Commands.CreateProduct;
@@ -21,8 +23,6 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         _validator = validator;
     }
 
-    //There is not need to SaveChanges because is done in the Pipeline (transaction pipeline)
-    //Therefore, we return a task, which will slightly increase the performance 
     public Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
         Result<ProductName> productNameResult = ProductName.Create(command.ProductName);
@@ -39,15 +39,17 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         if (_validator.IsInvalid)
         {
             var failure = (IResult<CreateProductResponse>)_validator.Failure<CreateProductResponse>();
-            return Task.FromResult(failure);
+            
+            return failure
+                .ToTask();
         }
 
         Product createdProduct = CreateProduct(productNameResult, priceResult, uomCodeResult, revisionResult);
 
-        var response = createdProduct.ToCreateResponse();
-        var success = (IResult<CreateProductResponse>)Result.Create(response);
-
-        return Task.FromResult(success);
+        return createdProduct
+            .ToCreateResponse()
+            .ToResult()
+            .ToTask();
     }
 
     private Product CreateProduct

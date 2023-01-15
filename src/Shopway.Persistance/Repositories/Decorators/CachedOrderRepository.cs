@@ -17,7 +17,7 @@ public sealed class CachedOrderRepository : IOrderRepository
         _memoryCache = memoryCache;
     }
 
-    public Task<Order?> GetByIdAsync(OrderId id, CancellationToken cancellationToken = default)
+    public Task<Order> GetByIdAsync(OrderId id, CancellationToken cancellationToken = default)
     {
         string key = $"order-{id}";
 
@@ -28,10 +28,10 @@ public sealed class CachedOrderRepository : IOrderRepository
                 entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(2));
 
                 return _decorated.GetByIdAsync(id, cancellationToken);
-            });
+            })!;
     }
 
-    public Task<Order?> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken = default, params Expression<Func<Order, object>>[] includes)
+    public Task<Order> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken = default, params Expression<Func<Order, object>>[] includes)
     {
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }

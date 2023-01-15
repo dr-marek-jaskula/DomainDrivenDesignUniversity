@@ -4,12 +4,12 @@ using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using static Shopway.Domain.Errors.HttpErrors;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Abstractions;
+using Shopway.Application.Utilities;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Users.Commands.LogUser;
-
 
 internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, LogUserResponse>
 {
@@ -41,7 +41,7 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
             return _validator.Failure<LogUserResponse>();
         }
 
-        //Validate if email is used
+        //Validate if email is already used
         User? user = await _userRepository
             .GetByEmailAsync(emailResult.Value, cancellationToken);
 
@@ -75,6 +75,7 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
     {
         var logUserResponse = new LogUserResponse(token);
 
-        return Result.Create(logUserResponse);
+        return logUserResponse
+            .ToResult();
     }
 }

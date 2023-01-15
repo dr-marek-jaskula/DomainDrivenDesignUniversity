@@ -28,3 +28,9 @@ Or see **ProductPageQueryValidator**
 	Therefore, verifying that the entity is not null in the handler is redundant.
 
 3. The remaining validation is done in the domain.
+
+## Transaction Pipelines
+
+There is not need to save changes inside handlers, because is done in the Pipeline (transaction pipeline)
+Moreover, the pipeline provides the transaction scope, so if at least one database operation fail, all operations are rollbacked.
+Therefore in some cases, we return a task, which slightly increases the performance 

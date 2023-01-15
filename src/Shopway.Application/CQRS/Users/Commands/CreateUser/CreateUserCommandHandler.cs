@@ -7,7 +7,6 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
-using Shopway.Persistence.Framework;
 using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Application.CQRS.Users.Commands.CreateUser;
@@ -16,12 +15,10 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator _validator;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IValidator validator, IPasswordHasher<User> passwordHasher)
+    public CreateUserCommandHandler(IUserRepository userRepository, IValidator validator, IPasswordHasher<User> passwordHasher)
     {
-        _unitOfWork = unitOfWork;
         _validator = validator;
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
@@ -48,8 +45,6 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
         }
 
         var result = AddUser(emailResult.Value, usernameResult.Value, passwordResult.Value);
-
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return result;
     }

@@ -1,8 +1,8 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Results;
 using Shopway.Application.Mapping;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Abstractions;
+using Shopway.Application.Utilities;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductById;
 
@@ -19,8 +19,8 @@ internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQ
     {
         var product = await _productRepository.GetByIdAsync(query.Id, cancellationToken);
 
-        var response = product!.ToResponse();
-
-        return Result.Create(response);
+        return product
+            .ToResponse()
+            .ToResult();
     }
 }

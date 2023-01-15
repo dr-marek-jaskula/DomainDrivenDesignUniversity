@@ -4,27 +4,26 @@ using Shopway.Application.Mapping;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
-using Shopway.Persistence.Framework;
 using Shopway.Domain.Results;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Application.Utilities;
+using Shopway.Domain.Utilities;
 
 namespace Shopway.Application.CQRS.Orders.Commands.CreateOrder;
 
 internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, CreateOrderResponse>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator _validator;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork, IValidator validator)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, IValidator validator)
     {
         _orderRepository = orderRepository;
-        _unitOfWork = unitOfWork;
         _validator = validator;
     }
 
-    public async Task<IResult<CreateOrderResponse>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
+    public Task<IResult<CreateOrderResponse>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
         Result<Amount> amountResult = Amount.Create(command.Amount);
         Result<Discount> discountResult = Discount.Create(command.Discount ?? 0);
@@ -35,16 +34,18 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<CreateOrderResponse>();
+            var failure = (IResult<CreateOrderResponse>)_validator.Failure<CreateOrderResponse>();
+            
+            return failure
+                .ToTask();
         }
 
         Order createdOrder = CreateOrder(command, amountResult, discountResult);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        var response = createdOrder.ToCreateResponse();
-
-        return Result.Create(response);
+        return createdOrder
+            .ToCreateResponse()
+            .ToResult()
+            .ToTask();
     }
 
     private Order CreateOrder(CreateOrderCommand command, Result<Amount> amountResult, Result<Discount> discountResult)

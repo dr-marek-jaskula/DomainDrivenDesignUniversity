@@ -4,12 +4,9 @@ using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Products;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Application.CQRS.Products.Queries.GetProductById;
-using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
-using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
-using Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -26,9 +23,7 @@ public sealed class ProductController : ApiController
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var productId = ProductId.Create(id);
-
-        var query = new GetProductByIdQuery(productId);
+        var query = new GetProductByIdQuery(ProductId.Create(id));
 
         var response = await Sender.Send(query, cancellationToken);
 
@@ -40,11 +35,13 @@ public sealed class ProductController : ApiController
         [FromBody] CreateProductRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new CreateProductCommand(
+        var command = new CreateProductCommand
+        (
             request.ProductName,
             request.Price,
             request.UomCode,
-            request.Revision);
+            request.Revision
+        );
 
         var response = await Sender.Send(command, cancellationToken);
 
@@ -62,9 +59,7 @@ public sealed class ProductController : ApiController
         [FromBody] UpdateProductRequest request,
         CancellationToken cancellationToken)
     {
-        var productId = ProductId.Create(id);
-
-        var command = new UpdateProductCommand(productId, request.Price);
+        var command = new UpdateProductCommand(ProductId.Create(id), request.Price);
 
         var result = await Sender.Send(command, cancellationToken);
 
@@ -81,72 +76,7 @@ public sealed class ProductController : ApiController
         Guid id,
         CancellationToken cancellationToken)
     {
-        var productId = ProductId.Create(id);
-
-        var command = new RemoveProductCommand(productId);
-
-        var result = await Sender.Send(command, cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return NoContent();
-    }
-
-    [HttpPost("{id}/review")]
-    public async Task<IActionResult> AddReview(
-        Guid id,
-        [FromBody] AddReviewRequest request,
-        CancellationToken cancellationToken)
-    {
-        var productId = ProductId.Create(id);
-
-        var command = new AddReviewCommand(productId, request.Username, request.Stars, request.Title, request.Description);
-
-        var result = await Sender.Send(command, cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return Ok(result.Value);
-    }
-
-    [HttpPatch("{productId}/review/{reviewId}")]
-    public async Task<IActionResult> UpdateReview(
-        Guid productId,
-        Guid reviewId,
-        [FromBody] UpdateReviewRequest request,
-        CancellationToken cancellationToken)
-    {
-        var productIdType = ProductId.Create(productId);
-        var reviewIdType = ReviewId.Create(reviewId);
-
-        var command = new UpdateReviewCommand(productIdType, reviewIdType, request.Stars, request.Description);
-
-        var result = await Sender.Send(command, cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return Ok(result.Value);
-    }
-
-    [HttpDelete("{productId}/review/{reviewId}")]
-    public async Task<IActionResult> RemoveReview(
-        Guid productId,
-        Guid reviewId,
-        CancellationToken cancellationToken)
-    {
-        var productIdType = ProductId.Create(productId);
-        var reviewIdType = ReviewId.Create(reviewId);
-
-        var command = new RemoveReviewCommand(productIdType, reviewIdType);
+        var command = new RemoveProductCommand(ProductId.Create(id));
 
         var result = await Sender.Send(command, cancellationToken);
 

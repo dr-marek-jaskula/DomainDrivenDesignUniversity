@@ -1,5 +1,4 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Results;
 using Shopway.Application.Utilities;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Domain.Abstractions.Repositories;
@@ -25,6 +24,7 @@ internal sealed class ProductPageQueryHandler : IPageQueryHandler<ProductPageQue
         var pageResponse = await queryable
             .ToPage(pageQuery.PageSize, pageQuery.PageNumber, ProductMapping.ToResponse, cancellationToken);
 
-        return Result.Create(pageResponse);
+        return pageResponse
+            .ToResult();
     }
 }

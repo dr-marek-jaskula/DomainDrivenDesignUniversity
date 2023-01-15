@@ -39,6 +39,8 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             return errors.CreateValidationResult<TResponse>();
         }
 
+        _context.ChangeTracker.Clear();
+
         return await next();
     }
 
