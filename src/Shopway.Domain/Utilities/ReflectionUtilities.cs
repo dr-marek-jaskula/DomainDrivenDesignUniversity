@@ -10,8 +10,11 @@ public static class ReflectionUtilities
 
         var skipAmount = "Id".Length;
 
-        var typeName = $"{assembly.GetName().Name}.Entities.{entityId.PropertyType.Name[0..^skipAmount]}";
+        var typeName = entityId.PropertyType.Name[0..^skipAmount];
 
-        return assembly.GetType(typeName)!;
+        return assembly
+            .GetTypes()
+            .Where(type => type.Name == typeName)
+            .Single();
     }
 }
