@@ -25,5 +25,6 @@ Or see **ProductPageQueryValidator**
 
 2. ReferenceValidation
 	MediatR pipeline that checks if the given id truly refers to the entity
+	Therefore, verifying that the entity is not null in the handler is redundant.
 
 3. The remaining validation is done in the domain.

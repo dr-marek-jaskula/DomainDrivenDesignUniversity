@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.Results;
 
 namespace Shopway.Application.Pipelines;
 
 public class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
-    where TResponse : Result
+    where TResponse : IResult
 {
     private readonly ILogger<LoggingPipeline<TRequest, TResponse>> _logger;
 

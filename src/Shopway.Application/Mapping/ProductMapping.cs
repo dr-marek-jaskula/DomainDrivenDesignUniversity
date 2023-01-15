@@ -13,11 +13,11 @@ public static class ProductMapping
         return new ProductResponse
         (
             Id: product.Id.Value,
-            ProductName: product.ProductName,
-            Revision: product.Revision,
-            Price: product.Price,
-            UomCode: product.UomCode,
-            Reviews: product.Reviews
+            ProductName: product.ProductName.Value,
+            Revision: product.Revision.Value,
+            Price: product.Price.Value,
+            UomCode: product.UomCode.Value,
+            Reviews: product.Reviews.ToResponses()
         );
     }
 
