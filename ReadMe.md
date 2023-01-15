@@ -32,4 +32,4 @@ This layer should provide the database specific structures, configurations, repo
 
 ### .Domain
 
-This is the heart of the whole solution. We store here the entities, value objects, enumerations, domain events and other core structures.
+This is the heart of the whole solution. We store here entities, value objects, enumerations, domain events and other core structures.
