@@ -13,11 +13,13 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
 {
     private readonly IProductRepository _productRepository;
     private readonly IValidator _validator;
+    private readonly IUserContextService _userContext;
 
-    public AddReviewCommandHandler(IProductRepository productRepository, IValidator validator)
+    public AddReviewCommandHandler(IProductRepository productRepository, IValidator validator, IUserContextService userContext)
     {
         _productRepository = productRepository;
         _validator = validator;
+        _userContext = userContext;
     }
 
     public async Task<IResult<AddReviewResponse>> Handle(AddReviewCommand command, CancellationToken cancellationToken)
@@ -26,7 +28,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
 
         Result<Title> titleResult = Title.Create(command.Title);
         Result<Description> descriptionResult = Description.Create(command.Description);
-        Result<Username> usernameResult = Username.Create(command.Username);
+        Result<Username> usernameResult = Username.Create(_userContext.GetUserName!);
         Result<Stars> starsResult = Stars.Create(command.Stars);
 
         _validator

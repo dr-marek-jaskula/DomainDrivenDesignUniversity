@@ -11,6 +11,7 @@ internal static class TableNames
     internal const string Product = nameof(Product);
     internal const string Review = nameof(Review);
     internal const string Role = nameof(Role);
+    internal const string RoleUser = nameof(RoleUser);
     internal const string Permission = nameof(Permission);
     internal const string RolePermission = nameof(RolePermission);
     internal const string Tag = nameof(Tag);

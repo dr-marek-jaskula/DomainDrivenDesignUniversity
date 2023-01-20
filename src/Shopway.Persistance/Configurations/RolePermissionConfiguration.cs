@@ -25,16 +25,13 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
             Create(Role.Manager, Permission.Update),
             Create(Role.Employee, Permission.Read),
             Create(Role.Employee, Permission.Create),
-            Create(Role.Customer, Permission.Read)
+            Create(Role.Customer, Permission.Read),
+            Create(Role.Customer, Permission.CRUD_Review)
         );
     }
 
     private static RolePermission Create(Role role, Permission permission)
     {
-        return new RolePermission
-        {
-            RoleId = role.Id,
-            PermissionId = permission.Id
-        };
+        return new RolePermission(role.Id, permission.Id);
     }
 }

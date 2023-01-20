@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Shopway.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Products;
@@ -6,6 +7,7 @@ using Shopway.Domain.StronglyTypedIds;
 using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
 using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
 using Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
+using Shopway.Infrastructure.Authentication;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -18,6 +20,7 @@ public sealed class ReviewController : ApiController
     }
 
     [HttpPost()]
+    [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> Add(
         Guid productId,
         [FromBody] AddReviewRequest request,
@@ -26,7 +29,6 @@ public sealed class ReviewController : ApiController
         var command = new AddReviewCommand
         (
             ProductId.Create(productId), 
-            request.Username, 
             request.Stars, 
             request.Title, 
             request.Description
@@ -43,6 +45,7 @@ public sealed class ReviewController : ApiController
     }
 
     [HttpPatch("{reviewId}")]
+    [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> Update(
         Guid productId,
         Guid reviewId,
@@ -68,6 +71,7 @@ public sealed class ReviewController : ApiController
     }
 
     [HttpDelete("{reviewId}")]
+    [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> Remove(
         Guid productId,
         Guid reviewId,

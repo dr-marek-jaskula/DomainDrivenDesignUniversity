@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Shopway.Application.Abstractions;
 using Shopway.Domain.StronglyTypedIds;
-using Shopway.Infrastructure.Abstractions;
+using Shopway.Domain.Utilities;
 using Shopway.Infrastructure.Policies;
 using System.Security.Claims;
 
@@ -23,11 +24,15 @@ public class UserContextService : IUserContextService
         ? null 
         : UserId.Create(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
+    public string? GetUserName => User is null 
+        ? null 
+        : User.FindFirstValue("name");
+
     public PersonId? GetPersonId
     {
         get
         {
-            if (User?.FindFirstValue(ClaimPolicies.PersonId) is string stringPersonId)
+            if (User?.FindFirstValue(ClaimPolicies.PersonId) is string stringPersonId && stringPersonId.IsNullOrEmptyOrWhiteSpace() == false)
             {
                 return PersonId.Create(Guid.Parse(stringPersonId));
             }

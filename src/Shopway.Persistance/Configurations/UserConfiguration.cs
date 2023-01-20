@@ -4,6 +4,7 @@ using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.Enumerations;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -37,7 +38,8 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .HasColumnType("NCHAR(514)"); //512 + 2 for 'N' characters
 
         builder.HasMany(u => u.Roles)
-            .WithMany(r => r.Users);
+            .WithMany(r => r.Users)
+            .UsingEntity<RoleUser>();
 
         builder.HasOne(u => u.Person)
             .WithOne(c => c.User)
