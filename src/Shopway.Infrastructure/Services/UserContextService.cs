@@ -22,11 +22,9 @@ public class UserContextService : IUserContextService
 
     public UserId? GetUserId => User is null 
         ? null 
-        : UserId.Create(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+        : UserId.Create(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
 
-    public string? GetUserName => User is null 
-        ? null 
-        : User.FindFirstValue("name");
+    public string? GetUserName => User?.FindFirstValue("name");
 
     public PersonId? GetPersonId
     {
