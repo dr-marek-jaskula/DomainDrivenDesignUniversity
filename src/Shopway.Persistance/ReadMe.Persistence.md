@@ -50,3 +50,9 @@ We create a background job using the Quartz NuGet Package. This will be a part o
 ## Specification Pattern
 
 We represent the requirement that our database entities are supposed to meet, in order to satisfy the specification and to be returned from the database.
+
+## Cache
+
+Basic memory cache is presented in the "CachedOrderRepository"
+
+Redis cache is presented in the "CachedProductRepository"

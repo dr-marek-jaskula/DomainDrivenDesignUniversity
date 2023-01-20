@@ -1,14 +1,13 @@
-﻿using Shopway.Domain.Abstractions.BaseTypes;
-using Shopway.Domain.Errors;
+﻿using System.Text;
 using Shopway.Domain.Results;
-using System.Text;
+using Shopway.Domain.Abstractions.BaseTypes;
 using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
 public sealed class PasswordHash : ValueObject
 {
-    public const int BytesLong = 256;
+    public const int BytesLong = 514;
     public string Value { get; }
 
     private PasswordHash(string value)
@@ -25,7 +24,7 @@ public sealed class PasswordHash : ValueObject
 
         var numberOfbytes = Encoding.ASCII.GetByteCount(passwordHash);
 
-        if (numberOfbytes is not BytesLong)
+        if (numberOfbytes > BytesLong)
         {
             return Result.Failure<PasswordHash>(PasswordHashError.BytesLong);
         }

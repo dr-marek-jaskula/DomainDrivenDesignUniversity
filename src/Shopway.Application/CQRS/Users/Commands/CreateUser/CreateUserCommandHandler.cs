@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Mapping;
+using Shopway.Application.Utilities;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
@@ -11,7 +13,7 @@ using static Shopway.Domain.Errors.DomainErrors;
 
 namespace Shopway.Application.CQRS.Users.Commands.CreateUser;
 
-internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
+internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, CreateUserResponse>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
@@ -24,7 +26,7 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<IResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         Result<Email> emailResult = Email.Create(request.Email);
         Result<Username> usernameResult = Username.Create(request.Username);
@@ -49,7 +51,7 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
         return result;
     }
 
-    private IResult AddUser(Email email, Username username, Password password)
+    private IResult<CreateUserResponse> AddUser(Email email, Username username, Password password)
     {
         var user = User.Create(UserId.New(), username, email);
 
@@ -67,6 +69,8 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
 
         _userRepository.Add(user);
 
-        return Result.Create(user.Id);
+        return user
+            .ToCreateResponse()
+            .ToResult();
     }
 }

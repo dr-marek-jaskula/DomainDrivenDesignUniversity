@@ -18,7 +18,7 @@ public class Result<TValue> : Result, IResult<TValue>
     /// <exception cref="InvalidOperationException"> when <see cref="Result.IsFailure"/> is true</exception>
     public TValue Value => IsSuccess
         ? _value!
-        : throw new InvalidOperationException("The value of a failure result can not be accessed.");
+        : throw new InvalidOperationException($"The value of a failure result can not be accessed. Type '{typeof(TValue).FullName}'.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Result{TValueType}"/> class with the specified parameters

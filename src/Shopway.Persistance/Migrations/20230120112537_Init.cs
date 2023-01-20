@@ -142,25 +142,25 @@ namespace Shopway.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PermissionRole",
+                name: "RolePermission",
                 schema: "Master",
                 columns: table => new
                 {
-                    PermissionsId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PermissionRole", x => new { x.PermissionsId, x.RoleId });
+                    table.PrimaryKey("PK_RolePermission", x => new { x.RoleId, x.PermissionId });
                     table.ForeignKey(
-                        name: "FK_PermissionRole_Permission_PermissionsId",
-                        column: x => x.PermissionsId,
+                        name: "FK_RolePermission_Permission_PermissionId",
+                        column: x => x.PermissionId,
                         principalSchema: "Master",
                         principalTable: "Permission",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PermissionRole_Role_RoleId",
+                        name: "FK_RolePermission_Role_RoleId",
                         column: x => x.RoleId,
                         principalSchema: "Master",
                         principalTable: "Role",
@@ -207,7 +207,7 @@ namespace Shopway.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     Amount = table.Column<int>(type: "INT", nullable: false),
-                    Status = table.Column<string>(type: "VARCHAR(10)", nullable: false, defaultValue: "Create", comment: "Create, InProgress, Done or Rejected"),
+                    Status = table.Column<string>(type: "VARCHAR(10)", nullable: false, defaultValue: "New", comment: "Create, InProgress, Done or Rejected"),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset(2)", nullable: true),
                     ProductId = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -292,7 +292,7 @@ namespace Shopway.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     Priority = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Status = table.Column<string>(type: "VARCHAR(10)", nullable: false, defaultValue: "Create", comment: "Create, InProgress, Done or Rejected"),
+                    Status = table.Column<string>(type: "VARCHAR(10)", nullable: false, defaultValue: "New", comment: "Create, InProgress, Done or Rejected"),
                     Title = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(600)", maxLength: 600, nullable: false),
                     StoryPoints = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
@@ -385,6 +385,24 @@ namespace Shopway.Persistence.Migrations
                     { 4, "Administrator" }
                 });
 
+            migrationBuilder.InsertData(
+                schema: "Master",
+                table: "RolePermission",
+                columns: new[] { "PermissionId", "RoleId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 1, 2 },
+                    { 2, 2 },
+                    { 1, 3 },
+                    { 2, 3 },
+                    { 3, 3 },
+                    { 1, 4 },
+                    { 2, 4 },
+                    { 3, 4 },
+                    { 4, 4 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Address_PersonId",
                 schema: "Master",
@@ -427,12 +445,6 @@ namespace Shopway.Persistence.Migrations
                 filter: "Status <> 'Rejected'");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PermissionRole_RoleId",
-                schema: "Master",
-                table: "PermissionRole",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Person_Email",
                 schema: "Master",
                 table: "Person",
@@ -458,6 +470,12 @@ namespace Shopway.Persistence.Migrations
                 schema: "Shopway",
                 table: "Review",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RolePermission_PermissionId",
+                schema: "Master",
+                table: "RolePermission",
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleUser_UsersId",
@@ -550,12 +568,12 @@ namespace Shopway.Persistence.Migrations
                 schema: "Outbox");
 
             migrationBuilder.DropTable(
-                name: "PermissionRole",
-                schema: "Master");
-
-            migrationBuilder.DropTable(
                 name: "Review",
                 schema: "Shopway");
+
+            migrationBuilder.DropTable(
+                name: "RolePermission",
+                schema: "Master");
 
             migrationBuilder.DropTable(
                 name: "RoleUser",
@@ -574,12 +592,12 @@ namespace Shopway.Persistence.Migrations
                 schema: "Shopway");
 
             migrationBuilder.DropTable(
-                name: "Permission",
-                schema: "Master");
-
-            migrationBuilder.DropTable(
                 name: "Product",
                 schema: "Shopway");
+
+            migrationBuilder.DropTable(
+                name: "Permission",
+                schema: "Master");
 
             migrationBuilder.DropTable(
                 name: "Role",

@@ -10,4 +10,4 @@ public sealed record CreateUserCommand
     string ConfirmPassword
 
 ) 
-    : ICommand;
+    : ICommand<CreateUserResponse>;

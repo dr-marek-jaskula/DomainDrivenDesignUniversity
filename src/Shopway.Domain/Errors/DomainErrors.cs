@@ -47,7 +47,7 @@ public static class DomainErrors
 
         public static readonly Error BytesLong = new(
             "PasswordHash.BytesLong",
-            $"PasswordHash needs to be {PasswordHash.BytesLong} bytes long");
+            $"PasswordHash needs to be less than {PasswordHash.BytesLong} bytes long");
     }
 
     public static class FirstNameError

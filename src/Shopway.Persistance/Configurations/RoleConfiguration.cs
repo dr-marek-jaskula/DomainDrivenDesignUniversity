@@ -20,7 +20,8 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
             .HasColumnType("VARCHAR(128)");
 
         builder.HasMany(x => x.Permissions)
-            .WithMany();
+            .WithMany()
+            .UsingEntity<RolePermission>();
 
         builder.HasMany(r => r.Users)
             .WithMany(u => u.Roles);

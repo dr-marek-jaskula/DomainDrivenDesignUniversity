@@ -17,25 +17,10 @@ namespace Shopway.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PermissionRole", b =>
-                {
-                    b.Property<int>("PermissionsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PermissionsId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("PermissionRole", "Master");
-                });
 
             modelBuilder.Entity("RoleUser", b =>
                 {
@@ -76,7 +61,7 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("VARCHAR(10)")
-                        .HasDefaultValue("Create")
+                        .HasDefaultValue("New")
                         .HasComment("Create, InProgress, Done or Rejected");
 
                     b.Property<DateTimeOffset?>("UpdatedOn")
@@ -176,7 +161,7 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("VARCHAR(10)")
-                        .HasDefaultValue("Create")
+                        .HasDefaultValue("New")
                         .HasComment("Create, InProgress, Done or Rejected");
 
                     b.Property<int>("StoryPoints")
@@ -419,6 +404,73 @@ namespace Shopway.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Shopway.Domain.Enumerations.RolePermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RolePermission", "Master");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1
+                        });
+                });
+
             modelBuilder.Entity("Shopway.Persistence.Outbox.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -500,21 +552,6 @@ namespace Shopway.Persistence.Migrations
                     b.HasBaseType("Shopway.Domain.Entities.Parents.WorkItem");
 
                     b.HasDiscriminator().HasValue("Feature");
-                });
-
-            modelBuilder.Entity("PermissionRole", b =>
-                {
-                    b.HasOne("Shopway.Domain.Enumerations.Permission", null)
-                        .WithMany()
-                        .HasForeignKey("PermissionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shopway.Domain.Enumerations.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -639,6 +676,21 @@ namespace Shopway.Persistence.Migrations
                         .HasForeignKey("Shopway.Domain.Entities.User", "PersonId");
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Enumerations.RolePermission", b =>
+                {
+                    b.HasOne("Shopway.Domain.Enumerations.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopway.Domain.Enumerations.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Customer", b =>

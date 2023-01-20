@@ -23,8 +23,6 @@ public sealed class CachedProductRepository : IProductRepository
     };
 
     private readonly IProductRepository _decorated;
-    //basic way to implement cache
-    //private readonly IMemoryCache _memoryCache;
     //Cache with Redis
     private readonly IDistributedCache _distributedCache;
     //This is if we need to track the entity, when it is obtained from the Redis Cache
@@ -41,30 +39,15 @@ public sealed class CachedProductRepository : IProductRepository
     {
         string key = $"product-{id}";
 
-        //Basic memory cache
-        //return _memoryCache.GetOrCreateAsync(
-        //    key,
-        //    entry =>
-        //    {
-        //        entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(2));
-
-        //        return _decorated.GetByIdAsync(id, cancellationToken);
-        //    });
-
         string? cachedProduct = await _distributedCache.GetStringAsync(
             key,
             cancellationToken);
 
-        Product? product;
+        Product product;
 
         if (cachedProduct.IsNullOrEmptyOrWhiteSpace())
         {
             product = await _decorated.GetByIdAsync(id, cancellationToken);
-
-            if (product is null)
-            {
-                return product;
-            }
 
             await _distributedCache.SetStringAsync(
                 key, 
@@ -74,13 +57,10 @@ public sealed class CachedProductRepository : IProductRepository
             return product;
         }
 
-        product = JsonConvert.DeserializeObject<Product>(cachedProduct!, _jsonSerializerSettings);
+        product = JsonConvert.DeserializeObject<Product>(cachedProduct!, _jsonSerializerSettings)!;
 
         //Make EF Core track the obtained entity if it is not null
-        if (product is not null)
-        {
-            _context.Set<Product>().Attach(product);
-        }
+        _context.Set<Product>().Attach(product);
 
         return product;
     }
