@@ -9,7 +9,7 @@ public static class CacheRegistration
     {
         var serviceProvider = services.BuildServiceProvider();
 
-        var cacheOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+        var cacheOptions = serviceProvider.GetRequiredService<IOptions<CacheOptions>>().Value;
 
         services.AddStackExchangeRedisCache(redisOptions =>
         {
