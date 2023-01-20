@@ -1,9 +1,7 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mapping;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Persistence.Framework;
 using Shopway.Application.Utilities;
 
 namespace Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
