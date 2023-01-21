@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Exceptions;
 using System.Reflection;
 
-namespace Shopway.Domain.Abstractions.BaseTypes;
+namespace Shopway.Domain.BaseTypes;
 
 /// <summary>
 /// Represents an enumeration of objects with a unique numeric identifier and a name
@@ -11,7 +11,7 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>, IComp
     where TEnum : Enumeration<TEnum>
 {
     private static readonly string EnumerationName = typeof(TEnum).Name;
-    private static readonly Lazy<Dictionary<int, TEnum>> EnumerationsDictionary = 
+    private static readonly Lazy<Dictionary<int, TEnum>> EnumerationsDictionary =
         new(() => CreateEnumerationDictionary(typeof(TEnum)));
 
     /// <summary>
@@ -152,8 +152,8 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>, IComp
     /// <inheritdoc />
     public int CompareTo(Enumeration<TEnum>? other)
     {
-        return other is null 
-            ? 1 
+        return other is null
+            ? 1
             : Id.CompareTo(other.Id);
     }
 

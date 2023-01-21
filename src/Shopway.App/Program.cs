@@ -3,8 +3,6 @@ using Serilog.Events;
 using Serilog;
 using Shopway.Presentation.Exceptions;
 using Shopway.Persistence.Framework;
-using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Persistence.Repositories;
 
 Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)

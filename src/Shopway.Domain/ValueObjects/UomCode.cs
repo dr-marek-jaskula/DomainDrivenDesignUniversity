@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Results;
-using Shopway.Domain.Abstractions.BaseTypes;
 using static Shopway.Domain.Errors.DomainErrors;
+using Shopway.Domain.BaseTypes;
 
 namespace Shopway.Domain.ValueObjects;
 

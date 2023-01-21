@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Abstractions.BaseTypes;
+﻿using Shopway.Domain.BaseTypes;
 
 namespace Shopway.Domain.Enumerations
 {

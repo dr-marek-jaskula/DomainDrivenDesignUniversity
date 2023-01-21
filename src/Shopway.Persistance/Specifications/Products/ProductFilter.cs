@@ -11,10 +11,10 @@ public sealed record ProductFilter : IFilter<Product>
     public int? Price { get; init; }
     public string? UomCode { get; init; }
 
-    public bool ByProductName => ProductName.IsNullOrEmptyOrWhiteSpace();
-    public bool ByRevision => Revision.IsNullOrEmptyOrWhiteSpace();
-    public bool ByPrice => Price.HasValue;
-    public bool ByUomCode => UomCode.IsNullOrEmptyOrWhiteSpace();
+    internal bool ByProductName => ProductName.IsNotNullOrEmptyOrWhiteSpace();
+    internal bool ByRevision => Revision.IsNotNullOrEmptyOrWhiteSpace();
+    internal bool ByPrice => Price.HasValue;
+    internal bool ByUomCode => UomCode.IsNotNullOrEmptyOrWhiteSpace();
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {

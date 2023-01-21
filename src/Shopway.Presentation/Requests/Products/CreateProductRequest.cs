@@ -1,4 +1,6 @@
-﻿namespace Shopway.Presentation.Requests.Products;
+﻿using Shopway.Presentation.Abstractions;
+
+namespace Shopway.Presentation.Requests.Products;
 
 public sealed record CreateProductRequest
 (
@@ -6,4 +8,4 @@ public sealed record CreateProductRequest
     decimal Price,
     string UomCode,
     string Revision
-);
+) : IRequest;

@@ -11,7 +11,7 @@ using Shopway.Infrastructure.Authentication;
 
 namespace Shopway.Presentation.Controllers;
 
-[Route("api/{productId}/[controller]")]
+[Route("api/Product/{productId}/[controller]")]
 public sealed class ReviewController : ApiController
 {
     public ReviewController(ISender sender)

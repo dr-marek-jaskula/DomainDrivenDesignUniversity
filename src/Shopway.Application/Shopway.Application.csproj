@@ -21,4 +21,8 @@
     <Folder Include="CQRS\Users\Queries\" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Shopway.Tests.Unit"/>
+	</ItemGroup>
+
 </Project>

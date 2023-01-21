@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Utilities;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Specifications.Products;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Specifications.Products;
 
@@ -17,7 +18,16 @@ public static class ProductFilterExtensions
 
     private static IQueryable<Product> FilterByProductName(this IQueryable<Product> queryable, ProductFilter filter)
     {
-        return queryable.Filter(filter.ByProductName, product => product.ProductName.Value.Contains(filter.ProductName!));
+        //return queryable.Filter(filter.ByProductName, product => product.ProductName.Value.Contains(filter.ProductName!));
+        return queryable.Filter(filter.ByProductName, p => p.ProductName == ProductName.Create(filter.ProductName).Value);
+
+        //return queryable.Where(p => p.ProductName.Value.Contains(filter.ProductName));
+
+        //return queryable.Where(p => p.ProductName.Value.Contains(filter.ProductName));
+        //return queryable.Where(p => p.ProductName == ProductName.Create(filter.ProductName).Value);
+        //return queryable.Where(p => p.ProductName == ProductName.Create(filter.ProductName).Value);
+        //return queryable.Where(p => p.ProductName.ToString().Contains(filter.ProductName));
+        //return queryable.Where(p => p.ProductName.Contains(filter.ProductName));
     }
 
     private static IQueryable<Product> FilterByRevision(this IQueryable<Product> queryable, ProductFilter filter)

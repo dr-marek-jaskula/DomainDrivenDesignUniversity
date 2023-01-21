@@ -7,10 +7,14 @@ using Shopway.Application.CQRS.Products.Queries.GetProductById;
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
+using Shopway.Application.CQRS.Products.Queries.QueryProduct;
+using Shopway.Persistence.Specifications.Products;
+using Shopway.Domain.Enums;
+using Newtonsoft.Json.Linq;
+using System;
 
 namespace Shopway.Presentation.Controllers;
 
-[Route("api/[controller]")]
 public sealed class ProductController : ApiController
 {
     public ProductController(ISender sender)
@@ -24,6 +28,38 @@ public sealed class ProductController : ApiController
         CancellationToken cancellationToken)
     {
         var query = new GetProductByIdQuery(ProductId.Create(id));
+
+        var response = await Sender.Send(query, cancellationToken);
+
+        return QueryResult(response);
+    }
+
+    [HttpGet()]
+    public async Task<IActionResult> Query(
+        QueryProductRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new ProductPageQuery(request.PageNumber, request.PageSize)
+        {
+            Filter = new ProductFilter()
+            {
+                ProductName = request.FilterByProductName,
+                Revision = request.FilterByRevision,
+                Price = request.FilterByPrice,
+                UomCode = request.FilterByUomCode,
+            }
+            //Order = new ProductOrder()
+            //{
+            //    ByProductName = request.OrderByProductName,
+            //    ByRevision = request.FilterByPrice,
+            //    ByPrice = request.FilterByProductName,
+            //    ByUomCode = request.FilterByUomCode,
+            //    ThenByProductName = request.FilterByUomCode,
+            //    ThenByRevision = request.FilterByUomCode,
+            //    ThenByPrice = request.FilterByUomCode,
+            //    ThenByUomCode = request.FilterByUomCode,
+            //}
+        };
 
         var response = await Sender.Send(query, cancellationToken);
 

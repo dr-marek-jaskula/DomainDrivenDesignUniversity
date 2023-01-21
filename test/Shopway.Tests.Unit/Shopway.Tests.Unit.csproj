@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -30,12 +30,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Domain\" />
-	  <Folder Include="Infrastructure\" />
-	  <Folder Include="Application\" />
-	  <Folder Include="App\" />
-	  <Folder Include="Presentation\" />
-	  <Folder Include="Persistance\" />
+	  <Folder Include="SystemsUnderTest\Domain\" />
+	  <Folder Include="SystemsUnderTest\Infrastructure\" />
+	  <Folder Include="SystemsUnderTest\App\" />
+	  <Folder Include="SystemsUnderTest\Presentation\" />
+	  <Folder Include="SystemsUnderTest\Persistance\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Shopway.Application\Shopway.Application.csproj" />
+	  <ProjectReference Include="..\..\src\Shopway.Domain\Shopway.Domain.csproj" />
+	  <ProjectReference Include="..\..\src\Shopway.Persistance\Shopway.Persistence.csproj" />
+	</ItemGroup>
+	
 </Project>

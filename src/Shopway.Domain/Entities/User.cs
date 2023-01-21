@@ -1,6 +1,6 @@
 using MediatR;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Abstractions.BaseTypes;
+using Shopway.Domain.BaseTypes;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enumerations;

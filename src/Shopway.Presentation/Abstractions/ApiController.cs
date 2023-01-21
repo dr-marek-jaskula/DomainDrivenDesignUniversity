@@ -8,6 +8,7 @@ using IResult = Shopway.Domain.Abstractions.IResult;
 namespace Shopway.Presentation.Abstractions;
 
 [ApiController]
+[Route("api/[controller]")]
 public abstract class ApiController : ControllerBase
 {
     protected readonly ISender Sender;

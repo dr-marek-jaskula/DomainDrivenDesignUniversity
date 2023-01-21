@@ -7,7 +7,6 @@ using Shopway.Application.CQRS.Users.Commands.CreateUser;
 
 namespace Gatherly.Presentation.Controllers;
 
-[Route("api/[controller]")]
 public sealed class UserController : ApiController
 {
     public UserController(ISender sender)

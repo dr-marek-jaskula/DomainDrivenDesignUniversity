@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Abstractions.BaseTypes;
+﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Domain.ValueObjects;

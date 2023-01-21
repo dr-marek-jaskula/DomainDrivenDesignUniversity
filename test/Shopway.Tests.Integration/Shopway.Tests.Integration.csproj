@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -10,8 +10,10 @@
 
   <ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="6.9.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 		<PackageReference Include="NSubstitute" Version="4.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,10 +32,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="UserController\" />
-	  <Folder Include="ReviewController\" />
-	  <Folder Include="ProductController\" />
-	  <Folder Include="OrderController\" />
+	  <Folder Include="ControllersUnderTest\UserController\" />
+	  <Folder Include="ControllersUnderTest\ReviewController\" />
+	  <Folder Include="ControllersUnderTest\OrderController\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Shopway.Domain\Shopway.Domain.csproj" />
+	  <ProjectReference Include="..\..\src\Shopway.Presentation\Shopway.Presentation.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -12,6 +12,11 @@ public static class StringUtilities
         return string.IsNullOrWhiteSpace(input);
     }
 
+    public static bool IsNotNullOrEmptyOrWhiteSpace(this string? input)
+    {
+        return string.IsNullOrWhiteSpace(input) is false;
+    }
+
     public static bool ContainsIllegalCharacter(this string input)
     {
         return input.Any(character => _illegalCharacter.Contains(character));

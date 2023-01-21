@@ -28,7 +28,7 @@ public sealed class PageResponse<TValue> : IResponse
         ItemsFrom = pageSize * (pageNumber - 1) + 1;
 
         //LastElement
-        ItemsTo = ItemsFrom + pageSize - 1;
+        ItemsTo = Math.Min(ItemsFrom + pageSize - 1, TotalItemsCount);
 
         //Total number of pages
         TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);

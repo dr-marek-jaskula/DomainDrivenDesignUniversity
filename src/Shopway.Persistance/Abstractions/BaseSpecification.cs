@@ -1,5 +1,5 @@
 ﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.Abstractions.BaseTypes;
+using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Enums;
 using System.Linq.Expressions;
 

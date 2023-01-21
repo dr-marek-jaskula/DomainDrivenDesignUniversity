@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Shopway.Domain.Abstractions.BaseTypes;
+namespace Shopway.Domain.BaseTypes;
 
 public interface IDomainEvent : INotification
 {
