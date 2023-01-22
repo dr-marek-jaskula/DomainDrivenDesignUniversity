@@ -18,11 +18,11 @@ public abstract class BaseSpecification<TEntity, TEntityId>
     public List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = new();
 
     //OrderBy
-    public ISortBy? SortBy { get; private set; } = null;
+    public ISortBy<TEntity>? SortBy { get; private set; } = null;
     public (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
     public (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
 
-    protected void AddOrder(ISortBy? order)
+    protected void AddOrder(ISortBy<TEntity>? order)
     {
         SortBy = order;
     }

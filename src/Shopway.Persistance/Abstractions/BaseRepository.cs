@@ -3,7 +3,6 @@ using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Utilities;
 
 namespace Shopway.Persistence.Abstractions;
 
@@ -55,7 +54,7 @@ public abstract class BaseRepository
 
         if (specification.SortBy is not null)
         {
-            queryable.Order(specification.SortBy);
+            queryable = specification.SortBy.Apply(queryable);
         }
         else if (specification.SortByExpression is not null and var sort)
         {

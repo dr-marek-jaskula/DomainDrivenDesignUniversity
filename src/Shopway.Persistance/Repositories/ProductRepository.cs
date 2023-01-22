@@ -32,7 +32,7 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
             .FirstAsync(cancellationToken);
     }
 
-    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy? sort)
+    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sort)
     {
         var specification = ProductQuerySpecification.Create(filter, sort);
 

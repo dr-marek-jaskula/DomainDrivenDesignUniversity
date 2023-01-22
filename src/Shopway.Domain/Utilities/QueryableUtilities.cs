@@ -5,7 +5,7 @@ namespace Shopway.Domain.Utilities;
 
 public static class QueryableUtilities
 {
-    public static IQueryable<TEntity> OrderBy<TEntity>
+    public static IOrderedQueryable<TEntity> OrderBy<TEntity>
     (
         this IQueryable<TEntity> queryable,
         Expression<Func<TEntity, object>> SortBy,
@@ -52,6 +52,20 @@ public static class QueryableUtilities
         return predicate
             ? queryable.Where(ifPredicateIsTrue)
             : queryable.Where(ifPredicateIsFalse);
+    }
+
+    public static IOrderedQueryable<TEntity> SortBy<TEntity>(this IQueryable<TEntity> queryable, string property, SortDirection sortDirection)
+    {
+        return sortDirection is SortDirection.Ascending
+            ? queryable.OrderBy(property)
+            : queryable.OrderByDescending(property);
+    }
+
+    public static IOrderedQueryable<TEntity> ThenSortBy<TEntity>(this IOrderedQueryable<TEntity> queryable, string property, SortDirection sortDirection)
+    {
+        return sortDirection is SortDirection.Ascending
+            ? queryable.ThenBy(property)
+            : queryable.ThenByDescending(property);
     }
 
     public static IQueryable<TEntity> SortBy<TEntity>

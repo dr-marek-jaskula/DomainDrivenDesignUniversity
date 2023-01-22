@@ -70,7 +70,7 @@ public sealed class CachedProductRepository : IProductRepository
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }
 
-    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy? sortBy)
+    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sortBy)
     {
         return _decorated.Queryable(filter, sortBy);
     }

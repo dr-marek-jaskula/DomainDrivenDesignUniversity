@@ -11,7 +11,7 @@ internal sealed class ProductQuerySpecification : BaseSpecification<Product, Pro
     {
     }
 
-    public static BaseSpecification<Product, ProductId> Create(IFilter<Product>? filter, ISortBy? sortBy)
+    public static BaseSpecification<Product, ProductId> Create(IFilter<Product>? filter, ISortBy<Product>? sortBy)
     {
         var specification = new ProductQuerySpecification();
 
