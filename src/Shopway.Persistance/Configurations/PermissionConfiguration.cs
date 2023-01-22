@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Constants;
-using Shopway.Persistence.Exceptions;
 using Shopway.Domain.Enumerations;
 
 namespace Shopway.Persistence.Configurations;
@@ -13,6 +12,12 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
         builder.ToTable(TableNames.Permission, SchemaNames.Master);
 
         builder.HasKey(p => p.Id);
+
+        builder.Property(r => r.Id)
+            .HasColumnType(ColumnTypes.TinyInt);
+
+        builder.Property(r => r.Name)
+            .HasColumnType(ColumnTypes.VarChar(128));
 
         var premissionsFromEnumeration = Permission
             .GetValues()

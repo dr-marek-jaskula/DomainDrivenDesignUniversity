@@ -17,30 +17,47 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
 
         builder.Property(p => p.Id)
             .HasConversion(id => id.Value, guid => ProductId.Create(guid))
-            .HasColumnType("UNIQUEIDENTIFIER");
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder
-            .Property(p => p.ProductName)
-            .HasConversion(x => x.Value, v => ProductName.Create(v).Value)
-            .IsRequired(true)
-            .HasMaxLength(128);
+            .OwnsOne(p => p.ProductName, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(ProductName))
+                    .IsRequired(true)
+                    .HasMaxLength(ProductName.MaxLength);
+            });
 
         builder
-            .Property(p => p.Revision)
-            .HasConversion(x => x.Value, v => Revision.Create(v).Value)
-            .IsRequired(true)
-            .HasMaxLength(64);
+            .OwnsOne(p => p.Revision, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Revision))
+                    .IsRequired(true)
+                    .HasMaxLength(Revision.MaxLength);
+            });
 
         builder
-            .Property(p => p.UomCode)
-            .HasConversion(x => x.Value, v => UomCode.Create(v).Value)
-            .IsRequired(true)
-            .HasMaxLength(8);
+            .OwnsOne(p => p.UomCode, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(UomCode))
+                    .HasColumnType(ColumnTypes.VarChar(8))
+                    .IsRequired(true);
+            });
 
-        builder.Property(p => p.Price)
-            .HasConversion(x => x.Value, v => Price.Create(v).Value)
-            .IsRequired(true)
-            .HasPrecision(10, 2);
+        builder
+            .OwnsOne(p => p.Price, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Price))
+                    .IsRequired(true)
+                    .HasPrecision(NumberConstants.DecimalPrecision, NumberConstants.DecimalScale);
+            });
 
         builder.HasMany(p => p.Reviews)
             .WithOne()

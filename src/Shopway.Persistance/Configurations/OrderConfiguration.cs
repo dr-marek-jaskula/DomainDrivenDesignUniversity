@@ -5,6 +5,7 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.Entities.Parents;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -17,26 +18,27 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
         builder.HasKey(o => o.Id);
         builder.Property(o => o.Id)
             .HasConversion(id => id.Value, guid => OrderId.Create(guid))
-            .HasColumnType("UNIQUEIDENTIFIER");
-
-        builder.Property(o => o.Amount)
-            .IsRequired(true)
-            .HasConversion(x => x.Value, v => Amount.Create(v).Value)
-            .HasColumnType("INT");
-
-        builder.Property(o => o.Status)
-            .IsRequired(true)
-            .HasColumnType("VARCHAR(10)")
-            .HasDefaultValue(Status.New)
-            .HasConversion(status => status.ToString(),
-             s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("Create, InProgress, Done or Rejected");
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(o => o.CreatedOn)
-            .HasColumnType("datetimeoffset(2)");
+            .HasColumnType(ColumnTypes.DateTimeOffset(2));
 
         builder.Property(o => o.UpdatedOn)
-            .HasColumnType("datetimeoffset(2)");
+            .HasColumnType(ColumnTypes.DateTimeOffset(2));
+
+        builder.Property(p => p.Status)
+            .IsRequired(true)
+            .HasColumnType(ColumnTypes.VarChar(10))
+            .HasConversion(status => status.ToString(), s => (Status)Enum.Parse(typeof(Status), s));
+
+        builder
+            .OwnsOne(p => p.Amount, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Amount))
+                    .IsRequired(true);
+            });
 
         builder.HasOne(o => o.Product)
             .WithMany()
@@ -51,8 +53,9 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
             .HasForeignKey<Order>(o => o.PaymentId);
 
         //Indexes
-        builder.HasIndex(o => new { o.ProductId, o.Status }, "IX_Order_ProductId_Status")
-            .IncludeProperties(o => new { o.Amount, o.CustomerId })
-            .HasFilter("Status IN ('Create', 'InProgress')");
+        builder.HasIndex(o => new { o.ProductId, o.Status })
+            .HasDatabaseName($"IX_{nameof(Order)}_{nameof(ProductId)}_{nameof(Status)}")
+            //.IncludeProperties(o => new { o.Amount, o.CustomerId })
+            .HasFilter("Status IN ('New', 'InProgress')");
     }
 }

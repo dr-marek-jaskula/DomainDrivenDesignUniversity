@@ -17,6 +17,6 @@ internal sealed class RoleUserConfiguration : IEntityTypeConfiguration<RoleUser>
 
         builder.Property(x => x.UserId)
             .HasConversion(id => id.Value, guid => UserId.Create(guid))
-            .HasColumnType("UNIQUEIDENTIFIER");
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
     }
 }

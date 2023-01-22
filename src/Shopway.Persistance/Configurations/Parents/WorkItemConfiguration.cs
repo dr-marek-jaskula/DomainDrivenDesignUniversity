@@ -18,31 +18,54 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
 
         builder.Property(wi => wi.Id)
             .HasConversion(id => id.Value, guid => WorkItemId.Create(guid))
-            .HasColumnType("UNIQUEIDENTIFIER");
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
 
-        builder.Property(wi => wi.Priority)
-            .HasConversion(x => x.Value, v => Priority.Create(v).Value)
-            .HasDefaultValue(Priority.Create(Priority.HighestPriority).Value);
-
-        builder.Property(wi => wi.Status)
+        builder.Property(p => p.Status)
             .IsRequired(true)
-            .HasColumnType("VARCHAR(10)")
-            .HasDefaultValue(Status.New)
-            .HasConversion(status => status.ToString(),
-             s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("Create, InProgress, Done or Rejected");
+            .HasColumnType(ColumnTypes.VarChar(10))
+            .HasConversion(status => status.ToString(), s => (Status)Enum.Parse(typeof(Status), s));
 
-        builder.Property(wi => wi.Title)
-            .HasConversion(x => x.Value, v => Title.Create(v).Value)
-            .HasMaxLength(Title.MaxLength);
+        builder
+            .OwnsOne(p => p.Priority, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Priority))
+                    .HasColumnType(ColumnTypes.TinyInt)
+                    .HasDefaultValue(Priority.HighestPriority)
+                    .IsRequired(true);
+            });
 
-        builder.Property(wi => wi.Description)
-            .HasConversion(x => x.Value, v => Description.Create(v).Value)
-            .HasMaxLength(Description.MaxLength);
+        builder
+            .OwnsOne(p => p.Title, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Title))
+                    .IsRequired(true)
+                    .HasMaxLength(Title.MaxLength);
+            });
 
-        builder.Property(wi => wi.StoryPoints)
-            .HasConversion(x => x.Value, v => StoryPoints.Create(v).Value)
-            .HasDefaultValue(StoryPoints.Create(StoryPoints.MinStoryPoints).Value);
+        builder
+            .OwnsOne(p => p.Description, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Description))
+                    .IsRequired(true)
+                    .HasMaxLength(Description.MaxLength);
+            });
+
+        builder
+            .OwnsOne(p => p.StoryPoints, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(StoryPoints))
+                    .HasColumnType(ColumnTypes.TinyInt)
+                    .HasDefaultValue(StoryPoints.MinStoryPoints)
+                    .IsRequired(true);
+            });
 
         builder.HasOne(wi => wi.Employee)
             .WithMany(e => e.WorkItems)

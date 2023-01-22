@@ -16,89 +16,117 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
         builder.ToTable(TableNames.Person, SchemaNames.Master);
 
         builder.HasKey(p => p.Id);
+
         builder.Property(p => p.Id)
             .HasConversion(id => id.Value, guid => PersonId.Create(guid))
-            .HasColumnType("UNIQUEIDENTIFIER");
-
-        builder.Property(p => p.FirstName)
-            .HasConversion(x => x.Value, v => FirstName.Create(v).Value)
-            .HasMaxLength(FirstName.MaxLength);
-
-        builder.Property(p => p.LastName)
-            .HasConversion(x => x.Value, v => LastName.Create(v).Value)
-            .HasMaxLength(LastName.MaxLength);
-
-        builder.Property(p => p.Email)
-            .HasConversion(x => x.Value, v => Email.Create(v).Value)
-            .HasMaxLength(Email.MaxLength);
-
-        builder.Property(p => p.ContactNumber)
-            .HasConversion(x => x.Value, v => PhoneNumber.Create(v).Value)
-            .HasMaxLength(9);
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.DateOfBirth)
             .HasConversion<DateOnlyConverter, DateOnlyComparer>()
-            .HasColumnType("datetimeoffset(2)")
-            .HasDefaultValue(null);
+            .HasColumnType(ColumnTypes.DateTimeOffset(2))
+            .HasDefaultValue(null)
+            .IsRequired(false);
 
         builder.Property(p => p.Gender)
-            .IsRequired(true)
-            .HasColumnType("VARCHAR(7)")
-            .HasConversion(g => g.ToString(),
-            s => (Gender)Enum.Parse(typeof(Gender), s))
-            .HasComment("Male, Female or Unknown");
+            .HasColumnType(ColumnTypes.VarChar(7))
+            .HasConversion(g => g.ToString(), s => (Gender)Enum.Parse(typeof(Gender), s))
+            .IsRequired(true);
+
+        builder
+            .OwnsOne(p => p.FirstName, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(FirstName))
+                    .IsRequired(true)
+                    .HasMaxLength(FirstName.MaxLength);
+            });
+
+        builder
+            .OwnsOne(p => p.LastName, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(LastName))
+                    .IsRequired(true)
+                    .HasMaxLength(LastName.MaxLength);
+            });
+
+        builder
+            .OwnsOne(p => p.Email, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Email))
+                    .IsRequired(true)
+                    .HasMaxLength(Email.MaxLength);
+
+                navigationBuilder
+                    .HasIndex(email => email.Value)
+                    .HasDatabaseName($"UX_{nameof(Person)}_{nameof(Email)}")
+                    //.IncludeProperties(p => new { p.FirstName, p.LastName });
+                    .IsUnique(true);
+            });
+
+        builder
+            .OwnsOne(p => p.PhoneNumber, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(PhoneNumber))
+                    .IsRequired(true)
+                    .HasMaxLength(9);
+            });
 
         builder.OwnsOne(
             p => p.Address,
             addressNavigationBuilder =>
             {
                 //Configures a different table that the entity type maps to when targeting a relational database.
-                addressNavigationBuilder.ToTable("Address");
+                addressNavigationBuilder.ToTable(TableNames.Address);
 
                 //Configures the relationship to the owner, and indicates the Foreign Key.
                 addressNavigationBuilder
                     .WithOwner()
-                    .HasForeignKey("PersonId"); //Shadow Foreign Key
+                    .HasForeignKey(nameof(PersonId)); //Shadow Foreign Key
 
                 //Configure a property of the owned entity type, in this case the to be used as Primary Key
                 addressNavigationBuilder
-                    .Property<Guid>("Id"); //Shadow property
+                    .Property<Guid>(ShadowColumnNames.Id); //Shadow property
 
                 //Sets the properties that make up the primary key for this owned entity type.
                 addressNavigationBuilder
-                    .HasKey("Id"); //Shadow Primary Key
-
-                addressNavigationBuilder
-                    .Property(p => p.Street)
-                    .HasMaxLength(100);
-
-                addressNavigationBuilder
-                    .Property(p => p.Building)
-                    .HasColumnType("TINYINT");
-
-                addressNavigationBuilder
-                    .Property(p => p.Flat)
-                    .HasColumnType("TINYINT");
+                    .HasKey(ShadowColumnNames.Id); //Shadow Primary Key
 
                 addressNavigationBuilder
                     .Property(p => p.Country)
+                    .IsRequired(true)
                     .HasMaxLength(100);
 
                 addressNavigationBuilder
                     .Property(p => p.City)
+                    .IsRequired(true)
+                    .HasMaxLength(100);
+
+                addressNavigationBuilder
+                    .Property(p => p.Street)
+                    .IsRequired(true)
                     .HasMaxLength(100);
 
                 addressNavigationBuilder
                     .Property(p => p.ZipCode)
+                    .IsRequired(true)
                     .HasMaxLength(5);
+
+                addressNavigationBuilder
+                    .Property(p => p.Building)
+                    .IsRequired(true)
+                    .HasMaxLength(Address.MaxBuildingNumber);
+
+                addressNavigationBuilder
+                    .Property(p => p.Flat)
+                    .IsRequired(false)
+                    .HasMaxLength(Address.MaxFlatNumber);
             });
-
-        //Indexes
-        builder.HasIndex(p => p.Email, "UX_Person_Email")
-            .IsUnique()
-            .IncludeProperties(p => new { p.FirstName, p.LastName });
-
-        builder.HasIndex(p => p.Email, "IX_Person_Email")
-            .IsUnique();
     }
 }

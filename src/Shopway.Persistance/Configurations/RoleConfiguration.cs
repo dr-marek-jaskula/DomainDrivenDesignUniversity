@@ -14,10 +14,10 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
         builder.HasKey(r => r.Id);
 
         builder.Property(r => r.Id)
-            .HasMaxLength(128);
+            .HasColumnType(ColumnTypes.TinyInt);
 
         builder.Property(r => r.Name)
-            .HasColumnType("VARCHAR(128)");
+            .HasColumnType(ColumnTypes.VarChar(128));
 
         builder.HasMany(x => x.Permissions)
             .WithMany()

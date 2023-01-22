@@ -26,7 +26,7 @@ public class Person : AggregateRoot<PersonId>
         LastName = lastName;
         Gender = gender;
         DateOfBirth = dateOfBirth;
-        ContactNumber = contactNumber;
+        PhoneNumber = contactNumber;
         Email = email;
         Address = address;
         User = user;
@@ -44,7 +44,7 @@ public class Person : AggregateRoot<PersonId>
     //DateOnly property needs a conversion to SQL Server DATE format
     public DateOnly? DateOfBirth { get; private set; }
 
-    public PhoneNumber ContactNumber { get; private set; }
+    public PhoneNumber PhoneNumber { get; private set; }
     public Email Email { get; private set; }
     public Address? Address { get; private set; }
 

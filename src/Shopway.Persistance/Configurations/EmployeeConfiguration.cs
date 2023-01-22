@@ -12,7 +12,7 @@ internal sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration
         builder.ToTable(TableNames.Employee, SchemaNames.Master);
 
         builder.Property(e => e.HireDate)
-            .HasColumnType("datetimeoffset(2)")
+            .HasColumnType(ColumnTypes.DateTimeOffset(2))
             .HasDefaultValue(null);
 
         //Defining the relations: (rest are in Customer and Review classes)

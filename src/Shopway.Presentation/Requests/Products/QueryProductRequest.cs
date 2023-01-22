@@ -9,7 +9,7 @@ public sealed record QueryProductRequest
     int PageSize,
     string? FilterByProductName,
     string? FilterByRevision,
-    int? FilterByPrice,
+    decimal? FilterByPrice,
     string? FilterByUomCode,
     string? OrderByProductName,
     string? OrderByByRevision,

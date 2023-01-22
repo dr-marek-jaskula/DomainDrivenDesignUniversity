@@ -8,7 +8,7 @@ public sealed record ProductFilter : IFilter<Product>
 {
     public string? ProductName { get; init; }
     public string? Revision { get; init; }
-    public int? Price { get; init; }
+    public decimal? Price { get; init; }
     public string? UomCode { get; init; }
 
     internal bool ByProductName => ProductName.IsNotNullOrEmptyOrWhiteSpace();

@@ -14,8 +14,7 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
 
         builder.Property(c => c.Rank)
             .HasDefaultValue(Rank.Standard)
-            .HasColumnType("VARCHAR(8)")
-            .HasConversion(r => r.ToString(),
-            s => (Rank)Enum.Parse(typeof(Rank), s));
+            .HasColumnType(ColumnTypes.VarChar(8))
+            .HasConversion(r => r.ToString(), s => (Rank)Enum.Parse(typeof(Rank), s));
     }
 }

@@ -16,36 +16,59 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
             .HasConversion(id => id.Value, guid => ReviewId.Create(guid))
-            .HasColumnType("UNIQUEIDENTIFIER");
-
-        builder.Property(r => r.Username)
-            .HasConversion(x => x.Value, v => Username.Create(v).Value)
-            .IsRequired(true)
-            .HasMaxLength(100);
-
-        builder.Property(s => s.Title)
-            .HasConversion(x => x.Value, v => Title.Create(v).Value)
-            .IsRequired(true)
-            .HasMaxLength(128);
-
-        builder.Property(s => s.Stars)
-            .HasConversion(x => x.Value, v => Stars.Create(v).Value)
-            .IsRequired(true)
-            .HasColumnType("TINYINT");
-
-        builder.Property(u => u.CreatedOn)
-            .HasColumnType("datetimeoffset(2)");
-
-        builder.Property(u => u.UpdatedOn)
-            .HasColumnType("datetimeoffset(2)");
-
-        builder.Property(r => r.Description)
-            .HasConversion(x => x.Value, v => Description.Create(v).Value)
-            .HasMaxLength(1000);
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(r => r.ProductId)
             .HasConversion(id => id.Value, guid => ProductId.Create(guid))
-            .HasColumnType("UNIQUEIDENTIFIER")
+            .HasColumnType(ColumnTypes.UniqueIdentifier)
             .IsRequired(true);
+
+        builder.Property(u => u.CreatedOn)
+            .HasColumnType(ColumnTypes.DateTimeOffset(2))
+            .IsRequired(true);
+
+        builder.Property(u => u.UpdatedOn)
+            .HasColumnType(ColumnTypes.DateTimeOffset(2))
+            .IsRequired(false);
+
+        builder
+            .OwnsOne(p => p.Username, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Username))
+                    .IsRequired(true)
+                    .HasMaxLength(Username.MaxLength);
+            });
+
+        builder
+            .OwnsOne(p => p.Title, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Title))
+                    .IsRequired(true)
+                    .HasMaxLength(Title.MaxLength);
+            });
+
+        builder
+            .OwnsOne(p => p.Stars, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Stars))
+                    .HasColumnType(ColumnTypes.TinyInt)
+                    .IsRequired(true);
+            });
+
+        builder
+            .OwnsOne(p => p.Description, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Description))
+                    .IsRequired(true)
+                    .HasMaxLength(Description.MaxLength);
+            });
     }
 }

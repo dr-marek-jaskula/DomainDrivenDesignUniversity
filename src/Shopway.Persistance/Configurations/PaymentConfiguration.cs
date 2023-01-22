@@ -15,28 +15,33 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.ToTable(TableNames.Payment, SchemaNames.Shopway);
 
         builder.HasKey(p => p.Id);
+
         builder.Property(p => p.Id)
             .HasConversion(id => id.Value, guid => PaymentId.Create(guid))
-            .HasColumnType("UNIQUEIDENTIFIER");
-
-        builder.Property(p => p.Discount)
-            .HasConversion(x => x.Value, v => Discount.Create(v).Value)
-            .HasPrecision(3, 2);
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.OrderId)
-            .HasConversion(p => p.Value, p => new OrderId() { Value = p })
-            .HasColumnType("UNIQUEIDENTIFIER");
-
-        builder.Property(p => p.Status)
-            .IsRequired(true)
-            .HasMaxLength(10)
-            .HasConversion(status => status.ToString(),
-            s => (Status)Enum.Parse(typeof(Status), s))
-            .HasComment("Create, InProgress, Done or Rejected");
+            .HasConversion(p => p.Value, guid => OrderId.Create(guid))
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.OccurredOn)
-            .HasColumnType("datetimeoffset(2)")
+            .HasColumnType(ColumnTypes.DateTimeOffset(2))
             .IsRequired(false);
+
+        builder.Property(p => p.Status)
+            .HasColumnType(ColumnTypes.VarChar(10))
+            .HasConversion(status => status.ToString(), s => (Status)Enum.Parse(typeof(Status), s))
+            .IsRequired(true);
+
+        builder
+            .OwnsOne(p => p.Discount, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Discount))
+                    .IsRequired(true)
+                    .HasPrecision(NumberConstants.DiscountPrecision, NumberConstants.DecimalScale);
+            });
 
         //Indexes
         builder.HasIndex(o => new { o.OrderId, o.Status }, "IX_Payment_OrderId_Status")

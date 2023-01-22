@@ -1,6 +1,5 @@
 ﻿namespace Shopway.Persistence.Constants;
 
-
 internal static class SchemaNames
 {
     internal const string Shopway = nameof(Shopway);
