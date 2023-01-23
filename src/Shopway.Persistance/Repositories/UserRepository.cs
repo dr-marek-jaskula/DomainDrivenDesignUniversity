@@ -28,7 +28,7 @@ public sealed class UserRepository : IUserRepository
     {
         return await _dbContext
             .Set<User>()
-            .Where(user => user.Email == email)
+            .Where(user => user.Email.Value == email.Value)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -36,7 +36,7 @@ public sealed class UserRepository : IUserRepository
     {
         var isEmailTaken = await _dbContext
             .Set<User>()
-            .Where(user => user.Email == email)
+            .Where(user => user.Email.Value == email.Value)
             .AnyAsync(cancellationToken);
 
         return isEmailTaken is false;

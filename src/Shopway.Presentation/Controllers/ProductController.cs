@@ -12,6 +12,8 @@ using Shopway.Persistence.Specifications.Products;
 using Shopway.Domain.Enums;
 using Newtonsoft.Json.Linq;
 using System;
+using Shopway.Domain.Utilities;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -47,18 +49,18 @@ public sealed class ProductController : ApiController
                 Revision = request.FilterByRevision,
                 Price = request.FilterByPrice,
                 UomCode = request.FilterByUomCode,
+            },
+            Order = new ProductOrder()
+            {
+                ByProductName = request.OrderByProductName.ParseToNullableEnum<SortDirection>(),
+                ByRevision = request.OrderByRevision.ParseToNullableEnum<SortDirection>(),
+                ByPrice = request.OrderByPrice.ParseToNullableEnum<SortDirection>(),
+                ByUomCode = request.OrderByUomCode.ParseToNullableEnum<SortDirection>(),
+                ThenByProductName = request.ThanByProductName.ParseToNullableEnum<SortDirection>(),
+                ThenByRevision = request.ThanByRevision.ParseToNullableEnum<SortDirection>(),
+                ThenByPrice = request.ThanByPrice.ParseToNullableEnum<SortDirection>(),
+                ThenByUomCode = request.ThanByUomCode.ParseToNullableEnum<SortDirection>(),
             }
-            //Order = new ProductOrder()
-            //{
-            //    ByProductName = request.OrderByProductName,
-            //    ByRevision = request.FilterByPrice,
-            //    ByPrice = request.FilterByProductName,
-            //    ByUomCode = request.FilterByUomCode,
-            //    ThenByProductName = request.FilterByUomCode,
-            //    ThenByRevision = request.FilterByUomCode,
-            //    ThenByPrice = request.FilterByUomCode,
-            //    ThenByUomCode = request.FilterByUomCode,
-            //}
         };
 
         var response = await Sender.Send(query, cancellationToken);

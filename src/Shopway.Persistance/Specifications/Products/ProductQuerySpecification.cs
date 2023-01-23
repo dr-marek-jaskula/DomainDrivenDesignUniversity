@@ -24,6 +24,11 @@ internal sealed class ProductQuerySpecification : BaseSpecification<Product, Pro
         specification
             .AddOrder(sortBy);
 
+        //Alternative way, hardcoded
+        //specification
+        //    .OrderBy(x => x.ProductName.Value, SortDirection.Ascending)
+        //    .ThenBy(x => x.Price.Value, SortDirection.Descending);
+
         return specification;
     }
 }

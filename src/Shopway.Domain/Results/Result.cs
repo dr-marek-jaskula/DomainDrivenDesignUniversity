@@ -38,7 +38,6 @@ public class Result<TValue> : Result, IResult<TValue>
     }
 }
 
-
 /// <summary>
 /// Represents a result, with a status and possible error
 /// </summary>

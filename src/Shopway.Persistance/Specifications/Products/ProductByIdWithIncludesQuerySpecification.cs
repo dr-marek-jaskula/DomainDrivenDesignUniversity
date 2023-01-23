@@ -1,5 +1,4 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Domain.Enums;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Abstractions;
 using System.Linq.Expressions;
@@ -23,10 +22,6 @@ internal sealed class ProductByIdWithIncludesQuerySpecification : BaseSpecificat
             .AddIncludes(includes);
 
         specification.IsSplitQuery = true;
-
-        specification
-            .OrderBy(x => x.ProductName, SortDirection.Ascending)
-            .ThenBy(x => x.Price, SortDirection.Descending);
 
         return specification;
     }

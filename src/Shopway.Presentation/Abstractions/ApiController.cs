@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using IResult = Shopway.Domain.Abstractions.IResult;
 
 namespace Shopway.Presentation.Abstractions;
@@ -57,9 +58,16 @@ public abstract class ApiController : ControllerBase
 
     protected IActionResult QueryResult<T>(IResult<T> response)
     {
-        return response.IsSuccess 
-            ? Ok(response.Value) 
-            : NotFound(response.Error);
+        if (response.IsSuccess)
+        {
+            return Ok(response.Value);
+        }
+        else if (response is IValidationResult validationResult)
+        {
+            return NotFound(validationResult.Errors);
+        }
+        
+        return NotFound(response.Error);
     }
 
     protected IActionResult CreatedAtActionResult<T>(IResult<T> response, string? actionName)

@@ -1,5 +1,4 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Domain.Enums;
 using Shopway.Domain.StronglyTypedIds;
 using Shopway.Persistence.Abstractions;
 
@@ -20,10 +19,6 @@ internal sealed class ProductByIdWithReviewsQuerySpecification : BaseSpecificati
 
         specification
             .AddIncludes(product => product.Reviews);
-
-        specification
-            .OrderBy(x => x.ProductName, SortDirection.Ascending)
-            .ThenBy(x => x.Price, SortDirection.Descending);
 
         return specification;
     }

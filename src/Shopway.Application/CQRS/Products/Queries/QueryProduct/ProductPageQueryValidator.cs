@@ -22,7 +22,7 @@ internal sealed class ProductPageQueryValidator : AbstractValidator<ProductPageQ
 
         RuleFor(query => query.Order)
             .Must(ValidateProductPageOrder)
-            .WithMessage("Multiple SortBy or ThenBy properties selected");
+            .WithMessage("Invalid SortBy or ThenBy: Single SortBy can be select and if so, single ThenBy can be chosen");
     }
 
     private static bool ValidateProductPageOrder(ProductOrder? productPageOrder)
@@ -41,8 +41,7 @@ internal sealed class ProductPageQueryValidator : AbstractValidator<ProductPageQ
         };
 
         var sortByNotNullCount = sortByArray
-            .Where(x => x is not null)
-            .Count();
+            .Count(x => x is not null);
 
         var thenByArray = new SortDirection?[]
         {
@@ -53,10 +52,17 @@ internal sealed class ProductPageQueryValidator : AbstractValidator<ProductPageQ
         };
 
         var thenByNotNullCount = thenByArray
-            .Where(x => x is not null)
-            .Count();
+            .Count(x => x is not null);
 
-        return sortByNotNullCount is 1 
-            && thenByNotNullCount is 1;
+        if (sortByNotNullCount > 1 || thenByNotNullCount > 1)
+        {
+            return false;
+        }
+        else if (sortByNotNullCount is 0 && thenByNotNullCount is 1)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

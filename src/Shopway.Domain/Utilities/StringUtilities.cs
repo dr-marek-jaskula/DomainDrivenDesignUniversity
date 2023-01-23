@@ -1,4 +1,7 @@
-﻿namespace Shopway.Domain.Utilities;
+﻿using MediatR;
+using Shopway.Domain.Enums;
+
+namespace Shopway.Domain.Utilities;
 
 public static class StringUtilities
 {
@@ -25,5 +28,11 @@ public static class StringUtilities
     public static bool ContainsDigit(this string input)
     {
         return input.Any(character => _digits.Contains(character));
+    }
+
+    public static TEnum? ParseToNullableEnum<TEnum>(this string? input)
+        where TEnum : struct, IConvertible
+    {
+        return Enum.TryParse<TEnum>(input, out var outPriority) ? outPriority : null;
     }
 }

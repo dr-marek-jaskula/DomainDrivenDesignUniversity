@@ -12,12 +12,11 @@ public sealed record QueryProductRequest
     decimal? FilterByPrice,
     string? FilterByUomCode,
     string? OrderByProductName,
-    string? OrderByByRevision,
-    string? OrderByByPrice,
-    string? OrderByByUomCode,
+    string? OrderByRevision,
+    string? OrderByPrice,
+    string? OrderByUomCode,
     string? ThanByProductName,
-    string? ThanByByRevision,
-    string? ThanByByPrice,
-    string? ThanByByUomCode
-
+    string? ThanByRevision,
+    string? ThanByPrice,
+    string? ThanByUomCode
 ) : IRequest;
