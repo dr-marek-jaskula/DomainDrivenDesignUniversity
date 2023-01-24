@@ -19,32 +19,16 @@ public sealed record ProductOrder : ISortBy<Product>
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
-        SortDirection?[] sortByOptions = { ByProductName, ByRevision, ByPrice, ByUomCode };
-        SortDirection?[] thenByOptions = { ThenByProductName, ThenByRevision, ThenByPrice, ThenByUomCode };
-
-        var sortCount = sortByOptions.Count(sort => sort is not null);
-        var thenCount = thenByOptions.Count(sort => sort is not null);
-
-        if (sortCount is 0 && thenCount is 0)
-        {
-            return queryable;
-        }
-
         queryable = queryable
             .SortBy(ByProductName, product => product.ProductName.Value)
             .SortBy(ByRevision, product => product.Revision.Value)
             .SortBy(ByPrice, product => product.Price.Value)
             .SortBy(ByUomCode, product => product.UomCode.Value);
 
-        if (thenCount is 1)
-        {
-            return ((IOrderedQueryable<Product>)queryable)
-                .ThenSortBy(ThenByProductName, product => product.ProductName.Value)
-                .ThenSortBy(ThenByRevision, product => product.Revision.Value)
-                .ThenSortBy(ThenByPrice, product => product.Price.Value)
-                .ThenSortBy(ThenByUomCode, product => product.UomCode.Value);
-        }
-
-        return queryable;
+        return ((IOrderedQueryable<Product>)queryable)
+            .ThenSortBy(ThenByProductName, product => product.ProductName.Value)
+            .ThenSortBy(ThenByRevision, product => product.Revision.Value)
+            .ThenSortBy(ThenByPrice, product => product.Price.Value)
+            .ThenSortBy(ThenByUomCode, product => product.UomCode.Value);
     }
 }
