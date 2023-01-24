@@ -10,10 +10,7 @@ using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 using Shopway.Application.CQRS.Products.Queries.QueryProduct;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Domain.Enums;
-using Newtonsoft.Json.Linq;
-using System;
 using Shopway.Domain.Utilities;
-using Shopway.Domain.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -33,7 +30,12 @@ public sealed class ProductController : ApiController
 
         var response = await Sender.Send(query, cancellationToken);
 
-        return QueryResult(response);
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
     }
 
     [HttpGet()]
@@ -65,7 +67,12 @@ public sealed class ProductController : ApiController
 
         var response = await Sender.Send(query, cancellationToken);
 
-        return QueryResult(response);
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
     }
 
     [HttpPost]

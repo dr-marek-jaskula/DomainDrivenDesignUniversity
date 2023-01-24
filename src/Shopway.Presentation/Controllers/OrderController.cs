@@ -26,7 +26,12 @@ public sealed class OrderController : ApiController
 
         var response = await Sender.Send(query, cancellationToken);
 
-        return QueryResult(response);
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
     }
 
     [HttpPost]
