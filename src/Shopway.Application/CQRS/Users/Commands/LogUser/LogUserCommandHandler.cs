@@ -46,7 +46,7 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
             .GetByEmailAsync(emailResult.Value, cancellationToken);
 
         _validator
-            .If(user is null, thenError: InvalidPasswordOrEmail());
+            .If(user is null, thenError: InvalidPasswordOrEmail);
 
         if (_validator.IsInvalid)
         {
@@ -58,7 +58,7 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
             .VerifyHashedPassword(user!, user!.PasswordHash.Value, passwordResult.Value.Value);
 
         _validator
-            .If(result is PasswordVerificationResult.Failed, thenError: InvalidPasswordOrEmail());
+            .If(result is PasswordVerificationResult.Failed, thenError: InvalidPasswordOrEmail);
 
         if (_validator.IsInvalid)
         {

@@ -42,14 +42,16 @@ public abstract class BaseRepository
             queryable = queryable.Include(inlcudeExression);
         }
 
-        foreach (var filter in specification.FilterExpressions)
-        {
-            queryable = queryable.Where(filter);
-        }
-
         if (specification.Filter is not null)
         {
             queryable = specification.Filter.Apply(queryable);
+        }
+        else if (specification.FilterExpressions.IsNotNullOrEmpty())
+        {
+            foreach (var filter in specification.FilterExpressions)
+            {
+                queryable = queryable.Where(filter);
+            }
         }
 
         if (specification.SortBy is not null)
