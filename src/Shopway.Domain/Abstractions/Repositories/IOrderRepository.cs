@@ -1,5 +1,5 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using System.Linq.Expressions;
 
 namespace Shopway.Domain.Abstractions.Repositories;

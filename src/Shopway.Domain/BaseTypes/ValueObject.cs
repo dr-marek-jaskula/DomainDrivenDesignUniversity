@@ -1,5 +1,6 @@
 ﻿namespace Shopway.Domain.BaseTypes;
 
+[Serializable]
 public abstract class ValueObject : IEquatable<ValueObject>
 {
     //For instance the atomic value of a Email is a single character

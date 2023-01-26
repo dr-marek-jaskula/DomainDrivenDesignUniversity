@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Resolvers;
 using System.Linq.Expressions;
 using Shopway.Persistence.Framework;

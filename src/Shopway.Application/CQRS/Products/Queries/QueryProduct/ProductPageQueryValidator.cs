@@ -34,10 +34,10 @@ internal sealed class ProductPageQueryValidator : AbstractValidator<ProductPageQ
 
         var sortByArray = new SortDirection?[]
         {
-            productPageOrder.ByProductName,
-            productPageOrder.ByRevision,
-            productPageOrder.ByPrice,
-            productPageOrder.ByUomCode,
+            productPageOrder.ProductName,
+            productPageOrder.Revision,
+            productPageOrder.Price,
+            productPageOrder.UomCode,
         };
 
         var sortByNotNullCount = sortByArray
@@ -45,10 +45,10 @@ internal sealed class ProductPageQueryValidator : AbstractValidator<ProductPageQ
 
         var thenByArray = new SortDirection?[]
         {
-            productPageOrder.ThenByProductName,
-            productPageOrder.ThenByRevision,
-            productPageOrder.ThenByPrice,
-            productPageOrder.ThenByUomCode,
+            productPageOrder.ThenProductName,
+            productPageOrder.ThenRevision,
+            productPageOrder.ThenPrice,
+            productPageOrder.ThenUomCode,
         };
 
         var thenByNotNullCount = thenByArray

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 
 namespace Shopway.Persistence.Configurations;
 

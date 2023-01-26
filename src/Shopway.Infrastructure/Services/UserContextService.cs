@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shopway.Application.Abstractions;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Domain.Utilities;
 using Shopway.Infrastructure.Policies;
 using System.Security.Claims;

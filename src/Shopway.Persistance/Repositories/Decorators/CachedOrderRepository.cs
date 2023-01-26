@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories.Decorators;

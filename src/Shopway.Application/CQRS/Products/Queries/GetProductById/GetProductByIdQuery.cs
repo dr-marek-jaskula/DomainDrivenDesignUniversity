@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductById;
 

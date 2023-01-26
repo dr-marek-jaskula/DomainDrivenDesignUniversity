@@ -2,7 +2,7 @@
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Enums;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;

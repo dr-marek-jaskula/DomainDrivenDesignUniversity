@@ -7,7 +7,7 @@ using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using static Shopway.Domain.Errors.DomainErrors;
 

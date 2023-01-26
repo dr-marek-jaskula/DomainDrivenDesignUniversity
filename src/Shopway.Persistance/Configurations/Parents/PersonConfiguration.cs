@@ -5,7 +5,7 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Converters;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 
 namespace Shopway.Persistence.Configurations.Parents;
 

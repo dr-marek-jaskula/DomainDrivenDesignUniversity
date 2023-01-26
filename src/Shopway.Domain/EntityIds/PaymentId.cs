@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 
-namespace Shopway.Domain.StronglyTypedIds;
+namespace Shopway.Domain.EntityIds;
 
 public readonly record struct PaymentId : IEntityId<PaymentId>
 {

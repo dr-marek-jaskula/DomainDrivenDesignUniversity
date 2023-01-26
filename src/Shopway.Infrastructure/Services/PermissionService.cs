@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Infrastructure.Abstractions;
 using Shopway.Domain.Enumerations;
 

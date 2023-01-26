@@ -1,5 +1,5 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
 using System.Linq.Expressions;
 

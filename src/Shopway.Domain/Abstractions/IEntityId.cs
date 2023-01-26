@@ -1,5 +1,9 @@
-﻿namespace Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.EntityIds;
+using System.ComponentModel;
 
+namespace Shopway.Domain.Abstractions;
+
+[TypeConverter(typeof(EntityIdConverter))]
 public interface IEntityId<out TEntity> : IEntityId
 {
     /// <summary>

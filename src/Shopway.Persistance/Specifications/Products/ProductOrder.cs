@@ -7,28 +7,28 @@ namespace Shopway.Persistence.Specifications.Products;
 
 public sealed record ProductOrder : ISortBy<Product>
 {
-    public SortDirection? ByProductName { get; init; }
-    public SortDirection? ByRevision { get; init; }
-    public SortDirection? ByPrice { get; init; }
-    public SortDirection? ByUomCode { get; init; }
+    public SortDirection? ProductName { get; init; }
+    public SortDirection? Revision { get; init; }
+    public SortDirection? Price { get; init; }
+    public SortDirection? UomCode { get; init; }
 
-    public SortDirection? ThenByProductName { get; init; }
-    public SortDirection? ThenByRevision { get; init; }
-    public SortDirection? ThenByPrice { get; init; }
-    public SortDirection? ThenByUomCode { get; init; }
+    public SortDirection? ThenProductName { get; init; }
+    public SortDirection? ThenRevision { get; init; }
+    public SortDirection? ThenPrice { get; init; }
+    public SortDirection? ThenUomCode { get; init; }
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
         queryable = queryable
-            .SortBy(ByProductName, product => product.ProductName.Value)
-            .SortBy(ByRevision, product => product.Revision.Value)
-            .SortBy(ByPrice, product => product.Price.Value)
-            .SortBy(ByUomCode, product => product.UomCode.Value);
+            .SortBy(ProductName, product => product.ProductName.Value)
+            .SortBy(Revision, product => product.Revision.Value)
+            .SortBy(Price, product => product.Price.Value)
+            .SortBy(UomCode, product => product.UomCode.Value);
 
         return ((IOrderedQueryable<Product>)queryable)
-            .ThenSortBy(ThenByProductName, product => product.ProductName.Value)
-            .ThenSortBy(ThenByRevision, product => product.Revision.Value)
-            .ThenSortBy(ThenByPrice, product => product.Price.Value)
-            .ThenSortBy(ThenByUomCode, product => product.UomCode.Value);
+            .ThenSortBy(ThenProductName, product => product.ProductName.Value)
+            .ThenSortBy(ThenRevision, product => product.Revision.Value)
+            .ThenSortBy(ThenPrice, product => product.Price.Value)
+            .ThenSortBy(ThenUomCode, product => product.UomCode.Value);
     }
 }

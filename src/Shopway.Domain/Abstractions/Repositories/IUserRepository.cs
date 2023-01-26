@@ -1,5 +1,5 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Abstractions.Repositories;

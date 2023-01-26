@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Presentation.Abstractions;
-using Shopway.Presentation.Requests.Orders;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -36,15 +35,9 @@ public sealed class OrderController : ApiController
 
     [HttpPost]
     public async Task<IActionResult> CreateOrder(
-        [FromBody] CreateOrderRequest request,
+        [FromBody] CreateOrderCommand command,
         CancellationToken cancellationToken)
     {
-        var command = new CreateOrderCommand(
-            request.ProductId,
-            request.Amount,
-            request.CustomerId,
-            request.Discount);
-
         var response = await Sender.Send(command, cancellationToken);
 
         if (response.IsFailure)

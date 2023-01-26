@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.StronglyTypedIds;
+﻿using Shopway.Domain.EntityIds;
 
 namespace Shopway.Infrastructure.Abstractions;
 

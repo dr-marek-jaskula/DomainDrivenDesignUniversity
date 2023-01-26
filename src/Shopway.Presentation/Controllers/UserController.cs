@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Shopway.Presentation.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Presentation.Requests.Users;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
 using Shopway.Application.CQRS.Users.Commands.CreateUser;
 
@@ -17,12 +16,10 @@ public sealed class UserController : ApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Login
     (
-        [FromBody] LoginRequest request,
+        [FromBody] LogUserCommand command,
         CancellationToken cancellationToken
     )
     {
-        var command = new LogUserCommand(request.Email, request.Password);
-
         var response = await Sender.Send(command, cancellationToken);
 
         if (response.IsFailure)
@@ -36,12 +33,10 @@ public sealed class UserController : ApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Register
     (
-        [FromBody] RegisterRequest request,
+        [FromBody] CreateUserCommand command,
         CancellationToken cancellationToken
     )
     {
-        var command = new CreateUserCommand(request.Username, request.Email, request.Password, request.ConfirmPassword);
-
         var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)

@@ -1,5 +1,5 @@
 ﻿using Shopway.Domain.BaseTypes;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 
 namespace Shopway.Domain.DomainEvents;
 

@@ -3,7 +3,7 @@ using Shopway.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Requests.Products;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
 using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
 using Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
@@ -23,7 +23,7 @@ public sealed class ReviewController : ApiController
     [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> Add(
         Guid productId,
-        [FromBody] AddReviewRequest request,
+        [FromBody] AddReviewRequest request, //AddReviewCommand.Request
         CancellationToken cancellationToken)
     {
         var command = new AddReviewCommand

@@ -1,24 +1,24 @@
 ﻿using Shopway.Domain.Abstractions;
 
-namespace Shopway.Domain.StronglyTypedIds;
+namespace Shopway.Domain.EntityIds;
 
-public readonly record struct OrderId : IEntityId<OrderId>
+public readonly record struct UserId : IEntityId<UserId>
 {
-    private OrderId(Guid id)
+    private UserId(Guid id)
     {
         Value = id;
     }
 
     public Guid Value { get; init; }
 
-    public static OrderId New()
+    public static UserId New()
     {
-        return new OrderId(Guid.NewGuid());
+        return new UserId(Guid.NewGuid());
     }
 
-    public static OrderId Create(Guid id)
+    public static UserId Create(Guid id)
     {
-        return new OrderId(id);
+        return new UserId(id);
     }
 
     public override int GetHashCode()

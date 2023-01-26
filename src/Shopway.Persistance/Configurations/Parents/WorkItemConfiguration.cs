@@ -4,7 +4,7 @@ using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
-using Shopway.Domain.StronglyTypedIds;
+using Shopway.Domain.EntityIds;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
