@@ -42,6 +42,7 @@ try
         .RegisterServices()
         .RegisterServiceDecorators()
         .RegisterRepositories()
+        .RegisterHealthCheck(builder.Configuration)
         .AddSwaggerGen();
 
     //Build the application
@@ -62,6 +63,7 @@ try
     }
 
     app
+        .UseHealthChecks()
         .UseMiddlewares()
         .UseHttpsRedirection();
 
