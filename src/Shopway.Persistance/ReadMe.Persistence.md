@@ -1,10 +1,11 @@
 # Persistence Layer
 
-In this project we store components connected to the ORM and database operations:
+In this layer we store components connected to the specific ORM and database operations:
 
 - DatabaseContext
 - UnitOfWork
 - Configurations
+- Specifications
 - Repositories
 - Migrations
 - Outbox pattern classes
@@ -50,6 +51,29 @@ We create a background job using the Quartz NuGet Package. This will be a part o
 ## Specification Pattern
 
 We represent the requirement that our database entities are supposed to meet, in order to satisfy the specification and to be returned from the database.
+
+#### Filter & Order
+
+Filtering and sorting is done by objects that implements IFilter<TEntity> and ISortBy<TEntity> interfaces. The apply method 
+applied in the BaseRepository. To set the filtering in the specification we use 
+
+```
+specification
+    .AddFilters(filter);
+
+specification
+    .AddOrder(sortBy);
+```
+
+We can also determine filtering and sorting in the specification without these objects, using 
+```
+specification
+    .AddFilters(product => product.Id == productId);
+
+specification
+    .OrderBy(x => x.ProductName.Value, SortDirection.Ascending)
+    .ThenBy(x => x.Price.Value, SortDirection.Descending);
+```
 
 ## Cache
 

@@ -6,7 +6,8 @@ using System.Globalization;
 
 namespace Shopway.Domain.EntityIds;
 
-public sealed class EntityIdConverter<TValue> : TypeConverter
+public sealed class EntityIdConverter<TEntitiyId> : TypeConverter
+    where TEntitiyId : struct, IEntityId<TEntitiyId>
 {
     private readonly Type _type;
 
@@ -32,7 +33,7 @@ public sealed class EntityIdConverter<TValue> : TypeConverter
         if (value is string @string)
         {
             var guid = Guid.Parse(@string);
-            var createMethod = _type.GetMethod(nameof(IEntityId<object>.Create));
+            var createMethod = _type.GetMethod(nameof(IEntityId<TEntitiyId>.Create));
             return createMethod!.Invoke(null, new object[] { guid });
         }
 
@@ -46,7 +47,7 @@ public sealed class EntityIdConverter<TValue> : TypeConverter
             throw new ArgumentNullException(nameof(value));
         }
 
-        var entityId = (IEntityId<TValue>)value;
+        var entityId = (IEntityId<TEntitiyId>)value;
         var idValue = entityId.Value;
 
         if (destinationType == typeof(string))

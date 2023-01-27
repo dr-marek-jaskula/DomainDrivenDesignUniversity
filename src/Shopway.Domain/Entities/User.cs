@@ -11,6 +11,8 @@ namespace Shopway.Domain.Entities;
 
 public sealed class User : AggregateRoot<UserId>, IAuditableEntity
 {
+    private readonly List<Role> _roles = new();
+
     internal User
     (
         UserId id,
@@ -35,7 +37,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     public PasswordHash PasswordHash { get; set; }
     public PersonId? PersonId { get; set; }
     public Person? Person { get; set; }
-    public ICollection<Role> Roles { get; set; }
+    public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     public static User Create
     (

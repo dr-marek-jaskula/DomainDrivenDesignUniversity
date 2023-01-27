@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Options;
 using Shopway.App.Options;
-using Shopway.Domain.Entities;
+using Shopway.App.Utilities;
 using Shopway.Persistence.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -14,7 +12,7 @@ public static class DatabaseContextRegistration
     {
         services.AddDbContextPool<ShopwayDbContext>((serviceProvider, optionsBuilder) =>
         {
-            var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+            var databaseOptions = services.GetOptions<DatabaseOptions>();
 
             optionsBuilder.UseSqlServer(databaseOptions.ConnectionString!, options =>
             {

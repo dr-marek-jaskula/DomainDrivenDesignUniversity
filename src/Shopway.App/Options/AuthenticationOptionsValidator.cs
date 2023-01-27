@@ -12,12 +12,12 @@ public sealed class AuthenticationOptionsValidator : IValidateOptions<Authentica
 
         if (options.DaysToExpire <= 0)
         {
-            validationResult += $"Invalid {nameof(options.DaysToExpire)}";
+            validationResult += $"Invalid {nameof(options.DaysToExpire)}. ";
         }
 
         if (options.SecretKey.Length < 5)
         {
-            validationResult += $"To short {nameof(options.SecretKey)}";
+            validationResult += $"To short {nameof(options.SecretKey)}. ";
         }
 
         if (!validationResult.IsNullOrEmptyOrWhiteSpace())

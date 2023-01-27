@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using Shopway.App.Options;
+﻿using Shopway.App.Options;
+using Shopway.App.Utilities;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -7,9 +7,7 @@ public static class CacheRegistration
 {
     public static IServiceCollection RegisterCache(this IServiceCollection services)
     {
-        var serviceProvider = services.BuildServiceProvider();
-
-        var cacheOptions = serviceProvider.GetRequiredService<IOptions<CacheOptions>>().Value;
+        var cacheOptions = services.GetOptions<CacheOptions>();
 
         services.AddStackExchangeRedisCache(redisOptions =>
         {

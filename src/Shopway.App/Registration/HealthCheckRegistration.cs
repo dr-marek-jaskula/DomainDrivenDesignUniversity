@@ -7,6 +7,7 @@ using Shopway.Domain.Entities;
 using Shopway.Persistence.Framework;
 using static Newtonsoft.Json.Formatting;
 using static Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus;
+using Shopway.App.Utilities;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -18,15 +19,14 @@ public static class HealthCheckRegistration
 
     public static IServiceCollection RegisterHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
-        var healthOptions = configuration.GetOptions<HealthOptions>();
-        var databaseOptions = configuration.GetOptions<DatabaseOptions>();
-        var connectionString = configuration.GetConnectionString("DefaultConnection")!;
+        var healthOptions = services.GetOptions<HealthOptions>();
+        var databaseOptions = services.GetOptions<DatabaseOptions>();
 
         services
             .AddHealthChecks()
             .AddSqlServer
             (
-                connectionString: connectionString,
+                connectionString: databaseOptions.ConnectionString!,
                 failureStatus: Unhealthy,
                 healthQuery: "SELECT 1",
                 name: "SqlServer connection",

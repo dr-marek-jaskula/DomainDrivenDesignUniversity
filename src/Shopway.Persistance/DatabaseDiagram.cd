@@ -33,21 +33,11 @@
   <Class Name="Shopway.Domain.Entities.Review" Collapsed="true">
     <Position X="8.25" Y="3.5" Width="1.5" />
     <TypeIdentifier />
-    <ShowAsAssociation>
-      <Property Name="Product" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Shopway.Domain.Entities.Role" Collapsed="true">
-    <Position X="14.75" Y="6.5" Width="1.5" />
-    <TypeIdentifier />
   </Class>
   <Class Name="Shopway.Domain.Entities.User" Collapsed="true">
     <Position X="13.5" Y="5" Width="3.75" />
     <TypeIdentifier />
-    <ShowAsAssociation>
-      <Property Name="Role" />
-    </ShowAsAssociation>
     <Lollipop Position="0.1" />
   </Class>
   <Class Name="Shopway.Domain.Entities.Feature" Collapsed="true">

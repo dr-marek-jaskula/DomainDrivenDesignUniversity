@@ -46,6 +46,11 @@ public sealed class Validator : IValidator
     public ValidationResult<TResponse> Failure<TResponse>()
         where TResponse : IResponse
     {
+        if (_errors.Any() == false)
+        {
+            throw new InvalidOperationException("Validation was successful, but Failure called");
+        }
+
         return ValidationResult<TResponse>.WithErrors(_errors.ToArray());
     }
 }

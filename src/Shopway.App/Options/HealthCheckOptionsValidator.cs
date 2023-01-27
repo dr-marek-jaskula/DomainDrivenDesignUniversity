@@ -3,7 +3,7 @@ using Shopway.Domain.Utilities;
 
 namespace Shopway.App.Options;
 
-public sealed class HealthCheckOptionsValidator : IValidateOptions<HealthOptions>
+public sealed class HealthOptionsValidator : IValidateOptions<HealthOptions>
 {
     public ValidateOptionsResult Validate(string? name, HealthOptions options)
     {
@@ -11,12 +11,12 @@ public sealed class HealthCheckOptionsValidator : IValidateOptions<HealthOptions
 
         if (options.DelayInSeconds <= 1)
         {
-            validationResult += "Delay must be at least two seconds";
+            validationResult += "Delay must be at least two seconds. ";
         }
 
         if (options.PeriodInSeconds <= 1)
         {
-            validationResult += "Period must be at least two seconds";
+            validationResult += "Period must be at least two seconds. ";
         }
 
         if (!validationResult.IsNullOrEmptyOrWhiteSpace())

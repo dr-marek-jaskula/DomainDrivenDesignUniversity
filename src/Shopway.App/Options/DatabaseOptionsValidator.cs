@@ -11,22 +11,22 @@ public sealed class DatabaseOptionsValidator : IValidateOptions<DatabaseOptions>
 
         if (options.ConnectionString.IsNullOrEmptyOrWhiteSpace())
         {
-            validationResult += "Connection string is missing";
+            validationResult += "Connection string is missing. ";
         }
 
         if (options.MaxRetryCount < 1)
         {
-            validationResult += "Retry Count is less than one";
+            validationResult += "Retry Count is less than one. ";
         }
 
         if (options.MaxRetryDelay < 1)
         {
-            validationResult += "Retry delay is less than one";
+            validationResult += "Retry delay is less than one. ";
         }
 
         if (options.CommandTimeout < 1)
         {
-            validationResult += "Command timeout is less than one";
+            validationResult += "Command timeout is less than one. ";
         }
 
         if (!validationResult.IsNullOrEmptyOrWhiteSpace())

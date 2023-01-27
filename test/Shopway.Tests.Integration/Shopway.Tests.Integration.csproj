@@ -33,12 +33,12 @@
 
 	<ItemGroup>
 	  <Folder Include="ControllersUnderTest\UserController\" />
-	  <Folder Include="ControllersUnderTest\ReviewController\" />
 	  <Folder Include="ControllersUnderTest\OrderController\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\Shopway.Domain\Shopway.Domain.csproj" />
+	  <ProjectReference Include="..\..\src\Shopway.Persistance\Shopway.Persistence.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Presentation\Shopway.Presentation.csproj" />
 	</ItemGroup>
 

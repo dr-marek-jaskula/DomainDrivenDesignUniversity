@@ -8,10 +8,9 @@ public static class FluentValidationRegistration
     public static IServiceCollection RegisterFluentValidation(this IServiceCollection services)
     {
         services
-            .AddFluentValidationAutoValidation(options => //Fluent Validation (Models -> Validators)
+            .AddFluentValidationAutoValidation(options =>
             {
                 options.DisableDataAnnotationsValidation = true;
-
                 ValidatorOptions.Global.LanguageManager.Enabled = false;
             })
             .AddValidatorsFromAssembly(

@@ -1,7 +1,29 @@
 ﻿# Presentation Layer
 
-This layer is the part where interaction with external systems happens. This layer is the gateway to the effects that a human, an application or a message will have on the domain. Requests will be accepted from this layer and the response will be shaped in this layer and displayed to the user.
+This layer is the part where interaction with external user or other systems happens. 
+
+Therefore, we define here:
 
 - Controllers
-- Requests 
 - Request Exceptions
+- ProblemDetails definition
+
+## Enum to string conversion
+
+Due to the 
+
+```csharp
+.AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ContractResolver = new RequiredPropertiesCamelCaseContractResolver();
+    options.SerializerSettings.Formatting = Indented;
+    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+    options.SerializerSettings.ReferenceLoopHandling = Ignore;
+});
+```
+
+in the .App, we can convert string to enums in the requests behind the scenes.
+
+## EntityId Converter
+
+Due to the EntityIdConverter, the conversion from string in route to entity id object is done behind the scenes.

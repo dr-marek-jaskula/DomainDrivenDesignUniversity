@@ -11,7 +11,7 @@ public sealed class CacheOptionsValidator : IValidateOptions<CacheOptions>
 
         if (options.ConnectionString.IsNullOrEmptyOrWhiteSpace())
         {
-            validationResult += "Connection string is missing";
+            validationResult += "Connection string is missing. ";
         }
 
         if (!validationResult.IsNullOrEmptyOrWhiteSpace())

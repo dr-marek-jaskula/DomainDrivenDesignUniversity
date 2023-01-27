@@ -15,9 +15,9 @@ public static class OptionsRegistration
         services.ConfigureOptions<HealthCheckOptionsSetup>();
 
         services.AddSingleton<IValidateOptions<DatabaseOptions>, DatabaseOptionsValidator>();
-        services.AddSingleton<IValidateOptions<CacheOptions>, CacheOptionsValidator>();
         services.AddSingleton<IValidateOptions<AuthenticationOptions>, AuthenticationOptionsValidator>();
-        services.AddSingleton<IValidateOptions<HealthOptions>, HealthCheckOptionsValidator>();
+        services.AddSingleton<IValidateOptions<HealthOptions>, HealthOptionsValidator>();
+        services.AddSingleton<IValidateOptions<CacheOptions>, CacheOptionsValidator>();
 
         return services;
     }

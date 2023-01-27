@@ -1,26 +1,21 @@
-﻿# App Layer (User Interface (Web/Api) Layer)
+﻿# App Layer
 
-In this project we store components connected to :
+In this layer we:
 
-- Registering services
-- Middlewares
-- Options
-- Settings
-
-## Quartz background jobs
-
-To configure Quartz background jobs we need Quartz.Extensions.Hosting NuGet Package. This integrates with background service in ASP.NET.
+- Register dependencies
+- Set Middlewares
+- Store Options
 
 ## Redis Cache
 
 1. install NuGet Microsoft.Extensions.Caching.StackExchangeRedis
-2. Create CacheOptions (see Options)
-3. Use caching in the decorator (see CachedProductRepository)
+2. Create CacheOptions
+3. Use caching, for instance in the decorator (see CachedProductRepository)
 4. Add PrivateResolver (in Shopway.Persistance) to be able to deserialized object with private setters
 
-IMemory cache is faster, but the Redis cache can be reused between multiple instance of our application.
+IMemory cache is faster, but the Redis cache can be reused between multiple instance of the same application.
 
-If we do not want to use decorator pattern for cache, we can use create a CacheService
+If we do not want to use decorator pattern for cache, we can create a CacheService or a CachePipeline
 
 ## Spin the Docker Container with Redis
 
