@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shopway.Domain.Errors;
 using Shopway.Presentation.Exceptions;
+using static Shopway.Presentation.Utilities.ProblemDetailsUtilities;
 
 namespace Shopway.App.Middlewares;
 
@@ -45,16 +47,14 @@ public sealed class ErrorHandlingMiddleware : IMiddleware
     /// <returns>Exception details in JSON format</returns>
     private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        var problemDetails = new ProblemDetails //this class represents the standard details. Very important class in real-life web api
-        {
-            Type = "https://Shopway.com",
-            Title = "An unrecoverable error occurred",
-            Status = context.Response.StatusCode,
-            Detail = "Problem details: " + exception.Message,
-            Instance = context.Request.Path
-        };
-        
-        problemDetails.Extensions.Add("RequestId", context.TraceIdentifier);
+        var problemDetails = CreateProblemDetails
+        (
+           title: "An unrecoverable error occurred",
+           status: context.Response.StatusCode,
+           new Error("https://Shopway.com", exception.Message),
+           context: context
+        );
+
         await context.Response.WriteAsJsonAsync(problemDetails, problemDetails.GetType(), options: null, contentType: "application/problem+json");
     }
 }

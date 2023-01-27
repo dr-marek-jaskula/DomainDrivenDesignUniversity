@@ -1,4 +1,5 @@
-﻿using Shopway.Application.Abstractions.CQRS;
+﻿using Microsoft.AspNetCore.Mvc;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.EntityIds;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductById;

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
-using Shopway.Domain.EntityIds;
 using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
@@ -16,13 +15,9 @@ public sealed class OrderController : ApiController
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrderById(
-        Guid id, 
+        [FromRoute] GetOrderByIdQuery query, 
         CancellationToken cancellationToken)
     {
-        var orderId = OrderId.Create(id);
-
-        var query = new GetOrderByIdQuery(orderId);
-
         var response = await Sender.Send(query, cancellationToken);
 
         if (response.IsFailure)

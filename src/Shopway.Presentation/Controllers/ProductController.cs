@@ -19,11 +19,9 @@ public sealed class ProductController : ApiController
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(
-        ProductId id, 
+        [FromRoute] GetProductByIdQuery query,
         CancellationToken cancellationToken)
     {
-        var query = new GetProductByIdQuery(id);
-
         var response = await Sender.Send(query, cancellationToken);
 
         if (response.IsFailure)
@@ -36,7 +34,7 @@ public sealed class ProductController : ApiController
 
     [HttpGet()]
     public async Task<IActionResult> Query(
-        ProductPageQuery query,
+        [FromBody] ProductPageQuery query,
         CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
@@ -66,11 +64,11 @@ public sealed class ProductController : ApiController
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(
-        Guid id,
-        [FromBody] UpdateProductCommand command,
+        [FromRoute] ProductId id,
+        [FromBody] UpdateProductCommand.UpdateRequestBody body,
         CancellationToken cancellationToken)
     {
-        //var command = new UpdateProductCommand(ProductId.Create(id), request.Price);
+        var command = new UpdateProductCommand(id, body);
 
         var result = await Sender.Send(command, cancellationToken);
 
@@ -84,11 +82,9 @@ public sealed class ProductController : ApiController
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(
-        Guid id,
+        [FromRoute] RemoveProductCommand command,
         CancellationToken cancellationToken)
     {
-        var command = new RemoveProductCommand(ProductId.Create(id));
-
         var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)

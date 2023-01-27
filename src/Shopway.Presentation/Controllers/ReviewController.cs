@@ -2,12 +2,11 @@
 using Shopway.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Presentation.Abstractions;
-using Shopway.Presentation.Requests.Products;
 using Shopway.Domain.EntityIds;
-using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
 using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
 using Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
 using Shopway.Infrastructure.Authentication;
+using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -22,17 +21,11 @@ public sealed class ReviewController : ApiController
     [HttpPost()]
     [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> Add(
-        Guid productId,
-        [FromBody] AddReviewRequest request, //AddReviewCommand.Request
+        [FromRoute] ProductId productId,
+        [FromBody] AddReviewCommand.AddReviewRequestBody body,
         CancellationToken cancellationToken)
     {
-        var command = new AddReviewCommand
-        (
-            ProductId.Create(productId), 
-            request.Stars, 
-            request.Title, 
-            request.Description
-        );
+        var command = new AddReviewCommand(productId, body);
 
         var result = await Sender.Send(command, cancellationToken);
 
@@ -47,18 +40,12 @@ public sealed class ReviewController : ApiController
     [HttpPatch("{reviewId}")]
     [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> Update(
-        Guid productId,
-        Guid reviewId,
-        [FromBody] UpdateReviewRequest request,
+        [FromRoute] ProductId productId,
+        [FromRoute] ReviewId reviewId,
+        [FromBody] UpdateReviewCommand.UpdateReviewRequestBody body,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateReviewCommand
-        (
-            ProductId.Create(productId),
-            ReviewId.Create(reviewId), 
-            request.Stars, 
-            request.Description
-        );
+        var command = new UpdateReviewCommand(productId, reviewId, body);
 
         var result = await Sender.Send(command, cancellationToken);
 
@@ -73,16 +60,9 @@ public sealed class ReviewController : ApiController
     [HttpDelete("{reviewId}")]
     [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> Remove(
-        Guid productId,
-        Guid reviewId,
+        [FromRoute] RemoveReviewCommand command,
         CancellationToken cancellationToken)
     {
-        var command = new RemoveReviewCommand
-        (
-            ProductId.Create(productId),
-            ReviewId.Create(reviewId)
-        );
-
         var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)

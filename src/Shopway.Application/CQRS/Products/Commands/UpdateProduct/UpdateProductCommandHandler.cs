@@ -22,7 +22,7 @@ internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProduc
 
     public async Task<IResult<UpdateProductResponse>> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
-        Result<Price> priceResult = Price.Create(command.Price);
+        Result<Price> priceResult = Price.Create(command.Body.Price);
 
         _validator
             .Validate(priceResult);

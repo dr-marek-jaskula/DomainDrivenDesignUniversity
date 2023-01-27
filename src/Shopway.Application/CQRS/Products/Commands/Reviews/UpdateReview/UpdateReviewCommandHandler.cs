@@ -28,9 +28,9 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
             .Reviews
             .First(x => x.Id == command.ReviewId);
 
-        if (command.Description is not null)
+        if (command.Body.Description is not null)
         {
-            Result<Description> descriptionResult = Description.Create(command.Description);
+            Result<Description> descriptionResult = Description.Create(command.Body.Description);
 
             _validator
                 .Validate(descriptionResult);
@@ -43,9 +43,9 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
             reviewToUpdate.UpdateDescription(descriptionResult.Value);
         }
 
-        if (command.Stars is not null)
+        if (command.Body.Stars is not null)
         {
-            Result<Stars> starsResult = Stars.Create((decimal)command.Stars);
+            Result<Stars> starsResult = Stars.Create((decimal)command.Body.Stars);
 
             _validator
                 .Validate(starsResult);

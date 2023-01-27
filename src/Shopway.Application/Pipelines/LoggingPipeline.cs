@@ -32,14 +32,14 @@ public class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         if (result.IsFailure)
         {
             _logger.LogError(
-                "Request failure {@RequestName}, {@Error}, {@DateTimeUtc}",
+                "UpdateRequestBody failure {@RequestName}, {@Error}, {@DateTimeUtc}",
                 typeof(TRequest).Name,
                 result.Error,
                 DateTime.UtcNow);
         }
 
         _logger.LogInformation(
-            "Request completed {@RequestName}, {@DateTimeUtc}",
+            "UpdateRequestBody completed {@RequestName}, {@DateTimeUtc}",
             typeof(TRequest).Name,
             DateTime.UtcNow);
 

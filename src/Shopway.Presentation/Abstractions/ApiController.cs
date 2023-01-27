@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Errors;
 using IResult = Shopway.Domain.Abstractions.IResult;
+using static Shopway.Presentation.Utilities.ProblemDetailsUtilities;
 
 namespace Shopway.Presentation.Abstractions;
 
@@ -33,25 +33,9 @@ public abstract class ApiController : ControllerBase
 
             _ => BadRequest(
                     CreateProblemDetails(
-                        "Bad Request",
+                        "BadRequest",
                         StatusCodes.Status400BadRequest,
                         result.Error))
-        };
-    }
-
-    private static ProblemDetails CreateProblemDetails(
-        string title,
-        int status,
-        Error error,
-        Error[]? errors = null)
-    {
-        return new()
-        {
-            Title = title,
-            Type = error.Code,
-            Detail = error.Message,
-            Status = status,
-            Extensions = { { nameof(errors), errors } }
         };
     }
 
