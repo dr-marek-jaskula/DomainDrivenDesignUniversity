@@ -1,6 +1,8 @@
 ﻿using RestSharp;
+using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Tests.Integration.Abstractions;
 using Shopway.Tests.Integration.Persistance;
+using Shopway.Tests.Integration.Utilities;
 using static Shopway.Tests.Integration.Collections.CollectionNames;
 using static System.Net.HttpStatusCode;
 
@@ -31,14 +33,17 @@ public sealed class ProductControllerTests : ControllerTestsBase, IAsyncLifetime
     public async Task GetById_ShouldReturnProduct_WhenProductExists()
     {
         //Arrange
-        var generatedProductId = _fixture.DataGenerator.AddProductWithoutReviews();
+        var generatedProductId = await _fixture.DataGenerator.AddProductWithoutReviews();
 
-        var request = GetRequest(generatedProductId.Result.Value.ToString());
+        var request = GetRequest(generatedProductId.Value.ToString());
 
         //Act
         var response = await _restClient!.GetAsync(request);
 
         //Assert
         response.StatusCode.Should().Be(OK);
+
+        var deserializedResponse = response.DeserializeResponseResult<ProductResponse>();
+        deserializedResponse.Id.Should().Be(generatedProductId.Value);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Framework;
+﻿using Shopway.Persistence.Framework;
 
 namespace Shopway.Tests.Integration.Persistance;
 
@@ -12,8 +11,8 @@ public sealed class DatabaseFixture : IDisposable
     {
         var factory = new ShopwayDbContextFactory();
         Context = factory.CreateDbContext(new[] { _testConnection });
-        Context.Database.EnsureDeleted(); 
-        Context.Database.Migrate();
+        //Context.Database.EnsureDeleted();
+        //Context.Database.Migrate();
 
         DataGenerator = new TestDataGenerator(Context);
     }
@@ -25,9 +24,9 @@ public sealed class DatabaseFixture : IDisposable
         Context.Dispose();
     }
 
-    public async Task DisposeAsync()
+    public Task DisposeAsync()
     {
-        await Context.DisposeAsync();
+        return Task.CompletedTask;
     }
 
     public async Task CleanDatabase()

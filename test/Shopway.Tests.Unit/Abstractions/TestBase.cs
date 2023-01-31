@@ -1,7 +1,4 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
-using static Shopway.Domain.Utilities.RandomUtilities;
+﻿using static Shopway.Domain.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Unit.Abstractions;
 

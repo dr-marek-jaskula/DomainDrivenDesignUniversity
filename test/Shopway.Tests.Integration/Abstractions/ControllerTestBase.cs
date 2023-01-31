@@ -4,6 +4,7 @@ using RestSharp.Authenticators;
 using Shopway.Application.CQRS.Users.Commands.CreateUser;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
 using Shopway.Domain.Entities;
+using Shopway.Tests.Integration.Helpers;
 using Shopway.Tests.Integration.Persistance;
 using Shopway.Tests.Integration.Utilities;
 using static RestSharp.Method;
@@ -14,18 +15,19 @@ public abstract partial class ControllerTestsBase
 {
     private const string ShopwayApiUrl = "https://localhost:7236/api/";
     protected readonly string _controllerUri;
-    protected readonly string _userControllerUri = "user";
+    private static readonly RestClient _userClient = new($"{ShopwayApiUrl}{"user"}");
 
     public ControllerTestsBase()
 	{
         _controllerUri = GetType().Name[..^"ControllerTests".Length];
     }
 
-    protected async Task<RestClient> RestClient(string controllerUri, DatabaseFixture databaseFixture)
+    protected static async Task<RestClient> RestClient(string controllerUri, DatabaseFixture databaseFixture)
 	{
         var client = new RestClient($"{ShopwayApiUrl}{controllerUri}");
 
-        var token = await RegisterAndLogTestUser(databaseFixture);
+        await EnsureThatTheTestUserIsRegistered(databaseFixture);
+        var token = await LogTestUser();
 
         client.UseAuthenticator(new JwtAuthenticator(token));
 
@@ -59,19 +61,28 @@ public abstract partial class ControllerTestsBase
     }
 
     /// <summary>
-    /// Register and log the test user
+    /// Ensure that the test user is registered
     /// </summary>
     /// <param name="databaseFixture"></param>
     /// <returns>Jwt token</returns>
-    private async Task<string> RegisterAndLogTestUser(DatabaseFixture databaseFixture)
+    private static async Task EnsureThatTheTestUserIsRegistered(DatabaseFixture databaseFixture)
     {
-        var userClient = new RestClient($"{ShopwayApiUrl}{_userControllerUri}");
+        var userAlreadyExists = await databaseFixture
+            .Context
+            .Set<User>()
+            .Where(x => x.Username.Value == TestUser.Username)
+            .AnyAsync();
 
-        var registerCommand = new CreateUserCommand("TestUser", "testUser123@gmail.com", "testPassword123!", "testPassword123!");
+        if (userAlreadyExists is true)
+        {
+            return;
+        }
+
+        var registerCommand = new CreateUserCommand(TestUser.Username, TestUser.Email, TestUser.Password, TestUser.Password);
 
         var registerRequest = PostRequest("register", registerCommand);
 
-        await userClient.PostAsync(registerRequest);
+        await _userClient.PostAsync(registerRequest);
 
         var user = databaseFixture
             .Context
@@ -84,12 +95,20 @@ public abstract partial class ControllerTestsBase
             ");
 
         await databaseFixture.Context.SaveChangesAsync();
+    }
 
-        var logCommand = new LogUserCommand("testUser123@gmail.com", "testPassword123!");
+    /// <summary>
+    /// Register and log the test user
+    /// </summary>
+    /// <param name="databaseFixture"></param>
+    /// <returns>Jwt token</returns>
+    private static async Task<string> LogTestUser()
+    {
+        var logCommand = new LogUserCommand(TestUser.Email, TestUser.Password);
 
         var loginRequest = PostRequest("login", logCommand);
 
-        var logResponse = await userClient.PostAsync(loginRequest);
+        var logResponse = await _userClient.PostAsync(loginRequest);
 
         var token = logResponse.Deserialize<LogUserResponse>();
 
