@@ -4,7 +4,7 @@ namespace Shopway.Domain.BaseTypes;
 
 public interface IAggregateRoot
 {
-    IReadOnlyCollection<IDomainEvent> GetDomainEvents();
+    IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
     void ClearDomainEvents();
 }
 
@@ -27,10 +27,7 @@ public abstract class AggregateRoot<TEntityId> : Entity<TEntityId>, IAggregateRo
     {
     }
 
-    public IReadOnlyCollection<IDomainEvent> GetDomainEvents()
-    {
-        return _domainEvents.ToList();
-    }
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     public void ClearDomainEvents()
     {

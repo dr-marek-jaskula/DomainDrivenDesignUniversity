@@ -65,7 +65,7 @@ internal sealed class UnitOfWork : IUnitOfWork
             .Select(x => x.Entity)
             .SelectMany(aggregateRoot =>
             {
-                var domainEvents = aggregateRoot.GetDomainEvents();
+                var domainEvents = aggregateRoot.DomainEvents;
 
                 aggregateRoot.ClearDomainEvents();
 

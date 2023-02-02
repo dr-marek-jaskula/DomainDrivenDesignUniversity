@@ -20,7 +20,7 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
             .HasColumnType(ColumnTypes.VarChar(128));
 
         var premissionsFromEnumeration = Permission
-            .GetValues()
+            .List
             .Select(p => p.Name)
             .ToHashSet();
 
@@ -38,6 +38,6 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
         }
 
         //Inserting static data (data that are not related to other)
-        builder.HasData(Permission.GetValues());
+        builder.HasData(Permission.List);
     }
 }

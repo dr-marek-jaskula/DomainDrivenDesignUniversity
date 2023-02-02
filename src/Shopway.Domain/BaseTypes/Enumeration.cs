@@ -38,6 +38,8 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>, IComp
         Name = string.Empty;
     }
 
+    public static IReadOnlyCollection<TEnum> List => EnumerationsDictionary.Value.Values.ToList().AsReadOnly();
+
     /// <summary>
     /// Gets the identifier
     /// </summary>
@@ -66,19 +68,6 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>, IComp
     public static bool operator !=(Enumeration<TEnum> a, Enumeration<TEnum> b)
     {
         return !(a == b);
-    }
-
-    /// <summary>
-    /// Gets the enumeration values
-    /// </summary>
-    /// <returns>The read-only collection of enumeration values</returns>
-    public static IReadOnlyCollection<TEnum> GetValues()
-    {
-        return EnumerationsDictionary
-            .Value
-            .Values
-            .ToList()
-            .AsReadOnly();
     }
 
     /// <summary>
