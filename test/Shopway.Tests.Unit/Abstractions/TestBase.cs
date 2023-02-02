@@ -14,6 +14,11 @@ public abstract class TestBase
         return $"{APP_PREFIX}_test_{GenerateString(lenght)}";
     }
 
+    protected static string NotTrimmedTestString(int lenght = Length)
+    {
+        return $" \n  \t \n    \t {APP_PREFIX}_test_{GenerateString(lenght)}  \n \t   \n ";
+    }
+
     protected static string Username(string username = Name)
     {
         return username;

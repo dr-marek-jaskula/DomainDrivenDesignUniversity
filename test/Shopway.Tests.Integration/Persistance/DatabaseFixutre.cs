@@ -4,20 +4,21 @@ namespace Shopway.Tests.Integration.Persistance;
 
 public sealed class DatabaseFixture : IDisposable
 {
-    public readonly TestDataGenerator DataGenerator;
-    public const string _testConnection = "TestConnection";
+    private const string _testConnection = "TestConnection";
+    private readonly ShopwayDbContext _context;
 
     public DatabaseFixture()
     {
         var factory = new ShopwayDbContextFactory();
-        Context = factory.CreateDbContext(new[] { _testConnection });
-        //Context.Database.EnsureDeleted();
-        //Context.Database.Migrate();
+        _context = factory.CreateDbContext(new[] { _testConnection });
+        //_context.Database.EnsureDeleted();
+        //_context.Database.Migrate();
 
         DataGenerator = new TestDataGenerator(Context);
     }
 
-    public ShopwayDbContext Context { get; }
+    public TestDataGenerator DataGenerator { get; }
+    public ShopwayDbContext Context => _context;
 
     public void Dispose()
     {
@@ -31,6 +32,6 @@ public sealed class DatabaseFixture : IDisposable
 
     public async Task CleanDatabase()
     {
-        await DataGenerator.ClearDatabase();
+        await DataGenerator.CleanupDatabase();
     }
 }

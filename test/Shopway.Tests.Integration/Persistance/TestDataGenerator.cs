@@ -19,7 +19,7 @@ public class TestDataGenerator
         _context = context;
     }
 
-    public async Task ClearDatabase()
+    public async Task CleanupDatabase()
     {
         //Disable all constraints
         //Delete data in all tables (but not from __EFMigrationsHistory) and use SET QUOTED_IDENTIFIES ON -> (QUOTED_IDENTIFIER controls the behavior of SQL Server handling double-quotes)
@@ -80,6 +80,11 @@ public class TestDataGenerator
     public static string TestString(int lenght = Length)
     {
         return $"{GenerateString(lenght)}";
+    }
+
+    public static string NotTrimmedTestString(int lenght = Length)
+    {
+        return $" \n  \t \n    \t {GenerateString(lenght)}  \n \t   \n ";
     }
 
     public int TestInt(int min = 1, int max = 1000)
