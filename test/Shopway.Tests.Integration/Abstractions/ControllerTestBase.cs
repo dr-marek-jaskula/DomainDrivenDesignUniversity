@@ -4,29 +4,44 @@ using RestSharp.Authenticators;
 using Shopway.Application.CQRS.Users.Commands.CreateUser;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
 using Shopway.Domain.Entities;
-using Shopway.Tests.Integration.Helpers;
 using Shopway.Tests.Integration.Persistance;
 using Shopway.Tests.Integration.Utilities;
 using System.Data;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.EntityIds;
 using Gatherly.Presentation.Controllers;
+using Microsoft.Extensions.DependencyInjection;
+using Shopway.Tests.Integration.Configurations;
 using static RestSharp.Method;
+using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
+using Shopway.Tests.Integration.Constants;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
-public abstract class ControllerTestsBase
+public abstract class ControllerTestsBase : IDisposable
 {
-    private const string ShopwayApiUrl = "https://localhost:7236/api/";
+    private readonly string ShopwayApiUrl;
+    private readonly RestClient _userClient; 
     protected readonly string _controllerUri;
-    private static readonly RestClient _userClient = new($"{ShopwayApiUrl}{nameof(User)}");
+    protected readonly IServiceScope Scope;
+    protected readonly IntegrationTestsUrlOptions integrationTestsUrlOptions;
 
-    public ControllerTestsBase()
+    public ControllerTestsBase(DependencyInjectionContainerTestFixture containerTestFixture)
 	{
-        _controllerUri = GetType().Name[..^"ControllerTests".Length];
+        Scope = containerTestFixture
+            .ServiceProvider
+            .CreateScope();
+
+        integrationTestsUrlOptions = (IntegrationTestsUrlOptions)containerTestFixture
+            .ServiceProvider
+            .GetRequiredService(typeof(IntegrationTestsUrlOptions));
+
+        ShopwayApiUrl = integrationTestsUrlOptions.ShopwayApiUrl!;
+        _controllerUri = GetType().Name[..^ControllerTests.Length];
+        _userClient = new($"{ShopwayApiUrl}{nameof(User)}");
     }
 
-    protected static async Task<RestClient> RestClient(string controllerUri, DatabaseFixture databaseFixture)
+    protected async Task<RestClient> RestClient(string controllerUri, DatabaseFixture databaseFixture)
 	{
         var client = new RestClient($"{ShopwayApiUrl}{controllerUri}");
 
@@ -69,7 +84,7 @@ public abstract class ControllerTestsBase
     /// </summary>
     /// <param name="databaseFixture"></param>
     /// <returns>Jwt token</returns>
-    private static async Task EnsureThatTheTestUserIsRegistered(DatabaseFixture databaseFixture)
+    private async Task EnsureThatTheTestUserIsRegistered(DatabaseFixture databaseFixture)
     {
         var userAlreadyExists = await databaseFixture
             .Context
@@ -106,7 +121,7 @@ public abstract class ControllerTestsBase
     /// </summary>
     /// <param name="databaseFixture"></param>
     /// <returns>Jwt token</returns>
-    private static async Task<string> LogTestUser()
+    private async Task<string> LogTestUser()
     {
         var logCommand = new LogUserCommand(TestUser.Email, TestUser.Password);
 
@@ -117,5 +132,10 @@ public abstract class ControllerTestsBase
         var token = logResponse.Deserialize<LogUserResponse>();
 
         return token!.Token;
+    }
+
+    public virtual void Dispose()
+    {
+        Scope.Dispose();
     }
 }

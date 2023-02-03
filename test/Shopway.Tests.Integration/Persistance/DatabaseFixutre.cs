@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
+using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
 
 namespace Shopway.Tests.Integration.Persistance;
 
 public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
 {
-    private const string _testConnection = "TestConnection";
     private readonly ShopwayDbContext _context;
 
     public DatabaseFixture()
     {
         var factory = new ShopwayDbContextFactory();
-        _context = factory.CreateDbContext(new[] { _testConnection });
+        _context = factory.CreateDbContext(new[] { TestConnection });
         _context.Database.Migrate();
 
         var testContext = new TestContextService();
@@ -32,11 +32,11 @@ public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
     {
         try
         {
-            await DataGenerator.CleanupDatabase();
+            await DataGenerator.CleanDatabase();
         }
         catch
         {
-            Console.WriteLine("CleanupTestData.Integration.Api.Tests failed.");
+            Console.WriteLine("CleanTestData.Integration.Api.Tests failed.");
         }
     }
 

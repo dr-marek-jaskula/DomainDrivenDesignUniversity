@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Errors;
 
-namespace Shopway.Tests.Integration.Helpers;
+namespace Shopway.Tests.Integration.ControllersUnderTest;
 
 /// <summary>
 /// Represents a helper class used to deserialize the response

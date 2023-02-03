@@ -10,6 +10,7 @@
 
   <ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="6.9.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 		<PackageReference Include="NSubstitute" Version="4.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
@@ -37,6 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Shopway.App\Shopway.App.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Domain\Shopway.Domain.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Persistance\Shopway.Persistence.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Presentation\Shopway.Presentation.csproj" />

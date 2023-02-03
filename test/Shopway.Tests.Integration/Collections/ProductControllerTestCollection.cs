@@ -1,10 +1,12 @@
 ﻿using Shopway.Tests.Integration.Persistance;
-using static Shopway.Tests.Integration.Collections.CollectionNames;
+using static Shopway.Tests.Integration.Constants.CollectionNames;
 
 namespace Shopway.Tests.Integration.Collections;
 
-[CollectionDefinition(Product_Controller_Collection)]
-public sealed class ProductControllerTestCollection : ICollectionFixture<DatabaseFixture>
+[CollectionDefinition(ProductControllerCollection)]
+public sealed class ProductControllerTestCollection 
+    : ICollectionFixture<DatabaseFixture>, 
+      ICollectionFixture<DependencyInjectionContainerTestFixture>
 {
-    //DatabaseFixture will be shared across all collection
+    //DatabaseFixture and DependencyInjectionContainerTestFixture will be shared across all collections
 }

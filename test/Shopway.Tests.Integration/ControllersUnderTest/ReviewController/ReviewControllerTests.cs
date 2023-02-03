@@ -2,19 +2,20 @@
 using Shopway.Domain.Entities;
 using Shopway.Tests.Integration.Abstractions;
 using Shopway.Tests.Integration.Persistance;
-using static Shopway.Tests.Integration.Collections.CollectionNames;
+using static Shopway.Tests.Integration.Constants.CollectionNames;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ReviewController;
 
-[Collection(Product_Controller_Collection)]
+[Collection(ProductControllerCollection)]
 public sealed partial class ReviewControllerTests : ControllerTestsBase, IAsyncLifetime
 {
     private RestClient? _restClient;
     private readonly DatabaseFixture _fixture;
 
-    public ReviewControllerTests(DatabaseFixture fixture) : base()
+    public ReviewControllerTests(DatabaseFixture databaseFixture, DependencyInjectionContainerTestFixture containerTestFixture) 
+        : base(containerTestFixture)
     {
-        _fixture = fixture;
+        _fixture = databaseFixture;
     }
 
     public async Task InitializeAsync()

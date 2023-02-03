@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using static Shopway.Persistence.Constants.ConnectionConstants;
 
 namespace Shopway.Persistence.Framework;
 
@@ -8,17 +9,17 @@ public sealed class ShopwayDbContextFactory : IDesignTimeDbContextFactory<Shopwa
 {
     public ShopwayDbContext CreateDbContext(string[]? args = null)
     {
-        var configuration = new ConfigurationBuilder().AddJsonFile("connectionString.json").Build();
+        var configuration = new ConfigurationBuilder().AddJsonFile(ConnectionStringJsonFile).Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<ShopwayDbContext>();
 
-        if (args is not null && args.Contains("TestConnection") is true)
+        if (args is not null && args.Contains(TestConnection) is true)
         {
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("TestConnection"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString(TestConnection));
         }
         else
         {
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString(DefaultConnection));
         }
 
         return new ShopwayDbContext(optionsBuilder.Options);

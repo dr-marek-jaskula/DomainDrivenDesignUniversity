@@ -1,4 +1,4 @@
-﻿namespace Shopway.Tests.Integration.Helpers;
+﻿namespace Shopway.Tests.Integration.Constants;
 
 public static class TestUser
 {
