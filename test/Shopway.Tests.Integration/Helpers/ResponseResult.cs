@@ -3,7 +3,7 @@
 namespace Shopway.Tests.Integration.Helpers;
 
 /// <summary>
-/// Represents a helper class to use to deserialize the response
+/// Represents a helper class used to deserialize the response
 /// </summary>
 public sealed class ResponseResult<TValue> : ResponseResult
 {
@@ -17,7 +17,7 @@ public sealed class ResponseResult<TValue> : ResponseResult
 }
 
 /// <summary>
-/// Represents a helper class to use to deserialize the response
+/// Represents a helper class used to deserialize the response
 /// </summary>
 public class ResponseResult
 {

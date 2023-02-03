@@ -44,7 +44,7 @@ public class Person : AggregateRoot<PersonId>, IAuditableEntity
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
     public string CreatedBy { get; set; }
-    public string UpdatedBy { get; set; }
+    public string? UpdatedBy { get; set; }
 
     //DateOnly property needs a conversion to SQL Server DATE format
     public DateOnly? DateOfBirth { get; private set; }

@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Entities;
+using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Framework;
+using Shopway.Tests.Integration.Utilities;
 using static Shopway.Domain.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Integration.Persistance;
@@ -11,7 +13,7 @@ namespace Shopway.Tests.Integration.Persistance;
 public class TestDataGenerator
 {
     private readonly IUnitOfWork<ShopwayDbContext> _unitOfWork;
-    private const string AUTO_PREFIX = "auto_";
+    private const string AUTO_PREFIX = "auto";
     private const int Length = 22;
     private readonly Random _random = new();
 
@@ -20,18 +22,36 @@ public class TestDataGenerator
         _unitOfWork = unitOfWork;
     }
 
-    public async Task CleanupDatabase()
+    internal async Task CleanupDatabase()
     {
-        //Disable all constraints
-        //Delete data in all tables (but not from __EFMigrationsHistory) and use SET QUOTED_IDENTIFIES ON -> (QUOTED_IDENTIFIER controls the behavior of SQL Server handling double-quotes)
-        //Enable all constraints 
-        //Reseed identity columns if the table has identity
-        await _unitOfWork.Context.Database.ExecuteSqlRawAsync(@"
-            EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT all';
-            EXEC sp_MSForEachTable @command1 = 'SET QUOTED_IDENTIFIER ON; DELETE FROM ?', @whereand = ' AND Object_id IN (SELECT Object_id FROM sys.objects WHERE name != ''__EFMigrationsHistory'')';
-            EXEC sp_MSForEachTable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all';
-            EXEC sp_MSForEachTable 'IF (OBJECTPROPERTY(OBJECT_ID(''?''), ''TableHasIdentity'') = 1) DBCC CHECKIDENT (''?'', RESEED, 0)';
-            ");
+        foreach (var entityEntry in _unitOfWork.Context.ChangeTracker.Entries())
+        {
+            await entityEntry.ReloadAsync();
+        }
+
+        _unitOfWork.Context.Set<Product>().RemoveTestData();
+        _unitOfWork.Context.Set<Review>().RemoveTestData();
+        _unitOfWork.Context.Set<Person>().RemoveTestData();
+        _unitOfWork.Context.Set<User>().RemoveTestData();
+        _unitOfWork.Context.Set<Order>().RemoveTestData();
+        _unitOfWork.Context.Set<Payment>().RemoveTestData();
+        _unitOfWork.Context.Set<WorkItem>().RemoveTestData();
+
+        _unitOfWork.Context.Database.SetCommandTimeout(TimeSpan.FromMinutes(2));
+
+        try
+        {
+            await _unitOfWork.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException exception)
+        {
+            foreach (var entry in exception.Entries)
+            {
+                entry.State = EntityState.Detached;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+        }
 
         _unitOfWork.Context.ChangeTracker.Clear();
     }

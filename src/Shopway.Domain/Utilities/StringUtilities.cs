@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Shopway.Domain.Enums;
-
-namespace Shopway.Domain.Utilities;
+﻿namespace Shopway.Domain.Utilities;
 
 public static class StringUtilities
 {

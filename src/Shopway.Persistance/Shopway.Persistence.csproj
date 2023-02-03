@@ -31,4 +31,8 @@
     </None>
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Shopway.Tests.Integration"/>
+	</ItemGroup>
+	
 </Project>

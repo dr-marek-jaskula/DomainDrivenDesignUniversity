@@ -34,7 +34,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
     public string CreatedBy { get; set; }
-    public string UpdatedBy { get; set; }
+    public string? UpdatedBy { get; set; }
     public PasswordHash PasswordHash { get; set; }
     public PersonId? PersonId { get; set; }
     public Person? Person { get; set; }

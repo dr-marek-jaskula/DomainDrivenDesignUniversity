@@ -7,15 +7,19 @@ using Shopway.Domain.Entities;
 using Shopway.Tests.Integration.Helpers;
 using Shopway.Tests.Integration.Persistance;
 using Shopway.Tests.Integration.Utilities;
+using System.Data;
+using Shopway.Persistence.Constants;
+using Shopway.Domain.EntityIds;
+using Gatherly.Presentation.Controllers;
 using static RestSharp.Method;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
-public abstract partial class ControllerTestsBase
+public abstract class ControllerTestsBase
 {
     private const string ShopwayApiUrl = "https://localhost:7236/api/";
     protected readonly string _controllerUri;
-    private static readonly RestClient _userClient = new($"{ShopwayApiUrl}{"user"}");
+    private static readonly RestClient _userClient = new($"{ShopwayApiUrl}{nameof(User)}");
 
     public ControllerTestsBase()
 	{
@@ -80,7 +84,7 @@ public abstract partial class ControllerTestsBase
 
         var registerCommand = new CreateUserCommand(TestUser.Username, TestUser.Email, TestUser.Password, TestUser.Password);
 
-        var registerRequest = PostRequest("register", registerCommand);
+        var registerRequest = PostRequest(nameof(UserController.Register), registerCommand);
 
         await _userClient.PostAsync(registerRequest);
 
@@ -90,8 +94,8 @@ public abstract partial class ControllerTestsBase
             .First();
 
         await databaseFixture.Context.Database.ExecuteSqlRawAsync(@$"
-            INSERT INTO Master.RoleUser (RoleId, UserId)
-            VALUES (1, '{user.Id.Value}');     
+            INSERT INTO {SchemaNames.Master}.{TableNames.RoleUser} (RoleId, {nameof(UserId)})
+            VALUES ({TestUser.AdministratorRole}, '{user.Id.Value}');     
             ");
 
         await databaseFixture.Context.SaveChangesAsync();
@@ -106,7 +110,7 @@ public abstract partial class ControllerTestsBase
     {
         var logCommand = new LogUserCommand(TestUser.Email, TestUser.Password);
 
-        var loginRequest = PostRequest("login", logCommand);
+        var loginRequest = PostRequest(nameof(UserController.Login), logCommand);
 
         var logResponse = await _userClient.PostAsync(loginRequest);
 

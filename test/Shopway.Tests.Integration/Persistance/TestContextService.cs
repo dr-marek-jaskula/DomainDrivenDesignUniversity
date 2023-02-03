@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.Utilities;
-using Shopway.Infrastructure.Policies;
+﻿using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
+using Shopway.Tests.Integration.Helpers;
 using System.Security.Claims;
 
 namespace Shopway.Tests.Integration.Persistance;
@@ -13,7 +11,7 @@ public sealed class TestContextService : IUserContextService
 
     public UserId? UserId => null;
 
-    public string? Username => TestDataGenerator.TestStringWithPrefix();
+    public string? Username => TestUser.Username;
 
     public PersonId? PersonId => null;
 }

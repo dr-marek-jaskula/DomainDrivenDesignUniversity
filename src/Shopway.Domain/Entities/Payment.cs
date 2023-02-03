@@ -33,7 +33,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditableEntity
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
     public string CreatedBy { get; set; }
-    public string UpdatedBy { get; set; }
+    public string? UpdatedBy { get; set; }
 
     internal static Payment Create(OrderId orderId, Discount discount)
     {

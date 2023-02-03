@@ -3,7 +3,7 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Tests.Integration.Persistance;
 
-public sealed class DatabaseFixture : IDisposable
+public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
 {
     private const string _testConnection = "TestConnection";
     private readonly ShopwayDbContext _context;
@@ -12,7 +12,6 @@ public sealed class DatabaseFixture : IDisposable
     {
         var factory = new ShopwayDbContextFactory();
         _context = factory.CreateDbContext(new[] { _testConnection });
-        _context.Database.EnsureDeleted();
         _context.Database.Migrate();
 
         var testContext = new TestContextService();
@@ -26,15 +25,23 @@ public sealed class DatabaseFixture : IDisposable
     public void Dispose()
     {
         Context.Dispose();
+        GC.SuppressFinalize(this);
     }
 
-    public Task DisposeAsync()
+    public async Task DisposeAsync()
+    {
+        try
+        {
+            await DataGenerator.CleanupDatabase();
+        }
+        catch
+        {
+            Console.WriteLine("CleanupTestData.Integration.Api.Tests failed.");
+        }
+    }
+
+    public Task InitializeAsync()
     {
         return Task.CompletedTask;
-    }
-
-    public async Task CleanDatabase()
-    {
-        await DataGenerator.CleanupDatabase();
     }
 }
