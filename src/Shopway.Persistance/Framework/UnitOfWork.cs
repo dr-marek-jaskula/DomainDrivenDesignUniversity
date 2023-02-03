@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
+using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Outbox;
 
 namespace Shopway.Persistence.Framework;
 
-public interface IUnitOfWork
+public interface IUnitOfWork<TContext>
+    where TContext : DbContext
 {
-    public ShopwayDbContext Context { get; }
+    public TContext Context { get; }
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
     IExecutionStrategy CreateExecutionStrategy();
@@ -25,16 +27,20 @@ public interface IUnitOfWork
 //So this removes the responsibility of SavingChanges from the repositories and moves it to the UnitOfWork
 //b) since we use IUnitOfWork interface we can provide a mock for this interface
 //3. Move the logic from the interceptors to the UnitOfWork
-internal sealed class UnitOfWork : IUnitOfWork
+public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
+    where TContext : DbContext
 {
-    private readonly ShopwayDbContext _dbContext;
+    private readonly TContext _dbContext;
+    private readonly IUserContextService _userContext;
+    private const string DefaultUsername = "Unknown";
 
-    public UnitOfWork(ShopwayDbContext dbContext)
+    public UnitOfWork(TContext dbContext, IUserContextService userContext)
     {
         _dbContext = dbContext;
+        _userContext = userContext;
     }
 
-    public ShopwayDbContext Context => _dbContext;
+    public TContext Context => _dbContext;
 
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
@@ -102,11 +108,13 @@ internal sealed class UnitOfWork : IUnitOfWork
             if (entityEntry.State == EntityState.Added)
             {
                 entityEntry.Property(a => a.CreatedOn).CurrentValue = DateTimeOffset.UtcNow;
+                entityEntry.Property(a => a.CreatedBy).CurrentValue ??= _userContext.Username ?? DefaultUsername;
             }
 
             if (entityEntry.State == EntityState.Modified)
             {
                 entityEntry.Property(a => a.UpdatedOn).CurrentValue = DateTimeOffset.UtcNow;
+                entityEntry.Property(a => a.UpdatedBy).CurrentValue = _userContext.Username ?? DefaultUsername;
             }
         }
     }

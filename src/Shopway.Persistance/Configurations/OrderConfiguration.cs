@@ -5,7 +5,7 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.Entities.Parents;
+using Shopway.Persistence.Utilities;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -20,16 +20,12 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
             .HasConversion(id => id.Value, guid => OrderId.Create(guid))
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
-        builder.Property(o => o.CreatedOn)
-            .HasColumnType(ColumnTypes.DateTimeOffset(2));
-
-        builder.Property(o => o.UpdatedOn)
-            .HasColumnType(ColumnTypes.DateTimeOffset(2));
-
         builder.Property(p => p.Status)
             .IsRequired(true)
             .HasColumnType(ColumnTypes.VarChar(10))
             .HasConversion(status => status.ToString(), s => (Status)Enum.Parse(typeof(Status), s));
+
+        builder.ConfigureAuditableEntity();
 
         builder
             .OwnsOne(p => p.Amount, navigationBuilder =>

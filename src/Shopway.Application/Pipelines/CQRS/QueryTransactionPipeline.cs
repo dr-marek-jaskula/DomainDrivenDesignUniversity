@@ -12,7 +12,7 @@ public sealed class QueryTransactionPipeline<TQueryRequest, TQueryResponse>
     where TQueryRequest : class, IRequest<TQueryResponse>, IQuery<IResponse>
     where TQueryResponse : class, IResult<IResponse>
 {
-    public QueryTransactionPipeline(IUnitOfWork unitOfWork)
+    public QueryTransactionPipeline(IUnitOfWork<ShopwayDbContext> unitOfWork)
         : base(unitOfWork)
     {
     }

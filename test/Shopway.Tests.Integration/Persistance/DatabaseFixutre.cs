@@ -1,4 +1,5 @@
-﻿using Shopway.Persistence.Framework;
+﻿using Microsoft.EntityFrameworkCore;
+using Shopway.Persistence.Framework;
 
 namespace Shopway.Tests.Integration.Persistance;
 
@@ -11,10 +12,12 @@ public sealed class DatabaseFixture : IDisposable
     {
         var factory = new ShopwayDbContextFactory();
         _context = factory.CreateDbContext(new[] { _testConnection });
-        //_context.Database.EnsureDeleted();
-        //_context.Database.Migrate();
+        _context.Database.EnsureDeleted();
+        _context.Database.Migrate();
 
-        DataGenerator = new TestDataGenerator(Context);
+        var testContext = new TestContextService();
+        var unitOfWork = new UnitOfWork<ShopwayDbContext>(_context, testContext);
+        DataGenerator = new TestDataGenerator(unitOfWork);
     }
 
     public TestDataGenerator DataGenerator { get; }

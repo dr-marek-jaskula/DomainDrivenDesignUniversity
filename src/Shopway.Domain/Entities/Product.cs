@@ -1,11 +1,12 @@
-﻿using Shopway.Domain.BaseTypes;
+﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.BaseTypes;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Product : AggregateRoot<ProductId>
+public sealed class Product : AggregateRoot<ProductId>, IAuditableEntity
 {
     private readonly List<Review> _reviews = new();
 
@@ -32,6 +33,10 @@ public sealed class Product : AggregateRoot<ProductId>
     public Revision Revision { get; private set; }
     public Price Price { get; private set; }
     public UomCode UomCode { get; private set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? UpdatedOn { get; set; }
+    public string CreatedBy { get; set; }
+    public string UpdatedBy { get; set; }
 
     public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
 

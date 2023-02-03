@@ -2,13 +2,14 @@
 using Shopway.Domain.Enums;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Domain.Entities.Parents;
 
 //Table-per-hierarchy approach (abstract class)
 
 //The additional "Discriminator" column to distinguish the different children of a WorkItem
-public abstract class WorkItem : AggregateRoot<WorkItemId>
+public abstract class WorkItem : AggregateRoot<WorkItemId>, IAuditableEntity
 {
     protected WorkItem(
         WorkItemId id,
@@ -45,4 +46,8 @@ public abstract class WorkItem : AggregateRoot<WorkItemId>
     public StoryPoints StoryPoints { get; private set; }
     public PersonId? EmployeeId { get; private set; }
     public Employee? Employee { get; private set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? UpdatedOn { get; set; }
+    public string CreatedBy { get; set; }
+    public string UpdatedBy { get; set; }
 }

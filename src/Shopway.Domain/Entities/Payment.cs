@@ -2,10 +2,11 @@
 using Shopway.Domain.Enums;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Payment : Entity<PaymentId>
+public sealed class Payment : Entity<PaymentId>, IAuditableEntity
 {
     internal Payment
     (
@@ -28,8 +29,11 @@ public sealed class Payment : Entity<PaymentId>
 
     public Discount Discount { get; private set; }
     public Status Status { get; private set; }
-    public DateTimeOffset? OccurredOn { get; private set; }
     public OrderId OrderId { get; private set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? UpdatedOn { get; set; }
+    public string CreatedBy { get; set; }
+    public string UpdatedBy { get; set; }
 
     internal static Payment Create(OrderId orderId, Discount discount)
     {

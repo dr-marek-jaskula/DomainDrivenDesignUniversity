@@ -5,6 +5,7 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityIds;
+using Shopway.Persistence.Utilities;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
@@ -24,6 +25,8 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
             .IsRequired(true)
             .HasColumnType(ColumnTypes.VarChar(10))
             .HasConversion(status => status.ToString(), s => (Status)Enum.Parse(typeof(Status), s));
+
+        builder.ConfigureAuditableEntity();
 
         builder
             .OwnsOne(p => p.Priority, navigationBuilder =>

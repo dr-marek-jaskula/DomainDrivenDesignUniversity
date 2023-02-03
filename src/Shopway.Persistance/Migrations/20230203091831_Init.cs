@@ -63,8 +63,11 @@ namespace Shopway.Persistence.Migrations
                     Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false),
                     Status = table.Column<string>(type: "VarChar(10)", nullable: false),
-                    OccurredOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
-                    OrderId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                    OrderId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,7 +97,11 @@ namespace Shopway.Persistence.Migrations
                     ProductName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Revision = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    UomCode = table.Column<string>(type: "VarChar(8)", nullable: false)
+                    UomCode = table.Column<string>(type: "VarChar(8)", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -123,11 +130,13 @@ namespace Shopway.Persistence.Migrations
                     Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Stars = table.Column<byte>(type: "TinyInt", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(600)", maxLength: 600, nullable: false),
-                    ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                    ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -210,6 +219,8 @@ namespace Shopway.Persistence.Migrations
                     Status = table.Column<string>(type: "VarChar(10)", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
                     ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     PaymentId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     CustomerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
@@ -269,6 +280,10 @@ namespace Shopway.Persistence.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Gender = table.Column<string>(type: "VarChar(7)", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
                     DateOfBirth = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
@@ -297,6 +312,10 @@ namespace Shopway.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(600)", maxLength: 600, nullable: false),
                     StoryPoints = table.Column<byte>(type: "TinyInt", nullable: false, defaultValue: (byte)1),
                     EmployeeId = table.Column<Guid>(type: "UniqueIdentifier", nullable: true),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -320,6 +339,8 @@ namespace Shopway.Persistence.Migrations
                     Email = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
                     PasswordHash = table.Column<string>(type: "NChar(514)", nullable: false),
                     PersonId = table.Column<Guid>(type: "UniqueIdentifier", nullable: true)
                 },

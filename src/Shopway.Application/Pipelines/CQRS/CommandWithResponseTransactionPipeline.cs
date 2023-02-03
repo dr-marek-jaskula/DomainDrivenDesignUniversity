@@ -12,7 +12,7 @@ public sealed class CommandWithResponseTransactionPipeline<TCommandRequest, TCom
     where TCommandRequest : class, IRequest<TCommandResponse>, ICommand<IResponse>
     where TCommandResponse : class, IResult<IResponse>
 {
-    public CommandWithResponseTransactionPipeline(IUnitOfWork unitOfWork)
+    public CommandWithResponseTransactionPipeline(IUnitOfWork<ShopwayDbContext> unitOfWork)
         : base(unitOfWork)
     {
     }

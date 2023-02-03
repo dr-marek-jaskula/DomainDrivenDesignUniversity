@@ -40,6 +40,8 @@ public static class DatabaseContextRegistration
             }
         });
 
+        services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+
         return services;
     }
 }

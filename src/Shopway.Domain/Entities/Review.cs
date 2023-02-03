@@ -30,11 +30,13 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
 
     public Username Username { get; private set; }
     public Stars Stars { get; private set; }
-    public DateTimeOffset CreatedOn { get; set; }
-    public DateTimeOffset? UpdatedOn { get; set; }
     public Title Title { get; private set; }
     public Description Description { get; private set; }
     public ProductId ProductId { get; private set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? UpdatedOn { get; set; }
+    public string CreatedBy { get; set; }
+    public string UpdatedBy { get; set; }
 
     internal static Review Create(
         ReviewId reviewId,

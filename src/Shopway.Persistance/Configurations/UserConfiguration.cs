@@ -4,6 +4,7 @@ using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityIds;
+using Shopway.Persistence.Utilities;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -19,13 +20,7 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .HasConversion(id => id.Value, guid => UserId.Create(guid))
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
-        builder.Property(u => u.CreatedOn)
-            .HasColumnType(ColumnTypes.DateTimeOffset(2))
-            .IsRequired(true);
-
-        builder.Property(u => u.UpdatedOn)
-            .HasColumnType(ColumnTypes.DateTimeOffset(2))
-            .IsRequired(false);
+        builder.ConfigureAuditableEntity();
 
         builder
             .OwnsOne(p => p.Username, navigationBuilder =>

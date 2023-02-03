@@ -5,6 +5,7 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityIds;
+using Shopway.Persistence.Utilities;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -24,14 +25,12 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasConversion(p => p.Value, guid => OrderId.Create(guid))
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
-        builder.Property(p => p.OccurredOn)
-            .HasColumnType(ColumnTypes.DateTimeOffset(2))
-            .IsRequired(false);
-
         builder.Property(p => p.Status)
             .HasColumnType(ColumnTypes.VarChar(10))
             .HasConversion(status => status.ToString(), s => (Status)Enum.Parse(typeof(Status), s))
             .IsRequired(true);
+
+        builder.ConfigureAuditableEntity();
 
         builder
             .OwnsOne(p => p.Discount, navigationBuilder =>

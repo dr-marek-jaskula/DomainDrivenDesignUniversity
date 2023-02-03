@@ -27,6 +27,10 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("VarChar(30)");
+
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
@@ -42,6 +46,9 @@ namespace Shopway.Persistence.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("VarChar(10)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("VarChar(30)");
 
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("DateTimeOffset(2)");
@@ -65,6 +72,13 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
+
                     b.Property<DateTimeOffset?>("DateOfBirth")
                         .HasColumnType("DateTimeOffset(2)");
 
@@ -74,6 +88,12 @@ namespace Shopway.Persistence.Migrations
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("VarChar(7)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
 
                     b.HasKey("Id");
 
@@ -89,6 +109,13 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -99,6 +126,12 @@ namespace Shopway.Persistence.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("VarChar(10)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
 
                     b.HasKey("Id");
 
@@ -116,7 +149,11 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
 
-                    b.Property<DateTimeOffset?>("OccurredOn")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
                     b.Property<Guid>("OrderId")
@@ -125,6 +162,12 @@ namespace Shopway.Persistence.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("VarChar(10)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
 
                     b.HasKey("Id");
 
@@ -139,6 +182,19 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Product", "Shopway");
@@ -149,11 +205,18 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("VarChar(30)");
+
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("UniqueIdentifier");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("VarChar(30)");
 
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("DateTimeOffset(2)");
@@ -185,11 +248,18 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("VarChar(30)");
+
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
                     b.Property<Guid?>("PersonId")
                         .HasColumnType("UniqueIdentifier");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("VarChar(30)");
 
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("DateTimeOffset(2)");

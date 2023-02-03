@@ -6,6 +6,7 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
 using Shopway.Application.Utilities;
+using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
 
@@ -28,7 +29,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
 
         Result<Title> titleResult = Title.Create(command.Body.Title);
         Result<Description> descriptionResult = Description.Create(command.Body.Description);
-        Result<Username> usernameResult = Username.Create(_userContext.GetUserName!);
+        Result<Username> usernameResult = Username.Create(_userContext.Username!);
         Result<Stars> starsResult = Stars.Create(command.Body.Stars);
 
         _validator

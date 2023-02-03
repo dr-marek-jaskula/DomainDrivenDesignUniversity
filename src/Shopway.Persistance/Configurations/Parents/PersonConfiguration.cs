@@ -6,6 +6,7 @@ using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Converters;
 using Shopway.Domain.EntityIds;
+using Shopway.Persistence.Utilities;
 
 namespace Shopway.Persistence.Configurations.Parents;
 
@@ -31,6 +32,8 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
             .HasColumnType(ColumnTypes.VarChar(7))
             .HasConversion(g => g.ToString(), s => (Gender)Enum.Parse(typeof(Gender), s))
             .IsRequired(true);
+
+        builder.ConfigureAuditableEntity();
 
         builder
             .OwnsOne(p => p.FirstName, navigationBuilder =>

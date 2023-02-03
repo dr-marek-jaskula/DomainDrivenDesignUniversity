@@ -2,11 +2,12 @@
 using Shopway.Domain.Enums;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Domain.Entities.Parents;
 
 //Table-per-type approach
-public class Person : AggregateRoot<PersonId>
+public class Person : AggregateRoot<PersonId>, IAuditableEntity
 {
     protected Person
     (
@@ -40,6 +41,10 @@ public class Person : AggregateRoot<PersonId>
     public FirstName FirstName { get; private set; }
     public LastName LastName { get; private set; }
     public Gender Gender { get; private set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? UpdatedOn { get; set; }
+    public string CreatedBy { get; set; }
+    public string UpdatedBy { get; set; }
 
     //DateOnly property needs a conversion to SQL Server DATE format
     public DateOnly? DateOfBirth { get; private set; }

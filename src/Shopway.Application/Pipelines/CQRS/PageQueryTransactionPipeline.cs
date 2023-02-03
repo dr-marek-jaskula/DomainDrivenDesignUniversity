@@ -13,7 +13,7 @@ public sealed class PageQueryTransactionPipeline<TQueryRequest, TQueryResponse>
     where TQueryRequest : class, IRequest<TQueryResponse>, IPageQuery<IResponse, IFilter, ISortBy>
     where TQueryResponse : class, IResult<PageResponse<IResponse>>
 {
-    public PageQueryTransactionPipeline(IUnitOfWork unitOfWork)
+    public PageQueryTransactionPipeline(IUnitOfWork<ShopwayDbContext> unitOfWork)
         : base(unitOfWork)
     {
     }

@@ -8,9 +8,9 @@ namespace Shopway.Application.Abstractions.CQRS;
 public abstract class QueryTransactionPipelineBase<TQueryResponse>
     where TQueryResponse : IResult
 {
-    protected readonly IUnitOfWork UnitOfWork;
+    protected readonly IUnitOfWork<ShopwayDbContext> UnitOfWork;
 
-    protected QueryTransactionPipelineBase(IUnitOfWork unitOfWork)
+    protected QueryTransactionPipelineBase(IUnitOfWork<ShopwayDbContext> unitOfWork)
     {
         UnitOfWork = unitOfWork;
         UnitOfWork

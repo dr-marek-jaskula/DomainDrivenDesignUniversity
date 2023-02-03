@@ -7,9 +7,9 @@ namespace Shopway.Application.Abstractions.CQRS;
 public class CommandTransactionPipelineBase<TCommandResponse>
     where TCommandResponse : IResult
 {
-    protected readonly IUnitOfWork UniteOfWork;
+    protected readonly IUnitOfWork<ShopwayDbContext> UniteOfWork;
 
-    public CommandTransactionPipelineBase(IUnitOfWork uniteOfWork)
+    public CommandTransactionPipelineBase(IUnitOfWork<ShopwayDbContext> uniteOfWork)
     {
         UniteOfWork = uniteOfWork;
     }

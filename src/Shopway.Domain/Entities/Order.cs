@@ -33,6 +33,8 @@ public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
     public Status Status { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
+    public string CreatedBy { get; set; }
+    public string UpdatedBy { get; set; }
     public Product Product { get; private set; }
     public ProductId ProductId { get; private set; }
     public Payment Payment { get; private set; }
