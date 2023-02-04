@@ -40,7 +40,6 @@ public sealed class Address : ValueObject
 
     public static Result<Address> Create(string city, string country, string zipCode, string street, int building, int? flat)
     {
-
         if (ValidateCountry(country) is { IsValid: false } countryValidation)
         {
             return Result.Failure<Address>(countryValidation.Error);

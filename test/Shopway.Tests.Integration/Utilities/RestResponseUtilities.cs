@@ -27,7 +27,7 @@ public static class RestResponseUtilities
 
         if (responseResult is null || responseResult.IsFailure)
         {
-            throw new ArgumentNullException("response result is null or failure");
+            throw new ArgumentNullException("Response result is null or failure");
         }
 
         return responseResult.Value!;

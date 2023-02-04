@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;

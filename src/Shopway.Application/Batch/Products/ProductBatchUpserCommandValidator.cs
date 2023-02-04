@@ -29,6 +29,10 @@ public static class ProductBatchUpserCommandValidator
 
     private static void ValidateRequest(IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> builder, ProductBatchUpsertRequest request)
     {
+        //Due to the fact, that we want to return every possible error, we can not use the domain validation (ValueObject.Create methods to get results)
+        //Nevertheless, the validation logic can be similar. 
+        //Therefore, we are forced to duplicate a part of the validation 
+        //However, the gain is that we get the generic validation for batch operations
         builder
             .ValidateUsing(ValidateProductName)
             .ValidateUsing(ValidateProductRevision)

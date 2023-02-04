@@ -47,7 +47,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
         //Set proper Request to ProductKey mapping method for the injected builder
         _builder.SetRequestToResponseKeyMapper(MapFromRequestToResponseKey);
 
-        //Perform validation, using the correct builder, trimmed command and queried products
+        //Perform validation, using the builder (with set RequestToResponse delegate), trimmed command and queried products
         var responseEntries = command.Validate(_builder, productsToUpdateWithKeys);
 
         if (responseEntries.Any(response => response.Status is Error))
