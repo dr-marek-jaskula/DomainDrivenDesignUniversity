@@ -39,6 +39,7 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>, IComp
     }
 
     public static IReadOnlyCollection<TEnum> List => EnumerationsDictionary.Value.Values.ToList().AsReadOnly();
+    public static IReadOnlyCollection<int> Ids => EnumerationsDictionary.Value.Keys.ToList().AsReadOnly();
 
     /// <summary>
     /// Gets the identifier

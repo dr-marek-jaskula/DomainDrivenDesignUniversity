@@ -15,6 +15,7 @@ using Shopway.Tests.Integration.Configurations;
 using Shopway.Tests.Integration.Constants;
 using static RestSharp.Method;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
+using Shopway.Domain.Enumerations;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
@@ -108,10 +109,14 @@ public abstract class ControllerTestsBase : IDisposable
             .Set<User>()
             .First();
 
-        await databaseFixture.Context.Database.ExecuteSqlRawAsync(@$"
+        //Give all roles to the user
+        foreach (var role in Role.Ids)
+        {
+            await databaseFixture.Context.Database.ExecuteSqlRawAsync(@$"
             INSERT INTO {SchemaNames.Master}.{TableNames.RoleUser} (RoleId, {nameof(UserId)})
-            VALUES ({TestUser.AdministratorRole}, '{user.Id.Value}');     
+            VALUES ({role}, '{user.Id.Value}');     
             ");
+        }
 
         await databaseFixture.Context.SaveChangesAsync();
     }
