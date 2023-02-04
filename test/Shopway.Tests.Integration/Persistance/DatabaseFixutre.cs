@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
+using static Shopway.Persistence.Constants.ConnectionConstants;
 
 namespace Shopway.Tests.Integration.Persistance;
 

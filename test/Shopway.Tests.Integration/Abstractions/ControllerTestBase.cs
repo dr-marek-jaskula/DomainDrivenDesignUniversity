@@ -12,9 +12,9 @@ using Shopway.Domain.EntityIds;
 using Gatherly.Presentation.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
+using Shopway.Tests.Integration.Constants;
 using static RestSharp.Method;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
-using Shopway.Tests.Integration.Constants;
 
 namespace Shopway.Tests.Integration.Abstractions;
 

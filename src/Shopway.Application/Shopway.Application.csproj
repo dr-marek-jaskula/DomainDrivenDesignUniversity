@@ -22,7 +22,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="Shopway.Tests.Unit"/>
+		<InternalsVisibleTo Include="Shopway.Tests.Unit" />
 	</ItemGroup>
 
 </Project>

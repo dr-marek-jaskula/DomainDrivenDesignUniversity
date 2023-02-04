@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Shopway.Application.Pipelines;
+using Shopway.Application.Pipelines.Batch;
 using Shopway.Application.Pipelines.CQRS;
 using Shopway.Application.Pipelines.ValidationPipelines;
 
@@ -19,6 +20,8 @@ public static class MediatorRegistration
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(ListQueryTransactionPipeline<,>))
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandTransactionPipeline<,>))
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandWithResponseTransactionPipeline<,>))
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(BatchCommandTransactionPipeline<,>))
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(BatchCommandWithResponseTransactionPipeline<,>))
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(ReferenceValidationPipeline<,>));
 
         return services;

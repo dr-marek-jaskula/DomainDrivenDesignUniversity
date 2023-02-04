@@ -54,14 +54,14 @@ public class Result : IResult
 
         if (successWithError)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("The result was successful, but still contained an error");
         }
 
         bool failureWithNoError = !isSuccess && error == Error.None;
 
         if (failureWithNoError)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("The result was failure, but contained no error");
         }
 
         IsSuccess = isSuccess;
@@ -120,7 +120,7 @@ public class Result : IResult
     /// Returns a success <see cref="Result{TValue}"/> with the specified value
     /// </summary>
     /// <typeparam name="TValue">The result type.</typeparam>
-    /// <param name="value">The result value.</param>
+    /// <param name="value">The result value</param>
     /// <returns>A new instance of <see cref="Result{TValue}"/> with the specified value</returns>
     public static Result<TValue> Success<TValue>(TValue value)
     {
@@ -146,5 +146,17 @@ public class Result : IResult
     public static Result<TValue> Failure<TValue>(Error error)
     {
         return new(default, false, error);
+    }
+
+    /// <summary>
+    /// Returns a dummy failure <see cref="Result{TValue}"/> with the specified error and the specified value
+    /// </summary>
+    /// <typeparam name="TValue">The result type</typeparam>
+    /// <param name="value">The result value</param>
+    /// <param name="error">The error</param>
+    /// <returns>A new instance of <see cref="Result{TValue}"/> with the dummy error and failure result value</returns>
+    public static Result<TValue> BatchFailure<TValue>(TValue value)
+    {
+        return new(value, true, Error.None);
     }
 }

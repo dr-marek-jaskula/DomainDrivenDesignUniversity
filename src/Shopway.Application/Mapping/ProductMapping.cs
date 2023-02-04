@@ -1,8 +1,12 @@
-﻿using Shopway.Application.CQRS.Products.Commands.CreateProduct;
+﻿using Shopway.Application.Batch;
+using Shopway.Application.Batch.Products;
+using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
+using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
+using static Shopway.Application.Batch.Products.ProductBatchUpsertResponse;
 
 namespace Shopway.Application.Mapping;
 
@@ -34,5 +38,20 @@ public static class ProductMapping
     public static CreateProductResponse ToCreateResponse(this Product productToCreate)
     {
         return new CreateProductResponse(productToCreate.Id.Value);
+    }
+
+    public static ProductBatchUpsertResponse ToBatchUpsertResponse(this IList<BatchResponseEntry> batchResponseEntries)
+    {
+        return new ProductBatchUpsertResponse(batchResponseEntries);
+    }
+
+    public static ProductKey MapFromRequestToResponseKey(ProductBatchUpsertRequest productBatchRequest)
+    {
+        return new ProductKey(productBatchRequest.ProductName, productBatchRequest.Revision);
+    }
+
+    public static ProductKey MapFromProductToResponseKey(Product product)
+    {
+        return new ProductKey(product.ProductName.Value, product.Revision.Value);
     }
 }

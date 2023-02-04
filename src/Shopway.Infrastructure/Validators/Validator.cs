@@ -48,7 +48,7 @@ public sealed class Validator : IValidator
     {
         if (_errors.Any() == false)
         {
-            throw new InvalidOperationException("Validation was successful, but Failure called");
+            throw new InvalidOperationException("Validation was successful, but BatchFailure called");
         }
 
         return ValidationResult<TResponse>.WithErrors(_errors.ToArray());

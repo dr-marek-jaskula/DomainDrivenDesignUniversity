@@ -1,4 +1,5 @@
 ﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.Entities;
 
 namespace Shopway.Domain.Errors;
 
@@ -7,7 +8,7 @@ public static class HttpErrors
     /// <summary>
     /// Create an Error describing that a password or an email are invalid
     /// </summary>
-    public static readonly Error InvalidPasswordOrEmail = new("User.InvalidPasswordOrEmail", "Invalid password or email");
+    public static readonly Error InvalidPasswordOrEmail = new($"{nameof(User)}.InvalidPasswordOrEmail", "Invalid password or email");
 
     /// <summary>
     /// Create an Error based on the entity type name and the id that was not found
@@ -26,6 +27,24 @@ public static class HttpErrors
     /// <returns>InvalidReference error</returns>
     public static Error InvalidReference(Guid reference, string entity)
     {
-        return new Error($"Error.{nameof(InvalidReference)}", $"Invalid Entity reference {reference} for entity {entity}");
+        return new Error($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid Entity reference {reference} for entity {entity}");
+    }
+
+    /// <summary>
+    /// Create an Error describing that the collection is null or empty
+    /// </summary>
+    /// <returns>NullOrEmpty error</returns>
+    public static Error NullOrEmpty(string collectionName)
+    {
+        return new($"{nameof(Error)}.{nameof(NullOrEmpty)}", $"{collectionName} is null or empty");
+    }
+
+    /// <summary>
+    /// Create an Error describing that the collection is null or empty
+    /// </summary>
+    /// <returns>NullOrEmpty error</returns>
+    public static Error InvalidBatchCommand(string batchCommand)
+    {
+        return new($"{nameof(Error)}.{batchCommand}", $"{batchCommand} is invalid");
     }
 }

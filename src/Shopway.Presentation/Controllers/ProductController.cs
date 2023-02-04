@@ -7,6 +7,8 @@ using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 using Shopway.Application.CQRS.Products.Queries.QueryProduct;
+using Shopway.Application.Batch.Products;
+using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -90,6 +92,27 @@ public sealed class ProductController : ApiController
         if (result.IsFailure)
         {
             return HandleFailure(result);
+        }
+
+        return Ok(result.Value);
+    }
+
+
+    [HttpPost("batch/upsert")]
+    public async Task<IActionResult> BatchUpsert(
+        [FromBody] ProductBatchUpsertCommand command,
+        CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        if (result.IsSuccess && result.Value.Entries.Any(entry => entry.Status is Error))
+        {
+            return BadRequest(result.Value);
         }
 
         return Ok(result.Value);

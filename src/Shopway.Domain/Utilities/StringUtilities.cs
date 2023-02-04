@@ -32,4 +32,24 @@ public static class StringUtilities
     {
         return Enum.TryParse<TEnum>(input, out var outPriority) ? outPriority : null;
     }
+
+    public static bool IsLengthInRange(this string input, int lowerBound, int upperBound)
+    {
+        return input.Length >= lowerBound && input.Length <= upperBound;
+    }
+
+    public static bool IsLengthInRange(this string input, Range range)
+    {
+        return input.Length >= range.Start.Value && input.Length <= range.End.Value;
+    }
+
+    public static bool LengthNotInRange(this string input, int lowerBound, int upperBound)
+    {
+        return input.IsLengthInRange(lowerBound, upperBound) is false;
+    }
+
+    public static bool LengthNotInRange(this string input, Range range)
+    {
+        return input.IsLengthInRange(range) is false;
+    }
 }
