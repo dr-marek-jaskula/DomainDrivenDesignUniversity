@@ -21,16 +21,16 @@ namespace Shopway.Application.Batch.Products;
 public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHandler<ProductBatchUpsertCommand, ProductBatchUpsertRequest, ProductBatchUpsertResponse>
 {
     private readonly IUnitOfWork<ShopwayDbContext> _unitOfWork;
-    private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _builder;
+    private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _responseBuilder;
 
     public ProductBatchUpsertCommandHandler
     (
         IUnitOfWork<ShopwayDbContext> unitOfWork, 
-        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> builder
+        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder
     )
     {
         _unitOfWork = unitOfWork;
-        _builder = builder;
+        _responseBuilder = responseBuilder;
     }
 
     public async Task<IResult<ProductBatchUpsertResponse>> Handle(ProductBatchUpsertCommand command, CancellationToken cancellationToken)
@@ -45,10 +45,10 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
         var productsToUpdateWithKeys = await GetProductsToUpdateWithKeys(command, cancellationToken);
 
         //Set proper Request to ProductKey mapping method for the injected builder
-        _builder.SetRequestToResponseKeyMapper(MapFromRequestToResponseKey);
+        _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToResponseKey);
 
         //Perform validation, using the builder (with set RequestToResponse delegate), trimmed command and queried products
-        var responseEntries = command.Validate(_builder, productsToUpdateWithKeys);
+        var responseEntries = command.Validate(_responseBuilder, productsToUpdateWithKeys);
 
         if (responseEntries.Any(response => response.Status is Error))
         {
@@ -56,8 +56,8 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
         }
 
         //If validation succeeded, then distinguish insert/update requests
-        var validRequestsToInsert = _builder.ValidRequestsToInsert;
-        var validRequestsToUpdate = _builder.ValidRequestsToUpdate;
+        var validRequestsToInsert = _responseBuilder.ValidRequestsToInsert;
+        var validRequestsToUpdate = _responseBuilder.ValidRequestsToUpdate;
 
         //Perform batch upsert
         await InsertProducts(validRequestsToInsert, cancellationToken);

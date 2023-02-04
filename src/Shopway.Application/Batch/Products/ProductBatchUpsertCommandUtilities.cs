@@ -111,7 +111,7 @@ public static class ProductBatchUpsertCommandUtilities
             throw new ArgumentException($"Status must differ from {Error}");
         }
 
-        //If status is updated, use updated products. Otherwise, exclude them.
+        //If status is updated, use productsToUpdate. Otherwise, exclude them, so only insert requests will remain.
         bool searchCondition = status is Updated;
 
         return command

@@ -13,55 +13,75 @@ public static class ProductBatchUpserCommandValidator
     public static IList<BatchResponseEntry> Validate
     (
         this ProductBatchUpsertCommand command, 
-        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> builder, 
+        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder, 
         IDictionary<ProductKey, Product> productsToUpdateWithKeys
     )
     {
         var updateRequests = command.GetUpdateRequests(productsToUpdateWithKeys);
         var insertRequests = command.GetInsertRequests(productsToUpdateWithKeys);
 
-        builder
+        responseBuilder
             .ValidateUpdateRequests(updateRequests, ValidateRequest)
             .ValidateInsertRequests(insertRequests, ValidateRequest);
 
-        return builder.BuildResponseEntries();
+        return responseBuilder.BuildResponseEntries();
     }
 
-    private static void ValidateRequest(IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> builder, ProductBatchUpsertRequest request)
+    private static void ValidateRequest
+    (
+        IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> responseEntryBuilder, 
+        ProductBatchUpsertRequest request
+    )
     {
         //Due to the fact, that we want to return every possible error, we can not use the domain validation (ValueObject.Create methods to get results)
         //Nevertheless, the validation logic can be similar. 
         //Therefore, we are forced to duplicate a part of the validation 
         //However, the gain is that we get the generic validation for batch operations
-        builder
+        responseEntryBuilder
             .ValidateUsing(ValidateProductName)
             .ValidateUsing(ValidateProductRevision)
             .ValidateUsing(ValidateProductPrice)
             .ValidateUsing(ValidateProductUomCode);
     }
 
-    private static void ValidateProductName(IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> builder, ProductBatchUpsertRequest request)
+    private static void ValidateProductName
+    (
+        IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> responseEntryBuilder, 
+        ProductBatchUpsertRequest request
+    )
     {
-        builder
+        responseEntryBuilder
             .If(request.ProductName.LengthNotInRange(1..ProductName.MaxLength), $"{nameof(ProductName)} must be in range '1..{ProductName.MaxLength}'. Current length: {request.ProductName.Length}")
             .If(request.ProductName.ContainsIllegalCharacter(), $"{ProductNameError.ContainsIllegalCharacter.Message}");
     }
 
-    private static void ValidateProductRevision(IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> builder, ProductBatchUpsertRequest request)
+    private static void ValidateProductRevision
+    (
+        IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> responseEntryBuilder, 
+        ProductBatchUpsertRequest request
+    )
     {
-        builder
+        responseEntryBuilder
             .If(request.Revision.LengthNotInRange(1..Revision.MaxLength), $"{nameof(Revision)} must be in range '1..{Revision.MaxLength}'. Current length: {request.Revision.Length}");
     }
 
-    private static void ValidateProductPrice(IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> builder, ProductBatchUpsertRequest request)
+    private static void ValidateProductPrice
+    (
+        IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> responseEntryBuilder, 
+        ProductBatchUpsertRequest request
+    )
     {
-        builder
+        responseEntryBuilder
             .If(request.Price.NotInRange(Price.MinPrice, Price.MaxPrice), $"{nameof(Price)} must be in range '{Price.MinPrice}..{Price.MaxPrice}'. Current length: {request.Price}");
     }
 
-    private static void ValidateProductUomCode(IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> builder, ProductBatchUpsertRequest request)
+    private static void ValidateProductUomCode
+    (
+        IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> responseEntryBuilder, 
+        ProductBatchUpsertRequest request
+    )
     {
-        builder
+        responseEntryBuilder
             .If(UomCode.AllowedUomCodes.NotContains(request.UomCode), $"{nameof(UomCode)} must be in '{UomCodeError.Invalid.Message}'. Current uom code: {request.UomCode}");
     }
 }
