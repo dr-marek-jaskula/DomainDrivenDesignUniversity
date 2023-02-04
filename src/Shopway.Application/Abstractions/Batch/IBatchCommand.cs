@@ -1,12 +1,11 @@
-﻿using MediatR;
-using Shopway.Domain.Abstractions;
+﻿using Shopway.Application.Abstractions.CQRS;
 
 namespace Shopway.Application.Abstractions.Batch;
 
 /// <summary>
 /// Represents the batch command interface
 /// </summary>
-public interface IBatchCommand<TBatchRequest> : IRequest<IResult>
+public interface IBatchCommand<TBatchRequest> : ICommand
     where TBatchRequest : IBatchRequest
 {
     IList<TBatchRequest> Requests { get; }
@@ -15,10 +14,10 @@ public interface IBatchCommand<TBatchRequest> : IRequest<IResult>
 /// <summary>
 /// Represents the batch command interface
 /// </summary>
-/// <typeparam name="TResponse">The command response type.</typeparam>
-public interface IBatchCommand<TBatchRequest, out TResponse> : IRequest<IResult<TResponse>>
+/// <typeparam name="TBatchResponse">The command response type.</typeparam>
+public interface IBatchCommand<TBatchRequest, out TBatchResponse> : ICommand<TBatchResponse>
     where TBatchRequest : IBatchRequest
-    where TResponse : IBatchResponse
+    where TBatchResponse : IBatchResponse
 {
     IList<TBatchRequest> Requests { get; }
 }
