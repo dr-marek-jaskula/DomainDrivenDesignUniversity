@@ -20,6 +20,12 @@ public abstract class TestDataGeneratorBase
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// Generates test string with 'auto' prefix
+    /// </summary>
+    /// <param name="lenght">Must be greater than 4</param>
+    /// <returns>Test string with prefix</returns>
+    /// <exception cref="ArgumentException"></exception>
     public static string TestStringWithPrefix(int lenght = Length)
     {
         if (lenght - AUTO_PREFIX.Length <= 0)
@@ -30,22 +36,41 @@ public abstract class TestDataGeneratorBase
         return $"{AUTO_PREFIX}{GenerateString(lenght - AUTO_PREFIX.Length)}";
     }
 
+    /// <summary>
+    /// Generates test string with given length
+    /// </summary>
+    /// <param name="lenght">String length</param>
+    /// <returns>Test string</returns>
     public static string TestString(int lenght = Length)
     {
         return $"{GenerateString(lenght)}";
     }
 
-    public static string NotTrimmedTestString(int lenght = Length)
+    /// <summary>
+    /// Generates not trimmed test string
+    /// </summary>
+    /// <param name="length">The length of string (not including spaces)</param>
+    /// <returns>Test string with enter, tabs and white spaces from both sides</returns>
+    public static string NotTrimmedTestString(int length = Length)
     {
-        return $" \n  \t \n    \t {GenerateString(lenght)}  \n \t   \n ";
+        return $" \n  \t \n    \t {GenerateString(length)}  \n \t   \n ";
     }
 
+    /// <summary>
+    /// Generates test int in given range
+    /// </summary>
+    /// <param name="min">Lower bound</param>
+    /// <param name="max">Upper bound</param>
+    /// <returns></returns>
     public int TestInt(int min = 1, int max = 1000)
     {
         return _random.Next(min, max);
     }
 
-    internal async Task CleanDatabase()
+    /// <summary>
+    /// Clean the database from the test data
+    /// </summary>
+    internal async Task CleanDatabaseFromTestData()
     {
         foreach (var entityEntry in _unitOfWork.Context.ChangeTracker.Entries())
         {
@@ -79,6 +104,11 @@ public abstract class TestDataGeneratorBase
         _unitOfWork.Context.ChangeTracker.Clear();
     }
 
+    /// <summary>
+    /// Insert the entity to the database
+    /// </summary>
+    /// <typeparam name="TEntity">Entity type</typeparam>
+    /// <param name="entity">Entity to be inserted</param>
     protected async Task AddEntity<TEntity>(TEntity entity)
         where TEntity : class, IEntity
     {

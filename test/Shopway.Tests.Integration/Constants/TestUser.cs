@@ -1,5 +1,8 @@
 ﻿namespace Shopway.Tests.Integration.Constants;
 
+/// <summary>
+/// Test user data
+/// </summary>
 public static class TestUser
 {
     public const string Username = "autoTestUser";

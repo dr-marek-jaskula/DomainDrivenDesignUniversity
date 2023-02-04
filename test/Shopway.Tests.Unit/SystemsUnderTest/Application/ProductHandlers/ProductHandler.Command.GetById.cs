@@ -10,6 +10,9 @@ namespace Shopway.Tests.Unit.SystemsUnderTest.Application.ProductHandlers;
 
 public class CreateProductCommandHandlerTests : TestBase
 {
+    /// <summary>
+    /// System under tests
+    /// </summary>
     private readonly GetProductByIdQueryHandler _sut;
     private readonly IProductRepository _productRepository = Substitute.For<IProductRepository>();
 

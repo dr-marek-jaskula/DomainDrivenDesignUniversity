@@ -7,6 +7,7 @@ namespace Shopway.Tests.Integration.Persistance;
 public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
 {
     private readonly ShopwayDbContext _context;
+    private readonly TestDataGenerator _testDataGenerator;
 
     public DatabaseFixture()
     {
@@ -16,10 +17,10 @@ public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
 
         var testContext = new TestContextService();
         var unitOfWork = new UnitOfWork<ShopwayDbContext>(_context, testContext);
-        DataGenerator = new TestDataGenerator(unitOfWork);
+        _testDataGenerator = new TestDataGenerator(unitOfWork);
     }
 
-    public TestDataGenerator DataGenerator { get; }
+    public TestDataGenerator DataGenerator => _testDataGenerator;
     public ShopwayDbContext Context => _context;
 
     public void Dispose()
@@ -32,7 +33,7 @@ public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
     {
         try
         {
-            await DataGenerator.CleanDatabase();
+            await DataGenerator.CleanDatabaseFromTestData();
         }
         catch
         {

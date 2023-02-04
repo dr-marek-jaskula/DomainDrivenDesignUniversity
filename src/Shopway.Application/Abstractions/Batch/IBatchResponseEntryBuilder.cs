@@ -1,5 +1,10 @@
 ﻿namespace Shopway.Application.Abstractions.Batch;
 
+/// <summary>
+/// Builder used to validate the request and then create the single response entry 
+/// </summary>
+/// <typeparam name="TBatchRequest">Batch Request type</typeparam>
+/// <typeparam name="TBatchResponseKey">Unique Response Key type</typeparam>
 public interface IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>
     where TBatchRequest : class, IBatchRequest
     where TBatchResponseKey : class, IBatchResponseKey

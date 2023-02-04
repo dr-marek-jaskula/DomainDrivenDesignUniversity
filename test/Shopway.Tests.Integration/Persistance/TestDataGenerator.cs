@@ -6,6 +6,9 @@ using Shopway.Tests.Integration.Abstractions;
 
 namespace Shopway.Tests.Integration.Persistance;
 
+/// <summary>
+/// Contains methods to add entities to the database and utility methods for test data
+/// </summary>
 public sealed class TestDataGenerator : TestDataGeneratorBase
 {
     public TestDataGenerator(IUnitOfWork<ShopwayDbContext> unitOfWork) 

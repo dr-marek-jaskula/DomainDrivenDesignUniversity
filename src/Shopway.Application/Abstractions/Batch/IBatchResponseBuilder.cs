@@ -2,6 +2,12 @@
 
 namespace Shopway.Application.Abstractions.Batch;
 
+/// <summary>
+/// Builder used to validate all requests in the batch command and then create the list of response entries
+/// Uses IBatchResponseEntryBuilders to validate respective requests
+/// </summary>
+/// <typeparam name="TBatchRequest">Batch Request type</typeparam>
+/// <typeparam name="TBatchResponseKey">Unique Response Key type</typeparam>
 public interface IBatchResponseBuilder<TBatchRequest, TBatchResponseKey>
     where TBatchRequest : class, IBatchRequest
     where TBatchResponseKey : class, IBatchResponseKey

@@ -14,7 +14,7 @@ public interface IBatchCommand<TBatchRequest> : ICommand
 /// <summary>
 /// Represents the batch command interface
 /// </summary>
-/// <typeparam name="TBatchResponse">The command response type.</typeparam>
+/// <typeparam name="TBatchResponse">The command response type</typeparam>
 public interface IBatchCommand<TBatchRequest, out TBatchResponse> : ICommand<TBatchResponse>
     where TBatchRequest : IBatchRequest
     where TBatchResponse : IBatchResponse

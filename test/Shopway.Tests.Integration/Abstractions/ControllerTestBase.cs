@@ -13,9 +13,9 @@ using Gatherly.Presentation.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
 using Shopway.Tests.Integration.Constants;
+using Shopway.Domain.Enumerations;
 using static RestSharp.Method;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
-using Shopway.Domain.Enumerations;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
@@ -42,9 +42,15 @@ public abstract class ControllerTestsBase : IDisposable
         _userClient = new($"{ShopwayApiUrl}{nameof(User)}");
     }
 
-    protected async Task<RestClient> RestClient(string controllerUri, DatabaseFixture databaseFixture)
+    /// <summary>
+    /// Create the rest client with api url appended by given controller url and ensure that the test user for this client has all privileges
+    /// </summary>
+    /// <param name="controllerUrl">Controller url</param>
+    /// <param name="databaseFixture">Database fixture</param>
+    /// <returns></returns>
+    protected async Task<RestClient> RestClient(string controllerUrl, DatabaseFixture databaseFixture)
 	{
-        var client = new RestClient($"{ShopwayApiUrl}{controllerUri}");
+        var client = new RestClient($"{ShopwayApiUrl}{controllerUrl}");
 
         await EnsureThatTheTestUserIsRegistered(databaseFixture);
         var token = await LogTestUser();
@@ -54,11 +60,22 @@ public abstract class ControllerTestsBase : IDisposable
         return client;
     }
 
+    /// <summary>
+    /// Get Request 
+    /// </summary>
+    /// <param name="endpointUri">Endpoint</param>
+    /// <returns></returns>
 	protected static RestRequest GetRequest(string endpointUri)
 	{
 		return new RestRequest(endpointUri, Get);
     }
 
+    /// <summary>
+    /// Post Request
+    /// </summary>
+    /// <param name="endpointUri">Endpoint uri</param>
+    /// <param name="body">Request body</param>
+    /// <returns></returns>
     protected static RestRequest PostRequest(string endpointUri, object body)
     {
         var request = new RestRequest(endpointUri, Post);
@@ -67,6 +84,12 @@ public abstract class ControllerTestsBase : IDisposable
             .AddJson(body);
     }
 
+    /// <summary>
+    /// Patch Request
+    /// </summary>
+    /// <param name="endpointUri">Endpoint uri</param>
+    /// <param name="body">Request body</param>
+    /// <returns></returns>
     protected static RestRequest PatchRequest(string endpointUri, object body)
     {
         var request = new RestRequest(endpointUri, Patch);
@@ -75,6 +98,11 @@ public abstract class ControllerTestsBase : IDisposable
             .AddJson(body);
     }
 
+    /// <summary>
+    /// Delete Request
+    /// </summary>
+    /// <param name="endpointUri">Endpoint uri</param>
+    /// <returns></returns>
     protected static RestRequest DeleteRequest(string endpointUri)
     {
         return new RestRequest(endpointUri, Delete);
@@ -109,7 +137,7 @@ public abstract class ControllerTestsBase : IDisposable
             .Set<User>()
             .First();
 
-        //Give all roles to the user
+        //Give all roles to the test user
         foreach (var role in Role.Ids)
         {
             await databaseFixture.Context.Database.ExecuteSqlRawAsync(@$"

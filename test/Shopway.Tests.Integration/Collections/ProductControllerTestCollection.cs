@@ -8,5 +8,5 @@ public sealed class ProductControllerTestCollection
     : ICollectionFixture<DatabaseFixture>, 
       ICollectionFixture<DependencyInjectionContainerTestFixture>
 {
-    //DatabaseFixture and DependencyInjectionContainerTestFixture will be shared across all collections
+    //DatabaseFixture and DependencyInjectionContainerTestFixture will be shared across all classed with this collection attribute
 }
