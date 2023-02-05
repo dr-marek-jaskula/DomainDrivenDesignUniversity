@@ -6,6 +6,7 @@ public static class StringUtilities
         { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 
           '\'', '"', '[', ']', ';', ':', '\\', '|', '/', '.', ',', '>', '<', '?', '-', '_', '+', '+', '~', '`' };
     private static readonly char[] _digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    private static readonly char[] _toTrimCharacter = { ' ', '\n', '\t' };
 
     public static bool IsNullOrEmptyOrWhiteSpace(this string? input)
     {
@@ -20,6 +21,11 @@ public static class StringUtilities
     public static bool ContainsIllegalCharacter(this string input)
     {
         return input.Any(character => _illegalCharacter.Contains(character));
+    }
+
+    public static bool ContainsToTrimCharacter(this string input)
+    {
+        return input.Any(character => _toTrimCharacter.Contains(character));
     }
 
     public static bool ContainsDigit(this string input)

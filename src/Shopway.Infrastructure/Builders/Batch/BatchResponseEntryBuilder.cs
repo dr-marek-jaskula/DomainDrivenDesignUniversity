@@ -6,7 +6,7 @@ using static Shopway.Application.Batch.BatchEntryStatus;
 namespace Shopway.Infrastructure.Builders.Batch;
 
 //BatchResponseEntryBuilder is only used for BatchResponseBuilder
-//So to avoid having generic parameters in entry builder is a subclass in the generic BatchResponseBuilder
+//So to avoid having generic parameters in this entry builder, it is a subclass in the generic BatchResponseBuilder
 partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
     where TBatchRequest : class, IBatchRequest
     where TBatchResponseKey : class, IBatchResponseKey
@@ -80,10 +80,10 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         }
 
         /// <summary>
-        /// Build the response entry based on a previous validations. If there is at least one error, status will be set to error.
+        /// Builds the response entry based on a previous validations. If there is at least one error, status will be set to error.
         /// </summary>
         /// <returns>Response entry: (ResponseKey, ResponseStatus, ErrorMessages)</returns>
-        internal BatchResponseEntry ToBatchResponseEntry()
+        internal BatchResponseEntry BuildBatchResponseEntry()
         {
             var responseStatus = _errorMessages.IsNullOrEmpty()
                 ? _successStatus

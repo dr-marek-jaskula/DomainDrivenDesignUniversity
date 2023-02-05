@@ -64,7 +64,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     {
         return _responseEntryBuilders
             .Values
-            .Select(request => request.ToBatchResponseEntry())
+            .Select(request => request.BuildBatchResponseEntry())
             .ToList();
     }
 
