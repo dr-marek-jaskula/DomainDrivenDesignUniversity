@@ -1,9 +1,6 @@
 # Domain Driven Design University
 
-This is a project made to present the domain driven design concept.
-
-By default the test database is used and it is cleaned after tests. 
-User privileges should be added on the database level.
+This project presents the domain driven design concepts.
 
 ## Solution structure
 
