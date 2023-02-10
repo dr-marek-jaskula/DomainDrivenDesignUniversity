@@ -27,3 +27,7 @@ in the .App, we can convert string to enums in the requests behind the scenes.
 ## EntityId Converter
 
 Due to the EntityIdConverter, the conversion from string in route to entity id object is done behind the scenes.
+
+## Authentication
+
+Authentication is described in the ReadMe.Infrastructe file.

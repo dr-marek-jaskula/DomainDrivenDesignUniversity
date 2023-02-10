@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Abstractions;
-using Shopway.Application.Abstractions.Batch;
-using static Shopway.Presentation.Utilities.ProblemDetailsUtilities;
 using IResult = Shopway.Domain.Abstractions.IResult;
+using static Shopway.Presentation.Utilities.ProblemDetailsUtilities;
 
 namespace Shopway.Presentation.Abstractions;
 

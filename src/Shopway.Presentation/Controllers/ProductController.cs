@@ -8,6 +8,7 @@ using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 using Shopway.Application.CQRS.Products.Queries.QueryProduct;
 using Shopway.Application.Batch.Products;
+using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
 using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Presentation.Controllers;
@@ -20,6 +21,7 @@ public sealed class ProductController : ApiController
     }
 
     [HttpGet("{id}")]
+    [ApiKey(RequiredApiKeyName.PRODUCT_GET)]
     public async Task<IActionResult> GetById(
         [FromRoute] GetProductByIdQuery query,
         CancellationToken cancellationToken)
@@ -50,6 +52,7 @@ public sealed class ProductController : ApiController
     }
 
     [HttpPost]
+    [ApiKey(RequiredApiKeyName.PRODUCT_CREATE)]
     public async Task<IActionResult> Create(
         [FromBody] CreateProductCommand command,
         CancellationToken cancellationToken)
@@ -65,6 +68,7 @@ public sealed class ProductController : ApiController
     }
 
     [HttpPut("{id}")]
+    [ApiKey(RequiredApiKeyName.PRODUCT_UPDATE)]
     public async Task<IActionResult> Update(
         [FromRoute] ProductId id,
         [FromBody] UpdateProductCommand.UpdateRequestBody body,
@@ -83,6 +87,7 @@ public sealed class ProductController : ApiController
     }
 
     [HttpDelete("{id}")]
+    [ApiKey(RequiredApiKeyName.PRODUCT_REMOVE)]
     public async Task<IActionResult> Remove(
         [FromRoute] RemoveProductCommand command,
         CancellationToken cancellationToken)
