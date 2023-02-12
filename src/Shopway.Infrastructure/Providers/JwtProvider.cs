@@ -13,10 +13,12 @@ namespace Shopway.Infrastructure.Providers;
 internal sealed class JwtProvider : IJwtProvider
 {
     private readonly AuthenticationOptions _options;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
-    public JwtProvider(IOptions<AuthenticationOptions> options)
+    public JwtProvider(IOptions<AuthenticationOptions> options, IDateTimeProvider dateTimeProvider)
     {
         _options = options.Value;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     public string GenerateJwt(User user)
@@ -37,14 +39,14 @@ internal sealed class JwtProvider : IJwtProvider
 
         var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
-        var expires = DateTime.Now.AddDays(_options.DaysToExpire);
+        var expires = _dateTimeProvider.UtcNow.AddDays(_options.DaysToExpire);
 
         var token = new JwtSecurityToken
         (
             issuer: _options.Issuer,
             audience: _options.Audience,
             claims: claims,
-            expires: expires,
+            expires: expires.DateTime,
             signingCredentials: signingCredentials
         );
 

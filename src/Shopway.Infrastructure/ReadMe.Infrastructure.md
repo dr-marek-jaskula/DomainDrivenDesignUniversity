@@ -38,12 +38,12 @@ Idempotency means: being able to execute a certain operation multiple times with
 In other words: on retry perform only these operation that were not processed.
 
 Example: we are publishing the domain event that has 3 event handlers. Lets assume that event handler 1 and 2 execute properly, but event handler 3 fails.
-This effects in publishing the domain event again, because of the retry mechanism. Because of this, the event handler 1 and 2 will be called again.
-If one of this event handler would deal with payment, the customer would be charged twice.
+This effects in publishing the domain event again, because of the retry mechanism. Therefore, the event handler 1 and 2 is called again.
+If one of this event handlers would deal with payment, the customer would be charged twice.
 
-To deal with this problem we define **OutboxMessageConsumer** class in the Persistence Layer. 
-It contains the id that matches the id of OutboxMessage. It also contains the name, that will come from the event handler that is being executed.
-Therefore, we configure this entity to contain the compose key:
+To overcome this problem we define **OutboxMessageConsumer** class in the Persistence Layer. 
+It contains id that matches the id of OutboxMessage and the name, that will come from the event handler, that is being executed.
+Thus, we configure this entity to contain the compose key:
 
 ```csharp
 builder.HasKey(outboxMessageConsumer => new

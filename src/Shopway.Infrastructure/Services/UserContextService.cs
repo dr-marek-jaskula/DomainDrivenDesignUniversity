@@ -7,11 +7,15 @@ using System.Security.Claims;
 
 namespace Shopway.Infrastructure.Services;
 
-//This class is responsible for sharing the information about certain user based on the HTTP Context (so we will be free from strong connection to HttpContext for user data)
-//We will be able to get User data in every Service by injecting the IUserContextService
+/// <summary>
+/// Responsible for sharing informations about user based on the HTTP Context.
+/// Therefore, we avoid the strong connection to HttpContext for user data
+/// We will be able to get User data in every Service by injecting the IUserContextService
+/// </summary>
 public sealed class UserContextService : IUserContextService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private const string _userNameProperty = "name";
 
     public UserContextService(IHttpContextAccessor httpContextAccessor)
     {
@@ -22,9 +26,9 @@ public sealed class UserContextService : IUserContextService
 
     public UserId? UserId => User is null 
         ? null 
-        : global::Shopway.Domain.EntityIds.UserId.Create(global::System.Guid.Parse(User.FindFirstValue(global::System.Security.Claims.ClaimTypes.NameIdentifier)!));
+        : Shopway.Domain.EntityIds.UserId.Create(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
 
-    public string? Username => User?.FindFirstValue("name");
+    public string? Username => User?.FindFirstValue(_userNameProperty);
 
     public PersonId? PersonId
     {
