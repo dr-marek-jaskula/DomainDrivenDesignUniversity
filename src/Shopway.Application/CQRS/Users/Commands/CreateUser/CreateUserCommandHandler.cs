@@ -28,9 +28,9 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
 
     public async Task<IResult<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        Result<Email> emailResult = Email.Create(request.Email);
-        Result<Username> usernameResult = Username.Create(request.Username);
-        Result<Password> passwordResult = Password.Create(request.Password);
+        ValidationResult<Email> emailResult = Email.Create(request.Email);
+        ValidationResult<Username> usernameResult = Username.Create(request.Username);
+        ValidationResult<Password> passwordResult = Password.Create(request.Password);
 
         bool emailIsUnique = await _userRepository
             .IsEmailUniqueAsync(emailResult.Value, cancellationToken);
@@ -55,7 +55,7 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
     {
         var user = User.Create(UserId.New(), username, email);
 
-        Result<PasswordHash> passwordHashResult = PasswordHash.Create(_passwordHasher.HashPassword(user, password.Value));
+        ValidationResult<PasswordHash> passwordHashResult = PasswordHash.Create(_passwordHasher.HashPassword(user, password.Value));
 
         _validator
             .Validate(passwordHashResult);

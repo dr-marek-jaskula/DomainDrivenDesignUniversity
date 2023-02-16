@@ -1,7 +1,9 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using System.Diagnostics;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -17,19 +19,33 @@ public sealed class Discount : ValueObject
         Value = value;
     }
 
-    public static Result<Discount> Create(decimal price)
+    public static ValidationResult<Discount> Create(decimal price)
     {
+        var errors = Validate(price);
+
+        if (errors.Any())
+        {
+            return ValidationResult<Discount>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<Discount>.WithoutErrors(new Discount(decimal.Round(price, 2)));
+    }
+
+    private static List<Error> Validate(decimal price)
+    {
+        var errors = Empty<Error>();
+
         if (price < MinDiscount)
         {
-            return Result.Failure<Discount>(DiscountError.TooLow);
+            errors.Add(DiscountError.TooLow);
         }
 
         if (price > MaxDiscount)
         {
-            return Result.Failure<Discount>(DiscountError.TooHigh);
+            errors.Add(DiscountError.TooHigh);
         }
 
-        return new Discount(decimal.Round(price, 2));
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

@@ -53,7 +53,7 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
 
     public void UpdateDescription(Description description)
     {
-        Description= description;
+        Description = description;
     }
 
     public void UpdateStars(Stars stars)

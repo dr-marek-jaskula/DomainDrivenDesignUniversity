@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using Shopway.Domain.Results;
-using static Shopway.Domain.Errors.DomainErrors;
 using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Errors;
+using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -15,21 +17,35 @@ public sealed class PasswordHash : ValueObject
         Value = value;
     }
 
-    public static Result<PasswordHash> Create(string passwordHash)
+    public static ValidationResult<PasswordHash> Create(string passwordHash)
     {
+        var errors = Validate(passwordHash);
+
+        if (errors.Any())
+        {
+            return ValidationResult<PasswordHash>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<PasswordHash>.WithoutErrors(new PasswordHash(passwordHash));
+    }
+
+    private static List<Error> Validate(string passwordHash)
+    {
+        var errors = Empty<Error>();
+
         if (string.IsNullOrWhiteSpace(passwordHash))
         {
-            return Result.Failure<PasswordHash>(PasswordHashError.Empty);
+            errors.Add(PasswordHashError.Empty);
         }
 
         var numberOfbytes = Encoding.ASCII.GetByteCount(passwordHash);
 
         if (numberOfbytes > BytesLong)
         {
-            return Result.Failure<PasswordHash>(PasswordHashError.BytesLong);
+            errors.Add(PasswordHashError.BytesLong);
         }
 
-        return new PasswordHash(passwordHash);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

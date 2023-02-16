@@ -30,7 +30,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
 
         if (command.Body.Description is not null)
         {
-            Result<Description> descriptionResult = Description.Create(command.Body.Description);
+            ValidationResult<Description> descriptionResult = Description.Create(command.Body.Description);
 
             _validator
                 .Validate(descriptionResult);
@@ -45,7 +45,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
 
         if (command.Body.Stars is not null)
         {
-            Result<Stars> starsResult = Stars.Create((decimal)command.Body.Stars);
+            ValidationResult<Stars> starsResult = Stars.Create((decimal)command.Body.Stars);
 
             _validator
                 .Validate(starsResult);

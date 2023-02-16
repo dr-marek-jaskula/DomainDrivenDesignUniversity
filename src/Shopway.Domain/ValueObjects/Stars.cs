@@ -2,6 +2,7 @@
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -16,14 +17,28 @@ public sealed class Stars : ValueObject
         Value = value;
     }
 
-    public static Result<Stars> Create(decimal stars)
+    public static ValidationResult<Stars> Create(decimal stars)
     {
-        if (!AdmissibleStars.Contains(stars))
+        var errors = Validate(stars);
+
+        if (errors.Any())
         {
-            return Result.Failure<Stars>(StarsError.Invalid);
+            return ValidationResult<Stars>.WithErrors(errors.ToArray());
         }
 
-        return new Stars(stars);
+        return ValidationResult<Stars>.WithoutErrors(new Stars(stars));
+    }
+
+    private static List<Error> Validate(decimal stars)
+    {
+        var errors = Empty<Error>();
+
+        if (!AdmissibleStars.Contains(stars))
+        {
+            errors.Add(StarsError.Invalid);
+        }
+
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

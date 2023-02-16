@@ -1,7 +1,9 @@
 ﻿using Shopway.Domain.Utilities;
 using Shopway.Domain.Results;
+using Shopway.Domain.Errors;
 using Shopway.Domain.BaseTypes;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -21,23 +23,37 @@ public sealed class ProductName : ValueObject
         yield return Value;
     }
 
-    public static Result<ProductName> Create(string productName)
+    public static ValidationResult<ProductName> Create(string productName)
     {
+        var errors = Validate(productName);
+
+        if (errors.Any())
+        {
+            return ValidationResult<ProductName>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<ProductName>.WithoutErrors(new ProductName(productName));
+    }
+
+    private static List<Error> Validate(string productName)
+    {
+        var errors = Empty<Error>();
+
         if (string.IsNullOrWhiteSpace(productName))
         {
-            return Result.Failure<ProductName>(ProductNameError.Empty);
+            errors.Add(ProductNameError.Empty);
         }
 
         if (productName.Length > MaxLength)
         {
-            return Result.Failure<ProductName>(ProductNameError.TooLong);
+            errors.Add(ProductNameError.TooLong);
         }
 
         if (productName.ContainsIllegalCharacter())
         {
-            return Result.Failure<ProductName>(ProductNameError.ContainsIllegalCharacter);
+            errors.Add(ProductNameError.ContainsIllegalCharacter);
         }
 
-        return new ProductName(productName);
+        return errors;
     }
 }

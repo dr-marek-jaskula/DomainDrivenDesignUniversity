@@ -1,6 +1,8 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -16,19 +18,33 @@ public sealed class StoryPoints : ValueObject
         Value = value;
     }
 
-    public static Result<StoryPoints> Create(int storyPoints)
+    public static ValidationResult<StoryPoints> Create(int storyPoints)
     {
+        var errors = Validate(storyPoints);
+
+        if (errors.Any())
+        {
+            return ValidationResult<StoryPoints>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<StoryPoints>.WithoutErrors(new StoryPoints(storyPoints));
+    }
+
+    private static List<Error> Validate(int storyPoints)
+    {
+        var errors = Empty<Error>();
+
         if (storyPoints < MinStoryPoints)
         {
-            return Result.Failure<StoryPoints>(DomainErrors.PriorityError.TooHigh);
+            errors.Add(PriorityError.TooLow);
         }
 
         if (storyPoints > MaxStoryPoints)
         {
-            return Result.Failure<StoryPoints>(DomainErrors.PriorityError.TooHigh);
+            errors.Add(PriorityError.TooHigh);
         }
 
-        return new StoryPoints(storyPoints);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

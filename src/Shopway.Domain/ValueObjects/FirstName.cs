@@ -1,8 +1,9 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Results;
-using static Shopway.Domain.Errors.DomainErrors;
 using Shopway.Domain.BaseTypes;
+using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -17,29 +18,43 @@ public sealed class FirstName : ValueObject
 
     public string Value { get; }
 
-    public static Result<FirstName> Create(string firstName)
+    public static ValidationResult<FirstName> Create(string firstName)
     {
+        var errors = Validate(firstName);
+
+        if (errors.Any())
+        {
+            return ValidationResult<FirstName>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<FirstName>.WithoutErrors(new FirstName(firstName));
+    }
+
+    private static List<Error> Validate(string firstName)
+    {
+        var errors = Empty<Error>();
+
         if (string.IsNullOrWhiteSpace(firstName))
         {
-            return Result.Failure<FirstName>(FirstNameError.Empty);
+            errors.Add(FirstNameError.Empty);
         }
 
         if (firstName.Length > MaxLength)
         {
-            return Result.Failure<FirstName>(FirstNameError.TooLong);
+            errors.Add(FirstNameError.TooLong);
         }
 
         if (firstName.ContainsIllegalCharacter())
         {
-            return Result.Failure<FirstName>(FirstNameError.ContainsIllegalCharacter);
+            errors.Add(FirstNameError.ContainsIllegalCharacter);
         }
 
         if (firstName.ContainsDigit())
         {
-            return Result.Failure<FirstName>(FirstNameError.ContainsDigit);
+            errors.Add(FirstNameError.ContainsDigit);
         }
 
-        return new FirstName(firstName);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

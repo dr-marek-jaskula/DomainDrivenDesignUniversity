@@ -29,7 +29,7 @@ public abstract class ApiController : ControllerBase
                         "Validation Error", 
                         StatusCodes.Status400BadRequest,
                         result.Error,
-                        validationResult.Errors)),
+                        validationResult.ValidationErrors)),
 
             _ => BadRequest(
                     CreateProblemDetails(

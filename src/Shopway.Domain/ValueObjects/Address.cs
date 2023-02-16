@@ -4,6 +4,7 @@ using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
 using Shopway.Domain.BaseTypes;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -38,39 +39,53 @@ public sealed class Address : ValueObject
     { 
     }
 
-    public static Result<Address> Create(string city, string country, string zipCode, string street, int building, int? flat)
+    public static ValidationResult<Address> Create(string city, string country, string zipCode, string street, int building, int? flat)
     {
+        var errors = Validate(city, country, zipCode, street, building, flat);
+
+        if (errors.Any())
+        {
+            return ValidationResult<Address>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<Address>.WithoutErrors(new Address(city, country, zipCode, street, building, flat));
+    }
+
+    private static List<Error> Validate(string city, string country, string zipCode, string street, int building, int? flat)
+    {
+        var errors = Empty<Error>();
+
         if (ValidateCountry(country) is { IsValid: false } countryValidation)
         {
-            return Result.Failure<Address>(countryValidation.Error);
+            errors.Add(countryValidation.Error);
         }
 
         if (ValidateCity(city) is { IsValid: false } cityValidation)
         {
-            return Result.Failure<Address>(cityValidation.Error);
+            errors.Add(cityValidation.Error);
         }
 
         if (ValidateZipCode(zipCode) is { IsValid: false } zipCodeValidation)
         {
-            return Result.Failure<Address>(zipCodeValidation.Error);
+            errors.Add(zipCodeValidation.Error);
         }
 
         if (ValidateStreet(street) is { IsValid: false } streetValidation)
         {
-            return Result.Failure<Address>(streetValidation.Error);
+            errors.Add(streetValidation.Error);
         }
 
         if (ValidateBuilding(building) is { IsValid: false } buildingValidation)
         {
-            return Result.Failure<Address>(buildingValidation.Error);
+            errors.Add(buildingValidation.Error);
         }
 
         if (ValidateFlat(flat) is { IsValid: false } flatValidation)
         {
-            return Result.Failure<Address>(flatValidation.Error);
+            errors.Add(flatValidation.Error);
         }
 
-        return new Address(city, country, zipCode, street, building, flat);
+        return errors;
     }
 
     /// <returns>Street, City, Country, ZipCode, Building and Flat if not null</returns>

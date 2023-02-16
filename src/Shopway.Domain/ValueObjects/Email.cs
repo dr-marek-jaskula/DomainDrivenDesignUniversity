@@ -3,6 +3,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -19,24 +20,38 @@ public sealed class Email : ValueObject
         Value = value;
     }
 
-    public static Result<Email> Create(string email)
+    public static ValidationResult<Email> Create(string email)
     {
+        var errors = Validate(email);
+
+        if (errors.Any())
+        {
+            return ValidationResult<Email>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<Email>.WithoutErrors(new Email(email));
+    }
+
+    private static List<Error> Validate(string email)
+    {
+        var errors = Empty<Error>();
+
         if (string.IsNullOrEmpty(email))
         {
-            return Result.Failure<Email>(EmailError.Empty);
+            errors.Add(EmailError.Empty);
         }
 
         if (email.Length > MaxLength)
         {
-            return Result.Failure<Email>(EmailError.Empty);
+            errors.Add(EmailError.Empty);
         }
 
         if (!_regex.IsMatch(email))
         {
-            return Result.Failure<Email>(EmailError.Invalid);
+            errors.Add(EmailError.Invalid);
         }
 
-        return new Email(email);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

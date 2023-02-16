@@ -43,6 +43,19 @@ public sealed class Validator : IValidator
         return this;
     }
 
+    public IValidator Validate<TValueObject>(ValidationResult<TValueObject> valueObject)
+        where TValueObject : ValueObject
+    {
+        if (valueObject.IsSuccess)
+        {
+            return this;
+        }
+
+        _errors.AddRange(valueObject.ValidationErrors);
+        IsValid = false;
+        return this;
+    }
+
     public ValidationResult<TResponse> Failure<TResponse>()
         where TResponse : IResponse
     {

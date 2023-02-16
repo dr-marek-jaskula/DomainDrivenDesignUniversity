@@ -2,6 +2,7 @@
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -21,19 +22,33 @@ public sealed class Revision : ValueObject
     {
     }
 
-    public static Result<Revision> Create(string revision)
+    public static ValidationResult<Revision> Create(string revision)
     {
+        var errors = Validate(revision);
+
+        if (errors.Any())
+        {
+            return ValidationResult<Revision>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<Revision>.WithoutErrors(new Revision(revision));
+    }
+
+    private static List<Error> Validate(string revision)
+    {
+        var errors = Empty<Error>();
+
         if (string.IsNullOrWhiteSpace(revision))
         {
-            return Result.Failure<Revision>(RevisionError.Empty);
+            errors.Add(RevisionError.Empty);
         }
 
         if (revision.Length > MaxLength)
         {
-            return Result.Failure<Revision>(RevisionError.TooLong);
+            errors.Add(RevisionError.TooLong);
         }
 
-        return new Revision(revision);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

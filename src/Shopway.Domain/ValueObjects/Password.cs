@@ -3,6 +3,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using System.Text.RegularExpressions;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -19,29 +20,43 @@ public sealed class Password : ValueObject
         Value = value;
     }
 
-    public static Result<Password> Create(string password)
+    public static ValidationResult<Password> Create(string password)
     {
+        var errors = Validate(password);
+
+        if (errors.Any())
+        {
+            return ValidationResult<Password>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<Password>.WithoutErrors(new Password(password));
+    }
+
+    private static List<Error> Validate(string password)
+    {
+        var errors = Empty<Error>();
+
         if (string.IsNullOrWhiteSpace(password))
         {
-            return Result.Failure<Password>(PasswordError.Empty);
+            errors.Add(PasswordError.Empty);
         }
 
         if (password.Length < MinLength)
         {
-            return Result.Failure<Password>(PasswordError.TooShort);
+            errors.Add(PasswordError.TooShort);
         }
 
         if (password.Length > MaxLength)
         {
-            return Result.Failure<Password>(PasswordError.TooLong);
+            errors.Add(PasswordError.TooLong);
         }
 
         if (!_regex.IsMatch(password))
         {
-            return Result.Failure<Password>(PasswordError.Invalid);
+            errors.Add(PasswordError.Invalid);
         }
 
-        return new Password(password);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

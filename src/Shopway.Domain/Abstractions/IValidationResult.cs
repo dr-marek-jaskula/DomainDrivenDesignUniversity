@@ -8,5 +8,5 @@ public interface IValidationResult
         code: "ValidationError",
         message: "A validation problem occurred.");
 
-    Error[] Errors { get; }
+    Error[] ValidationErrors { get; }
 }

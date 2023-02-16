@@ -1,6 +1,8 @@
 ﻿using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -16,19 +18,33 @@ public sealed class Amount : ValueObject
         Value = value;
     }
 
-    public static Result<Amount> Create(int amount)
+    public static ValidationResult<Amount> Create(int amount)
     {
+        var errors = Validate(amount);
+
+        if (errors.Any())
+        {
+            return ValidationResult<Amount>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<Amount>.WithoutErrors(new Amount(amount));
+    }
+
+    private static List<Error> Validate(int amount)
+    {
+        var errors = Empty<Error>();
+
         if (amount < MinAmount)
         {
-            return Result.Failure<Amount>(AmountError.TooLow);
+            errors.Add(AmountError.TooLow);
         }
 
         if (amount > MaxAmount)
         {
-            return Result.Failure<Amount>(AmountError.TooHigh);
+            errors.Add(AmountError.TooHigh);
         }
 
-        return new Amount(amount);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()
@@ -36,4 +52,3 @@ public sealed class Amount : ValueObject
         yield return Value;
     }
 }
-

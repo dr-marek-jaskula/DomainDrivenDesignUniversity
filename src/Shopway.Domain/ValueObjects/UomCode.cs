@@ -1,6 +1,8 @@
 ﻿using Shopway.Domain.Results;
 using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Errors;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -25,14 +27,27 @@ public sealed class UomCode : ValueObject
         yield return Value;
     }
 
-    public static Result<UomCode> Create(string uomCode)
+    public static ValidationResult<UomCode> Create(string uomCode)
     {
-        if (!AllowedUomCodes.Contains(uomCode))
+        var errors = Validate(uomCode);
+
+        if (errors.Any())
         {
-            return Result.Failure<UomCode>(UomCodeError.Invalid);
+            return ValidationResult<UomCode>.WithErrors(errors.ToArray());
         }
 
-        return new UomCode(uomCode);
+        return ValidationResult<UomCode>.WithoutErrors(new UomCode(uomCode));
+    }
+
+    private static List<Error> Validate(string uomCode)
+    {
+        var errors = Empty<Error>();
+
+        if (!AllowedUomCodes.Contains(uomCode))
+        {
+            errors.Add(UomCodeError.Invalid);
+        }
+
+        return errors;
     }
 }
-

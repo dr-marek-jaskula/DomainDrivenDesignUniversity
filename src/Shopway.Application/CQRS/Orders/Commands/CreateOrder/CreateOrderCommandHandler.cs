@@ -25,8 +25,8 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
 
     public Task<IResult<CreateOrderResponse>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
-        Result<Amount> amountResult = Amount.Create(command.Amount);
-        Result<Discount> discountResult = Discount.Create(command.Discount ?? 0);
+        ValidationResult<Amount> amountResult = Amount.Create(command.Amount);
+        ValidationResult<Discount> discountResult = Discount.Create(command.Discount ?? 0);
 
         _validator
             .Validate(amountResult)

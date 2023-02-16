@@ -29,8 +29,8 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
     public async Task<IResult<LogUserResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
     {
         //Validate email and password format
-        Result<Email> emailResult = Email.Create(command.Email);
-        Result<Password> passwordResult = Password.Create(command.Password);
+        ValidationResult<Email> emailResult = Email.Create(command.Email);
+        ValidationResult<Password> passwordResult = Password.Create(command.Password);
 
         _validator
             .Validate(emailResult)

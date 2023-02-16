@@ -27,10 +27,10 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
     {
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
-        Result<Title> titleResult = Title.Create(command.Body.Title);
-        Result<Description> descriptionResult = Description.Create(command.Body.Description);
-        Result<Username> usernameResult = Username.Create(_userContext.Username!);
-        Result<Stars> starsResult = Stars.Create(command.Body.Stars);
+        ValidationResult<Title> titleResult = Title.Create(command.Body.Title);
+        ValidationResult<Description> descriptionResult = Description.Create(command.Body.Description);
+        ValidationResult<Username> usernameResult = Username.Create(_userContext.Username!);
+        ValidationResult<Stars> starsResult = Stars.Create(command.Body.Stars);
 
         _validator
             .Validate(titleResult)

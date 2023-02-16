@@ -25,10 +25,10 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
 
     public Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        Result<ProductName> productNameResult = ProductName.Create(command.ProductName);
-        Result<Price> priceResult = Price.Create(command.Price);
-        Result<UomCode> uomCodeResult = UomCode.Create(command.UomCode);
-        Result<Revision> revisionResult = Revision.Create(command.Revision);
+        ValidationResult<ProductName> productNameResult = ProductName.Create(command.ProductName);
+        ValidationResult<Price> priceResult = Price.Create(command.Price);
+        ValidationResult<UomCode> uomCodeResult = UomCode.Create(command.UomCode);
+        ValidationResult<Revision> revisionResult = Revision.Create(command.Revision);
 
         _validator
             .Validate(productNameResult)

@@ -1,6 +1,8 @@
 ﻿using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -16,19 +18,33 @@ public sealed class Priority : ValueObject
         Value = value;
     }
 
-    public static Result<Priority> Create(int priority)
+    public static ValidationResult<Priority> Create(int priority)
     {
+        var errors = Validate(priority);
+
+        if (errors.Any())
+        {
+            return ValidationResult<Priority>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<Priority>.WithoutErrors(new Priority(priority));
+    }
+
+    private static List<Error> Validate(int priority)
+    {
+        var errors = Empty<Error>();
+
         if (priority < HighestPriority)
         {
-            return Result.Failure<Priority>(PriorityError.TooHigh);
+            errors.Add(PriorityError.TooHigh);
         }
 
         if (priority > LowestPriority)
         {
-            return Result.Failure<Priority>(PriorityError.TooHigh);
+            errors.Add(PriorityError.TooLow);
         }
 
-        return new Priority(priority);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()

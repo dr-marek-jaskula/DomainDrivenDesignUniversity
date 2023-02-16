@@ -1,7 +1,9 @@
 ﻿using Shopway.Domain.Utilities;
 using Shopway.Domain.Results;
 using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Errors;
 using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -16,24 +18,38 @@ public sealed class Username : ValueObject
 
     public string Value { get; }
 
-    public static Result<Username> Create(string username)
+    public static ValidationResult<Username> Create(string username)
     {
+        var errors = Validate(username);
+
+        if (errors.Any())
+        {
+            return ValidationResult<Username>.WithErrors(errors.ToArray());
+        }
+
+        return ValidationResult<Username>.WithoutErrors(new Username(username));
+    }
+
+    private static List<Error> Validate(string username)
+    {
+        var errors = Empty<Error>();
+
         if (string.IsNullOrWhiteSpace(username))
         {
-            return Result.Failure<Username>(UsernameError.Empty);
+            errors.Add(UsernameError.Empty);
         }
 
         if (username.Length > MaxLength)
         {
-            return Result.Failure<Username>(UsernameError.TooLong);
+            errors.Add(UsernameError.TooLong);
         }
 
         if (username.ContainsIllegalCharacter())
         {
-            return Result.Failure<Username>(UsernameError.ContainsIllegalCharacter);
+            errors.Add(UsernameError.ContainsIllegalCharacter);
         }
 
-        return new Username(username);
+        return errors;
     }
 
     public override IEnumerable<object> GetAtomicValues()
