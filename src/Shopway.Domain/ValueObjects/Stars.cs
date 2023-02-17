@@ -29,7 +29,7 @@ public sealed class Stars : ValueObject
         return ValidationResult<Stars>.WithoutErrors(new Stars(stars));
     }
 
-    private static List<Error> Validate(decimal stars)
+    public static List<Error> Validate(decimal stars)
     {
         var errors = Empty<Error>();
 

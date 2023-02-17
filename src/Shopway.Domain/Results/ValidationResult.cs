@@ -22,8 +22,8 @@ public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
     /// <summary>
     /// Creates failure ValidationResult<typeparamref name="TValue"/>
     /// </summary>
-    /// <param name="validationErrors"></param>
-    /// <returns></returns>
+    /// <param name="validationErrors">Validation errors</param>
+    /// <returns>Failure ValidationResult</returns>
     public static ValidationResult<TValue> WithErrors(Error[] validationErrors)
     {
         return new(validationErrors);

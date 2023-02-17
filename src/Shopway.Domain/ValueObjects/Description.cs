@@ -29,7 +29,7 @@ public sealed class Description : ValueObject
         return ValidationResult<Description>.WithoutErrors(new Description(description));
     }
 
-    private static List<Error> Validate(string description)
+    public static List<Error> Validate(string description)
     {
         var errors = Empty<Error>();
 

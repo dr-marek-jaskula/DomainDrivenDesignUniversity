@@ -44,10 +44,10 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
         var productsToUpdateWithKeys = await GetProductsToUpdateWithKeys(command, cancellationToken);
 
-        //Set proper Request to ProductKey mapping method for the injected builder. Required step
+        //Required step: set RequestToProductKeyMapping method for the injected builder
         _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToResponseKey);
 
-        //Perform validation, using the builder (with set RequestToResponse delegate), trimmed command and queried productsToUpdate
+        //Perform validation: using the builder, trimmed command and queried productsToUpdate
         var responseEntries = command.Validate(_responseBuilder, productsToUpdateWithKeys);
 
         if (responseEntries.Any(response => response.Status is Error))
@@ -73,6 +73,8 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
         var productNames = command.ProductNames();
         var productRevisions = command.ProductRevisions();
 
+        //We query to many products, because we query all combinations of ProductName and Revision
+        //Therefore, we need to filter them. To achieve this in performed way, we use sorting
         var productsToBeFiltered = await _unitOfWork
             .Context
             .Set<Product>()
@@ -82,25 +84,25 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
                 .ThenBy(product => product.Revision.Value)
             .ToListAsync(cancellationToken);
 
-        var sortedRequests = command
+        var requestsSortedInTheSameMannerAsQueriedProducts = command
             .Requests
             .OrderBy(request => request.ProductName)
                 .ThenBy(request => request.Revision)
             .ToList();
 
-        return FilterSortedProducts(productsToBeFiltered, sortedRequests);
+        return FilterSortedProducts(productsToBeFiltered, requestsSortedInTheSameMannerAsQueriedProducts);
     }
 
     /// <summary>
     /// Both products and requests must be filtered in the same manner: using the product key order.
-    /// Then the filtering will be efficient, because iterating if will just forward so no quadratic time will happen
+    /// Then, filtering will be efficient, because iterating will just go forward
     /// </summary>
-    /// <param name="productsToBeFilteredSortedByKeyOrder">Products ordered by product key order</param>
+    /// <param name="productsToBeFilteredSortedByKey">Products ordered by product key order</param>
     /// <param name="sortedRequestsByKeyOrder">Requests ordered by product key order</param>
     /// <returns>Products to be updated if further validation succeeds</returns>
     private static IDictionary<ProductKey, Product> FilterSortedProducts
     (
-        IList<Product> productsToBeFilteredSortedByKeyOrder, 
+        IList<Product> productsToBeFilteredSortedByKey, 
         IList<ProductBatchUpsertRequest> sortedRequestsByKeyOrder
     )
     {
@@ -111,19 +113,19 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
         while (sortedRequestsIndex < sortedRequestsByKeyOrder.Count)
         {
-            //Get the request and then check in order for matching product
+            //Get the request and then search for the matching product
             var request = sortedRequestsByKeyOrder[sortedRequestsIndex];
 
-            while (productsToBefilteredIndex < productsToBeFilteredSortedByKeyOrder.Count)
+            while (productsToBefilteredIndex < productsToBeFilteredSortedByKey.Count)
             {
-                var filtered = productsToBeFilteredSortedByKeyOrder[productsToBefilteredIndex];
+                var filtered = productsToBeFilteredSortedByKey[productsToBefilteredIndex];
 
-                //If the product matches with the request, then the subsequent search will start from the next index
+                //If the product matches a request, then the subsequent search will start from the next index
                 productsToBefilteredIndex++;
 
                 if (filtered.ProductName.Value == request.ProductName && filtered.Revision.Value == request.Revision)
                 {
-                    //If the product matches, get the key and add (key, product) to the dictionary
+                    //If the product matches, then get the key and add (key, product) to the dictionary
                     var key = MapFromProductToResponseKey(filtered);
                     products.Add(key, filtered);
                     break;

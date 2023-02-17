@@ -35,7 +35,7 @@ public sealed class ProductName : ValueObject
         return ValidationResult<ProductName>.WithoutErrors(new ProductName(productName));
     }
 
-    private static List<Error> Validate(string productName)
+    public static List<Error> Validate(string productName)
     {
         var errors = Empty<Error>();
 

@@ -29,7 +29,7 @@ public sealed class PhoneNumber : ValueObject
         return ValidationResult<PhoneNumber>.WithoutErrors(new PhoneNumber(number));
     }
 
-    private static List<Error> Validate(string number)
+    public static List<Error> Validate(string number)
     {
         var errors = Empty<Error>();
 

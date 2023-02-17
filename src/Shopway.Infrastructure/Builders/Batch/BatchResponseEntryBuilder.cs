@@ -1,6 +1,8 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions.Batch;
 using Shopway.Application.Batch;
+using Shopway.Domain.BaseTypes;
+using System.Reflection;
 using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Infrastructure.Builders.Batch;
@@ -31,7 +33,7 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         /// <summary>
         /// Error messages. If there is no errors, then the validation succeeds and the success status is used.
         /// </summary>
-        private readonly IList<string> _errorMessages;
+        private readonly List<string> _errorMessages;
 
         internal BatchResponseEntryBuilder(TBatchRequest request, TBatchResponseKey responseKey, BatchEntryStatus successStatus)
         {
@@ -76,6 +78,28 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         )
         {
             requestValidationMethod(this, _request);
+            return this;
+        }
+
+        public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> UseValueObjectValidation<TValueObject>
+        (
+            string validationMethodName,
+            params object[] parameteres
+        )
+            where TValueObject : ValueObject
+        {
+            var method = typeof(TValueObject)
+                .GetMethod(validationMethodName, BindingFlags.Public | BindingFlags.Static);
+
+            if (method is null)
+            {
+                throw new InvalidOperationException($"Type: {nameof(TValueObject)} does not contain public static method '{validationMethodName}'");
+            }
+
+            object errors = method.Invoke(null, parameteres)!;
+
+            var stringErrors = ((List<Shopway.Domain.Errors.Error>)errors).Select(error => error.Message);
+            _errorMessages.AddRange(stringErrors);
             return this;
         }
 

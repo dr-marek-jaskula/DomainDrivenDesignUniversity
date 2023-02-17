@@ -30,7 +30,7 @@ public sealed class Priority : ValueObject
         return ValidationResult<Priority>.WithoutErrors(new Priority(priority));
     }
 
-    private static List<Error> Validate(int priority)
+    public static List<Error> Validate(int priority)
     {
         var errors = Empty<Error>();
 

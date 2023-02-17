@@ -34,7 +34,7 @@ public sealed class Title : ValueObject
         return ValidationResult<Title>.WithoutErrors(new Title(title));
     }
 
-    private static List<Error> Validate(string title)
+    public static List<Error> Validate(string title)
     {
         var errors = Empty<Error>();
 

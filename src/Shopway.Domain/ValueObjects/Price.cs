@@ -30,7 +30,7 @@ public sealed class Price : ValueObject
         return ValidationResult<Price>.WithoutErrors(new Price(decimal.Round(price, 2)));
     }
 
-    private static List<Error> Validate(decimal price)
+    public static List<Error> Validate(decimal price)
     {
         var errors = Empty<Error>();
 

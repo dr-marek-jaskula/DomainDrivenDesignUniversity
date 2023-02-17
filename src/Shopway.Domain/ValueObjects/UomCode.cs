@@ -39,7 +39,7 @@ public sealed class UomCode : ValueObject
         return ValidationResult<UomCode>.WithoutErrors(new UomCode(uomCode));
     }
 
-    private static List<Error> Validate(string uomCode)
+    public static List<Error> Validate(string uomCode)
     {
         var errors = Empty<Error>();
 

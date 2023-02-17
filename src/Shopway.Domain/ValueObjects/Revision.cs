@@ -34,7 +34,7 @@ public sealed class Revision : ValueObject
         return ValidationResult<Revision>.WithoutErrors(new Revision(revision));
     }
 
-    private static List<Error> Validate(string revision)
+    public static List<Error> Validate(string revision)
     {
         var errors = Empty<Error>();
 

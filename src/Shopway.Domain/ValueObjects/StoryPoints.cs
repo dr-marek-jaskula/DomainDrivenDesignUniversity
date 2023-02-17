@@ -30,7 +30,7 @@ public sealed class StoryPoints : ValueObject
         return ValidationResult<StoryPoints>.WithoutErrors(new StoryPoints(storyPoints));
     }
 
-    private static List<Error> Validate(int storyPoints)
+    public static List<Error> Validate(int storyPoints)
     {
         var errors = Empty<Error>();
 

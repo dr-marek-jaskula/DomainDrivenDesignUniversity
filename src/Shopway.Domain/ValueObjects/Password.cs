@@ -32,7 +32,7 @@ public sealed class Password : ValueObject
         return ValidationResult<Password>.WithoutErrors(new Password(password));
     }
 
-    private static List<Error> Validate(string password)
+    public static List<Error> Validate(string password)
     {
         var errors = Empty<Error>();
 

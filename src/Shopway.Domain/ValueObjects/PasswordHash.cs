@@ -29,7 +29,7 @@ public sealed class PasswordHash : ValueObject
         return ValidationResult<PasswordHash>.WithoutErrors(new PasswordHash(passwordHash));
     }
 
-    private static List<Error> Validate(string passwordHash)
+    public static List<Error> Validate(string passwordHash)
     {
         var errors = Empty<Error>();
 

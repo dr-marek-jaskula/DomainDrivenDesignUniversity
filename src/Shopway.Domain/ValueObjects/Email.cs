@@ -32,7 +32,7 @@ public sealed class Email : ValueObject
         return ValidationResult<Email>.WithoutErrors(new Email(email));
     }
 
-    private static List<Error> Validate(string email)
+    public static List<Error> Validate(string email)
     {
         var errors = Empty<Error>();
 

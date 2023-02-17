@@ -30,7 +30,7 @@ public sealed class Username : ValueObject
         return ValidationResult<Username>.WithoutErrors(new Username(username));
     }
 
-    private static List<Error> Validate(string username)
+    public static List<Error> Validate(string username)
     {
         var errors = Empty<Error>();
 

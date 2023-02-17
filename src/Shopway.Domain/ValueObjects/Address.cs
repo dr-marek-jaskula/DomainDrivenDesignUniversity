@@ -51,7 +51,7 @@ public sealed class Address : ValueObject
         return ValidationResult<Address>.WithoutErrors(new Address(city, country, zipCode, street, building, flat));
     }
 
-    private static List<Error> Validate(string city, string country, string zipCode, string street, int building, int? flat)
+    public static List<Error> Validate(string city, string country, string zipCode, string street, int building, int? flat)
     {
         var errors = Empty<Error>();
 
