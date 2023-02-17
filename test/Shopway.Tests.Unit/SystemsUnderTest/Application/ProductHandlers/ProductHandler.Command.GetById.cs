@@ -2,8 +2,6 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Tests.Unit.Abstractions;
 using Shopway.Application.CQRS.Products.Queries.GetProductById;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.Entities;
-using Shopway.Domain.ValueObjects;
 using static System.Threading.CancellationToken;
 
 namespace Shopway.Tests.Unit.SystemsUnderTest.Application.ProductHandlers;
@@ -26,15 +24,7 @@ public class CreateProductCommandHandlerTests : TestBase
 	{
         //Arrange
         var productId = ProductId.New();
-
-        var expected = Product.Create
-        (
-            productId, 
-            ProductName.Create("Name").Value, 
-            Price.Create(2).Value, 
-            UomCode.Create("kg").Value, 
-            Revision.Create("2").Value
-        );
+        var expected = CreateProduct(productId);
 
         _productRepository
             .GetByIdAsync(productId)

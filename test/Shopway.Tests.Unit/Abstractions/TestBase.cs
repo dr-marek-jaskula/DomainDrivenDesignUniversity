@@ -1,12 +1,16 @@
-﻿using static Shopway.Domain.Utilities.RandomUtilities;
+﻿using Shopway.Domain.Entities;
+using Shopway.Domain.EntityIds;
+using Shopway.Domain.ValueObjects;
+using static Shopway.Domain.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Unit.Abstractions;
 
 public abstract class TestBase
 {
     protected readonly string CreatedBy = $"{APP_PREFIX}_{GenerateString(Length)}";
-    private const string APP_PREFIX = "auto_shopway";
+    private const string APP_PREFIX = "auto";
     private const int Length = 22;
+    protected static readonly Random _random = new();
 
     /// <summary>
     /// Generates test string
@@ -15,7 +19,7 @@ public abstract class TestBase
     /// <returns>Test string</returns>
     protected static string TestString(int length = Length)
     {
-        return $"{APP_PREFIX}_test_{GenerateString(length)}";
+        return $"{APP_PREFIX}{GenerateString(length)}";
     }
 
     /// <summary>
@@ -25,6 +29,36 @@ public abstract class TestBase
     /// <returns>Test string with enter, tabs and white spaces from both sides</returns>
     protected static string NotTrimmedTestString(int length = Length)
     {
-        return $" \n  \t \n    \t {APP_PREFIX}_test_{GenerateString(length)}  \n \t   \n ";
+        return $" \n  \t \n    \t {APP_PREFIX}{GenerateString(length)}  \n \t   \n ";
+    }
+
+    /// <summary>
+    /// Generates test int in given range
+    /// </summary>
+    /// <param name="min">Lower bound</param>
+    /// <param name="max">Upper bound</param>
+    /// <returns></returns>
+    public static int TestInt(int min = 1, int max = 1000)
+    {
+        return _random.Next(min, max);
+    }
+
+    protected static Product CreateProduct
+    (
+        ProductId productId, 
+        string? productName = null, 
+        int? productPrice = null,
+        string? uomCode = null,
+        string? productRevision = null
+    )
+    {
+        return Product.Create
+        (
+            productId,
+            ProductName.Create(productName ?? TestString(10)).Value,
+            Price.Create(productPrice ?? TestInt(1, 10)).Value,
+            UomCode.Create(uomCode ?? UomCode.AllowedUomCodes.First()).Value,
+            Revision.Create(productRevision ?? TestString(2)).Value
+        );
     }
 }
