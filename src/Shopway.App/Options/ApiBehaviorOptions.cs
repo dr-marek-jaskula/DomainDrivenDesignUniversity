@@ -1,6 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Mvc;
-using Shopway.Domain.Errors;
+﻿using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames.Application;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState;
 using static Shopway.Presentation.Utilities.ProblemDetailsUtilities;
