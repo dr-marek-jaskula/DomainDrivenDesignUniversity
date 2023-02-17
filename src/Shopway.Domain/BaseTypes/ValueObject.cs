@@ -1,5 +1,10 @@
 ﻿namespace Shopway.Domain.BaseTypes;
 
+/// <summary>
+/// Each ValueObject should contain at least two public, static methods: "Create" and "Validate".
+/// "Create" method should return the ValidationResult of same ValueObjectType and should use the "Validate" method.
+/// "Validate" method should return List<Error> and contain all value object validation
+/// </summary>
 [Serializable]
 public abstract class ValueObject : IEquatable<ValueObject>
 {

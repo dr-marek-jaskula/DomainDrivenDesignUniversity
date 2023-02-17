@@ -7,7 +7,7 @@ In this layer we define:
 - Value Objects
 - Enumerations
 - Domain Events
-- Erros
+- Errors
 - Enums
 - Results
 - Constants

@@ -56,7 +56,7 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         /// </summary>
         /// <param name="invalid">Condition representing the invalid case</param>
         /// <param name="thenError">Error that will be added to error list if invalid condition is true</param>
-        /// <returns></returns>
+        /// <returns>Same instance to be able to chain validation methods</returns>
         public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> If(bool invalid, string thenError)
         {
             if (invalid is true)
@@ -71,7 +71,7 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         /// In order to place validation in part (in separate methods) use ValidateUsing and pass the respective validation part as a input delegate
         /// </summary>
         /// <param name="requestValidationMethod">Validation action that represent the validation that needs to be performed</param>
-        /// <returns></returns>
+        /// <returns>Same instance to be able to chain validation methods</returns>
         public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> ValidateUsing
         (
             Action<IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>, TBatchRequest> requestValidationMethod
@@ -81,6 +81,15 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
             return this;
         }
 
+        /// <summary>
+        /// Use the public, static validation method defined in a given ValueObject type 
+        /// </summary>
+        /// <typeparam name="TValueObject">ValueObject type that we use to validate input parameters</typeparam>
+        /// <param name="validationMethodName">ValueObject validation public, static method name. For consistence should be 'Validate'</param>
+        /// <param name="parameteres">Parameters that are required and sufficient to create a ValueObject</param>
+        /// <returns>Same instance to be able to chain validation methods</returns>
+        /// <exception cref="ArgumentException">Thrown if no parameters were specified</exception>
+        /// <exception cref="InvalidOperationException">Thrown if given ValueObject type does not contain the public, static method, specified in input parameter</exception>
         public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> UseValueObjectValidation<TValueObject>
         (
             string validationMethodName,
@@ -91,9 +100,14 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
             var method = typeof(TValueObject)
                 .GetMethod(validationMethodName, BindingFlags.Public | BindingFlags.Static);
 
+            if (parameteres.IsNullOrEmpty())
+            {
+                throw new ArgumentException($"There need to be at least one parameter for specified validation method");
+            }
+
             if (method is null)
             {
-                throw new InvalidOperationException($"Type: {nameof(TValueObject)} does not contain public static method '{validationMethodName}'");
+                throw new InvalidOperationException($"ValueObject: {nameof(TValueObject)} does not contain public, static method '{validationMethodName}'");
             }
 
             object errors = method.Invoke(null, parameteres)!;

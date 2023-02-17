@@ -73,8 +73,8 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
         var productNames = command.ProductNames();
         var productRevisions = command.ProductRevisions();
 
-        //We query to many products, because we query all combinations of ProductName and Revision
-        //Therefore, we need to filter them. To achieve this in performed way, we use sorting
+        //We query too many products, because we query all combinations of ProductName and Revision
+        //Therefore, we will need to filter them
         var productsToBeFiltered = await _unitOfWork
             .Context
             .Set<Product>()
@@ -90,7 +90,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
                 .ThenBy(request => request.Revision)
             .ToList();
 
-        return FilterSortedProducts(productsToBeFiltered, requestsSortedInTheSameMannerAsQueriedProducts);
+        return GetProductsToUpdate(productsToBeFiltered, requestsSortedInTheSameMannerAsQueriedProducts);
     }
 
     /// <summary>
@@ -99,8 +99,8 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
     /// </summary>
     /// <param name="productsToBeFilteredSortedByKey">Products ordered by product key order</param>
     /// <param name="sortedRequestsByKeyOrder">Requests ordered by product key order</param>
-    /// <returns>Products to be updated if further validation succeeds</returns>
-    private static IDictionary<ProductKey, Product> FilterSortedProducts
+    /// <returns>Products to be updated</returns>
+    private static IDictionary<ProductKey, Product> GetProductsToUpdate
     (
         IList<Product> productsToBeFilteredSortedByKey, 
         IList<ProductBatchUpsertRequest> sortedRequestsByKeyOrder
@@ -113,7 +113,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
         while (sortedRequestsIndex < sortedRequestsByKeyOrder.Count)
         {
-            //Get the request and then search for the matching product
+            //Get a request and then search for the matching product
             var request = sortedRequestsByKeyOrder[sortedRequestsIndex];
 
             while (productsToBefilteredIndex < productsToBeFilteredSortedByKey.Count)
@@ -125,14 +125,14 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
                 if (filtered.ProductName.Value == request.ProductName && filtered.Revision.Value == request.Revision)
                 {
-                    //If the product matches, then get the key and add (key, product) to the dictionary
+                    //If the product matches, first get the key and then add (key, product) to the dictionary
                     var key = MapFromProductToResponseKey(filtered);
                     products.Add(key, filtered);
                     break;
                 }
             }
 
-            //We move to the next request
+            //Move to the next request
             sortedRequestsIndex++;
         }
 
