@@ -6,5 +6,8 @@ internal sealed class UpdateProductCommandValidator : AbstractValidator<UpdatePr
 {
     public UpdateProductCommandValidator()
     {
+        RuleFor(x => x.Id).NotNull();
+        RuleFor(x => x.Body).NotNull();
+        RuleFor(x => x.Body.Price).NotNull();
     }
 }

@@ -15,6 +15,7 @@ using Shopway.Tests.Integration.Configurations;
 using Shopway.Tests.Integration.Constants;
 using Shopway.Domain.Enumerations;
 using static RestSharp.Method;
+using Shopway.Tests.Integration.ControllersUnderTest;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
 
 namespace Shopway.Tests.Integration.Abstractions;
@@ -22,13 +23,14 @@ namespace Shopway.Tests.Integration.Abstractions;
 public abstract class ControllerTestsBase : IDisposable
 {
     private readonly string ShopwayApiUrl;
-    private readonly RestClient _userClient; 
+    private readonly RestClient _userClient;
     protected readonly string _controllerUri;
     protected readonly IServiceScope Scope;
     protected readonly IntegrationTestsUrlOptions integrationTestsUrlOptions;
+    protected readonly ApiKeyTestOptions apiKeys;
 
     public ControllerTestsBase(DependencyInjectionContainerTestFixture containerTestFixture)
-	{
+    {
         Scope = containerTestFixture
             .ServiceProvider
             .CreateScope();
@@ -36,6 +38,10 @@ public abstract class ControllerTestsBase : IDisposable
         integrationTestsUrlOptions = (IntegrationTestsUrlOptions)containerTestFixture
             .ServiceProvider
             .GetRequiredService(typeof(IntegrationTestsUrlOptions));
+
+        apiKeys = (ApiKeyTestOptions)containerTestFixture
+            .ServiceProvider
+            .GetRequiredService(typeof(ApiKeyTestOptions));
 
         ShopwayApiUrl = integrationTestsUrlOptions.ShopwayApiUrl!;
         _controllerUri = GetType().Name[..^ControllerTests.Length];
@@ -49,7 +55,7 @@ public abstract class ControllerTestsBase : IDisposable
     /// <param name="databaseFixture">Database fixture</param>
     /// <returns></returns>
     protected async Task<RestClient> RestClient(string controllerUrl, DatabaseFixture databaseFixture)
-	{
+    {
         var client = new RestClient($"{ShopwayApiUrl}{controllerUrl}");
 
         await EnsureThatTheTestUserIsRegistered(databaseFixture);
@@ -165,6 +171,29 @@ public abstract class ControllerTestsBase : IDisposable
         var token = logResponse.Deserialize<LogUserResponse>();
 
         return token!.Token;
+    }
+
+    /// <summary>
+    /// Asserts problem details after the model validation.
+    /// </summary>
+    /// <param name="problemDetails">Deserialized problem details</param>
+    protected static void AssertProblemDetails(ValidationProblemDetails problemDetails)
+    {
+        problemDetails.Type.Should().Be("ValidationError");
+        problemDetails.Status.Should().Be(400);
+        problemDetails.Title.Should().Be("Validation Error");
+        problemDetails.Detail.Should().Be("A validation problem occurred.");
+    }
+
+    /// <summary>
+    /// Asserts problem details in case when the request model is invalid. For instance, when some field is null.
+    /// </summary>
+    /// <param name="problemDetails">Deserialized problem details</param>
+    protected static void AssertModelProblemDetails(ModelProblemDetails problemDetails)
+    {
+        problemDetails.Type.Should().Be("https://Shopway.com");
+        problemDetails.Status.Should().Be(400);
+        problemDetails.Title.Should().Be("Invalid request body or request parameters");
     }
 
     public virtual void Dispose()

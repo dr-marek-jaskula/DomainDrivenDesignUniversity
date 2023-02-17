@@ -23,7 +23,8 @@ public static class ServiceProviderFactory
         serviceCollection
             .RegisterDatabaseContext(true)
             .AddTransient(_ => configurations)
-            .AddTransient(_ => configurations.GetTestOptions<IntegrationTestsUrlOptions>(IntegrationTestsUrl));
+            .AddTransient(_ => configurations.GetTestOptions<IntegrationTestsUrlOptions>(IntegrationTestsUrl))
+            .AddTransient(_ => configurations.GetTestOptions<ApiKeyTestOptions>(ApiKeys));
 
         return serviceCollection.BuildServiceProvider();
     }

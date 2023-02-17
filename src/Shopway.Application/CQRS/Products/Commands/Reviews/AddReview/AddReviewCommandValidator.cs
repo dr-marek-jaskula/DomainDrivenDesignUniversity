@@ -7,5 +7,9 @@ internal sealed class AddReviewCommandValidator : AbstractValidator<AddReviewCom
     public AddReviewCommandValidator()
     {
         RuleFor(x => x.ProductId).NotEmpty();
+        RuleFor(x => x.Body).NotNull();
+        RuleFor(x => x.Body.Title).NotNull();
+        RuleFor(x => x.Body.Stars).NotNull();
+        RuleFor(x => x.Body.Description).NotNull();
     }
 }

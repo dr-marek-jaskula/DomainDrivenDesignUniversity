@@ -7,7 +7,8 @@ namespace Shopway.Tests.Integration.Utilities;
 
 public static class RestRequestUtilities
 {
-    private const string Content_Type = "content-type";
+    private const string ContentTypeHeader = "content-type";
+    private const string ApiKeyHeader = "x-api-key";
 
     /// <summary>
     /// Appends the request path by query parameters (variable=value). 
@@ -37,7 +38,13 @@ public static class RestRequestUtilities
     public static RestRequest AddJsonContentHeader(this RestRequest restRequest)
     {
         return restRequest
-            .AddHeader(Content_Type, ContentType.Json);
+            .AddHeader(ContentTypeHeader, ContentType.Json);
+    }
+
+    public static RestRequest AddApiKeyAuthentication(this RestRequest restRequest, string apiKey)
+    {
+        return restRequest
+            .AddHeader(ApiKeyHeader, apiKey);
     }
 
     /// <summary>

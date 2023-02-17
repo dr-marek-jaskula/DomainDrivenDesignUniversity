@@ -2,10 +2,10 @@
 using Shopway.Application.Batch;
 using Shopway.Application.Batch.Products;
 using Shopway.Tests.Integration.Utilities;
+using Shopway.Domain.ValueObjects;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
-using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
@@ -62,7 +62,7 @@ public partial class ProductControllerTests
         var request = PostRequest($"batch/upsert", batchCommand);
 
         //Act
-        var response = await _restClient!.PostAsync(request);
+        var response = await _restClient!.ExecutePostAsync(request);
 
         //Assert
         response.StatusCode.Should().Be(BadRequest);

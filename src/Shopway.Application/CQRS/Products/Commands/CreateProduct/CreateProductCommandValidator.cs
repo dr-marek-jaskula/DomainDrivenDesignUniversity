@@ -6,5 +6,9 @@ internal sealed class CreateProductCommandValidator : AbstractValidator<CreatePr
 {
     public CreateProductCommandValidator()
     {
+        RuleFor(x => x.ProductName).NotNull();
+        RuleFor(x => x.Price).NotNull();
+        RuleFor(x => x.UomCode).NotNull();
+        RuleFor(x => x.Revision).NotNull();
     }
 }
