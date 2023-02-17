@@ -6,6 +6,7 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
 using Shopway.Application.Utilities;
+using Shopway.Domain.Entities;
 
 namespace Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
 
@@ -28,38 +29,43 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
             .Reviews
             .First(x => x.Id == command.ReviewId);
 
+        ValidationResult<Description>? descriptionResult = null;
+        ValidationResult<Stars>? starsResult = null;
+
         if (command.Body.Description is not null)
         {
-            ValidationResult<Description> descriptionResult = Description.Create(command.Body.Description);
-
-            _validator
-                .Validate(descriptionResult);
-
-            if (_validator.IsInvalid)
-            {
-                return _validator.Failure<UpdateReviewResponse>();
-            }
-
-            reviewToUpdate.UpdateDescription(descriptionResult.Value);
+            descriptionResult = Description.Create(command.Body.Description);
+            _validator.Validate(descriptionResult);
         }
 
         if (command.Body.Stars is not null)
         {
-            ValidationResult<Stars> starsResult = Stars.Create((decimal)command.Body.Stars);
-
-            _validator
-                .Validate(starsResult);
-
-            if (_validator.IsInvalid)
-            {
-                return _validator.Failure<UpdateReviewResponse>();
-            }
-
-            reviewToUpdate.UpdateStars(starsResult.Value);
+            starsResult = Stars.Create((decimal)command.Body.Stars);
+            _validator.Validate(starsResult);
         }
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<UpdateReviewResponse>();
+        }
+
+        Update(reviewToUpdate, descriptionResult, starsResult);
 
         return reviewToUpdate
             .ToUpdateResponse()
             .ToResult();
+    }
+
+    private static void Update(Review reviewToUpdate, ValidationResult<Description>? description, ValidationResult<Stars>? starts)
+    {
+        if (description is not null)
+        {
+            reviewToUpdate.UpdateDescription(description.Value);
+        }
+
+        if (starts is not null)
+        {
+            reviewToUpdate.UpdateStars(starts.Value);
+        }
     }
 }
