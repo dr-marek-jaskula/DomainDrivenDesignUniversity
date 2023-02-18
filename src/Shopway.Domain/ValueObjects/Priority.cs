@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
 
@@ -21,13 +22,7 @@ public sealed class Priority : ValueObject
     public static ValidationResult<Priority> Create(int priority)
     {
         var errors = Validate(priority);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Priority>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Priority>.WithoutErrors(new Priority(priority));
+        return errors.CreateValidationResult(() => new Priority(priority));
     }
 
     public static List<Error> Validate(int priority)

@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
 
@@ -21,13 +22,7 @@ public sealed class Amount : ValueObject
     public static ValidationResult<Amount> Create(int amount)
     {
         var errors = Validate(amount);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Amount>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Amount>.WithoutErrors(new Amount(amount));
+        return errors.CreateValidationResult(() => new Amount(amount));
     }
 
     public static List<Error> Validate(int amount)

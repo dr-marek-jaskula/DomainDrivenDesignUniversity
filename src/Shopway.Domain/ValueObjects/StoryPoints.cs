@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
 
@@ -21,13 +22,7 @@ public sealed class StoryPoints : ValueObject
     public static ValidationResult<StoryPoints> Create(int storyPoints)
     {
         var errors = Validate(storyPoints);
-
-        if (errors.Any())
-        {
-            return ValidationResult<StoryPoints>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<StoryPoints>.WithoutErrors(new StoryPoints(storyPoints));
+        return errors.CreateValidationResult(() => new StoryPoints(storyPoints));
     }
 
     public static List<Error> Validate(int storyPoints)

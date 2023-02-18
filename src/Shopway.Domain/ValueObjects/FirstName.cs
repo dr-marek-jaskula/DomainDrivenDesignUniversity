@@ -21,13 +21,7 @@ public sealed class FirstName : ValueObject
     public static ValidationResult<FirstName> Create(string firstName)
     {
         var errors = Validate(firstName);
-
-        if (errors.Any())
-        {
-            return ValidationResult<FirstName>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<FirstName>.WithoutErrors(new FirstName(firstName));
+        return errors.CreateValidationResult(() => new FirstName(firstName));
     }
 
     public static List<Error> Validate(string firstName)

@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using System.Text.RegularExpressions;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
@@ -20,13 +21,7 @@ public sealed class PhoneNumber : ValueObject
     public static ValidationResult<PhoneNumber> Create(string number)
     {
         var errors = Validate(number);
-
-        if (errors.Any())
-        {
-            return ValidationResult<PhoneNumber>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<PhoneNumber>.WithoutErrors(new PhoneNumber(number));
+        return errors.CreateValidationResult(() => new PhoneNumber(number));
     }
 
     public static List<Error> Validate(string number)

@@ -42,13 +42,7 @@ public sealed class Address : ValueObject
     public static ValidationResult<Address> Create(string city, string country, string zipCode, string street, int building, int? flat)
     {
         var errors = Validate(city, country, zipCode, street, building, flat);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Address>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Address>.WithoutErrors(new Address(city, country, zipCode, street, building, flat));
+        return errors.CreateValidationResult(() => new Address(city, country, zipCode, street, building, flat));
     }
 
     public static List<Error> Validate(string city, string country, string zipCode, string street, int building, int? flat)

@@ -4,6 +4,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.BaseTypes;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
+using System.Net.Http.Headers;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -26,13 +27,7 @@ public sealed class ProductName : ValueObject
     public static ValidationResult<ProductName> Create(string productName)
     {
         var errors = Validate(productName);
-
-        if (errors.Any())
-        {
-            return ValidationResult<ProductName>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<ProductName>.WithoutErrors(new ProductName(productName));
+        return errors.CreateValidationResult(() => new ProductName(productName));
     }
 
     public static List<Error> Validate(string productName)

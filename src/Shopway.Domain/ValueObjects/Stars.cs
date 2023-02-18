@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
 
@@ -20,13 +21,7 @@ public sealed class Stars : ValueObject
     public static ValidationResult<Stars> Create(decimal stars)
     {
         var errors = Validate(stars);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Stars>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Stars>.WithoutErrors(new Stars(stars));
+        return errors.CreateValidationResult(() => new Stars(stars));
     }
 
     public static List<Error> Validate(decimal stars)

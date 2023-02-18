@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using System.Text.RegularExpressions;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
@@ -23,13 +24,7 @@ public sealed class Email : ValueObject
     public static ValidationResult<Email> Create(string email)
     {
         var errors = Validate(email);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Email>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Email>.WithoutErrors(new Email(email));
+        return errors.CreateValidationResult(() => new Email(email));
     }
 
     public static List<Error> Validate(string email)

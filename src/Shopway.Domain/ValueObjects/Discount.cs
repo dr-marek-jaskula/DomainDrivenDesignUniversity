@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
 
@@ -21,13 +22,7 @@ public sealed class Discount : ValueObject
     public static ValidationResult<Discount> Create(decimal price)
     {
         var errors = Validate(price);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Discount>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Discount>.WithoutErrors(new Discount(decimal.Round(price, 2)));
+        return errors.CreateValidationResult(() => new Discount(decimal.Round(price, 2)));
     }
 
     public static List<Error> Validate(decimal price)

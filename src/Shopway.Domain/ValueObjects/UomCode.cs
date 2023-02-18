@@ -3,6 +3,7 @@ using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
+using Shopway.Domain.Utilities;
 
 namespace Shopway.Domain.ValueObjects;
 
@@ -30,13 +31,7 @@ public sealed class UomCode : ValueObject
     public static ValidationResult<UomCode> Create(string uomCode)
     {
         var errors = Validate(uomCode);
-
-        if (errors.Any())
-        {
-            return ValidationResult<UomCode>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<UomCode>.WithoutErrors(new UomCode(uomCode));
+        return errors.CreateValidationResult(() => new UomCode(uomCode));
     }
 
     public static List<Error> Validate(string uomCode)

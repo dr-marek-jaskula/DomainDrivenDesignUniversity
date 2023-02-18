@@ -21,13 +21,7 @@ public sealed class Username : ValueObject
     public static ValidationResult<Username> Create(string username)
     {
         var errors = Validate(username);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Username>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Username>.WithoutErrors(new Username(username));
+        return errors.CreateValidationResult(() => new Username(username));
     }
 
     public static List<Error> Validate(string username)

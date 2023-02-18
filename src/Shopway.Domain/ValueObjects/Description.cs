@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
 
@@ -20,13 +21,7 @@ public sealed class Description : ValueObject
     public static ValidationResult<Description> Create(string description)
     {
         var errors = Validate(description);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Description>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Description>.WithoutErrors(new Description(description));
+        return errors.CreateValidationResult(() => new Description(description));
     }
 
     public static List<Error> Validate(string description)

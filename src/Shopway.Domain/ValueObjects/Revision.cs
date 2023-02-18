@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
 
@@ -25,13 +26,7 @@ public sealed class Revision : ValueObject
     public static ValidationResult<Revision> Create(string revision)
     {
         var errors = Validate(revision);
-
-        if (errors.Any())
-        {
-            return ValidationResult<Revision>.WithErrors(errors.ToArray());
-        }
-
-        return ValidationResult<Revision>.WithoutErrors(new Revision(revision));
+        return errors.CreateValidationResult(() => new Revision(revision));
     }
 
     public static List<Error> Validate(string revision)
