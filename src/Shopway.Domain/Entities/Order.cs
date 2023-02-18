@@ -9,7 +9,7 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
 {
-    internal Order(
+    private Order(
         OrderId id,
         ProductId productId,
         Amount amount,

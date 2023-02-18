@@ -7,7 +7,6 @@ using Shopway.Domain.Abstractions;
 namespace Shopway.Domain.Entities.Parents;
 
 //Table-per-hierarchy approach (abstract class)
-
 //The additional "Discriminator" column to distinguish the different children of a WorkItem
 public abstract class WorkItem : AggregateRoot<WorkItemId>, IAuditableEntity
 {
@@ -28,7 +27,7 @@ public abstract class WorkItem : AggregateRoot<WorkItemId>, IAuditableEntity
 
         if (employeeId is not null)
         {
-            EmployeeId = new PersonId() { Value = (Guid)employeeId };
+            EmployeeId = PersonId.Create((Guid)employeeId);
         }
 
         StoryPoints = storyPoints;

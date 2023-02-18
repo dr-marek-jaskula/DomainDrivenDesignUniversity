@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Polly;
 using Quartz;
 using Shopway.Application.Abstractions;
-using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Abstractions;
 using Shopway.Infrastructure.Policies;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;

@@ -48,7 +48,6 @@ public class Person : AggregateRoot<PersonId>, IAuditableEntity
 
     //DateOnly property needs a conversion to SQL Server DATE format
     public DateOnly? DateOfBirth { get; private set; }
-
     public PhoneNumber PhoneNumber { get; private set; }
     public Email Email { get; private set; }
     public Address? Address { get; private set; }

@@ -10,7 +10,7 @@ public sealed class Product : AggregateRoot<ProductId>, IAuditableEntity
 {
     private readonly List<Review> _reviews = new();
 
-    internal Product(
+    private Product(
         ProductId id,
         ProductName productName,
         Price price,
@@ -61,13 +61,15 @@ public sealed class Product : AggregateRoot<ProductId>, IAuditableEntity
 
     public Review AddReview(Title title, Description description, Username username, Stars stars)
     {
-        Review reviewToAdd = Review.Create(
+        Review reviewToAdd = Review.Create
+        (
             ReviewId.New(),
             Id, 
             title, 
             description, 
             username, 
-            stars);
+            stars
+        );
 
         _reviews.Add(reviewToAdd);
         

@@ -2,12 +2,8 @@
 
 namespace Shopway.Domain.BaseTypes;
 
-public interface IEntity
-{
-}
-
 public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>, IEntity
-    where TEntityId : IEntityId<TEntityId>, new()
+    where TEntityId : IEntityId
 {
     protected Entity(TEntityId id)
     {

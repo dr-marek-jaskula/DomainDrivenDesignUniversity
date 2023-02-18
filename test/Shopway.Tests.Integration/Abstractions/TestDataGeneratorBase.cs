@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Entities.Parents;
 using Shopway.Persistence.Framework;

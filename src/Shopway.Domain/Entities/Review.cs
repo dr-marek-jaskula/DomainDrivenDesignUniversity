@@ -38,13 +38,15 @@ public sealed class Review : Entity<ReviewId>, IAuditableEntity
     public string CreatedBy { get; set; }
     public string? UpdatedBy { get; set; }
 
-    internal static Review Create(
+    public static Review Create
+    (
         ReviewId reviewId,
         ProductId productId,
         Title title,
         Description description,
         Username username,
-        Stars stars)
+        Stars stars
+    )
     {
         var review = new Review(reviewId, productId, title, description, username, stars);
 

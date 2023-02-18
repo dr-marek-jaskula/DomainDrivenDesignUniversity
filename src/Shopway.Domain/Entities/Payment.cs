@@ -8,7 +8,7 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Payment : Entity<PaymentId>, IAuditableEntity
 {
-    internal Payment
+    private Payment
     (
         PaymentId id,
         Discount discount,
@@ -35,7 +35,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditableEntity
     public string CreatedBy { get; set; }
     public string? UpdatedBy { get; set; }
 
-    internal static Payment Create(OrderId orderId, Discount discount)
+    public static Payment Create(OrderId orderId, Discount discount)
     {
         return new Payment
         (

@@ -12,12 +12,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
 {
     private readonly List<Role> _roles = new();
 
-    internal User
-    (
-        UserId id,
-        Username username,
-        Email email
-    )
+    private User(UserId id, Username username, Email email)
         : base(id)
     {
         Username = username;
@@ -40,22 +35,10 @@ public sealed class User : AggregateRoot<UserId>, IAuditableEntity
     public Person? Person { get; set; }
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
-    public static User Create
-    (
-        UserId id,
-        Username username,
-        Email email
-    )
+    public static User Create(UserId id, Username username, Email email)
     {
-        var user = new User
-        (
-            id,
-            username,
-            email
-        );
-
+        var user = new User(id, username, email);
         user.RaiseDomainEvent(new UserRegisteredDomainEvent(Guid.NewGuid(), user.Id));
-
         return user;
     }
 

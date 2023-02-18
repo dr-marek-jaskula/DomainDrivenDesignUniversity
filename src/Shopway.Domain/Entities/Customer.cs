@@ -10,10 +10,7 @@ public sealed class Customer : Person
 {
     private readonly List<Order> _orders = new();
 
-    public Rank Rank { get; private set; }
-    public IReadOnlyCollection<Order> Orders => _orders;
-
-    internal Customer(
+    private Customer(
         PersonId id,
         FirstName firstName,
         LastName lastName,
@@ -33,6 +30,9 @@ public sealed class Customer : Person
     private Customer()
     {
     }
+
+    public Rank Rank { get; private set; }
+    public IReadOnlyCollection<Order> Orders => _orders.AsReadOnly();
 
     public static Customer Create(
         PersonId id,

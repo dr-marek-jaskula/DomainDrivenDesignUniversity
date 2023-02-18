@@ -3,7 +3,7 @@ using Shopway.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Shopway.Persistence.Framework;
-using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Infrastructure.Decoratos;
 

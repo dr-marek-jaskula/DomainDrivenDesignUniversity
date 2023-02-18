@@ -13,7 +13,7 @@ public sealed class Employee : Person
     private readonly List<WorkItem> _workItems = new();
     private readonly List<Employee> _subordinates = new();
 
-    internal Employee(
+    private Employee(
         PersonId id,
         FirstName firstName,
         LastName lastName,
@@ -44,8 +44,6 @@ public sealed class Employee : Person
     public Employee? Manager { get; private set; }
 
     public IReadOnlyCollection<Employee> Subordinates => _subordinates.AsReadOnly();
-
-    //WorkItems relations
     public IReadOnlyCollection<WorkItem> WorkItems => _workItems.AsReadOnly();
 
     public static Employee Create(

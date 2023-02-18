@@ -8,7 +8,7 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Feature : WorkItem
 {
-    internal Feature(
+    private Feature(
         WorkItemId id,
         Title title,
         Description description,
