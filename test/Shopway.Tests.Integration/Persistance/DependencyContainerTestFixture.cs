@@ -2,8 +2,14 @@
 
 namespace Shopway.Tests.Integration.Persistance;
 
+/// <summary>
+/// Test dependency injection container fixture
+/// </summary>
 public sealed class DependencyInjectionContainerTestFixture
 {
+	/// <summary>
+	/// Test ServiceProvider
+	/// </summary>
     public ServiceProvider ServiceProvider { get; set; }
 
 	public DependencyInjectionContainerTestFixture()

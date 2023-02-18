@@ -5,6 +5,9 @@ using static Shopway.Domain.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Unit.Abstractions;
 
+/// <summary>
+/// Contains methods to create entities and utility methods for test data
+/// </summary>
 public abstract class TestBase
 {
     protected readonly string CreatedBy = $"{APP_PREFIX}{GenerateString(Length)}";
@@ -43,6 +46,15 @@ public abstract class TestBase
         return _random.Next(min, max);
     }
 
+    /// <summary>
+    /// Create the product
+    /// </summary>
+    /// <param name="productId">ProductId</param>
+    /// <param name="productName">ProductName. If null, random 10 character long string will be generated</param>
+    /// <param name="productPrice">ProductPrice. If null, random integer in range 1 to 10 will be generated</param>
+    /// <param name="uomCode">Unit of Measure Code. If null, first uom code from AllowedUomCode will be selected</param>
+    /// <param name="productRevision">ProductRevision. If null, random 2 character long string will be generated</param>
+    /// <returns>Product instance</returns>
     protected static Product CreateProduct
     (
         ProductId productId, 

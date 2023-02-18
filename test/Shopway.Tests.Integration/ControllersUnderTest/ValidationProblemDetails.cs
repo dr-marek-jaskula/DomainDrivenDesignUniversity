@@ -2,6 +2,9 @@
 
 namespace Shopway.Tests.Integration.ControllersUnderTest;
 
+/// <summary>
+/// Represents a helper class used to deserialize the validation problem details
+/// </summary>
 public sealed class ValidationProblemDetails
 {
     public string Type { get; set; } = string.Empty;

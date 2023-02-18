@@ -14,12 +14,17 @@ public static class ServiceProviderFactory
         ServiceProvider = BuildServiceProvider();
     }
 
+    /// <summary>
+    /// Builds the test service provider, so provider used in DependencyInjectionContainerTestFixture
+    /// </summary>
+    /// <returns>Test ServiceProvider</returns>
     private static ServiceProvider BuildServiceProvider()
     {
         var serviceCollection = new ServiceCollection();
 
         var configurations = AppsettingsConfiguration.GetConfiguration();
 
+        //Register test services
         serviceCollection
             .RegisterDatabaseContext(true)
             .AddTransient(_ => configurations)

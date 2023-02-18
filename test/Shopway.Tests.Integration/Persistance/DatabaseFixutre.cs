@@ -20,7 +20,14 @@ public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
         _testDataGenerator = new TestDataGenerator(unitOfWork);
     }
 
+    /// <summary>
+    /// Use to generate test data
+    /// </summary>
     public TestDataGenerator DataGenerator => _testDataGenerator;
+
+    /// <summary>
+    /// Database context
+    /// </summary>
     public ShopwayDbContext Context => _context;
 
     public void Dispose()

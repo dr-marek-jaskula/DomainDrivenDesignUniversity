@@ -1,19 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-using Serilog.Events;
 using Serilog;
-using Shopway.Presentation.Exceptions;
-using Shopway.Persistence.Framework;
+using static Microsoft.Extensions.DependencyInjection.LoggerUtilities;
 
-Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            .Enrich.FromLogContext()
-            .WriteTo.Console() 
-            .CreateBootstrapLogger();
+Log.Logger = CreateSerilogLogger();
 
 try
 {
     Log.Information("Staring the web host");
-    
+
     //Initial configuration
 
     var builder = WebApplication.CreateBuilder(new WebApplicationOptions
@@ -22,10 +15,8 @@ try
         ContentRootPath = Directory.GetCurrentDirectory()
     });
 
-    builder.Host.UseSerilog((context, services, configuration) => configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext());
+    builder
+        .ConfigureSerilog();
 
     //Configure Services
 
@@ -47,50 +38,30 @@ try
 
     //Build the application
 
-    WebApplication app = builder.Build();
+    WebApplication webApplication = builder.Build();
 
     //Configure HTTP request pipeline
 
-    app.UseSerilogRequestLogging(options =>
-    {
-        options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} ({UserId}) responded {StatusCode} in {Elapsed:0.0000}ms";
-    });
+    webApplication
+        .ConfigureSerilogRequestLogging();
 
-    if (app.Environment.IsDevelopment())
+    if (webApplication.Environment.IsDevelopment())
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        webApplication
+            .UseSwagger()
+            .UseSwaggerUI();
     }
 
-    app
+    webApplication
         .UseHealthChecks()
         .UseMiddlewares()
-        .UseHttpsRedirection();
+        .UseHttpsRedirection()
+        .ApplyMigrations()
+        .UseAuthorization();
 
-    #region Apply Migrations
-    
-    var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+    webApplication.MapControllers();
 
-    using (var applyMigrationsScope = serviceScopeFactory.CreateScope())
-    {
-        var dbContext = applyMigrationsScope.ServiceProvider.GetService<ShopwayDbContext>();
-
-        if (dbContext is null)
-            throw new UnavailableException("Database is not available");
-
-        var pendingMigrations = dbContext.Database.GetPendingMigrations();
-
-        if (pendingMigrations.Any())
-            dbContext.Database.Migrate();
-    }
-
-    #endregion Apply Migrations
-
-    app.UseAuthorization();
-
-    app.MapControllers();
-
-    app.Run();
+    webApplication.Run();
 }
 catch (Exception ex)
 {

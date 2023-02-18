@@ -7,7 +7,6 @@ using Shopway.Domain.Entities;
 using Shopway.Persistence.Framework;
 using static Newtonsoft.Json.Formatting;
 using static Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus;
-using Shopway.App.Utilities;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
