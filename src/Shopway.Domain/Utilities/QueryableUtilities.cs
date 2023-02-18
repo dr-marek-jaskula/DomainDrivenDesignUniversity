@@ -8,25 +8,25 @@ public static class QueryableUtilities
     public static IOrderedQueryable<TEntity> OrderBy<TEntity>
     (
         this IQueryable<TEntity> queryable,
-        Expression<Func<TEntity, object>> SortBy,
-        SortDirection SortDirection
+        Expression<Func<TEntity, object>> sortBy,
+        SortDirection sortDirection
     )
     {
-        return SortDirection is SortDirection.Ascending
-            ? queryable.OrderBy(SortBy)
-            : queryable.OrderByDescending(SortBy);
+        return sortDirection is SortDirection.Ascending
+            ? queryable.OrderBy(sortBy)
+            : queryable.OrderByDescending(sortBy);
     }
 
     public static IOrderedQueryable<TEntity> ThenBy<TEntity>
     (
         this IOrderedQueryable<TEntity> queryable,
-        Expression<Func<TEntity, object>> SortBy,
-        SortDirection SortDirection
+        Expression<Func<TEntity, object>> sortBy,
+        SortDirection sortDirection
     )
     {
-        return SortDirection is SortDirection.Ascending
-            ? queryable.ThenBy(SortBy)
-            : queryable.OrderByDescending(SortBy);
+        return sortDirection is SortDirection.Ascending
+            ? queryable.ThenBy(sortBy)
+            : queryable.ThenByDescending(sortBy);
     }
 
     public static IQueryable<TEntity> Filter<TEntity>
@@ -70,21 +70,6 @@ public static class QueryableUtilities
             return sortDirection is SortDirection.Ascending
                 ? queryable.ThenBy(expression)
                 : queryable.ThenByDescending(expression);
-        }
-
-        return queryable;
-    }
-
-    public static IQueryable<T> WhereIf<T>
-    (
-        this IQueryable<T> queryable,
-        Expression<Func<T, bool>> predicate,
-        bool condition
-    )
-    {
-        if (condition)
-        {
-            return queryable.Where(predicate);
         }
 
         return queryable;
