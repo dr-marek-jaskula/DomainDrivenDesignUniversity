@@ -6,8 +6,12 @@ using System.Globalization;
 
 namespace Shopway.Domain.EntityIds;
 
+/// <summary>
+/// Converter used to allow conversion between guid in string format and specified entity id
+/// </summary>
+/// <typeparam name="TEntitiyId">Type of entity id</typeparam>
 public sealed class EntityIdConverter<TEntitiyId> : TypeConverter
-    where TEntitiyId : struct, IEntityId<TEntitiyId>
+    where TEntitiyId : struct, IEntityId
 {
     private readonly Type _type;
 
@@ -28,18 +32,27 @@ public sealed class EntityIdConverter<TEntitiyId> : TypeConverter
             || base.CanConvertTo(context, destinationType);
     }
 
+    /// <summary>
+    /// Convert from guid in string format to entity id
+    /// </summary>
+    /// <returns>EntityId</returns>
     public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
         if (value is string @string)
         {
             var guid = Guid.Parse(@string);
-            var createMethod = _type.GetMethod(nameof(IEntityId<TEntitiyId>.Create));
+            var createMethod = _type.GetMethod(nameof(IEntityId<object>.Create));
             return createMethod!.Invoke(null, new object[] { guid });
         }
 
         return base.ConvertFrom(context, culture, value);
     }
 
+    /// <summary>
+    /// Convert from entity id to string 
+    /// </summary>
+    /// <returns>Guid in string format</returns>
+    /// <exception cref="ArgumentNullException">Thrown if value to convert is null</exception>
     public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
         if (value is null)
@@ -47,18 +60,21 @@ public sealed class EntityIdConverter<TEntitiyId> : TypeConverter
             throw new ArgumentNullException(nameof(value));
         }
 
-        var entityId = (IEntityId<TEntitiyId>)value;
+        var entityId = (IEntityId)value;
         var idValue = entityId.Value;
 
         if (destinationType == typeof(string))
         {
-            return idValue.ToString()!;
+            return idValue.ToString();
         }
 
         return base.ConvertTo(context, culture, value, destinationType);
     }
 }
 
+/// <summary>
+/// Converter that creates and stores the concrete entity id converters and use them if it is needed
+/// </summary>
 public sealed class EntityIdConverter : TypeConverter
 {
     private static readonly ConcurrentDictionary<Type, TypeConverter> ActualConverters = new();
