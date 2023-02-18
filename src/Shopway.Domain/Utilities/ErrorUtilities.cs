@@ -37,6 +37,7 @@ public static class ErrorUtilities
     /// <param name="errors">Not null collection of errors</param>
     /// <param name="createValueObject">Delegate that specifies how to create the value object</param>
     /// <returns>ValidationReuslt</returns>
+    /// <exception cref="InvalidOperationException">Thrown if errors collection is null</exception>
     public static ValidationResult<TValueObject> CreateValidationResult<TValueObject>
     (
         this ICollection<Error> errors,
@@ -44,11 +45,16 @@ public static class ErrorUtilities
     )
         where TValueObject : ValueObject
     {
+        if (errors is null)
+        {
+            throw new InvalidOperationException($"{nameof(errors)} must not be null");
+        }
+
         if (errors.Any())
         {
             return ValidationResult<TValueObject>.WithErrors(errors.ToArray());
         }
 
-        return ValidationResult<TValueObject>.WithoutErrors(createValueObject());
+        return ValidationResult<TValueObject>.WithoutErrors(createValueObject.Invoke());
     }
 }
