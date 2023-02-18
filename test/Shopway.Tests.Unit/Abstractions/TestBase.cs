@@ -7,10 +7,10 @@ namespace Shopway.Tests.Unit.Abstractions;
 
 public abstract class TestBase
 {
-    protected readonly string CreatedBy = $"{APP_PREFIX}_{GenerateString(Length)}";
+    protected readonly string CreatedBy = $"{APP_PREFIX}{GenerateString(Length)}";
+    protected static readonly Random _random = new();
     private const string APP_PREFIX = "auto";
     private const int Length = 22;
-    protected static readonly Random _random = new();
 
     /// <summary>
     /// Generates test string

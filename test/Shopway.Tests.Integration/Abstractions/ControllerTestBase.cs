@@ -138,11 +138,11 @@ public abstract class ControllerTestsBase : IDisposable
 
         await _userClient.PostAsync(registerRequest);
 
-        var user = databaseFixture
+        var user = await databaseFixture
             .Context
             .Set<User>()
             .Where(user => user.Username.Value == TestUser.Username)
-            .First();
+            .FirstAsync();
 
         //Give all roles to the test user
         foreach (var role in Role.Ids)
