@@ -1,5 +1,4 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Enums;
 using System.Linq.Expressions;
 
 namespace Shopway.Domain.Utilities;
@@ -71,6 +70,21 @@ public static class QueryableUtilities
             return sortDirection is SortDirection.Ascending
                 ? queryable.ThenBy(expression)
                 : queryable.ThenByDescending(expression);
+        }
+
+        return queryable;
+    }
+
+    public static IQueryable<T> WhereIf<T>
+    (
+        this IQueryable<T> queryable,
+        Expression<Func<T, bool>> predicate,
+        bool condition
+    )
+    {
+        if (condition)
+        {
+            return queryable.Where(predicate);
         }
 
         return queryable;
