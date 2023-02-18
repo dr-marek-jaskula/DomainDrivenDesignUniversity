@@ -2,6 +2,7 @@
 using Shopway.Application.Pipelines;
 using Shopway.Application.Pipelines.Batch;
 using Shopway.Application.Pipelines.CQRS;
+using System.Net.NetworkInformation;
 using Shopway.Application.Pipelines.ValidationPipelines;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -10,19 +11,19 @@ public static class MediatorRegistration
 {
     public static IServiceCollection RegisterMediator(this IServiceCollection services)
     {
-        services.AddMediatR(Shopway.Application.AssemblyReference.Assembly);
-
-        //Register Pipeline Behaviors
-        services
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipeline<,>))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(FluentValidationPipeline<,>))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(QueryTransactionPipeline<,>))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(ListQueryTransactionPipeline<,>))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandTransactionPipeline<,>))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandWithResponseTransactionPipeline<,>))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(BatchCommandTransactionPipeline<,>))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(BatchCommandWithResponseTransactionPipeline<,>))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(ReferenceValidationPipeline<,>));
+        services.AddMediatR(configuration =>
+        {
+            configuration.RegisterServicesFromAssembly(Shopway.Application.AssemblyReference.Assembly);
+            configuration.AddOpenBehavior(typeof(LoggingPipeline<,>));
+            configuration.AddOpenBehavior(typeof(FluentValidationPipeline<,>));
+            configuration.AddOpenBehavior(typeof(QueryTransactionPipeline<,>));
+            configuration.AddOpenBehavior(typeof(ListQueryTransactionPipeline<,>));
+            configuration.AddOpenBehavior(typeof(CommandTransactionPipeline<,>));
+            configuration.AddOpenBehavior(typeof(CommandWithResponseTransactionPipeline<,>));
+            configuration.AddOpenBehavior(typeof(BatchCommandTransactionPipeline<,>));
+            configuration.AddOpenBehavior(typeof(BatchCommandWithResponseTransactionPipeline<,>));
+            configuration.AddOpenBehavior(typeof(ReferenceValidationPipeline<,>));
+        });
 
         return services;
     }

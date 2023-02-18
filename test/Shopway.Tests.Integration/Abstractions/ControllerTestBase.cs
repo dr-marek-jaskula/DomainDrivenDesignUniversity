@@ -14,8 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
 using Shopway.Tests.Integration.Constants;
 using Shopway.Domain.Enumerations;
-using static RestSharp.Method;
 using Shopway.Tests.Integration.ControllersUnderTest;
+using static RestSharp.Method;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
 
 namespace Shopway.Tests.Integration.Abstractions;
