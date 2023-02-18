@@ -5,7 +5,7 @@ using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Review : Entity<ReviewId>, IAuditableEntity
+public sealed class Review : Entity<ReviewId>, IAuditable
 {
     private Review(
         ReviewId reviewId,

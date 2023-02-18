@@ -8,7 +8,7 @@ using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class User : AggregateRoot<UserId>, IAuditableEntity
+public sealed class User : AggregateRoot<UserId>, IAuditable
 {
     private readonly List<Role> _roles = new();
 

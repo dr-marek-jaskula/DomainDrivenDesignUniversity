@@ -9,7 +9,7 @@ namespace Shopway.Persistence.Utilities;
 public static class ConfigureUtilities
 {
     public static EntityTypeBuilder<TEntity> ConfigureAuditableEntity<TEntity>(this EntityTypeBuilder<TEntity> builder)
-        where TEntity : class, IEntity, IAuditableEntity
+        where TEntity : class, IEntity, IAuditable
     {
         builder.Property(o => o.CreatedOn)
             .HasColumnType(ColumnTypes.DateTimeOffset(2));

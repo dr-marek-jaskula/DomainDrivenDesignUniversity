@@ -7,7 +7,7 @@ using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Order : AggregateRoot<OrderId>, IAuditableEntity
+public sealed class Order : AggregateRoot<OrderId>, IAuditable
 {
     private Order(
         OrderId id,

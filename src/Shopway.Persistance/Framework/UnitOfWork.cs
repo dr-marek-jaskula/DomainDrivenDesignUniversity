@@ -98,12 +98,12 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
 
     private void UpdateAuditableEntities()
     {
-        IEnumerable<EntityEntry<IAuditableEntity>> entries =
+        IEnumerable<EntityEntry<IAuditable>> entries =
             _dbContext
                 .ChangeTracker
-                .Entries<IAuditableEntity>();
+                .Entries<IAuditable>();
 
-        foreach (EntityEntry<IAuditableEntity> entityEntry in entries)
+        foreach (EntityEntry<IAuditable> entityEntry in entries)
         {
             if (entityEntry.State == EntityState.Added)
             {

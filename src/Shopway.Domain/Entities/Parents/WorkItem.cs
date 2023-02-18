@@ -8,7 +8,7 @@ namespace Shopway.Domain.Entities.Parents;
 
 //Table-per-hierarchy approach (abstract class)
 //The additional "Discriminator" column to distinguish the different children of a WorkItem
-public abstract class WorkItem : AggregateRoot<WorkItemId>, IAuditableEntity
+public abstract class WorkItem : AggregateRoot<WorkItemId>, IAuditable
 {
     protected WorkItem(
         WorkItemId id,

@@ -6,7 +6,7 @@ using Shopway.Domain.Abstractions;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Payment : Entity<PaymentId>, IAuditableEntity
+public sealed class Payment : Entity<PaymentId>, IAuditable
 {
     private Payment
     (

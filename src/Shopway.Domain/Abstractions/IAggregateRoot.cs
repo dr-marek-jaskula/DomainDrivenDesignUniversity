@@ -1,6 +1,4 @@
-﻿using Shopway.Domain.BaseTypes;
-
-namespace Shopway.Domain.Abstractions;
+﻿namespace Shopway.Domain.Abstractions;
 
 public interface IAggregateRoot
 {

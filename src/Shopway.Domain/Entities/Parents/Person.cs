@@ -7,7 +7,7 @@ using Shopway.Domain.Abstractions;
 namespace Shopway.Domain.Entities.Parents;
 
 //Table-per-type approach
-public class Person : AggregateRoot<PersonId>, IAuditableEntity
+public class Person : AggregateRoot<PersonId>, IAuditable
 {
     protected Person
     (
