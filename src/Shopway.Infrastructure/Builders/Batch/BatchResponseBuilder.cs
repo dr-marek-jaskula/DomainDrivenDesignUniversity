@@ -29,7 +29,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     public IReadOnlyList<TBatchRequest> ValidRequestsToUpdate => Filter(builder => builder.IsValidAndToUpdate).AsReadOnly();
 
     /// <summary>
-    /// Filter builder on given predicate and retrieve the requests from filtered builders
+    /// Filter builders on given predicate and retrieve the requests from filtered builders
     /// </summary>
     /// <param name="predicate">Predicate used to filter builders</param>
     /// <returns>A list of requests from filtered builders</returns>

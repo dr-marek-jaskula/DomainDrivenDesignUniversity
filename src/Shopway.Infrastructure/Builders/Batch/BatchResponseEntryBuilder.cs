@@ -82,32 +82,27 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         }
 
         /// <summary>
-        /// Use the public, static validation method defined in a given ValueObject type 
+        /// Use the public, static validation method called "Validate", defined in a given ValueObject type 
         /// </summary>
         /// <typeparam name="TValueObject">ValueObject type that we use to validate input parameters</typeparam>
-        /// <param name="validationMethodName">ValueObject validation public, static method name. For consistence should be 'Validate'</param>
         /// <param name="parameteres">Parameters that are required and sufficient to create a ValueObject</param>
         /// <returns>Same instance to be able to chain validation methods</returns>
         /// <exception cref="ArgumentException">Thrown if no parameters were specified</exception>
-        /// <exception cref="InvalidOperationException">Thrown if given ValueObject type does not contain the public, static method, specified in input parameter</exception>
-        public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> UseValueObjectValidation<TValueObject>
-        (
-            string validationMethodName,
-            params object[] parameteres
-        )
+        /// <exception cref="InvalidOperationException">Thrown if given ValueObject type does not contain the public, static method "Validate"</exception>
+        public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameteres)
             where TValueObject : ValueObject
         {
-            var method = typeof(TValueObject)
-                .GetMethod(validationMethodName, BindingFlags.Public | BindingFlags.Static);
-
             if (parameteres.IsNullOrEmpty())
             {
-                throw new ArgumentException($"There need to be at least one parameter for specified validation method");
+                throw new ArgumentException($"There need to be at least one parameter for the validation method");
             }
+
+            var method = typeof(TValueObject)
+                .GetMethod("Validate", BindingFlags.Public | BindingFlags.Static);
 
             if (method is null)
             {
-                throw new InvalidOperationException($"ValueObject: {nameof(TValueObject)} does not contain public, static method '{validationMethodName}'");
+                throw new InvalidOperationException($"ValueObject: {nameof(TValueObject)} does not contain public, static method \"Validate\"");
             }
 
             object errors = method.Invoke(null, parameteres)!;

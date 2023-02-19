@@ -44,9 +44,9 @@ public static class ProductBatchUpserCommandValidator
     )
     {
         responseEntryBuilder
-            .UseValueObjectValidation<ProductName>(nameof(ProductName.Validate), request.ProductName)
-            .UseValueObjectValidation<Revision>(nameof(Revision.Validate), request.Revision)
-            .UseValueObjectValidation<Price>(nameof(Price.Validate), request.Price)
-            .UseValueObjectValidation<UomCode>(nameof(UomCode.Validate), request.UomCode);
+            .UseValueObjectValidation<ProductName>(request.ProductName)
+            .UseValueObjectValidation<Revision>(request.Revision)
+            .UseValueObjectValidation<Price>(request.Price)
+            .UseValueObjectValidation<UomCode>(request.UomCode);
     }
 }

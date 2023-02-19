@@ -28,12 +28,11 @@ public interface IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>
     IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> ValidateUsing(Action<IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>, TBatchRequest> requestValidationMethod);
 
     /// <summary>
-    /// Use the predefined value object validation method to get possible validation errors
+    /// Use the predefined value object validation method called "Validate" to get possible validation errors
     /// </summary>
     /// <typeparam name="TValueObject">Type of value object</typeparam>
-    /// <param name="validationMethodName">Name of the validation method</param>
     /// <param name="parameteres">Parameters for value object validation method</param>
     /// <returns>Same instance to chain the validation</returns>
-    IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> UseValueObjectValidation<TValueObject>(string validationMethodName, params object[] parameteres)
+    IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameteres)
             where TValueObject : ValueObject;
 }
