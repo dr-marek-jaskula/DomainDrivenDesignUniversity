@@ -97,15 +97,15 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
                 throw new ArgumentException($"There need to be at least one parameter for the validation method");
             }
 
-            var method = typeof(TValueObject)
+            var validationMethod = typeof(TValueObject)
                 .GetMethod("Validate", BindingFlags.Public | BindingFlags.Static);
 
-            if (method is null)
+            if (validationMethod is null)
             {
                 throw new InvalidOperationException($"ValueObject: {nameof(TValueObject)} does not contain public, static method \"Validate\"");
             }
 
-            object errors = method.Invoke(null, parameteres)!;
+            object errors = validationMethod.Invoke(null, parameteres)!;
 
             var stringErrors = ((List<Shopway.Domain.Errors.Error>)errors).Select(error => error.Message);
             _errorMessages.AddRange(stringErrors);
