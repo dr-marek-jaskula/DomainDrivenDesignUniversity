@@ -8,7 +8,7 @@ public static partial class DomainErrors
     {
         public static readonly Error Empty = new(
             $"{nameof(LastName)}.{nameof(Empty)}",
-            "LastName is empty");
+            $"{nameof(LastName)} is empty");
 
         public static readonly Error TooLong = new(
             $"{nameof(LastName)}.{nameof(TooLong)}",
