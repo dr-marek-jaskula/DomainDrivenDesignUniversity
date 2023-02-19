@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Errors;
 
@@ -8,7 +9,7 @@ public static class HttpErrors
     /// <summary>
     /// Create an Error describing that a password or an email are invalid
     /// </summary>
-    public static readonly Error InvalidPasswordOrEmail = new($"{nameof(User)}.InvalidPasswordOrEmail", "Invalid password or email");
+    public static readonly Error InvalidPasswordOrEmail = new($"{nameof(User)}.{nameof(InvalidPasswordOrEmail)}", $"Invalid {nameof(Password)} or {nameof(Email)}");
 
     /// <summary>
     /// Create an Error based on the entity type name and the id that was not found
@@ -18,7 +19,7 @@ public static class HttpErrors
     /// <returns>NotFound error</returns>
     public static Error NotFound<TEntityId>(string name, IEntityId<TEntityId> id)
     {
-        return new Error($"{name}.NotFound", $"{name} with Id: '{id.Value}' was not found");
+        return new Error($"{name}.{nameof(NotFound)}", $"{name} with Id: '{id.Value}' was not found");
     }
 
     /// <summary>
@@ -27,7 +28,7 @@ public static class HttpErrors
     /// <returns>InvalidReference error</returns>
     public static Error InvalidReference(Guid reference, string entity)
     {
-        return new Error($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid Entity reference {reference} for entity {entity}");
+        return new Error($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid reference {reference} for entity {entity}");
     }
 
     /// <summary>
@@ -45,6 +46,6 @@ public static class HttpErrors
     /// <returns>NullOrEmpty error</returns>
     public static Error InvalidBatchCommand(string batchCommand)
     {
-        return new($"{nameof(Error)}.{batchCommand}", $"{batchCommand} is invalid");
+        return new($"{nameof(Error)}.{nameof(InvalidBatchCommand)}", $"{batchCommand} is invalid");
     }
 }

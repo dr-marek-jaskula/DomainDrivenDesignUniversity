@@ -2,7 +2,7 @@
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Results;
 using Shopway.Domain.BaseTypes;
-using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Errors.Domain.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Domain.ValueObjects;

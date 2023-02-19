@@ -9,7 +9,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
-using static Shopway.Domain.Errors.DomainErrors;
+using static Shopway.Domain.Errors.Domain.DomainErrors;
 
 namespace Shopway.Application.CQRS.Users.Commands.CreateUser;
 

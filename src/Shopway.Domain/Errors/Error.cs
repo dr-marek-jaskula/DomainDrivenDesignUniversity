@@ -61,7 +61,10 @@ public class Error : IEquatable<Error>
         return a.Equals(b);
     }
 
-    public static bool operator !=(Error? a, Error? b) => !(a == b);
+    public static bool operator !=(Error? a, Error? b)
+    {
+        return !(a == b);
+    }
 
     /// <inheritdoc />
     public virtual bool Equals(Error? other)
