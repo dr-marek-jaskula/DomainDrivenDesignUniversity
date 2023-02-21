@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Shopway.Domain.ValueObjects;
 
-namespace Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
+namespace Shopway.Application.CQRS.Products.Commands.UpdateReview;
 
 internal sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewCommand>
 {

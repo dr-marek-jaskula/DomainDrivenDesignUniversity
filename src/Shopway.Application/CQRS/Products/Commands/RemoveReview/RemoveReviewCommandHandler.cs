@@ -4,7 +4,7 @@ using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Application.Utilities;
 
-namespace Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
+namespace Shopway.Application.CQRS.Products.Commands.RemoveReview;
 
 internal sealed class RemoveReviewCommandHandler : ICommandHandler<RemoveReviewCommand, RemoveReviewResponse>
 {

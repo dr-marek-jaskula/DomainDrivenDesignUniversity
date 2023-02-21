@@ -1,5 +1,5 @@
 ﻿using RestSharp;
-using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
+using Shopway.Application.CQRS.Products.Commands.AddReview;
 using Shopway.Domain.Entities;
 using static System.Net.HttpStatusCode;
 

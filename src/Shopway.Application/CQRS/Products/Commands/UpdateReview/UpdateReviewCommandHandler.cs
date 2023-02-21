@@ -8,7 +8,7 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Entities;
 
-namespace Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
+namespace Shopway.Application.CQRS.Products.Commands.UpdateReview;
 
 internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewCommand, UpdateReviewResponse>
 {

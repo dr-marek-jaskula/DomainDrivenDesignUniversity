@@ -8,7 +8,7 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Application.Utilities;
 using Shopway.Persistence.Abstractions;
 
-namespace Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
+namespace Shopway.Application.CQRS.Products.Commands.AddReview;
 
 internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand, AddReviewResponse>
 {

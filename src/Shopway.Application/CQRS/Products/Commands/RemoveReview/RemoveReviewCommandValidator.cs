@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
+namespace Shopway.Application.CQRS.Products.Commands.RemoveReview;
 
 internal sealed class RemoveReviewCommandValidator : AbstractValidator<RemoveReviewCommand>
 {

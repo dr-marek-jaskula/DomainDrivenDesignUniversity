@@ -1,6 +1,6 @@
-﻿using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
-using Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
-using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
+﻿using Shopway.Application.CQRS.Products.Commands.AddReview;
+using Shopway.Application.CQRS.Products.Commands.RemoveReview;
+using Shopway.Application.CQRS.Products.Commands.UpdateReview;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 

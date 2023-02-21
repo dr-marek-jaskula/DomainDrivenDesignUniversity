@@ -1,6 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 
-namespace Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
+namespace Shopway.Application.CQRS.Products.Commands.RemoveReview;
 
 public sealed record RemoveReviewResponse
 (

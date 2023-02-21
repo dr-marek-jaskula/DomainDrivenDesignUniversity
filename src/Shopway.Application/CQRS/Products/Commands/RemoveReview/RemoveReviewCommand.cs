@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.EntityIds;
 
-namespace Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
+namespace Shopway.Application.CQRS.Products.Commands.RemoveReview;
 
 public sealed record RemoveReviewCommand
 (

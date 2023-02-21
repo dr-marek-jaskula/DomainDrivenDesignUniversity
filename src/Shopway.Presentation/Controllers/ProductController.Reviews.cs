@@ -1,29 +1,23 @@
-﻿using MediatR;
-using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Presentation.Abstractions;
 using Shopway.Domain.EntityIds;
-using Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
-using Shopway.Application.CQRS.Products.Commands.Reviews.RemoveReview;
 using Shopway.Infrastructure.Authentication;
-using Shopway.Application.CQRS.Products.Commands.Reviews.UpdateReview;
+using Shopway.Application.CQRS.Products.Commands.AddReview;
+using Shopway.Application.CQRS.Products.Commands.RemoveReview;
+using Shopway.Application.CQRS.Products.Commands.UpdateReview;
 
 namespace Shopway.Presentation.Controllers;
 
-[Route("api/Product/{productId}/[controller]")]
-public sealed class ReviewController : ApiController
+partial class ProductController
 {
-    public ReviewController(ISender sender)
-        : base(sender)
-    {
-    }
+    private const string Review = nameof(Review);
 
-    [HttpPost()]
+    [HttpPost("{productId}/" + Review)]
     [HasPermission(Permission.CRUD_Review)]
-    public async Task<IActionResult> Add(
-        [FromRoute] ProductId productId,
-        [FromBody] AddReviewCommand.AddReviewRequestBody body,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> AddReview(
+            [FromRoute] ProductId productId,
+            [FromBody] AddReviewCommand.AddReviewRequestBody body,
+            CancellationToken cancellationToken)
     {
         var command = new AddReviewCommand(productId, body);
 
@@ -37,9 +31,10 @@ public sealed class ReviewController : ApiController
         return Ok(result.Value);
     }
 
-    [HttpPatch("{reviewId}")]
+
+    [HttpPatch("{productId}/" + Review + "/{reviewId}")]
     [HasPermission(Permission.CRUD_Review)]
-    public async Task<IActionResult> Update(
+    public async Task<IActionResult> UpdateReview(
         [FromRoute] ProductId productId,
         [FromRoute] ReviewId reviewId,
         [FromBody] UpdateReviewCommand.UpdateReviewRequestBody body,
@@ -57,9 +52,9 @@ public sealed class ReviewController : ApiController
         return Ok(result.Value);
     }
 
-    [HttpDelete("{reviewId}")]
+    [HttpDelete("{productId}/" + Review + "/{reviewId}")]
     [HasPermission(Permission.CRUD_Review)]
-    public async Task<IActionResult> Remove(
+    public async Task<IActionResult> RemoveReview(
         [FromRoute] RemoveReviewCommand command,
         CancellationToken cancellationToken)
     {

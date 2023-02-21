@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Shopway.Application.CQRS.Products.Commands.Reviews.AddReview;
+namespace Shopway.Application.CQRS.Products.Commands.AddReview;
 
 internal sealed class AddReviewCommandValidator : AbstractValidator<AddReviewCommand>
 {
