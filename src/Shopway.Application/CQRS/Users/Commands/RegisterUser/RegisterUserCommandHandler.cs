@@ -11,22 +11,22 @@ using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
 
-namespace Shopway.Application.CQRS.Users.Commands.CreateUser;
+namespace Shopway.Application.CQRS.Users.Commands.RegisterUser;
 
-internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, CreateUserResponse>
+internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, RegisterUserResponse>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IValidator _validator;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IValidator validator, IPasswordHasher<User> passwordHasher)
+    public RegisterUserCommandHandler(IUserRepository userRepository, IValidator validator, IPasswordHasher<User> passwordHasher)
     {
         _validator = validator;
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<IResult<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<RegisterUserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         ValidationResult<Email> emailResult = Email.Create(request.Email);
         ValidationResult<Username> usernameResult = Username.Create(request.Username);
@@ -43,7 +43,7 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<CreateUserResponse>();
+            return _validator.Failure<RegisterUserResponse>();
         }
 
         var result = AddUser(emailResult.Value, usernameResult.Value, passwordResult.Value);
@@ -51,7 +51,7 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
         return result;
     }
 
-    private IResult<CreateUserResponse> AddUser(Email email, Username username, Password password)
+    private IResult<RegisterUserResponse> AddUser(Email email, Username username, Password password)
     {
         var user = User.Create(UserId.New(), username, email);
 
@@ -62,7 +62,7 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<CreateUserResponse>();
+            return _validator.Failure<RegisterUserResponse>();
         }
 
         user.SetHashedPassword(passwordHashResult.Value);

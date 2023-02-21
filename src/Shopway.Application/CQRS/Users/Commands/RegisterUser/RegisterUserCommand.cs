@@ -1,8 +1,8 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
 
-namespace Shopway.Application.CQRS.Users.Commands.CreateUser;
+namespace Shopway.Application.CQRS.Users.Commands.RegisterUser;
 
-public sealed record CreateUserCommand
+public sealed record RegisterUserCommand
 (
     string Username,
     string Email,
@@ -10,4 +10,4 @@ public sealed record CreateUserCommand
     string ConfirmPassword
 
 ) 
-    : ICommand<CreateUserResponse>;
+    : ICommand<RegisterUserResponse>;

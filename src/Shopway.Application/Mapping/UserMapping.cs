@@ -1,12 +1,12 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Application.CQRS.Users.Commands.CreateUser;
+using Shopway.Application.CQRS.Users.Commands.RegisterUser;
 
 namespace Shopway.Application.Mapping;
 
 public static class UserMapping
 {
-    public static CreateUserResponse ToCreateResponse(this User userToCreate)
+    public static RegisterUserResponse ToCreateResponse(this User userToCreate)
     {
-        return new CreateUserResponse(userToCreate.Id.Value);
+        return new RegisterUserResponse(userToCreate.Id.Value);
     }
 }

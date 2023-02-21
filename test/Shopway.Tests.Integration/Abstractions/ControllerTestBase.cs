@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestSharp;
 using RestSharp.Authenticators;
-using Shopway.Application.CQRS.Users.Commands.CreateUser;
+using Shopway.Application.CQRS.Users.Commands.RegisterUser;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
 using Shopway.Domain.Entities;
 using Shopway.Tests.Integration.Persistance;
@@ -132,7 +132,7 @@ public abstract class ControllerTestsBase : IDisposable
             return;
         }
 
-        var registerCommand = new CreateUserCommand(TestUser.Username, TestUser.Email, TestUser.Password, TestUser.Password);
+        var registerCommand = new RegisterUserCommand(TestUser.Username, TestUser.Email, TestUser.Password, TestUser.Password);
 
         var registerRequest = PostRequest(nameof(UserController.Register), registerCommand);
 

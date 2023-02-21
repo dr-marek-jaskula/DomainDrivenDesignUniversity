@@ -22,7 +22,7 @@ internal sealed class ProductPageQueryValidator : AbstractValidator<ProductPageQ
 
         RuleFor(query => query.Order)
             .Must(ValidateProductPageOrder)
-            .WithMessage("Invalid SortBy or ThenBy: Single SortBy can be select and if so, single ThenBy can be chosen");
+            .WithMessage("Invalid SortBy or ThenBy: Single SortBy can be selected and if so, single ThenBy can be chosen");
     }
 
     private static bool ValidateProductPageOrder(ProductOrder? productPageOrder)

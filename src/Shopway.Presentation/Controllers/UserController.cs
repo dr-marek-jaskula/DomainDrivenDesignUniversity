@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Shopway.Presentation.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Shopway.Presentation.Abstractions;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
-using Shopway.Application.CQRS.Users.Commands.CreateUser;
+using Shopway.Application.CQRS.Users.Commands.RegisterUser;
 
 namespace Gatherly.Presentation.Controllers;
 
@@ -33,7 +33,7 @@ public sealed class UserController : ApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Register
     (
-        [FromBody] CreateUserCommand command,
+        [FromBody] RegisterUserCommand command,
         CancellationToken cancellationToken
     )
     {
