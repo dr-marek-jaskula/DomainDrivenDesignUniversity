@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
-namespace Shopway.App.Options;
+namespace Shopway.Infrastructure.Options;
 
 public sealed class CacheOptionsSetup : IConfigureOptions<CacheOptions>
 {

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Abstractions;
 using IResult = Shopway.Domain.Abstractions.IResult;
-using static Shopway.Presentation.Utilities.ProblemDetailsUtilities;
+using static Shopway.Application.Utilities.ProblemDetailsUtilities;
+using static Shopway.Application.Constants.ProblemDetailsConstants;
 
 namespace Shopway.Presentation.Abstractions;
 
@@ -26,14 +27,14 @@ public abstract class ApiController : ControllerBase
 
             IValidationResult validationResult => BadRequest(
                     CreateProblemDetails(
-                        "Validation Error", 
+                        ValidationError, 
                         StatusCodes.Status400BadRequest,
                         result.Error,
                         validationResult.ValidationErrors)),
 
             _ => BadRequest(
                     CreateProblemDetails(
-                        "BadRequest",
+                        InvalidRequest,
                         StatusCodes.Status400BadRequest,
                         result.Error))
         };

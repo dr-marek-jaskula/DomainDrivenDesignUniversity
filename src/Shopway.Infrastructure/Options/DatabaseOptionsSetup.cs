@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 
-namespace Shopway.App.Options;
+namespace Shopway.Infrastructure.Options;
 
 public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
 {

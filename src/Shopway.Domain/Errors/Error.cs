@@ -21,6 +21,11 @@ public class Error : IEquatable<Error>
     public static readonly Error ConditionNotSatisfied = new($"{nameof(Error)}.{nameof(ConditionNotSatisfied)}", "The specified condition was not satisfied.");
 
     /// <summary>
+    /// The validation error instance
+    /// </summary>
+    public static readonly Error ValidationError = new($"{nameof(ValidationError)}", "A validation problem occurred.");
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Error"/> class
     /// </summary>
     /// <param name="code">The error code</param>

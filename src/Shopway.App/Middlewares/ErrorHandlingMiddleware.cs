@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Errors;
 using Shopway.Presentation.Exceptions;
-using static Shopway.Presentation.Utilities.ProblemDetailsUtilities;
+using static Shopway.Application.Utilities.ProblemDetailsUtilities;
+using static Shopway.Application.Constants.ProblemDetailsConstants;
 
 namespace Shopway.App.Middlewares;
 
@@ -49,9 +49,9 @@ public sealed class ErrorHandlingMiddleware : IMiddleware
     {
         var problemDetails = CreateProblemDetails
         (
-           title: "An unrecoverable error occurred",
+           title: ExceptionOccured,
            status: context.Response.StatusCode,
-           new Error("https://Shopway.com", exception.Message),
+           HttpErrors.Exception(exception.Message),
            context: context
         );
 

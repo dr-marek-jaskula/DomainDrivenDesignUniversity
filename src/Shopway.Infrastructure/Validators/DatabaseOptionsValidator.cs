@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Shopway.Domain.Utilities;
+using Shopway.Infrastructure.Options;
 
-namespace Shopway.App.Options;
+namespace Shopway.Infrastructure.Validators;
 
 public sealed class DatabaseOptionsValidator : IValidateOptions<DatabaseOptions>
 {

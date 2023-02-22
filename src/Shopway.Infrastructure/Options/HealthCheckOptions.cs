@@ -1,4 +1,4 @@
-﻿namespace Shopway.App.Options;
+﻿namespace Shopway.Infrastructure.Options;
 
 public sealed class HealthOptions
 {

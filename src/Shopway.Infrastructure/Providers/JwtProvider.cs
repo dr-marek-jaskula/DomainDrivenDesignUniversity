@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Entities;
-using Shopway.Infrastructure.Authentication;
+using Shopway.Infrastructure.Options;
 using Shopway.Infrastructure.Policies;
 
 namespace Shopway.Infrastructure.Providers;

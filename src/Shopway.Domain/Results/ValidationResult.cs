@@ -6,7 +6,7 @@ namespace Shopway.Domain.Results;
 public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
 {
     private ValidationResult(Error[] validationErrors)
-        : base(default, false, IValidationResult.ValidationError)
+        : base(default, false, Error.ValidationError)
     {
         ValidationErrors = validationErrors;
     }
@@ -43,7 +43,7 @@ public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
 public sealed class ValidationResult : Result, IValidationResult
 {
     private ValidationResult(Error[] validationErrors)
-        : base(false, IValidationResult.ValidationError)
+        : base(false, Error.ValidationError)
     {
         ValidationErrors = validationErrors;
     }

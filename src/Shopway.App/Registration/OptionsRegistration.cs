@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using Shopway.App.Options;
-using Shopway.Infrastructure.Authentication;
+using Shopway.Infrastructure.Options;
+using Shopway.Infrastructure.Validators;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

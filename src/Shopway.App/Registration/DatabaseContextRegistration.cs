@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Shopway.App.Options;
+using Shopway.Infrastructure.Options;
 using Shopway.Persistence.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;

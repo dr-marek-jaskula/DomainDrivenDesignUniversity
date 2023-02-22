@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Options;
-using Shopway.Infrastructure.Authentication;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
-namespace Shopway.App.Options;
+namespace Shopway.Infrastructure.Options;
 
 public sealed class AuthenticationOptionsSetup : IConfigureOptions<AuthenticationOptions>
 {

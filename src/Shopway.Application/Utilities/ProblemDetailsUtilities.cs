@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Errors;
+using static Shopway.Application.Constants.ProblemDetailsConstants;
 
-namespace Shopway.Presentation.Utilities;
+namespace Shopway.Application.Utilities;
 
 public static class ProblemDetailsUtilities
 {
@@ -24,7 +25,7 @@ public static class ProblemDetailsUtilities
 
         if (context is not null)
         {
-            problemDetails.Extensions.Add("RequestId", context.TraceIdentifier);
+            problemDetails.Extensions.Add(RequestId, context.TraceIdentifier);
             problemDetails.Instance = context.Request.Path;
         }
 

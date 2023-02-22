@@ -1,8 +1,8 @@
 ﻿using Shopway.Infrastructure.Resolvers;
 using Newtonsoft.Json.Converters;
-using ApiBehaviorOptions = Shopway.App.Options.ApiBehaviorOptions;
 using static Newtonsoft.Json.ReferenceLoopHandling;
 using static Newtonsoft.Json.Formatting;
+using ApiBehaviorOptions = Shopway.Infrastructure.Options.ApiBehaviorOptions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

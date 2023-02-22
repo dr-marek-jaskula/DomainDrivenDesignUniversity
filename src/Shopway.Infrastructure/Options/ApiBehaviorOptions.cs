@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames.Application;
+using static Shopway.Application.Utilities.ProblemDetailsUtilities;
+using static Shopway.Application.Constants.ProblemDetailsConstants;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState;
-using static Shopway.Presentation.Utilities.ProblemDetailsUtilities;
 
-namespace Shopway.App.Options;
+namespace Shopway.Infrastructure.Options;
 
 public static class ApiBehaviorOptions
 {
@@ -17,8 +19,8 @@ public static class ApiBehaviorOptions
                 .ToList();
 
             var problemDetails = CreateProblemDetails(
-                        "https://Shopway.com",
-                        "Invalid request body or request parameters",
+                        InvalidRequest,
+                        InvalidRequestTitle,
                         StatusCodes.Status400BadRequest,
                         errors);
 

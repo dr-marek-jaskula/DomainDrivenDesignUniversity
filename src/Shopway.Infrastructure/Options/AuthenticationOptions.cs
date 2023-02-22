@@ -1,4 +1,4 @@
-﻿namespace Shopway.Infrastructure.Authentication;
+﻿namespace Shopway.Infrastructure.Options;
 
 public sealed class AuthenticationOptions
 {

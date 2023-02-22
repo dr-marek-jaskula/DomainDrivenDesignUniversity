@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json.Linq;
-using Shopway.App.Options;
+using Shopway.Infrastructure.Options;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Framework;
 using static Newtonsoft.Json.Formatting;

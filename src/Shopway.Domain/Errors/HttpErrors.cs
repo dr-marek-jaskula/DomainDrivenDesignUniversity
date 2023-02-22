@@ -48,4 +48,14 @@ public static class HttpErrors
     {
         return new($"{nameof(Error)}.{nameof(InvalidBatchCommand)}", $"{batchCommand} is invalid");
     }
+
+    /// <summary>
+    /// Create an Error from the thrown exception
+    /// </summary>
+    /// <param name="exceptionMessage">Exception message</param>
+    /// <returns>Error</returns>
+    public static Error Exception(string exceptionMessage)
+    {
+        return new Error($"{nameof(Error)}.{nameof(Exception)}", exceptionMessage);
+    }
 }

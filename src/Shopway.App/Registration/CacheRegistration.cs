@@ -1,4 +1,4 @@
-﻿using Shopway.App.Options;
+﻿using Shopway.Infrastructure.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
