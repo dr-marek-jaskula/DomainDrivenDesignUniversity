@@ -28,7 +28,7 @@ public abstract class BaseRepository
     /// <typeparam name="TEntity">Entity type</typeparam>
     /// <param name="inputQueryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Concrete specification</param>
-    /// <returns></returns>
+    /// <returns>Query</returns>
     private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(
         IQueryable<TEntity> inputQueryable,
         BaseSpecification<TEntity, TEntityId> specification)

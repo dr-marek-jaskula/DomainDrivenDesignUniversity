@@ -1,6 +1,6 @@
 namespace Shopway.Presentation.Exceptions;
 
-public class ForbidException : Exception
+public sealed class ForbidException : Exception
 {
     public ForbidException(string message) : base(message)
     {

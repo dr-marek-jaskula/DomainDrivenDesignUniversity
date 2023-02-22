@@ -14,6 +14,7 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
 
         builder.HasKey(x => new { x.RoleId, x.PermissionId });
 
+        //Insert static data
         builder.HasData
         (
             Create(Role.Administrator, Permission.Read),

@@ -22,7 +22,7 @@ public class PermissionRequirementHandler : AuthorizationHandler<PermissionRequi
             .Claims
             .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-        if (!Guid.TryParse(userId, out Guid parsedUserId))
+        if (Guid.TryParse(userId, out Guid parsedUserId) is false)
         {
             return;
         }

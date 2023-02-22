@@ -134,7 +134,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     /// <param name="request">Request for which the builder will be created</param>
     /// <param name="successStatus">Status that will used a builder success status</param>
     /// <returns>Created request entry builder</returns>
-    /// <exception cref="ArgumentNullException">The Request to ResponseKey mapper must be provided before the use of this method</exception>
+    /// <exception cref="InvalidOperationException">The Request-to-ResponseKey mapper must be provided before the use of this method</exception>
     private IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> CreateResponseEntryBuilder
     (
         TBatchRequest request,
@@ -143,7 +143,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     {
         if (_mapFromRequestToResponseKey is null)
         {
-            throw new ArgumentNullException("The Request to ResponseKey mapper is null. User SetRequestToResponseKeyMapper method to set mapper.");
+            throw new InvalidOperationException($"The Request-to-ResponseKey mapper is null. Use '{nameof(SetRequestToResponseKeyMapper)}' method to set mapper.");
         }
 
         var responseKey = _mapFromRequestToResponseKey(request);

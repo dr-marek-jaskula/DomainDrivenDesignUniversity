@@ -1,9 +1,9 @@
 ﻿using Shopway.Domain.Results;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
+using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
-using Shopway.Domain.Utilities;
 
 namespace Shopway.Domain.ValueObjects;
 

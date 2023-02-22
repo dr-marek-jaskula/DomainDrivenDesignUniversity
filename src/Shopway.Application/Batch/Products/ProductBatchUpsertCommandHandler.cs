@@ -10,6 +10,7 @@ using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Persistence.Abstractions;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.Batch.BatchEntryStatus;
 using static Shopway.Application.Mapping.ProductMapping;

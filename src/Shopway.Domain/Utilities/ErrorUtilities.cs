@@ -2,11 +2,6 @@
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
-using Shopway.Domain.ValueObjects;
-using System.Diagnostics.Metrics;
-using System.IO;
-using System.Linq.Expressions;
-using System.Reflection.Emit;
 
 namespace Shopway.Domain.Utilities;
 
@@ -36,8 +31,8 @@ public static class ErrorUtilities
     /// <typeparam name="TValueObject"></typeparam>
     /// <param name="errors">Not null collection of errors</param>
     /// <param name="createValueObject">Delegate that specifies how to create the value object</param>
-    /// <returns>ValidationReuslt</returns>
-    /// <exception cref="InvalidOperationException">Thrown if errors collection is null</exception>
+    /// <returns>ValidationResult</returns>
+    /// <exception cref="ArgumentNullException">Thrown if errors collection is null</exception>
     public static ValidationResult<TValueObject> CreateValidationResult<TValueObject>
     (
         this ICollection<Error> errors,
@@ -47,7 +42,7 @@ public static class ErrorUtilities
     {
         if (errors is null)
         {
-            throw new InvalidOperationException($"{nameof(errors)} must not be null");
+            throw new ArgumentNullException($"{nameof(errors)} must not be null");
         }
 
         if (errors.Any())

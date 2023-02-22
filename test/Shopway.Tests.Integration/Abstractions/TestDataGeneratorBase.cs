@@ -2,6 +2,7 @@
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Entities.Parents;
+using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Tests.Integration.Utilities;
 using static Shopway.Domain.Utilities.RandomUtilities;

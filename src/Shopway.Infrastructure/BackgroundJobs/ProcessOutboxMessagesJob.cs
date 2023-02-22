@@ -38,7 +38,7 @@ public sealed class ProcessOutboxMessagesJob : IJob
             .Take(20)
             .ToListAsync(context.CancellationToken);
 
-        if (!messages.Any())
+        if (messages.Any() is false)
         {
             return;
         }

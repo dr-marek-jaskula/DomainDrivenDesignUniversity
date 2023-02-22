@@ -4,6 +4,7 @@ using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.CQRS;
 using Shopway.Domain.Abstractions;
+using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 
 namespace Shopway.Application.Pipelines.CQRS;

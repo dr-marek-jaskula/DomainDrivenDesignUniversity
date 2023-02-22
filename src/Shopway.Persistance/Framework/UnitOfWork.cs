@@ -3,22 +3,12 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.BaseTypes;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Outbox;
 
 namespace Shopway.Persistence.Framework;
 
-public interface IUnitOfWork<TContext>
-    where TContext : DbContext
-{
-    public TContext Context { get; }
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
-    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
-    IExecutionStrategy CreateExecutionStrategy();
-}
-
-//The UnitOfWork class to handler transactions
+//UnitOfWork class to handler transactions
 //Benefits:
 //1. We do not want to pollute the application layer with entity framework
 //2. We do not expose any implementation details when we inject IUnitOfWork interface
@@ -72,9 +62,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
             .SelectMany(aggregateRoot =>
             {
                 var domainEvents = aggregateRoot.DomainEvents;
-
                 aggregateRoot.ClearDomainEvents();
-
                 return domainEvents;
             })
             .Select(domainEvent => new OutboxMessage

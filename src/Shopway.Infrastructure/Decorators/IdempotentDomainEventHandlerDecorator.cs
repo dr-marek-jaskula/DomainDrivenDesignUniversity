@@ -25,11 +25,12 @@ public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent> : IDomai
     {
         string consumer = _decorated.GetType().Name;
 
-        bool isConsumerAlreadyProcessed = await _dbContext.Set<OutboxMessageConsumer>()
-                            .AnyAsync(outboxMessageConsumer =>
-                            outboxMessageConsumer.Id == notification.Id 
-                            && outboxMessageConsumer.Name == consumer,
-                            cancellationToken);
+        bool isConsumerAlreadyProcessed = await _dbContext
+            .Set<OutboxMessageConsumer>()
+            .AnyAsync(outboxMessageConsumer =>
+                outboxMessageConsumer.Id == notification.Id 
+                && outboxMessageConsumer.Name == consumer,
+                cancellationToken);
 
         if (isConsumerAlreadyProcessed)
         {

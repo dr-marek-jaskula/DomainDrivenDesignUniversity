@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Shopway.Infrastructure.Options;
+using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,6 @@ public static class DatabaseContextRegistration
                     databaseOptions.MaxRetryCount,
                     TimeSpan.FromSeconds(databaseOptions.MaxRetryDelay),
                     Array.Empty<int>());
-
             });
 
             if (isDevelopment)

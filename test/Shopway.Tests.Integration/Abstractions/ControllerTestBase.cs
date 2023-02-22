@@ -15,10 +15,10 @@ using Shopway.Tests.Integration.Configurations;
 using Shopway.Tests.Integration.Constants;
 using Shopway.Domain.Enumerations;
 using Shopway.Tests.Integration.ControllersUnderTest;
+using Shopway.Domain.Errors;
 using static RestSharp.Method;
 using static Shopway.Application.Constants.ProblemDetailsConstants;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
-using Shopway.Domain.Errors;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
@@ -28,8 +28,8 @@ public abstract class ControllerTestsBase : IDisposable
     private readonly RestClient _userClient;
     protected readonly string _controllerUri;
     protected readonly IServiceScope Scope;
-    protected readonly IntegrationTestsUrlOptions integrationTestsUrlOptions;
     protected readonly ApiKeyTestOptions apiKeys;
+    protected readonly IntegrationTestsUrlOptions integrationTestsUrlOptions;
 
     public ControllerTestsBase(DependencyInjectionContainerTestFixture containerTestFixture)
     {

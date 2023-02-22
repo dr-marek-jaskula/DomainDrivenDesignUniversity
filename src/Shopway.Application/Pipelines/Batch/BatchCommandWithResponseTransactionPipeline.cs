@@ -4,6 +4,7 @@ using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Application.Abstractions.Batch;
 using Microsoft.EntityFrameworkCore;
+using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Application.Pipelines.Batch;
 

@@ -1,6 +1,6 @@
 namespace Shopway.Presentation.Exceptions;
 
-public class UnavailableException : Exception
+public sealed class UnavailableException : Exception
 {
     public UnavailableException(string message) : base(message)
     {

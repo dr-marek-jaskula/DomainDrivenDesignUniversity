@@ -12,7 +12,7 @@ public sealed class RequiredPropertiesCamelCaseContractResolver : CamelCasePrope
 
         foreach (var contractProperty in contract.Properties)
         {
-            if (contractProperty?.PropertyType?.IsValueType == true
+            if (contractProperty?.PropertyType?.IsValueType is true
                 && contractProperty?.AttributeProvider?.GetAttributes(typeof(RequiredAttribute), inherit: true).Count > 0)
             {
                 contractProperty.Required = Always;

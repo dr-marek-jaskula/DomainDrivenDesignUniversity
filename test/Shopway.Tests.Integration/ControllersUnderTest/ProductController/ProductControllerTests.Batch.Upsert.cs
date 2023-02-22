@@ -2,9 +2,9 @@
 using Shopway.Application.Batch;
 using Shopway.Application.Batch.Products;
 using Shopway.Tests.Integration.Utilities;
-using Shopway.Domain.ValueObjects;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Utilities.ListUtilities;
+using static Shopway.Domain.Errors.Domain.DomainErrors.ProductNameError;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
@@ -82,11 +82,11 @@ public partial class ProductControllerTests
         errorEntry
             .Errors
             .Should()
-            .Contain($"ProductName must be at most {ProductName.MaxLength} characters long");
+            .Contain(TooLong.Message);
 
         errorEntry
             .Errors
             .Should()
-            .Contain("ProductName contains illegal character");
+            .Contain(ContainsIllegalCharacter.Message);
     }
 }

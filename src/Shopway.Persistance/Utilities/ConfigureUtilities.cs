@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.BaseTypes;
 using Shopway.Persistence.Constants;
 
 namespace Shopway.Persistence.Utilities;

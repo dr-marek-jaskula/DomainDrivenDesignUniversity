@@ -5,7 +5,6 @@ namespace Shopway.Persistence.Converters;
 
 //Used for conversion from DateTimeOffset to DateOnly and backwards.
 //The example of use is done in PersonConfiguration
-
 public sealed class DateOnlyConverter : ValueConverter<DateOnly, DateTimeOffset>
 {
     public DateOnlyConverter() : base(dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue), dateTime => DateOnly.FromDateTime(dateTime.DateTime))

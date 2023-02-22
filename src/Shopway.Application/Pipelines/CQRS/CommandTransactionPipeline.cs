@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions;
+using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 
 namespace Shopway.Application.Pipelines.CQRS;

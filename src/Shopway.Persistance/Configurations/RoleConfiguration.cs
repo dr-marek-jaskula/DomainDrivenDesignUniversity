@@ -26,7 +26,7 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
         builder.HasMany(r => r.Users)
             .WithMany(u => u.Roles);
 
-        //Inserting static data (data that are not related to other)
+        //Insert static data
         builder.HasData(Role.List);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Tests.Integration.Abstractions;
 
@@ -40,7 +41,6 @@ public sealed class TestDataGenerator : TestDataGeneratorBase
 
         await AddEntity(product);
 
-        return product
-            .Id;
+        return product.Id;
     }
 }
