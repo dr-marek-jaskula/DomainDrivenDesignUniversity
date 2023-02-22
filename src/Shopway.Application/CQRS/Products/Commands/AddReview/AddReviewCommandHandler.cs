@@ -7,6 +7,8 @@ using Shopway.Domain.Results;
 using Shopway.Domain.ValueObjects;
 using Shopway.Application.Utilities;
 using Shopway.Persistence.Abstractions;
+using Shopway.Domain.Entities;
+using Shopway.Domain.EntityIds;
 
 namespace Shopway.Application.CQRS.Products.Commands.AddReview;
 
@@ -43,11 +45,24 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
             return _validator.Failure<AddReviewResponse>();
         }
 
-        var reviewToAdd = product
-            .AddReview(titleResult.Value, descriptionResult.Value, usernameResult.Value, starsResult.Value);
+        Review reviewToAdd = CreateReview(titleResult.Value, descriptionResult.Value, usernameResult.Value, starsResult.Value);
+
+        product.AddReview(reviewToAdd);
 
         return reviewToAdd
             .ToAddResponse()
             .ToResult();
+    }
+
+    private static Review CreateReview(Title title, Description description, Username username, Stars stars)
+    {
+        return Review.Create
+        (
+            ReviewId.New(),
+            title,
+            description,
+            username,
+            stars
+        );
     }
 }

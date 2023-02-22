@@ -59,23 +59,13 @@ public sealed class Product : AggregateRoot<ProductId>, IAuditable
         return product;
     }
 
-    public Review AddReview(Title title, Description description, Username username, Stars stars)
+    public Review AddReview(Review review)
     {
-        Review reviewToAdd = Review.Create
-        (
-            ReviewId.New(),
-            Id, 
-            title, 
-            description, 
-            username, 
-            stars
-        );
-
-        _reviews.Add(reviewToAdd);
+        _reviews.Add(review);
         
-        RaiseDomainEvent(ReviewAddedDomainEvent.New(reviewToAdd.Id, Id));
+        RaiseDomainEvent(ReviewAddedDomainEvent.New(review.Id, Id));
 
-        return reviewToAdd;
+        return review;
     }
 
     public bool RemoveReview(Review review)

@@ -9,7 +9,6 @@ public sealed class Review : Entity<ReviewId>, IAuditable
 {
     private Review(
         ReviewId reviewId,
-        ProductId productId,
         Title title,
         Description description,
         Username username,
@@ -20,7 +19,6 @@ public sealed class Review : Entity<ReviewId>, IAuditable
         Stars = stars;
         Title = title;
         Description = description;
-        ProductId = productId;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -41,14 +39,13 @@ public sealed class Review : Entity<ReviewId>, IAuditable
     public static Review Create
     (
         ReviewId reviewId,
-        ProductId productId,
         Title title,
         Description description,
         Username username,
         Stars stars
     )
     {
-        var review = new Review(reviewId, productId, title, description, username, stars);
+        var review = new Review(reviewId, title, description, username, stars);
 
         return review;
     }
