@@ -6,7 +6,7 @@ This project presents the domain driven design concepts.
 
 ### .App
 
-This layer should register dependencies, set middlewares, provide options and run the program
+This layer should register dependencies, set middlewares and run the program
 
 ### .Presentation
 
@@ -24,7 +24,7 @@ Therefore, we place here handler pipelines, CQRS structure and mappings.
 
 This layer should provide additional tools that we are going to use.
 
-Therefore, we place here services, validators, adapters, providers, policies, background jobs and so on.
+Therefore, we place here services, options, validators, adapters, providers, policies, background jobs and so on.
 
 ### .Persistance
 
