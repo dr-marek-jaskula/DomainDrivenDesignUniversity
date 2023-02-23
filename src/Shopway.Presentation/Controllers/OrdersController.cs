@@ -6,9 +6,9 @@ using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
-public sealed class OrderController : ApiController
+public sealed class OrdersController : ApiController
 {
-    public OrderController(ISender sender)
+    public OrdersController(ISender sender)
         : base(sender)
     {
     }

@@ -4,10 +4,10 @@ using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Presentation.Controllers;
 
-public partial class ProductController
+public partial class ProductsController
 {
     [HttpPost("batch/upsert")]
-    public async Task<IActionResult> ProductBatchUpsert(
+    public async Task<IActionResult> ProductsBatchUpsert(
         [FromBody] ProductBatchUpsertCommand command,
         CancellationToken cancellationToken)
     {

@@ -6,9 +6,9 @@ using Shopway.Application.CQRS.Users.Commands.RegisterUser;
 
 namespace Gatherly.Presentation.Controllers;
 
-public sealed class UserController : ApiController
+public sealed class UsersController : ApiController
 {
-    public UserController(ISender sender)
+    public UsersController(ISender sender)
         : base(sender)
     {
     }

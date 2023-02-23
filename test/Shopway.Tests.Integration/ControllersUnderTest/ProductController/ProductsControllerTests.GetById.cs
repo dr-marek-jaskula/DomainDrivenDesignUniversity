@@ -8,7 +8,7 @@ using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
-public partial class ProductControllerTests
+public partial class ProductsControllerTests
 {
     [Fact]
     public async Task GetById_ShouldReturnProduct_WhenProductExists()

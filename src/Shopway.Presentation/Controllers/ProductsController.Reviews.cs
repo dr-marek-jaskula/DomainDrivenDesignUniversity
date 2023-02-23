@@ -8,11 +8,11 @@ using Shopway.Application.CQRS.Products.Commands.UpdateReview;
 
 namespace Shopway.Presentation.Controllers;
 
-partial class ProductController
+partial class ProductsController
 {
-    private const string Review = nameof(Review);
+    public const string Reviews = nameof(Reviews);
 
-    [HttpPost("{productId}/" + Review)]
+    [HttpPost("{productId}/" + Reviews)]
     [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> AddReview(
             [FromRoute] ProductId productId,
@@ -32,7 +32,7 @@ partial class ProductController
     }
 
 
-    [HttpPatch("{productId}/" + Review + "/{reviewId}")]
+    [HttpPatch("{productId}/" + Reviews + "/{reviewId}")]
     [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> UpdateReview(
         [FromRoute] ProductId productId,
@@ -52,7 +52,7 @@ partial class ProductController
         return Ok(result.Value);
     }
 
-    [HttpDelete("{productId}/" + Review + "/{reviewId}")]
+    [HttpDelete("{productId}/" + Reviews + "/{reviewId}")]
     [HasPermission(Permission.CRUD_Review)]
     public async Task<IActionResult> RemoveReview(
         [FromRoute] RemoveReviewCommand command,

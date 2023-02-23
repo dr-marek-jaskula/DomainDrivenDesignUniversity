@@ -9,7 +9,7 @@ using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
-public partial class ProductControllerTests
+public partial class ProductsControllerTests
 {
     [Fact]
     public async Task Batch_Upsert_ShouldReturnValidResponseEntries_WhenRequestsAreValid()

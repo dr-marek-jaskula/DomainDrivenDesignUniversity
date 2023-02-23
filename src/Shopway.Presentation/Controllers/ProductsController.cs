@@ -11,9 +11,9 @@ using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
 
 namespace Shopway.Presentation.Controllers;
 
-public sealed partial class ProductController : ApiController
+public sealed partial class ProductsController : ApiController
 {
-    public ProductController(ISender sender)
+    public ProductsController(ISender sender)
         : base(sender)
     {
     }
@@ -35,7 +35,7 @@ public sealed partial class ProductController : ApiController
     }
 
     [HttpGet()]
-    public async Task<IActionResult> QueryProduct(
+    public async Task<IActionResult> QueryProducts(
         [FromBody] ProductPageQuery query,
         CancellationToken cancellationToken)
     {

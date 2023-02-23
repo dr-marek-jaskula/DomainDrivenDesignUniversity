@@ -31,3 +31,7 @@ Due to the EntityIdConverter, the conversion from string in route to entity id o
 ## Authentication
 
 Authentication is described in the ReadMe.Infrastructe file.
+
+## Routing
+
+It is important to keep to the plural: use "products" not "product" for the route.

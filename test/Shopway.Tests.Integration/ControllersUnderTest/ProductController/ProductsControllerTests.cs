@@ -6,12 +6,12 @@ using static Shopway.Tests.Integration.Constants.CollectionNames;
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
 [Collection(ProductControllerCollection)]
-public sealed partial class ProductControllerTests : ControllerTestsBase, IAsyncLifetime
+public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyncLifetime
 {
     private RestClient? _restClient;
     private readonly DatabaseFixture _fixture;
 
-    public ProductControllerTests(DatabaseFixture databaseFixture, DependencyInjectionContainerTestFixture containerTestFixture) 
+    public ProductsControllerTests(DatabaseFixture databaseFixture, DependencyInjectionContainerTestFixture containerTestFixture) 
         : base(containerTestFixture)
     {
         _fixture = databaseFixture;

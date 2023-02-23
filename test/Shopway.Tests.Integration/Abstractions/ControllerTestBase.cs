@@ -47,7 +47,7 @@ public abstract class ControllerTestsBase : IDisposable
 
         ShopwayApiUrl = integrationTestsUrlOptions.ShopwayApiUrl!;
         _controllerUri = GetType().Name[..^ControllerTests.Length];
-        _userClient = new($"{ShopwayApiUrl}{nameof(User)}");
+        _userClient = new($"{ShopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ public abstract class ControllerTestsBase : IDisposable
 
         var registerCommand = new RegisterUserCommand(TestUser.Username, TestUser.Email, TestUser.Password, TestUser.Password);
 
-        var registerRequest = PostRequest(nameof(UserController.Register), registerCommand);
+        var registerRequest = PostRequest(nameof(UsersController.Register), registerCommand);
 
         await _userClient.PostAsync(registerRequest);
 
@@ -167,7 +167,7 @@ public abstract class ControllerTestsBase : IDisposable
     {
         var logCommand = new LogUserCommand(TestUser.Email, TestUser.Password);
 
-        var loginRequest = PostRequest(nameof(UserController.Login), logCommand);
+        var loginRequest = PostRequest(nameof(UsersController.Login), logCommand);
 
         var logResponse = await _userClient.PostAsync(loginRequest);
 

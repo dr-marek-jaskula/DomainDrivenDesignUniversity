@@ -1,11 +1,12 @@
 ﻿using RestSharp;
-using Shopway.Application.CQRS.Products.Commands.AddReview;
 using Shopway.Domain.Entities;
+using Shopway.Application.CQRS.Products.Commands.AddReview;
 using static System.Net.HttpStatusCode;
+using static Shopway.Presentation.Controllers.ProductsController;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ReviewController;
 
-public partial class ReviewControllerTests
+public partial class ReviewsControllerTests
 {
     [Fact]
     public async Task AddReview_ShouldAddReview_WhenValidData()
@@ -15,7 +16,7 @@ public partial class ReviewControllerTests
 
         var body = new AddReviewCommand.AddReviewRequestBody(2, "CustomTitle", "Description");
 
-        var request = PostRequest($"{generatedProductId.Result.Value}/{nameof(Review)}", body);
+        var request = PostRequest($"{generatedProductId.Result.Value}/{Reviews}", body);
 
         //Act
         var response = await _restClient!.PostAsync(request);
