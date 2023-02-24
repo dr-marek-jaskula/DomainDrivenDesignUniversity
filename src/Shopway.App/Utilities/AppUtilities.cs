@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using Shopway.Presentation.Exceptions;
+using Shopway.Application.Exceptions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

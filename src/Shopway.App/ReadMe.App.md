@@ -1,10 +1,3 @@
 ﻿# App Layer
 
-In this layer we:
-
-- Register dependencies
-- Set Middlewares
-
-
-
-
+In this layer we only register dependencies

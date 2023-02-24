@@ -1,4 +1,4 @@
-﻿using Shopway.App.Middlewares;
+﻿using Shopway.Application.Middlewares;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

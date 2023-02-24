@@ -6,7 +6,7 @@ This project presents the domain driven design concepts.
 
 ### .App
 
-This layer should register dependencies, set middlewares and run the program
+This layer should register dependencies and run the program
 
 ### .Presentation
 

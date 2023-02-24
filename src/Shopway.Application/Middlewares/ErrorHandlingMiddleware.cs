@@ -1,9 +1,10 @@
 ﻿using Shopway.Domain.Errors;
-using Shopway.Presentation.Exceptions;
+using Shopway.Application.Exceptions;
+using Microsoft.AspNetCore.Http;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
 using static Shopway.Application.Constants.ProblemDetailsConstants;
 
-namespace Shopway.App.Middlewares;
+namespace Shopway.Application.Middlewares;
 
 /// <summary>
 /// Middleware that provides exception handling. Each request needs to be processed by the following try-catch block

@@ -21,6 +21,7 @@ internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewC
         _validator = validator;
     }
 
+    //It is not preferred to make partial updates, but for tutorial purpose it is done here
     public async Task<IResult<UpdateReviewResponse>> Handle(UpdateReviewCommand command, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);

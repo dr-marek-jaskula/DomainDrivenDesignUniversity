@@ -1,4 +1,4 @@
-namespace Shopway.Presentation.Exceptions;
+namespace Shopway.Application.Exceptions;
 
 public sealed class BadRequestException : Exception
 {

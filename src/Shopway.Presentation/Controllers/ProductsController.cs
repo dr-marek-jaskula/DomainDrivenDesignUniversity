@@ -34,7 +34,7 @@ public sealed partial class ProductsController : ApiController
         return Ok(response);
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> QueryProducts(
         [FromBody] ProductPageQuery query,
         CancellationToken cancellationToken)
