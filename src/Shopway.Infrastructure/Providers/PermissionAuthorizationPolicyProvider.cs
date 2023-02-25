@@ -11,6 +11,11 @@ public class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyP
     {
     }
 
+    /// <summary>
+    /// Automatically registers the policies using PermissionRequirement when asked for the permission policy.
+    /// </summary>
+    /// <param name="policyName">Input policy</param>
+    /// <returns>Authorization policy with permission requirement</returns>
     public override async Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
     {
         AuthorizationPolicy? policy = await base.GetPolicyAsync(policyName);

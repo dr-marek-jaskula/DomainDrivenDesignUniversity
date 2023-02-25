@@ -31,7 +31,7 @@ internal sealed class JwtProvider : IJwtProvider
             new(ClaimPolicies.PersonId, user switch
             {
                 { PersonId: not null } => $"{user.PersonId}",
-                _ => ""
+                _ => string.Empty
             })
         };
 
