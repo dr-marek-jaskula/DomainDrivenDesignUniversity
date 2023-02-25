@@ -8,6 +8,9 @@ using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 using Shopway.Application.CQRS.Products.Queries.QueryProduct;
 using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+using Microsoft.AspNetCore.Http;
+using Shopway.Application.CQRS.Products.Queries;
+using Shopway.Application.CQRS;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -20,10 +23,14 @@ public sealed partial class ProductsController : ApiController
 
     [HttpGet("{id}")]
     [ApiKey(RequiredApiKeyName.PRODUCT_GET)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetProductById(
-        [FromRoute] GetProductByIdQuery query,
+        [FromRoute] ProductId id,
         CancellationToken cancellationToken)
     {
+        var query = new GetProductByIdQuery(id);
+
         var response = await Sender.Send(query, cancellationToken);
 
         if (response.IsFailure)
@@ -35,6 +42,8 @@ public sealed partial class ProductsController : ApiController
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> QueryProducts(
         [FromBody] ProductPageQuery query,
         CancellationToken cancellationToken)
@@ -51,6 +60,8 @@ public sealed partial class ProductsController : ApiController
 
     [HttpPost]
     [ApiKey(RequiredApiKeyName.PRODUCT_CREATE)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProductResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> CreateProduct(
         [FromBody] CreateProductCommand command,
         CancellationToken cancellationToken)
@@ -67,6 +78,8 @@ public sealed partial class ProductsController : ApiController
 
     [HttpPut("{id}")]
     [ApiKey(RequiredApiKeyName.PRODUCT_UPDATE)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateProductResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> UpdateProduct(
         [FromRoute] ProductId id,
         [FromBody] UpdateProductCommand.UpdateRequestBody body,
@@ -86,10 +99,14 @@ public sealed partial class ProductsController : ApiController
 
     [HttpDelete("{id}")]
     [ApiKey(RequiredApiKeyName.PRODUCT_REMOVE)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveProductResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> RemoveProduct(
-        [FromRoute] RemoveProductCommand command,
+        [FromRoute] ProductId id,
         CancellationToken cancellationToken)
     {
+        var command = new RemoveProductCommand(id);
+
         var result = await Sender.Send(command, cancellationToken);
 
         if (result.IsFailure)

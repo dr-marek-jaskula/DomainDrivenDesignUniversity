@@ -5,6 +5,7 @@ using Shopway.Infrastructure.Authentication;
 using Shopway.Application.CQRS.Products.Commands.AddReview;
 using Shopway.Application.CQRS.Products.Commands.RemoveReview;
 using Shopway.Application.CQRS.Products.Commands.UpdateReview;
+using Microsoft.AspNetCore.Http;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -14,6 +15,8 @@ partial class ProductsController
 
     [HttpPost($"{{productId}}/{Reviews}")]
     [HasPermission(Permission.CRUD_Review)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddReviewResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> AddReview(
             [FromRoute] ProductId productId,
             [FromBody] AddReviewCommand.AddReviewRequestBody body,
@@ -34,6 +37,8 @@ partial class ProductsController
 
     [HttpPatch($"{{productId}}/{Reviews}/{{reviewId}}")]
     [HasPermission(Permission.CRUD_Review)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateReviewResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> UpdateReview(
         [FromRoute] ProductId productId,
         [FromRoute] ReviewId reviewId,
@@ -54,6 +59,8 @@ partial class ProductsController
 
     [HttpDelete($"{{productId}}/{Reviews}/{{reviewId}}")]
     [HasPermission(Permission.CRUD_Review)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveReviewResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> RemoveReview(
         [FromRoute] RemoveReviewCommand command,
         CancellationToken cancellationToken)

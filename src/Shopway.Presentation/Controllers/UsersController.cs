@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shopway.Presentation.Abstractions;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
 using Shopway.Application.CQRS.Users.Commands.RegisterUser;
+using Microsoft.AspNetCore.Http;
 
 namespace Gatherly.Presentation.Controllers;
 
@@ -14,6 +15,8 @@ public sealed class UsersController : ApiController
     }
 
     [HttpPost("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> Login
     (
         [FromBody] LogUserCommand command,
@@ -31,6 +34,8 @@ public sealed class UsersController : ApiController
     }
 
     [HttpPost("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> Register
     (
         [FromBody] RegisterUserCommand command,

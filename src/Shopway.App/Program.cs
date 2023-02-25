@@ -34,7 +34,8 @@ try
         .RegisterServiceDecorators()
         .RegisterRepositories()
         .RegisterHealthCheck(builder.Configuration)
-        .AddSwaggerGen();
+        .RegisterVersioning()
+        .RegisterSwagger();
 
     //Build the application
 
@@ -43,16 +44,9 @@ try
     //Configure HTTP request pipeline
 
     webApplication
-        .ConfigureSerilogRequestLogging();
-
-    if (webApplication.Environment.IsDevelopment())
-    {
-        webApplication
-            .UseSwagger()
-            .UseSwaggerUI();
-    }
-
-    webApplication
+        .ConfigureSwagger()
+        .ConfigureSerilogRequestLogging()
+        .UseStaticFiles()
         .UseHealthChecks()
         .UseMiddlewares()
         .UseHttpsRedirection()
