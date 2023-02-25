@@ -10,6 +10,7 @@ namespace Shopway.Presentation.Abstractions;
 
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public abstract class ApiController : ControllerBase
 {
     protected readonly ISender Sender;

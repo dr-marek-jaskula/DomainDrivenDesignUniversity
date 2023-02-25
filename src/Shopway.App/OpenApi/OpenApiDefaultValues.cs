@@ -55,6 +55,7 @@ public sealed class OpenApiDefaultValues : IOperationFilter
             }
 
             parameter.Required |= description.IsRequired;
+
         }
     }
 }

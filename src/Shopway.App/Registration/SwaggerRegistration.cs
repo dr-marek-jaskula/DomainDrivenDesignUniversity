@@ -1,22 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 using Swashbuckle.AspNetCore.Filters;
+using Shopway.App.Utilities;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class SwaggerRegistration
 {
-    private const string JwtAuthorizationHeader = "Authorization";
-    private const string ApiKeyAuthorization = "x-api-key";
-    private const string JwtAuthorizationName = "oauth2";
-    private const string Jwt = nameof(Jwt);
-    private const string ApiKeyScheme = nameof(ApiKeyScheme);
-    private const string Bearer = nameof(Bearer);
-    private const string ApiKey = nameof(ApiKey);
-
     public static IServiceCollection RegisterSwagger(this IServiceCollection services)
     {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureOpenApiOptions>();
@@ -34,56 +26,8 @@ public static class SwaggerRegistration
             options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
             options.OperationFilter<SecurityRequirementsOperationFilter>();
 
-            options.AddSecurityDefinition(JwtAuthorizationName, new OpenApiSecurityScheme
-            {
-                Description = $"Bearer authorization. Input: \"{{token}}\"",
-                In = ParameterLocation.Header, 
-                Name = JwtAuthorizationHeader, 
-                Type = SecuritySchemeType.Http,
-                BearerFormat = Jwt,
-                Scheme = Bearer
-            });
-
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = Bearer
-                        },
-                        In = ParameterLocation.Header
-                    },
-                    Array.Empty<string>()
-                }
-            });
-
-            options.AddSecurityDefinition(ApiKey, new OpenApiSecurityScheme
-            {
-                Description = $"ApiKey authorization. Input: \"{{apikey}}\"",
-                In = ParameterLocation.Header,
-                Name = ApiKeyAuthorization,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = ApiKeyScheme
-            });
-
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme()
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = ApiKey
-                        },
-                        In = ParameterLocation.Header
-                    },
-                    Array.Empty<string>()
-                }
-            });
+            options.AddJwtAuthrization();
+            options.AddApiKeyAuthrization();
         });
 
         services.AddVersionedApiExplorer(options =>
@@ -118,6 +62,4 @@ public static class SwaggerRegistration
 
         return app;
     }
-
-
 }

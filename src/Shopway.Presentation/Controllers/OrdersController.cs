@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
@@ -15,6 +16,8 @@ public sealed class OrdersController : ApiController
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetOrderById(
         [FromRoute] OrderId id, 
         CancellationToken cancellationToken)
@@ -32,6 +35,8 @@ public sealed class OrdersController : ApiController
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateOrderResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> CreateOrder(
         [FromBody] CreateOrderCommand command,
         CancellationToken cancellationToken)

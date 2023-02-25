@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Batch.Products;
+using Swashbuckle.AspNetCore.Filters;
 using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Presentation.Controllers;
@@ -7,6 +9,8 @@ namespace Shopway.Presentation.Controllers;
 public partial class ProductsController
 {
     [HttpPost("batch/upsert")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductBatchUpsertResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> ProductsBatchUpsert(
         [FromBody] ProductBatchUpsertCommand command,
         CancellationToken cancellationToken)
