@@ -8,28 +8,16 @@ namespace Shopway.App.Utilities;
 public static class OpenApiUtilities
 {
     private const string JwtAuthorizationHeader = "Authorization";
-    private const string ApiKeyAuthorization = "x-api-key";
-    private const string JwtAuthorizationName = "oauth2";
+    private const string ApiKeyAuthorizationHeader = "x-api-key";
+    private const string JwtAuthorizationSecurityName = "oauth2";
     private const string Jwt = nameof(Jwt);
     private const string ApiKeyScheme = nameof(ApiKeyScheme);
     private const string Bearer = nameof(Bearer);
     private const string ApiKey = nameof(ApiKey);
 
-    /// <summary>
-    /// Used to add to OpenApi a new custom header
-    /// </summary>
-    /// <param name="options"></param>
-    /// <param name="headerName">Name of the header</param>
-    /// <param name="headerDescription">Header description</param>
-    /// <param name="isHeaderRequiredInOpenApi">True if header is required, false otherwise. Default false</param>
-    public static void AddCustomHeader(this SwaggerGenOptions options, string headerName, string headerDescription, bool isHeaderRequiredInOpenApi = false)
-    {
-        options.OperationFilter<AddHeaderOperationFilter>(headerName, headerDescription, isHeaderRequiredInOpenApi);
-    }
-
     public static void AddJwtAuthrization(this SwaggerGenOptions options)
     {
-        options.AddSecurityDefinition(JwtAuthorizationName, new OpenApiSecurityScheme
+        options.AddSecurityDefinition(JwtAuthorizationSecurityName, new OpenApiSecurityScheme
         {
             Description = $"Bearer authorization. Input: \"{{token}}\"",
             In = ParameterLocation.Header,
@@ -62,7 +50,7 @@ public static class OpenApiUtilities
         {
             Description = $"ApiKey authorization. Input: \"{{apikey}}\"",
             In = ParameterLocation.Header,
-            Name = ApiKeyAuthorization,
+            Name = ApiKeyAuthorizationHeader,
             Type = SecuritySchemeType.ApiKey,
             Scheme = ApiKeyScheme
         });
@@ -84,6 +72,17 @@ public static class OpenApiUtilities
         });
     }
 
+    /// <summary>
+    /// Used to add to OpenApi a new custom header
+    /// </summary>
+    /// <param name="options"></param>
+    /// <param name="headerName">Name of the header</param>
+    /// <param name="headerDescription">Header description</param>
+    /// <param name="isHeaderRequiredInOpenApi">True if header is required, false otherwise. Default false</param>
+    public static void AddCustomHeader(this SwaggerGenOptions options, string headerName, string headerDescription, bool isHeaderRequiredInOpenApi = false)
+    {
+        options.OperationFilter<AddHeaderOperationFilter>(headerName, headerDescription, isHeaderRequiredInOpenApi);
+    }
 
     /// <summary>
     /// Provides xml documentation for OpenApi. 

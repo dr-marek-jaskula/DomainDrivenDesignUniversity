@@ -10,7 +10,7 @@ public sealed class OpenApiDefaultValues : IOperationFilter
 {
     private const string id = "id";
     private const string @Default = "default";
-    private const string ExampleId = "\"02b7fd5c-d0d5-4144-83eb-14b84129b434\"";
+    private const string GuidExample = "\"02b7fd5c-d0d5-4144-83eb-14b84129b434\"";
 
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
@@ -60,13 +60,23 @@ public sealed class OpenApiDefaultValues : IOperationFilter
 
             parameter.Required |= description.IsRequired;
 
-            if (parameter.Name.Contains(id, StringComparison.OrdinalIgnoreCase))
+            UseGuidExampleForEntityIdsInTheRoute(parameter);
+        }
+    }
+
+    /// <summary>
+    /// Due to the fact the entity id is a strongly type id, swagger example is an json object. 
+    /// To handle this problem we add a custom example for an entity id that is a constant guid
+    /// </summary>
+    /// <param name="parameter">Open api parameter</param>
+    private static void UseGuidExampleForEntityIdsInTheRoute(OpenApiParameter? parameter)
+    {
+        if (parameter is not null && parameter.Name.Contains(id, StringComparison.OrdinalIgnoreCase))
+        {
+            parameter.Examples.Add(parameter.Name, new OpenApiExample
             {
-                parameter.Examples.Add(parameter.Name, new OpenApiExample
-                {
-                    Value = new OpenApiString(ExampleId)
-                });
-            }
+                Value = new OpenApiString(GuidExample)
+            });
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Framework;
 using Shopway.Application.Exceptions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class AppUtilities
+public static class MigrationsUtilities
 {
-    public static IApplicationBuilder ApplyMigrations(this IApplicationBuilder app)
+    public static IApplicationBuilder ApplyMigrations<TDbContext>(this IApplicationBuilder app)
+        where TDbContext : DbContext
     {
         var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
 
         using var applyMigrationsScope = serviceScopeFactory.CreateScope();
 
-        var dbContext = applyMigrationsScope.ServiceProvider.GetService<ShopwayDbContext>();
+        var dbContext = applyMigrationsScope.ServiceProvider.GetService<TDbContext>();
 
         if (dbContext is null)
         {

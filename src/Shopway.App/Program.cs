@@ -1,4 +1,5 @@
 using Serilog;
+using Shopway.Persistence.Framework;
 using static Microsoft.Extensions.DependencyInjection.LoggerUtilities;
 
 Log.Logger = CreateSerilogLogger();
@@ -18,7 +19,7 @@ try
     builder.ConfigureSerilog();
 
     //Configure Services
-
+    
     builder.Services
         .RegisterControllers()
         .RegisterOptions()
@@ -49,7 +50,7 @@ try
         .UseHealthChecks()
         .UseMiddlewares()
         .UseHttpsRedirection()
-        .ApplyMigrations()
+        .ApplyMigrations<ShopwayDbContext>()
         .UseAuthorization();
 
     webApplication.MapControllers();
@@ -57,9 +58,9 @@ try
     //Run the application
     webApplication.Run();
 }
-catch (Exception ex)
+catch (Exception exception)
 {
-    Log.Fatal(ex, "Host terminated unexpectedly");
+    Log.Fatal(exception, "Host terminated unexpectedly");
     return 1;
 }
 finally
