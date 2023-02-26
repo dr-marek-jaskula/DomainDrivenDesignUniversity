@@ -15,8 +15,7 @@ try
         ContentRootPath = Directory.GetCurrentDirectory()
     });
 
-    builder
-        .ConfigureSerilog();
+    builder.ConfigureSerilog();
 
     //Configure Services
 
@@ -35,7 +34,7 @@ try
         .RegisterRepositories()
         .RegisterHealthCheck(builder.Configuration)
         .RegisterVersioning()
-        .RegisterSwagger();
+        .RegisterOpenApi();
 
     //Build the application
 
@@ -44,7 +43,7 @@ try
     //Configure HTTP request pipeline
 
     webApplication
-        .ConfigureSwagger()
+        .ConfigureOpenApi()
         .ConfigureSerilogRequestLogging()
         .UseStaticFiles()
         .UseHealthChecks()
@@ -55,6 +54,7 @@ try
 
     webApplication.MapControllers();
 
+    //Run the application
     webApplication.Run();
 }
 catch (Exception ex)

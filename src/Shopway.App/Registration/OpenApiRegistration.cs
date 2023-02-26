@@ -1,31 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Reflection;
 using Swashbuckle.AspNetCore.Filters;
 using Shopway.App.Utilities;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class SwaggerRegistration
+public static class OpenApiRegistration
 {
-    public static IServiceCollection RegisterSwagger(this IServiceCollection services)
+    public static IServiceCollection RegisterOpenApi(this IServiceCollection services)
     {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureOpenApiOptions>();
 
         services.AddSwaggerGen(options =>
         {
             options.OperationFilter<OpenApiDefaultValues>();
-
             options.ExampleFilters();
-
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            options.IncludeXmlComments(xmlPath);
-
+            options.IncludeXmlDocumentation(Shopway.Presentation.AssemblyReference.Assembly);
             options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
             options.OperationFilter<SecurityRequirementsOperationFilter>();
-
             options.AddJwtAuthrization();
             options.AddApiKeyAuthrization();
         });
@@ -41,7 +34,7 @@ public static class SwaggerRegistration
         return services;
     }
 
-    public static IApplicationBuilder ConfigureSwagger(this WebApplication app)
+    public static IApplicationBuilder ConfigureOpenApi(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {

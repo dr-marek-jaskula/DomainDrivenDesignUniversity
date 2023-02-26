@@ -1,6 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace Shopway.App.Utilities;
 
@@ -39,20 +40,20 @@ public static class OpenApiUtilities
         });
 
         options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
             {
+                new OpenApiSecurityScheme
                 {
-                    new OpenApiSecurityScheme
+                    Reference = new OpenApiReference
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = Bearer
-                        },
-                        In = ParameterLocation.Header
+                        Type = ReferenceType.SecurityScheme,
+                        Id = Bearer
                     },
-                    Array.Empty<string>()
-                }
-            });
+                    In = ParameterLocation.Header
+                },
+                Array.Empty<string>()
+            }
+        });
     }
 
     public static void AddApiKeyAuthrization(this SwaggerGenOptions options)
@@ -81,5 +82,26 @@ public static class OpenApiUtilities
                 Array.Empty<string>()
             }
         });
+    }
+
+
+    /// <summary>
+    /// Provides xml documentation for OpenApi. 
+    /// </summary>
+    /// <param name="options">OpenApi options</param>
+    /// <param name="assembly">Assembly containing controllers</param>
+    public static void IncludeXmlDocumentation(this SwaggerGenOptions options, Assembly assembly)
+    {
+        var xmlFile = $"{assembly.GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        options.IncludeXmlComments(xmlPath);
+
+        //Note: Paste the following xml to the project file that contains controllers
+        /*
+        <PropertyGroup>
+		    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+		    <NoWarn>$(NoWarn);1591</NoWarn>
+	    </PropertyGroup>
+        */
     }
 }

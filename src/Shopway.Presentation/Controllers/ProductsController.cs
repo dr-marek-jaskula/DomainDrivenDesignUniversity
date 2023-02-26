@@ -21,6 +21,13 @@ public sealed partial class ProductsController : ApiController
     {
     }
 
+    /// <summary>
+    /// Gets product by specified id
+    /// </summary>
+    /// <remarks>This documentation is for tutorial purpose - to demonstrate how to provide the OpenApi documentation</remarks>
+    /// <param name="id">Product id</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Product</returns>
     [HttpGet("{id}")]
     [ApiKey(RequiredApiKeyName.PRODUCT_GET)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponse))]

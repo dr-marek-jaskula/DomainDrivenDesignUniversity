@@ -8,6 +8,7 @@ using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
+[ApiVersion("0.1", Deprecated = true)]
 public sealed class OrdersController : ApiController
 {
     public OrdersController(ISender sender)

@@ -28,7 +28,7 @@ public sealed class ConfigureOpenApiOptions : IConfigureOptions<SwaggerGenOption
         {
             Title = "DDD University",
             Version = description.ApiVersion.ToString(),
-            Description = "Domain Driven Design University",
+            Description = "Domain Driven Design University.",
             Contact = new OpenApiContact() { Name = "dr Marek Jaskuła", Email = "marek.jaskula1@gmail.com" },
             License = new OpenApiLicense() { Name = "License MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
         };

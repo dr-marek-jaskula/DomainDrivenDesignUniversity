@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Batch.Products;
-using Swashbuckle.AspNetCore.Filters;
 using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Presentation.Controllers;

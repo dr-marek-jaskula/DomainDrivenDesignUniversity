@@ -8,6 +8,10 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public sealed class OpenApiDefaultValues : IOperationFilter
 {
+    private const string id = "id";
+    private const string @Default = "default";
+    private const string ExampleId = "\"02b7fd5c-d0d5-4144-83eb-14b84129b434\"";
+
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         var apiDescription = context.ApiDescription;
@@ -21,7 +25,7 @@ public sealed class OpenApiDefaultValues : IOperationFilter
         foreach (var responseType in context.ApiDescription.SupportedResponseTypes)
         {
             var responseKey = responseType.IsDefaultResponse 
-                ? "default" 
+                ? @Default
                 : responseType.StatusCode.ToString();
 
             var response = operation.Responses[responseKey];
@@ -56,6 +60,13 @@ public sealed class OpenApiDefaultValues : IOperationFilter
 
             parameter.Required |= description.IsRequired;
 
+            if (parameter.Name.Contains(id, StringComparison.OrdinalIgnoreCase))
+            {
+                parameter.Examples.Add(parameter.Name, new OpenApiExample
+                {
+                    Value = new OpenApiString(ExampleId)
+                });
+            }
         }
     }
 }
