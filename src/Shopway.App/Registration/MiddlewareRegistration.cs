@@ -8,6 +8,7 @@ public static class MiddlewaresRegistration
     {
         //Order is not important
         services.AddScoped<ErrorHandlingMiddleware>();
+        services.AddScoped<RequestTimeMiddleware>();
 
         return services;
     }
@@ -16,6 +17,7 @@ public static class MiddlewaresRegistration
     {
         //Order is important
         app.UseMiddleware<ErrorHandlingMiddleware>();
+        app.UseMiddleware<RequestTimeMiddleware>();
 
         return app;
     }
