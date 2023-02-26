@@ -15,7 +15,7 @@ public static class OpenApiUtilities
     private const string Bearer = nameof(Bearer);
     private const string ApiKey = nameof(ApiKey);
 
-    public static void AddJwtAuthrization(this SwaggerGenOptions options)
+    public static void AddJwtAuthorization(this SwaggerGenOptions options)
     {
         options.AddSecurityDefinition(JwtAuthorizationSecurityName, new OpenApiSecurityScheme
         {
@@ -44,7 +44,7 @@ public static class OpenApiUtilities
         });
     }
 
-    public static void AddApiKeyAuthrization(this SwaggerGenOptions options)
+    public static void AddApiKeyAuthorization(this SwaggerGenOptions options)
     {
         options.AddSecurityDefinition(ApiKey, new OpenApiSecurityScheme
         {

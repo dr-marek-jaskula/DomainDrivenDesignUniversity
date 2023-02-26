@@ -19,8 +19,8 @@ public static class OpenApiRegistration
             options.IncludeXmlDocumentation(Shopway.Presentation.AssemblyReference.Assembly);
             options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
             options.OperationFilter<SecurityRequirementsOperationFilter>();
-            options.AddJwtAuthrization();
-            options.AddApiKeyAuthrization();
+            options.AddJwtAuthorization();
+            options.AddApiKeyAuthorization();
         });
 
         services.AddVersionedApiExplorer(options =>
