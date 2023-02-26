@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+using Shopway.Application.Abstractions;
 using System.Diagnostics;
+using static Microsoft.Extensions.Logging.LogLevel;
 
 namespace Shopway.Application.Middlewares;
 
@@ -9,9 +10,9 @@ namespace Shopway.Application.Middlewares;
 /// </summary>
 public sealed class RequestTimeMiddleware : IMiddleware
 {
-    private readonly ILogger<RequestTimeMiddleware> _logger;
+    private readonly ILoggerAdapter<RequestTimeMiddleware> _logger;
 
-    public RequestTimeMiddleware(ILogger<RequestTimeMiddleware> logger)
+    public RequestTimeMiddleware(ILoggerAdapter<RequestTimeMiddleware> logger)
     {
         _logger = logger;
     }
@@ -25,7 +26,7 @@ public sealed class RequestTimeMiddleware : IMiddleware
         if (requestDuration.Seconds >= 4)
         {
             var message = $"Request [{context.Request.Method}] at {context.Request.Path} took {requestDuration.Milliseconds} ms";
-            _logger.LogWarning(message);
+            _logger.Log(Warning, message);
         }
     }
 }
