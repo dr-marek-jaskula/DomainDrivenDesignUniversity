@@ -32,7 +32,7 @@ try
         .RegisterServices()
         .RegisterServiceDecorators()
         .RegisterRepositories()
-        .RegisterHealthCheck(builder.Configuration)
+        .RegisterHealthChecks()
         .RegisterVersioning()
         .RegisterOpenApi();
 

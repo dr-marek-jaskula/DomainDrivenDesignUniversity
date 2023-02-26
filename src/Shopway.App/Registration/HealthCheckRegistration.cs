@@ -16,7 +16,7 @@ public static class HealthCheckRegistration
     private const string Critical = nameof(Critical);
     private const string Readiness = nameof(Readiness);
 
-    public static IServiceCollection RegisterHealthCheck(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterHealthChecks(this IServiceCollection services)
     {
         var healthOptions = services.GetOptions<HealthOptions>();
         var databaseOptions = services.GetOptions<DatabaseOptions>();
@@ -33,10 +33,10 @@ public static class HealthCheckRegistration
             )
             .AddDbContextCheck<ShopwayDbContext>
             (
-                tags: new[] { Readiness },
                 failureStatus: Unhealthy,
                 name: "DbContext readiness",
-                customTestQuery: Products
+                customTestQuery: Products,
+                tags: new[] { Readiness }
             );
 
         services
@@ -46,7 +46,6 @@ public static class HealthCheckRegistration
                 options.Period = TimeSpan.FromSeconds(healthOptions.PeriodInSeconds);
                 options.Predicate = (check) => check.Tags.Contains(Basic);
             });
-
 
         return services;
     }
