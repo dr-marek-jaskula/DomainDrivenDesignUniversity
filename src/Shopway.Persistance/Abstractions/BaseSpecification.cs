@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 namespace Shopway.Persistence.Abstractions;
 
 public abstract class BaseSpecification<TEntity, TEntityId>
-    where TEntityId : IEntityId<TEntityId>, new()
+    where TEntityId : IEntityId
     where TEntity : Entity<TEntityId>
 {
     //Flags
