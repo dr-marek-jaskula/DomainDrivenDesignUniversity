@@ -41,6 +41,18 @@ public static class QueryableUtilities
             : queryable;
     }
 
+    public static IQueryable<TEntity> Page<TEntity>
+    (
+        this IQueryable<TEntity> queryable,
+        int pageSize,
+        int pageNumber
+    )
+    {
+        return queryable
+            .Skip(pageSize * (pageNumber - 1))
+            .Take(pageSize);
+    }
+
     public static IQueryable<TEntity> SortBy<TEntity, TValue>
     (
         this IQueryable<TEntity> queryable,

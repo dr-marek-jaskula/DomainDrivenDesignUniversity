@@ -21,13 +21,13 @@ public sealed class PageResponse<TValue> : IResponse
     //The last element of the certain page
     public int ItemsTo { get; set; }
 
-    public PageResponse(IList<TValue> items, int totalCount, int itemFrom, int itemsTo, int totalPages, int pageNumber)
+    public PageResponse(IList<TValue> items, int totalCount, int pageSize, int pageNumber)
     {
         Items = items;
         TotalItemsCount = totalCount;
-        ItemsFrom = itemFrom;
-        ItemsTo = itemsTo;
-        TotalPages = totalPages;
+        ItemsFrom = pageSize * (pageNumber - 1) + 1;
+        ItemsTo = Math.Min(ItemsFrom + pageSize - 1, totalCount);
+        TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
         CurrentPage = pageNumber;
     }
 }
