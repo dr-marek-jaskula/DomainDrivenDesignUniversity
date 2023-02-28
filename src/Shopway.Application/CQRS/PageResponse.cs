@@ -1,4 +1,6 @@
-﻿using Shopway.Application.Abstractions;
+﻿using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Shopway.Application.Abstractions;
+using Shopway.Application.Exceptions;
 
 namespace Shopway.Application.CQRS;
 
@@ -24,10 +26,16 @@ public sealed class PageResponse<TValue> : IResponse
     public PageResponse(IList<TValue> items, int totalCount, int pageSize, int pageNumber)
     {
         Items = items;
-        TotalItemsCount = totalCount;
-        ItemsFrom = pageSize * (pageNumber - 1) + 1;
-        ItemsTo = Math.Min(ItemsFrom + pageSize - 1, totalCount);
-        TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
         CurrentPage = pageNumber;
+        TotalItemsCount = totalCount;
+        TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+        if (CurrentPage > TotalPages)
+        {
+            throw new BadRequestException($"Selected page '{CurrentPage}' is greater then total number pages '{TotalPages}'");
+        }
+
+        ItemsFrom = Math.Min(pageSize * (pageNumber - 1) + 1, totalCount);
+        ItemsTo = Math.Min(ItemsFrom + pageSize - 1, totalCount);
     }
 }
