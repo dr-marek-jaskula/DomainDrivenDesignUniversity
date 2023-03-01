@@ -10,5 +10,5 @@ public sealed record ProductBatchUpsertResponse : BatchResponseBase<ProductKey>
 	{
 	}
 
-	public sealed record ProductKey(string ProductName, string Revision) : IBatchResponseKey;
+	public readonly record struct ProductKey(string ProductName, string Revision) : IBatchResponseKey;
 }

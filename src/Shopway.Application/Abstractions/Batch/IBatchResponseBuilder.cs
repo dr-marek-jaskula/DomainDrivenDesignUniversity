@@ -10,7 +10,7 @@ namespace Shopway.Application.Abstractions.Batch;
 /// <typeparam name="TBatchResponseKey">Unique Response Key type</typeparam>
 public interface IBatchResponseBuilder<TBatchRequest, TBatchResponseKey>
     where TBatchRequest : class, IBatchRequest
-    where TBatchResponseKey : class, IBatchResponseKey
+    where TBatchResponseKey : struct, IBatchResponseKey
 {
     /// <summary>
     /// Batch requests that has not Error status

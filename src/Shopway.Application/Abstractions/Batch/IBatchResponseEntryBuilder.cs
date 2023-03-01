@@ -9,7 +9,7 @@ namespace Shopway.Application.Abstractions.Batch;
 /// <typeparam name="TBatchResponseKey">Unique Response Key type</typeparam>
 public interface IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>
     where TBatchRequest : class, IBatchRequest
-    where TBatchResponseKey : class, IBatchResponseKey
+    where TBatchResponseKey : struct, IBatchResponseKey
 {
     /// <summary>
     /// If the input condition is true, append the error to the error list

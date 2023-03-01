@@ -3,7 +3,7 @@
 namespace Shopway.Application.Abstractions.Batch;
 
 public abstract record BatchResponseBase<TBatchResponseKey> : IBatchResponse
-    where TBatchResponseKey : class, IBatchResponseKey
+    where TBatchResponseKey : struct, IBatchResponseKey
 {
 	protected BatchResponseBase(IList<BatchResponseEntry> entries)
 	{

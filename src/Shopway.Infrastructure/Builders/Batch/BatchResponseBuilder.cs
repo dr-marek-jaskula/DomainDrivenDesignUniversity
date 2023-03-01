@@ -4,8 +4,9 @@ using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Infrastructure.Builders.Batch;
 
-public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey> : IBatchResponseBuilder<TBatchRequest, TBatchResponseKey> where TBatchRequest : class, IBatchRequest
-    where TBatchResponseKey : class, IBatchResponseKey
+public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey> : IBatchResponseBuilder<TBatchRequest, TBatchResponseKey> 
+    where TBatchRequest : class, IBatchRequest
+    where TBatchResponseKey : struct, IBatchResponseKey
 {
     /// <summary>
     /// Required delegate, used to map the requests to response keys. 
