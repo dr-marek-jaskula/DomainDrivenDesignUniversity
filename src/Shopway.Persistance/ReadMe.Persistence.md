@@ -80,3 +80,19 @@ specification
 Basic memory cache is presented in the "CachedOrderRepository"
 
 Redis cache is presented in the "CachedProductRepository"
+
+## Indexes on ValueObjects with Owned Types
+
+There is no support in Entity Framework Core 7 to create unique indexes on multiple columns that are represented by ValueObjects.
+
+Microsoft currently aims to switch from Owned Types to Value Converter for ValueObject configurations:
+```
+It was previously the team view that owned entities, intended for aggregate support, would also be a reasonable approximation to value objects. 
+Experience has shown this not to be the case. Therefore, in EF8, we plan to introduce a better experience focused on the needs of value objects in domain-driven design. 
+This approach will be based on value converters rather than owned entities.
+```
+
+Current solution is to create a custom migration and use raw sql. 
+See: migration '20230301210403_Add_Unique_Key_To_Product' that is used to create the unique key for product: (ProductName, Revision).
+
+After introducing the Entity Framework 8 this project will use Owned Types, because value converters also have their limitations.
