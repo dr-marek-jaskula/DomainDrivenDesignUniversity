@@ -3,9 +3,6 @@ using Newtonsoft.Json.Converters;
 using static Newtonsoft.Json.ReferenceLoopHandling;
 using static Newtonsoft.Json.Formatting;
 using ApiBehaviorOptions = Shopway.Infrastructure.Options.ApiBehaviorOptions;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Serialization;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
