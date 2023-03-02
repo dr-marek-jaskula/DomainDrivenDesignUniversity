@@ -12,7 +12,7 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    [Migration("20230301210403_Add_Unique_Key_To_Product")]
+    [Migration("20230302173356_Add_Unique_Key_To_Product")]
     partial class Add_Unique_Key_To_Product
     {
         /// <inheritdoc />

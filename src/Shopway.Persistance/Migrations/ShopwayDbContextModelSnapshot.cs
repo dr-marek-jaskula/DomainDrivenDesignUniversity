@@ -531,7 +531,7 @@ namespace Shopway.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Amount", "Amount", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Order.Amount#Shopway.Domain.ValueObjects.Amount", "Amount", b1 =>
                         {
                             b1.Property<Guid>("OrderId")
                                 .HasColumnType("UniqueIdentifier");
@@ -564,30 +564,7 @@ namespace Shopway.Persistence.Migrations
                         .WithMany("Customers")
                         .HasForeignKey("EmployeeId");
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Email", "Email", b1 =>
-                        {
-                            b1.Property<Guid>("PersonId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(40)
-                                .HasColumnType("nvarchar(40)")
-                                .HasColumnName("Email");
-
-                            b1.HasKey("PersonId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique()
-                                .HasDatabaseName("UX_Person_Email");
-
-                            b1.ToTable("Person", "Master");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PersonId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Address", "Address", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.Person.Address#Shopway.Domain.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
@@ -635,7 +612,30 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("PersonId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.FirstName", "FirstName", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.Person.Email#Shopway.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<Guid>("PersonId")
+                                .HasColumnType("UniqueIdentifier");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("nvarchar(40)")
+                                .HasColumnName("Email");
+
+                            b1.HasKey("PersonId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique()
+                                .HasDatabaseName("UX_Person_Email");
+
+                            b1.ToTable("Person", "Master");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PersonId");
+                        });
+
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.Person.FirstName#Shopway.Domain.ValueObjects.FirstName", "FirstName", b1 =>
                         {
                             b1.Property<Guid>("PersonId")
                                 .HasColumnType("UniqueIdentifier");
@@ -654,7 +654,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("PersonId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.LastName", "LastName", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.Person.LastName#Shopway.Domain.ValueObjects.LastName", "LastName", b1 =>
                         {
                             b1.Property<Guid>("PersonId")
                                 .HasColumnType("UniqueIdentifier");
@@ -673,7 +673,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("PersonId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.Person.PhoneNumber#Shopway.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b1 =>
                         {
                             b1.Property<Guid>("PersonId")
                                 .HasColumnType("UniqueIdentifier");
@@ -713,7 +713,7 @@ namespace Shopway.Persistence.Migrations
                         .WithMany("WorkItems")
                         .HasForeignKey("EmployeeId");
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Description", "Description", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.WorkItem.Description#Shopway.Domain.ValueObjects.Description", "Description", b1 =>
                         {
                             b1.Property<Guid>("WorkItemId")
                                 .HasColumnType("UniqueIdentifier");
@@ -732,26 +732,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("WorkItemId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Title", "Title", b1 =>
-                        {
-                            b1.Property<Guid>("WorkItemId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(45)
-                                .HasColumnType("nvarchar(45)")
-                                .HasColumnName("Title");
-
-                            b1.HasKey("WorkItemId");
-
-                            b1.ToTable("WorkItem", "Workflow");
-
-                            b1.WithOwner()
-                                .HasForeignKey("WorkItemId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Priority", "Priority", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.WorkItem.Priority#Shopway.Domain.ValueObjects.Priority", "Priority", b1 =>
                         {
                             b1.Property<Guid>("WorkItemId")
                                 .HasColumnType("UniqueIdentifier");
@@ -770,7 +751,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("WorkItemId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.StoryPoints", "StoryPoints", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.WorkItem.StoryPoints#Shopway.Domain.ValueObjects.StoryPoints", "StoryPoints", b1 =>
                         {
                             b1.Property<Guid>("WorkItemId")
                                 .HasColumnType("UniqueIdentifier");
@@ -780,6 +761,25 @@ namespace Shopway.Persistence.Migrations
                                 .HasColumnType("TinyInt")
                                 .HasDefaultValue((byte)1)
                                 .HasColumnName("StoryPoints");
+
+                            b1.HasKey("WorkItemId");
+
+                            b1.ToTable("WorkItem", "Workflow");
+
+                            b1.WithOwner()
+                                .HasForeignKey("WorkItemId");
+                        });
+
+                    b.OwnsOne("Shopway.Domain.Entities.Parents.WorkItem.Title#Shopway.Domain.ValueObjects.Title", "Title", b1 =>
+                        {
+                            b1.Property<Guid>("WorkItemId")
+                                .HasColumnType("UniqueIdentifier");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(45)
+                                .HasColumnType("nvarchar(45)")
+                                .HasColumnName("Title");
 
                             b1.HasKey("WorkItemId");
 
@@ -806,7 +806,7 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Payment", b =>
                 {
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Discount", "Discount", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Payment.Discount#Shopway.Domain.ValueObjects.Discount", "Discount", b1 =>
                         {
                             b1.Property<Guid>("PaymentId")
                                 .HasColumnType("UniqueIdentifier");
@@ -830,7 +830,7 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Product", b =>
                 {
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Price", "Price", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Product.Price#Shopway.Domain.ValueObjects.Price", "Price", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("UniqueIdentifier");
@@ -848,7 +848,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("ProductId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.ProductName", "ProductName", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Product.ProductName#Shopway.Domain.ValueObjects.ProductName", "ProductName", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("UniqueIdentifier");
@@ -867,7 +867,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("ProductId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Revision", "Revision", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Product.Revision#Shopway.Domain.ValueObjects.Revision", "Revision", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("UniqueIdentifier");
@@ -886,7 +886,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("ProductId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.UomCode", "UomCode", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Product.UomCode#Shopway.Domain.ValueObjects.UomCode", "UomCode", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("UniqueIdentifier");
@@ -925,7 +925,7 @@ namespace Shopway.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Description", "Description", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Review.Description#Shopway.Domain.ValueObjects.Description", "Description", b1 =>
                         {
                             b1.Property<Guid>("ReviewId")
                                 .HasColumnType("UniqueIdentifier");
@@ -944,7 +944,24 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("ReviewId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Title", "Title", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Review.Stars#Shopway.Domain.ValueObjects.Stars", "Stars", b1 =>
+                        {
+                            b1.Property<Guid>("ReviewId")
+                                .HasColumnType("UniqueIdentifier");
+
+                            b1.Property<byte>("Value")
+                                .HasColumnType("TinyInt")
+                                .HasColumnName("Stars");
+
+                            b1.HasKey("ReviewId");
+
+                            b1.ToTable("Review", "Shopway");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ReviewId");
+                        });
+
+                    b.OwnsOne("Shopway.Domain.Entities.Review.Title#Shopway.Domain.ValueObjects.Title", "Title", b1 =>
                         {
                             b1.Property<Guid>("ReviewId")
                                 .HasColumnType("UniqueIdentifier");
@@ -963,7 +980,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("ReviewId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Username", "Username", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.Review.Username#Shopway.Domain.ValueObjects.Username", "Username", b1 =>
                         {
                             b1.Property<Guid>("ReviewId")
                                 .HasColumnType("UniqueIdentifier");
@@ -973,23 +990,6 @@ namespace Shopway.Persistence.Migrations
                                 .HasMaxLength(30)
                                 .HasColumnType("nvarchar(30)")
                                 .HasColumnName("Username");
-
-                            b1.HasKey("ReviewId");
-
-                            b1.ToTable("Review", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ReviewId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Stars", "Stars", b1 =>
-                        {
-                            b1.Property<Guid>("ReviewId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<byte>("Value")
-                                .HasColumnType("TinyInt")
-                                .HasColumnName("Stars");
 
                             b1.HasKey("ReviewId");
 
@@ -1033,7 +1033,7 @@ namespace Shopway.Persistence.Migrations
                         .WithOne("User")
                         .HasForeignKey("Shopway.Domain.Entities.User", "PersonId");
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Email", "Email", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.User.Email#Shopway.Domain.ValueObjects.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("UniqueIdentifier");
@@ -1056,7 +1056,25 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Username", "Username", b1 =>
+                    b.OwnsOne("Shopway.Domain.Entities.User.PasswordHash#Shopway.Domain.ValueObjects.PasswordHash", "PasswordHash", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("UniqueIdentifier");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("NChar(514)")
+                                .HasColumnName("PasswordHash");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("User", "Master");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsOne("Shopway.Domain.Entities.User.Username#Shopway.Domain.ValueObjects.Username", "Username", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("UniqueIdentifier");
@@ -1072,24 +1090,6 @@ namespace Shopway.Persistence.Migrations
                             b1.HasIndex("Value")
                                 .IsUnique()
                                 .HasDatabaseName("UX_Username_Email");
-
-                            b1.ToTable("User", "Master");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.PasswordHash", "PasswordHash", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("NChar(514)")
-                                .HasColumnName("PasswordHash");
-
-                            b1.HasKey("UserId");
 
                             b1.ToTable("User", "Master");
 

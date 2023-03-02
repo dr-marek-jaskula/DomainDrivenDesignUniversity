@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-//Custom migrations for adding Indexes (for CreateType look below)
-
 namespace Shopway.Persistence.Migrations;
 
-/// <inheritdoc />
 public partial class Add_Unique_Key_To_Product : Migration
 {
     private const string CreateIndex = "CREATE UNIQUE INDEX IX_Product_ProductName_Revision ON [Shopway].[Product](ProductName, Revision);";
