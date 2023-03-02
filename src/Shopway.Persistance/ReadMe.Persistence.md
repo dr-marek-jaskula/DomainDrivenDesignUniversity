@@ -93,6 +93,6 @@ This approach will be based on value converters rather than owned entities.
 ```
 
 Current solution is to create a custom migration and use raw sql. 
-See: migration '20230301210403_Add_Unique_Key_To_Product' that is used to create the unique key for product: (ProductName, Revision).
+See: migration '20230301210403_Add_Unique_Key_To_Product' and Configuration -> CustomMigrations that is used to create the unique key for product: (ProductName, Revision).
 
 After introducing the Entity Framework 8 this project will use Owned Types, because value converters also have their limitations.
