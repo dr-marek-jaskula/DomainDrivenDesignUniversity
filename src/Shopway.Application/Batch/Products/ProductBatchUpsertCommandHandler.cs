@@ -16,6 +16,7 @@ using static Shopway.Application.Batch.BatchEntryStatus;
 using static Shopway.Application.Mapping.ProductMapping;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertResponse;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
+using Shopway.Domain.EntitiesBusinessKeys;
 
 namespace Shopway.Application.Batch.Products;
 
@@ -124,7 +125,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
                 //If the product matches a request, then the subsequent search will start from the next index
                 productsToBefilteredIndex++;
 
-                if (filtered.ProductName.Value == request.ProductName && filtered.Revision.Value == request.Revision)
+                if (filtered.ProductName.Value.CaseInsensitiveEquals(request.ProductName) && filtered.Revision.Value.CaseInsensitiveEquals(request.Revision))
                 {
                     //If the product matches, first get the key and then add (key, product) to the dictionary
                     var key = MapFromProductToResponseKey(filtered);

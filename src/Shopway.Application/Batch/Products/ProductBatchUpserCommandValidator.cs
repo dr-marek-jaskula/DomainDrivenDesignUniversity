@@ -3,6 +3,7 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Application.Abstractions.Batch;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertResponse;
+using Shopway.Domain.EntitiesBusinessKeys;
 
 namespace Shopway.Application.Batch.Products;
 

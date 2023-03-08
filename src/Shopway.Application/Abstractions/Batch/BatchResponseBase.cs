@@ -1,9 +1,10 @@
 ﻿using Shopway.Application.Batch;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.Abstractions.Batch;
 
-public abstract record BatchResponseBase<TBatchResponseKey> : IBatchResponse
-    where TBatchResponseKey : struct, IBatchResponseKey
+public abstract record BatchResponseBase<TResponseKey> : IBatchResponse
+    where TResponseKey : struct, IBusinessKey
 {
 	protected BatchResponseBase(IList<BatchResponseEntry> entries)
 	{

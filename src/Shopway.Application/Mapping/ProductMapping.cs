@@ -5,6 +5,7 @@ using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
+using Shopway.Domain.EntitiesBusinessKeys;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertResponse;
 

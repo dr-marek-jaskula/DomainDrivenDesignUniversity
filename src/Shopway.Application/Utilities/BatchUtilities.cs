@@ -1,77 +1,78 @@
 ﻿using Shopway.Application.Abstractions.Batch;
 using Shopway.Application.Batch;
+using Shopway.Domain.Abstractions;
 using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Application.Utilities;
 
 public static class BatchUtilities
 {
-    public static IList<BatchResponseEntry> NotErrorEntries<TBatchResponseKey>(this BatchResponseBase<TBatchResponseKey> response)
-        where TBatchResponseKey : struct, IBatchResponseKey
+    public static IList<BatchResponseEntry> NotErrorEntries<TResponseKey>(this BatchResponseBase<TResponseKey> response)
+        where TResponseKey : struct, IBusinessKey
     {
         return Filter(response, entry => entry.Status is not Error);
     }
 
-    public static IList<BatchResponseEntry> InsertedEntries<TBatchResponseKey>(this BatchResponseBase<TBatchResponseKey> response)
-        where TBatchResponseKey: struct, IBatchResponseKey
+    public static IList<BatchResponseEntry> InsertedEntries<TResponseKey>(this BatchResponseBase<TResponseKey> response)
+        where TResponseKey: struct, IBusinessKey
     {
         return Filter(response, entry => entry.Status is Inserted);
     }
 
-    public static bool IsInserted<TBatchResponseKey>(this BatchEntryStatus status)
-        where TBatchResponseKey: struct, IBatchResponseKey
+    public static bool IsInserted<TResponseKey>(this BatchEntryStatus status)
+        where TResponseKey: struct, IBusinessKey
     {
         return status is Inserted;
     }
 
-    public static bool IsInserted<TBatchResponseKey>(this BatchResponseEntry entry)
-        where TBatchResponseKey: struct, IBatchResponseKey
+    public static bool IsInserted<TResponseKey>(this BatchResponseEntry entry)
+        where TResponseKey: struct, IBusinessKey
     {
-        return entry.Status.IsInserted<TBatchResponseKey>();
+        return entry.Status.IsInserted<TResponseKey>();
     }
 
-    public static IList<BatchResponseEntry> UpdatedEntries<TBatchResponseKey>(this BatchResponseBase<TBatchResponseKey> response)
-        where TBatchResponseKey : struct, IBatchResponseKey
+    public static IList<BatchResponseEntry> UpdatedEntries<TResponseKey>(this BatchResponseBase<TResponseKey> response)
+        where TResponseKey : struct, IBusinessKey
     {
         return Filter(response, entry => entry.Status is Updated);
     }
 
-    public static bool IsUpdated<TBatchResponseKey>(this BatchEntryStatus status)
-        where TBatchResponseKey : struct, IBatchResponseKey
+    public static bool IsUpdated<TResponseKey>(this BatchEntryStatus status)
+        where TResponseKey : struct, IBusinessKey
     {
         return status is Updated;
     }
 
-    public static bool IsUpdated<TBatchResponseKey>(this BatchResponseEntry entry)
-        where TBatchResponseKey : struct, IBatchResponseKey
+    public static bool IsUpdated<TResponseKey>(this BatchResponseEntry entry)
+        where TResponseKey : struct, IBusinessKey
     {
-        return entry.Status.IsUpdated<TBatchResponseKey>();
+        return entry.Status.IsUpdated<TResponseKey>();
     }
 
-    public static IList<BatchResponseEntry> ErrorEntries<TBatchResponseKey>(this BatchResponseBase<TBatchResponseKey> response)
-    where TBatchResponseKey : struct, IBatchResponseKey
+    public static IList<BatchResponseEntry> ErrorEntries<TResponseKey>(this BatchResponseBase<TResponseKey> response)
+    where TResponseKey : struct, IBusinessKey
     {
         return Filter(response, entry => entry.Status is Error);
     }
 
-    public static bool IsError<TBatchResponseKey>(this BatchEntryStatus status)
-        where TBatchResponseKey : struct, IBatchResponseKey
+    public static bool IsError<TResponseKey>(this BatchEntryStatus status)
+        where TResponseKey : struct, IBusinessKey
     {
         return status is Error;
     }
 
-    public static bool IsError<TBatchResponseKey>(this BatchResponseEntry entry)
-        where TBatchResponseKey : struct, IBatchResponseKey
+    public static bool IsError<TResponseKey>(this BatchResponseEntry entry)
+        where TResponseKey : struct, IBusinessKey
     {
-        return entry.Status.IsError<TBatchResponseKey>();
+        return entry.Status.IsError<TResponseKey>();
     }
 
-    private static IList<BatchResponseEntry> Filter<TBatchResponseKey>
+    private static IList<BatchResponseEntry> Filter<TResponseKey>
     (
-        BatchResponseBase<TBatchResponseKey> response, 
+        BatchResponseBase<TResponseKey> response, 
         Func<BatchResponseEntry, bool> predicate
     )
-        where TBatchResponseKey: struct, IBatchResponseKey
+        where TResponseKey: struct, IBusinessKey
     {
         return response
             .Entries

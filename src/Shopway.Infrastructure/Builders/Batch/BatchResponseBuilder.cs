@@ -1,28 +1,29 @@
 ﻿using Shopway.Application.Abstractions.Batch;
 using Shopway.Application.Batch;
+using Shopway.Domain.Abstractions;
 using static Shopway.Application.Batch.BatchEntryStatus;
 
 namespace Shopway.Infrastructure.Builders.Batch;
 
-public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey> : IBatchResponseBuilder<TBatchRequest, TBatchResponseKey> 
+public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : IBatchResponseBuilder<TBatchRequest, TResponseKey> 
     where TBatchRequest : class, IBatchRequest
-    where TBatchResponseKey : struct, IBatchResponseKey
+    where TResponseKey : struct, IBusinessKey
 {
     /// <summary>
     /// Required delegate, used to map the requests to response keys. 
     /// Due to the fact that the builder will be injected from the Dependency Injection Container, it needs to be set after the injection.
     /// It is required to provide this delegate. 
     /// </summary>
-    private Func<TBatchRequest, TBatchResponseKey>? _mapFromRequestToResponseKey;
+    private Func<TBatchRequest, TResponseKey>? _mapFromRequestToResponseKey;
 
     /// <summary>
     /// (ResponseKey, ResponseEntryBuilder) dictionary to store builder for all requests and allow to deal with duplicates in the easy way
     /// </summary>
-    private readonly IDictionary<TBatchResponseKey, BatchResponseEntryBuilder> _responseEntryBuilders;
+    private readonly IDictionary<TResponseKey, BatchResponseEntryBuilder> _responseEntryBuilders;
 
     public BatchResponseBuilder()
     {
-        _responseEntryBuilders = new Dictionary<TBatchResponseKey, BatchResponseEntryBuilder>();
+        _responseEntryBuilders = new Dictionary<TResponseKey, BatchResponseEntryBuilder>();
     }
 
     public IReadOnlyList<TBatchRequest> ValidRequests => Filter(builder => builder.IsValid).AsReadOnly();
@@ -51,7 +52,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     /// <param name="mapFromRequestToResponseKey"></param>
     public void SetRequestToResponseKeyMapper
     (
-        Func<TBatchRequest, TBatchResponseKey> mapFromRequestToResponseKey
+        Func<TBatchRequest, TResponseKey> mapFromRequestToResponseKey
     )
     {
         _mapFromRequestToResponseKey = mapFromRequestToResponseKey;
@@ -75,10 +76,10 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     /// <param name="insertRequests">Requests that are meant to be used to insert entities</param>
     /// <param name="requestValidationMethod">Validation method that will be performed over the each provided request</param>
     /// <returns>Builder to be able to chain subsequent validation method</returns>
-    public IBatchResponseBuilder<TBatchRequest, TBatchResponseKey> ValidateInsertRequests
+    public IBatchResponseBuilder<TBatchRequest, TResponseKey> ValidateInsertRequests
     (
         IReadOnlyList<TBatchRequest> insertRequests,
-        Action<IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>, TBatchRequest> requestValidationMethod
+        Action<IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>, TBatchRequest> requestValidationMethod
     )
     {
         return Validate(insertRequests, requestValidationMethod, Inserted);
@@ -90,10 +91,10 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     /// <param name="updateRequests">Requests that are meant to be used to update entities</param>
     /// <param name="requestValidationMethod">Validation method that will be performed over the each provided request</param>
     /// <returns>Builder to be able to chain subsequent validation method</returns>
-    public IBatchResponseBuilder<TBatchRequest, TBatchResponseKey> ValidateUpdateRequests
+    public IBatchResponseBuilder<TBatchRequest, TResponseKey> ValidateUpdateRequests
     (
         IReadOnlyList<TBatchRequest> updateRequests,
-        Action<IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>, TBatchRequest> requestValidationMethod
+        Action<IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>, TBatchRequest> requestValidationMethod
     )
     {
         return Validate(updateRequests, requestValidationMethod, Updated);
@@ -106,10 +107,10 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     /// <param name="requestValidationMethod">The validation manner</param>
     /// <param name="successStatus">Status that will be used if the validation succeeds</param>
     /// <returns></returns>
-    private BatchResponseBuilder<TBatchRequest, TBatchResponseKey> Validate
+    private BatchResponseBuilder<TBatchRequest, TResponseKey> Validate
     (
         IReadOnlyList<TBatchRequest> requests,
-        Action<IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>, TBatchRequest> requestValidationMethod,
+        Action<IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>, TBatchRequest> requestValidationMethod,
         BatchEntryStatus successStatus
     )
     {
@@ -136,7 +137,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKe
     /// <param name="successStatus">Status that will used a builder success status</param>
     /// <returns>Created request entry builder</returns>
     /// <exception cref="InvalidOperationException">The Request-to-ResponseKey mapper must be provided before the use of this method</exception>
-    private IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> CreateResponseEntryBuilder
+    private IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> CreateResponseEntryBuilder
     (
         TBatchRequest request,
         BatchEntryStatus successStatus

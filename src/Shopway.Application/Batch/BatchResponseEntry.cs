@@ -1,4 +1,4 @@
-﻿using Shopway.Application.Abstractions.Batch;
+﻿using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.Batch;
 
@@ -10,7 +10,7 @@ namespace Shopway.Application.Batch;
 /// <param name="Errors">The list of errors for corresponding batch request</param>
 public sealed record BatchResponseEntry
 (
-    IBatchResponseKey Key,
+    IBusinessKey Key,
     BatchEntryStatus Status,
     IList<string> Errors
 );

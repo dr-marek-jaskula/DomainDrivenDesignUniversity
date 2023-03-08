@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Batch;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.Abstractions.Batch;
 
@@ -7,10 +8,10 @@ namespace Shopway.Application.Abstractions.Batch;
 /// Uses IBatchResponseEntryBuilders to validate respective requests
 /// </summary>
 /// <typeparam name="TBatchRequest">Batch Request type</typeparam>
-/// <typeparam name="TBatchResponseKey">Unique Response Key type</typeparam>
-public interface IBatchResponseBuilder<TBatchRequest, TBatchResponseKey>
+/// <typeparam name="TResponseKey">Unique Response Key type</typeparam>
+public interface IBatchResponseBuilder<TBatchRequest, TResponseKey>
     where TBatchRequest : class, IBatchRequest
-    where TBatchResponseKey : struct, IBatchResponseKey
+    where TResponseKey : struct, IBusinessKey
 {
     /// <summary>
     /// Batch requests that has not Error status
@@ -31,7 +32,7 @@ public interface IBatchResponseBuilder<TBatchRequest, TBatchResponseKey>
     /// Required to use the builder. Set the request to response key to mapping method
     /// </summary>
     /// <param name="mapFromRequestToResponseKey">Request to ResponseKey mapping method</param>
-    void SetRequestToResponseKeyMapper(Func<TBatchRequest, TBatchResponseKey> mapFromRequestToResponseKey);
+    void SetRequestToResponseKeyMapper(Func<TBatchRequest, TResponseKey> mapFromRequestToResponseKey);
 
     /// <summary>
     /// Build response entries: key, status and errors if there are some
@@ -45,10 +46,10 @@ public interface IBatchResponseBuilder<TBatchRequest, TBatchResponseKey>
     /// <param name="requests">Insert requests</param>
     /// <param name="requestValidationMethod">Delegate that validates the request</param>
     /// <returns></returns>
-    IBatchResponseBuilder<TBatchRequest, TBatchResponseKey> ValidateInsertRequests
+    IBatchResponseBuilder<TBatchRequest, TResponseKey> ValidateInsertRequests
     (
         IReadOnlyList<TBatchRequest> requests, 
-        Action<IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>, TBatchRequest> requestValidationMethod
+        Action<IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>, TBatchRequest> requestValidationMethod
     );
 
     /// <summary>
@@ -57,9 +58,9 @@ public interface IBatchResponseBuilder<TBatchRequest, TBatchResponseKey>
     /// <param name="requests">Update requests</param>
     /// <param name="requestValidationMethod">Delegate that validates the request</param>
     /// <returns></returns>
-    IBatchResponseBuilder<TBatchRequest, TBatchResponseKey> ValidateUpdateRequests
+    IBatchResponseBuilder<TBatchRequest, TResponseKey> ValidateUpdateRequests
     (
         IReadOnlyList<TBatchRequest> requests, 
-        Action<IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>, TBatchRequest> requestValidationMethod
+        Action<IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>, TBatchRequest> requestValidationMethod
     );
 }

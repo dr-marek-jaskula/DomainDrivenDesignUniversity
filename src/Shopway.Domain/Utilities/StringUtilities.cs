@@ -1,4 +1,6 @@
-﻿namespace Shopway.Domain.Utilities;
+﻿using Shopway.Domain.ValueObjects;
+
+namespace Shopway.Domain.Utilities;
 
 public static class StringUtilities
 {
@@ -57,5 +59,10 @@ public static class StringUtilities
     public static bool LengthNotInRange(this string input, Range range)
     {
         return input.IsLengthInRange(range) is false;
+    }
+
+    public static bool CaseInsensitiveEquals(this string input, string compareTo)
+    {
+        return string.Equals(input, compareTo, StringComparison.OrdinalIgnoreCase);
     }
 }

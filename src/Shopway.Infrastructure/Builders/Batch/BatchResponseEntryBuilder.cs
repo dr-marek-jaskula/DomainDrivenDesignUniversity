@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions.Batch;
 using Shopway.Application.Batch;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
 using System.Reflection;
 using static Shopway.Application.Batch.BatchEntryStatus;
@@ -9,21 +10,21 @@ namespace Shopway.Infrastructure.Builders.Batch;
 
 //BatchResponseEntryBuilder is only used for BatchResponseBuilder
 //So to avoid having generic parameters in this entry builder, it is a subclass in the generic BatchResponseBuilder
-partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
+partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
     where TBatchRequest : class, IBatchRequest
-    where TBatchResponseKey : struct, IBatchResponseKey
+    where TResponseKey : struct, IBusinessKey
 {
     /// <summary>
     /// Builder used to build a single response entry from a single request, with possible errors and result status 
     /// </summary>
-    public sealed class BatchResponseEntryBuilder : IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>
+    public sealed class BatchResponseEntryBuilder : IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>
     {
         private readonly TBatchRequest _request;
         
         /// <summary>
         /// The key, that represents the request uniqueness. Usually the unique composed key, created by few entity properties
         /// </summary>
-        private readonly TBatchResponseKey _responseKey;
+        private readonly TResponseKey _responseKey;
 
         /// <summary>
         /// Status that will be used, if validation succeeds. If not, the 'Error' status will be used instead.
@@ -35,7 +36,7 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         /// </summary>
         private readonly List<string> _errorMessages;
 
-        internal BatchResponseEntryBuilder(TBatchRequest request, TBatchResponseKey responseKey, BatchEntryStatus successStatus)
+        internal BatchResponseEntryBuilder(TBatchRequest request, TResponseKey responseKey, BatchEntryStatus successStatus)
         {
             _request = request;
             _responseKey = responseKey;
@@ -57,7 +58,7 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         /// <param name="invalid">Condition representing the invalid case</param>
         /// <param name="thenError">Error that will be added to error list if invalid condition is true</param>
         /// <returns>Same instance to be able to chain validation methods</returns>
-        public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> If(bool invalid, string thenError)
+        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> If(bool invalid, string thenError)
         {
             if (invalid is true)
             {
@@ -72,9 +73,9 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         /// </summary>
         /// <param name="requestValidationMethod">Validation action that represent the validation that needs to be performed</param>
         /// <returns>Same instance to be able to chain validation methods</returns>
-        public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> ValidateUsing
+        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> ValidateUsing
         (
-            Action<IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey>, TBatchRequest> requestValidationMethod
+            Action<IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>, TBatchRequest> requestValidationMethod
         )
         {
             requestValidationMethod(this, _request);
@@ -89,7 +90,7 @@ partial class BatchResponseBuilder<TBatchRequest, TBatchResponseKey>
         /// <returns>Same instance to be able to chain validation methods</returns>
         /// <exception cref="ArgumentException">Thrown if no parameters were specified</exception>
         /// <exception cref="InvalidOperationException">Thrown if given ValueObject type does not contain the public, static method "Validate"</exception>
-        public IBatchResponseEntryBuilder<TBatchRequest, TBatchResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameteres)
+        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameteres)
             where TValueObject : ValueObject
         {
             if (parameteres.IsNullOrEmpty())
