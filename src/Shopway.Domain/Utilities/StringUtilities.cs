@@ -1,6 +1,4 @@
-﻿using Shopway.Domain.ValueObjects;
-
-namespace Shopway.Domain.Utilities;
+﻿namespace Shopway.Domain.Utilities;
 
 public static class StringUtilities
 {

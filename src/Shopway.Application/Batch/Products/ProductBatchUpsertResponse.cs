@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Abstractions.Batch;
-using Shopway.Domain.EntitiesBusinessKeys;
+using Shopway.Domain.EntityBusinessKeys;
 
 namespace Shopway.Application.Batch.Products;
 

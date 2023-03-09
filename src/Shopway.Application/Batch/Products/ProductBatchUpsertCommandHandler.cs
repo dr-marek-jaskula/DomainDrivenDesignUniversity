@@ -11,12 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Abstractions;
+using Shopway.Domain.EntityBusinessKeys;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.Batch.BatchEntryStatus;
 using static Shopway.Application.Mapping.ProductMapping;
-using static Shopway.Application.Batch.Products.ProductBatchUpsertResponse;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
-using Shopway.Domain.EntitiesBusinessKeys;
 
 namespace Shopway.Application.Batch.Products;
 
@@ -44,13 +43,13 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
         command = command.Trim();
 
-        var productsToUpdateWithKeys = await GetProductsToUpdateWithKeys(command, cancellationToken);
+        var productsToUpdateDictionary = await GetProductsToUpdateDictionary(command, cancellationToken);
 
         //Required step: set RequestToProductKeyMapping method for the injected builder
-        _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToResponseKey);
+        _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToProductKey);
 
         //Perform validation: using the builder, trimmed command and queried productsToUpdate
-        var responseEntries = command.Validate(_responseBuilder, productsToUpdateWithKeys);
+        var responseEntries = command.Validate(_responseBuilder, productsToUpdateDictionary);
 
         if (responseEntries.Any(response => response.Status is Error))
         {
@@ -63,14 +62,14 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
         //Perform batch upsert
         await InsertProducts(validRequestsToInsert, cancellationToken);
-        UpdateProducts(validRequestsToUpdate, productsToUpdateWithKeys);
+        UpdateProducts(validRequestsToUpdate, productsToUpdateDictionary);
 
         return responseEntries
             .ToBatchUpsertResponse()
             .ToResult();
     }
 
-    private async Task<IDictionary<ProductKey, Product>> GetProductsToUpdateWithKeys(ProductBatchUpsertCommand command, CancellationToken cancellationToken)
+    private async Task<IDictionary<ProductKey, Product>> GetProductsToUpdateDictionary(ProductBatchUpsertCommand command, CancellationToken cancellationToken)
     {
         var productNames = command.ProductNames();
         var productRevisions = command.ProductRevisions();
@@ -92,7 +91,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
                 .ThenBy(request => request.Revision)
             .ToList();
 
-        return GetProductsToUpdate(productsToBeFiltered, requestsSortedInTheSameMannerAsQueriedProducts);
+        return FilterProductsAndMapToDictionary(productsToBeFiltered, requestsSortedInTheSameMannerAsQueriedProducts);
     }
 
     /// <summary>
@@ -102,7 +101,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
     /// <param name="productsToBeFilteredSortedByKey">Products ordered by product key order</param>
     /// <param name="sortedRequestsByKeyOrder">Requests ordered by product key order</param>
     /// <returns>Products to be updated</returns>
-    private static IDictionary<ProductKey, Product> GetProductsToUpdate
+    private static IDictionary<ProductKey, Product> FilterProductsAndMapToDictionary
     (
         IList<Product> productsToBeFilteredSortedByKey, 
         IList<ProductBatchUpsertRequest> sortedRequestsByKeyOrder
@@ -128,7 +127,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
                 if (filtered.ProductName.Value.CaseInsensitiveEquals(request.ProductName) && filtered.Revision.Value.CaseInsensitiveEquals(request.Revision))
                 {
                     //If the product matches, first get the key and then add (key, product) to the dictionary
-                    var key = MapFromProductToResponseKey(filtered);
+                    var key = MapFromProductToProductKey(filtered);
                     products.Add(key, filtered);
                     break;
                 }
@@ -169,7 +168,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
         foreach (var request in validRequestsToUpdate)
         {
             //At this stage, key is always valid
-            var key = MapFromRequestToResponseKey(request);
+            var key = MapFromRequestToProductKey(request);
             UpdateProduct(productsToUpdate[key], request);
         }
     }

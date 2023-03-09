@@ -1,9 +1,8 @@
 ﻿using Shopway.Domain.Entities;
+using Shopway.Domain.EntityBusinessKeys;
 using static Shopway.Application.Batch.BatchEntryStatus;
 using static Shopway.Application.Mapping.ProductMapping;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
-using static Shopway.Application.Batch.Products.ProductBatchUpsertResponse;
-using Shopway.Domain.EntitiesBusinessKeys;
 
 namespace Shopway.Application.Batch.Products;
 
@@ -117,7 +116,7 @@ public static class ProductBatchUpsertCommandUtilities
 
         return command
             .Requests
-            .Where(request => productsToUpdateWithKeys.ContainsKey(MapFromRequestToResponseKey(request)) == searchCondition)
+            .Where(request => productsToUpdateWithKeys.ContainsKey(MapFromRequestToProductKey(request)) == searchCondition)
             .ToList()
             .AsReadOnly();
     }
