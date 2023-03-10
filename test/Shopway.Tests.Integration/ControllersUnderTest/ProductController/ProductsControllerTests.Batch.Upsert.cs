@@ -89,4 +89,36 @@ public partial class ProductsControllerTests
             .Should()
             .Contain(ContainsIllegalCharacter.Message);
     }
+
+    [Fact]
+    public async Task Batch_Upsert_ShouldReturnOneErrorResponseEntry_WhenProductNameIsNull()
+    {
+        //Arrange
+        var batchRequests = AsList
+        (
+            new ProductBatchUpsertRequest(null, 100m, "pcs", "1.0"),
+        );
+
+        var batchCommand = new ProductBatchUpsertCommand(batchRequests);
+
+        var request = PostRequest($"batch/upsert", batchCommand);
+
+        //Act
+        var response = await _restClient!.ExecutePostAsync(request);
+
+        //Assert
+        response.StatusCode.Should().Be(BadRequest);
+
+        var deserializedResponse = response.Deserialize<ProductBatchResponseResult>();
+        
+        deserializedResponse!
+            .Entries
+            .Should()
+            .HaveCount(3);
+
+        var errorEntry = deserializedResponse!
+            .Entries
+            .Where(x => x.Status is BatchEntryStatus.Error)
+            .First();
+    }
 }

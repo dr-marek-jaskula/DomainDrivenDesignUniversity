@@ -30,7 +30,7 @@ public partial class ProductsControllerTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnProduct_WhenProductNotExists()
+    public async Task GetById_ShouldReturnErrorResponse_WhenProductNotExists()
     {
         //Arrange
         var invalidProductId = ProductId.New();

@@ -47,11 +47,11 @@ public static class ProductMapping
 
     public static ProductKey MapFromRequestToProductKey(ProductBatchUpsertRequest productBatchRequest)
     {
-        return new ProductKey(productBatchRequest.ProductName, productBatchRequest.Revision);
+        return ProductKey.Create(productBatchRequest.ProductName, productBatchRequest.Revision);
     }
 
     public static ProductKey MapFromProductToProductKey(Product product)
     {
-        return new ProductKey(product.ProductName.Value, product.Revision.Value);
+        return ProductKey.Create(product.ProductName.Value, product.Revision.Value);
     }
 }

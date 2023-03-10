@@ -23,6 +23,18 @@ public static class HttpErrors
     }
 
     /// <summary>
+    /// Create an Error based on the business key
+    /// </summary>
+    /// <param name="name">name of the product key type. Use "nameof(TValue)" syntax</param>
+    /// <param name="key">business key of the entity that is already in the database</param>
+    /// <returns>AlreadyExists error</returns>
+    public static Error AlreadyExists<TBusinessKey>(string name, TBusinessKey key)
+        where TBusinessKey : IBusinessKey
+    {
+        return new Error($"{name}.{nameof(AlreadyExists)}", $"{name} with key: '{key}' already exists");
+    }
+
+    /// <summary>
     /// Create an Error describing that the provided reference is invalid
     /// </summary>
     /// <returns>InvalidReference error</returns>

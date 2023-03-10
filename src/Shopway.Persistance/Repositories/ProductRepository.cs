@@ -2,6 +2,7 @@
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
+using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
@@ -14,6 +15,22 @@ public sealed class ProductRepository : BaseRepository, IProductRepository
 {
     public ProductRepository(ShopwayDbContext dbContext) : base(dbContext)
     {
+    }
+
+    public async Task<Product> GetByKeyAsync(ProductKey key, CancellationToken cancellationToken = default)
+    {
+        var specification = ProductByKeyQuerySpecification.Create(key);
+
+        return await ApplySpecification(specification)
+            .FirstAsync(cancellationToken);
+    }
+
+    public async Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken = default)
+    {
+        var specification = ProductByKeyQuerySpecification.Create(key);
+
+        return await ApplySpecification(specification)
+            .AnyAsync(cancellationToken);
     }
 
     public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken = default)

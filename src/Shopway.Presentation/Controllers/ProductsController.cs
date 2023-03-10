@@ -11,6 +11,8 @@ using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
 using Microsoft.AspNetCore.Http;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Application.CQRS;
+using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Application.CQRS.Products.Queries.GetProductByKey;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -37,6 +39,32 @@ public sealed partial class ProductsController : ApiController
         CancellationToken cancellationToken)
     {
         var query = new GetProductByIdQuery(id);
+
+        var response = await Sender.Send(query, cancellationToken);
+
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Gets product by specified key
+    /// </summary>
+    /// <param name="key">Product key</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Product</returns>
+    [HttpGet("key")]
+    [ApiKey(RequiredApiKeyName.PRODUCT_GET)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> GetProductByKey(
+        [FromBody] ProductKey key,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetProductByKeyQuery(key);
 
         var response = await Sender.Send(query, cancellationToken);
 

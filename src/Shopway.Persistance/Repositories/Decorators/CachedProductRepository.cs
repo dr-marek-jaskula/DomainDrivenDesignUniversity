@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using Shopway.Persistence.Framework;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Domain.EntityBusinessKeys;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -88,5 +89,15 @@ public sealed class CachedProductRepository : IProductRepository
     public void Update(Product product)
     {
         _decorated.Update(product);
+    }
+
+    public Task<Product> GetByKeyAsync(ProductKey key, CancellationToken cancellationToken = default)
+    {
+        return _decorated.GetByKeyAsync(key, cancellationToken);
+    }
+
+    public Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken = default)
+    {
+        return _decorated.AnyAsync(key, cancellationToken);
     }
 }

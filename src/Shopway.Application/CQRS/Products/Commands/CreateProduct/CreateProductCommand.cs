@@ -1,13 +1,13 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.EntityBusinessKeys;
 
 namespace Shopway.Application.CQRS.Products.Commands.CreateProduct;
 
 public sealed record CreateProductCommand
 (
-    string ProductName,
+    ProductKey ProductKey,
     decimal Price,
-    string UomCode,
-    string Revision
+    string UomCode
 ) : ICommand<CreateProductResponse>;
 
 

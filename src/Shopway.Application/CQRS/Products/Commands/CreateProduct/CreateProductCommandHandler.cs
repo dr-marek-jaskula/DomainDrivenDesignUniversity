@@ -7,8 +7,9 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.Utilities;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.EntityBusinessKeys;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Commands.CreateProduct;
 
@@ -23,12 +24,12 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         _validator = validator;
     }
 
-    public Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+    public async Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<ProductName> productNameResult = ProductName.Create(command.ProductName);
+        ValidationResult<ProductName> productNameResult = ProductName.Create(command.ProductKey.ProductName);
+        ValidationResult<Revision> revisionResult = Revision.Create(command.ProductKey.Revision);
         ValidationResult<Price> priceResult = Price.Create(command.Price);
         ValidationResult<UomCode> uomCodeResult = UomCode.Create(command.UomCode);
-        ValidationResult<Revision> revisionResult = Revision.Create(command.Revision);
 
         _validator
             .Validate(productNameResult)
@@ -38,18 +39,28 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
 
         if (_validator.IsInvalid)
         {
-            var failure = (IResult<CreateProductResponse>)_validator.Failure<CreateProductResponse>();
-            
-            return failure
-                .ToTask();
+            return _validator.Failure<CreateProductResponse>();
+        }
+
+        _validator
+            .If(await ProductAlreadyExists(command.ProductKey, cancellationToken), AlreadyExists(nameof(ProductKey), command.ProductKey));
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<CreateProductResponse>();
         }
 
         Product createdProduct = CreateProduct(productNameResult, priceResult, uomCodeResult, revisionResult);
 
         return createdProduct
             .ToCreateResponse()
-            .ToResult()
-            .ToTask();
+            .ToResult();
+    }
+
+    private async Task<bool> ProductAlreadyExists(ProductKey key, CancellationToken cancellationToken)
+    {
+        return await _productRepository
+            .AnyAsync(key, cancellationToken);
     }
 
     private Product CreateProduct
