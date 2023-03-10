@@ -47,7 +47,7 @@ public static class ProductMapping
 
     public static ProductKey MapFromRequestToProductKey(ProductBatchUpsertRequest productBatchRequest)
     {
-        return ProductKey.Create(productBatchRequest.ProductName, productBatchRequest.Revision);
+        return ProductKey.Create(productBatchRequest.ProductKey.ProductName, productBatchRequest.ProductKey.Revision);
     }
 
     public static ProductKey MapFromProductToProductKey(Product product)

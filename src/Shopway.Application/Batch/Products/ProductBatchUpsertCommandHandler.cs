@@ -87,8 +87,8 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
         var requestsSortedInTheSameMannerAsQueriedProducts = command
             .Requests
-            .OrderBy(request => request.ProductName)
-                .ThenBy(request => request.Revision)
+            .OrderBy(request => request.ProductKey.ProductName)
+                .ThenBy(request => request.ProductKey.Revision)
             .ToList();
 
         return FilterProductsAndMapToDictionary(productsToBeFiltered, requestsSortedInTheSameMannerAsQueriedProducts);
@@ -124,7 +124,8 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
                 //If the product matches a request, then the subsequent search will start from the next index
                 productsToBefilteredIndex++;
 
-                if (filtered.ProductName.Value.CaseInsensitiveEquals(request.ProductName) && filtered.Revision.Value.CaseInsensitiveEquals(request.Revision))
+                if (filtered.ProductName.Value.CaseInsensitiveEquals(request.ProductKey.ProductName) 
+                    && filtered.Revision.Value.CaseInsensitiveEquals(request.ProductKey.Revision))
                 {
                     //If the product matches, first get the key and then add (key, product) to the dictionary
                     var key = MapFromProductToProductKey(filtered);
@@ -147,10 +148,10 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
             var productToInsert = Product.Create
             (
                 ProductId.New(),
-                ProductName.Create(request.ProductName).Value,
+                ProductName.Create(request.ProductKey.ProductName).Value,
                 Price.Create(request.Price).Value,
                 UomCode.Create(request.UomCode).Value,
-                Revision.Create(request.Revision).Value
+                Revision.Create(request.ProductKey.Revision).Value
             );
 
             await _unitOfWork
@@ -175,8 +176,8 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
     private static void UpdateProduct(Product product, ProductBatchUpsertRequest request)
     {
-        product.UpdateName(ProductName.Create(request.ProductName).Value);
-        product.UpdateRevision(Revision.Create(request.Revision).Value);
+        product.UpdateName(ProductName.Create(request.ProductKey.ProductName).Value);
+        product.UpdateRevision(Revision.Create(request.ProductKey.Revision).Value);
         product.UpdateUomCode(UomCode.Create(request.UomCode).Value);
         product.UpdatePrice(Price.Create(request.Price).Value);
     }

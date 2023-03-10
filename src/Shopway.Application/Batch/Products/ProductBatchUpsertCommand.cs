@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Abstractions.Batch;
+using Shopway.Domain.EntityBusinessKeys;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
 
 namespace Shopway.Application.Batch.Products;
@@ -14,10 +15,9 @@ public sealed record ProductBatchUpsertCommand : IBatchCommand<ProductBatchUpser
 
 	public sealed record ProductBatchUpsertRequest
 	(
-        string ProductName,
+        ProductKey ProductKey,
         decimal Price,
-        string UomCode,
-        string Revision
+        string UomCode
     )
 		: IBatchRequest;
 }

@@ -3,10 +3,12 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Application.Abstractions.Batch;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
+using Microsoft.IdentityModel.Tokens;
+using Azure.Core;
 
 namespace Shopway.Application.Batch.Products;
 
-public static class ProductBatchUpserCommandValidator
+internal static class ProductBatchUpserCommandValidator
 {
     /// <summary>
     /// Validate the command
@@ -44,9 +46,19 @@ public static class ProductBatchUpserCommandValidator
     )
     {
         responseEntryBuilder
-            .UseValueObjectValidation<ProductName>(request.ProductName)
-            .UseValueObjectValidation<Revision>(request.Revision)
+            .ValidateUsing(ValidateProductKey)
             .UseValueObjectValidation<Price>(request.Price)
-            .UseValueObjectValidation<UomCode>(request.UomCode);
+            .UseValueObjectValidation<UomCode>(request.UomCode); 
+    }
+
+    private static void ValidateProductKey
+    (
+        IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> responseEntryBuilder,
+        ProductBatchUpsertRequest request
+    )
+    {
+        responseEntryBuilder
+            .UseValueObjectValidation<ProductName>(request.ProductKey.ProductName)
+            .UseValueObjectValidation<Revision>(request.ProductKey.Revision);
     }
 }

@@ -6,7 +6,7 @@ using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
 
 namespace Shopway.Application.Batch.Products;
 
-public static class ProductBatchUpsertCommandUtilities
+internal static class ProductBatchUpsertCommandUtilities
 {
     /// <summary>
     /// Product Key components list
@@ -16,7 +16,7 @@ public static class ProductBatchUpsertCommandUtilities
     {
         return command
             .Requests
-            .Select(x => x.ProductName)
+            .Select(x => x.ProductKey.ProductName)
             .Distinct()
             .ToList();
     }
@@ -29,7 +29,7 @@ public static class ProductBatchUpsertCommandUtilities
     {
         return command
             .Requests
-            .Select(x => x.Revision)
+            .Select(x => x.ProductKey.Revision)
             .Distinct()
             .ToList();
     }
@@ -58,10 +58,9 @@ public static class ProductBatchUpsertCommandUtilities
     {
         return new ProductBatchUpsertRequest
         (
-            inputRequest.ProductName.Trim(),
+            inputRequest.ProductKey,
             inputRequest.Price,
-            inputRequest.UomCode.Trim(),
-            inputRequest.Revision.Trim()
+            inputRequest.UomCode.Trim()
         );
     }
 

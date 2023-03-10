@@ -6,6 +6,7 @@ using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Domain.Errors.Domain.DomainErrors.ProductNameError;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
+using Shopway.Domain.EntityBusinessKeys;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
@@ -17,9 +18,9 @@ public partial class ProductsControllerTests
         //Arrange
         var batchRequests = AsList
         (
-            new ProductBatchUpsertRequest("firstTestProduct", 100m, "pcs", "1.0"),
-            new ProductBatchUpsertRequest("secondTestProduct", 50m, "kg", "2.0"),
-            new ProductBatchUpsertRequest("thirdTestProduct", 10m, "pcs", "3.0")
+            new ProductBatchUpsertRequest(ProductKey.Create("firstTestProduct", "1,0"), 100m, "pcs"),
+            new ProductBatchUpsertRequest(ProductKey.Create("secondTestProduct", "2,0"), 50m, "kg"),
+            new ProductBatchUpsertRequest(ProductKey.Create("thirdTestProduct", "3,0"), 10m, "pcs")
         );
 
         var batchCommand = new ProductBatchUpsertCommand(batchRequests);
@@ -52,9 +53,9 @@ public partial class ProductsControllerTests
         //Arrange
         var batchRequests = AsList
         (
-            new ProductBatchUpsertRequest("firstTest+=.,ProductfirstTestProductfirstTestProductfirstTestProductfirstTestProduct", 100m, "pcs", "1.0"),
-            new ProductBatchUpsertRequest("secondTestProduct", 50m, "kg", "2.0"),
-            new ProductBatchUpsertRequest("thirdTestProduct", 10m, "pcs", "3.0")
+            new ProductBatchUpsertRequest(ProductKey.Create("firstTest+=.,ProductfirstTestProductfirstTestProductfirstTestProductfirstTestProduct", "1,0"), 100m, "pcs"),
+            new ProductBatchUpsertRequest(ProductKey.Create("secondTestProduct", "2,0"), 50m, "kg"),
+            new ProductBatchUpsertRequest(ProductKey.Create("thirdTestProduct", "3,0"), 10m, "pcs")
         );
 
         var batchCommand = new ProductBatchUpsertCommand(batchRequests);
@@ -96,7 +97,7 @@ public partial class ProductsControllerTests
         //Arrange
         var batchRequests = AsList
         (
-            new ProductBatchUpsertRequest(null, 100m, "pcs", "1.0"),
+            new ProductBatchUpsertRequest(new ProductKey(), 100m, "pcs2")
         );
 
         var batchCommand = new ProductBatchUpsertCommand(batchRequests);
@@ -110,15 +111,9 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(BadRequest);
 
         var deserializedResponse = response.Deserialize<ProductBatchResponseResult>();
-        
-        deserializedResponse!
-            .Entries
-            .Should()
-            .HaveCount(3);
-
-        var errorEntry = deserializedResponse!
-            .Entries
-            .Where(x => x.Status is BatchEntryStatus.Error)
-            .First();
+        deserializedResponse.Should().NotBeNull();
+        deserializedResponse!.Entries.Should().ContainSingle();
+        var entry = deserializedResponse.Entries.Single();
+        entry.Errors.Should().HaveCount(3);
     }
 }

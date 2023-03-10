@@ -3,6 +3,8 @@ using Shopway.Application.Abstractions.Batch;
 using Shopway.Application.Batch;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Utilities;
+using Shopway.Domain.ValueObjects;
 using System.Reflection;
 using static Shopway.Application.Batch.BatchEntryStatus;
 
@@ -96,6 +98,21 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
             if (parameteres.IsNullOrEmpty())
             {
                 throw new ArgumentException($"There need to be at least one parameter for the validation method");
+            }
+
+            var isAnyNullParameter = false;
+            foreach (var parameter in parameteres)
+            {
+                if (parameter is null) 
+                {
+                    _errorMessages.Add($"{typeof(TValueObject).Name} is null");
+                    isAnyNullParameter = true;
+                }
+            }
+
+            if (isAnyNullParameter)
+            {
+                return this;
             }
 
             var validationMethod = typeof(TValueObject)
