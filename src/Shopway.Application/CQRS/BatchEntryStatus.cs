@@ -1,4 +1,4 @@
-﻿namespace Shopway.Application.Batch;
+﻿namespace Shopway.Application.CQRS;
 
 /// <summary>
 /// Each response entry has its status. Error status overwrites other if at least one error for respective request occurs

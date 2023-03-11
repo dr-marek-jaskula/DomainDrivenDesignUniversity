@@ -1,6 +1,6 @@
-﻿using Shopway.Application.Batch;
+﻿using Shopway.Application.CQRS;
 
-namespace Shopway.Application.Abstractions.Batch;
+namespace Shopway.Application.Abstractions.CQRS.Batch;
 
 public interface IBatchResponse : IResponse
 {

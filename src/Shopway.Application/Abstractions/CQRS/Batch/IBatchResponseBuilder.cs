@@ -1,7 +1,7 @@
-﻿using Shopway.Application.Batch;
+﻿using Shopway.Application.CQRS;
 using Shopway.Domain.Abstractions;
 
-namespace Shopway.Application.Abstractions.Batch;
+namespace Shopway.Application.Abstractions.CQRS.Batch;
 
 /// <summary>
 /// Builder used to validate all requests in the batch command and then create the list of response entries
@@ -48,7 +48,7 @@ public interface IBatchResponseBuilder<TBatchRequest, TResponseKey>
     /// <returns></returns>
     IBatchResponseBuilder<TBatchRequest, TResponseKey> ValidateInsertRequests
     (
-        IReadOnlyList<TBatchRequest> requests, 
+        IReadOnlyList<TBatchRequest> requests,
         Action<IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>, TBatchRequest> requestValidationMethod
     );
 
@@ -60,7 +60,7 @@ public interface IBatchResponseBuilder<TBatchRequest, TResponseKey>
     /// <returns></returns>
     IBatchResponseBuilder<TBatchRequest, TResponseKey> ValidateUpdateRequests
     (
-        IReadOnlyList<TBatchRequest> requests, 
+        IReadOnlyList<TBatchRequest> requests,
         Action<IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>, TBatchRequest> requestValidationMethod
     );
 }

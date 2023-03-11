@@ -1,12 +1,12 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.Abstractions.Batch;
-using Shopway.Application.Batch;
+using Shopway.Application.Abstractions.CQRS.Batch;
+using Shopway.Application.CQRS;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.ValueObjects;
 using System.Reflection;
-using static Shopway.Application.Batch.BatchEntryStatus;
+using static Shopway.Application.CQRS.BatchEntryStatus;
 
 namespace Shopway.Infrastructure.Builders.Batch;
 

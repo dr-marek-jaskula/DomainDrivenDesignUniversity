@@ -1,10 +1,11 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
-using static Shopway.Application.Batch.BatchEntryStatus;
+using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.Mapping.ProductMapping;
-using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
+using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.ProductBatchUpsertCommand;
+using Shopway.Application.CQRS;
 
-namespace Shopway.Application.Batch.Products;
+namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
 internal static class ProductBatchUpsertCommandUtilities
 {

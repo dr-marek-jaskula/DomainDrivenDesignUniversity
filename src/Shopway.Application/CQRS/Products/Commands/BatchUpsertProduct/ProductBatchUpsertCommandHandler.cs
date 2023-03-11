@@ -1,5 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.Abstractions.Batch;
 using Shopway.Application.Mapping;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Abstractions;
@@ -12,12 +11,13 @@ using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Abstractions;
 using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Application.Abstractions.CQRS.Batch;
 using static Shopway.Domain.Errors.HttpErrors;
-using static Shopway.Application.Batch.BatchEntryStatus;
+using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.Mapping.ProductMapping;
-using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
+using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.ProductBatchUpsertCommand;
 
-namespace Shopway.Application.Batch.Products;
+namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
 public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHandler<ProductBatchUpsertCommand, ProductBatchUpsertRequest, ProductBatchUpsertResponse>
 {
@@ -26,7 +26,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
     public ProductBatchUpsertCommandHandler
     (
-        IUnitOfWork<ShopwayDbContext> unitOfWork, 
+        IUnitOfWork<ShopwayDbContext> unitOfWork,
         IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder
     )
     {
@@ -103,7 +103,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
     /// <returns>Products to be updated</returns>
     private static IDictionary<ProductKey, Product> FilterProductsAndMapToDictionary
     (
-        IList<Product> productsToBeFilteredSortedByKey, 
+        IList<Product> productsToBeFilteredSortedByKey,
         IList<ProductBatchUpsertRequest> sortedRequestsByKeyOrder
     )
     {
@@ -124,7 +124,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
                 //If the product matches a request, then the subsequent search will start from the next index
                 productsToBefilteredIndex++;
 
-                if (filtered.ProductName.Value.CaseInsensitiveEquals(request.ProductKey.ProductName) 
+                if (filtered.ProductName.Value.CaseInsensitiveEquals(request.ProductKey.ProductName)
                     && filtered.Revision.Value.CaseInsensitiveEquals(request.ProductKey.Revision))
                 {
                     //If the product matches, first get the key and then add (key, product) to the dictionary
@@ -162,7 +162,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
 
     private static void UpdateProducts
     (
-        IReadOnlyList<ProductBatchUpsertRequest> validRequestsToUpdate, 
+        IReadOnlyList<ProductBatchUpsertRequest> validRequestsToUpdate,
         IDictionary<ProductKey, Product> productsToUpdate
     )
     {

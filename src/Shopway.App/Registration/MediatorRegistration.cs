@@ -1,6 +1,6 @@
 ﻿using Shopway.Application.Pipelines;
-using Shopway.Application.Pipelines.Batch;
 using Shopway.Application.Pipelines.CQRS;
+using Shopway.Application.Pipelines.CQRS.Batch;
 using Shopway.Application.Pipelines.ValidationPipelines;
 
 namespace Microsoft.Extensions.DependencyInjection;

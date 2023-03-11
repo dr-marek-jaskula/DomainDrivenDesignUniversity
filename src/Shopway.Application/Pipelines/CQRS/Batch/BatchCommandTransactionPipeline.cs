@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Application.Abstractions.Batch;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 
-namespace Shopway.Application.Pipelines.Batch;
+namespace Shopway.Application.Pipelines.CQRS.Batch;
 
 public sealed class BatchCommandTransactionPipeline<TCommandRequest, TCommandResponse>
     : CommandTransactionPipelineBase<TCommandResponse>, IPipelineBehavior<TCommandRequest, TCommandResponse>

@@ -1,10 +1,11 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityBusinessKeys;
-using Shopway.Application.Abstractions.Batch;
-using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
+using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.ProductBatchUpsertCommand;
+using Shopway.Application.Abstractions.CQRS.Batch;
+using Shopway.Application.CQRS;
 
-namespace Shopway.Application.Batch.Products;
+namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
 internal static class ProductBatchUpsertCommandValidator
 {
@@ -17,8 +18,8 @@ internal static class ProductBatchUpsertCommandValidator
     /// <returns>List of response entries, that are required to create the batch response</returns>
     public static IList<BatchResponseEntry> Validate
     (
-        this ProductBatchUpsertCommand command, 
-        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder, 
+        this ProductBatchUpsertCommand command,
+        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder,
         IDictionary<ProductKey, Product> productsToUpdateWithKeys
     )
     {
@@ -39,14 +40,14 @@ internal static class ProductBatchUpsertCommandValidator
     /// <param name="request">Request to validate</param>
     private static void ValidateRequest
     (
-        IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> responseEntryBuilder, 
+        IBatchResponseEntryBuilder<ProductBatchUpsertRequest, ProductKey> responseEntryBuilder,
         ProductBatchUpsertRequest request
     )
     {
         responseEntryBuilder
             .ValidateUsing(ValidateProductKey)
             .UseValueObjectValidation<Price>(request.Price)
-            .UseValueObjectValidation<UomCode>(request.UomCode); 
+            .UseValueObjectValidation<UomCode>(request.UomCode);
     }
 
     private static void ValidateProductKey

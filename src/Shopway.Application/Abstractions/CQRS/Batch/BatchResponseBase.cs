@@ -1,0 +1,15 @@
+﻿using Shopway.Application.CQRS;
+using Shopway.Domain.Abstractions;
+
+namespace Shopway.Application.Abstractions.CQRS.Batch;
+
+public abstract record BatchResponseBase<TResponseKey> : IBatchResponse
+    where TResponseKey : struct, IBusinessKey
+{
+    protected BatchResponseBase(IList<BatchResponseEntry> entries)
+    {
+        Entries = entries;
+    }
+
+    public IList<BatchResponseEntry> Entries { get; set; }
+}

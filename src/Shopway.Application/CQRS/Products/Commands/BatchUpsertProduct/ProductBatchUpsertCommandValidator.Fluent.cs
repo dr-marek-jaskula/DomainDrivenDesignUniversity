@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Shopway.Application.Batch.Products;
+namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
 internal sealed class ProductBatchUpsertCommandFleuntValidator : AbstractValidator<ProductBatchUpsertCommand>
 {

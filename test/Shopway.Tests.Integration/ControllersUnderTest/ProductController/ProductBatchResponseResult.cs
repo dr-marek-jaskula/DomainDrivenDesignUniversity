@@ -1,4 +1,4 @@
-﻿using Shopway.Application.Batch;
+﻿using Shopway.Application.CQRS;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 

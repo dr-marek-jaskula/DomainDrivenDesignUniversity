@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 
-namespace Shopway.Application.Batch;
+namespace Shopway.Application.CQRS;
 
 /// <summary>
 /// Contains information about corresponding batch request

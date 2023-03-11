@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Application.Batch.Products;
-using static Shopway.Application.Batch.BatchEntryStatus;
+using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
+using static Shopway.Application.CQRS.BatchEntryStatus;
 
 namespace Shopway.Presentation.Controllers;
 

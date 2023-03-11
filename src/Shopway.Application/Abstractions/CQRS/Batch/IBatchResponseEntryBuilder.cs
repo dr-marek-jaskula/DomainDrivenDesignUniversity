@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
 
-namespace Shopway.Application.Abstractions.Batch;
+namespace Shopway.Application.Abstractions.CQRS.Batch;
 
 /// <summary>
 /// Builder used to validate the request and then create the single response entry 

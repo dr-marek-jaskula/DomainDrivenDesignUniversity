@@ -5,8 +5,8 @@ using Shopway.Application.Abstractions;
 using Shopway.Infrastructure.Validators;
 using Microsoft.AspNetCore.Identity;
 using Shopway.Domain.Entities;
-using Shopway.Application.Abstractions.Batch;
 using Shopway.Infrastructure.Builders.Batch;
+using Shopway.Application.Abstractions.CQRS.Batch;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
