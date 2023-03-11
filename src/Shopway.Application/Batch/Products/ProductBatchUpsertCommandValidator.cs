@@ -3,12 +3,10 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Application.Abstractions.Batch;
 using static Shopway.Application.Batch.Products.ProductBatchUpsertCommand;
-using Microsoft.IdentityModel.Tokens;
-using Azure.Core;
 
 namespace Shopway.Application.Batch.Products;
 
-internal static class ProductBatchUpserCommandValidator
+internal static class ProductBatchUpsertCommandValidator
 {
     /// <summary>
     /// Validate the command

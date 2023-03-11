@@ -100,17 +100,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
                 throw new ArgumentException($"There need to be at least one parameter for the validation method");
             }
 
-            var isAnyNullParameter = false;
-            foreach (var parameter in parameteres)
-            {
-                if (parameter is null) 
-                {
-                    _errorMessages.Add($"{typeof(TValueObject).Name} is null");
-                    isAnyNullParameter = true;
-                }
-            }
-
-            if (isAnyNullParameter)
+            if (IsAnyNullParameter<TValueObject>(parameteres))
             {
                 return this;
             }
@@ -128,6 +118,23 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
             var stringErrors = ((List<Shopway.Domain.Errors.Error>)errors).Select(error => error.Message);
             _errorMessages.AddRange(stringErrors);
             return this;
+        }
+
+        /// <summary>
+        /// Examines if any of input parameters is null
+        /// </summary>
+        /// <typeparam name="TValueObject">ValueObject</typeparam>
+        /// <param name="parameteres">Input parameters</param>
+        /// <returns>True if there is null parameter. Otherwise, return false</returns>
+        private bool IsAnyNullParameter<TValueObject>(object[] parameteres) where TValueObject : ValueObject
+        {
+            if (parameteres.Any(parameter => parameter is null))
+            {
+                _errorMessages.Add($"At least one of {typeof(TValueObject).Name} components is null");
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

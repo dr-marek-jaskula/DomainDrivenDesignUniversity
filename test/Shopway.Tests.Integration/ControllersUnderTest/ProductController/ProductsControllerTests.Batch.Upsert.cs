@@ -92,7 +92,7 @@ public partial class ProductsControllerTests
     }
 
     [Fact]
-    public async Task Batch_Upsert_ShouldReturnOneErrorResponseEntry_WhenProductNameIsNull()
+    public async Task Batch_Upsert_ShouldReturnProblemDetailsWithTwoErrors_WhenProductNameAndRevisionAreNull()
     {
         //Arrange
         var batchRequests = AsList
@@ -110,10 +110,8 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(BadRequest);
 
-        var deserializedResponse = response.Deserialize<ProductBatchResponseResult>();
+        var deserializedResponse = response.Deserialize<ModelProblemDetails>();
         deserializedResponse.Should().NotBeNull();
-        deserializedResponse!.Entries.Should().ContainSingle();
-        var entry = deserializedResponse.Entries.Single();
-        entry.Errors.Should().HaveCount(3);
+        deserializedResponse!.Errors.Should().HaveCount(2);
     }
 }
