@@ -1,12 +1,12 @@
 ﻿using RestSharp;
+using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Application.CQRS;
 using Shopway.Tests.Integration.Utilities;
+using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Domain.Errors.Domain.DomainErrors.ProductNameError;
-using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.ProductBatchUpsertCommand;
-using Shopway.Domain.EntityBusinessKeys;
-using Shopway.Application.CQRS;
-using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
+using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
@@ -23,7 +23,7 @@ public partial class ProductsControllerTests
             new ProductBatchUpsertRequest(ProductKey.Create("thirdTestProduct", "3,0"), 10m, "pcs")
         );
 
-        var batchCommand = new ProductBatchUpsertCommand(batchRequests);
+        var batchCommand = new BatchUpsertProductCommand(batchRequests);
 
         var request = PostRequest($"batch/upsert", batchCommand);
 
@@ -58,7 +58,7 @@ public partial class ProductsControllerTests
             new ProductBatchUpsertRequest(ProductKey.Create("thirdTestProduct", "3,0"), 10m, "pcs")
         );
 
-        var batchCommand = new ProductBatchUpsertCommand(batchRequests);
+        var batchCommand = new BatchUpsertProductCommand(batchRequests);
 
         var request = PostRequest($"batch/upsert", batchCommand);
 
@@ -100,7 +100,7 @@ public partial class ProductsControllerTests
             new ProductBatchUpsertRequest(new ProductKey(), 100m, "pcs2")
         );
 
-        var batchCommand = new ProductBatchUpsertCommand(batchRequests);
+        var batchCommand = new BatchUpsertProductCommand(batchRequests);
 
         var request = PostRequest($"batch/upsert", batchCommand);
 

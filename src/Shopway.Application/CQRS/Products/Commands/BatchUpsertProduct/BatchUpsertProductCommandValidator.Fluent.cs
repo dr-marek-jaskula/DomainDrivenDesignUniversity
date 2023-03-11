@@ -2,9 +2,9 @@
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
-internal sealed class ProductBatchUpsertCommandFleuntValidator : AbstractValidator<ProductBatchUpsertCommand>
+internal sealed class BatchUpsertProductCommandFluentValidator : AbstractValidator<BatchUpsertProductCommand>
 {
-    public ProductBatchUpsertCommandFleuntValidator()
+    public BatchUpsertProductCommandFluentValidator()
     {
         RuleForEach(command => command.Requests).ChildRules(request =>
         {

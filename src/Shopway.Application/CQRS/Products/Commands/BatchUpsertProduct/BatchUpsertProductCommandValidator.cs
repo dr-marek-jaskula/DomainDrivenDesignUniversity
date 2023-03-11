@@ -1,13 +1,12 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityBusinessKeys;
-using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.ProductBatchUpsertCommand;
 using Shopway.Application.Abstractions.CQRS.Batch;
-using Shopway.Application.CQRS;
+using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
-internal static class ProductBatchUpsertCommandValidator
+internal static class BatchUpsertProductCommandValidator
 {
     /// <summary>
     /// Validate the command
@@ -18,7 +17,7 @@ internal static class ProductBatchUpsertCommandValidator
     /// <returns>List of response entries, that are required to create the batch response</returns>
     public static IList<BatchResponseEntry> Validate
     (
-        this ProductBatchUpsertCommand command,
+        this BatchUpsertProductCommand command,
         IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder,
         IDictionary<ProductKey, Product> productsToUpdateWithKeys
     )

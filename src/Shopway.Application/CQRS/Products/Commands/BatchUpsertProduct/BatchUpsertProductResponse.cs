@@ -1,12 +1,11 @@
 ﻿using Shopway.Application.Abstractions.CQRS.Batch;
-using Shopway.Application.CQRS;
 using Shopway.Domain.EntityBusinessKeys;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
-public sealed record ProductBatchUpsertResponse : BatchResponseBase<ProductKey>
+public sealed record BatchUpsertProductResponse : BatchResponseBase<ProductKey>
 {
-    public ProductBatchUpsertResponse(IList<BatchResponseEntry> entries)
+    public BatchUpsertProductResponse(IList<BatchResponseEntry> entries)
         : base(entries)
     {
     }

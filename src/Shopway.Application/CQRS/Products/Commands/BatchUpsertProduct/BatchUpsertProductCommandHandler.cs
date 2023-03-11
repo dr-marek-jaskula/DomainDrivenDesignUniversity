@@ -15,16 +15,16 @@ using Shopway.Application.Abstractions.CQRS.Batch;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.Mapping.ProductMapping;
-using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.ProductBatchUpsertCommand;
+using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
-public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHandler<ProductBatchUpsertCommand, ProductBatchUpsertRequest, ProductBatchUpsertResponse>
+public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse>
 {
     private readonly IUnitOfWork<ShopwayDbContext> _unitOfWork;
     private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _responseBuilder;
 
-    public ProductBatchUpsertCommandHandler
+    public BatchUpsertProductCommandHandler
     (
         IUnitOfWork<ShopwayDbContext> unitOfWork,
         IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder
@@ -34,11 +34,11 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
         _responseBuilder = responseBuilder;
     }
 
-    public async Task<IResult<ProductBatchUpsertResponse>> Handle(ProductBatchUpsertCommand command, CancellationToken cancellationToken)
+    public async Task<IResult<BatchUpsertProductResponse>> Handle(BatchUpsertProductCommand command, CancellationToken cancellationToken)
     {
         if (command.Requests.IsNullOrEmpty())
         {
-            return Result.Failure<ProductBatchUpsertResponse>(NullOrEmpty(nameof(ProductBatchUpsertCommand)));
+            return Result.Failure<BatchUpsertProductResponse>(NullOrEmpty(nameof(BatchUpsertProductCommand)));
         }
 
         command = command.Trim();
@@ -69,7 +69,7 @@ public sealed partial class ProductBatchUpsertCommandHandler : IBatchCommandHand
             .ToResult();
     }
 
-    private async Task<IDictionary<ProductKey, Product>> GetProductsToUpdateDictionary(ProductBatchUpsertCommand command, CancellationToken cancellationToken)
+    private async Task<IDictionary<ProductKey, Product>> GetProductsToUpdateDictionary(BatchUpsertProductCommand command, CancellationToken cancellationToken)
     {
         var productNames = command.ProductNames();
         var productRevisions = command.ProductRevisions();

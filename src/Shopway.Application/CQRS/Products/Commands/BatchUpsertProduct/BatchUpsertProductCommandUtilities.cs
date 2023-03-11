@@ -2,18 +2,17 @@
 using Shopway.Domain.EntityBusinessKeys;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.Mapping.ProductMapping;
-using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.ProductBatchUpsertCommand;
-using Shopway.Application.CQRS;
+using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
-internal static class ProductBatchUpsertCommandUtilities
+internal static class BatchUpsertProductCommandUtilities
 {
     /// <summary>
     /// Product Key components list
     /// </summary>
     /// <returns>List of distinct product names</returns>
-    public static IList<string> ProductNames(this ProductBatchUpsertCommand command)
+    public static IList<string> ProductNames(this BatchUpsertProductCommand command)
     {
         return command
             .Requests
@@ -26,7 +25,7 @@ internal static class ProductBatchUpsertCommandUtilities
     /// Product Key components list
     /// </summary>
     /// <returns>List of distinct product revisions</returns>
-    public static IList<string> ProductRevisions(this ProductBatchUpsertCommand command)
+    public static IList<string> ProductRevisions(this BatchUpsertProductCommand command)
     {
         return command
             .Requests
@@ -40,14 +39,14 @@ internal static class ProductBatchUpsertCommandUtilities
     /// </summary>
     /// <param name="inputCommand">Not trimmed command</param>
     /// <returns>Trimmed command</returns>
-    public static ProductBatchUpsertCommand Trim(this ProductBatchUpsertCommand inputCommand)
+    public static BatchUpsertProductCommand Trim(this BatchUpsertProductCommand inputCommand)
     {
         var requests = inputCommand
             .Requests
             .Select(Trim)
             .ToList();
 
-        return new ProductBatchUpsertCommand(requests);
+        return new BatchUpsertProductCommand(requests);
     }
 
     /// <summary>
@@ -73,7 +72,7 @@ internal static class ProductBatchUpsertCommandUtilities
     /// <returns></returns>
     public static IReadOnlyList<ProductBatchUpsertRequest> GetUpdateRequests
     (
-        this ProductBatchUpsertCommand command,
+        this BatchUpsertProductCommand command,
         IDictionary<ProductKey, Product> productsToUpdateWithKeys
     )
     {
@@ -83,7 +82,7 @@ internal static class ProductBatchUpsertCommandUtilities
 
     public static IReadOnlyList<ProductBatchUpsertRequest> GetInsertRequests
     (
-        this ProductBatchUpsertCommand command,
+        this BatchUpsertProductCommand command,
         IDictionary<ProductKey, Product> productsToUpdateWithKeys
     )
     {
@@ -101,7 +100,7 @@ internal static class ProductBatchUpsertCommandUtilities
     /// <exception cref="ArgumentException"></exception>
     public static IReadOnlyList<ProductBatchUpsertRequest> FilterValidRequests
     (
-        this ProductBatchUpsertCommand command,
+        this BatchUpsertProductCommand command,
         IDictionary<ProductKey, Product> productsToUpdateWithKeys,
         BatchEntryStatus status
     )
