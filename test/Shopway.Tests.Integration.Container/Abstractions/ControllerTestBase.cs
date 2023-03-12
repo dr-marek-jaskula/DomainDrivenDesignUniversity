@@ -25,21 +25,21 @@ namespace Shopway.Tests.Integration.Abstractions;
 public abstract class ControllerTestsBase
 {
     private readonly RestClient _userClient;
-    protected readonly string ShopwayApiUrl;
-    protected readonly string _controllerUri;
-    protected readonly ApiKeyTestOptions apiKeys;
     protected HttpClient httpClient;
+    protected readonly string shopwayApiUrl;
+    protected readonly string controllerUrl;
+    protected readonly ApiKeyTestOptions apiKeys;
     protected readonly DatabaseFixture fixture;
 
     public ControllerTestsBase(ShopwayApiFactory apiFactory)
     {
         apiKeys = apiFactory.Services.GetRequiredService<ApiKeyTestOptions>();
-        ShopwayApiUrl = apiFactory.Services.GetRequiredService<IntegrationTestsUrlOptions>().ShopwayApiUrl!;
-        _controllerUri = GetType().Name[..^ControllerTests.Length];
+        shopwayApiUrl = apiFactory.Services.GetRequiredService<IntegrationTestsUrlOptions>().ShopwayApiUrl!;
+        controllerUrl = GetType().Name[..^ControllerTests.Length];
 
         httpClient = apiFactory.CreateClient();
         _userClient = new(httpClient);
-        _userClient.Options.BaseUrl = new Uri($"{ShopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
+        _userClient.Options.BaseUrl = new Uri($"{shopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
         fixture = new DatabaseFixture(apiFactory.ContainerConnectionString);
     }
 

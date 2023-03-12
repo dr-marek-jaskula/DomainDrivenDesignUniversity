@@ -17,7 +17,7 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
     public async Task InitializeAsync()
     {
         _restClient = await RestClient(httpClient, fixture);
-        _restClient.Options.BaseUrl = new Uri($"{ShopwayApiUrl}{_controllerUri}");
+        _restClient.Options.BaseUrl = new Uri($"{shopwayApiUrl}{controllerUrl}");
     }
 
     public Task DisposeAsync()
