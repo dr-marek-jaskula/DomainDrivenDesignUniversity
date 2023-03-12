@@ -33,6 +33,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="Shopway.Tests.Integration" />
+		<InternalsVisibleTo Include="Shopway.Tests.Integration.Container" />
 	</ItemGroup>
 	
 </Project>

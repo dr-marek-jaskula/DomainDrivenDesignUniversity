@@ -17,6 +17,10 @@ public sealed class ShopwayDbContextFactory : IDesignTimeDbContextFactory<Shopwa
         {
             optionsBuilder.UseSqlServer(configuration.GetConnectionString(TestConnection));
         }
+        else if (args is not null && args.Length is 1)
+        {
+            optionsBuilder.UseSqlServer(args.Single());
+        }
         else
         {
             optionsBuilder.UseSqlServer(configuration.GetConnectionString(DefaultConnection));
