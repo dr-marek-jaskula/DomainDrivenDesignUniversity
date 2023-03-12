@@ -28,24 +28,30 @@ public abstract class ControllerTestsBase
     private readonly RestClient _userClient;
     protected readonly string _controllerUri;
     protected readonly ApiKeyTestOptions apiKeys;
+    protected HttpClient httpClient;
+    protected readonly DatabaseFixture fixture;
 
     public ControllerTestsBase(ShopwayApiFactory apiFactory)
     {
         apiKeys = apiFactory.Services.GetRequiredService<ApiKeyTestOptions>();
         ShopwayApiUrl = apiFactory.Services.GetRequiredService<IntegrationTestsUrlOptions>().ShopwayApiUrl!;
         _controllerUri = GetType().Name[..^ControllerTests.Length];
-        _userClient = new($"{ShopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
+
+        httpClient = apiFactory.CreateClient();
+        _userClient = new(httpClient);
+        _userClient.Options.BaseUrl = new Uri($"{ShopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
+        fixture = new DatabaseFixture(apiFactory.ContainerConnectionString);
     }
 
     /// <summary>
     /// Create the rest client with api url appended by given controller url and ensure that the test user for this client has all privileges
     /// </summary>
-    /// <param name="controllerUrl">Controller url</param>
+    /// <param name="httpClient">Controller url</param>
     /// <param name="databaseFixture">Database fixture</param>
     /// <returns></returns>
-    protected async Task<RestClient> RestClient(string controllerUrl, DatabaseFixture databaseFixture)
+    protected async Task<RestClient> RestClient(HttpClient httpClient, DatabaseFixture databaseFixture)
     {
-        var client = new RestClient($"{ShopwayApiUrl}{controllerUrl}");
+        var client = new RestClient(httpClient);
 
         await EnsureThatTheTestUserIsRegistered(databaseFixture);
         var token = await LogTestUser();

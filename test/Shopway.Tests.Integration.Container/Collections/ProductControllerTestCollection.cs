@@ -1,6 +1,4 @@
-﻿using Customers.Api.Tests.Integration;
-using Shopway.Tests.Integration.Configurations;
-using Shopway.Tests.Integration.Persistance;
+﻿using Shopway.Tests.Integration.Configurations;
 using static Shopway.Tests.Integration.Constants.CollectionNames;
 
 namespace Shopway.Tests.Integration.Collections;
@@ -10,6 +8,5 @@ public sealed class ProductControllerTestCollection
     : ICollectionFixture<ShopwayApiFactory>,
       ICollectionFixture<IntegrationTestsUrlOptions>,
       ICollectionFixture<ApiKeyTestOptions>
-      //ICollectionFixture<DatabaseFixture>
 {
 }

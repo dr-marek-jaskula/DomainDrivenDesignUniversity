@@ -4,28 +4,13 @@ using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
-using Shopway.Tests.Integration.Abstractions;
-using Shopway.Tests.Integration.Persistance;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
-using static Shopway.Tests.Integration.Constants.CollectionNames;
 
-namespace Shopway.Tests.Integration.ControllersUnderTest.ProductControllerContainers;
+namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
-[Collection(ProductControllerCollection)]
-public sealed partial class ProductCreateTestContainer : ControllerTestsBase
+public partial class ProductsControllerTests
 {
-    private RestClient? _restClient;
-    private readonly DatabaseFixture _fixture;
-
-    public ProductCreateTestContainer(ShopwayApiFactory apiFactory, DatabaseFixture databaseFixture)
-        : base(apiFactory)
-    {
-        _restClient = new RestClient(apiFactory.CreateClient());
-        _fixture = databaseFixture;
-        //_fixture = new DatabaseFixture(apiFactory.ContainerConnectionString);
-    }
-
     [Fact]
     public async Task Create_ShouldReturnFailure_WhenProductExists()
     {
@@ -50,9 +35,9 @@ public sealed partial class ProductCreateTestContainer : ControllerTestsBase
     public async Task Create_ShouldReturnFailure_WhenProductExists2()
     {
         //Arrange
-        var generatedProductId = await _fixture.DataGenerator.AddProductWithoutReviews();
+        var generatedProductId = await fixture.DataGenerator.AddProductWithoutReviews();
 
-        var get = await _fixture.Context.Set<Product>().ToListAsync();
+        var get = await fixture.Context.Set<Product>().ToListAsync();
 
         var request = GetRequest(generatedProductId.Value.ToString());
         request.AddApiKeyAuthentication(apiKeys.PRODUCT_GET);
