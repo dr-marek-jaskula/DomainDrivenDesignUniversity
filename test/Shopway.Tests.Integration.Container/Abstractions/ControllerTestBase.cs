@@ -24,8 +24,8 @@ namespace Shopway.Tests.Integration.Abstractions;
 
 public abstract class ControllerTestsBase
 {
-    private readonly string ShopwayApiUrl;
     private readonly RestClient _userClient;
+    protected readonly string ShopwayApiUrl;
     protected readonly string _controllerUri;
     protected readonly ApiKeyTestOptions apiKeys;
     protected HttpClient httpClient;

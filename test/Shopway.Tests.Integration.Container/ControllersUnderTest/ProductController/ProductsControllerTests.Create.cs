@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RestSharp;
+﻿using RestSharp;
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
-using Shopway.Application.CQRS.Products.Queries;
-using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.ValueObjects;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
@@ -19,36 +18,19 @@ public partial class ProductsControllerTests
         var revision = "RevisioN";
         var key = ProductKey.Create(productName, revision);
 
+        await fixture.DataGenerator.AddProductWithoutReviews(ProductName.Create(productName).Value, Revision.Create(revision).Value);
+
         var body = new CreateProductCommand(key, 10, "kg");
-        var request = PostRequest("/api/products", body);
+        var request = PostRequest(string.Empty, body);
         request.AddApiKeyAuthentication(apiKeys.PRODUCT_CREATE);
 
         //Act
         var response = await _restClient!.ExecutePostAsync(request);
 
         //Assert
-        var deserialized = response.Deserialize<CreateProductResponse>();
-        deserialized!.Id.Should().NotBeEmpty();
-    }
+        response.StatusCode.Should().Be(BadRequest);
 
-    [Fact]
-    public async Task Create_ShouldReturnFailure_WhenProductExists2()
-    {
-        //Arrange
-        var generatedProductId = await fixture.DataGenerator.AddProductWithoutReviews();
-
-        var get = await fixture.Context.Set<Product>().ToListAsync();
-
-        var request = GetRequest(generatedProductId.Value.ToString());
-        request.AddApiKeyAuthentication(apiKeys.PRODUCT_GET);
-
-        //Act
-        var response = await _restClient!.GetAsync(request);
-
-        //Assert
-        response.StatusCode.Should().Be(OK);
-
-        var deserializedResponse = response.DeserializeResponseResult<ProductResponse>();
-        deserializedResponse.Id.Should().Be(generatedProductId.Value);
+        var deserializedResponse = response.Deserialize<ValidationProblemDetails>();
+        deserializedResponse!.Errors.Should().Contain(error => error == AlreadyExists(nameof(ProductKey), key));
     }
 }

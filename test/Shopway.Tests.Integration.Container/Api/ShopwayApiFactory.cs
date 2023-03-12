@@ -28,6 +28,9 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        //Set container connection string
+        ContainerConnectionString = _msSqlContainer.GetConnectionString();
+
         builder.ConfigureLogging(logging =>
         {
             logging.ClearProviders();
@@ -35,17 +38,11 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
 
         builder.ConfigureTestServices(services =>
         {
-            ContainerConnectionString = _msSqlContainer.GetConnectionString();
-
+            //Remove background workers
             services.RemoveAll(typeof(IHostedService));
             services.RemoveAll(typeof(IJob));
-            services.RemoveAll(typeof(ShopwayDbContext));
 
-            services.Configure<DatabaseOptions>(options =>
-            {
-                options.ConnectionString = ContainerConnectionString;
-            });
-
+            //Register options
             services.AddSingleton(x => new IntegrationTestsUrlOptions()
             {
                 ShopwayApiUrl = "https://localhost:7236/api/"
@@ -59,6 +56,13 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
                 PRODUCT_CREATE = "51b4c4e8-d246-4dcf-b7c7-05811a9123c0"
             });
 
+            //Re-register database context to use the connection to the database in the container
+            services.Configure<DatabaseOptions>(options =>
+            {
+                options.ConnectionString = ContainerConnectionString;
+            });
+
+            services.RemoveAll(typeof(ShopwayDbContext));
             services.RegisterDatabaseContext(true);
         });
     }
@@ -69,7 +73,6 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
     }
 
     //This method from the interface IAsyncLifetime will hide the one in the "WebApplicationFactory<IApiMarker>"
-    //This in intentional hiding
     public new async Task DisposeAsync()
     {
         await _msSqlContainer.DisposeAsync();
