@@ -2,8 +2,8 @@
 
 namespace Shopway.Tests.Integration.Collections;
 
-[CollectionDefinition(ProductControllerCollection)]
-public sealed class ProductControllerTestCollection
+[CollectionDefinition(WebApplicationFactoryCollection)]
+public sealed class WebApplicationFactoryTestCollection
     : ICollectionFixture<ShopwayApiFactory> //This will ensure that one container will be created per collection
 {
 }

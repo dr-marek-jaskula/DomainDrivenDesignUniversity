@@ -4,7 +4,7 @@ using static Shopway.Tests.Integration.Constants.CollectionNames;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
-[Collection(ProductControllerCollection)]
+[Collection(WebApplicationFactoryCollection)]
 public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyncLifetime
 {
     private RestClient? _restClient;
