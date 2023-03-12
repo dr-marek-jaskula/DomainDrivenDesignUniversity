@@ -33,3 +33,23 @@ This layer should provide the database specific structures, configurations, repo
 ### .Domain
 
 This is the heart of the whole solution. We store here entities, value objects, enumerations, domain events and other core structures.
+
+### .Tests.Unit
+
+Project to present structure of unit tests
+
+### .Tests.Integration
+
+This layer contains the integrations tests. 
+
+Here we do not use the WebApplicationFactory approach, but we create DI container in more manual way.
+
+Moreover, tests are done on the test database, but the test cleaning is required (see TestDataGeneratorBase.CleanDatabaseFromTestData)
+
+### .Tests.Integration.Container
+
+This layer contains the integrations tests. 
+
+Here we use the proper approach of using the WebApplicationFactory.
+
+Moreover, we use TestContianers library, to make all integrations test in sql database inside the container, so the additional database cleaning is not required (like in Shopway.Tests.Integration)
