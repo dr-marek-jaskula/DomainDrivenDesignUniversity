@@ -11,6 +11,8 @@ public abstract class BaseSpecification<TEntity, TEntityId>
 {
     //Flags
     public bool IsSplitQuery { get; protected set; }
+    public bool IsAsNoTracking { get; protected set; }
+    public bool IsAsNoTrackingWithIdentityResolution { get; protected set; }
 
     //Filters and Includes
     public IFilter<TEntity>? Filter { get; private set; } = null;

@@ -73,6 +73,16 @@ public abstract class BaseRepository
             queryable = queryable.AsSplitQuery();
         }
 
+        if (specification.IsAsNoTracking)
+        {
+            queryable = queryable.AsNoTracking();
+        }
+
+        if (specification.IsAsNoTrackingWithIdentityResolution)
+        {
+            queryable = queryable.AsNoTrackingWithIdentityResolution();
+        }
+
         return queryable;
     }
 }
