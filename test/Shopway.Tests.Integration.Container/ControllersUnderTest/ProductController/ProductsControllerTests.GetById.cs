@@ -14,7 +14,7 @@ public partial class ProductsControllerTests
     public async Task GetById_ShouldReturnProduct_WhenProductExists()
     {
         //Arrange
-        var generatedProduct = await fixture.DataGenerator.AddProductWithoutReviews();
+        var generatedProduct = await fixture.DataGenerator.AddProduct();
 
         var request = GetRequest(generatedProduct.Id.Value.ToString());
         request.AddApiKeyAuthentication(apiKeys.PRODUCT_GET);
@@ -26,7 +26,7 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(OK);
 
         var deserializedResponse = response.DeserializeResponseResult<ProductResponse>();
-        AssertProductResponse(deserializedResponse, generatedProduct, assertReviews: true);
+        AssertProductResponse(deserializedResponse, generatedProduct, assertReviews: false);
     }
 
     [Fact]

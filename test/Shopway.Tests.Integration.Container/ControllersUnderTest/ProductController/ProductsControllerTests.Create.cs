@@ -18,7 +18,7 @@ public partial class ProductsControllerTests
         var revision = "RevisioN";
         var key = ProductKey.Create(productName, revision);
 
-        await fixture.DataGenerator.AddProductWithoutReviews(ProductName.Create(productName).Value, Revision.Create(revision).Value);
+        await fixture.DataGenerator.AddProduct(ProductName.Create(productName).Value, Revision.Create(revision).Value);
 
         var body = new CreateProductCommand(key, 10, "kg");
         var request = PostRequest(string.Empty, body);

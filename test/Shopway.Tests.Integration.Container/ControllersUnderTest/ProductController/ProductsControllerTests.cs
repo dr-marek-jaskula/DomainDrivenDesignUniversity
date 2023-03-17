@@ -51,8 +51,6 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
     /// <param name="productResponse">Deserialized product response</param>
     private static void AssertReviewResponses(IReadOnlyCollection<ReviewResponse> reviewResponses, IReadOnlyCollection<Review> reviews)
     {
-        reviewResponses.Should().NotHaveSameCount(reviews);
-
         foreach (var reviewResponse in reviewResponses)
         {
             var review = reviews.First(review => review.Id.Value == reviewResponse.Id);

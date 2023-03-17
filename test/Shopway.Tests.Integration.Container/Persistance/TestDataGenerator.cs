@@ -17,7 +17,7 @@ public sealed class TestDataGenerator : TestDataGeneratorBase
     {
     }
 
-    public async Task<Product> AddProductWithoutReviews
+    public async Task<Product> AddProduct
     (
         ProductName? productName = null,
         Revision? revision = null,
