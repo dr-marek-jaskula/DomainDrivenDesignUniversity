@@ -5,7 +5,7 @@ using Shopway.Presentation.Controllers;
 using static Shopway.Tests.Integration.Constants.CollectionNames;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
 
-namespace Shopway.Tests.Integration.ControllersUnderTest.ReviewController;
+namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 
 [Collection(ProductControllerCollection)]
 public sealed partial class ReviewsControllerTests : ControllerTestsBase, IAsyncLifetime

@@ -4,7 +4,7 @@ using Shopway.Application.CQRS.Products.Commands.AddReview;
 using static System.Net.HttpStatusCode;
 using static Shopway.Presentation.Controllers.ProductsController;
 
-namespace Shopway.Tests.Integration.ControllersUnderTest.ReviewController;
+namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 
 public partial class ReviewsControllerTests
 {
@@ -12,11 +12,13 @@ public partial class ReviewsControllerTests
     public async Task AddReview_ShouldAddReview_WhenValidData()
     {
         //Arrange
-        var generatedProductId = _fixture.DataGenerator.AddProductWithoutReviews();
+        var generatedProduct = await _fixture.DataGenerator.AddProduct();
 
-        var body = new AddReviewCommand.AddReviewRequestBody(2, "CustomTitle", "Description");
+        var reviewTitle = "CustomTitle";
+        var reviewDescription = "Description";
+        var body = new AddReviewCommand.AddReviewRequestBody(2, reviewTitle, reviewDescription);
 
-        var request = PostRequest($"{generatedProductId.Result.Value}/{Reviews}", body);
+        var request = PostRequest($"{generatedProduct.Id}/{Presentation.Controllers.ProductsController.Reviews}", body);
 
         //Act
         var response = await _restClient!.PostAsync(request);
@@ -33,5 +35,7 @@ public partial class ReviewsControllerTests
             .FirstOrDefault();
 
         addedReview.Should().NotBeNull();
+        addedReview!.Title.Value.Should().Be(reviewTitle);
+        addedReview!.Description.Value.Should().Be(reviewDescription);
     }
 }

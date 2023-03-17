@@ -27,7 +27,7 @@ public static class DatabaseContextRegistration
             if (isDevelopment)
             {
                 optionsBuilder.EnableDetailedErrors();
-                //optionsBuilder.EnableSensitiveDataLogging(); //DO NOT USE THIS IN PRODUCTIN! Used to get parameter values. DO NOT USE THIS IN PRODUCTIN!
+                //optionsBuilder.EnableSensitiveDataLogging(); //DO NOT USE THIS IN PRODUCTION! Used to get parameter values. DO NOT USE THIS IN PRODUCTION!
                 optionsBuilder.ConfigureWarnings(warningAction =>
                 {
                     warningAction.Log(new EventId[]
