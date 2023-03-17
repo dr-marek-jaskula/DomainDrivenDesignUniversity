@@ -17,7 +17,7 @@ public sealed class TestDataGenerator : TestDataGeneratorBase
     {
     }
 
-    public async Task<ProductId> AddProductWithoutReviews
+    public async Task<Product> AddProductWithoutReviews
     (
         ProductName? productName = null,
         Revision? revision = null,
@@ -41,6 +41,6 @@ public sealed class TestDataGenerator : TestDataGeneratorBase
 
         await AddEntity(product);
 
-        return product.Id;
+        return product;
     }
 }

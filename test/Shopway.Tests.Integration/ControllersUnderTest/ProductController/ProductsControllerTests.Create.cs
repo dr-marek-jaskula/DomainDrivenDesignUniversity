@@ -5,6 +5,7 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Errors.HttpErrors;
+using static Shopway.Tests.Integration.Abstractions.TestDataGeneratorBase;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
@@ -14,8 +15,8 @@ public partial class ProductsControllerTests
     public async Task Create_ShouldReturnFailure_WhenProductExists()
     {
         //Arrange
-        var productName = "ExistingNamE";
-        var revision = "RevisioN";
+        var productName = TestString(20);
+        var revision = TestString(2);
         var key = ProductKey.Create(productName, revision);
 
         await _fixture.DataGenerator.AddProductWithoutReviews(ProductName.Create(productName).Value, Revision.Create(revision).Value);
