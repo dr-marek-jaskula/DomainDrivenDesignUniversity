@@ -38,8 +38,8 @@ public abstract class ControllerTestsBase
         controllerUrl = GetType().Name[..^ControllerTests.Length];
 
         httpClient = apiFactory.CreateClient();
-        _userClient = new(httpClient);
-        _userClient.Options.BaseUrl = new Uri($"{shopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
+        var userUri = new Uri($"{shopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
+        _userClient = new(httpClient, new RestClientOptions(userUri));
         fixture = new DatabaseFixture(apiFactory.ContainerConnectionString);
     }
 
@@ -49,16 +49,13 @@ public abstract class ControllerTestsBase
     /// <param name="httpClient">Controller url</param>
     /// <param name="databaseFixture">Database fixture</param>
     /// <returns></returns>
-    protected async Task<RestClient> RestClient(HttpClient httpClient, DatabaseFixture databaseFixture)
+    protected async Task<RestClient> RestClient(HttpClient httpClient, RestClientOptions restClientOptions, DatabaseFixture databaseFixture)
     {
-        var client = new RestClient(httpClient);
-
         await EnsureThatTheTestUserIsRegistered(databaseFixture);
         var token = await LogTestUser();
 
-        client.UseAuthenticator(new JwtAuthenticator(token));
-
-        return client;
+        restClientOptions.Authenticator = new JwtAuthenticator(token);
+        return new RestClient(httpClient, restClientOptions);
     }
 
     /// <summary>

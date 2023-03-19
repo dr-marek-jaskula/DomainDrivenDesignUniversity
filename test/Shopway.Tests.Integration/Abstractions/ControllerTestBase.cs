@@ -19,6 +19,7 @@ using Shopway.Domain.Errors;
 using static RestSharp.Method;
 using static Shopway.Application.Constants.ProblemDetailsConstants;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
+using System.Net.Http;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
@@ -58,14 +59,15 @@ public abstract class ControllerTestsBase : IDisposable
     /// <returns></returns>
     protected async Task<RestClient> RestClient(string controllerUrl, DatabaseFixture databaseFixture)
     {
-        var client = new RestClient($"{ShopwayApiUrl}{controllerUrl}");
-
         await EnsureThatTheTestUserIsRegistered(databaseFixture);
         var token = await LogTestUser();
 
-        client.UseAuthenticator(new JwtAuthenticator(token));
+        var restClientOptions = new RestClientOptions(new Uri($"{ShopwayApiUrl}{controllerUrl}"))
+        {
+            Authenticator = new JwtAuthenticator(token)
+        };
 
-        return client;
+        return new RestClient(restClientOptions);
     }
 
     /// <summary>

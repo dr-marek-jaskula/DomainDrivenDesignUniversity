@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Gatherly.Presentation.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using RestSharp;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Tests.Integration.Abstractions;
@@ -18,8 +20,8 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
 
     public async Task InitializeAsync()
     {
-        _restClient = await RestClient(httpClient, fixture);
-        _restClient.Options.BaseUrl = new Uri($"{shopwayApiUrl}{controllerUrl}");
+        var clientUri = new Uri($"{shopwayApiUrl}{controllerUrl}");
+        _restClient = await RestClient(httpClient, new RestClientOptions(clientUri), fixture);
     }
 
     public Task DisposeAsync()
