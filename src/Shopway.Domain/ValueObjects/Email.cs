@@ -38,7 +38,7 @@ public sealed class Email : ValueObject
 
         if (email.Length > MaxLength)
         {
-            errors.Add(EmailError.Empty);
+            errors.Add(EmailError.TooLong);
         }
 
         if (!_regex.IsMatch(email))

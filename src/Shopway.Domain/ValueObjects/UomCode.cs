@@ -23,11 +23,6 @@ public sealed class UomCode : ValueObject
     {
     }
 
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
-    }
-
     public static ValidationResult<UomCode> Create(string uomCode)
     {
         var errors = Validate(uomCode);
@@ -44,5 +39,10 @@ public sealed class UomCode : ValueObject
         }
 
         return errors;
+    }
+
+    public override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
     }
 }

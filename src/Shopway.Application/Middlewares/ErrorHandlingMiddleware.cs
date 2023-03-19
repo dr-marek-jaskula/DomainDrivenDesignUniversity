@@ -52,10 +52,12 @@ public sealed class ErrorHandlingMiddleware : IMiddleware
         (
            title: ExceptionOccured,
            status: context.Response.StatusCode,
-           HttpErrors.Exception(exception.Message),
+           error: HttpErrors.Exception(exception.Message),
            context: context
         );
 
-        await context.Response.WriteAsJsonAsync(problemDetails, problemDetails.GetType(), options: null, contentType: "application/problem+json");
+        await context
+            .Response
+            .WriteAsJsonAsync(problemDetails, problemDetails.GetType(), options: null, contentType: "application/problem+json");
     }
 }
