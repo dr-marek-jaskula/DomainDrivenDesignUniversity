@@ -10,22 +10,22 @@ namespace Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
 /// </summary>
 public sealed class ApiKeyAttribute : TypeFilterAttribute
 {
-    public ApiKeyAttribute(RequiredApiKeyName requiredApiKeyName) : base(typeof(ApiKeyFilter))
+    public ApiKeyAttribute(RequiredApiKey requiredApiKey) : base(typeof(ApiKeyFilter))
     {
-        Arguments = new object[] { requiredApiKeyName };
+        Arguments = new object[] { requiredApiKey };
     }
 
     /// <summary>
     /// Api key filter, used to handle the api key authorization
     /// </summary>
-    public sealed class ApiKeyFilter : IAuthorizationFilter
+    private sealed class ApiKeyFilter : IAuthorizationFilter
     {
         private readonly IConfiguration _configuration;
-        private readonly RequiredApiKeyName _requiredApiKeyName;
+        private readonly RequiredApiKey _requiredApiKey;
 
-        public ApiKeyFilter(RequiredApiKeyName requiredApiKeyName, IConfiguration configuration)
+        public ApiKeyFilter(RequiredApiKey requiredApiKey, IConfiguration configuration)
         {
-            _requiredApiKeyName = requiredApiKeyName;
+            _requiredApiKey = requiredApiKey;
             _configuration = configuration;
         }
 
@@ -48,7 +48,7 @@ public sealed class ApiKeyAttribute : TypeFilterAttribute
 
             //For tutorial purpose, api keys are stored in appsettings
             var requiredApiKeyValue = _configuration
-                .GetValue<string>($"{ApiKeySection}:{_requiredApiKeyName}")!;
+                .GetValue<string>($"{ApiKeySection}:{_requiredApiKey}")!;
 
             bool isRequestApiKeyEqualToRequiredApiKey = requiredApiKeyValue.Equals(apiKeyFromHeader);
 

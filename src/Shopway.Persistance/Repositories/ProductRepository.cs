@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class ProductRepository : BaseRepository, IProductRepository
+public sealed class ProductRepository : RepositoryBase, IProductRepository
 {
     public ProductRepository(ShopwayDbContext dbContext) : base(dbContext)
     {

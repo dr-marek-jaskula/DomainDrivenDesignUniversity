@@ -6,16 +6,16 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Abstractions;
 
-public abstract class BaseRepository
+public abstract class RepositoryBase
 {
     protected readonly ShopwayDbContext _dbContext;
 
-    protected BaseRepository(ShopwayDbContext dbContext)
+    protected RepositoryBase(ShopwayDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    protected IQueryable<TEntity> ApplySpecification<TEntity, TEntityId>(BaseSpecification<TEntity, TEntityId> specification)
+    protected IQueryable<TEntity> ApplySpecification<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : IEntityId
         where TEntity : Entity<TEntityId>
     {
@@ -31,7 +31,7 @@ public abstract class BaseRepository
     /// <returns>Query</returns>
     private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(
         IQueryable<TEntity> inputQueryable,
-        BaseSpecification<TEntity, TEntityId> specification)
+        SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : IEntityId
         where TEntity : Entity<TEntityId>
     {

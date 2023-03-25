@@ -5,7 +5,7 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class ReviewRepository : BaseRepository, IReviewRepository
+public sealed class ReviewRepository : RepositoryBase, IReviewRepository
 {
     public ReviewRepository(ShopwayDbContext dbContext) : base(dbContext)
     {

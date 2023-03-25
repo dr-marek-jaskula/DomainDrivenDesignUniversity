@@ -6,7 +6,7 @@ using Shopway.Infrastructure.Abstractions;
 
 namespace Shopway.Infrastructure.Authentication.Requirements;
 
-public class PermissionRequirementHandler : AuthorizationHandler<PermissionRequirement>
+public sealed class PermissionRequirementHandler : AuthorizationHandler<PermissionRequirement>
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
 

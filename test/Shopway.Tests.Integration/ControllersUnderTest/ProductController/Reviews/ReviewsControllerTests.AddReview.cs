@@ -2,7 +2,6 @@
 using Shopway.Domain.Entities;
 using Shopway.Application.CQRS.Products.Commands.AddReview;
 using static System.Net.HttpStatusCode;
-using static Shopway.Presentation.Controllers.ProductsController;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 

@@ -5,13 +5,13 @@ using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductQuerySpecification : BaseSpecification<Product, ProductId>
+internal sealed class ProductQuerySpecification : SpecificationBase<Product, ProductId>
 {
     private ProductQuerySpecification() : base()
     {
     }
 
-    public static BaseSpecification<Product, ProductId> Create(IFilter<Product>? filter, ISortBy<Product>? sortBy)
+    public static SpecificationBase<Product, ProductId> Create(IFilter<Product>? filter, ISortBy<Product>? sortBy)
     {
         var specification = new ProductQuerySpecification();
 

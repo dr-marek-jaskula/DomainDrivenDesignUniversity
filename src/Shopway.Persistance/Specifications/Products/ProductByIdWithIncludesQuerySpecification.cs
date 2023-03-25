@@ -5,13 +5,13 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductByIdWithIncludesQuerySpecification : BaseSpecification<Product, ProductId>
+internal sealed class ProductByIdWithIncludesQuerySpecification : SpecificationBase<Product, ProductId>
 {
     private ProductByIdWithIncludesQuerySpecification() : base()
     {
     }
 
-    public static BaseSpecification<Product, ProductId> Create(ProductId productId, params Expression<Func<Product, object>>[] includes)
+    public static SpecificationBase<Product, ProductId> Create(ProductId productId, params Expression<Func<Product, object>>[] includes)
     {
         var specification = new ProductByIdWithIncludesQuerySpecification();
 

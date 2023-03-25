@@ -31,7 +31,7 @@ public sealed partial class ProductsController : ApiController
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Product</returns>
     [HttpGet("{id}")]
-    [ApiKey(RequiredApiKeyName.PRODUCT_GET)]
+    [ApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetProductById(
@@ -57,7 +57,7 @@ public sealed partial class ProductsController : ApiController
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Product</returns>
     [HttpGet("key")]
-    [ApiKey(RequiredApiKeyName.PRODUCT_GET)]
+    [ApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetProductByKey(
@@ -94,7 +94,7 @@ public sealed partial class ProductsController : ApiController
     }
 
     [HttpPost]
-    [ApiKey(RequiredApiKeyName.PRODUCT_CREATE)]
+    [ApiKey(RequiredApiKey.PRODUCT_CREATE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> CreateProduct(
@@ -112,7 +112,7 @@ public sealed partial class ProductsController : ApiController
     }
 
     [HttpPut("{id}")]
-    [ApiKey(RequiredApiKeyName.PRODUCT_UPDATE)]
+    [ApiKey(RequiredApiKey.PRODUCT_UPDATE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> UpdateProduct(
@@ -133,7 +133,7 @@ public sealed partial class ProductsController : ApiController
     }
 
     [HttpDelete("{id}")]
-    [ApiKey(RequiredApiKeyName.PRODUCT_REMOVE)]
+    [ApiKey(RequiredApiKey.PRODUCT_REMOVE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> RemoveProduct(

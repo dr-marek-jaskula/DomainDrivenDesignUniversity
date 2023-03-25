@@ -18,9 +18,10 @@ public class PermissionService : IPermissionService
 
     public async Task<HashSet<string>> GetPermissionsAsync(UserId userId)
     {
-        IReadOnlyCollection<Role>[] roles = await _context.Set<User>()
+        IReadOnlyCollection<Role>[] roles = await _context
+            .Set<User>()
             .Include(x => x.Roles)
-            .ThenInclude(x => x.Permissions)
+                .ThenInclude(x => x.Permissions)
             .Where(x => x.Id == userId)
             .Select(x => x.Roles)
             .ToArrayAsync();

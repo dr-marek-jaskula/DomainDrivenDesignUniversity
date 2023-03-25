@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Abstractions;
 
-public abstract class BaseSpecification<TEntity, TEntityId>
+public abstract class SpecificationBase<TEntity, TEntityId>
     where TEntityId : IEntityId
     where TEntity : Entity<TEntityId>
 {
@@ -34,7 +34,7 @@ public abstract class BaseSpecification<TEntity, TEntityId>
         Filter = filter;
     }
 
-    public BaseSpecification<TEntity, TEntityId> OrderBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
+    public SpecificationBase<TEntity, TEntityId> OrderBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
     {
         SortByExpression = (sortByExpression, sortDirection);
         return this;

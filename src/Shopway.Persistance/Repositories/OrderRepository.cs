@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OrderRepository : BaseRepository, IOrderRepository
+public sealed class OrderRepository : RepositoryBase, IOrderRepository
 {
     public OrderRepository(ShopwayDbContext dbContext) : base(dbContext)
     {

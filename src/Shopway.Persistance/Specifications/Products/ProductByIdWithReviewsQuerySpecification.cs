@@ -4,13 +4,13 @@ using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductByIdWithReviewsQuerySpecification : BaseSpecification<Product, ProductId>
+internal sealed class ProductByIdWithReviewsQuerySpecification : SpecificationBase<Product, ProductId>
 {
     private ProductByIdWithReviewsQuerySpecification() : base()
     {
     }
 
-    public static BaseSpecification<Product, ProductId> Create(ProductId productId)
+    public static SpecificationBase<Product, ProductId> Create(ProductId productId)
     {
         var specification = new ProductByIdWithReviewsQuerySpecification();
 
