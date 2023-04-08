@@ -34,7 +34,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         private readonly BatchEntryStatus _successStatus;
 
         /// <summary>
-        /// Error messages. If there are no errors, then the validation succeeds and the success status is used.
+        /// If there are no errors, then the validation succeeds and the success status is used.
         /// </summary>
         private readonly List<Error> _errors;
 
