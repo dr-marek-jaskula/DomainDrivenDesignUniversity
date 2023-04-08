@@ -125,7 +125,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <returns>Response entry: (ResponseKey, ResponseStatus, Errors)</returns>
         internal BatchResponseEntry BuildBatchResponseEntry()
         {
-            var responseStatus = _errors.IsNullOrEmpty()
+            var responseStatus = IsValid
                 ? _successStatus
                 : BatchEntryStatus.Error;
 
