@@ -1,4 +1,5 @@
-﻿using Shopway.Application.Abstractions;
+﻿using Microsoft.IdentityModel.Tokens;
+using Shopway.Application.Abstractions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
@@ -12,10 +13,9 @@ public sealed class Validator : IValidator
     public Validator()
     {
         _errors = new();
-        IsValid = true;
     }
 
-    public bool IsValid { get; private set; }
+    public bool IsValid => _errors.IsNullOrEmpty();
     public bool IsInvalid => IsValid is false;
 
     /// <summary>
@@ -32,7 +32,6 @@ public sealed class Validator : IValidator
         }
 
         _errors.Add(thenError);
-        IsValid = false;
         return this;
     }
 
@@ -51,7 +50,6 @@ public sealed class Validator : IValidator
         }
 
         _errors.Add(resultOfValueObject.Error);
-        IsValid = false;
         return this;
     }
 
@@ -70,7 +68,6 @@ public sealed class Validator : IValidator
         }
 
         _errors.AddRange(valueObject.ValidationErrors);
-        IsValid = false;
         return this;
     }
 
@@ -79,13 +76,13 @@ public sealed class Validator : IValidator
     /// </summary>
     /// <typeparam name="TResponse">Type of response</typeparam>
     /// <returns>ValidationResult with errors</returns>
-    /// <exception cref="InvalidOperationException">If validator error list is empty, throw exception</exception>
+    /// <exception cref="InvalidOperationException">If validator error list is null or empty, throw exception</exception>
     public ValidationResult<TResponse> Failure<TResponse>()
         where TResponse : IResponse
     {
-        if (_errors.Any() is false)
+        if (IsValid)
         {
-            throw new InvalidOperationException("Validation was successful, but Failure called");
+            throw new InvalidOperationException("Validation was successful, but Failure was called");
         }
 
         return ValidationResult<TResponse>.WithErrors(_errors.ToArray());
