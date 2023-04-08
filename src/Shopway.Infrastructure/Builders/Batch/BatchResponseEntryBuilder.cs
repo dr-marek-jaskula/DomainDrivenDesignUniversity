@@ -29,7 +29,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         private readonly TResponseKey _responseKey;
 
         /// <summary>
-        /// Status that will be used, if validation succeeds. If not, the 'Error' status will be used instead.
+        /// This status that will be used, if validation succeeds. If not, the 'Error' status will be used instead.
         /// </summary>
         private readonly BatchEntryStatus _successStatus;
 
