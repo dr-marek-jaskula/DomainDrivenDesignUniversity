@@ -120,6 +120,19 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         }
 
         /// <summary>
+        /// Builds the response entry based on a previous validations. If there is at least one error, status will be set to error.
+        /// </summary>
+        /// <returns>Response entry: (ResponseKey, ResponseStatus, Errors)</returns>
+        internal BatchResponseEntry BuildBatchResponseEntry()
+        {
+            var responseStatus = _errors.IsNullOrEmpty()
+                ? _successStatus
+                : BatchEntryStatus.Error;
+
+            return new BatchResponseEntry(_responseKey, responseStatus, _errors);
+        }
+
+        /// <summary>
         /// Examines if any of input parameters is null
         /// </summary>
         /// <typeparam name="TValueObject">ValueObject</typeparam>
@@ -134,19 +147,6 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Builds the response entry based on a previous validations. If there is at least one error, status will be set to error.
-        /// </summary>
-        /// <returns>Response entry: (ResponseKey, ResponseStatus, Errors)</returns>
-        internal BatchResponseEntry BuildBatchResponseEntry()
-        {
-            var responseStatus = _errors.IsNullOrEmpty()
-                ? _successStatus
-                : BatchEntryStatus.Error;
-
-            return new BatchResponseEntry(_responseKey, responseStatus, _errors);
         }
     }
 }
