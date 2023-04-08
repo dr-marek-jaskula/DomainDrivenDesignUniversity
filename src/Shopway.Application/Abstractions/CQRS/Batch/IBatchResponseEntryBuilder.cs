@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Errors;
 
 namespace Shopway.Application.Abstractions.CQRS.Batch;
 
@@ -18,7 +19,7 @@ public interface IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>
     /// <param name="invalid">Condition that is true for invalid case</param>
     /// <param name="thenError">Error to add, if the condition is true</param>
     /// <returns>Same instance to chain the validation</returns>
-    IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> If(bool invalid, string thenError);
+    IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> If(bool invalid, Error thenError);
 
     /// <summary>
     /// In order to keep the validation clean, place the part of the validation in a separate method and pass it by ValidateUsing. 

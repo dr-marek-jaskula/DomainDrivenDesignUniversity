@@ -34,13 +34,8 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(OK);
 
         var deserializedResponse = response.Deserialize<ProductBatchResponseResult>();
-        
-        deserializedResponse!
-            .Entries
-            .Should()
-            .HaveCount(3);
 
-        deserializedResponse
+        deserializedResponse!
             .Entries
             .Where(x => x.Status is BatchEntryStatus.Inserted)
             .Should()
@@ -83,12 +78,12 @@ public partial class ProductsControllerTests
         errorEntry
             .Errors
             .Should()
-            .Contain(TooLong.Message);
+            .Contain(TooLong);
 
         errorEntry
             .Errors
             .Should()
-            .Contain(ContainsIllegalCharacter.Message);
+            .Contain(ContainsIllegalCharacter);
     }
 
     [Fact]

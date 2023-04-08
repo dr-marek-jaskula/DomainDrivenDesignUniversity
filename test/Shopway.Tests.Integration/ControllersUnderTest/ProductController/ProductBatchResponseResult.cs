@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.CQRS;
+using Shopway.Domain.Errors;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
@@ -19,7 +20,7 @@ public sealed record ProductBatchResponseResult
     (
         ProductTestKey Key,
         BatchEntryStatus Status,
-        IList<string> Errors
+        IList<Error> Errors
     );
 
     public sealed record ProductTestKey(string ProductName, string Revision);

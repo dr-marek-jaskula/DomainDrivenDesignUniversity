@@ -3,6 +3,7 @@ using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.CQRS;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.ValueObjects;
 using System.Reflection;
@@ -34,16 +35,16 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         private readonly BatchEntryStatus _successStatus;
 
         /// <summary>
-        /// Error messages. If there is no errors, then the validation succeeds and the success status is used.
+        /// Error messages. If there are no errors, then the validation succeeds and the success status is used.
         /// </summary>
-        private readonly List<string> _errorMessages;
+        private readonly List<Error> _errorMessages;
 
         internal BatchResponseEntryBuilder(TBatchRequest request, TResponseKey responseKey, BatchEntryStatus successStatus)
         {
             _request = request;
             _responseKey = responseKey;
             _successStatus = successStatus;
-            _errorMessages = new List<string>();
+            _errorMessages = new List<Error>();
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <param name="invalid">Condition representing the invalid case</param>
         /// <param name="thenError">Error that will be added to error list if invalid condition is true</param>
         /// <returns>Same instance to be able to chain validation methods</returns>
-        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> If(bool invalid, string thenError)
+        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> If(bool invalid, Error thenError)
         {
             if (invalid is true)
             {
@@ -115,8 +116,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
 
             object errors = validationMethod.Invoke(null, parameteres)!;
 
-            var stringErrors = ((List<Shopway.Domain.Errors.Error>)errors).Select(error => error.Message);
-            _errorMessages.AddRange(stringErrors);
+            _errorMessages.AddRange((List<Error>)errors);
             return this;
         }
 
@@ -130,7 +130,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         {
             if (parameteres.Any(parameter => parameter is null))
             {
-                _errorMessages.Add($"At least one of {typeof(TValueObject).Name} components is null");
+                _errorMessages.Add(new Error($"Error.{nameof(ValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
                 return true;
             }
 
@@ -145,7 +145,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         {
             var responseStatus = _errorMessages.IsNullOrEmpty()
                 ? _successStatus
-                : Error;
+                : BatchEntryStatus.Error;
 
             return new BatchResponseEntry(_responseKey, responseStatus, _errorMessages);
         }

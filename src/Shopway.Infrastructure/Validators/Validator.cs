@@ -26,12 +26,11 @@ public sealed class Validator : IValidator
     /// <returns>IValidator to chain validation</returns>
     public IValidator If(bool invalid, Error thenError)
     {
-        if (invalid is false)
+        if (invalid is true)
         {
-            return this;
+            _errors.Add(thenError);
         }
 
-        _errors.Add(thenError);
         return this;
     }
 
@@ -44,12 +43,11 @@ public sealed class Validator : IValidator
     public IValidator Validate<TValueObject>(Result<TValueObject> resultOfValueObject)
         where TValueObject : ValueObject
     {
-        if (resultOfValueObject.IsSuccess)
+        if (resultOfValueObject.IsFailure)
         {
-            return this;
+            _errors.Add(resultOfValueObject.Error);
         }
 
-        _errors.Add(resultOfValueObject.Error);
         return this;
     }
 
@@ -62,12 +60,11 @@ public sealed class Validator : IValidator
     public IValidator Validate<TValueObject>(ValidationResult<TValueObject> valueObject)
         where TValueObject : ValueObject
     {
-        if (valueObject.IsSuccess)
+        if (valueObject.IsFailure)
         {
-            return this;
+            _errors.AddRange(valueObject.ValidationErrors);
         }
 
-        _errors.AddRange(valueObject.ValidationErrors);
         return this;
     }
 

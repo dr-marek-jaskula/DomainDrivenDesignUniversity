@@ -1,4 +1,5 @@
 ﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.Errors;
 
 namespace Shopway.Application.CQRS;
 
@@ -12,5 +13,5 @@ public sealed record BatchResponseEntry
 (
     IBusinessKey Key,
     BatchEntryStatus Status,
-    IList<string> Errors
+    IList<Error> Errors
 );
