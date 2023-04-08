@@ -21,12 +21,12 @@ public sealed class Validator : IValidator
     /// <summary>
     /// If the provided condition is true, then error will be added to the error list
     /// </summary>
-    /// <param name="invalid">Condition for invalid state</param>
+    /// <param name="condition">Condition for invalid state</param>
     /// <param name="thenError">Error that will be added to the error list if condition is true</param>
     /// <returns>IValidator to chain validation</returns>
-    public IValidator If(bool invalid, Error thenError)
+    public IValidator If(bool condition, Error thenError)
     {
-        if (invalid is true)
+        if (condition is true)
         {
             _errors.Add(thenError);
         }
