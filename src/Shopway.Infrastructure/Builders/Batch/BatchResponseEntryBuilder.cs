@@ -110,7 +110,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
 
             if (validationMethod is null)
             {
-                throw new InvalidOperationException($"ValueObject: {nameof(TValueObject)} does not contain public, static method \"Validate\"");
+                throw new InvalidOperationException($"{nameof(ValueObject)}: {nameof(TValueObject)} does not contain public, static method \"Validate\"");
             }
 
             object errors = validationMethod.Invoke(null, parameteres)!;
