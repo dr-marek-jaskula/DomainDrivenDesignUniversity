@@ -36,7 +36,7 @@ public sealed class CachedProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken = default)
+    public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
     {
         string key = $"product-{id}";
 
@@ -66,7 +66,7 @@ public sealed class CachedProductRepository : IProductRepository
         return product;
     }
 
-    public Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken = default, params Expression<Func<Product, object>>[] includes)
+    public Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
     {
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }
@@ -91,12 +91,12 @@ public sealed class CachedProductRepository : IProductRepository
         _decorated.Update(product);
     }
 
-    public Task<Product> GetByKeyAsync(ProductKey key, CancellationToken cancellationToken = default)
+    public Task<Product> GetByKeyAsync(ProductKey key, CancellationToken cancellationToken)
     {
         return _decorated.GetByKeyAsync(key, cancellationToken);
     }
 
-    public Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken = default)
+    public Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken)
     {
         return _decorated.AnyAsync(key, cancellationToken);
     }

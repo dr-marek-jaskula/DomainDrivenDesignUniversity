@@ -27,7 +27,7 @@ public class CreateProductCommandHandlerTests : TestBase
         var expected = CreateProduct(productId);
 
         _productRepository
-            .GetByIdAsync(productId)
+            .GetByIdAsync(productId, None)
             .Returns(expected);
 
         var query = new GetProductByIdQuery(productId);

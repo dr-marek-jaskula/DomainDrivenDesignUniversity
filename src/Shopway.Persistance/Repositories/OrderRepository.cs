@@ -14,7 +14,7 @@ public sealed class OrderRepository : RepositoryBase, IOrderRepository
     {
     }
 
-    public async Task<Order> GetByIdAsync(OrderId id, CancellationToken cancellationToken = default)
+    public async Task<Order> GetByIdAsync(OrderId id, CancellationToken cancellationToken)
     {
         return await _dbContext
             .Set<Order>()
@@ -25,7 +25,7 @@ public sealed class OrderRepository : RepositoryBase, IOrderRepository
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<Order> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken = default, params Expression<Func<Order, object>>[] includes)
+    public async Task<Order> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken, params Expression<Func<Order, object>>[] includes)
     {
         var baseQuery = _dbContext
             .Set<Order>()

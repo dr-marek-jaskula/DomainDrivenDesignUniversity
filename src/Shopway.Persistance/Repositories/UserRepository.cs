@@ -16,7 +16,7 @@ public sealed class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken)
     {
         return await _dbContext
             .Set<User>()
@@ -24,7 +24,7 @@ public sealed class UserRepository : IUserRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken)
     {
         return await _dbContext
             .Set<User>()
@@ -32,7 +32,7 @@ public sealed class UserRepository : IUserRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default)
+    public async Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken)
     {
         var isEmailTaken = await _dbContext
             .Set<User>()

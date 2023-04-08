@@ -6,11 +6,11 @@ namespace Shopway.Domain.Abstractions.Repositories;
 
 public interface IUserRepository
 {
-    Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken = default);
+    Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken);
 
-    Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default);
+    Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken);
 
-    Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default);
+    Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken);
 
     void Add(User user);
 
