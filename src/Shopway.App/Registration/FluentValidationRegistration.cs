@@ -13,9 +13,11 @@ public static class FluentValidationRegistration
                 options.DisableDataAnnotationsValidation = true;
                 ValidatorOptions.Global.LanguageManager.Enabled = false;
             })
-            .AddValidatorsFromAssembly(
+            .AddValidatorsFromAssembly
+            (
                 Shopway.Application.AssemblyReference.Assembly,
-                includeInternalTypes: true);
+                includeInternalTypes: true
+            );
 
         return services;
     }
