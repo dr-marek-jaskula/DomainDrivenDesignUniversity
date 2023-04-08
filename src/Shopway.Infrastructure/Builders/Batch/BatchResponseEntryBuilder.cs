@@ -5,7 +5,6 @@ using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
-using Shopway.Domain.ValueObjects;
 using System.Reflection;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 
@@ -101,7 +100,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
                 throw new ArgumentException($"There need to be at least one parameter for the validation method");
             }
 
-            if (IsAnyNullParameter<TValueObject>(parameteres))
+            if (AnyNullParameter<TValueObject>(parameteres))
             {
                 return this;
             }
@@ -126,7 +125,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <typeparam name="TValueObject">ValueObject</typeparam>
         /// <param name="parameteres">Input parameters</param>
         /// <returns>True if there is null parameter. Otherwise, return false</returns>
-        private bool IsAnyNullParameter<TValueObject>(object[] parameteres) where TValueObject : ValueObject
+        private bool AnyNullParameter<TValueObject>(object[] parameteres) where TValueObject : ValueObject
         {
             if (parameteres.Any(parameter => parameter is null))
             {
@@ -140,7 +139,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <summary>
         /// Builds the response entry based on a previous validations. If there is at least one error, status will be set to error.
         /// </summary>
-        /// <returns>Response entry: (ResponseKey, ResponseStatus, ErrorMessages)</returns>
+        /// <returns>Response entry: (ResponseKey, ResponseStatus, Errors)</returns>
         internal BatchResponseEntry BuildBatchResponseEntry()
         {
             var responseStatus = _errors.IsNullOrEmpty()
