@@ -37,35 +37,35 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <summary>
         /// Error messages. If there are no errors, then the validation succeeds and the success status is used.
         /// </summary>
-        private readonly List<Error> _errorMessages;
+        private readonly List<Error> _errors;
 
         internal BatchResponseEntryBuilder(TBatchRequest request, TResponseKey responseKey, BatchEntryStatus successStatus)
         {
             _request = request;
             _responseKey = responseKey;
             _successStatus = successStatus;
-            _errorMessages = new List<Error>();
+            _errors = new();
         }
 
         /// <summary>
         /// Request used to create the ResponseKey and being validated to inspect errors.
         /// </summary>
         public TBatchRequest Request => _request;
-        internal bool IsValid => _errorMessages.IsNullOrEmpty();
+        internal bool IsValid => _errors.IsNullOrEmpty();
         internal bool IsValidAndToInsert => IsValid && _successStatus is Inserted;
         internal bool IsValidAndToUpdate => IsValid && _successStatus is Updated;
 
         /// <summary>
         /// Validate the provided condition and add an error, if it is true
         /// </summary>
-        /// <param name="invalid">Condition representing the invalid case</param>
+        /// <param name="condition">Condition representing the invalid case</param>
         /// <param name="thenError">Error that will be added to error list if invalid condition is true</param>
         /// <returns>Same instance to be able to chain validation methods</returns>
-        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> If(bool invalid, Error thenError)
+        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> If(bool condition, Error thenError)
         {
-            if (invalid is true)
+            if (condition is true)
             {
-                _errorMessages.Add(thenError);
+                _errors.Add(thenError);
             }
 
             return this;
@@ -116,7 +116,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
 
             object errors = validationMethod.Invoke(null, parameteres)!;
 
-            _errorMessages.AddRange((List<Error>)errors);
+            _errors.AddRange((List<Error>)errors);
             return this;
         }
 
@@ -130,7 +130,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         {
             if (parameteres.Any(parameter => parameter is null))
             {
-                _errorMessages.Add(new Error($"Error.{nameof(ValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
+                _errors.Add(new Error($"Error.{nameof(ValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
                 return true;
             }
 
@@ -143,11 +143,11 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <returns>Response entry: (ResponseKey, ResponseStatus, ErrorMessages)</returns>
         internal BatchResponseEntry BuildBatchResponseEntry()
         {
-            var responseStatus = _errorMessages.IsNullOrEmpty()
+            var responseStatus = _errors.IsNullOrEmpty()
                 ? _successStatus
                 : BatchEntryStatus.Error;
 
-            return new BatchResponseEntry(_responseKey, responseStatus, _errorMessages);
+            return new BatchResponseEntry(_responseKey, responseStatus, _errors);
         }
     }
 }
