@@ -40,7 +40,7 @@ public sealed class ErrorHandlingMiddleware : IMiddleware
     }
 
     /// <summary>
-    /// Handler that sends enough information to user so that he would be able to identify the problem and explain the details to developer.
+    /// Handler that sends enough information to user, so that he would be able to identify the problem and explain the details to developer.
     /// However, the detail does not cover the whole problem, in order to prevent the user from getting the sensitive data or unreadable for user data.
     /// </summary>
     /// <param name="context">HttpContext</param>
