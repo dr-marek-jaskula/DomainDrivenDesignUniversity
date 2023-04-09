@@ -16,7 +16,7 @@ public sealed class Validator : IValidator
     }
 
     public bool IsValid => _errors.IsNullOrEmpty();
-    public bool IsInvalid => IsValid is false;
+    public bool IsInvalid => !IsValid;
 
     /// <summary>
     /// If the provided condition is true, then error will be added to the error list

@@ -32,7 +32,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
 
     public TContext Context => _dbContext;
 
-    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {
         return Context
             .Database
@@ -46,7 +46,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
             .CreateExecutionStrategy();
     }
 
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    public Task SaveChangesAsync(CancellationToken cancellationToken)
     {
         ConvertDomainEventsToOutboxMessages();
         UpdateAuditableEntities();
@@ -70,12 +70,14 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
                 Id = Guid.NewGuid(),
                 OccurredOn = DateTimeOffset.UtcNow,
                 Type = domainEvent.GetType().Name,
-                Content = JsonConvert.SerializeObject(
+                Content = JsonConvert.SerializeObject
+                (
                     domainEvent,
                     new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All
-                    })
+                    }
+                )
             })
             .ToList();
 

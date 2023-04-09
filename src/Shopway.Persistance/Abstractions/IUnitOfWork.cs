@@ -7,7 +7,7 @@ public interface IUnitOfWork<TContext>
     where TContext : DbContext
 {
     public TContext Context { get; }
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
-    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
+    Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
     IExecutionStrategy CreateExecutionStrategy();
 }

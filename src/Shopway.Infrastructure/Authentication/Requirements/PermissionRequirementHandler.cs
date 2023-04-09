@@ -20,7 +20,8 @@ public sealed class PermissionRequirementHandler : AuthorizationHandler<Permissi
         string? userId = context
             .User
             .Claims
-            .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)
+            ?.Value;
 
         if (Guid.TryParse(userId, out Guid parsedUserId) is false)
         {

@@ -76,6 +76,6 @@ public abstract class TestDataGeneratorBase
             .Set<TEntity>()
             .Add(entity);
 
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(CancellationToken.None);
     }
 }

@@ -50,9 +50,9 @@ public sealed class ApiKeyAttribute : TypeFilterAttribute
             var requiredApiKeyValue = _configuration
                 .GetValue<string>($"{ApiKeySection}:{_requiredApiKey}")!;
 
-            bool isRequestApiKeyEqualToRequiredApiKey = requiredApiKeyValue.Equals(apiKeyFromHeader);
+            bool isProvidedApiKeyEqualToRequiredApiKey = requiredApiKeyValue.Equals(apiKeyFromHeader);
 
-            if (isRequestApiKeyEqualToRequiredApiKey is false)
+            if (isProvidedApiKeyEqualToRequiredApiKey is false)
             {
                 context.Result = new UnauthorizedObjectResult("Invalid Api Key");
                 return;

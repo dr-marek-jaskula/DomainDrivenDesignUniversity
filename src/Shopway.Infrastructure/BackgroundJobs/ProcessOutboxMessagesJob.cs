@@ -21,6 +21,7 @@ public sealed class ProcessOutboxMessagesJob : IJob
     private readonly IPublisher _publisher;
     private readonly ILoggerAdapter<ProcessOutboxMessagesJob> _logger;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private const int AmountOfProcessedMessages = 20;
 
     public ProcessOutboxMessagesJob(ShopwayDbContext dbContext, IPublisher publisher, ILoggerAdapter<ProcessOutboxMessagesJob> logger, IDateTimeProvider dateTimeProvider)
     {
@@ -35,7 +36,7 @@ public sealed class ProcessOutboxMessagesJob : IJob
         var messages = await _dbContext
             .Set<OutboxMessage>()
             .Where(m => m.ProcessedOn == null)
-            .Take(20)
+            .Take(AmountOfProcessedMessages)
             .ToListAsync(context.CancellationToken);
 
         if (messages.Any() is false)
@@ -46,19 +47,23 @@ public sealed class ProcessOutboxMessagesJob : IJob
         foreach (var message in messages)
         {
             var domainEvent = JsonConvert
-                .DeserializeObject<IDomainEvent>(
-                message.Content,
-                new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.All
-                });
+                .DeserializeObject<IDomainEvent>
+                (
+                    message.Content,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    }
+                );
 
             if (domainEvent is null)
             {
-                _logger.Log(
+                _logger.Log
+                (
                     LogLevel.Warning, 
                     "Following DomainEvent was not deserialized properly: {message.Content}", 
-                    message.Content);
+                    message.Content
+                );
 
                 continue;
             }

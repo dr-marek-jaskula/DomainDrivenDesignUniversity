@@ -26,26 +26,36 @@ public abstract class ApiController : ControllerBase
         {
             { IsSuccess: true } => throw new InvalidOperationException("Result was successful"),
 
-            IValidationResult validationResult => BadRequest(
-                    CreateProblemDetails(
-                        ValidationError, 
-                        StatusCodes.Status400BadRequest,
-                        result.Error,
-                        validationResult.ValidationErrors)),
+            IValidationResult validationResult => BadRequest
+            (
+                CreateProblemDetails
+                (
+                    ValidationError, 
+                    StatusCodes.Status400BadRequest,
+                    result.Error,
+                    validationResult.ValidationErrors
+                )
+            ),
 
-            _ => BadRequest(
-                    CreateProblemDetails(
-                        InvalidRequest,
-                        StatusCodes.Status400BadRequest,
-                        result.Error))
+            _ => BadRequest
+            (
+                CreateProblemDetails
+                (
+                    InvalidRequest,
+                    StatusCodes.Status400BadRequest,
+                    result.Error
+                )
+            )
         };
     }
 
     protected IActionResult CreatedAtActionResult<T>(IResult<T> response, string? actionName)
     {
-        return CreatedAtAction(
+        return CreatedAtAction
+        (
             actionName,
             new { id = response.Value },
-            response.Value);
+            response.Value
+        );
     }
 }

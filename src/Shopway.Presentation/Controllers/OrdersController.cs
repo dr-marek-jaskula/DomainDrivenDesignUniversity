@@ -19,9 +19,7 @@ public sealed class OrdersController : ApiController
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> GetOrderById(
-        [FromRoute] OrderId id, 
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> GetOrderById([FromRoute] OrderId id, CancellationToken cancellationToken)
     {
         var query = new GetOrderByIdQuery(id);
 
@@ -38,9 +36,7 @@ public sealed class OrdersController : ApiController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateOrderResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> CreateOrder(
-        [FromBody] CreateOrderCommand command,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(command, cancellationToken);
 

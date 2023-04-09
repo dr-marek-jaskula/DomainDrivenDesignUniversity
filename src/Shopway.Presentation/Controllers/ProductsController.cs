@@ -34,9 +34,7 @@ public sealed partial class ProductsController : ApiController
     [ApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> GetProductById(
-        [FromRoute] ProductId id,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProductById([FromRoute] ProductId id, CancellationToken cancellationToken)
     {
         var query = new GetProductByIdQuery(id);
 
@@ -60,9 +58,7 @@ public sealed partial class ProductsController : ApiController
     [ApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> GetProductByKey(
-        [FromBody] ProductKey key,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProductByKey([FromBody] ProductKey key, CancellationToken cancellationToken)
     {
         var query = new GetProductByKeyQuery(key);
 
@@ -79,9 +75,7 @@ public sealed partial class ProductsController : ApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> QueryProducts(
-        [FromBody] ProductPageQuery query,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> QueryProducts([FromBody] ProductPageQuery query, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
 
@@ -97,9 +91,7 @@ public sealed partial class ProductsController : ApiController
     [ApiKey(RequiredApiKey.PRODUCT_CREATE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> CreateProduct(
-        [FromBody] CreateProductCommand command,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(command, cancellationToken);
 
@@ -115,10 +107,12 @@ public sealed partial class ProductsController : ApiController
     [ApiKey(RequiredApiKey.PRODUCT_UPDATE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> UpdateProduct(
+    public async Task<IActionResult> UpdateProduct
+    (
         [FromRoute] ProductId id,
         [FromBody] UpdateProductCommand.UpdateRequestBody body,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         var command = new UpdateProductCommand(id, body);
 
@@ -136,9 +130,7 @@ public sealed partial class ProductsController : ApiController
     [ApiKey(RequiredApiKey.PRODUCT_REMOVE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveProductResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> RemoveProduct(
-        [FromRoute] ProductId id,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveProduct([FromRoute] ProductId id, CancellationToken cancellationToken)
     {
         var command = new RemoveProductCommand(id);
 

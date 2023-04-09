@@ -29,17 +29,15 @@ public abstract class RepositoryBase
     /// <param name="inputQueryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Concrete specification</param>
     /// <returns>Query</returns>
-    private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(
-        IQueryable<TEntity> inputQueryable,
-        SpecificationBase<TEntity, TEntityId> specification)
+    private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(IQueryable<TEntity> inputQueryable, SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : IEntityId
         where TEntity : Entity<TEntityId>
     {
         IQueryable<TEntity> queryable = inputQueryable;
 
-        foreach (var inlcudeExression in specification.IncludeExpressions)
+        foreach (var includeExpression in specification.IncludeExpressions)
         {
-            queryable = queryable.Include(inlcudeExression);
+            queryable = queryable.Include(includeExpression);
         }
 
         if (specification.Filter is not null)

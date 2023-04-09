@@ -13,9 +13,7 @@ public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent> : IDomai
     private readonly INotificationHandler<TDomainEvent> _decorated;
     private readonly ShopwayDbContext _dbContext;
 
-    public IdempotentDomainEventHandlerDecorator(
-        INotificationHandler<TDomainEvent> decorated,
-        ShopwayDbContext dbContext)
+    public IdempotentDomainEventHandlerDecorator(INotificationHandler<TDomainEvent> decorated, ShopwayDbContext dbContext)
     {
         _decorated = decorated;
         _dbContext = dbContext;
@@ -39,7 +37,8 @@ public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent> : IDomai
 
         await _decorated.Handle(notification, cancellationToken);
 
-        _dbContext.Set<OutboxMessageConsumer>()
+        _dbContext
+            .Set<OutboxMessageConsumer>()
             .Add(new OutboxMessageConsumer
             {
                 Id = notification.Id,

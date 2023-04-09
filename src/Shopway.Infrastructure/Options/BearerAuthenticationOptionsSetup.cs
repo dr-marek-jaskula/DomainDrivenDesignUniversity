@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Shopway.Infrastructure.Options;
 
@@ -18,7 +18,6 @@ public class BearerAuthenticationOptionsSetup : IPostConfigureOptions<JwtBearerO
     {
         options.TokenValidationParameters.ValidIssuer = _authenticationOptions.Issuer;
         options.TokenValidationParameters.ValidAudience = _authenticationOptions.Audience;
-        options.TokenValidationParameters.IssuerSigningKey =
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationOptions.SecretKey));
+        options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationOptions.SecretKey));
     }
 }

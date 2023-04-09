@@ -17,10 +17,12 @@ partial class ProductsController
     [HasPermission(Permission.CRUD_Review)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddReviewResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> AddReview(
-            [FromRoute] ProductId productId,
-            [FromBody] AddReviewCommand.AddReviewRequestBody body,
-            CancellationToken cancellationToken)
+    public async Task<IActionResult> AddReview
+    (
+        [FromRoute] ProductId productId,
+        [FromBody] AddReviewCommand.AddReviewRequestBody body,
+        CancellationToken cancellationToken
+    )
     {
         var command = new AddReviewCommand(productId, body);
 
@@ -39,11 +41,13 @@ partial class ProductsController
     [HasPermission(Permission.CRUD_Review)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateReviewResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> UpdateReview(
+    public async Task<IActionResult> UpdateReview
+    (
         [FromRoute] ProductId productId,
         [FromRoute] ReviewId reviewId,
         [FromBody] UpdateReviewCommand.UpdateReviewRequestBody body,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         var command = new UpdateReviewCommand(productId, reviewId, body);
 
@@ -61,9 +65,7 @@ partial class ProductsController
     [HasPermission(Permission.CRUD_Review)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveReviewResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> RemoveReview(
-        [FromRoute] RemoveReviewCommand command,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveReview([FromRoute] RemoveReviewCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
 

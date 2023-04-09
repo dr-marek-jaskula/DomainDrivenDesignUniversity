@@ -90,7 +90,7 @@ public abstract class TestDataGeneratorBase
 
         try
         {
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(CancellationToken.None);
         }
         catch (DbUpdateConcurrencyException exception)
         {
@@ -99,7 +99,7 @@ public abstract class TestDataGeneratorBase
                 entry.State = EntityState.Detached;
             }
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(CancellationToken.None);
         }
 
         _unitOfWork.Context.ChangeTracker.Clear();
@@ -117,6 +117,6 @@ public abstract class TestDataGeneratorBase
             .Set<TEntity>()
             .Add(entity);
 
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(CancellationToken.None);
     }
 }

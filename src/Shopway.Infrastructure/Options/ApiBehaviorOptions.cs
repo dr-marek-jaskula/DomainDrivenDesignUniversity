@@ -14,15 +14,18 @@ public static class ApiBehaviorOptions
         {
             var errors = context.ModelState.Values
                 .Where(modelStateEntry => modelStateEntry.ValidationState is Invalid)
-                .SelectMany(modelStateEntry => modelStateEntry.Errors
+                .SelectMany(modelStateEntry => modelStateEntry
+                    .Errors
                     .Select(error => error.ErrorMessage))
                 .ToList();
 
-            var problemDetails = CreateProblemDetails(
-                        InvalidRequest,
-                        InvalidRequestTitle,
-                        StatusCodes.Status400BadRequest,
-                        errors);
+            var problemDetails = CreateProblemDetails
+            (
+                InvalidRequest,
+                InvalidRequestTitle,
+                StatusCodes.Status400BadRequest,
+                errors
+            );
 
             var result = new BadRequestObjectResult(problemDetails);
 
