@@ -17,9 +17,9 @@ public interface IProductRepository
 
     IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sortBy);
 
-    void Create(Product order);
+    void Create(Product product);
 
-    void Update(Product order);
+    void Update(Product product);
 
     void Remove(Product product);
 }
