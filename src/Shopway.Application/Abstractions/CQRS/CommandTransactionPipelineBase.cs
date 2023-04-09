@@ -8,21 +8,21 @@ namespace Shopway.Application.Abstractions.CQRS;
 public class CommandTransactionPipelineBase<TCommandResponse>
     where TCommandResponse : IResult
 {
-    protected readonly IUnitOfWork<ShopwayDbContext> UniteOfWork;
+    protected readonly IUnitOfWork<ShopwayDbContext> UnitOfWork;
 
     public CommandTransactionPipelineBase(IUnitOfWork<ShopwayDbContext> uniteOfWork)
     {
-        UniteOfWork = uniteOfWork;
+        UnitOfWork = uniteOfWork;
     }
 
     protected async Task<TCommandResponse> BeginTransactionAsync(RequestHandlerDelegate<TCommandResponse> next, CancellationToken cancellationToken)
     {
-        using var transaction = await UniteOfWork.BeginTransactionAsync(cancellationToken);
+        using var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
         var result = await next();
 
         if (result.IsSuccess)
         {
-            await UniteOfWork.SaveChangesAsync(cancellationToken);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
         }
         else

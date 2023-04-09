@@ -20,7 +20,7 @@ public sealed class CommandWithResponseTransactionPipeline<TCommandRequest, TCom
 
     public async Task<TCommandResponse> Handle(TCommandRequest command, RequestHandlerDelegate<TCommandResponse> next, CancellationToken cancellationToken)
     {
-        var executionStrategy = UniteOfWork.CreateExecutionStrategy();
+        var executionStrategy = UnitOfWork.CreateExecutionStrategy();
         return await executionStrategy.ExecuteAsync(cancellationToken => BeginTransactionAsync(next, cancellationToken), cancellationToken);
     }
 }
