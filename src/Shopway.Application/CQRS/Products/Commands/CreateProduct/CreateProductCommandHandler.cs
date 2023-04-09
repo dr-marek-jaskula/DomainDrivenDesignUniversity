@@ -43,7 +43,7 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         }
 
         _validator
-            .If(await ProductAlreadyExists(command.ProductKey, cancellationToken), AlreadyExists(nameof(ProductKey), command.ProductKey));
+            .If(await ProductAlreadyExists(command.ProductKey, cancellationToken), AlreadyExists(command.ProductKey));
 
         if (_validator.IsInvalid)
         {

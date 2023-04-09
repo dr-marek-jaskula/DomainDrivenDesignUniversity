@@ -17,21 +17,21 @@ public static class HttpErrors
     /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
     /// <param name="id">id of the entity that was not found</param>
     /// <returns>NotFound error</returns>
-    public static Error NotFound<TEntityId>(string name, IEntityId<TEntityId> id)
+    public static Error NotFound<TEntity>(IEntityId<TEntity> id)
+        where TEntity : class, IEntity
     {
-        return new Error($"{name}.{nameof(NotFound)}", $"{name} with Id: '{id.Value}' was not found");
+        return new Error($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with Id: '{id.Value}' was not found");
     }
 
     /// <summary>
     /// Create an Error based on the business key
     /// </summary>
-    /// <param name="name">name of the product key type. Use "nameof(TValue)" syntax</param>
     /// <param name="key">business key of the entity that is already in the database</param>
     /// <returns>AlreadyExists error</returns>
-    public static Error AlreadyExists<TBusinessKey>(string name, TBusinessKey key)
+    public static Error AlreadyExists<TBusinessKey>(TBusinessKey key)
         where TBusinessKey : IBusinessKey
     {
-        return new Error($"{name}.{nameof(AlreadyExists)}", $"{name} with key: '{key}' already exists");
+        return new Error($"{typeof(TBusinessKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TBusinessKey).Name} with key: '{key}' already exists");
     }
 
     /// <summary>
