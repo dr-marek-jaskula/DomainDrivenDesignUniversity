@@ -28,4 +28,9 @@ public static class ListUtilities
     {
         return list.IsNotNullOrEmpty() is false;
     }
+
+    public static bool NotContains<TValue>(this IList<TValue> list, TValue value)
+    {
+        return list.Contains(value) is false;
+    }
 }

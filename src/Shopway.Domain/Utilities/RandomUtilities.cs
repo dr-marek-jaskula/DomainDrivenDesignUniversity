@@ -46,12 +46,12 @@ public static class RandomUtilities
 
     public static string GenerateTestString()
     {
-        Guid opportinityId = Guid.NewGuid();
+        Guid opportunityId = Guid.NewGuid();
         Guid systemUserId = Guid.NewGuid();
         string currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
         StringBuilder sb = new();
-        sb.AppendFormat("opportunityid={0}", opportinityId.ToString());
+        sb.AppendFormat("opportunityid={0}", opportunityId.ToString());
         sb.AppendFormat("&systemuserid={0}", systemUserId.ToString());
         sb.AppendFormat("&currenttime={0}", currentTime);
 

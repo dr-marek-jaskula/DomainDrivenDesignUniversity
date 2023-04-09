@@ -13,6 +13,6 @@ public static class NumberUtilities
     public static bool NotInRange<TNumber>(this TNumber input, TNumber lowerBound, TNumber upperBound)
         where TNumber : INumber<TNumber>
     {
-        return input.IsInRange(lowerBound, upperBound) is false ;
+        return input.IsInRange(lowerBound, upperBound) is false;
     }
 }

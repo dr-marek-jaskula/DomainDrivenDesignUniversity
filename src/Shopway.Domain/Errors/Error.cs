@@ -79,7 +79,8 @@ public class Error : IEquatable<Error>
             return false;
         }
 
-        return Code == other.Code && Message == other.Message;
+        return Code == other.Code 
+            && Message == other.Message;
     }
 
     /// <inheritdoc />
