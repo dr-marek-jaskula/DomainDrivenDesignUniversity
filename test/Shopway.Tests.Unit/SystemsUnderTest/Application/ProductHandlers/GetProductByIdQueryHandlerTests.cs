@@ -1,12 +1,12 @@
-using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Tests.Unit.Abstractions;
 using Shopway.Application.CQRS.Products.Queries.GetProductById;
+using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityIds;
+using Shopway.Tests.Unit.Abstractions;
 using static System.Threading.CancellationToken;
 
 namespace Shopway.Tests.Unit.SystemsUnderTest.Application.ProductHandlers;
 
-public class CreateProductCommandHandlerTests : TestBase
+public sealed class GetProductByIdQueryHandlerTests : TestBase
 {
     /// <summary>
     /// System under tests
@@ -14,13 +14,13 @@ public class CreateProductCommandHandlerTests : TestBase
     private readonly GetProductByIdQueryHandler _sut;
     private readonly IProductRepository _productRepository = Substitute.For<IProductRepository>();
 
-    public CreateProductCommandHandlerTests()
+    public GetProductByIdQueryHandlerTests()
     {
         _sut = new(_productRepository);
     }
 
-	[Fact]
-	public async Task Handle_ShouldSucceed_WhenCreateValidProduct()
+    [Fact]
+	public async Task GetById_ShouldSucceed_WhenCreateValidProduct()
 	{
         //Arrange
         var productId = ProductId.New();
@@ -42,10 +42,6 @@ public class CreateProductCommandHandlerTests : TestBase
 
         var actual = result.Value;
 
-        actual.Id.Should().Be(expected.Id.Value);
-        actual.ProductName.Should().Be(expected.ProductName.Value);
-        actual.Revision.Should().Be(expected.Revision.Value);
-        actual.Price.Should().Be(expected.Price.Value);
-        actual.UomCode.Should().Be(expected.UomCode.Value);
+        AssertProductResponse(actual, expected);
     }
 }

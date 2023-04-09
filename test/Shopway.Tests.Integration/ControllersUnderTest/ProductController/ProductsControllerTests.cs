@@ -50,7 +50,8 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
     /// <summary>
     /// Asserts review responses.
     /// </summary>
-    /// <param name="productResponse">Deserialized product response</param>
+    /// <param name="reviewResponses">Deserialized review responses</param>
+    /// <param name="reviews">Reviews to compare responses with</param>
     private static void AssertReviewResponses(IReadOnlyCollection<ReviewResponse> reviewResponses, IReadOnlyCollection<Review> reviews)
     {
         foreach (var reviewResponse in reviewResponses)
@@ -63,7 +64,8 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
     /// <summary>
     /// Asserts review response.
     /// </summary>
-    /// <param name="productResponse">Deserialized product response</param>
+    /// <param name="reviewResponse">Deserialized review response</param>
+    /// <param name="review">Review to compare response with</param>
     private static void AssertReviewResponse(ReviewResponse reviewResponse, Review review)
     {
         reviewResponse.Id.Should().Be(review.Id.Value);

@@ -1,6 +1,4 @@
-﻿using Gatherly.Presentation.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using RestSharp;
+﻿using RestSharp;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Tests.Integration.Abstractions;
@@ -33,6 +31,8 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
     /// Asserts product response.
     /// </summary>
     /// <param name="productResponse">Deserialized product response</param>
+    /// <param name="product">Product to compare response with</param>
+    /// <param name="assertReviews">Flag that indicates whether to assert reviews</param>
     private static void AssertProductResponse(ProductResponse productResponse, Product product, bool assertReviews = false)
     {
         productResponse.Id.Should().Be(product.Id.Value);
@@ -50,7 +50,8 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
     /// <summary>
     /// Asserts review responses.
     /// </summary>
-    /// <param name="productResponse">Deserialized product response</param>
+    /// <param name="reviewResponses">Deserialized review responses</param>
+    /// <param name="reviews">Reviews to compare responses with</param>
     private static void AssertReviewResponses(IReadOnlyCollection<ReviewResponse> reviewResponses, IReadOnlyCollection<Review> reviews)
     {
         foreach (var reviewResponse in reviewResponses)
@@ -63,7 +64,8 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
     /// <summary>
     /// Asserts review response.
     /// </summary>
-    /// <param name="productResponse">Deserialized product response</param>
+    /// <param name="reviewResponse">Deserialized review response</param>
+    /// <param name="review">Review to compare response with</param>
     private static void AssertReviewResponse(ReviewResponse reviewResponse, Review review)
     {
         reviewResponse.Id.Should().Be(review.Id.Value);
