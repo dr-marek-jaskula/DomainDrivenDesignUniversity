@@ -38,14 +38,14 @@ public sealed class Validator : IValidator
     /// If the result is failure, then result error will be added to the error list
     /// </summary>
     /// <typeparam name="TValueObject">ValueObject type</typeparam>
-    /// <param name="resultOfValueObject">Result containing the value object</param>
+    /// <param name="result">Result containing the value object</param>
     /// <returns>IValidator to chain validation</returns>
-    public IValidator Validate<TValueObject>(Result<TValueObject> resultOfValueObject)
+    public IValidator Validate<TValueObject>(Result<TValueObject> result)
         where TValueObject : ValueObject
     {
-        if (resultOfValueObject.IsFailure)
+        if (result.IsFailure)
         {
-            _errors.Add(resultOfValueObject.Error);
+            _errors.Add(result.Error);
         }
 
         return this;
@@ -55,14 +55,14 @@ public sealed class Validator : IValidator
     /// If the validation result is failure, then all validation result errors will be added to the error list
     /// </summary>
     /// <typeparam name="TValueObject">ValueObject type</typeparam>
-    /// <param name="valueObject">ValidationResult containing the value object</param>
+    /// <param name="validationResult">ValidationResult containing the value object</param>
     /// <returns>IValidator to chain validation</returns>
-    public IValidator Validate<TValueObject>(ValidationResult<TValueObject> valueObject)
+    public IValidator Validate<TValueObject>(ValidationResult<TValueObject> validationResult)
         where TValueObject : ValueObject
     {
-        if (valueObject.IsFailure)
+        if (validationResult.IsFailure)
         {
-            _errors.AddRange(valueObject.ValidationErrors);
+            _errors.AddRange(validationResult.ValidationErrors);
         }
 
         return this;
