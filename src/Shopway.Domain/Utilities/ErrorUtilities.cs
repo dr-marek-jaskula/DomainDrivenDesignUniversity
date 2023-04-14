@@ -52,4 +52,12 @@ public static class ErrorUtilities
 
         return ValidationResult<TValueObject>.WithoutErrors(createValueObject.Invoke());
     }
+
+    public static void ThrowIfErrorNone(this Error error)
+    {
+        if (error == Error.None)
+        {
+            throw new InvalidOperationException("Provided error is Error.None");
+        }
+    }
 }

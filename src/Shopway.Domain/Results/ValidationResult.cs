@@ -6,13 +6,13 @@ namespace Shopway.Domain.Results;
 public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
 {
     private ValidationResult(Error[] validationErrors)
-        : base(default, false, Error.ValidationError)
+        : base(default, Error.ValidationError)
     {
         ValidationErrors = validationErrors;
     }
 
     private ValidationResult(TValue? value)
-        : base(value, true, Error.None)
+        : base(value, Error.None)
     {
         ValidationErrors = Array.Empty<Error>();
     }
@@ -43,13 +43,13 @@ public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
 public sealed class ValidationResult : Result, IValidationResult
 {
     private ValidationResult(Error[] validationErrors)
-        : base(false, Error.ValidationError)
+        : base(Error.ValidationError)
     {
         ValidationErrors = validationErrors;
     }
 
     private ValidationResult()
-        : base(true, Error.None)
+        : base(Error.None)
     {
         ValidationErrors = Array.Empty<Error>();
     }

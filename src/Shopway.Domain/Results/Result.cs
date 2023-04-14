@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.Errors;
+using Shopway.Domain.Utilities;
 
 namespace Shopway.Domain.Results;
 
@@ -24,10 +25,9 @@ public class Result<TValue> : Result, IResult<TValue>
     /// Initializes a new instance of the <see cref="Result{TValueType}"/> class with the specified parameters
     /// </summary>
     /// <param name="value">The result value</param>
-    /// <param name="isSuccess">The flag indicating if the result is successful</param>
     /// <param name="error">The error</param>
-    protected internal Result(TValue? value, bool isSuccess, Error error)
-        : base(isSuccess, error)
+    protected internal Result(TValue? value, Error error)
+        : base(error)
     {
         _value = value;
     }
@@ -46,32 +46,16 @@ public class Result : IResult
     /// <summary>
     /// Initializes a new instance of the <see cref="Result"/> class with the specified parameters
     /// </summary>
-    /// <param name="isSuccess">The flag indicating if the result is successful</param>
     /// <param name="error">The error that occurred</param>
-    private protected Result(bool isSuccess, Error error)
+    private protected Result(Error error)
     {
-        bool successWithError = isSuccess && error != Error.None;
-
-        if (successWithError)
-        {
-            throw new InvalidOperationException("The result was successful, but still contained an error");
-        }
-
-        bool failureWithNoError = !isSuccess && error == Error.None;
-
-        if (failureWithNoError)
-        {
-            throw new InvalidOperationException("The result was failure, but contained no error");
-        }
-
-        IsSuccess = isSuccess;
         Error = error;
     }
 
     /// <summary>
     /// Gets a value indicating whether the result is a success
     /// </summary>
-    public bool IsSuccess { get; }
+    public bool IsSuccess => Error == Error.None;
 
     /// <summary>
     /// Gets a value indicating whether the result is a failure
@@ -113,28 +97,29 @@ public class Result : IResult
     /// <returns>A new instance of <see cref="Result"/></returns>
     public static Result Success()
     {
-        return new(true, Error.None);
+        return new(Error.None);
     }
 
     /// <summary>
     /// Returns a success <see cref="Result{TValue}"/> with the specified value
     /// </summary>
-    /// <typeparam name="TValue">The result type.</typeparam>
+    /// <typeparam name="TValue">The result type</typeparam>
     /// <param name="value">The result value</param>
     /// <returns>A new instance of <see cref="Result{TValue}"/> with the specified value</returns>
     public static Result<TValue> Success<TValue>(TValue value)
     {
-        return new(value, true, Error.None);
+        return new(value, Error.None);
     }
 
     /// <summary>
     /// Returns a failure <see cref="Result"/> with the specified error
     /// </summary>
-    /// <param name="error">The error.</param>
+    /// <param name="error">The error</param>
     /// <returns>A new instance of <see cref="Result"/> with the specified error</returns>
     public static Result Failure(Error error)
     {
-        return new(false, error);
+        error.ThrowIfErrorNone();
+        return new(error);
     }
 
     /// <summary>
@@ -145,18 +130,18 @@ public class Result : IResult
     /// <returns>A new instance of <see cref="Result{TValue}"/> with the specified error and failure flag set</returns>
     public static Result<TValue> Failure<TValue>(Error error)
     {
-        return new(default, false, error);
+        error.ThrowIfErrorNone();
+        return new(default, error);
     }
 
     /// <summary>
-    /// Returns a dummy failure <see cref="Result{TValue}"/> with the specified error and the specified value
+    /// Returns a dummy failure <see cref="Result{TValue}"/> with the specified value
     /// </summary>
     /// <typeparam name="TValue">The result type</typeparam>
     /// <param name="value">The result value</param>
-    /// <param name="error">The error</param>
     /// <returns>A new instance of <see cref="Result{TValue}"/> with the dummy error and failure result value</returns>
     public static Result<TValue> BatchFailure<TValue>(TValue value)
     {
-        return new(value, true, Error.None);
+        return new(value, Error.None);
     }
 }
