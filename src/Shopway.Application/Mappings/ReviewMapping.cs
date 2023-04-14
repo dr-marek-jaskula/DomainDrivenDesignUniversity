@@ -4,7 +4,7 @@ using Shopway.Application.CQRS.Products.Commands.UpdateReview;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 
-namespace Shopway.Application.Mapping;
+namespace Shopway.Application.Mappings;
 
 public static class ReviewMapping
 {

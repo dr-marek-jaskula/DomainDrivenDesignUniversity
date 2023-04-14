@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
 using static Shopway.Application.CQRS.BatchEntryStatus;
-using static Shopway.Application.Mapping.ProductMapping;
+using static Shopway.Application.Mappings.ProductMapping;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;

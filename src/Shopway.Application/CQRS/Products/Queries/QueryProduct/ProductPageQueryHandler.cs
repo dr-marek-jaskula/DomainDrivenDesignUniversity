@@ -3,7 +3,7 @@ using Shopway.Application.Utilities;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Abstractions;
-using Shopway.Application.Mapping;
+using Shopway.Application.Mappings;
 
 namespace Shopway.Application.CQRS.Products.Queries.QueryProduct;
 

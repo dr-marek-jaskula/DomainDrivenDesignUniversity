@@ -1,5 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.Mapping;
+using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
@@ -14,7 +14,7 @@ using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.CQRS.BatchEntryStatus;
-using static Shopway.Application.Mapping.ProductMapping;
+using static Shopway.Application.Mappings.ProductMapping;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;

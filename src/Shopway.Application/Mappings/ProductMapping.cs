@@ -8,7 +8,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
-namespace Shopway.Application.Mapping;
+namespace Shopway.Application.Mappings;
 
 public static class ProductMapping
 {

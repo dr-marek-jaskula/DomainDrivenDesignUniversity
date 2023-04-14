@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Application.CQRS.Users.Commands.RegisterUser;
 
-namespace Shopway.Application.Mapping;
+namespace Shopway.Application.Mappings;
 
 public static class UserMapping
 {
