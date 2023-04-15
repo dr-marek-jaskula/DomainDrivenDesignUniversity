@@ -19,20 +19,20 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
         builder.Property(r => r.Name)
             .HasColumnType(ColumnTypes.VarChar(128));
 
-        var premissionsFromEnumeration = Permission
+        var permissionsFromEnumeration = Permission
             .List
             .Select(p => p.Name)
             .ToHashSet();
 
-        var premissionsFromEnum = Enum
+        var permissionsFromEnum = Enum
             .GetValues<Domain.Enums.Permission>()
             .Select(p => p.ToString())
             .ToHashSet();
 
-        bool areEnumPremisionsEquivalentToEnumerationPremissions =
-            premissionsFromEnumeration.SetEquals(premissionsFromEnum);
+        bool areEnumPermisionsEquivalentToEnumerationPermissions =
+            permissionsFromEnumeration.SetEquals(permissionsFromEnum);
 
-        if (areEnumPremisionsEquivalentToEnumerationPremissions is false)
+        if (areEnumPermisionsEquivalentToEnumerationPermissions is false)
         {
             throw new Exception($"{nameof(Permission)} enum values are not equivalent to {nameof(Permission)} enumeration values");
         }
