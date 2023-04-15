@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
@@ -21,23 +20,27 @@ public sealed class ProcessOutboxMessagesJob : IJob
     private readonly IPublisher _publisher;
     private readonly ILoggerAdapter<ProcessOutboxMessagesJob> _logger;
     private readonly IDateTimeProvider _dateTimeProvider;
-    private const int AmountOfProcessedMessages = 20;
+    private readonly IOutboxRepository _outboxRepository;
 
-    public ProcessOutboxMessagesJob(ShopwayDbContext dbContext, IPublisher publisher, ILoggerAdapter<ProcessOutboxMessagesJob> logger, IDateTimeProvider dateTimeProvider)
+    public ProcessOutboxMessagesJob
+    (
+        ShopwayDbContext dbContext, 
+        IPublisher publisher, 
+        ILoggerAdapter<ProcessOutboxMessagesJob> logger, 
+        IDateTimeProvider dateTimeProvider,
+        IOutboxRepository outboxRepository)
     {
         _dbContext = dbContext;
         _publisher = publisher;
         _logger = logger;
         _dateTimeProvider = dateTimeProvider;
+        _outboxRepository = outboxRepository;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
-        var messages = await _dbContext
-            .Set<OutboxMessage>()
-            .Where(m => m.ProcessedOn == null)
-            .Take(AmountOfProcessedMessages)
-            .ToListAsync(context.CancellationToken);
+        var messages = await _outboxRepository
+            .GetOutboxMessagesAsync(context.CancellationToken);
 
         if (messages.Any() is false)
         {

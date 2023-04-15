@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
-using Newtonsoft.Json;
 using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Outbox;
@@ -23,11 +22,18 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
     private readonly TContext _dbContext;
     private readonly IUserContextService _userContext;
     private const string DefaultUsername = "Unknown";
+    private readonly IOutboxRepository _outboxRepository;
 
-    public UnitOfWork(TContext dbContext, IUserContextService userContext)
+    public UnitOfWork
+    (
+        TContext dbContext,
+        IUserContextService userContext,
+        IOutboxRepository outboxRepository
+    )
     {
         _dbContext = dbContext;
         _userContext = userContext;
+        _outboxRepository = outboxRepository;
     }
 
     public TContext Context => _dbContext;
@@ -48,42 +54,11 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
 
     public Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        ConvertDomainEventsToOutboxMessages();
+        _outboxRepository.ConvertDomainEventsToOutboxMessages();
+
         UpdateAuditableEntities();
 
         return _dbContext.SaveChangesAsync(cancellationToken);
-    }
-
-    private void ConvertDomainEventsToOutboxMessages()
-    {
-        var outboxMessages = _dbContext.ChangeTracker
-            .Entries<IAggregateRoot>()
-            .Select(x => x.Entity)
-            .SelectMany(aggregateRoot =>
-            {
-                var domainEvents = aggregateRoot.DomainEvents;
-                aggregateRoot.ClearDomainEvents();
-                return domainEvents;
-            })
-            .Select(domainEvent => new OutboxMessage
-            {
-                Id = Guid.NewGuid(),
-                OccurredOn = DateTimeOffset.UtcNow,
-                Type = domainEvent.GetType().Name,
-                Content = JsonConvert.SerializeObject
-                (
-                    domainEvent,
-                    new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All
-                    }
-                )
-            })
-            .ToList();
-
-        _dbContext
-            .Set<OutboxMessage>()
-            .AddRange(outboxMessages);
     }
 
     private void UpdateAuditableEntities()
