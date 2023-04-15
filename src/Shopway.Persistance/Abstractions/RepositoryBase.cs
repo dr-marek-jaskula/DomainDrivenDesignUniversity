@@ -8,31 +8,26 @@ namespace Shopway.Persistence.Abstractions;
 
 public abstract class RepositoryBase
 {
-    protected readonly ShopwayDbContext _dbContext;
+    private protected readonly ShopwayDbContext _dbContext;
 
-    protected RepositoryBase(ShopwayDbContext dbContext)
+    private protected RepositoryBase(ShopwayDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    protected IQueryable<TEntity> ApplySpecification<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
-        where TEntityId : IEntityId
-        where TEntity : Entity<TEntityId>
-    {
-        return GetQuery(_dbContext.Set<TEntity>(), specification);
-    }
-
     /// <summary>
-    /// Converts the specification into the IQueryable
+    /// Apply a specification and return a queryable
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
-    /// <param name="inputQueryable">_dbContext.Set<TEntity>()</param>
-    /// <param name="specification">Concrete specification</param>
-    /// <returns>Query</returns>
-    private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(IQueryable<TEntity> queryable, SpecificationBase<TEntity, TEntityId> specification)
+    /// <param name="queryable">_dbContext.Set<TEntity>()</param>
+    /// <param name="specification">Input specification</param>
+    /// <returns>Queryable</returns>
+    private protected IQueryable<TEntity> ApplySpecification<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : IEntityId
         where TEntity : Entity<TEntityId>
     {
+        IQueryable<TEntity> queryable = _dbContext.Set<TEntity>();
+
         foreach (var includeExpression in specification.IncludeExpressions)
         {
             queryable = queryable.Include(includeExpression);
