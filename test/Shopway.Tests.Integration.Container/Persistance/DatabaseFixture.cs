@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
+using Shopway.Persistence.Outbox;
 
 namespace Shopway.Tests.Integration.Persistance;
 
@@ -15,7 +16,8 @@ public sealed class DatabaseFixture : IDisposable
         _context.Database.Migrate();
 
         var testContext = new TestContextService();
-        var unitOfWork = new UnitOfWork<ShopwayDbContext>(_context, testContext);
+        var outboxRepository = new OutboxRepository(_context);
+        var unitOfWork = new UnitOfWork<ShopwayDbContext>(_context, testContext, outboxRepository);
         _testDataGenerator = new TestDataGenerator(unitOfWork);
     }
 
