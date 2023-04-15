@@ -22,7 +22,7 @@ Due to the
 });
 ```
 
-in the .App, we can convert string to enums in the requests behind the scenes.
+in the .App, we can convert strings to enums in the requests behind the scenes.
 
 ## EntityId Converter
 
@@ -34,4 +34,9 @@ Authentication is described in the ReadMe.Infrastructe file.
 
 ## Routing
 
-It is important to keep to the plural: use "products" not "product" for the route.
+It is important to keep to the plural: use "products" not "product" for the route. 
+Due to the fact that base ApiController has attribute 
+```csharp
+[Route("api/[controller]")]
+```
+we should name our controllers **ProductsController** and not ProductController.

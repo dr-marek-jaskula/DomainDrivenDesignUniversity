@@ -27,21 +27,7 @@ public static class OpenApiUtilities
             Scheme = Bearer
         });
 
-        options.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = Bearer
-                    },
-                    In = ParameterLocation.Header
-                },
-                Array.Empty<string>()
-            }
-        });
+        options.ConfigureRequirement(Bearer);
     }
 
     public static void AddApiKeyAuthorization(this SwaggerGenOptions options)
@@ -55,21 +41,7 @@ public static class OpenApiUtilities
             Scheme = ApiKeyScheme
         });
 
-        options.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme()
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = ApiKey
-                    },
-                    In = ParameterLocation.Header
-                },
-                Array.Empty<string>()
-            }
-        });
+        options.ConfigureRequirement(ApiKey);
     }
 
     /// <summary>
@@ -102,5 +74,24 @@ public static class OpenApiUtilities
 		    <NoWarn>$(NoWarn);1591</NoWarn>
 	    </PropertyGroup>
         */
+    }
+
+    private static void ConfigureRequirement(this SwaggerGenOptions options, string referenceId)
+    {
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = referenceId
+                    },
+                    In = ParameterLocation.Header
+                },
+                Array.Empty<string>()
+            }
+        });
     }
 }

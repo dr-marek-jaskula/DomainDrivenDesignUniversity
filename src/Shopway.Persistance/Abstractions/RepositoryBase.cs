@@ -29,12 +29,10 @@ public abstract class RepositoryBase
     /// <param name="inputQueryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Concrete specification</param>
     /// <returns>Query</returns>
-    private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(IQueryable<TEntity> inputQueryable, SpecificationBase<TEntity, TEntityId> specification)
+    private static IQueryable<TEntity> GetQuery<TEntity, TEntityId>(IQueryable<TEntity> queryable, SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : IEntityId
         where TEntity : Entity<TEntityId>
     {
-        IQueryable<TEntity> queryable = inputQueryable;
-
         foreach (var includeExpression in specification.IncludeExpressions)
         {
             queryable = queryable.Include(includeExpression);
@@ -66,17 +64,17 @@ public abstract class RepositoryBase
             }
         }
 
-        if (specification.IsSplitQuery)
+        if (specification.UseSplitQuery)
         {
             queryable = queryable.AsSplitQuery();
         }
 
-        if (specification.IsAsNoTracking)
+        if (specification.UseAsNoTracking)
         {
             queryable = queryable.AsNoTracking();
         }
 
-        if (specification.IsAsNoTrackingWithIdentityResolution)
+        if (specification.UseAsNoTrackingWithIdentityResolution)
         {
             queryable = queryable.AsNoTrackingWithIdentityResolution();
         }

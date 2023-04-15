@@ -10,9 +10,9 @@ public abstract class SpecificationBase<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
 {
     //Flags
-    public bool IsSplitQuery { get; protected set; }
-    public bool IsAsNoTracking { get; protected set; }
-    public bool IsAsNoTrackingWithIdentityResolution { get; protected set; }
+    public bool UseSplitQuery { get; protected set; }
+    public bool UseAsNoTracking { get; protected set; }
+    public bool UseAsNoTrackingWithIdentityResolution { get; protected set; }
 
     //Filters and Includes
     public IFilter<TEntity>? Filter { get; private set; } = null;

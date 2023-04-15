@@ -21,7 +21,7 @@ internal sealed class ProductByIdWithIncludesQuerySpecification : SpecificationB
         specification
             .AddIncludes(includes);
 
-        specification.IsSplitQuery = true;
+        specification.UseSplitQuery = true;
 
         return specification;
     }

@@ -22,7 +22,7 @@ public static class ServiceRegistration
 
         services.AddScoped<IValidator, Validator>();
 
-        //Builder
+        //Builders
 
         services.AddScoped(typeof(IBatchResponseBuilder<,>), typeof(BatchResponseBuilder<,>));
 
