@@ -3,4 +3,9 @@ using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.CQRS;
 
-public sealed record DictionaryResponseEntry(Guid Id, IBusinessKey BusinessKey) : IResponse;
+/// <summary>
+/// If additional information is required for dictionary response entry, than just inherit from this record (create for instance OrderDictionaryResponseEntry)
+/// </summary>
+/// <param name="Id"></param>
+/// <param name="BusinessKey"></param>
+public record DictionaryResponseEntry(Guid Id, IBusinessKey BusinessKey) : IResponse;
