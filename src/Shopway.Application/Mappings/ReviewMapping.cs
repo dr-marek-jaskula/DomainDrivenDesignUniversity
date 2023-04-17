@@ -12,18 +12,18 @@ public static class ReviewMapping
     {
         return new ReviewResponse
         (
-            Id: review.Id.Value,
-            Username: review.Username.Value,
-            Stars: review.Stars.Value,
-            Title: review.Title.Value,
-            Description: review.Description.Value
+            review.Id.Value,
+            review.Username.Value,
+            review.Stars.Value,
+            review.Title.Value,
+            review.Description.Value
         );
     }
 
     public static IReadOnlyCollection<ReviewResponse> ToResponses(this IReadOnlyCollection<Review> reviews)
     {
         return reviews
-            .Select(review => review.ToResponse())
+            .Select(ToResponse)
             .ToList()
             .AsReadOnly();
     }

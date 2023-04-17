@@ -27,9 +27,9 @@ public sealed class OutboxRepository : RepositoryBase, IOutboxRepository
     {
         return await _dbContext
             .Set<OutboxMessageConsumer>()
-            .AnyAsync(outboxMessageConsumer =>
-                outboxMessageConsumer.Id == domainEvent.Id && outboxMessageConsumer.Name == consumer,
-                cancellationToken);
+            .Where(outboxMessageConsumer => outboxMessageConsumer.Id == domainEvent.Id)
+            .Where(outboxMessageConsumer => outboxMessageConsumer.Name == consumer)
+            .AnyAsync(cancellationToken);
     }
 
     public async Task AddOutboxMessageConsumer(IDomainEvent domainEvent, string consumer)
@@ -46,7 +46,7 @@ public sealed class OutboxRepository : RepositoryBase, IOutboxRepository
         await _dbContext.SaveChangesAsync(CancellationToken.None);
     }
 
-    public void ConvertDomainEventsToOutboxMessages()
+    public void PersistOutboxMessagesFromDomainEvents()
     {
         var outboxMessages = _dbContext
             .ChangeTracker

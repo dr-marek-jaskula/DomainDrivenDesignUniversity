@@ -54,7 +54,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
 
     public Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        _outboxRepository.ConvertDomainEventsToOutboxMessages();
+        _outboxRepository.PersistOutboxMessagesFromDomainEvents();
 
         UpdateAuditableEntities();
 

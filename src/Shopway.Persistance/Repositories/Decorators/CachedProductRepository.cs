@@ -71,9 +71,9 @@ public sealed class CachedProductRepository : IProductRepository
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }
 
-    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sortBy)
+    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sortBy, bool includeReviews = true)
     {
-        return _decorated.Queryable(filter, sortBy);
+        return _decorated.Queryable(filter, sortBy, includeReviews);
     }
 
     public void Create(Product product)

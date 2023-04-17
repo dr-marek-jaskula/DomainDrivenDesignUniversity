@@ -10,5 +10,5 @@ public interface IOutboxRepository
 
     Task AddOutboxMessageConsumer(IDomainEvent domainEvent, string consumer);
 
-    void ConvertDomainEventsToOutboxMessages();
+    void PersistOutboxMessagesFromDomainEvents();
 }

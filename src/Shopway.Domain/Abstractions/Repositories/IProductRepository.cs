@@ -15,7 +15,7 @@ public interface IProductRepository
 
     Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes);
 
-    IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sortBy);
+    IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sortBy, bool inlcudeReviews = true);
 
     void Create(Product product);
 

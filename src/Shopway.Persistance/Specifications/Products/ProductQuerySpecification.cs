@@ -11,12 +11,15 @@ internal sealed class ProductQuerySpecification : SpecificationBase<Product, Pro
     {
     }
 
-    public static SpecificationBase<Product, ProductId> Create(IFilter<Product>? filter, ISortBy<Product>? sortBy)
+    public static SpecificationBase<Product, ProductId> Create(IFilter<Product>? filter, ISortBy<Product>? sortBy, bool includeReviews = true)
     {
         var specification = new ProductQuerySpecification();
 
-        specification
-            .AddIncludes(product => product.Reviews);
+        if (includeReviews)
+        {
+            specification
+                .AddIncludes(product => product.Reviews);
+        }
 
         specification
             .AddFilters(filter);

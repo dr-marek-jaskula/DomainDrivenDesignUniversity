@@ -22,7 +22,7 @@ internal sealed class ProductPageQueryHandler : IPageQueryHandler<ProductPageQue
             .Queryable(pageQuery.Filter, pageQuery.Order);
 
         var pageResponse = await queryable
-            .ToPageResponse(pageQuery.PageSize, pageQuery.PageNumber, ProductMapping.ToResponse, cancellationToken);
+            .ToPageResponse(pageQuery.PageSize, pageQuery.PageNumber, ProductMapping.ToResponse(), cancellationToken);
 
         return pageResponse
             .ToResult();

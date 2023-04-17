@@ -49,9 +49,9 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
             .FirstAsync(cancellationToken);
     }
 
-    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sort)
+    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sort, bool inlcudeReviews = true)
     {
-        var specification = ProductQuerySpecification.Create(filter, sort);
+        var specification = ProductQuerySpecification.Create(filter, sort, inlcudeReviews);
 
         return ApplySpecification(specification);
     }

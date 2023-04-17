@@ -13,6 +13,7 @@ using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Application.CQRS;
 using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Application.CQRS.Products.Queries.GetProductByKey;
+using Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -72,7 +73,22 @@ public sealed partial class ProductsController : ApiController
         return Ok(response);
     }
 
-    [HttpGet]
+    [HttpPost("query/dictionary")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<DictionaryResponseEntry>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> QueryProductsDictionary([FromBody] ProductDictionaryPageQuery query, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(query, cancellationToken);
+
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("query")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> QueryProducts([FromBody] ProductPageQuery query, CancellationToken cancellationToken)

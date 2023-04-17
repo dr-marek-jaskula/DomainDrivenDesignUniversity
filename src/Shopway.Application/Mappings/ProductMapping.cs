@@ -6,6 +6,7 @@ using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
+using System.Linq.Expressions;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.Mappings;
@@ -16,12 +17,53 @@ public static class ProductMapping
     {
         return new ProductResponse
         (
-            Id: product.Id.Value,
-            ProductName: product.ProductName.Value,
-            Revision: product.Revision.Value,
-            Price: product.Price.Value,
-            UomCode: product.UomCode.Value,
-            Reviews: product.Reviews.ToResponses()
+            product.Id.Value,
+            product.ProductName.Value,
+            product.Revision.Value,
+            product.Price.Value,
+            product.UomCode.Value,
+            product.Reviews.ToResponses()
+        );
+    }
+
+    /// <summary>
+    /// Used for performance reasons. More info in: ReadMe.Application.md (Mapping section)
+    /// </summary>
+    /// <returns>An expression of func</returns>
+    public static Expression<Func<Product, ProductResponse>> ToResponse()
+    {
+        return product => new ProductResponse
+        (
+            product.Id.Value,
+            product.ProductName.Value,
+            product.Revision.Value,
+            product.Price.Value,
+            product.UomCode.Value,
+            product.Reviews
+                .Select(review => new ReviewResponse
+                (
+                    review.Id.Value,
+                    review.Username.Value,
+                    review.Stars.Value,
+                    review.Title.Value,
+                    review.Description.Value
+                ))
+                .ToList()
+                .AsReadOnly()
+        );
+    }
+
+    /// <summary>
+    /// Used for performance reasons. More info in: ReadMe.Application.md (Mapping section). 
+    /// </summary>
+    /// <returns></returns>
+    public static Expression<Func<Product, DictionaryResponseEntry>> ToDictionaryResponseEntry()
+    {
+        return product => new DictionaryResponseEntry
+        (
+            product.Id.Value,
+            //Method *MapFromProductToProductKey* is not used on purpose here
+            ProductKey.Create(product.ProductName.Value, product.Revision.Value)
         );
     }
 
