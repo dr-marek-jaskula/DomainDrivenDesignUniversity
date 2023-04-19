@@ -17,7 +17,8 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
 
     public async Task<IResult<OrderResponse>> Handle(GetOrderByIdQuery query, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(query.Id, cancellationToken);
+        var order = await _orderRepository
+            .GetByIdAsync(query.Id, cancellationToken);
 
         return order
             .ToResponse()
