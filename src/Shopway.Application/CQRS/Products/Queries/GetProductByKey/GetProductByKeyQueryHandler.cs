@@ -17,7 +17,8 @@ internal sealed class GetProductByKeyQueryHandler : IQueryHandler<GetProductByKe
 
     public async Task<IResult<ProductResponse>> Handle(GetProductByKeyQuery query, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByKeyAsync(query.Key, cancellationToken);
+        var product = await _productRepository
+            .GetByKeyAsync(query.Key, cancellationToken);
 
         return product
             .ToResponse()
