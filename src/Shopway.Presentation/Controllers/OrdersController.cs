@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
+using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 using Shopway.Domain.EntityIds;
 using Shopway.Presentation.Abstractions;

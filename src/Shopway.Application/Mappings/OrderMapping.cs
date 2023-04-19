@@ -1,6 +1,6 @@
 ﻿using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
 using Shopway.Application.CQRS.Orders.Commands.UpdateOrder;
-using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
+using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Domain.Entities;
 
 namespace Shopway.Application.Mappings;

@@ -3,7 +3,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Domain.ValueObjects;
 
-namespace Shopway.Application.CQRS.Orders.Queries.GetOrderById;
+namespace Shopway.Application.CQRS.Orders.Queries;
 
 public sealed record OrderResponse
 (

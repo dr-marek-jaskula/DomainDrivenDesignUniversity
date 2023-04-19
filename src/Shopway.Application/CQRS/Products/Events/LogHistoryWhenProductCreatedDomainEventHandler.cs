@@ -17,7 +17,8 @@ internal sealed class LogHistoryWhenProductCreatedDomainEventHandler : IDomainEv
 
     public async Task Handle(ProductCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(notification.ProductId, cancellationToken);
+        var product = await _productRepository
+            .GetByIdAsync(notification.ProductId, cancellationToken);
 
         if (product is null)
         {

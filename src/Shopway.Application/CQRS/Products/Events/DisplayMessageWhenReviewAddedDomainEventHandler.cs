@@ -15,7 +15,8 @@ internal sealed class DisplayMessageWhenReviewAddedDomainEventHandler : IDomainE
 
     public async Task Handle(ReviewAddedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(notification.ProductId, cancellationToken);
+        var product = await _productRepository
+            .GetByIdAsync(notification.ProductId, cancellationToken);
 
         if (product is null)
         {
