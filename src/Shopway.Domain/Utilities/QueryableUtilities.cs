@@ -60,14 +60,12 @@ public static class QueryableUtilities
         Expression<Func<TEntity, TValue>> expression
     )
     {
-        if (sortDirection is not null)
+        return sortDirection switch
         {
-            return sortDirection is SortDirection.Ascending
-                ? queryable.OrderBy(expression)
-                : queryable.OrderByDescending(expression);
-        }
-
-        return queryable;
+            SortDirection.Ascending => queryable.OrderBy(expression),
+            SortDirection.Descending => queryable.OrderByDescending(expression),
+            _ => queryable
+        };
     }
 
     public static IOrderedQueryable<TEntity> ThenSortBy<TEntity, TValue>
@@ -77,13 +75,11 @@ public static class QueryableUtilities
         Expression<Func<TEntity, TValue>> expression
     )
     {
-        if (sortDirection is not null)
+        return sortDirection switch
         {
-            return sortDirection is SortDirection.Ascending
-                ? queryable.ThenBy(expression)
-                : queryable.ThenByDescending(expression);
-        }
-
-        return queryable;
+            SortDirection.Ascending => queryable.ThenBy(expression),
+            SortDirection.Descending => queryable.ThenByDescending(expression),
+            _ => queryable
+        };
     }
 }

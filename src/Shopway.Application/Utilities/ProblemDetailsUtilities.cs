@@ -7,12 +7,14 @@ namespace Shopway.Application.Utilities;
 
 public static class ProblemDetailsUtilities
 {
-    public static ProblemDetails CreateProblemDetails(
+    public static ProblemDetails CreateProblemDetails
+    (
         string title,
         int status,
         Error error,
         Error[]? errors = null,
-        HttpContext? context = null)
+        HttpContext? context = null
+    )
     {
         var problemDetails = new ProblemDetails()
         {
@@ -32,11 +34,13 @@ public static class ProblemDetailsUtilities
         return problemDetails;
     }
 
-    public static ProblemDetails CreateProblemDetails(
+    public static ProblemDetails CreateProblemDetails
+    (
         string type,
         string title,
         int status,
-        IList<string> errors)
+        IList<string> errors
+    )
     {
         var problemDetails = new ProblemDetails()
         {
