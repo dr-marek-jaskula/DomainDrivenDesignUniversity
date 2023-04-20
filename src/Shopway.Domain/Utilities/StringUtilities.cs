@@ -36,7 +36,9 @@ public static class StringUtilities
     public static TEnum? ParseToNullableEnum<TEnum>(this string? input)
         where TEnum : struct, IConvertible
     {
-        return Enum.TryParse<TEnum>(input, out var outPriority) ? outPriority : null;
+        return Enum.TryParse<TEnum>(input, out var outPriority) 
+            ? outPriority 
+            : null;
     }
 
     public static bool IsLengthInRange(this string input, int lowerBound, int upperBound)
