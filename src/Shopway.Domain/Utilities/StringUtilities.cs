@@ -13,7 +13,7 @@ public static class StringUtilities
         return string.IsNullOrWhiteSpace(input);
     }
 
-    public static bool IsNotNullOrEmptyOrWhiteSpace(this string? input)
+    public static bool NotNullOrEmptyOrWhiteSpace(this string? input)
     {
         return string.IsNullOrWhiteSpace(input) is false;
     }

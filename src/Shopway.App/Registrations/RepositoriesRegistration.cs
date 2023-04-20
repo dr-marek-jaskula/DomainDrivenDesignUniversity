@@ -13,6 +13,7 @@ public static class RepositoriesRegistration
         services.AddScoped<IOutboxRepository, OutboxRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
 
         return services;
     }

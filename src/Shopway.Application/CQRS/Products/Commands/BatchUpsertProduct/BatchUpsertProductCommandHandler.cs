@@ -56,13 +56,9 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
             return Result.BatchFailure(responseEntries.ToBatchUpsertResponse());
         }
 
-        //If validation succeeded, then distinguish insert/update requests
-        var validRequestsToInsert = _responseBuilder.ValidRequestsToInsert;
-        var validRequestsToUpdate = _responseBuilder.ValidRequestsToUpdate;
-
         //Perform batch upsert
-        await InsertProducts(validRequestsToInsert, cancellationToken);
-        UpdateProducts(validRequestsToUpdate, productsToUpdateDictionary);
+        await InsertProducts(_responseBuilder.ValidRequestsToInsert, cancellationToken);
+        UpdateProducts(_responseBuilder.ValidRequestsToUpdate, productsToUpdateDictionary);
 
         return responseEntries
             .ToBatchUpsertResponse()
@@ -108,7 +104,7 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
     )
     {
         int sortedRequestsIndex = 0;
-        int productsToBefilteredIndex = 0;
+        int productsToBeFilteredIndex = 0;
 
         var products = new Dictionary<ProductKey, Product>();
 
@@ -117,12 +113,12 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
             //Get a request and then search for the matching product
             var request = sortedRequestsByKeyOrder[sortedRequestsIndex];
 
-            while (productsToBefilteredIndex < productsToBeFilteredSortedByKey.Count)
+            while (productsToBeFilteredIndex < productsToBeFilteredSortedByKey.Count)
             {
-                var filtered = productsToBeFilteredSortedByKey[productsToBefilteredIndex];
+                var filtered = productsToBeFilteredSortedByKey[productsToBeFilteredIndex];
 
                 //If the product matches a request, then the subsequent search will start from the next index
-                productsToBefilteredIndex++;
+                productsToBeFilteredIndex++;
 
                 if (filtered.ProductName.Value.CaseInsensitiveEquals(request.ProductKey.ProductName)
                     && filtered.Revision.Value.CaseInsensitiveEquals(request.ProductKey.Revision))

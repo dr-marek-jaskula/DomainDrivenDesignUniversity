@@ -34,7 +34,7 @@ public sealed class UserContextService : IUserContextService
     {
         get
         {
-            if (User?.FindFirstValue(ClaimPolicies.PersonId) is string stringPersonId && stringPersonId.IsNullOrEmptyOrWhiteSpace() is false)
+            if (User?.FindFirstValue(ClaimPolicies.PersonId) is string stringPersonId && stringPersonId.NotNullOrEmptyOrWhiteSpace())
             {
                 return Domain.EntityIds.PersonId.Create(Guid.Parse(stringPersonId));
             }

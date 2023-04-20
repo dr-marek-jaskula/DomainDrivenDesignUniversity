@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityIds;
-using Shopway.Infrastructure.Abstractions;
 
 namespace Shopway.Infrastructure.Authentication.Requirements;
 
@@ -30,10 +30,10 @@ public sealed class PermissionRequirementHandler : AuthorizationHandler<Permissi
 
         using IServiceScope scope = _serviceScopeFactory.CreateScope();
 
-        IPermissionService permissionService = scope.ServiceProvider
-            .GetRequiredService<IPermissionService>();
+        var permissionRepository = scope.ServiceProvider
+            .GetRequiredService<IPermissionRepository>();
 
-        HashSet<string> permissions = await permissionService
+        HashSet<string> permissions = await permissionRepository
             .GetPermissionsAsync(UserId.Create(parsedUserId));
 
         if (permissions.Contains(requirement.Permission))

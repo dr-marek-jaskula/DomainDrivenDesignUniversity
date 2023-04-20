@@ -7,7 +7,7 @@ namespace Shopway.Persistence.Specifications.Products;
 public sealed record ProductDictionaryFilter : IFilter<Product>
 {
     public string? LikeQuery { get; init; }
-    private bool ByLikeQuery => LikeQuery.IsNotNullOrEmptyOrWhiteSpace();
+    private bool ByLikeQuery => LikeQuery.NotNullOrEmptyOrWhiteSpace();
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
