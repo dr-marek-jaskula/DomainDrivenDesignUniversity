@@ -19,14 +19,14 @@ public static class ListUtilities
         return new ReadOnlyCollection<TValue>(items);
     }
 
-    public static bool IsNotNullOrEmpty<TValue>(this IList<TValue> list)
+    public static bool NotNullOrEmpty<TValue>(this IList<TValue> list)
     {
         return list is not null && list.Any();
     }
 
     public static bool IsNullOrEmpty<TValue>(this IList<TValue> list)
     {
-        return list.IsNotNullOrEmpty() is false;
+        return list.NotNullOrEmpty() is false;
     }
 
     public static bool NotContains<TValue>(this IList<TValue> list, TValue value)

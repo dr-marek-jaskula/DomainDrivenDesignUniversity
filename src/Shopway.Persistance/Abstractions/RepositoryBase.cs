@@ -37,7 +37,7 @@ public abstract class RepositoryBase
         {
             queryable = specification.Filter.Apply(queryable);
         }
-        else if (specification.FilterExpressions.IsNotNullOrEmpty())
+        else if (specification.FilterExpressions.NotNullOrEmpty())
         {
             foreach (var filter in specification.FilterExpressions)
             {
