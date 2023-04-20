@@ -17,12 +17,14 @@ public sealed class FluentValidationPipeline<TRequest, TResponse> : IPipelineBeh
         _validators = validators;
     }
 
-    public async Task<TResponse> Handle(
+    public async Task<TResponse> Handle
+    (
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
-        if (!_validators.Any())
+        if (_validators.Any() is false)
         {
             return await next();
         }
@@ -31,9 +33,7 @@ public sealed class FluentValidationPipeline<TRequest, TResponse> : IPipelineBeh
             .Select(validator => validator.Validate(request))
             .SelectMany(validationResult => validationResult.Errors)
             .Where(validationFailure => validationFailure is not null)
-            .Select(failure => new Error(
-                failure.PropertyName,
-                failure.ErrorMessage))
+            .Select(failure => new Error(failure.PropertyName, failure.ErrorMessage))
             .Distinct()
             .ToArray();
 

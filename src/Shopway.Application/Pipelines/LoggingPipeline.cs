@@ -35,7 +35,7 @@ public class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         {
             _logger.LogError
             (
-                "UpdateRequestBody failed {@RequestName}, {@Error}, {@DateTimeUtc}",
+                "Request failed {@RequestName}, {@Error}, {@DateTimeUtc}",
                 typeof(TRequest).Name,
                 result.Error,
                 DateTime.UtcNow
@@ -46,7 +46,7 @@ public class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
         _logger.LogInformation
         (
-            "UpdateRequestBody completed {@RequestName}, {@DateTimeUtc}",
+            "Request completed {@RequestName}, {@DateTimeUtc}",
             typeof(TRequest).Name,
             DateTime.UtcNow
         );

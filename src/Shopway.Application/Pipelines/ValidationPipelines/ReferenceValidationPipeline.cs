@@ -27,7 +27,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             .ToList();
 
         Error[] errors = referenceProperties
-            .Select(async (reference) => await Validate(reference, request))
+            .Select(async (reference) => await Validate(reference, request, cancellationToken))
             .Select(task => task.Result)
             .Where(error => error != Error.None)
             .Distinct()
@@ -43,7 +43,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         return await next();
     }
 
-    private async Task<Error> Validate(PropertyInfo reference, TRequest request)
+    private async Task<Error> Validate(PropertyInfo reference, TRequest request, CancellationToken cancellationToken)
     {
         //omit optional reference
         if (reference.GetValue(request) is not IEntityId entityId || entityId is null || entityId.Value == Guid.Empty)
@@ -53,7 +53,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
         var entityType = reference.GetEntityTypeFromEntityId();
 
-        var entity = await _context.FindAsync(entityType, entityId);
+        var entity = await _context.FindAsync(entityType, new object[] { entityId }, cancellationToken);
 
         if (entity is null)
         {
