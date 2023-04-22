@@ -19,7 +19,6 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
     public string ContainerConnectionString { get; private set; } = string.Empty;
 
     private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder()
-        .WithName(SqlServerContainerName)
         .Build();
 
     public ShopwayApiFactory()

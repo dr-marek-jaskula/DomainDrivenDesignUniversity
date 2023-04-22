@@ -138,7 +138,8 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <typeparam name="TValueObject">ValueObject</typeparam>
         /// <param name="parameteres">Input parameters</param>
         /// <returns>True if there is null parameter. Otherwise, return false</returns>
-        private bool AnyNullParameter<TValueObject>(object[] parameteres) where TValueObject : ValueObject
+        private bool AnyNullParameter<TValueObject>(object[] parameteres) 
+            where TValueObject : ValueObject
         {
             if (parameteres.Any(parameter => parameter is null))
             {

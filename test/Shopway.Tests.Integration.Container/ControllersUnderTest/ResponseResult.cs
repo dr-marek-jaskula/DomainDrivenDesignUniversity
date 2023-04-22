@@ -27,14 +27,14 @@ public class ResponseResult
 
         if (successWithError)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Result was successful but error was not Error.None");
         }
 
         bool failureWithNoError = !isSuccess && error == Error.None;
 
         if (failureWithNoError)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Result was failure but error was Error.None");
         }
 
         IsSuccess = isSuccess;

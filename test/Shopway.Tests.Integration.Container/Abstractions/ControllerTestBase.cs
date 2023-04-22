@@ -179,7 +179,7 @@ public abstract class ControllerTestsBase
     }
 
     /// <summary>
-    /// Asserts problem details in case when the request model is invalid. For instance, when some field is null. . Specific error should be asserted separately.
+    /// Asserts problem details in case when the request model is invalid. For instance, when some field is null. Specific error should be asserted separately.
     /// </summary>
     /// <param name="problemDetails">Deserialized problem details</param>
     protected static void AssertModelProblemDetails(ModelProblemDetails problemDetails)

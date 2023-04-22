@@ -11,7 +11,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : 
     where TResponseKey : struct, IBusinessKey
 {
     /// <summary>
-    /// Required delegate, used to map the requests to response keys. 
+    /// Required delegate. Used to map the requests to response keys. 
     /// Due to the fact that the builder will be injected from the Dependency Injection Container, it needs to be set after the injection.
     /// It is required to provide this delegate. 
     /// </summary>
@@ -72,7 +72,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : 
     }
 
     /// <summary>
-    /// Validates the requests and for each of them sets success status to 'Inserted'. Status will be change to 'Error' if at least one error occurs
+    /// Validates the requests and for each of them sets success status to 'Inserted'. Status will be changed to 'Error' if at least one error occurs
     /// </summary>
     /// <param name="insertRequests">Requests that are meant to be used to insert entities</param>
     /// <param name="requestValidationMethod">Validation method that will be performed over the each provided request</param>
