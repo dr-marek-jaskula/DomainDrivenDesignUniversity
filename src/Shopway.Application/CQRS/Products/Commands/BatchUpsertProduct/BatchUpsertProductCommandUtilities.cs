@@ -115,7 +115,7 @@ internal static class BatchUpsertProductCommandUtilities
 
         return command
             .Requests
-            .Where(request => productsToUpdateWithKeys.ContainsKey(MapFromRequestToProductKey(request)) == searchCondition)
+            .Where(request => productsToUpdateWithKeys.ContainsKey(request.ToProductKey()) == searchCondition)
             .ToList()
             .AsReadOnly();
     }

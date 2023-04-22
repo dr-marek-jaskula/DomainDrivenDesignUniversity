@@ -1,20 +1,21 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.EntityIds;
+using System.Xml.Linq;
 
 namespace Shopway.Domain.EntityBusinessKeys;
 
-//BusinessKeys for not aggregates can contain ids, because they are only queried as a part of aggregate
+//BusinessKeys for not aggregates can contain keys, because they are only queried as a part of aggregate
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 public readonly record struct ReviewKey : IBusinessKey
 {
-    public readonly ProductId ProductId { get; }
+    public readonly ProductKey ProductKey { get; }
     public readonly string Title { get; }
 
-    public ReviewKey(ProductId productId, string title)
+    public ReviewKey(ProductKey productKey, string title)
     {
-        ProductId = productId;
+        ProductKey = productKey;
 
         if (title is not null)
         {
@@ -22,14 +23,19 @@ public readonly record struct ReviewKey : IBusinessKey
         }
     }
 
-    public static ReviewKey Create(ProductId productId, string title)
+    public static ReviewKey Create(ProductKey productKey, string title)
     {
-        return new ReviewKey(productId, title);
+        return new ReviewKey(productKey, title);
     }
 
     private static string NormalizeKeyComponent(string keyComponent)
     {
         return keyComponent.Trim().ToLower();
+    }
+
+    public override string ToString()
+    {
+        return $"Review {{ Title: {Title}, {ProductKey} }}" ;
     }
 }
 

@@ -48,7 +48,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
         }
 
         _validator
-            .If(ReviewAlreadyExists(product, titleResult.Value), AlreadyExists(ReviewKey.Create(product.Id, titleResult.Value.Value)));
+            .If(ReviewAlreadyExists(product, titleResult.Value), AlreadyExists(ReviewKey.Create(product.ToProductKey(), titleResult.Value.Value)));
 
         if (_validator.IsInvalid)
         {

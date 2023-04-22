@@ -1,4 +1,5 @@
 ﻿using Shopway.Domain.Abstractions;
+using System.Xml.Linq;
 
 namespace Shopway.Domain.EntityBusinessKeys;
 
@@ -30,6 +31,11 @@ public readonly record struct ProductKey : IBusinessKey
     private static string NormalizeKeyComponent(string keyComponent)
     {
         return keyComponent.Trim().ToLower();
+    }
+
+    public override string ToString()
+    {
+        return $"Product {{ Name: {ProductName}, Revision: {Revision} }}";
     }
 }
 

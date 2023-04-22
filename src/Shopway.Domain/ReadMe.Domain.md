@@ -37,4 +37,4 @@ Due to the fact that entity id is a record struct, we can use the '==' operator 
 
 ## BusinessKeys
 
-BusinessKeys for not aggregates can contain ids, because they are only queried as a part of aggregate
+BusinessKeys for not aggregates can contain keys, because they are only queried as a part of aggregate

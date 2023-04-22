@@ -124,7 +124,7 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
                     && filtered.Revision.Value.CaseInsensitiveEquals(request.ProductKey.Revision))
                 {
                     //If the product matches, first get the key and then add (key, product) to the dictionary
-                    var key = MapFromProductToProductKey(filtered);
+                    var key = filtered.ToProductKey();
                     products.Add(key, filtered);
                     break;
                 }
@@ -165,7 +165,7 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
         foreach (var request in validRequestsToUpdate)
         {
             //At this stage, key is always valid
-            var key = MapFromRequestToProductKey(request);
+            var key = request.ToProductKey();
             UpdateProduct(productsToUpdate[key], request);
         }
     }
