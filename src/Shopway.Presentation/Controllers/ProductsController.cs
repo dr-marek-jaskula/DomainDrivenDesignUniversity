@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Presentation.Abstractions;
 using Shopway.Domain.EntityIds;

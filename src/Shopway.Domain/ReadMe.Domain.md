@@ -34,3 +34,7 @@ To create a new id we use a static method "New". For instance, "ProductId.New()"
 To create a strongly typed id based on a given guid, we use "Create" method. For instance, "Product.Create()".
 
 Due to the fact that entity id is a record struct, we can use the '==' operator to compare ids.
+
+## BusinessKeys
+
+BusinessKeys for not aggregates can contain ids, because they are only queried as a part of aggregate

@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{49B6585D-A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63AD0D7C-F45A-4430-BCCB-4980C8BC2FD7}"
 	ProjectSection(SolutionItems) = preProject
+		DomainDrivenDesignUniversity.postman_collection.json = DomainDrivenDesignUniversity.postman_collection.json
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
