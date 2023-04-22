@@ -53,3 +53,9 @@ This layer contains the integrations tests.
 Here we use the proper approach of using the WebApplicationFactory.
 
 Moreover, we use TestContainers library, to make all integrations test in sql database inside the container, so the additional database cleaning is not required (like in Shopway.Tests.Integration)
+
+### Postman Collection
+
+Use the postman collection to get all endpoint for postman. 
+
+Replace variables current values like "validProductGuid" or "validReviewGuid" to your custom values.
