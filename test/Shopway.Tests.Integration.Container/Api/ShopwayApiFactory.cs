@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Shopway.Persistence.Framework;
 using Shopway.Tests.Integration.Configurations;
 using Shopway.Infrastructure.Options;
-using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
 
 namespace Shopway.Tests.Integration;
 
