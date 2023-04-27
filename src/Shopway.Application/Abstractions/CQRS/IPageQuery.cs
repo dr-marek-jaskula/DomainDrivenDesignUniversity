@@ -10,6 +10,7 @@ namespace Shopway.Application.Abstractions.CQRS;
 /// <typeparam name="TResponse">The page query response type</typeparam>
 /// <typeparam name="TFilter">The provided filter type</typeparam>
 /// <typeparam name="TSortBy">The provided order type</typeparam>
+/// <typeparam name="TPage">The provided page type</typeparam>
 public interface IPageQuery<TResponse, TFilter, TSortBy, TPage> : IRequest<IResult<PageResponse<TResponse>>>
     where TResponse : IResponse
     where TFilter : IFilter
