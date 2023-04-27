@@ -12,7 +12,14 @@ internal sealed class ProductQuerySpecification<TResposnse> : SpecificationWithM
     {
     }
 
-    public static SpecificationWithMappingBase<Product, ProductId, TResposnse> Create(IFilter<Product>? filter, ISortBy<Product>? sortBy, IPage page, Expression<Func<Product, TResposnse>>? select, params Expression<Func<Product, object>>[] includes)
+    public static SpecificationWithMappingBase<Product, ProductId, TResposnse> Create
+    (
+        IFilter<Product>? filter, 
+        ISortBy<Product>? sortBy, 
+        IPage page, 
+        Expression<Func<Product, TResposnse>>? select, 
+        params Expression<Func<Product, object>>[] includes
+    )
     {
         var specification = new ProductQuerySpecification<TResposnse>();
 
