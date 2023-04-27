@@ -1,5 +1,4 @@
 ﻿using Shopway.Domain.Abstractions;
-using System.Xml.Linq;
 
 namespace Shopway.Domain.EntityBusinessKeys;
 
