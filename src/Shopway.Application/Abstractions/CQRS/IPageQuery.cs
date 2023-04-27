@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Shopway.Application.CQRS;
+﻿using Shopway.Application.CQRS;
 using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.Abstractions.CQRS;
@@ -11,7 +10,7 @@ namespace Shopway.Application.Abstractions.CQRS;
 /// <typeparam name="TFilter">The provided filter type</typeparam>
 /// <typeparam name="TSortBy">The provided order type</typeparam>
 /// <typeparam name="TPage">The provided page type</typeparam>
-public interface IPageQuery<TResponse, TFilter, TSortBy, TPage> : IRequest<IResult<PageResponse<TResponse>>>
+public interface IPageQuery<TResponse, TFilter, TSortBy, TPage> : IQuery<PageResponse<TResponse>>
     where TResponse : IResponse
     where TFilter : IFilter
     where TSortBy : ISortBy

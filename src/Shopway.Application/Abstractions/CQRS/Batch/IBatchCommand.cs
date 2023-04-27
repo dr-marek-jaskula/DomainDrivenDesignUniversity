@@ -1,6 +1,4 @@
-﻿using Shopway.Application.Abstractions.CQRS;
-
-namespace Shopway.Application.Abstractions.CQRS.Batch;
+﻿namespace Shopway.Application.Abstractions.CQRS.Batch;
 
 /// <summary>
 /// Represents the batch command interface
