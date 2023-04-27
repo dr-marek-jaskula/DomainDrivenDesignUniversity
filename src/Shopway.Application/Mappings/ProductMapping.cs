@@ -62,7 +62,7 @@ public static class ProductMapping
         return product => new DictionaryResponseEntry
         (
             product.Id.Value,
-            //Method *MapFromProductToProductKey* is not used on purpose here
+            //Method *ToProductKey* is not used on purpose here
             ProductKey.Create(product.ProductName.Value, product.Revision.Value)
         );
     }
