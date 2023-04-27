@@ -12,8 +12,7 @@ public sealed record ProductDictionaryFilter : IFilter<Product>
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
         return queryable
-            .Filter(ByLikeQuery, product => 
-                product.ProductName.Value.Contains(LikeQuery!)
-             || product.Revision.Value.Contains(LikeQuery!));
+            .Filter(ByLikeQuery, product => product.ProductName.Value.Contains(LikeQuery!)
+                                         || product.Revision.Value.Contains(LikeQuery!));
     }
 }

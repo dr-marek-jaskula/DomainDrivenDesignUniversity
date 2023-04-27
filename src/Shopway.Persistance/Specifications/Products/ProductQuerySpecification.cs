@@ -6,15 +6,15 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductQuerySpecification : SpecificationBase<Product, ProductId>
+internal sealed class ProductQuerySpecification<TResposnse> : SpecificationWithMappingBase<Product, ProductId, TResposnse>
 {
     private ProductQuerySpecification() : base()
     {
     }
 
-    public static SpecificationBase<Product, ProductId> Create(IFilter<Product>? filter, ISortBy<Product>? sortBy, params Expression<Func<Product, object>>[] includes)
+    public static SpecificationWithMappingBase<Product, ProductId, TResposnse> Create(IFilter<Product>? filter, ISortBy<Product>? sortBy, IPage page, Expression<Func<Product, TResposnse>>? select, params Expression<Func<Product, object>>[] includes)
     {
-        var specification = new ProductQuerySpecification();
+        var specification = new ProductQuerySpecification<TResposnse>();
 
         specification
             .AddIncludes(includes);
@@ -23,7 +23,13 @@ internal sealed class ProductQuerySpecification : SpecificationBase<Product, Pro
             .AddFilters(filter);
 
         specification
+            .AddPage(page);
+
+        specification
             .AddOrder(sortBy);
+
+        specification
+            .AddSelect(select);
 
         //Alternative way
         //specification

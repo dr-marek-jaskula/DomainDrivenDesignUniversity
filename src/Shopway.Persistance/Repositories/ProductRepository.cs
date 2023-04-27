@@ -1,5 +1,4 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
@@ -54,7 +53,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<(IList<TResposnse> Responses, int TotalCount)> PageQuery<TResposnse>(IFilter<Product>? filter, ISortBy<Product>? sort, IPage page, Expression<Func<Product, TResposnse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
     {
-        var specification = ProductSelectQuerySpecification<TResposnse>.Create(filter, sort, page, select, includes);
+        var specification = ProductQuerySpecification<TResposnse>.Create(filter, sort, page, select, includes);
 
         var queryable = UseSpecificationWithMapping(specification);
 
