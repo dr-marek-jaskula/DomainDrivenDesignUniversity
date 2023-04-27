@@ -315,7 +315,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"PageNumber\": 1,\r\n  \"PageSize\": 15,\r\n  \"Filter\" : {\r\n    \"ProductName\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n    \"ProductName\" : \"Ascending\",\r\n    \"ThenPrice\" : \"Descending\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"ProductName\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n    \"ProductName\" : \"Ascending\",\r\n    \"ThenPrice\" : \"Descending\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,7 +345,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"PageNumber\": 1,\r\n  \"PageSize\": 5,\r\n  \"Filter\" : {\r\n    \"LikeQuery\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n    \"ProductName\" : \"Ascending\",\r\n    \"ThenPrice\" : \"Descending\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"LikeQuery\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n    \"ProductName\" : \"Ascending\",\r\n    \"ThenPrice\" : \"Descending\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
