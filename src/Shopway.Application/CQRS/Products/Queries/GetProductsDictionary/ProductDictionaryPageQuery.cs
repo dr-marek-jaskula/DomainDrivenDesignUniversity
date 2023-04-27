@@ -5,10 +5,9 @@ namespace Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;
 
 public sealed record ProductDictionaryPageQuery
 (
-    int PageNumber,
-    int PageSize
+    Page Page
 )
-    : IPageQuery<DictionaryResponseEntry, ProductDictionaryFilter, ProductOrder>
+    : IPageQuery<DictionaryResponseEntry, ProductDictionaryFilter, ProductOrder, Page>
 {
     public ProductDictionaryFilter? Filter { get; init; }
     public ProductOrder? Order { get; init; }

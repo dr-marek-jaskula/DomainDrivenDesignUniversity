@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Domain.EntityIds;
+using Shopway.Domain.Utilities;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications.Products;
+using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
@@ -21,7 +24,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductByKeyQuerySpecification.Create(key);
 
-        return await ApplySpecification(specification)
+        return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -29,7 +32,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductByKeyQuerySpecification.Create(key);
 
-        return await ApplySpecification(specification)
+        return await UseSpecificationWithoutMapping(specification)
             .AnyAsync(cancellationToken);
     }
 
@@ -37,7 +40,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductByIdWithReviewsQuerySpecification.Create(id);
 
-        return await ApplySpecification(specification)
+        return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -45,15 +48,23 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductByIdWithIncludesQuerySpecification.Create(id, includes);
 
-        return await ApplySpecification(specification)
+        return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
     }
 
-    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sort, params Expression<Func<Product, object>>[] includes)
+    public async Task<(IList<TResposnse> Responses, int TotalCount)> PageQuery<TResposnse>(IFilter<Product>? filter, ISortBy<Product>? sort, IPage page, Expression<Func<Product, TResposnse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
     {
-        var specification = ProductQuerySpecification.Create(filter, sort, includes);
+        var specification = ProductSelectQuerySpecification<TResposnse>.Create(filter, sort, page, select, includes);
 
-        return ApplySpecification(specification);
+        var queryable = UseSpecificationWithMapping(specification);
+
+        var totalCount = await queryable.CountAsync(cancellationToken);
+
+        var resposnses = await queryable
+            .Page(specification)
+            .ToListAsync(cancellationToken);
+
+        return (resposnses, totalCount);
     }
 
     public void Create(Product product)

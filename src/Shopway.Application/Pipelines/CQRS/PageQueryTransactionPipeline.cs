@@ -11,7 +11,7 @@ namespace Shopway.Application.Pipelines.CQRS;
 
 public sealed class PageQueryTransactionPipeline<TQueryRequest, TQueryResponse>
     : QueryTransactionPipelineBase<TQueryResponse>, IPipelineBehavior<TQueryRequest, TQueryResponse>
-    where TQueryRequest : class, IRequest<TQueryResponse>, IPageQuery<IResponse, IFilter, ISortBy>
+    where TQueryRequest : class, IRequest<TQueryResponse>, IPageQuery<IResponse, IFilter, ISortBy, IPage>
     where TQueryResponse : class, IResult<PageResponse<IResponse>>
 {
     public PageQueryTransactionPipeline(IUnitOfWork<ShopwayDbContext> unitOfWork)

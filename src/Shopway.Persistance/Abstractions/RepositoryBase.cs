@@ -19,10 +19,11 @@ public abstract class RepositoryBase
     /// Apply a specification and return a queryable
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
+    /// <typeparam name="TEntityId">EntityId type</typeparam>
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    private protected IQueryable<TEntity> ApplySpecification<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
+    private protected IQueryable<TEntity> UseSpecificationWithoutMapping<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : IEntityId
         where TEntity : Entity<TEntityId>
     {
@@ -75,5 +76,27 @@ public abstract class RepositoryBase
         }
 
         return queryable;
+    }
+
+    /// <summary>
+    /// Apply a specification and return a queryable of the given response type
+    /// </summary>
+    /// <typeparam name="TEntity">Entity type</typeparam>
+    /// <typeparam name="TEntityId">EntityId type</typeparam>
+    /// <typeparam name="TResponse">Response type</typeparam>
+    /// <param name="queryable">_dbContext.Set<TEntity>()</param>
+    /// <param name="specification">Input specification</param>
+    /// <returns>Queryable</returns>
+    private protected IQueryable<TResponse> UseSpecificationWithMapping<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
+        where TEntityId : IEntityId
+        where TEntity : Entity<TEntityId>
+    {
+        if (specification.Select is null)
+        {
+            throw new ArgumentNullException("Specification must contain Select statement");
+        }
+
+        return UseSpecificationWithoutMapping(specification)
+            .Select(specification.Select);
     }
 }

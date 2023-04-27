@@ -30,4 +30,10 @@ public static class PageUtilities
 
         return new PageResponse<TResponse>(response, totalCount, pageSize, pageNumber);
     }
+
+    public static PageResponse<TResponse> ToPageResponse<TResponse>(this (IList<TResponse> Items, int Count) response, Page page)
+        where TResponse : class, IResponse
+    {
+        return new PageResponse<TResponse>(response.Items, response.Count, page.PageSize, page.PageNumber);
+    }
 }

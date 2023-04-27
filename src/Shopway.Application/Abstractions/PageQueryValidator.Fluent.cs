@@ -8,18 +8,19 @@ namespace Shopway.Application.Abstractions;
 /// <summary>
 /// A generic page query validator, created to encapsulate common page query validation logic
 /// </summary>
-internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy> : AbstractValidator<TPageQuery>
+internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TPage> : AbstractValidator<TPageQuery>
     where TResponse : IResponse
     where TFilter : IFilter
     where TSortBy : ISortBy
-    where TPageQuery : IPageQuery<TResponse, TFilter, TSortBy>
+    where TPage : IPage
+    where TPageQuery : IPageQuery<TResponse, TFilter, TSortBy, TPage>
 {
     public PageQueryValidator()
     {
-        RuleFor(query => query.PageNumber)
+        RuleFor(query => query.Page.PageNumber)
             .GreaterThanOrEqualTo(1);
 
-        RuleFor(query => query.PageSize).Custom((pageSize, context) =>
+        RuleFor(query => query.Page.PageSize).Custom((pageSize, context) =>
         {
             if (AllowedPageSizes.Contains(pageSize) is false)
             {

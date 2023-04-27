@@ -7,7 +7,7 @@ using Shopway.Application.Mappings;
 
 namespace Shopway.Application.CQRS.Products.Queries.QueryProduct;
 
-internal sealed class ProductPageQueryHandler : IPageQueryHandler<ProductPageQuery, ProductResponse, ProductFilter, ProductOrder>
+internal sealed class ProductPageQueryHandler : IPageQueryHandler<ProductPageQuery, ProductResponse, ProductFilter, ProductOrder, Page>
 {
     private readonly IProductRepository _productRepository;
 
@@ -18,13 +18,11 @@ internal sealed class ProductPageQueryHandler : IPageQueryHandler<ProductPageQue
 
     public async Task<IResult<PageResponse<ProductResponse>>> Handle(ProductPageQuery pageQuery, CancellationToken cancellationToken)
     {
-        var queryable = _productRepository
-            .Queryable(pageQuery.Filter, pageQuery.Order, product => product.Reviews);
+        var response = await _productRepository
+            .PageQuery(pageQuery.Filter, pageQuery.Order, pageQuery.Page, ProductMapping.ToResponse(), cancellationToken, product => product.Reviews);
 
-        var pageResponse = await queryable
-            .ToPageResponse(pageQuery.PageSize, pageQuery.PageNumber, ProductMapping.ToResponse(), cancellationToken);
-
-        return pageResponse
+        return response
+            .ToPageResponse(pageQuery.Page)
             .ToResult();
     }
 }

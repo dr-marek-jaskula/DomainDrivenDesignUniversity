@@ -71,11 +71,6 @@ public sealed class CachedProductRepository : IProductRepository
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }
 
-    public IQueryable<Product> Queryable(IFilter<Product>? filter, ISortBy<Product>? sortBy, params Expression<Func<Product, object>>[] includes)
-    {
-        return _decorated.Queryable(filter, sortBy, includes);
-    }
-
     public void Create(Product product)
     {
         _decorated.Create(product);
@@ -99,5 +94,10 @@ public sealed class CachedProductRepository : IProductRepository
     public Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken)
     {
         return _decorated.AnyAsync(key, cancellationToken);
+    }
+
+    public Task<(IList<TResposnse> Responses, int TotalCount)> PageQuery<TResposnse>(IFilter<Product>? filter, ISortBy<Product>? sortBy, IPage page, Expression<Func<Product, TResposnse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
+    {
+        return _decorated.PageQuery(filter, sortBy, page, select, cancellationToken, includes);
     }
 }
