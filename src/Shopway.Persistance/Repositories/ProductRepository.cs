@@ -4,7 +4,6 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.Utilities;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications.Products;
@@ -63,9 +62,8 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductQuerySpecification<TResponse>.Create(filter, sort, page, select, includes);
         
-        var queryable = UseSpecificationWithMapping(specification);
-        
-        return await queryable.Page(specification, cancellationToken);
+        return await UseSpecificationWithMapping(specification)
+            .PageAsync(specification, cancellationToken);
     }
 
     public void Create(Product product)

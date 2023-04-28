@@ -39,7 +39,7 @@ internal static class QueryableUtilities
     /// <param name="queryable">Queryable</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Tuple of  items and total count</returns>
-    internal static async Task<(IList<TResponse> Responses, int TotalCount)> Page<TEntity, TEntityId, TResponse>
+    internal static async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TEntity, TEntityId, TResponse>
     (
         this IQueryable<TResponse> queryable,
         SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification,
