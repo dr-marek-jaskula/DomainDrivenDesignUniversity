@@ -93,7 +93,7 @@ public abstract class RepositoryBase
     {
         if (specification.Select is null)
         {
-            throw new ArgumentNullException("Specification must contain Select statement");
+            throw new ArgumentNullException($"SpecificationWithMappingBase must contain Select statement");
         }
 
         return UseSpecificationWithoutMapping(specification)

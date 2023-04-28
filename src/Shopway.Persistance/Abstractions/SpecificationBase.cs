@@ -27,9 +27,6 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal bool AsNoTracking { get; private set; }
     internal bool AsNoTrackingWithIdentityResolution { get; private set; }
 
-    //Pagination
-    internal IPage? Page { get; private set; } = null;
-
     //Filters
     internal IFilter<TEntity>? Filter { get; private set; } = null;
     internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = new();
@@ -57,12 +54,6 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal SpecificationBase<TEntity, TEntityId> UseNoTrackingWithIdentityResolution()
     {
         AsNoTrackingWithIdentityResolution = true;
-        return this;
-    }
-
-    internal SpecificationBase<TEntity, TEntityId> AddPage(IPage page)
-    {
-        Page = page;
         return this;
     }
 

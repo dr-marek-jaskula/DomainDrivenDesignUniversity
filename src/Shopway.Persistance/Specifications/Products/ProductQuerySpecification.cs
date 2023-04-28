@@ -17,7 +17,6 @@ internal sealed class ProductQuerySpecification<TResponse> : SpecificationWithMa
     (
         IFilter<Product>? filter, 
         ISortBy<Product>? sortBy, 
-        IPage page, 
         Expression<Func<Product, TResponse>>? select, 
         params Expression<Func<Product, object>>[] includes
     )
@@ -26,7 +25,6 @@ internal sealed class ProductQuerySpecification<TResponse> : SpecificationWithMa
             .AddSelect(select)
             .AddIncludes(includes)
             .AddFilter(filter)
-            .AddPage(page)
             .AddOrder(sortBy)
             .AsMappingSpecification<Product, ProductId, TResponse>();
     }

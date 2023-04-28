@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.Enums;
 using System.Linq.Expressions;
 
 namespace Shopway.Domain.Utilities;
@@ -51,6 +52,11 @@ public static class QueryableUtilities
         return queryable
             .Skip(pageSize * (pageNumber - 1))
             .Take(pageSize);
+    }
+
+    public static IQueryable<TEntity> Page<TEntity>(this IQueryable<TEntity> queryable, IPage page)
+    {
+        return queryable.Page(page.PageSize, page.PageNumber);
     }
 
     public static IQueryable<TEntity> SortBy<TEntity, TValue>

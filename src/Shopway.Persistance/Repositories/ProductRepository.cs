@@ -60,10 +60,10 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
         params Expression<Func<Product, object>>[] includes
     )
     {
-        var specification = ProductQuerySpecification<TResponse>.Create(filter, sort, page, select, includes);
+        var specification = ProductQuerySpecification<TResponse>.Create(filter, sort, select, includes);
         
         return await UseSpecificationWithMapping(specification)
-            .PageAsync(specification, cancellationToken);
+            .PageAsync(page, cancellationToken);
     }
 
     public void Create(Product product)
