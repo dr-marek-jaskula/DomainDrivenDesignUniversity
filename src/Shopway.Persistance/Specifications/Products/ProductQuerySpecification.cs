@@ -28,7 +28,7 @@ internal sealed class ProductQuerySpecification<TResponse> : SpecificationWithMa
             .AddFilter(filter)
             .AddPage(page)
             .AddOrder(sortBy)
-            .AsMappingSpecification<TResponse>();
+            .AsMappingSpecification<Product, ProductId, TResponse>();
 
         //Alternative way of applying sorting
         //specification
