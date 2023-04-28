@@ -31,23 +31,36 @@ public class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
         var result = await next();
 
-        if (result.IsFailure)
+        if (result.IsSuccess)
         {
-            _logger.LogError
+            _logger.LogInformation
             (
-                "Request failed {@RequestName}, {@Error}, {@DateTimeUtc}",
+                "Request completed {@RequestName}, {@DateTimeUtc}",
                 typeof(TRequest).Name,
-                result.Error,
                 DateTime.UtcNow
             );
 
             return result;
         }
 
-        _logger.LogInformation
+        if (result is IValidationResult validationResult)
+        {
+            _logger.LogError
+            (
+                "Request failed {@RequestName}, {@ValidationErrors}, {@DateTimeUtc}",
+                typeof(TRequest).Name,
+                validationResult.ValidationErrors,
+                DateTime.UtcNow
+            );
+
+            return result;
+        }
+
+        _logger.LogError
         (
-            "Request completed {@RequestName}, {@DateTimeUtc}",
+            "Request failed {@RequestName}, {@Error}, {@DateTimeUtc}",
             typeof(TRequest).Name,
+            result.Error,
             DateTime.UtcNow
         );
 
