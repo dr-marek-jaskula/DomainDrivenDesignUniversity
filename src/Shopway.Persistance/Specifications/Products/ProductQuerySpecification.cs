@@ -13,7 +13,7 @@ internal sealed class ProductQuerySpecification<TResponse> : SpecificationWithMa
     {
     }
 
-    public static SpecificationWithMappingBase<Product, ProductId, TResponse> Create
+    internal static SpecificationWithMappingBase<Product, ProductId, TResponse> Create
     (
         IFilter<Product>? filter, 
         ISortBy<Product>? sortBy, 

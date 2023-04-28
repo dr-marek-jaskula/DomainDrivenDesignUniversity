@@ -10,7 +10,7 @@ internal sealed class ProductByIdWithReviewsQuerySpecification : SpecificationBa
     {
     }
 
-    public static SpecificationBase<Product, ProductId> Create(ProductId productId)
+    internal static SpecificationBase<Product, ProductId> Create(ProductId productId)
     {
         return new ProductByIdWithReviewsQuerySpecification()
             .AddFilters(product => product.Id == productId)

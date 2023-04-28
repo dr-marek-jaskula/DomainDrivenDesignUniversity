@@ -5,7 +5,7 @@ using Shopway.Domain.Utilities;
 
 namespace Shopway.Persistence.Utilities;
 
-public static class QueryableUtilities
+internal static class QueryableUtilities
 {
     /// <summary>
     /// Add pagination from specification
@@ -16,7 +16,7 @@ public static class QueryableUtilities
     /// <param name="queryable">_dbContext.Set<TResponse>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    public static IQueryable<TResponse> Page<TEntity, TEntityId, TResponse>(this IQueryable<TResponse> queryable, SpecificationBase<TEntity, TEntityId> specification)
+    internal static IQueryable<TResponse> Page<TEntity, TEntityId, TResponse>(this IQueryable<TResponse> queryable, SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : IEntityId
         where TEntity : Entity<TEntityId>
     {

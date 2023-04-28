@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Abstractions;
 
-public abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResponse> : SpecificationBase<TEntity, TEntityId>
+internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResponse> : SpecificationBase<TEntity, TEntityId>
     where TEntityId : IEntityId
     where TEntity : Entity<TEntityId>
 {
@@ -18,7 +18,7 @@ public abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResponse
     }
 }
 
-public abstract class SpecificationBase<TEntity, TEntityId>
+internal abstract class SpecificationBase<TEntity, TEntityId>
     where TEntityId : IEntityId
     where TEntity : Entity<TEntityId>
 {

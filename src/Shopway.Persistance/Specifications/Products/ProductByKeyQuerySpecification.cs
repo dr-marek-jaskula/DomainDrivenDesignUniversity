@@ -11,7 +11,7 @@ internal sealed class ProductByKeyQuerySpecification : SpecificationBase<Product
     {
     }
 
-    public static SpecificationBase<Product, ProductId> Create(ProductKey key)
+    internal static SpecificationBase<Product, ProductId> Create(ProductKey key)
     {
         return new ProductByKeyQuerySpecification()
             .AddFilters
