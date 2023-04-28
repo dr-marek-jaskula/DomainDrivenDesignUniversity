@@ -48,13 +48,13 @@ public abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> UseAsNoTracking()
+    internal SpecificationBase<TEntity, TEntityId> UseNoTracking()
     {
         AsNoTracking = true;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> UseAsNoTrackingWithIdentityResolution()
+    internal SpecificationBase<TEntity, TEntityId> UseNoTrackingWithIdentityResolution()
     {
         AsNoTrackingWithIdentityResolution = true;
         return this;
