@@ -3,24 +3,25 @@ using Shopway.Application.Exceptions;
 
 namespace Shopway.Application.CQRS;
 
-public sealed class PageResponse<TValue> : IResponse
+public sealed record PageResponse<TValue> : IResponse
 {
     //Generic list that stores the pagination result
-    public IList<TValue> Items { get; set; }
+    public IList<TValue> Items { get; private init; }
 
     //Total number or items
-    public int TotalItemsCount { get; set; }
+    public int TotalItemsCount { get; private init; }
 
     //Total amount of pages
-    public int TotalPages { get; set; }
+    public int TotalPages { get; private init; }
 
-    public int CurrentPage { get; set; }
+    //Selected page
+    public int CurrentPage { get; private init; }
 
     //The first element of the certain page
-    public int ItemsFrom { get; set; }
+    public int ItemsFrom { get; private init; }
 
     //The last element of the certain page
-    public int ItemsTo { get; set; }
+    public int ItemsTo { get; private init; }
 
     public PageResponse(IList<TValue> items, int totalCount, int pageSize, int pageNumber)
     {

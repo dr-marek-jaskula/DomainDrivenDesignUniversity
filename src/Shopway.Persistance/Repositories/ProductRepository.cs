@@ -52,9 +52,9 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
+        IPage page, 
         IFilter<Product>? filter, 
         ISortBy<Product>? sort, 
-        IPage page, 
         Expression<Func<Product, TResponse>>? select, 
         CancellationToken cancellationToken, 
         params Expression<Func<Product, object>>[] includes

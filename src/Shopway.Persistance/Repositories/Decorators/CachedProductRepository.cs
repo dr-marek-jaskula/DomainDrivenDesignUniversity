@@ -96,8 +96,8 @@ public sealed class CachedProductRepository : IProductRepository
         return _decorated.AnyAsync(key, cancellationToken);
     }
 
-    public Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IFilter<Product>? filter, ISortBy<Product>? sortBy, IPage page, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
+    public Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
     {
-        return _decorated.PageAsync(filter, sortBy, page, select, cancellationToken, includes);
+        return _decorated.PageAsync(page, filter, sortBy, select, cancellationToken, includes);
     }
 }

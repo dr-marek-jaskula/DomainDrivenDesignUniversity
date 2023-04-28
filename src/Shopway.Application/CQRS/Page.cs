@@ -2,8 +2,8 @@
 
 namespace Shopway.Application.CQRS;
 
-public sealed class Page : IPage
+public sealed record Page : IPage
 {
-    public int PageSize { get; set; }
-    public int PageNumber { get; set; }
+    public required int PageSize { get; init; }
+    public required int PageNumber { get; init; }
 }
