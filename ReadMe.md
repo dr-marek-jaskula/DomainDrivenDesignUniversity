@@ -56,6 +56,6 @@ Moreover, we use TestContainers library, to make all integrations test in sql da
 
 ### Postman Collection
 
-Use the postman collection to get all endpoint for postman. 
+Use the postman collection to get all endpoints for postman. 
 
-Replace variables current values like "validProductGuid" or "validReviewGuid" to your custom values.
+Replace variables current values like "validProductGuid" or "validReviewGuid" to your custom ones.
