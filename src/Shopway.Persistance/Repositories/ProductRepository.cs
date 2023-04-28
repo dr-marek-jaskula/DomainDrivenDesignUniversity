@@ -65,7 +65,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
         
         var queryable = UseSpecificationWithMapping(specification);
         
-        return await specification.Page(queryable, cancellationToken);
+        return await queryable.Page(specification, cancellationToken);
     }
 
     public void Create(Product product)
