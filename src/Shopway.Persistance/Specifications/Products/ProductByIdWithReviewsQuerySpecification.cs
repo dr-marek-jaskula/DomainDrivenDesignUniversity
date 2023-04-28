@@ -12,14 +12,8 @@ internal sealed class ProductByIdWithReviewsQuerySpecification : SpecificationBa
 
     public static SpecificationBase<Product, ProductId> Create(ProductId productId)
     {
-        var specification = new ProductByIdWithReviewsQuerySpecification();
-
-        specification
-            .AddFilters(product => product.Id == productId);
-
-        specification
+        return new ProductByIdWithReviewsQuerySpecification()
+            .AddFilters(product => product.Id == productId)
             .AddIncludes(product => product.Reviews);
-
-        return specification;
     }
 }

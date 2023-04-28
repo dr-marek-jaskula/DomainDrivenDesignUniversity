@@ -60,17 +60,17 @@ public abstract class RepositoryBase
             }
         }
 
-        if (specification.UseSplitQuery)
+        if (specification.AsSplitQuery)
         {
             queryable = queryable.AsSplitQuery();
         }
 
-        if (specification.UseAsNoTracking)
+        if (specification.AsNoTracking)
         {
             queryable = queryable.AsNoTracking();
         }
 
-        if (specification.UseAsNoTrackingWithIdentityResolution)
+        if (specification.AsNoTrackingWithIdentityResolution)
         {
             queryable = queryable.AsNoTrackingWithIdentityResolution();
         }

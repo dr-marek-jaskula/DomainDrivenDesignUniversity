@@ -2,47 +2,37 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
+using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal sealed class ProductQuerySpecification<TResposnse> : SpecificationWithMappingBase<Product, ProductId, TResposnse>
+internal sealed class ProductQuerySpecification<TResponse> : SpecificationWithMappingBase<Product, ProductId, TResponse>
 {
     private ProductQuerySpecification() : base()
     {
     }
 
-    public static SpecificationWithMappingBase<Product, ProductId, TResposnse> Create
+    public static SpecificationWithMappingBase<Product, ProductId, TResponse> Create
     (
         IFilter<Product>? filter, 
         ISortBy<Product>? sortBy, 
         IPage page, 
-        Expression<Func<Product, TResposnse>>? select, 
+        Expression<Func<Product, TResponse>>? select, 
         params Expression<Func<Product, object>>[] includes
     )
     {
-        var specification = new ProductQuerySpecification<TResposnse>();
+        return new ProductQuerySpecification<TResponse>()
+            .AddSelect(select)
+            .AddIncludes(includes)
+            .AddFilter(filter)
+            .AddPage(page)
+            .AddOrder(sortBy)
+            .AsMappingSpecification<TResponse>();
 
-        specification
-            .AddIncludes(includes);
-
-        specification
-            .AddFilters(filter);
-
-        specification
-            .AddPage(page);
-
-        specification
-            .AddOrder(sortBy);
-
-        specification
-            .AddSelect(select);
-
-        //Alternative way
+        //Alternative way of applying sorting
         //specification
         //    .OrderBy(x => x.ProductName.Value, SortDirection.Ascending)
         //    .ThenBy(x => x.Price.Value, SortDirection.Descending);
-
-        return specification;
     }
 }

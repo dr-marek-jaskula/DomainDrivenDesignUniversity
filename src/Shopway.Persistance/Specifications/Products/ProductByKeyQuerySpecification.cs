@@ -13,15 +13,11 @@ internal sealed class ProductByKeyQuerySpecification : SpecificationBase<Product
 
     public static SpecificationBase<Product, ProductId> Create(ProductKey key)
     {
-        var specification = new ProductByKeyQuerySpecification();
-
-        specification
+        return new ProductByKeyQuerySpecification()
             .AddFilters
             (
                 product => product.ProductName.Value == key.ProductName,
                 product => product.Revision.Value == key.Revision
             );
-
-        return specification;
     }
 }

@@ -5,15 +5,16 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Abstractions;
 
-public abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResposnse> : SpecificationBase<TEntity, TEntityId>
+public abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResponse> : SpecificationBase<TEntity, TEntityId>
     where TEntityId : IEntityId
     where TEntity : Entity<TEntityId>
 {
-    public Expression<Func<TEntity, TResposnse>>? Select { get; private set; } = null;
+    internal Expression<Func<TEntity, TResponse>>? Select { get; private set; } = null;
 
-    protected void AddSelect(Expression<Func<TEntity, TResposnse>>? select)
+    internal SpecificationWithMappingBase<TEntity, TEntityId, TResponse> AddSelect(Expression<Func<TEntity, TResponse>>? select)
     {
         Select = select;
+        return this;
     }
 }
 
@@ -22,63 +23,88 @@ public abstract class SpecificationBase<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
 {
     //Flags
-    public bool UseSplitQuery { get; protected set; }
-    public bool UseAsNoTracking { get; protected set; }
-    public bool UseAsNoTrackingWithIdentityResolution { get; protected set; }
+    internal bool AsSplitQuery { get; private set; }
+    internal bool AsNoTracking { get; private set; }
+    internal bool AsNoTrackingWithIdentityResolution { get; private set; }
 
     //Pagination
-    public IPage? Page { get; private set; } = null;
+    internal IPage? Page { get; private set; } = null;
 
     //Filters
-    public IFilter<TEntity>? Filter { get; private set; } = null;
-    public List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = new();
+    internal IFilter<TEntity>? Filter { get; private set; } = null;
+    internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = new();
 
     //Includes
-    public List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = new();
+    internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = new();
 
     //OrderBy
-    public ISortBy<TEntity>? SortBy { get; private set; } = null;
-    public (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
-    public (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
+    internal ISortBy<TEntity>? SortBy { get; private set; } = null;
+    internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
+    internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
 
-    protected void AddPage(IPage page)
+    internal SpecificationBase<TEntity, TEntityId> UseSplitQuery()
+    {
+        AsSplitQuery = true;
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> UseAsNoTracking()
+    {
+        AsNoTracking = true;
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> UseAsNoTrackingWithIdentityResolution()
+    {
+        AsNoTrackingWithIdentityResolution = true;
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> AddPage(IPage page)
     {
         Page = page;
+        return this;
     }
 
-    protected void AddFilters(IFilter<TEntity>? filter)
+    internal SpecificationBase<TEntity, TEntityId> AddFilter(IFilter<TEntity>? filter)
     {
         Filter = filter;
+        return this;
     }
 
-    protected void AddOrder(ISortBy<TEntity>? order)
+    internal SpecificationBase<TEntity, TEntityId> AddOrder(ISortBy<TEntity>? order)
     {
         SortBy = order;
+        return this;
     }
 
-    protected void AddFilters(params Expression<Func<TEntity, bool>>[] filterExpressions)
+    internal SpecificationBase<TEntity, TEntityId> AddFilters(params Expression<Func<TEntity, bool>>[] filterExpressions)
     {
         foreach (var filterExpression in filterExpressions)
         {
             FilterExpressions.Add(filterExpression);
         }
+
+        return this;
     }
 
-    protected void AddIncludes(params Expression<Func<TEntity, object>>[] includeExpressions)
+    internal SpecificationBase<TEntity, TEntityId> AddIncludes(params Expression<Func<TEntity, object>>[] includeExpressions)
     {
         foreach (var includeExpression in includeExpressions)
         {
             IncludeExpressions.Add(includeExpression);
         }
+
+        return this;
     }
 
-    public SpecificationBase<TEntity, TEntityId> OrderBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
+    internal SpecificationBase<TEntity, TEntityId> OrderBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
     {
         SortByExpression = (sortByExpression, sortDirection);
         return this;
     }
 
-    public void ThenBy(Expression<Func<TEntity, object>> thenByExpression, SortDirection sortDirection)
+    internal SpecificationBase<TEntity, TEntityId> ThenBy(Expression<Func<TEntity, object>> thenByExpression, SortDirection sortDirection)
     {
         if (SortByExpression is null)
         {
@@ -91,5 +117,6 @@ public abstract class SpecificationBase<TEntity, TEntityId>
         }
 
         ThenByExpression = (thenByExpression, sortDirection);
+        return this;
     }
 }

@@ -13,16 +13,9 @@ internal sealed class ProductByIdWithIncludesQuerySpecification : SpecificationB
 
     public static SpecificationBase<Product, ProductId> Create(ProductId productId, params Expression<Func<Product, object>>[] includes)
     {
-        var specification = new ProductByIdWithIncludesQuerySpecification();
-
-        specification
-            .AddFilters(product => product.Id == productId);
-
-        specification
-            .AddIncludes(includes);
-
-        specification.UseSplitQuery = true;
-
-        return specification;
+        return new ProductByIdWithIncludesQuerySpecification()
+            .AddFilters(product => product.Id == productId)
+            .AddIncludes(includes)
+            .UseSplitQuery();
     }
 }
