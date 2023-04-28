@@ -29,10 +29,5 @@ internal sealed class ProductQuerySpecification<TResponse> : SpecificationWithMa
             .AddPage(page)
             .AddOrder(sortBy)
             .AsMappingSpecification<Product, ProductId, TResponse>();
-
-        //Alternative way of applying sorting
-        //specification
-        //    .OrderBy(x => x.ProductName.Value, SortDirection.Ascending)
-        //    .ThenBy(x => x.Price.Value, SortDirection.Descending);
     }
 }

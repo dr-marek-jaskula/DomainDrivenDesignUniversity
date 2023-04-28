@@ -51,19 +51,21 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
             .FirstAsync(cancellationToken);
     }
 
-    public async Task<(IList<TResponse> Responses, int TotalCount)> PageQuery<TResponse>(IFilter<Product>? filter, ISortBy<Product>? sort, IPage page, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
+    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    (
+        IFilter<Product>? filter, 
+        ISortBy<Product>? sort, 
+        IPage page, 
+        Expression<Func<Product, TResponse>>? select, 
+        CancellationToken cancellationToken, 
+        params Expression<Func<Product, object>>[] includes
+    )
     {
         var specification = ProductQuerySpecification<TResponse>.Create(filter, sort, page, select, includes);
-
+        
         var queryable = UseSpecificationWithMapping(specification);
-
-        var totalCount = await queryable.CountAsync(cancellationToken);
-
-        var responses = await queryable
-            .Page(specification)
-            .ToListAsync(cancellationToken);
-
-        return (responses, totalCount);
+        
+        return await specification.Page(queryable, cancellationToken);
     }
 
     public void Create(Product product)
