@@ -46,7 +46,7 @@ Problem statement:
 3. Therefore, repository method should be aware of the required mapping, but at the same time the data transfer model should be out of Persistence layer scope.
 
 Solution:
-1. Create mapping that returns an expression of func in mapping folder (.Application layer)
+1. Create mapping that returns an expression of func in mapping folder (.Application layer):
 
 ```csharp
 public static Expression<Func<Product, ProductResponse>> ToResponse()
@@ -73,14 +73,32 @@ public static Expression<Func<Product, ProductResponse>> ToResponse()
 }
 ```
 
-2. Pass the expression as a parameter of the repository method
+2. Pass the expression as a parameter of the repository method:
 
 ```csharp
 var page = await _productRepository
     .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.ToResponse(), cancellationToken);
 ```
 
-3. Use the expression as a parameter of the **Select** method. 
+3. Use the expression as a parameter of the **Select** method. The repository method must be a generic one:
+
+```csharp
+public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+(
+    IPage page, 
+    IFilter<Product>? filter, 
+    ISortBy<Product>? sort, 
+    Expression<Func<Product, TResponse>>? select, 
+    CancellationToken cancellationToken, 
+    params Expression<Func<Product, object>>[] includes
+)
+{
+    var specification = ProductQuerySpecification<TResponse>.Create(filter, sort, select, includes);
+        
+    return await UseSpecificationWithMapping(specification)
+        .PageAsync(page, cancellationToken);
+}
+```
 
 Note: in this solution we use the **SpecificationPattern**. Therefore, the expression is applied using the concrete specification.
 
