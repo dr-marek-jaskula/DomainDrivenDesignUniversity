@@ -102,4 +102,19 @@ public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TRespo
 
 Note: in this solution we use the **SpecificationPattern**. Therefore, the expression is applied using the concrete specification.
 
+```charp
+private protected IQueryable<TResponse> UseSpecificationWithMapping<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
+    where TEntityId : IEntityId
+    where TEntity : Entity<TEntityId>
+{
+    if (specification.Select is null)
+    {
+        throw new ArgumentNullException($"SpecificationWithMappingBase must contain Select statement");
+    }
+
+    return UseSpecificationWithoutMapping(specification)
+        .Select(specification.Select);
+}
+```
+
 **In the end the queryable will contain the mapping, so no redundant data will be queried, and the .Persistance layer will remain separated from .Application layer.**
