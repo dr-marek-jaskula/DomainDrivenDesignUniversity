@@ -38,7 +38,7 @@ Therefore in some cases, we return a task, which slightly increases the performa
 Manual mapping is way faster than mapping done by external libraries like automapper. Therefore, manual mapping
 is done in "Mapping" folder.
 
-**Moreover, manual mapping plays a significant role in using the repository pattern.**
+**Moreover, manual mapping plays a significant role when using the repository pattern.**
 
 Problem statement: 
 1. Persistence layer should not have access to response dtos (like **ProductResponse**)
