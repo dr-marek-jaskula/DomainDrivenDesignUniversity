@@ -40,10 +40,10 @@ internal static class QueryableUtilities
     internal static IQueryable<TResponse> Apply<TResponse>
     (
         this IQueryable<TResponse> queryable,
-        IEnumerable<SortByEntry> SortProperties
+        IEnumerable<SortByEntry> sortProperties
     )
     {
-        var sortedProperties = SortProperties
+        var sortedProperties = sortProperties
             .Distinct()
             .OrderBy(x => x.SortPriority);
 
