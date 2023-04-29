@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Shopway.Persistence.Utilities;
 
-public static class OrderEntryUtilities
+public static class SortByEntryUtilities
 {
     public static bool AnyInvalidSortPropertyName(this IList<SortByEntry> sortProperties, ReadOnlyCollection<string> allowedSortProperties)
     {

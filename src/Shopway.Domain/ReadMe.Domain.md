@@ -11,6 +11,7 @@ In this layer we define:
 - Enums
 - Results
 - Constants
+- Common components
 - IRepositories
 - Interfaces and utilities of generic purpose
 
