@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
-using Shopway.Domain.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Abstractions;
 using static Shopway.Application.Constants.PageConstants;
+using static Shopway.Persistence.Utilities.OrderEntryUtilities;
 
 namespace Shopway.Application.Abstractions;
 
@@ -29,35 +30,37 @@ internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSort
         });
 
         RuleFor(query => query.Order)
-            .Must(ValidatePageOrder)
-            .WithMessage("Invalid SortBy or ThenBy: Single SortBy can be selected and if so, single ThenBy can be chosen");
+            .Must(ValidatePageOrderPropertyNames)
+            .WithMessage($"SortProperties contains invalid property name.");
+
+        RuleFor(query => query.Order)
+            .Must(ValidatePageOrderPropertyPriorities)
+            .WithMessage("SortProperties contains priority duplicates.");
     }
 
-    private static bool ValidatePageOrder(TSortBy? pageOrder)
+    private static bool ValidatePageOrderPropertyNames(TSortBy? pageOrder)
     {
         if (pageOrder is null)
         {
             return true;
         }
 
-        var sortBy_NotNullCount = pageOrder
-            .GetType()
-            .GetProperties()
-            .Where(p => p.Name.StartsWith(Then) is false)
-            .Count(p => p.GetValue(pageOrder) is not null);
-
-        var thenBy_NotNullCount = pageOrder
-            .GetType()
-            .GetProperties()
-            .Where(p => p.Name.StartsWith(Then) is true)
-            .Count(p => p.GetValue(pageOrder) is not null);
-
-        if (sortBy_NotNullCount > 1 || thenBy_NotNullCount > 1)
+        if (pageOrder.SortProperties.AnyInvalidSortPropertyName(pageOrder.AllowedSortProperties))
         {
             return false;
         }
 
-        if (sortBy_NotNullCount is 0 && thenBy_NotNullCount is 1)
+        return true;
+    }
+
+    private static bool ValidatePageOrderPropertyPriorities(TSortBy? pageOrder)
+    {
+        if (pageOrder is null)
+        {
+            return true;
+        }
+
+        if (pageOrder.SortProperties.DuplicatedSortPriority())
         {
             return false;
         }

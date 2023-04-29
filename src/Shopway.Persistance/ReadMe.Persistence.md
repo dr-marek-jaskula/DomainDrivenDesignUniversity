@@ -96,3 +96,41 @@ Current solution is to create a custom migration and use raw sql.
 See: migration '20230301210403_Add_Unique_Key_To_Product' and Configuration -> CustomMigrations that is used to create the unique key for product: (ProductName, Revision).
 
 After introducing the Entity Framework 8 this project will use Owned Types, because value converters also have their limitations.
+
+## Dynamic or Static SortBy
+
+Dynamic sort use Linq.Dynamic.Core library.
+
+Static option for sorting the result:
+
+```csharp
+public sealed record ProductOrderStaticOption : ISortBy<Product>
+{
+    public SortDirection? ProductName { get; init; }
+    public SortDirection? Revision { get; init; }
+    public SortDirection? Price { get; init; }
+    public SortDirection? UomCode { get; init; }
+
+    public SortDirection? ThenProductName { get; init; }
+    public SortDirection? ThenRevision { get; init; }
+    public SortDirection? ThenPrice { get; init; }
+    public SortDirection? ThenUomCode { get; init; }
+
+    public IQueryable<Product> Apply(IQueryable<Product> queryable)
+    {
+        queryable = queryable
+            .SortBy(ProductName, product => product.ProductName.Value)
+            .SortBy(Revision, product => product.Revision.Value)
+            .SortBy(Price, product => product.Price.Value)
+            .SortBy(UomCode, product => product.UomCode.Value);
+
+        return ((IOrderedQueryable<Product>)queryable)
+            .ThenSortBy(ThenProductName, product => product.ProductName.Value)
+            .ThenSortBy(ThenRevision, product => product.Revision.Value)
+            .ThenSortBy(ThenPrice, product => product.Price.Value)
+            .ThenSortBy(ThenUomCode, product => product.UomCode.Value);
+    }
+}
+```
+
+Nevertheless, ISortBy and PageQueryValidator should be adjusted to static approach.
