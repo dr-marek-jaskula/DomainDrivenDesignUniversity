@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Utilities;
-using Microsoft.EntityFrameworkCore;
+﻿using Shopway.Domain.Common;
+using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shopway.Persistence.Utilities;
 
