@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Helpers;
+using Shopway.Domain.Common;
 using Shopway.Persistence.Utilities;
 using System.Collections.ObjectModel;
 using static Shopway.Domain.Utilities.ListUtilities;
@@ -18,7 +18,7 @@ public sealed record ProductOrder : ISortBy<Product>
     )
     .AsReadOnly();
 
-    public IList<OrderEntry> SortProperties { get; init; } = new List<OrderEntry>();
+    public IList<SortByEntry> SortProperties { get; init; } = new List<SortByEntry>();
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {

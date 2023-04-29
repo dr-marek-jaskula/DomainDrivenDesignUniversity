@@ -1,4 +1,5 @@
-﻿using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Domain.Common;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Persistence.Specifications.Products;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;

@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 
-namespace Shopway.Application.CQRS;
+namespace Shopway.Domain.Common;
 
 public sealed record Page : IPage
 {

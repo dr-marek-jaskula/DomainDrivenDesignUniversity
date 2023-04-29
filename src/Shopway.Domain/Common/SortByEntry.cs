@@ -1,8 +1,8 @@
 ﻿using Shopway.Domain.Enums;
 
-namespace Shopway.Domain.Helpers;
+namespace Shopway.Domain.Common;
 
-public sealed record OrderEntry
+public sealed record SortByEntry
 {
     public string PropertyName { get; init; } = string.Empty;
     public SortDirection SortDirection { get; init; }

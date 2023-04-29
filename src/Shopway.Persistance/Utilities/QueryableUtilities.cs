@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Helpers;
+using Shopway.Domain.Common;
 
 namespace Shopway.Persistence.Utilities;
 
@@ -40,7 +40,7 @@ internal static class QueryableUtilities
     internal static IQueryable<TResponse> Apply<TResponse>
     (
         this IQueryable<TResponse> queryable,
-        IEnumerable<OrderEntry> SortProperties
+        IEnumerable<SortByEntry> SortProperties
     )
     {
         var sortedProperties = SortProperties

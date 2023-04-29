@@ -1,9 +1,10 @@
-﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Utilities;
-using Shopway.Persistence.Specifications.Products;
-using Shopway.Domain.Abstractions.Repositories;
+﻿using Shopway.Domain.Common;
 using Shopway.Domain.Abstractions;
 using Shopway.Application.Mappings;
+using Shopway.Application.Utilities;
+using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Persistence.Specifications.Products;
 
 namespace Shopway.Application.CQRS.Products.Queries.QueryProduct;
 

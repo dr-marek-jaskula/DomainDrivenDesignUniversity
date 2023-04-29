@@ -1,11 +1,11 @@
-﻿using Shopway.Domain.Helpers;
+﻿using Shopway.Domain.Common;
 using System.Collections.ObjectModel;
 
 namespace Shopway.Domain.Abstractions;
 
 public interface ISortBy
 {
-    IList<OrderEntry> SortProperties { get; init; }
+    IList<SortByEntry> SortProperties { get; init; }
     ReadOnlyCollection<string> AllowedSortProperties { get; init; }
 }
 
