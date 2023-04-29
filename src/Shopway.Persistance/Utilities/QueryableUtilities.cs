@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Utilities;
+﻿using Shopway.Domain.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.Abstractions;
+using Shopway.Domain.Helpers;
 
 namespace Shopway.Persistence.Utilities;
 
@@ -35,5 +35,34 @@ internal static class QueryableUtilities
             .ToListAsync(cancellationToken);
 
         return (responses, totalCount);
+    }
+
+    internal static IQueryable<TResponse> Apply<TResponse>
+    (
+        this IQueryable<TResponse> queryable,
+        IEnumerable<OrderEntry> SortProperties
+    )
+    {
+        var sortedProperties = SortProperties
+            .Distinct()
+            .OrderBy(x => x.SortPriority);
+
+        var firstElement = sortedProperties.FirstOrDefault();
+
+        if (firstElement is null)
+        {
+            return queryable;
+        }
+
+        queryable = queryable
+            .SortBy(firstElement.SortDirection, firstElement.PropertyName);
+
+        foreach (var item in sortedProperties.Skip(1))
+        {
+            queryable = ((IOrderedQueryable<TResponse>)queryable)
+                .ThenSortBy(item.SortDirection, item.PropertyName);
+        }
+
+        return queryable;
     }
 }

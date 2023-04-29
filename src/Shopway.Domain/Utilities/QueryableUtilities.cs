@@ -99,8 +99,8 @@ public static class QueryableUtilities
     {
         return sortDirection switch
         {
-            SortDirection.Ascending => queryable.OrderBy(propertyName),
-            SortDirection.Descending => queryable.OrderBy($"{propertyName} DESC"),
+            SortDirection.Ascending => queryable.OrderBy($"{propertyName}.Value"),
+            SortDirection.Descending => queryable.OrderBy($"{propertyName}.Value DESC"),
             _ => queryable
         };
     }
@@ -114,8 +114,8 @@ public static class QueryableUtilities
     {
         return sortDirection switch
         {
-            SortDirection.Ascending => queryable.ThenBy(propertyName),
-            SortDirection.Descending => queryable.ThenBy($"{propertyName} DESC"),
+            SortDirection.Ascending => queryable.ThenBy($"{propertyName}.Value"),
+            SortDirection.Descending => queryable.ThenBy($"{propertyName}.Value DESC"),
             _ => queryable
         };
     }
