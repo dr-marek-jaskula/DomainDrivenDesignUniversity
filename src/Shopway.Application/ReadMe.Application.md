@@ -11,21 +11,21 @@ In this layer we define:
 
 ## Validators
 
-1. FleuntValidator
-	Mostly deal with the combinations of the request parameters. 
+1. FleuntValidator. Mostly deal with the combinations of the request parameters. 
 
 Example:
 ```csharp
 RuleFor(m => new {m.CountyId, m.Zip}).Must(x => ValidZipCounty(x.Zip, x.CountyId))
 ```
 
-Or see **ProductPageQueryValidator**
+Or see **ProductPageQueryValidator**.
 
-2. ReferenceValidation
-	MediatR pipeline that checks if the given id truly refers to the entity
+2. ReferenceValidation. MediatR pipeline that checks if the given id truly refers to the entity.
 	Therefore, verifying that the entity is not null in the handler is redundant.
 
-3. The remaining validation is done in the domain or in presentation layer (model validation)
+3. The remaining validation is done in the domain layer.
+
+4. Use of Validator custom tool, defined in .Infrastructure layer. It is very helpful and simple tool, thus I encourage to get familiar with it.
 
 ## Transaction Pipelines
 
@@ -38,56 +38,50 @@ Therefore in some cases, we return a task, which slightly increases the performa
 Manual mapping is way faster than mapping done by external libraries like automapper. Therefore, manual mapping
 is done in "Mapping" folder.
 
-Nevertheless, it is important to examine sql queries that are created for different types of mappings:
+**Moreover, manual mapping plays a significant role in using the repository pattern.**
 
-For instance, when in **ProductPageQueryHandler** we would use 
+Problem statement: 
+1. Persistence layer should not have access to response dtos (like **ProductResponse**)
+2. We do not want to query redundant data.
+3. Therefore, repository method should be aware of the required mapping, but at the same time the data transfer model should be out of Persistence layer scope.
+
+Solution:
+1. Create mapping that returns an expression of func in mapping folder (.Application layer)
+
 ```csharp
-        var pageResponse = await queryable
-            .ToPageResponse(pageQuery.PageSize, pageQuery.PageNumber, product => product.ToResponse(), cancellationToken);
+public static Expression<Func<Product, ProductResponse>> ToResponse()
+{
+    return product => new ProductResponse
+    (
+        product.Id.Value,
+        product.ProductName.Value,
+        product.Revision.Value,
+        product.Price.Value,
+        product.UomCode.Value,
+        product.Reviews
+            .Select(review => new ReviewResponse
+            (
+                review.Id.Value,
+                review.Username.Value,
+                review.Stars.Value,
+                review.Title.Value,
+                review.Description.Value
+            ))
+            .ToList()
+            .AsReadOnly()
+    );
+}
 ```
 
-We would get
+2. Pass the expression as a parameter of the repository method
 
-```sql
-DECLARE @__ProductName_0 nvarchar(50) = N'Bike';
-DECLARE @__p_1 int = 0;
-DECLARE @__p_2 int = 15;
-
-SELECT [t].[Id], [t].[CreatedBy], [t].[CreatedOn], [t].[UpdatedBy], [t].[UpdatedOn], [t].[Price], [t].[ProductName], [t].[Revision], [t].[UomCode], [r].[Id], [r].[CreatedBy], [r].[CreatedOn], [r].[ProductId], [r].[UpdatedBy], [r].[UpdatedOn], [r].[Description], [r].[Stars], [r].[Title], [r].[Username]
-FROM (
-    SELECT [p].[Id], [p].[CreatedBy], [p].[CreatedOn], [p].[UpdatedBy], [p].[UpdatedOn], [p].[Price], [p].[ProductName], [p].[Revision], [p].[UomCode]
-    FROM [Shopway].[Product] AS [p]
-    WHERE (@__ProductName_0 LIKE N'') OR CHARINDEX(@__ProductName_0, [p].[ProductName]) > 0
-    ORDER BY [p].[ProductName], [p].[Price] DESC
-    OFFSET @__p_1 ROWS FETCH NEXT @__p_2 ROWS ONLY
-) AS [t]
-LEFT JOIN [Shopway].[Review] AS [r] ON [t].[Id] = [r].[ProductId]
-ORDER BY [t].[ProductName], [t].[Price] DESC, [t].[Id]
-```
-
-So we would query redundant data. This is caused by using the extension method ToResponse() that entity framework is not able to translate, so it queries all data.
-
-However, if we use 
 ```csharp
-        var pageResponse = await queryable
-            .ToPageResponse(pageQuery.PageSize, pageQuery.PageNumber, ProductMapping.ToResponse(), cancellationToken);
+var page = await _productRepository
+    .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.ToResponse(), cancellationToken);
 ```
 
-We would get
+3. Use the expression as a parameter of the **Select** method. 
 
-```sql
-SELECT [t].[Id], [t].[ProductName], [t].[Revision], [t].[Price], [t].[UomCode], [r].[Id], [r].[Username], [r].[Stars], [r].[Title], [r].[Description]
-FROM (
-    SELECT [p].[Id], [p].[ProductName], [p].[Revision], [p].[Price], [p].[UomCode]
-    FROM [Shopway].[Product] AS [p]
-    WHERE (@__ProductName_0 LIKE N'') OR CHARINDEX(@__ProductName_0, [p].[ProductName]) > 0
-    ORDER BY [p].[ProductName], [p].[Price] DESC
-    OFFSET @__p_1 ROWS FETCH NEXT @__p_2 ROWS ONLY
-) AS [t]
-LEFT JOIN [Shopway].[Review] AS [r] ON [t].[Id] = [r].[ProductId]
-ORDER BY [t].[ProductName], [t].[Price] DESC, [t].[Id]
-```
+Note: in this solution we use the **SpecificationPattern**. Therefore, the expression is applied using the concrete specification.
 
-which is a way better. Here we pass the expression that does not use any method that entity framework cannot translate.
-
-Same goes for **ProductDictionaryPageQueryHandler**.
+**In the end the queryable will contain the mapping, so no redundant data will be queried, and the .Persistance layer will remain separated from .Application layer.**
