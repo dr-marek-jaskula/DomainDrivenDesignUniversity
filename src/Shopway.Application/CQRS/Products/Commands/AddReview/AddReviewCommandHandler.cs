@@ -9,8 +9,8 @@ using Shopway.Application.Utilities;
 using Shopway.Persistence.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
-using static Shopway.Domain.Errors.HttpErrors;
 using Shopway.Domain.EntityBusinessKeys;
+using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Commands.AddReview;
 
@@ -48,7 +48,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
         }
 
         _validator
-            .If(ReviewAlreadyExists(product, titleResult.Value), AlreadyExists(ReviewKey.Create(product.ToProductKey(), titleResult.Value.Value)));
+            .If(product.AnyReview(titleResult.Value), thenError: AlreadyExists(ReviewKey.Create(product.ToProductKey(), titleResult.Value.Value)));
 
         if (_validator.IsInvalid)
         {
@@ -62,13 +62,6 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
         return reviewToAdd
             .ToAddResponse()
             .ToResult();
-    }
-
-    private bool ReviewAlreadyExists(Product product, Title title)
-    {
-        return product
-            .Reviews
-            .Any(x => x.Title == title);
     }
 
     private static Review CreateReview(Title title, Description description, Username username, Stars stars)

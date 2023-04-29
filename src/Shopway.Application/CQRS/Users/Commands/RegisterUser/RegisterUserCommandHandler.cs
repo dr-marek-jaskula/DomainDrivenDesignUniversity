@@ -32,26 +32,26 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
         ValidationResult<Username> usernameResult = Username.Create(request.Username);
         ValidationResult<Password> passwordResult = Password.Create(request.Password);
 
-        bool emailIsUnique = await _userRepository
-            .IsEmailUniqueAsync(emailResult.Value, cancellationToken);
+        bool emailIsTaken = await _userRepository
+            .IsEmailTakenAsync(emailResult.Value, cancellationToken);
 
         _validator
             .Validate(emailResult)
             .Validate(usernameResult)
             .Validate(passwordResult)
-            .If(emailIsUnique is false, thenError: EmailError.EmailAlreadyTaken);
+            .If(emailIsTaken, thenError: EmailError.EmailAlreadyTaken);
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<RegisterUserResponse>();
         }
 
-        var result = AddUser(emailResult.Value, usernameResult.Value, passwordResult.Value);
+        var result = RegisterUser(emailResult.Value, usernameResult.Value, passwordResult.Value);
 
         return result;
     }
 
-    private IResult<RegisterUserResponse> AddUser(Email email, Username username, Password password)
+    private IResult<RegisterUserResponse> RegisterUser(Email email, Username username, Password password)
     {
         var user = User.Create(UserId.New(), username, email);
 

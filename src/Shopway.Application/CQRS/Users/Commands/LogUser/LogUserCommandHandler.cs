@@ -68,14 +68,7 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
         //Credentials are correct
         string token = _jwtProvider.GenerateJwt(user!);
 
-        return ToLogUserResponse(token);
-    }
-
-    private static IResult<LogUserResponse> ToLogUserResponse(string token)
-    {
-        var logUserResponse = new LogUserResponse(token);
-
-        return logUserResponse
+        return new LogUserResponse(token)
             .ToResult();
     }
 }

@@ -37,7 +37,7 @@ internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProduc
             revision: _validRevisionDummyResult.Value
         );
 
-        //Attach the product to the ChangeTracker and set it its status to Deleted
+        //Attach the product to the ChangeTracker and set its status to Deleted
         _productRepository.Remove(productToRemove);
 
         return productToRemove

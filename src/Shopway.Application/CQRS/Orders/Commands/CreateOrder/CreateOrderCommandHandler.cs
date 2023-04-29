@@ -34,9 +34,9 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
 
         if (_validator.IsInvalid)
         {
-            var failure = (IResult<CreateOrderResponse>)_validator.Failure<CreateOrderResponse>();
-            
-            return failure
+            return _validator
+                .Failure<CreateOrderResponse>()
+                .ToResult()
                 .ToTask();
         }
 
@@ -50,12 +50,14 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
 
     private Order CreateOrder(CreateOrderCommand command, Result<Amount> amountResult, Result<Discount> discountResult)
     {
-        var orderToCreate = Order.Create(
+        var orderToCreate = Order.Create
+        (
             id: OrderId.New(),
             productId: ProductId.Create(command.ProductId),
             amount: amountResult.Value,
             customerId: PersonId.Create(command.CustomerId),
-            discount: discountResult.Value);
+            discount: discountResult.Value
+        );
 
         _orderRepository.Create(orderToCreate);
 

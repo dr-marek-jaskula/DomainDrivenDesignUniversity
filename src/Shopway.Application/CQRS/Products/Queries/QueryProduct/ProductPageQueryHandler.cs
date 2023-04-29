@@ -19,7 +19,7 @@ internal sealed class ProductPageQueryHandler : IPageQueryHandler<ProductPageQue
     public async Task<IResult<PageResponse<ProductResponse>>> Handle(ProductPageQuery pageQuery, CancellationToken cancellationToken)
     {
         var page = await _productRepository
-            .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.ToResponse(), cancellationToken, product => product.Reviews);
+            .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.ToResponse(), cancellationToken);
 
         return page
             .ToPageResponse(pageQuery.Page)

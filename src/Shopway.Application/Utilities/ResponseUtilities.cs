@@ -11,4 +11,10 @@ public static class ResponseUtilities
     {
         return Result.Create(response);
     }
+
+    public static IResult<TResponse> ToResult<TResponse>(this ValidationResult<TResponse> response)
+        where TResponse : class, IResponse
+    {
+        return response;
+    }
 }

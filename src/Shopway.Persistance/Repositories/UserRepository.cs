@@ -34,12 +34,15 @@ public sealed class UserRepository : IUserRepository
 
     public async Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken)
     {
-        var isEmailTaken = await _dbContext
+        return await IsEmailTakenAsync(email, cancellationToken) is false;
+    }
+
+    public async Task<bool> IsEmailTakenAsync(Email email, CancellationToken cancellationToken)
+    {
+        return await _dbContext
             .Set<User>()
             .Where(user => user.Email.Value == email.Value)
             .AnyAsync(cancellationToken);
-
-        return isEmailTaken is false;
     }
 
     public void Add(User user)
