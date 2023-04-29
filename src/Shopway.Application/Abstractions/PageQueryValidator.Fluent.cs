@@ -40,27 +40,27 @@ internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSort
             return true;
         }
 
-        var sortBy_NotNullCount = pageOrder
-            .GetType()
-            .GetProperties()
-            .Where(p => p.Name.StartsWith(Then) is false)
-            .Count(p => p.GetValue(pageOrder) is not null);
+        //var sortBy_NotNullCount = pageOrder
+        //    .GetType()
+        //    .GetProperties()
+        //    .Where(p => p.Name.StartsWith(Then) is false)
+        //    .Count(p => p.GetValue(pageOrder) is not null);
 
-        var thenBy_NotNullCount = pageOrder
-            .GetType()
-            .GetProperties()
-            .Where(p => p.Name.StartsWith(Then) is true)
-            .Count(p => p.GetValue(pageOrder) is not null);
+        //var thenBy_NotNullCount = pageOrder
+        //    .GetType()
+        //    .GetProperties()
+        //    .Where(p => p.Name.StartsWith(Then) is true)
+        //    .Count(p => p.GetValue(pageOrder) is not null);
 
-        if (sortBy_NotNullCount > 1 || thenBy_NotNullCount > 1)
-        {
-            return false;
-        }
+        //if (sortBy_NotNullCount > 1 || thenBy_NotNullCount > 1)
+        //{
+        //    return false;
+        //}
 
-        if (sortBy_NotNullCount is 0 && thenBy_NotNullCount is 1)
-        {
-            return false;
-        }
+        //if (sortBy_NotNullCount is 0 && thenBy_NotNullCount is 1)
+        //{
+        //    return false;
+        //}
 
         return true;
     }

@@ -2,33 +2,58 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Domain.Utilities;
+using System.Collections.ObjectModel;
+using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Persistence.Specifications.Products;
 
+public record OrderData(string PropertyName, SortDirection SortDirection, int Priority);
+
 public sealed record ProductOrder : ISortBy<Product>
 {
-    public SortDirection? ProductName { get; init; }
-    public SortDirection? Revision { get; init; }
-    public SortDirection? Price { get; init; }
-    public SortDirection? UomCode { get; init; }
+    private static readonly ReadOnlyCollection<string> _allowedSortProperties = AsList
+    (
+         nameof(Product.ProductName),
+         nameof(Product.Revision),
+         nameof(Product.Price),
+         nameof(Product.UomCode)
+    )
+    .AsReadOnly();
 
-    public SortDirection? ThenProductName { get; init; }
-    public SortDirection? ThenRevision { get; init; }
-    public SortDirection? ThenPrice { get; init; }
-    public SortDirection? ThenUomCode { get; init; }
+    public IList<OrderData> SortOrder { get; init; } = new List<OrderData>();
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
-        queryable = queryable
-            .SortBy(ProductName, product => product.ProductName.Value)
-            .SortBy(Revision, product => product.Revision.Value)
-            .SortBy(Price, product => product.Price.Value)
-            .SortBy(UomCode, product => product.UomCode.Value);
+        bool sortOrderContainsInvalidPropertyName = SortOrder
+            .Select(x => x.PropertyName)
+            .Except(_allowedSortProperties)
+            .Any();
 
-        return ((IOrderedQueryable<Product>)queryable)
-            .ThenSortBy(ThenProductName, product => product.ProductName.Value)
-            .ThenSortBy(ThenRevision, product => product.Revision.Value)
-            .ThenSortBy(ThenPrice, product => product.Price.Value)
-            .ThenSortBy(ThenUomCode, product => product.UomCode.Value);
+        if (sortOrderContainsInvalidPropertyName)
+        {
+            throw new InvalidOperationException($"{nameof(SortOrder)} contains invalid property name.");
+        }
+
+        var somelist = SortOrder
+            .Distinct()
+            .OrderBy(x => x.Priority);
+
+        var firstElement = somelist.FirstOrDefault();
+
+        if (firstElement is null)
+        {
+            return queryable;
+        }
+
+        queryable = queryable
+            .SortBy(firstElement.SortDirection, product => firstElement.PropertyName);
+
+        foreach (var item in somelist.Skip(1))
+        {
+            queryable = ((IOrderedQueryable<Product>)queryable)
+                .ThenSortBy(item.SortDirection, product => item.PropertyName);
+        }
+
+        return queryable;
     }
 }

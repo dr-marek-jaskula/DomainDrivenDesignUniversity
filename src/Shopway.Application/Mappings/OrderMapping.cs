@@ -1,5 +1,4 @@
 ﻿using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
-using Shopway.Application.CQRS.Orders.Commands.UpdateOrder;
 using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Domain.Entities;
 
@@ -18,11 +17,6 @@ public static class OrderMapping
             Payment: order.Payment,
             Customer: order.Customer
         );
-    }
-
-    public static UpdateOrderResponse ToUpdateResponse(this Order orderToUpdate)
-    {
-        return new UpdateOrderResponse(orderToUpdate.Id.Value);
     }
 
     public static CreateOrderResponse ToCreateResponse(this Order orderToCreate)
