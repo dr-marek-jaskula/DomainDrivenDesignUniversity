@@ -1,22 +1,20 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Common;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Common;
+using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Utilities;
-using System.Collections.ObjectModel;
-using static Shopway.Domain.Utilities.ListUtilities;
+using static Shopway.Domain.Utilities.CollectionUtilities;
 
 namespace Shopway.Persistence.Specifications.Products;
 
 public sealed record ProductOrder : ISortBy<Product>
 {
-    public ReadOnlyCollection<string> AllowedSortProperties { get; init; } = AsList
+    public IReadOnlyCollection<string> AllowedSortProperties { get; init; } = AsReadOnlyCollection
     (
          nameof(Product.ProductName),
          nameof(Product.Revision),
          nameof(Product.Price),
          nameof(Product.UomCode)
-    )
-    .AsReadOnly();
+    );
 
     public IList<SortByEntry> SortProperties { get; init; } = new List<SortByEntry>();
 

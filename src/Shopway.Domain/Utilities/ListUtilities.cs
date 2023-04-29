@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace Shopway.Domain.Utilities;
+﻿namespace Shopway.Domain.Utilities;
 
 public static class ListUtilities
 {
@@ -12,11 +10,6 @@ public static class ListUtilities
     public static List<TValue> Empty<TValue>()
     {
         return new List<TValue>();
-    }
-
-    public static IList<TValue> AsReadOnlyList<TValue>(params TValue[] items)
-    {
-        return new ReadOnlyCollection<TValue>(items);
     }
 
     public static bool NotNullOrEmpty<TValue>(this IList<TValue> list)
@@ -32,5 +25,12 @@ public static class ListUtilities
     public static bool NotContains<TValue>(this IList<TValue> list, TValue value)
     {
         return list.Contains(value) is false;
+    }
+
+    public static bool ContainsDuplicates<TValue, TType>(this IList<TValue> list, Func<TValue, TType> expression)
+    {
+        return list
+            .GroupBy(expression)
+            .Any(g => g.Count() > 1);
     }
 }

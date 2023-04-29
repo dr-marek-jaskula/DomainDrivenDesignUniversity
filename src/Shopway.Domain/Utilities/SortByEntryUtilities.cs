@@ -1,11 +1,11 @@
 ﻿using Shopway.Domain.Common;
-using System.Collections.ObjectModel;
+using Shopway.Domain.Utilities;
 
 namespace Shopway.Persistence.Utilities;
 
 public static class SortByEntryUtilities
 {
-    public static bool AnyInvalidSortPropertyName(this IList<SortByEntry> sortProperties, ReadOnlyCollection<string> allowedSortProperties)
+    public static bool AnyInvalidSortPropertyName(this IList<SortByEntry> sortProperties, IReadOnlyCollection<string> allowedSortProperties)
     {
         return sortProperties
             .Select(x => x.PropertyName)
@@ -16,7 +16,6 @@ public static class SortByEntryUtilities
     public static bool DuplicatedSortPriority(this IList<SortByEntry> sortProperties)
     {
         return sortProperties
-            .GroupBy(x => x.SortPriority)
-            .Any(g => g.Count() > 1);
+            .ContainsDuplicates(x => x.SortPriority);
     }
 }
