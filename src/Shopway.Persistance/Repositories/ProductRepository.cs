@@ -6,6 +6,7 @@ using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
+using Shopway.Persistence.Specifications;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
@@ -60,7 +61,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
         params Expression<Func<Product, object>>[] includes
     )
     {
-        var specification = ProductQuerySpecification<TResponse>.Create(filter, sort, select, includes);
+        var specification = PageQuerySpecification<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
         
         return await UseSpecificationWithMapping(specification)
             .PageAsync(page, cancellationToken);
