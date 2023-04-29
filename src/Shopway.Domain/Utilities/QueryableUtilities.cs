@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.Enums;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
 
 namespace Shopway.Domain.Utilities;
 
@@ -85,6 +86,36 @@ public static class QueryableUtilities
         {
             SortDirection.Ascending => queryable.ThenBy(expression),
             SortDirection.Descending => queryable.ThenByDescending(expression),
+            _ => queryable
+        };
+    }
+
+    public static IQueryable<TEntity> SortBy<TEntity>
+    (
+        this IQueryable<TEntity> queryable,
+        SortDirection? sortDirection,
+        string propertyName
+    )
+    {
+        return sortDirection switch
+        {
+            SortDirection.Ascending => queryable.OrderBy(propertyName),
+            SortDirection.Descending => queryable.OrderBy($"{propertyName} DESC"),
+            _ => queryable
+        };
+    }
+
+    public static IOrderedQueryable<TEntity> ThenSortBy<TEntity>
+    (
+        this IOrderedQueryable<TEntity> queryable,
+        SortDirection? sortDirection,
+        string propertyName
+    )
+    {
+        return sortDirection switch
+        {
+            SortDirection.Ascending => queryable.ThenBy(propertyName),
+            SortDirection.Descending => queryable.ThenBy($"{propertyName} DESC"),
             _ => queryable
         };
     }

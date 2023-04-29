@@ -31,7 +31,7 @@ public sealed record ProductOrder : ISortBy<Product>
 
         if (sortOrderContainsInvalidPropertyName)
         {
-            throw new InvalidOperationException($"{nameof(SortOrder)} contains invalid property name.");
+            throw new InvalidOperationException($"{GetType().Name}.{nameof(SortOrder)} contains invalid property name.");
         }
 
         var somelist = SortOrder
@@ -46,12 +46,12 @@ public sealed record ProductOrder : ISortBy<Product>
         }
 
         queryable = queryable
-            .SortBy(firstElement.SortDirection, product => firstElement.PropertyName);
+            .SortBy(firstElement.SortDirection, firstElement.PropertyName + ".Value");
 
         foreach (var item in somelist.Skip(1))
         {
             queryable = ((IOrderedQueryable<Product>)queryable)
-                .ThenSortBy(item.SortDirection, product => item.PropertyName);
+                .ThenSortBy(item.SortDirection, item.PropertyName + ".Value");
         }
 
         return queryable;
