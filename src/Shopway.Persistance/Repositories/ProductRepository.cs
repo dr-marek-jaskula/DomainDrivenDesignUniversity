@@ -61,7 +61,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
         params Expression<Func<Product, object>>[] includes
     )
     {
-        var specification = PageQuerySpecification<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
+        var specification = CommonQuerySpecificationWithMapping<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
         
         return await UseSpecificationWithMapping(specification)
             .PageAsync(page, cancellationToken);

@@ -6,11 +6,11 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications;
 
-internal sealed class PageQuerySpecification<TEntity, TEntityId, TResponse> : SpecificationWithMappingBase<TEntity, TEntityId, TResponse>
+internal sealed class CommonQuerySpecificationWithMapping<TEntity, TEntityId, TResponse> : SpecificationWithMappingBase<TEntity, TEntityId, TResponse>
     where TEntityId : IEntityId
     where TEntity : Entity<TEntityId>
 {
-    private PageQuerySpecification() : base()
+    private CommonQuerySpecificationWithMapping() : base()
     {
     }
 
@@ -22,7 +22,7 @@ internal sealed class PageQuerySpecification<TEntity, TEntityId, TResponse> : Sp
         params Expression<Func<TEntity, object>>[] includes
     )
     {
-        return new PageQuerySpecification<TEntity, TEntityId, TResponse>()
+        return new CommonQuerySpecificationWithMapping<TEntity, TEntityId, TResponse>()
             .AddSelect(select)
             .AddIncludes(includes)
             .AddFilter(filter)

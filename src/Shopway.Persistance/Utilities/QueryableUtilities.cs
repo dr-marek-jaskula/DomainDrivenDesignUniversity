@@ -55,12 +55,12 @@ internal static class QueryableUtilities
         }
 
         queryable = queryable
-            .SortBy(firstElement.SortDirection, firstElement.PropertyName);
+            .SortByValueObjectName(firstElement.SortDirection, firstElement.PropertyName);
 
         foreach (var item in sortedProperties.Skip(1))
         {
             queryable = ((IOrderedQueryable<TResponse>)queryable)
-                .ThenSortBy(item.SortDirection, item.PropertyName);
+                .ThenSortByValueObjectName(item.SortDirection, item.PropertyName);
         }
 
         return queryable;

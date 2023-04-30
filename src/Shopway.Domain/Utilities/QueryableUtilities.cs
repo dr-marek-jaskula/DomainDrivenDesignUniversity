@@ -90,7 +90,7 @@ public static class QueryableUtilities
         };
     }
 
-    public static IQueryable<TEntity> SortBy<TEntity>
+    public static IQueryable<TEntity> SortByValueObjectName<TEntity>
     (
         this IQueryable<TEntity> queryable,
         SortDirection? sortDirection,
@@ -105,7 +105,7 @@ public static class QueryableUtilities
         };
     }
 
-    public static IOrderedQueryable<TEntity> ThenSortBy<TEntity>
+    public static IOrderedQueryable<TEntity> ThenSortByValueObjectName<TEntity>
     (
         this IOrderedQueryable<TEntity> queryable,
         SortDirection? sortDirection,
