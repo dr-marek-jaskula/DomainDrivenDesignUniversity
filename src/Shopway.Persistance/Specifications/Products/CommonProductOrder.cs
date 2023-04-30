@@ -14,6 +14,6 @@ public sealed record CommonProductOrder : ISortBy<Product>
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
-        return queryable.Apply(SortProperties);
+        return queryable.Sort(SortProperties);
     }
 }

@@ -37,7 +37,7 @@ internal static class QueryableUtilities
         return (responses, totalCount);
     }
 
-    internal static IQueryable<TResponse> Apply<TResponse>
+    internal static IQueryable<TResponse> Sort<TResponse>
     (
         this IQueryable<TResponse> queryable,
         IEnumerable<SortByEntry> sortProperties
