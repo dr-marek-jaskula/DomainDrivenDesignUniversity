@@ -26,4 +26,16 @@ public static class ConfigureUtilities
 
         return builder;
     }
+
+    public static EntityTypeBuilder<TEntity> ConfigureDiscriminator<TEntity>(this EntityTypeBuilder<TEntity> builder, string discriminatorName = "Discriminator")
+        where TEntity : class, IEntity
+    {
+        builder.HasDiscriminator<string>(discriminatorName);
+
+        builder.Property(discriminatorName)
+            .HasMaxLength(100)
+            .HasColumnName(discriminatorName);
+
+        return builder;
+    }
 }

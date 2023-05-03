@@ -20,6 +20,6 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
             .HasColumnType(ColumnTypes.VarChar(5000));
 
         builder.Property(x => x.Error)
-            .HasColumnType(ColumnTypes.VarChar(5000));
+            .HasColumnType(ColumnTypes.VarChar(8000));
     }
 }

@@ -26,6 +26,8 @@ internal class WorkItemEntityTypeConfiguration : IEntityTypeConfiguration<WorkIt
             .HasColumnType(ColumnTypes.VarChar(10))
             .HasConversion(status => status.ToString(), s => (Status)Enum.Parse(typeof(Status), s));
 
+        builder.ConfigureDiscriminator();
+
         builder.ConfigureAuditableEntity();
 
         builder
