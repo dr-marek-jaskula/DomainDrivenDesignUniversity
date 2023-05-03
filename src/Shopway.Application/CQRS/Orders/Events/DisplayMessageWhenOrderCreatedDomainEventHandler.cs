@@ -13,9 +13,10 @@ internal sealed class DisplayMessageWhenOrderCreatedDomainEventHandler : IDomain
         _orderRepository = orderRepository;
     }
 
-    public async Task Handle(OrderCreatedDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(OrderCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(notification.OrderId, cancellationToken);
+        var order = await _orderRepository
+            .GetByIdAsync(domainEvent.OrderId, cancellationToken);
 
         if (order is null)
         {

@@ -13,21 +13,21 @@ internal sealed class DisplayMessageWhenReviewAddedDomainEventHandler : IDomainE
         _productRepository = productRepository;
     }
 
-    public async Task Handle(ReviewAddedDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(ReviewAddedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
         var product = await _productRepository
-            .GetByIdAsync(notification.ProductId, cancellationToken);
+            .GetByIdAsync(domainEvent.ProductId, cancellationToken);
 
         if (product is null)
         {
             return;
         }
 
-        if (notification.ReviewId.Value == Guid.Empty)
+        if (domainEvent.ReviewId.Value == Guid.Empty)
         {
             return;
         }
 
-        Console.WriteLine($"Review with id: {notification.Id} was added!");
+        Console.WriteLine($"Review with id: {domainEvent.Id} was added!");
     }
 }

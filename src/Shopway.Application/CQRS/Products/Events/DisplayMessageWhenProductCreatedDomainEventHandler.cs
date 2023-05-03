@@ -13,10 +13,10 @@ internal sealed class DisplayMessageWhenProductCreatedDomainEventHandler : IDoma
         _productRepository = productRepository;
     }
 
-    public async Task Handle(ProductCreatedDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(ProductCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
         var product = await _productRepository
-            .GetByIdAsync(notification.ProductId, cancellationToken);
+            .GetByIdAsync(domainEvent.ProductId, cancellationToken);
 
         if (product is null)
         {
