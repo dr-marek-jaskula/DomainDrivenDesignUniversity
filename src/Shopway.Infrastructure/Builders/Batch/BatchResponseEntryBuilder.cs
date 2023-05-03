@@ -71,7 +71,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         }
 
         /// <summary>
-        /// In order to place validation in parts (in separate methods) use ValidateUsing and pass the respective validation part as a input delegate
+        /// In order to place validation in parts (in separate methods) use ValidateUsing and pass the respective validation part as an input delegate
         /// </summary>
         /// <param name="requestValidationMethod">Validation action that represent the validation that needs to be performed</param>
         /// <returns>Same instance to be able to chain validation methods</returns>

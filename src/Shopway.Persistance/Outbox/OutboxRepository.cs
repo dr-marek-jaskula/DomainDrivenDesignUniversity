@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Shopway.Domain.Abstractions;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
+using Shopway.Persistence.Utilities;
+using Microsoft.EntityFrameworkCore;
+using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Persistence.Outbox;
 
@@ -71,16 +72,9 @@ public sealed class OutboxRepository : RepositoryBase, IOutboxRepository
         return new OutboxMessage
         {
             Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
             Type = domainEvent.GetType().Name,
-            Content = JsonConvert.SerializeObject
-            (
-                domainEvent,
-                new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.All
-                }
-            )
+            Content = domainEvent.Serialize(TypeNameHandling.All),
+            OccurredOn = DateTimeOffset.UtcNow
         };
     }
 }

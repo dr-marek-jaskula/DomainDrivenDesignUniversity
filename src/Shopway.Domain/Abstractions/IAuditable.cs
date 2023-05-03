@@ -1,8 +1,8 @@
 ﻿namespace Shopway.Domain.Abstractions;
 
-//We use the Auditable pattern to set the "CreatedOn" and "UpdatedOn" properties when saving changes.
-//For this to happen we can use Interceptor pattern or override the SaveChanges (and SaveChangesAsync) methods
-//The preferred way: override SaveChanges
+/// <summary>
+/// We use the Auditable pattern to set the "CreatedOn", "CreatedBy" and "UpdatedOn", "UpdatedBy" properties when saving changes by UnitOfWork.
+/// </summary>
 public interface IAuditable
 {
     DateTimeOffset CreatedOn { get; set; }

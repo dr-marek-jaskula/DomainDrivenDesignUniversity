@@ -2,15 +2,21 @@
 
 public sealed class OutboxMessage
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 
-    public string Type { get; set; } = string.Empty;
+    public required string Type { get; set; }
 
-    public string Content { get; set; } = string.Empty;
+    public required string Content { get; set; }
 
-    public DateTimeOffset OccurredOn { get; set; }
+    public required DateTimeOffset OccurredOn { get; set; }
 
     public DateTimeOffset? ProcessedOn { get; set; }
 
     public string? Error { get; set; }
+
+    public void UpdatePostProcessProperties(DateTimeOffset? processedOn, string? error)
+    {
+        ProcessedOn = processedOn;
+        Error = error;
+    }
 }

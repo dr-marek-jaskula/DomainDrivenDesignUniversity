@@ -1,13 +1,12 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Polly;
+﻿using Polly;
 using Quartz;
-using Shopway.Application.Abstractions;
-using Shopway.Domain.Abstractions;
-using Shopway.Infrastructure.Policies;
-using Shopway.Persistence.Framework;
+using MediatR;
+using Newtonsoft.Json;
 using Shopway.Persistence.Outbox;
+using Shopway.Persistence.Framework;
+using Shopway.Persistence.Utilities;
+using Shopway.Infrastructure.Policies;
+using Shopway.Application.Abstractions;
 
 namespace Shopway.Infrastructure.BackgroundJobs;
 
@@ -49,36 +48,20 @@ public sealed class ProcessOutboxMessagesJob : IJob
 
         foreach (var message in messages)
         {
-            var domainEvent = JsonConvert
-                .DeserializeObject<IDomainEvent>
-                (
-                    message.Content,
-                    new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All
-                    }
-                );
+            var domainEvent = message.Deserialize(TypeNameHandling.All);
 
             if (domainEvent is null)
             {
-                _logger.Log
-                (
-                    LogLevel.Warning, 
-                    "Following DomainEvent was not deserialized properly: {message.Content}", 
-                    message.Content
-                );
-
+                _logger.LogWarning("DomainEvent was not deserialized properly: {message.Content}", message.Content);
                 continue;
             }
 
             PolicyResult result = await PollyPolicies.AsyncRetryPolicy.ExecuteAndCaptureAsync(() =>
                 _publisher.Publish(domainEvent, context.CancellationToken));
 
-            message.Error = result.FinalException?.ToString();
-            message.ProcessedOn = _dateTimeProvider.UtcNow;
+            message.UpdatePostProcessProperties(_dateTimeProvider.UtcNow, result.FinalException?.ToString());
         }
 
         await _dbContext.SaveChangesAsync();
     }
 }
-

@@ -21,4 +21,9 @@ public sealed class LoggerAdapter<TType> : ILoggerAdapter<TType>
     {
         Log(LogLevel.Information, message, args);
     }
+
+    public void LogWarning(string message, params object[] args)
+    {
+        Log(LogLevel.Warning, message, args);
+    }
 }

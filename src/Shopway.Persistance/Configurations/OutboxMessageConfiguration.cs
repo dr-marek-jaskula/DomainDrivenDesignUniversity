@@ -12,5 +12,14 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
         builder.ToTable(TableNames.OutboxMessage, SchemaNames.Outbox);
 
         builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Type)
+            .HasColumnType(ColumnTypes.VarChar(100));
+
+        builder.Property(x => x.Content)
+            .HasColumnType(ColumnTypes.VarChar(5000));
+
+        builder.Property(x => x.Error)
+            .HasColumnType(ColumnTypes.VarChar(5000));
     }
 }
