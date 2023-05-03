@@ -10,9 +10,9 @@ public sealed class OutboxMessage
 
     public required DateTimeOffset OccurredOn { get; set; }
 
-    public DateTimeOffset? ProcessedOn { get; set; }
+    public DateTimeOffset? ProcessedOn { get; private set; }
 
-    public string? Error { get; set; }
+    public string? Error { get; private set; }
 
     public void UpdatePostProcessProperties(DateTimeOffset? processedOn, string? error)
     {
