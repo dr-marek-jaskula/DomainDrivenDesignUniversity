@@ -16,7 +16,6 @@ using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.Mappings.ProductMapping;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
-using System.Collections.Immutable;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
