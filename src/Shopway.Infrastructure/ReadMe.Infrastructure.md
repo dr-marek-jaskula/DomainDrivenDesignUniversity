@@ -57,7 +57,7 @@ builder.HasKey(outboxMessageConsumer => new
 Every time we publish the domain event, before handling the actual event, we check in OutboxMessageConsumer if we already processed this message for this event handler.
 If so we want to skip it, otherwise we execute the event handler, and we add a new record to the OutboxMessageConsumer table.
 
-In fact, this will be obtain by the use of the Decorator Pattern. We create **IdempotentDomainEventHandlerDecorator** that decorates INotificationHandler<IDomainEvent>.
+In fact, this will be obtain by the use of the Decorator Pattern. We create **IdempotentDomainEventHandlerDecorator** that decorates IDomainEventHandler\<TDomainEvent\> (INotificationHandler\<IDomainEvent\>).
 
 - At first we get the name of the type of the decorated handler (this will be OutboxMessageConsumer.Name)
 - Examine if the decorated handler was already processed

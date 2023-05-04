@@ -34,12 +34,10 @@ The OutboxMessageConsumer is explained in ReadMe.Infrastructur.md chapter **Idem
 We should store the type of the serialized entity. This can be done by JsonSerializerSettings.TypeNameHandling set to All:
 
 ```csharp
-Content = JsonConvert.SerializeObject(
-    domainEvent,
-    new JsonSerializerSettings
-    {
-        TypeNameHandling = TypeNameHandling.All
-    })
+JsonConvert.SerializeObject(domainEvent, new JsonSerializerSettings
+{
+    TypeNameHandling = typeNameHandling
+});
 ```
 
 This will help to deserialize object (when we are consuming the OutboxMessages) to IDomainEvent object that we can publish using mediator.

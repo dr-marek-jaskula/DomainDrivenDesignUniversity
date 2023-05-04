@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Shopway.Persistence.Outbox;
+﻿using Shopway.Persistence.Outbox;
 using Shopway.Domain.Abstractions;
 using Shopway.Application.Abstractions;
 
@@ -8,10 +7,10 @@ namespace Shopway.Infrastructure.Decoratos;
 public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent> : IDomainEventHandler<TDomainEvent>
     where TDomainEvent : IDomainEvent
 {
-    private readonly INotificationHandler<TDomainEvent> _decorated;
+    private readonly IDomainEventHandler<TDomainEvent> _decorated;
     private readonly IOutboxRepository _outboxRepository;
 
-    public IdempotentDomainEventHandlerDecorator(INotificationHandler<TDomainEvent> decorated, IOutboxRepository outboxRepository)
+    public IdempotentDomainEventHandlerDecorator(IDomainEventHandler<TDomainEvent> decorated, IOutboxRepository outboxRepository)
     {
         _decorated = decorated;
         _outboxRepository = outboxRepository;

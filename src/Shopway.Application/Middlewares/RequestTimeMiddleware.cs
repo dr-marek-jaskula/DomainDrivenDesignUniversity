@@ -25,8 +25,7 @@ public sealed class RequestTimeMiddleware : IMiddleware
 
         if (requestDuration.Seconds >= RequestDurationLogLevel)
         {
-            var message = $"Request [{context.Request.Method}] at {context.Request.Path} took {requestDuration.Milliseconds} ms";
-            _logger.LogWarning(message);
+            _logger.LogWarning($"Request [{context.Request.Method}] at {context.Request.Path} took {requestDuration.Milliseconds} ms");
         }
     }
 }
