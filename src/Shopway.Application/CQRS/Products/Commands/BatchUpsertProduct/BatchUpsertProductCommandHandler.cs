@@ -16,6 +16,7 @@ using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.Mappings.ProductMapping;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
+using System.Collections.Immutable;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
@@ -70,71 +71,18 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
         var productNames = command.ProductNames();
         var productRevisions = command.ProductRevisions();
 
-        //We query too many products, because we query all combinations of ProductName and Revision
-        //Therefore, we will need to filter them
+        //We query too many products, because we query all combinations of ProductName and Revision. Therefore, we will need to filter them
         var productsToBeFiltered = await _unitOfWork
             .Context
             .Set<Product>()
             .Where(product => productNames.Contains(product.ProductName.Value))
             .Where(product => productRevisions.Contains(product.Revision.Value))
-            .OrderBy(product => product.ProductName.Value)
-                .ThenBy(product => product.Revision.Value)
             .ToListAsync(cancellationToken);
 
-        var requestsSortedInTheSameMannerAsQueriedProducts = command
-            .Requests
-            .OrderBy(request => request.ProductKey.ProductName)
-                .ThenBy(request => request.ProductKey.Revision)
-            .ToList();
-
-        return FilterProductsAndMapToDictionary(productsToBeFiltered, requestsSortedInTheSameMannerAsQueriedProducts);
-    }
-
-    /// <summary>
-    /// Both products and requests must be filtered in the same manner: using the product key order.
-    /// Then, filtering will be efficient, because iterating will just go forward
-    /// </summary>
-    /// <param name="productsToBeFilteredSortedByKey">Products ordered by product key order</param>
-    /// <param name="sortedRequestsByKeyOrder">Requests ordered by product key order</param>
-    /// <returns>Products to be updated</returns>
-    private static IDictionary<ProductKey, Product> FilterProductsAndMapToDictionary
-    (
-        IList<Product> productsToBeFilteredSortedByKey,
-        IList<ProductBatchUpsertRequest> sortedRequestsByKeyOrder
-    )
-    {
-        int sortedRequestsIndex = 0;
-        int productsToBeFilteredIndex = 0;
-
-        var products = new Dictionary<ProductKey, Product>();
-
-        while (sortedRequestsIndex < sortedRequestsByKeyOrder.Count)
-        {
-            //Get a request and then search for the matching product
-            var request = sortedRequestsByKeyOrder[sortedRequestsIndex];
-
-            while (productsToBeFilteredIndex < productsToBeFilteredSortedByKey.Count)
-            {
-                var filtered = productsToBeFilteredSortedByKey[productsToBeFilteredIndex];
-
-                //If the product matches a request, then the subsequent search will start from the next index
-                productsToBeFilteredIndex++;
-
-                if (filtered.ProductName.Value.CaseInsensitiveEquals(request.ProductKey.ProductName)
-                    && filtered.Revision.Value.CaseInsensitiveEquals(request.ProductKey.Revision))
-                {
-                    //If the product matches, first get the key and then add (key, product) to the dictionary
-                    var key = filtered.ToProductKey();
-                    products.Add(key, filtered);
-                    break;
-                }
-            }
-
-            //Move to the next request
-            sortedRequestsIndex++;
-        }
-
-        return products;
+        return productsToBeFiltered
+            .Where(product => command.Requests.Any(request => request.ProductKey.ProductName.CaseInsensitiveEquals(product.ProductName.Value) 
+                                                           && request.ProductKey.Revision.CaseInsensitiveEquals(product.Revision.Value)))
+            .ToDictionary(product => product.ToProductKey());
     }
 
     private async Task InsertProducts(IReadOnlyList<ProductBatchUpsertRequest> validRequestsToInsert, CancellationToken cancellationToken)
