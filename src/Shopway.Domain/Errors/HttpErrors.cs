@@ -20,7 +20,7 @@ public static class HttpErrors
     public static Error NotFound<TEntity>(IEntityId<TEntity> id)
         where TEntity : class, IEntity
     {
-        return new Error($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with Id: '{id.Value}' was not found");
+        return new($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with Id: '{id.Value}' was not found");
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public static class HttpErrors
     public static Error AlreadyExists<TBusinessKey>(TBusinessKey key)
         where TBusinessKey : IBusinessKey
     {
-        return new Error($"{typeof(TBusinessKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TBusinessKey).Name} with key: '{key}' already exists");
+        return new($"{typeof(TBusinessKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TBusinessKey).Name} with key: '{key}' already exists");
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public static class HttpErrors
     /// <returns>InvalidReference error</returns>
     public static Error InvalidReference(Guid reference, string entity)
     {
-        return new Error($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid reference {reference} for entity {entity}");
+        return new($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid reference {reference} for entity {entity}");
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public static class HttpErrors
     public static Error DuplicatedRequest<TBusinessKey>(TBusinessKey key)
         where TBusinessKey : IBusinessKey
     {
-        return new Error($"{nameof(Error)}.{nameof(DuplicatedRequest)}", $"Duplicated request for key {key}");
+        return new($"{nameof(Error)}.{nameof(DuplicatedRequest)}", $"Duplicated request for key {key}");
     }
 
     /// <summary>
@@ -78,6 +78,6 @@ public static class HttpErrors
     /// <returns>Exception error</returns>
     public static Error Exception(string exceptionMessage)
     {
-        return new Error($"{nameof(Error)}.{nameof(Exception)}", exceptionMessage);
+        return new($"{nameof(Error)}.{nameof(Exception)}", exceptionMessage);
     }
 }
