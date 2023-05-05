@@ -1,6 +1,6 @@
 ﻿namespace Shopway.Domain.Enumerations;
 
-public class RolePermission
+public sealed class RolePermission
 {
     public RolePermission(int roleId, int permissionId)
     {
@@ -10,7 +10,6 @@ public class RolePermission
 
     private RolePermission()
     {
-
     }
 
     public int RoleId { get; }
