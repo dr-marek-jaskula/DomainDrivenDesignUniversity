@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.CQRS;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Errors;
+using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 
 namespace Shopway.Infrastructure.Builders.Batch;
@@ -154,7 +154,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : 
         if (_responseEntryBuilders.TryGetValue(responseKey, out var responseEntryBuilder))
         {
             bool isDuplicated = true;
-            responseEntryBuilder.If(isDuplicated, new Error($"Error.Duplicated", $"Duplicated request for responseKey {responseKey}"));
+            responseEntryBuilder.If(isDuplicated, thenError: DuplicatedRequest(responseKey));
             return responseEntryBuilder;
         }
 

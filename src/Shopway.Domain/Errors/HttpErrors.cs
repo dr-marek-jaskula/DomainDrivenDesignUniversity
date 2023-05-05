@@ -55,17 +55,27 @@ public static class HttpErrors
     /// <summary>
     /// Create an Error describing that the collection is null or empty
     /// </summary>
-    /// <returns>NullOrEmpty error</returns>
+    /// <returns>InvalidBatchCommand error</returns>
     public static Error InvalidBatchCommand(string batchCommand)
     {
         return new($"{nameof(Error)}.{nameof(InvalidBatchCommand)}", $"{batchCommand} is invalid");
     }
 
     /// <summary>
+    /// Create an Error describing that the request is duplicated (same key)
+    /// </summary>
+    /// <returns>DuplicatedRequest error</returns>
+    public static Error DuplicatedRequest<TBusinessKey>(TBusinessKey key)
+        where TBusinessKey : IBusinessKey
+    {
+        return new Error($"{nameof(Error)}.{nameof(DuplicatedRequest)}", $"Duplicated request for key {key}");
+    }
+
+    /// <summary>
     /// Create an Error from the thrown exception
     /// </summary>
     /// <param name="exceptionMessage">Exception message</param>
-    /// <returns>Error</returns>
+    /// <returns>Exception error</returns>
     public static Error Exception(string exceptionMessage)
     {
         return new Error($"{nameof(Error)}.{nameof(Exception)}", exceptionMessage);
