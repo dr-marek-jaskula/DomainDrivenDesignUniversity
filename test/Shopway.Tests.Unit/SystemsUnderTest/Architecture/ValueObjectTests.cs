@@ -3,7 +3,7 @@ using Shopway.Domain.BaseTypes;
 
 namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture;
 
-public sealed class ValueObjects
+public sealed class ValueObjectTests
 {
     [Fact]
     public void ValueObjects_Should_Be_Immutable()
@@ -16,7 +16,7 @@ public sealed class ValueObjects
             .InAssembly(assembly)
             .That()
             .Inherit(typeof(ValueObject))
-            .Should()   
+            .Should()
             .BeImmutable()
             .GetResult();
 
