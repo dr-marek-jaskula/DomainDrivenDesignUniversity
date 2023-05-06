@@ -36,7 +36,9 @@ This is the heart of the whole solution. We store here entities, value objects, 
 
 ### .Tests.Unit
 
-Project to present structure of unit tests
+Project to present structure of unit tests.
+
+It contains also domain tests, architecture tests and utility tests.
 
 ### .Tests.Integration
 

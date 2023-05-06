@@ -17,3 +17,7 @@ For example of strongly type test data see:
 ## Domain tests
 
 Domain tests are very fast. They should cover all cases, but be as simple as possible.
+
+## Architecture tests
+
+For the architecture tests we use **NetArchTest.Rules** nuget package.
