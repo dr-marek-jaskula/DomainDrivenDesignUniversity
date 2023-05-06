@@ -36,6 +36,34 @@ public abstract partial class TestBase
     }
 
     /// <summary>
+    /// Create a review
+    /// </summary>
+    /// <param name="productId">ReviewId</param>
+    /// <param name="title">ProductName. If null, random 10 character long string will be generated</param>
+    /// <param name="description">ProductPrice. If null, random integer in range 1 to 10 will be generated</param>
+    /// <param name="username">Unit of Measure Code. If null, first uom code from AllowedUomCode will be selected</param>
+    /// <param name="stars">ProductRevision. If null, random 2 character long string will be generated</param>
+    /// <returns>Product instance</returns>
+    protected static Review CreateReview
+    (
+        ReviewId reviewId,
+        string? title = null,
+        string? description = null,
+        string? username = null,
+        decimal? stars = null
+    )
+    {
+        return Review.Create
+        (
+            reviewId,
+            Title.Create(title ?? TestString(10)).Value,
+            Description.Create(description ?? TestString(10)).Value,
+            Username.Create(username ?? TestString(10)).Value,
+            Stars.Create(stars ?? TestInt(1, 5)).Value
+        );
+    }
+
+    /// <summary>
     /// Asserts product response.
     /// </summary>
     /// <param name="productResponse">Deserialized product response</param>

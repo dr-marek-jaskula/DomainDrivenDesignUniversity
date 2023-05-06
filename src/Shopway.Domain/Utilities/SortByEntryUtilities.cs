@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.Common;
-using Shopway.Domain.Utilities;
 
-namespace Shopway.Persistence.Utilities;
+namespace Shopway.Domain.Utilities;
 
 public static class SortByEntryUtilities
 {

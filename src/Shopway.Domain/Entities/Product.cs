@@ -78,16 +78,6 @@ public sealed class Product : AggregateRoot<ProductId>, IAuditable
         Price = price;
     }
 
-    public void UpdateName(ProductName name)
-    {
-        ProductName = name;
-    }
-
-    public void UpdateRevision(Revision revision)
-    {
-        Revision = revision;
-    }
-
     public void UpdateUomCode(UomCode uomCode)
     {
         UomCode = uomCode;

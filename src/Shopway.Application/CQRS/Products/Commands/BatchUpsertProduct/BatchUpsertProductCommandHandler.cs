@@ -119,8 +119,6 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
 
     private static void UpdateProduct(Product product, ProductBatchUpsertRequest request)
     {
-        product.UpdateName(ProductName.Create(request.ProductKey.ProductName).Value);
-        product.UpdateRevision(Revision.Create(request.ProductKey.Revision).Value);
         product.UpdateUomCode(UomCode.Create(request.UomCode).Value);
         product.UpdatePrice(Price.Create(request.Price).Value);
     }

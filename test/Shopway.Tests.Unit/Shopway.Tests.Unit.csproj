@@ -30,7 +30,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="SystemsUnderTest\Domain\" />
 	  <Folder Include="SystemsUnderTest\Infrastructure\" />
 	  <Folder Include="SystemsUnderTest\App\" />
 	  <Folder Include="SystemsUnderTest\Presentation\" />
