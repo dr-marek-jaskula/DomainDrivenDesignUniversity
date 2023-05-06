@@ -7,4 +7,5 @@ public static class NamingConventions
     public const string Query = nameof(Query);
     public const string QueryHandler = nameof(QueryHandler);
     public const string DomainEvent = nameof(DomainEvent);
+    public const string DomainEventHandler = nameof(DomainEventHandler);
 }
