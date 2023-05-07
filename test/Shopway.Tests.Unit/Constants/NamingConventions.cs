@@ -11,4 +11,5 @@ public static class NamingConvention
     public const string Id = nameof(Id);
     public const string Key = nameof(Key);
     public const string Exception = nameof(Exception);
+    public const string Controller = nameof(Controller);
 }
