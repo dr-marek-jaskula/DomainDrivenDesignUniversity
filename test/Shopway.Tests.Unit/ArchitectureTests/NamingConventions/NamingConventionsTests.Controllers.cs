@@ -2,7 +2,7 @@
 using NetArchTest.Rules;
 using Shopway.Tests.Unit.Constants;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture.NamingConventions;
+namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
 public partial class NamingConventionsTests
 {

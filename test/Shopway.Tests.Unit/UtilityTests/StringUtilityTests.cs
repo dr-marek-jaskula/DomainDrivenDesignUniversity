@@ -1,9 +1,9 @@
 ﻿using static Shopway.Domain.Utilities.RangeUtility;
 using static Shopway.Domain.Utilities.StringUtilities;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Utilities;
+namespace Shopway.Tests.Unit.UtilityTests;
 
-public sealed class StringUtilitiesTests
+public sealed class StringUtilityTests
 {
     private sealed class DigitTestData : TheoryData<int>
     {

@@ -2,7 +2,7 @@
 using Shopway.Application.Abstractions.CQRS;
 using static Shopway.Tests.Unit.Constants.NamingConvention;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture.NamingConventions;
+namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
 public sealed partial class NamingConventionsTests
 {

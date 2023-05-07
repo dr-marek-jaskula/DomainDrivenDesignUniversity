@@ -4,7 +4,7 @@ using Shopway.Domain.EntityIds;
 using Shopway.Tests.Unit.Abstractions;
 using static System.Threading.CancellationToken;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Application.ProductHandlers;
+namespace Shopway.Tests.Unit.LayerTests.Application.ProductHandlers;
 
 public sealed class GetProductByIdQueryHandlerTests : TestBase
 {

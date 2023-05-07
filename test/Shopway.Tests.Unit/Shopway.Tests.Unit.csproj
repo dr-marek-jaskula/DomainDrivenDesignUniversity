@@ -31,10 +31,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="SystemsUnderTest\Infrastructure\" />
-	  <Folder Include="SystemsUnderTest\App\" />
-	  <Folder Include="SystemsUnderTest\Presentation\" />
-	  <Folder Include="SystemsUnderTest\Persistance\" />
+	  <Folder Include="LayerTests\Infrastructure\" />
+	  <Folder Include="LayerTests\App\" />
+	  <Folder Include="LayerTests\Presentation\" />
+	  <Folder Include="LayerTests\Persistance\" />
 	</ItemGroup>
 
 	<ItemGroup>

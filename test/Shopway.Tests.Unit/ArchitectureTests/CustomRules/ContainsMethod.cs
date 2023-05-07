@@ -1,7 +1,7 @@
 ﻿using NetArchTest.Rules;
 using Mono.Cecil;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture.CustomRules;
+namespace Shopway.Tests.Unit.ArchitectureTests.CustomRules;
 
 public sealed class ContainsMethod : ICustomRule
 {

@@ -1,24 +1,24 @@
-﻿using MediatR;
-using NetArchTest.Rules;
+﻿using NetArchTest.Rules;
+using Shopway.Persistence.Abstractions;
 using static Shopway.Tests.Unit.Constants.NamingConvention;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture.NamingConventions;
+namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
 public partial class NamingConventionsTests
 {
     [Fact]
-    public void PipelineNames_ShouldContainPipeline()
+    public void RepositoryNames_ShouldEndWithRepository()
     {
         //Arrange
-        var assembly = Shopway.Application.AssemblyReference.Assembly;
+        var assembly = Shopway.Persistence.AssemblyReference.Assembly;
 
         //Act
         var result = Types
             .InAssembly(assembly)
             .That()
-            .ImplementInterface(typeof(IPipelineBehavior<,>))
+            .Inherit(typeof(RepositoryBase))
             .Should()
-            .HaveNameMatching(Pipeline)
+            .HaveNameEndingWith(Repository)
             .GetResult();
 
         //Assert

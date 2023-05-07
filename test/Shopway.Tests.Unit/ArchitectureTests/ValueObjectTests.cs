@@ -1,8 +1,8 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Domain.BaseTypes;
-using Shopway.Tests.Unit.SystemsUnderTest.Architecture.CustomRules;
+using Shopway.Tests.Unit.ArchitectureTests.CustomRules;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture;
+namespace Shopway.Tests.Unit.ArchitectureTests;
 
 public sealed class ValueObjectTests
 {
@@ -10,7 +10,7 @@ public sealed class ValueObjectTests
     public void ValueObjects_ShouldBeImmutable()
     {
         //Arrange
-        var assembly = Shopway.Domain.AssemblyReference.Assembly;
+        var assembly = Domain.AssemblyReference.Assembly;
 
         //Act
         var result = Types
@@ -31,7 +31,7 @@ public sealed class ValueObjectTests
     public void ValueObjects_ShouldDefineMethod(string methodName)
     {
         //Arrange
-        var assembly = Shopway.Domain.AssemblyReference.Assembly;
+        var assembly = Domain.AssemblyReference.Assembly;
 
         //Act
         var result = Types

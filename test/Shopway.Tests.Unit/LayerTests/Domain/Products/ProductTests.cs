@@ -4,7 +4,7 @@ using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.DomainEvents;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Domain.Products;
+namespace Shopway.Tests.Unit.LayerTests.Domain.Products;
 
 public sealed class ProductTests : TestBase
 {

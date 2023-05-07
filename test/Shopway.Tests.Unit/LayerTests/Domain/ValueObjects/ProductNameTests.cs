@@ -3,7 +3,7 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Tests.Unit.Abstractions;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Domain.ValueObjects;
+namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
 
 public sealed class ProductNameTests : TestBase
 {

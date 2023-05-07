@@ -1,24 +1,24 @@
-﻿using Quartz;
+﻿using MediatR;
 using NetArchTest.Rules;
 using static Shopway.Tests.Unit.Constants.NamingConvention;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture.NamingConventions;
+namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
 public partial class NamingConventionsTests
 {
     [Fact]
-    public void JobNames_ShouldEndWithJob()
+    public void PipelineNames_ShouldContainPipeline()
     {
         //Arrange
-        var assembly = Shopway.Infrastructure.AssemblyReference.Assembly;
+        var assembly = Shopway.Application.AssemblyReference.Assembly;
 
         //Act
         var result = Types
             .InAssembly(assembly)
             .That()
-            .ImplementInterface(typeof(IJob))
+            .ImplementInterface(typeof(IPipelineBehavior<,>))
             .Should()
-            .HaveNameEndingWith(Job)
+            .HaveNameMatching(Pipeline)
             .GetResult();
 
         //Assert

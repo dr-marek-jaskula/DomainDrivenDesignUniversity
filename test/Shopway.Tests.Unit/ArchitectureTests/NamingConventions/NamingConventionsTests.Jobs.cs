@@ -1,26 +1,24 @@
-﻿using FluentValidation;
+﻿using Quartz;
 using NetArchTest.Rules;
 using static Shopway.Tests.Unit.Constants.NamingConvention;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture.NamingConventions;
+namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
 public partial class NamingConventionsTests
 {
     [Fact]
-    public void ValidatorsNames_ShouldEndWithValidators()
+    public void JobNames_ShouldEndWithJob()
     {
         //Arrange
-        var assembly = Shopway.Application.AssemblyReference.Assembly;
+        var assembly = Shopway.Infrastructure.AssemblyReference.Assembly;
 
         //Act
         var result = Types
             .InAssembly(assembly)
             .That()
-            .AreNotAbstract()
-            .And()
-            .Inherit(typeof(AbstractValidator<>))
+            .ImplementInterface(typeof(IJob))
             .Should()
-            .HaveNameEndingWith(Validator)
+            .HaveNameEndingWith(Job)
             .GetResult();
 
         //Assert

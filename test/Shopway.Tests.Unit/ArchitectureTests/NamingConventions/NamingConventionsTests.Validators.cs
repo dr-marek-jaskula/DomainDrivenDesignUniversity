@@ -1,26 +1,26 @@
-﻿using NetArchTest.Rules;
-using Shopway.Domain.Abstractions;
+﻿using FluentValidation;
+using NetArchTest.Rules;
 using static Shopway.Tests.Unit.Constants.NamingConvention;
 
-namespace Shopway.Tests.Unit.SystemsUnderTest.Architecture.NamingConventions;
+namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
 public partial class NamingConventionsTests
 {
     [Fact]
-    public void EntityIdNames_ShouldEndWithId()
+    public void ValidatorsNames_ShouldEndWithValidators()
     {
         //Arrange
-        var assembly = Shopway.Domain.AssemblyReference.Assembly;
+        var assembly = Shopway.Application.AssemblyReference.Assembly;
 
         //Act
         var result = Types
             .InAssembly(assembly)
             .That()
-            .AreNotInterfaces()
+            .AreNotAbstract()
             .And()
-            .ImplementInterface(typeof(IEntityId))
+            .Inherit(typeof(AbstractValidator<>))
             .Should()
-            .HaveNameEndingWith(Id)
+            .HaveNameEndingWith(Validator)
             .GetResult();
 
         //Assert
