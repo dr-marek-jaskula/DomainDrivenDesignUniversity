@@ -1,17 +1,20 @@
 ﻿# Tests.Unit Layer
 
-This layer contains the unit tests. 
+This layer contains the unit tests. We distinguish:
 
-We distinguish:
+I. LayerTests
+	1. **Domain** tests - test the domain logic
+	2. **Application** tests - test handlers and pipelines
+	3. **Infrastructure** tests - test tools
+	4. **Presentation** tests - test controllers
 
-1. **Domain** tests - test the domain logic
-2. **Application** tests - test handlers and pipelines
-3. **Infrastructure** tests - test tools
-4. **Presentation** tests - test controllers
-5. **Architecture** tests - we use **ArchUnitNET.xUnit** to test dependencies, naming conventions and more
-6. **Utilities** tests - we should test extension method and similar utilities
+II. ArchitectureTests
+	1. Test dependencies, naming conventions and systems structure
 
-For example of strongly type test data see:
+III. UtilityTests
+	1. Test extension method and similar utilities
+
+Example of strongly type test data:
 > SystemUnderTest/Domain/ValueObjects/ProductNameTests.cs
 
 ## Domain tests
