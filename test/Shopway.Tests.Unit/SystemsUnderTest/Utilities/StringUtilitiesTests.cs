@@ -9,7 +9,7 @@ public sealed class StringUtilitiesTests
     {
         public DigitTestData()
         {
-            foreach (var digit in 1..9)
+            foreach (var digit in 0..9)
             {
                 Add(digit);
             }
@@ -41,5 +41,18 @@ public sealed class StringUtilitiesTests
 
         //Assert
         result.Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData("string2", "String")]
+    [InlineData("STRING", "astring")]
+    [InlineData("str", "string")]
+    public void CaseInsensitiveEquals_ShouldReturnFalse_WhenStringsDifferByContent(string frist, string second)
+    {
+        //Act
+        var result = frist.CaseInsensitiveEquals(second);
+
+        //Assert
+        result.Should().BeFalse();
     }
 }

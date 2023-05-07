@@ -100,4 +100,12 @@ public class Error : IEquatable<Error>
     {
         return Code;
     }
+
+    public void ThrowIfErrorNone()
+    {
+        if (this == None)
+        {
+            throw new InvalidOperationException("Provided error is Error.None");
+        }
+    }
 }

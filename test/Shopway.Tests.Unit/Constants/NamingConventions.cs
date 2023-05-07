@@ -1,6 +1,6 @@
 ﻿namespace Shopway.Tests.Unit.Constants;
 
-public static class NamingConventions
+public static class NamingConvention
 {
     public const string Command = nameof(Command);
     public const string CommandHandler = nameof(CommandHandler);
@@ -8,4 +8,7 @@ public static class NamingConventions
     public const string QueryHandler = nameof(QueryHandler);
     public const string DomainEvent = nameof(DomainEvent);
     public const string DomainEventHandler = nameof(DomainEventHandler);
+    public const string Id = nameof(Id);
+    public const string Key = nameof(Key);
+    public const string Exception = nameof(Exception);
 }
