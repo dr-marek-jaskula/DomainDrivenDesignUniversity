@@ -2,17 +2,17 @@
 
 This layer contains the unit tests. We distinguish:
 
-I. LayerTests
-	1. **Domain** tests - test the domain logic
-	2. **Application** tests - test handlers and pipelines
-	3. **Infrastructure** tests - test tools
-	4. **Presentation** tests - test controllers
+1. LayerTests
+	a. **Domain** tests - test the domain logic
+	b. **Application** tests - test handlers and pipelines
+	c. **Infrastructure** tests - test tools
+	d. **Presentation** tests - test controllers
 
-II. ArchitectureTests
-	1. Test dependencies, naming conventions and systems structure
+2. ArchitectureTests
+	a. Test dependencies, naming conventions and systems structure
 
-III. UtilityTests
-	1. Test extension method and similar utilities
+3. UtilityTests
+	a. Test extension method and similar utilities
 
 Example of strongly type test data:
 > SystemUnderTest/Domain/ValueObjects/ProductNameTests.cs

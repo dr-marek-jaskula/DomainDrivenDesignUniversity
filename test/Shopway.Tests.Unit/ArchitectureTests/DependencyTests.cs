@@ -1,10 +1,12 @@
 ﻿using NetArchTest.Rules;
+using Shopway.Tests.Unit.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
 
 public sealed class DependencyTests
 {
     [Fact]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Domain_ShouldNotHaveDependencyOnOtherProjects()
     {
         //Arrange
@@ -31,6 +33,7 @@ public sealed class DependencyTests
     }
 
     [Fact]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Persistence_ShouldNotHaveDependencyOnOtherProjectsThanDomain()
     {
         //Arrange
@@ -56,6 +59,7 @@ public sealed class DependencyTests
     }
 
     [Fact]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Infrastructure_ShouldNotHaveDependencyOnOtherProjectsThanDomainAndPersistance()
     {
         //Arrange
@@ -80,6 +84,7 @@ public sealed class DependencyTests
     }
 
     [Fact]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Application_ShouldNotHaveDependencyOnOtherProjectsThanDomainAndPersistanceAndInfrastructure()
     {
         //Arrange
@@ -103,6 +108,7 @@ public sealed class DependencyTests
     }
 
     [Fact]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Presentation_ShouldHaveDependencyDomainAndPersistanceAndInfrastructureAndApplication()
     {
         //Arrange

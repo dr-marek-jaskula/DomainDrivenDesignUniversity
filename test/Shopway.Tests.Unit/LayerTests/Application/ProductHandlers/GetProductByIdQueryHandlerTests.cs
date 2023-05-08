@@ -1,8 +1,10 @@
+using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.CQRS.Products.Queries.GetProductById;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityIds;
 using Shopway.Tests.Unit.Abstractions;
 using static System.Threading.CancellationToken;
+using Shopway.Tests.Unit.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Application.ProductHandlers;
 
@@ -20,7 +22,8 @@ public sealed class GetProductByIdQueryHandlerTests : TestBase
     }
 
     [Fact]
-	public async Task GetById_ShouldSucceed_WhenCreateValidProduct()
+    [Trait(TraitConstants.Category, TraitConstants.Application)]
+    public async Task GetById_ShouldSucceed_WhenCreateValidProduct()
 	{
         //Arrange
         var productId = ProductId.New();

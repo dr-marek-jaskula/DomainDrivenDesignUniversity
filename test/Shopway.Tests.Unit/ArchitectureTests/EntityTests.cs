@@ -1,12 +1,14 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Domain.BaseTypes;
 using Shopway.Tests.Unit.ArchitectureTests.CustomRules;
+using Shopway.Tests.Unit.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
 
-public sealed class EntitiesTests
+public sealed class EntityTests
 {
     [Fact]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Entities_ShouldDefineCreateMethod()
     {
         //Arrange

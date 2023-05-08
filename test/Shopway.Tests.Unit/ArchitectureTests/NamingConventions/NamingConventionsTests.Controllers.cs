@@ -7,6 +7,7 @@ namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 public partial class NamingConventionsTests
 {
     [Fact]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void ControllerNames_ShouldEndWithController()
     {
         //Arrange

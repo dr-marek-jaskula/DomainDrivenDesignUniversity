@@ -1,12 +1,14 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Domain.BaseTypes;
 using Shopway.Tests.Unit.ArchitectureTests.CustomRules;
+using Shopway.Tests.Unit.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
 
 public sealed class ValueObjectTests
 {
     [Fact]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void ValueObjects_ShouldBeImmutable()
     {
         //Arrange
@@ -28,6 +30,7 @@ public sealed class ValueObjectTests
     [Theory]
     [InlineData("Validate")]
     [InlineData("Create")]
+    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void ValueObjects_ShouldDefineMethod(string methodName)
     {
         //Arrange
