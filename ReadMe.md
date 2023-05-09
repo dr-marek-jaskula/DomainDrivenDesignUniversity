@@ -56,6 +56,12 @@ Here we use the proper approach of using the WebApplicationFactory.
 
 Moreover, we use TestContainers library, to make all integrations test in sql database inside the container, so the additional database cleaning is not required (like in Shopway.Tests.Integration)
 
+### .Tests.Performance
+
+This layer container the performance tests.
+
+We use NBomber as a performance test framework, because we can use it with xunit.
+
 ### Postman Collection
 
 Use the postman collection to get all endpoints for postman. 
