@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
-using Shopway.Infrastructure.Options;
+﻿using Shopway.Infrastructure.Options;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Serialization.NewtonsoftJson;
 
@@ -12,7 +11,6 @@ public static class CacheRegistration
         var cacheOptions = services.GetOptions<CacheOptions>();
 
         services.AddMemoryCache();
-
         services.AddFusionCache()
             .WithDefaultEntryOptions(options =>
             {
@@ -23,14 +21,14 @@ public static class CacheRegistration
                 options.FactorySoftTimeout = TimeSpan.FromMilliseconds(100);
                 options.FactoryHardTimeout = TimeSpan.FromMilliseconds(1500);
 
-                options.DistributedCacheSoftTimeout = TimeSpan.FromSeconds(1);
-                options.DistributedCacheHardTimeout = TimeSpan.FromSeconds(2);
+                //options.DistributedCacheSoftTimeout = TimeSpan.FromSeconds(1);
+                //options.DistributedCacheHardTimeout = TimeSpan.FromSeconds(2);
             })
-            .WithSerializer(new FusionCacheNewtonsoftJsonSerializer())
-            .WithDistributedCache(new RedisCache(new RedisCacheOptions()
-            {
-                Configuration = cacheOptions.ConnectionString!
-            }));
+            .WithSerializer(new FusionCacheNewtonsoftJsonSerializer());
+            //.WithDistributedCache(new RedisCache(new RedisCacheOptions()
+            //{
+            //    Configuration = cacheOptions.ConnectionString!
+            //}));
 
         //for adding Backplane we should install: "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" and then add 
             //.WithBackplane(new RedisBackplane(new RedisBackplaneOptions() { Configuration = "CONNECTION STRING" });

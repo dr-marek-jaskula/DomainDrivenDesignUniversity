@@ -5,9 +5,9 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class DecoractorsRegistration
+public static class DecoratorRegistration
 {
-    public static IServiceCollection RegisterServiceDecorators(this IServiceCollection services)
+    public static IServiceCollection RegisterDecorators(this IServiceCollection services)
     {
         services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandlerDecorator<>));
 

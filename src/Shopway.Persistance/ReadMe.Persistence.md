@@ -73,11 +73,30 @@ specification
     .ThenBy(x => x.Price.Value, SortDirection.Descending);
 ```
 
-## Cache
+## Fusion Cache
 
-Basic memory cache is presented in the "CachedOrderRepository"
+Fusion cache approach is used 
 
-Redis cache is presented in the "CachedProductRepository"
+If no distributed cache is used, fusion cache use memory cache. Nevertheless, fusion cache is very efficient and easy to use.
+If distributed cache is used, fusion cache use the combination of memory and distributed caching (prefer to use redis for distributed cache).
+
+What is more the Backplane can be configured for multi node scenario. The preferred backplane is also redis.
+
+A backplane is like a message bus (message broker) where change notifications will be published to all other connected nodes each time something happens to a cache entry, all automatically without us having to do anything.
+
+```
+# CORE PACKAGE
+ZiggyCreatures.FusionCache
+
+# SERIALIZER
+ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson
+
+# DISTRIBUTED CACHE
+Microsoft.Extensions.Caching.StackExchangeRedis
+
+# BACKPLANE
+ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis
+```
 
 ## Indexes on ValueObjects with Owned Types
 
