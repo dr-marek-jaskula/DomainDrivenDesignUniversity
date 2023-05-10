@@ -1,34 +1,33 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Shopway.Domain.Abstractions.Repositories;
+﻿using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using System.Linq.Expressions;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
 public sealed class CachedOrderRepository : IOrderRepository
 {
     private readonly IOrderRepository _decorated;
-    private readonly IMemoryCache _memoryCache;
+    private readonly IFusionCache _fusionCache;
 
-    public CachedOrderRepository(IOrderRepository decorated, IMemoryCache memoryCache)
+    public CachedOrderRepository(IOrderRepository decorated, IFusionCache fusionCache)
     {
         _decorated = decorated;
-        _memoryCache = memoryCache;
+        _fusionCache = fusionCache;
     }
 
-    public Task<Order> GetByIdAsync(OrderId id, CancellationToken cancellationToken)
+    public async Task<Order> GetByIdAsync(OrderId id, CancellationToken cancellationToken)
     {
-        string key = $"order-{id}";
+        var order = await _fusionCache.GetOrSetAsync
+        (
+            $"{typeof(Order)}-{id}",
+            _ => _decorated.GetByIdAsync(id, cancellationToken)!,
+            TimeSpan.FromSeconds(30),
+            cancellationToken
+        );
 
-        return _memoryCache.GetOrCreateAsync(
-            key,
-            entry =>
-            {
-                entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(2));
-
-                return _decorated.GetByIdAsync(id, cancellationToken);
-            })!;
+        return order!;
     }
 
     public Task<Order> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken, params Expression<Func<Order, object>>[] includes)
