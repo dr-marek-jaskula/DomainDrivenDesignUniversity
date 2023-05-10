@@ -22,7 +22,7 @@ public sealed class CachedOrderRepository : IOrderRepository
         var order = await _fusionCache.GetOrSetAsync
         (
             $"{typeof(Order)}-{id}",
-            _ => _decorated.GetByIdAsync(id, cancellationToken)!,
+            cancellationToken => _decorated.GetByIdAsync(id, cancellationToken)!,
             TimeSpan.FromSeconds(30),
             cancellationToken
         );

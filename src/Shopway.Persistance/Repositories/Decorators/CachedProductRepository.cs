@@ -29,12 +29,12 @@ public sealed class CachedProductRepository : IProductRepository
         var product = await _fusionCache.GetOrSetAsync
         (
             $"{typeof(Product)}-{id}",
-            _ => _decorated.GetByIdAsync(id, cancellationToken)!,
+            cancellationToken => _decorated.GetByIdAsync(id, cancellationToken)!,
             TimeSpan.FromSeconds(30),
             cancellationToken
         );
 
-        //Make EF Core track the obtained entity if it is not null
+        //Make EF Core track the obtained entity
         _context.Set<Product>().Attach(product!);
 
         return product!;

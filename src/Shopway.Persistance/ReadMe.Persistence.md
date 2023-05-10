@@ -98,6 +98,13 @@ Microsoft.Extensions.Caching.StackExchangeRedis
 ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis
 ```
 
+## Cache and Repository Pattern
+
+In order not to involve any caching logic directly into repositories, we use decorator pattern and decorate repositories with cached repositories.
+See "CachedProductRepository". 
+
+Moreover, we use caching in "ReferenceValidationPipeline".
+
 ## Indexes on ValueObjects with Owned Types
 
 There is no support in Entity Framework Core 7 to create unique indexes on multiple columns that are represented by ValueObjects.
