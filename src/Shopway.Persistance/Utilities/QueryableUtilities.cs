@@ -1,11 +1,13 @@
 ﻿using Shopway.Domain.Common;
 using Shopway.Domain.Utilities;
+using System.Linq.Dynamic.Core;
 using Shopway.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.BaseTypes;
 
 namespace Shopway.Persistence.Utilities;
 
-internal static class QueryableUtilities
+public static class QueryableUtilities
 {
     /// <summary>
     /// Get page items and total count
@@ -16,7 +18,7 @@ internal static class QueryableUtilities
     /// <param name="queryable">Queryable</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Tuple of  items and total count</returns>
-    internal static async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    public static async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
         this IQueryable<TResponse> queryable,
         IPage page,
@@ -64,5 +66,19 @@ internal static class QueryableUtilities
         }
 
         return queryable;
+    }
+
+    public static async Task<bool> AnyAsync<TEntity, TEntityId>
+    (
+        this IQueryable<TEntity> queryable,
+        TEntityId entityId,
+        CancellationToken cancellationToken
+    )
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId
+    {
+        return await queryable
+           .Where($"Id == \"{entityId.Value}\"")
+           .AnyAsync(cancellationToken);
     }
 }

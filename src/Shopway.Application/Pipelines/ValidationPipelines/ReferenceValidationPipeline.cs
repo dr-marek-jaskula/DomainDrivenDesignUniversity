@@ -1,18 +1,16 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
+using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
-using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Framework;
-using System;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using ZiggyCreatures.Caching.Fusion;
+using System.Linq.Dynamic.Core;
 using static Shopway.Domain.Errors.HttpErrors;
+using static Shopway.Domain.Utilities.ReflectionUtilities;
+using static Shopway.Persistence.Utilities.QueryableUtilities;
 
 namespace Shopway.Application.Pipelines.ValidationPipelines;
 
@@ -63,63 +61,40 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
         var entityType = reference.GetEntityTypeFromEntityId();
 
-        MethodInfo fusionCacheTryGetMethod = GetGenericMethod(typeof(IFusionCache), entityType, "TryGetAsync");
-        MethodInfo isInCacheMethod = GetGenericMethod(typeof(ReferenceValidationPipeline<TRequest, TResponse>), entityType, "IsInCache");
+        MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<TRequest, TResponse>)
+            .GetFirstGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityId.GetType());
 
-        if (await IsEntityInCache(entityId, entityType, fusionCacheTryGetMethod, isInCacheMethod, cancellationToken))
+        return await (Task<Error>)checkCacheAndDatabasedMethod.Invoke(this, new object[]
+        {
+            $"any-{entityType}-{entityId}", //key is just for checking if the reference is correct.
+            entityId,
+            cancellationToken
+        })!;
+    }
+
+    public async Task<Error> CheckCacheAndDatabase<TEntity, TEntityId>(string key, TEntityId entityId, CancellationToken cancellationToken)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId
+    {
+        var isEntityInCache = (await _fusionCache.TryGetAsync<TEntity>(key, null, cancellationToken)).HasValue;
+
+        if (isEntityInCache)
         {
             return Error.None;
         }
 
-        var entity = await _context.FindAsync(entityType, new object[] { entityId }, cancellationToken);
+        var isEntityInDatabase = await _context
+            .Set<TEntity>()
+            .AnyAsync(entityId, cancellationToken);
 
-        if (entity is null)
+        if (isEntityInDatabase is false)
         {
-            return InvalidReference(entityId.Value, entityType.Name);
+            return InvalidReference(entityId.Value, typeof(TEntity).Name);
         }
 
-        await _fusionCache.SetAsync($"{entityType}-{entityId}", entity, token: cancellationToken);
+        //We will not store entities in cache by this pipeline, therefore we store just null in cache
+        await _fusionCache.SetAsync(key, default(TEntity), token: cancellationToken);
 
         return Error.None;
-    }
-
-    public async Task<bool> IsInCache<TType>(MethodInfo methodInfo, string key, CancellationToken cancellationToken)
-    {
-        var maybe = await (ValueTask<MaybeValue<TType>>)methodInfo.Invoke
-        (
-            _fusionCache,
-            new object[]
-            {
-                key,
-                null,
-                cancellationToken
-            }
-        )!;
-
-        return maybe.HasValue;
-    }
-
-    private async Task<bool> IsEntityInCache(IEntityId entityId, Type entityType, MethodInfo fusionCacheTryGetMethod, MethodInfo isInCacheMethod, CancellationToken cancellationToken)
-    {
-        return await (Task<bool>)isInCacheMethod.Invoke
-        (
-            this,
-            new object[]
-            {
-                fusionCacheTryGetMethod,
-                $"{entityType}-{entityId}",
-                cancellationToken
-            }
-        )!;
-    }
-
-    private static MethodInfo GetGenericMethod(Type baseType, Type entityType, string methodName)
-    {
-        var tryGetAsync = baseType
-            .GetMethods()
-            .Where(method => method.Name == methodName)
-            .First()!;
-
-        return tryGetAsync.MakeGenericMethod(entityType);
     }
 }

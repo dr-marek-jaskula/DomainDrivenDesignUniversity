@@ -9,7 +9,7 @@ namespace Shopway.Tests.Performance.ControllersUnderTest.ProductController;
 public partial class ProductsControllerTests : ControllerTestsBase
 {
     [Fact]
-    public void GetById_ShouldHandleAtleast100RequestPerSecond()
+    public void GetById_ShouldHandleAtLeast100RequestPerSecond()
     {
         var productId = ProductId.New();
         string url = $"{ShopwayApiUrl}/{controllerUri}/{productId.Value}";

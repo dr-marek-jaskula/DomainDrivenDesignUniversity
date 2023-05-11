@@ -17,4 +17,14 @@ public static class ReflectionUtilities
             .Where(type => type.Name == typeName)
             .Single();
     }
+
+    public static MethodInfo GetFirstGenericMethod(this Type baseType, string methodName, params Type[] genericType)
+    {
+        var tryGetAsync = baseType
+            .GetMethods()
+            .Where(method => method.Name == methodName)
+            .First()!;
+
+        return tryGetAsync.MakeGenericMethod(genericType);
+    }
 }

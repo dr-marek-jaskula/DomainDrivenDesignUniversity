@@ -9,9 +9,9 @@ namespace Shopway.Domain.EntityIds;
 /// <summary>
 /// Converter used to allow conversion between guid in string format and specified entity id
 /// </summary>
-/// <typeparam name="TEntitiyId">Type of entity id</typeparam>
-public sealed class EntityIdConverter<TEntitiyId> : TypeConverter
-    where TEntitiyId : struct, IEntityId
+/// <typeparam name="TEntityId">Type of entity id</typeparam>
+public sealed class EntityIdConverter<TEntityId> : TypeConverter
+    where TEntityId : struct, IEntityId
 {
     private readonly Type _type;
 
