@@ -25,7 +25,7 @@ Or see **ProductPageQueryValidator**.
 
 3. The remaining validation is done in the domain layer.
 
-4. Use of Validator custom tool, defined in .Infrastructure layer. It is very helpful and simple tool, thus I encourage to get familiar with it.
+4. Use Validator custom tool, defined in .Infrastructure layer. It is very helpful and simple tool, thus I encourage to get familiar with it.
 
 ## Transaction Pipelines
 
