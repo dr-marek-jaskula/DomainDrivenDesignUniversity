@@ -1,10 +1,9 @@
-using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.CQRS.Products.Queries.GetProductById;
-using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityIds;
-using Shopway.Tests.Unit.Abstractions;
-using static System.Threading.CancellationToken;
 using Shopway.Tests.Unit.Constants;
+using Shopway.Tests.Unit.Abstractions;
+using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Application.CQRS.Products.Queries.GetProductById;
+using static System.Threading.CancellationToken;
 
 namespace Shopway.Tests.Unit.LayerTests.Application.ProductHandlers;
 

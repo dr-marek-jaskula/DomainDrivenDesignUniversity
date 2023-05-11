@@ -36,11 +36,11 @@ public abstract class TestDataGeneratorBase
     /// <summary>
     /// Generates test string with given length
     /// </summary>
-    /// <param name="lenght">String length</param>
+    /// <param name="length">String length</param>
     /// <returns>Test string</returns>
-    public static string TestString(int lenght = Length)
+    public static string TestString(int length = Length)
     {
-        return $"{GenerateString(lenght)}";
+        return $"{GenerateString(length)}";
     }
 
     /// <summary>

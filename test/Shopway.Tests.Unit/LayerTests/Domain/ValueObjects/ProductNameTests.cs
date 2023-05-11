@@ -22,8 +22,8 @@ public sealed class ProductNameTests : TestBase
             string emptyProductName = string.Empty;
             Add(emptyProductName, ProductNameError.Empty);
 
-            string whitespacesProductName = "    ";
-            Add(whitespacesProductName, ProductNameError.Empty);
+            string whitespaceProductName = "    ";
+            Add(whitespaceProductName, ProductNameError.Empty);
         }
     }
 

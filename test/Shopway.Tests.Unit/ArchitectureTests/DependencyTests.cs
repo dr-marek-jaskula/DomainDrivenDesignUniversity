@@ -60,7 +60,7 @@ public sealed class DependencyTests
 
     [Fact]
     [Trait(TraitConstants.Category, TraitConstants.Architecture)]
-    public void Infrastructure_ShouldNotHaveDependencyOnOtherProjectsThanDomainAndPersistance()
+    public void Infrastructure_ShouldNotHaveDependencyOnOtherProjectsThanDomainAndPersistence()
     {
         //Arrange
         var assembly = Infrastructure.AssemblyReference.Assembly;
@@ -85,7 +85,7 @@ public sealed class DependencyTests
 
     [Fact]
     [Trait(TraitConstants.Category, TraitConstants.Architecture)]
-    public void Application_ShouldNotHaveDependencyOnOtherProjectsThanDomainAndPersistanceAndInfrastructure()
+    public void Application_ShouldNotHaveDependencyOnOtherProjectsThanDomainAndPersistenceAndInfrastructure()
     {
         //Arrange
         var assembly = Application.AssemblyReference.Assembly;
@@ -109,7 +109,7 @@ public sealed class DependencyTests
 
     [Fact]
     [Trait(TraitConstants.Category, TraitConstants.Architecture)]
-    public void Presentation_ShouldHaveDependencyDomainAndPersistanceAndInfrastructureAndApplication()
+    public void Presentation_ShouldHaveDependencyDomainAndPersistenceAndInfrastructureAndApplication()
     {
         //Arrange
         var assembly = Presentation.AssemblyReference.Assembly;

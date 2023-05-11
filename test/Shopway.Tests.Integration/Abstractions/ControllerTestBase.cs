@@ -19,7 +19,6 @@ using Shopway.Domain.Errors;
 using static RestSharp.Method;
 using static Shopway.Application.Constants.ProblemDetailsConstants;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
-using System.Net.Http;
 
 namespace Shopway.Tests.Integration.Abstractions;
 

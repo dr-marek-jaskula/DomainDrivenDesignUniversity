@@ -37,10 +37,10 @@ public sealed class StringUtilityTests
     [InlineData("STRING", "string")]
     [InlineData("string", "string")]
     [Trait(TraitConstants.Category, TraitConstants.Utility)]
-    public void CaseInsensitiveEquals_ShouldReturnTrue_WhenStringsDifferByCaseSensitiveness(string frist, string second)
+    public void CaseInsensitiveEquals_ShouldReturnTrue_WhenStringsDifferByCaseSensitiveness(string first, string second)
     {
         //Act
-        var result = frist.CaseInsensitiveEquals(second);
+        var result = first.CaseInsensitiveEquals(second);
 
         //Assert
         result.Should().BeTrue();
@@ -51,10 +51,10 @@ public sealed class StringUtilityTests
     [InlineData("STRING", "astring")]
     [InlineData("str", "string")]
     [Trait(TraitConstants.Category, TraitConstants.Utility)]
-    public void CaseInsensitiveEquals_ShouldReturnFalse_WhenStringsDifferByContent(string frist, string second)
+    public void CaseInsensitiveEquals_ShouldReturnFalse_WhenStringsDifferByContent(string first, string second)
     {
         //Act
-        var result = frist.CaseInsensitiveEquals(second);
+        var result = first.CaseInsensitiveEquals(second);
 
         //Assert
         result.Should().BeFalse();

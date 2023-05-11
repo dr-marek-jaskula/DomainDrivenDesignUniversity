@@ -7,9 +7,9 @@ namespace Shopway.Tests.Performance.Scenarios;
 
 public static class ProductScenarios
 {
-    public static ScenarioProps CreateGetScenario(string scenarionName, string url, string apiKey)
+    public static ScenarioProps CreateGetScenario(string scenarioName, string url, string apiKey)
     {
-        return Scenario.Create(scenarionName, async context =>
+        return Scenario.Create(scenarioName, async context =>
         {
             var request = Http.CreateRequest(HttpConstants.GET, url)
                     .WithHeader(HttpConstants.ApiKey, apiKey);
