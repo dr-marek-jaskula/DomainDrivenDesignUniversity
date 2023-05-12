@@ -33,8 +33,8 @@ public interface IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>
     /// Use the predefined value object validation method called "Validate" to get possible validation errors
     /// </summary>
     /// <typeparam name="TValueObject">Type of value object</typeparam>
-    /// <param name="parameteres">Parameters for value object validation method</param>
+    /// <param name="parameters">Parameters for value object validation method</param>
     /// <returns>Same instance to chain the validation</returns>
-    IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameteres)
+    IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameters)
             where TValueObject : ValueObject;
 }

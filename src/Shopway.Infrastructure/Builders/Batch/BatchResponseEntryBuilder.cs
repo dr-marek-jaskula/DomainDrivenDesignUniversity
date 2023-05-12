@@ -88,19 +88,19 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// Use the public, static validation method called "Validate", defined in a given ValueObject type 
         /// </summary>
         /// <typeparam name="TValueObject">ValueObject type that we use to validate input parameters</typeparam>
-        /// <param name="parameteres">Parameters that are required and sufficient to create a ValueObject</param>
+        /// <param name="parameters">Parameters that are required and sufficient to create a ValueObject</param>
         /// <returns>Same instance to be able to chain validation methods</returns>
         /// <exception cref="ArgumentException">Thrown if no parameters were specified</exception>
         /// <exception cref="InvalidOperationException">Thrown if given ValueObject type does not contain the public, static method "Validate"</exception>
-        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameteres)
+        public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameters)
             where TValueObject : ValueObject
         {
-            if (parameteres.IsNullOrEmpty())
+            if (parameters.IsNullOrEmpty())
             {
                 throw new ArgumentException($"There need to be at least one parameter for the validation method");
             }
 
-            if (AnyNullParameter<TValueObject>(parameteres))
+            if (AnyNullParameter<TValueObject>(parameters))
             {
                 return this;
             }
@@ -113,7 +113,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
                 throw new InvalidOperationException($"{nameof(ValueObject)}: {typeof(TValueObject).Name} does not contain public, static method \"Validate\"");
             }
 
-            object errors = validationMethod.Invoke(null, parameteres)!;
+            object errors = validationMethod.Invoke(null, parameters)!;
 
             _errors.AddRange((List<Error>)errors);
             return this;
