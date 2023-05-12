@@ -39,8 +39,6 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductByIdWithReviewsQuerySpecification.Create(id);
 
-        await Console.Out.WriteLineAsync("Obtained from database");
-
         return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
     }

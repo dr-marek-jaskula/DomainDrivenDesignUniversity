@@ -7,7 +7,6 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityBusinessKeys;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Utilities;
-using System.Threading;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
