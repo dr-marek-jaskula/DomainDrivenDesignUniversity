@@ -1,17 +1,17 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Abstractions;
-using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Errors;
-using Shopway.Domain.Utilities;
-using Shopway.Persistence.Framework;
 using System.Reflection;
-using ZiggyCreatures.Caching.Fusion;
+using Shopway.Domain.Errors;
+using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Utilities;
 using System.Linq.Dynamic.Core;
+using Shopway.Domain.Abstractions;
+using Shopway.Persistence.Framework;
+using Microsoft.EntityFrameworkCore;
+using Shopway.Persistence.Utilities;
+using ZiggyCreatures.Caching.Fusion;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
-using Shopway.Persistence.Utilities;
 
 namespace Shopway.Application.Pipelines.ValidationPipelines;
 
@@ -33,8 +33,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         var entityIds = typeof(TRequest)
             .GetProperties()
             .Where(prop => prop.PropertyType.GetInterfaces().Any(interfaceType => interfaceType == typeof(IEntityId)))
-            .Select(entityId => entityId.GetValue(request) as IEntityId)
-            .ToList();
+            .Select(entityId => entityId.GetValue(request) as IEntityId);
 
         Error[] errors = entityIds
             .Select(async (entityId) => await Validate(entityId!, cancellationToken))
@@ -47,8 +46,6 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         {
             return errors.CreateValidationResult<TResponse>();
         }
-
-        _context.ChangeTracker.Clear();
 
         return await next();
     }
@@ -85,7 +82,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
         if (isEntityInDatabase)
         {
-            //We should not store entities in cache using pipeline, therefore we store just null in cache
+            //We should not store entities in cache using this pipeline, therefore we just store null
             await _fusionCache.SetAsync(key, default(TEntity), token: cancellationToken);
             return Error.None;
         }
