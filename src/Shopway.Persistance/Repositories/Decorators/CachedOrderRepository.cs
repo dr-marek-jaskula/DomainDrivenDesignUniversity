@@ -13,13 +13,13 @@ public sealed class CachedOrderRepository : IOrderRepository
 {
     private readonly IOrderRepository _decorated;
     private readonly IFusionCache _fusionCache;
-    private readonly DbSet<Order> _orderDbSet;
+    private readonly ShopwayDbContext _context;
 
     public CachedOrderRepository(IOrderRepository decorated, IFusionCache fusionCache, ShopwayDbContext context)
     {
         _decorated = decorated;
         _fusionCache = fusionCache;
-        _orderDbSet = context.Set<Order>();
+        _context = context;
     }
 
     public async Task<Order> GetByIdAsync(OrderId id, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ public sealed class CachedOrderRepository : IOrderRepository
             cancellationToken
         );
 
-        return _orderDbSet.AttachAndReturn(order);
+        return _context.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(order);
     }
 
     public Task<Order> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken, params Expression<Func<Order, object>>[] includes)

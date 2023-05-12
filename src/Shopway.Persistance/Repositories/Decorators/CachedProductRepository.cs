@@ -8,6 +8,8 @@ using Shopway.Domain.EntityBusinessKeys;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.BaseTypes;
+using System.Collections.Generic;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -15,13 +17,13 @@ public sealed class CachedProductRepository : IProductRepository
 {
     private readonly IProductRepository _decorated;
     private readonly IFusionCache _fusionCache;
-    private readonly DbSet<Product> productDbSet;
+    private readonly ShopwayDbContext _context;
 
     public CachedProductRepository(IProductRepository decorated, IFusionCache fusionCache, ShopwayDbContext context)
     {
         _decorated = decorated;
         _fusionCache = fusionCache;
-        productDbSet = context.Set<Product>();
+        _context = context;
     }
 
     public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
@@ -34,7 +36,7 @@ public sealed class CachedProductRepository : IProductRepository
             cancellationToken
         );
 
-        return productDbSet.AttachAndReturn(product);
+        return _context.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(product);
     }
 
     public Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
