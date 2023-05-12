@@ -11,6 +11,7 @@ using System.Linq.Dynamic.Core;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
+using Shopway.Persistence.Utilities;
 
 namespace Shopway.Application.Pipelines.ValidationPipelines;
 
@@ -29,13 +30,14 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var referenceProperties = typeof(TRequest)
+        var entityIds = typeof(TRequest)
             .GetProperties()
-            .Where(prop => prop.PropertyType.GetInterfaces().Any(x => x == typeof(IEntityId)))
+            .Where(prop => prop.PropertyType.GetInterfaces().Any(interfaceType => interfaceType == typeof(IEntityId)))
+            .Select(entityId => entityId.GetValue(request) as IEntityId)
             .ToList();
 
-        Error[] errors = referenceProperties
-            .Select(async (reference) => await Validate(reference, request, cancellationToken))
+        Error[] errors = entityIds
+            .Select(async (entityId) => await Validate(entityId!, cancellationToken))
             .Select(task => task.Result)
             .Where(error => error != Error.None)
             .Distinct()
@@ -51,22 +53,16 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         return await next();
     }
 
-    private async Task<Error> Validate(PropertyInfo reference, TRequest request, CancellationToken cancellationToken)
+    private async Task<Error> Validate(IEntityId entityId, CancellationToken cancellationToken)
     {
-        //omit optional reference
-        if (reference.GetValue(request) is not IEntityId entityId || entityId is null || entityId.Value == Guid.Empty)
-        {
-            return Error.None;
-        }
+        var entityType = entityId.GetEntityTypeFromEntityId();
 
-        var entityType = reference.GetEntityTypeFromEntityId();
-
-        MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<TRequest, TResponse>)
+        MethodInfo checkCacheAndDatabasedMethod = GetType()
             .GetFirstGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityId.GetType());
 
         return await (Task<Error>)checkCacheAndDatabasedMethod.Invoke(this, new object[]
         {
-            $"any-{entityType}-{entityId}", //key is just for checking if the reference is correct.
+            entityId.ToCacheReferenceCheckKey(),
             entityId,
             cancellationToken
         })!;
@@ -87,14 +83,13 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             .Set<TEntity>()
             .AnyAsync(entityId, cancellationToken);
 
-        if (isEntityInDatabase is false)
+        if (isEntityInDatabase)
         {
-            return InvalidReference(entityId.Value, typeof(TEntity).Name);
+            //We should not store entities in cache using pipeline, therefore we store just null in cache
+            await _fusionCache.SetAsync(key, default(TEntity), token: cancellationToken);
+            return Error.None;
         }
 
-        //We will not store entities in cache by this pipeline, therefore we store just null in cache
-        await _fusionCache.SetAsync(key, default(TEntity), token: cancellationToken);
-
-        return Error.None;
+        return InvalidReference(entityId.Value, typeof(TEntity).Name);
     }
 }

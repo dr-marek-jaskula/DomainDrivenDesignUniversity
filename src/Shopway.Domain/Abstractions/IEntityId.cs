@@ -19,5 +19,6 @@ public interface IEntityId<out TEntity> : IEntityId
 
 public interface IEntityId
 {
+    public const string Id =  nameof(Id);
     public Guid Value { get; init; }
 }

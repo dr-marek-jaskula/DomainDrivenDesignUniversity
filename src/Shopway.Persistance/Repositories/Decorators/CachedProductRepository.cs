@@ -6,38 +6,35 @@ using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityBusinessKeys;
 using ZiggyCreatures.Caching.Fusion;
+using Shopway.Persistence.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
 public sealed class CachedProductRepository : IProductRepository
 {
     private readonly IProductRepository _decorated;
-    //Cache with fusion cache (Memory+Redis)
     private readonly IFusionCache _fusionCache;
-    //This is if we need to track the entity, when it is obtained from the Redis Cache
-    private readonly ShopwayDbContext _context;
+    private readonly DbSet<Product> productDbSet;
 
     public CachedProductRepository(IProductRepository decorated, IFusionCache fusionCache, ShopwayDbContext context)
     {
         _decorated = decorated;
         _fusionCache = fusionCache;
-        _context = context;
+        productDbSet = context.Set<Product>();
     }
 
     public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
     {
         var product = await _fusionCache.GetOrSetAsync
         (
-            $"{typeof(Product)}-{id}",
+            id.ToCacheKey(),
             cancellationToken => _decorated.GetByIdAsync(id, cancellationToken)!,
             TimeSpan.FromSeconds(30),
             cancellationToken
         );
 
-        //Make EF Core track the obtained entity
-        _context.Set<Product>().Attach(product!);
-
-        return product!;
+        return productDbSet.AttachAndReturn(product);
     }
 
     public Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
