@@ -6,6 +6,7 @@ using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityIds;
 using System.Linq.Expressions;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
@@ -72,9 +73,9 @@ public static class ProductMapping
         return new UpdateProductResponse(productToUpdate.Id.Value);
     }
 
-    public static RemoveProductResponse ToRemoveResponse(this Product productToRemove)
+    public static RemoveProductResponse ToRemoveResponse(this ProductId productIdToRemove)
     {
-        return new RemoveProductResponse(productToRemove.Id.Value);
+        return new RemoveProductResponse(productIdToRemove.Value);
     }
 
     public static CreateProductResponse ToCreateResponse(this Product productToCreate)

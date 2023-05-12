@@ -7,7 +7,7 @@ namespace Shopway.Domain.Abstractions.Repositories;
 
 public interface IProductRepository
 {
-    Task<Product> GetByKeyAsync(ProductKey key, CancellationToken cancellationToken);
+    Task<Product?> GetByKeyOrDefaultAsync(ProductKey key, CancellationToken cancellationToken);
 
     Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken);
 
@@ -21,5 +21,5 @@ public interface IProductRepository
 
     void Update(Product product);
 
-    void Remove(Product product);
+    void Remove(ProductId id);
 }

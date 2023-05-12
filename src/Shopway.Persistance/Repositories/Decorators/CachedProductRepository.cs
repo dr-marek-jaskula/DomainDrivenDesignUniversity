@@ -7,9 +7,7 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityBusinessKeys;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Utilities;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.BaseTypes;
-using System.Collections.Generic;
+using System.Threading;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -47,21 +45,24 @@ public sealed class CachedProductRepository : IProductRepository
     public void Create(Product product)
     {
         _decorated.Create(product);
+        _fusionCache.Set<Product, ProductId>(product);
     }
 
-    public void Remove(Product product)
+    public void Remove(ProductId id)
     {
-        _decorated.Remove(product);
+        _decorated.Remove(id);
+        _fusionCache.Remove(id);
     }
 
     public void Update(Product product)
     {
         _decorated.Update(product);
+        _fusionCache.Update<Product, ProductId>(product);
     }
 
-    public Task<Product> GetByKeyAsync(ProductKey key, CancellationToken cancellationToken)
+    public Task<Product?> GetByKeyOrDefaultAsync(ProductKey key, CancellationToken cancellationToken)
     {
-        return _decorated.GetByKeyAsync(key, cancellationToken);
+        return _decorated.GetByKeyOrDefaultAsync(key, cancellationToken);
     }
 
     public Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken)

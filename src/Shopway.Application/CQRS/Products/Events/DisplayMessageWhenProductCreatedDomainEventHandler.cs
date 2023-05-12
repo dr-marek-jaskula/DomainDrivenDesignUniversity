@@ -1,28 +1,17 @@
 ﻿using Shopway.Application.Abstractions;
-using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.DomainEvents;
 
 namespace Shopway.Application.CQRS.Products.Events;
 
 internal sealed class DisplayMessageWhenProductCreatedDomainEventHandler : IDomainEventHandler<ProductCreatedDomainEvent>
 {
-    private readonly IProductRepository _productRepository;
 
-    public DisplayMessageWhenProductCreatedDomainEventHandler(IProductRepository productRepository)
+    public DisplayMessageWhenProductCreatedDomainEventHandler()
     {
-        _productRepository = productRepository;
     }
 
-    public async Task Handle(ProductCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
+    public async Task Handle(ProductCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var product = await _productRepository
-            .GetByIdAsync(domainEvent.ProductId, cancellationToken);
-
-        if (product is null)
-        {
-            return;
-        }
-
-        Console.WriteLine("Product was created!");
+        await Console.Out.WriteLineAsync("Product was created!");
     }
 }

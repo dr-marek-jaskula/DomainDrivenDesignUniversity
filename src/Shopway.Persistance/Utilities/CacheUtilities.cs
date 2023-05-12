@@ -1,4 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.BaseTypes;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Utilities;
 
@@ -16,5 +18,27 @@ public static class CacheUtilities
         var typeName = entityId.GetType().Name[0..^skipAmount];
 
         return $"{typeName}-{entityId}";
+    }
+
+    public static void Update<TEntity, TEntityId>(this IFusionCache fusionCache, TEntity entity)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : IEntityId
+    {
+        fusionCache.Remove(entity.Id.ToCacheKey());
+        fusionCache.Set(entity.Id.ToCacheKey(), entity);
+    }
+
+    public static void Remove(this IFusionCache fusionCache, IEntityId entityId)
+    {
+        fusionCache.Remove(entityId.ToCacheKey());
+        fusionCache.Remove(entityId.ToCacheReferenceCheckKey());
+    }
+
+    public static void Set<TEntity, TEntityId>(this IFusionCache fusionCache, TEntity entity)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : IEntityId
+    {
+        fusionCache.Set(entity.Id.ToCacheKey(), entity);
+        fusionCache.Set(entity.Id.ToCacheReferenceCheckKey(), default(TEntity));
     }
 }

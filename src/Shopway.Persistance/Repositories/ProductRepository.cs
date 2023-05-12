@@ -19,12 +19,12 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
     }
 
-    public async Task<Product> GetByKeyAsync(ProductKey key, CancellationToken cancellationToken)
+    public async Task<Product?> GetByKeyOrDefaultAsync(ProductKey key, CancellationToken cancellationToken)
     {
         var specification = ProductByKeyQuerySpecification.Create(key);
 
         return await UseSpecificationWithoutMapping(specification)
-            .FirstAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken)
@@ -38,6 +38,8 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
     {
         var specification = ProductByIdWithReviewsQuerySpecification.Create(id);
+
+        await Console.Out.WriteLineAsync("Obtained from database");
 
         return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
@@ -81,12 +83,10 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
             .Update(product);
     }
 
-    public void Remove(Product product)
+    public void Remove(ProductId id)
     {
-        var entry = _dbContext
-            .Set<Product>()
-            .Attach(product);
-
-        entry.State = EntityState.Deleted;
+        _dbContext.Set<Product>()
+            .Where(product => product.Id == id)
+            .ExecuteDelete();
     }
 }
