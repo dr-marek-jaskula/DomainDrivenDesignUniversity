@@ -36,7 +36,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             .Select(entityId => entityId.GetValue(request) as IEntityId);
 
         Error[] errors = entityIds
-            .Select(async (entityId) => await Validate(entityId!, cancellationToken))
+            .Select(entityId => Validate(entityId!, cancellationToken))
             .Select(task => task.Result)
             .Where(error => error != Error.None)
             .Distinct()
