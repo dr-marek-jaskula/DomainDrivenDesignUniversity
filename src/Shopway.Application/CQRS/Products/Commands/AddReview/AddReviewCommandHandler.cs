@@ -29,8 +29,6 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
 
     public async Task<IResult<AddReviewResponse>> Handle(AddReviewCommand command, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
-
         ValidationResult<Title> titleResult = Title.Create(command.Body.Title);
         ValidationResult<Description> descriptionResult = Description.Create(command.Body.Description);
         ValidationResult<Username> usernameResult = Username.Create(_userContext.Username!);
@@ -46,6 +44,8 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
         {
             return _validator.Failure<AddReviewResponse>();
         }
+
+        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         _validator
             .If(product.AnyReview(titleResult.Value), thenError: AlreadyExists(ReviewKey.Create(product.ToProductKey(), titleResult.Value.Value)));
