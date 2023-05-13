@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
+using System.Threading;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Utilities;
@@ -40,5 +41,12 @@ public static class CacheUtilities
     {
         fusionCache.Set(entity.Id.ToCacheKey(), entity);
         fusionCache.Set(entity.Id.ToCacheReferenceCheckKey(), default(TEntity));
+    }
+
+    public static async Task<bool> AnyAsync<TEntity, TEntityId>(this IFusionCache fusionCache, string key, CancellationToken cancellationToken)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId
+    {
+        return (await fusionCache.TryGetAsync<TEntity>(key, null, cancellationToken)).HasValue;
     }
 }

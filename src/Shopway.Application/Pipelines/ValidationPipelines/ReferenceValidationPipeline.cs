@@ -70,7 +70,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     {
         var cacheReferenceCheckKey = entityId.ToCacheReferenceCheckKey();
 
-        var isEntityInCache = (await _fusionCache.TryGetAsync<TEntity>(cacheReferenceCheckKey, null, cancellationToken)).HasValue;
+        var isEntityInCache = await _fusionCache.AnyAsync<TEntity, TEntityId>(cacheReferenceCheckKey, cancellationToken);
 
         if (isEntityInCache)
         {
