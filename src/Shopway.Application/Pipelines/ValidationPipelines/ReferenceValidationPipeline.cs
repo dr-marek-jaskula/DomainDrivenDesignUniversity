@@ -59,17 +59,18 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
         return await (Task<Error>)checkCacheAndDatabasedMethod.Invoke(this, new object[]
         {
-            entityId.ToCacheReferenceCheckKey(),
             entityId,
             cancellationToken
         })!;
     }
 
-    public async Task<Error> CheckCacheAndDatabase<TEntity, TEntityId>(string key, TEntityId entityId, CancellationToken cancellationToken)
+    public async Task<Error> CheckCacheAndDatabase<TEntity, TEntityId>(TEntityId entityId, CancellationToken cancellationToken)
         where TEntity : Entity<TEntityId>
         where TEntityId : struct, IEntityId
     {
-        var isEntityInCache = (await _fusionCache.TryGetAsync<TEntity>(key, null, cancellationToken)).HasValue;
+        var cacheReferenceCheckKey = entityId.ToCacheReferenceCheckKey();
+
+        var isEntityInCache = (await _fusionCache.TryGetAsync<TEntity>(cacheReferenceCheckKey, null, cancellationToken)).HasValue;
 
         if (isEntityInCache)
         {
@@ -83,7 +84,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         if (isEntityInDatabase)
         {
             //We should not store entities in cache using this pipeline, therefore we just store null
-            await _fusionCache.SetAsync(key, default(TEntity), token: cancellationToken);
+            await _fusionCache.SetAsync(cacheReferenceCheckKey, default(TEntity), token: cancellationToken);
             return Error.None;
         }
 
