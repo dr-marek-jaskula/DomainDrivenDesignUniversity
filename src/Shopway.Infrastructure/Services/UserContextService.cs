@@ -4,6 +4,7 @@ using Shopway.Domain.Utilities;
 using Shopway.Infrastructure.Policies;
 using Shopway.Persistence.Abstractions;
 using System.Security.Claims;
+using System.Threading;
 
 namespace Shopway.Infrastructure.Services;
 
@@ -14,6 +15,8 @@ namespace Shopway.Infrastructure.Services;
 /// </summary>
 public sealed class UserContextService : IUserContextService
 {
+    // It is recommended to retrieve the HttoContext from the IHttpContextAccessor when it is needed, and use it only within the scope of the method or block of code that requires it.
+    //This way, you can ensure that each thread gets its own instance of the HttpContext object, and that it is not shared across threads.
     private readonly IHttpContextAccessor _httpContextAccessor;
     private const string _userNameProperty = "name";
 
