@@ -9,7 +9,9 @@ public sealed class ContainsMethod : ICustomRule
 
     public ContainsMethod(string methodName)
     {
-        _test = x => x.Methods.Any(x => x.Name == methodName);
+        _test = typeDefinition => typeDefinition
+            .Methods
+            .Any(methodDefinition => methodDefinition.Name == methodName);
     }
 
     public bool MeetsRule(TypeDefinition type)
