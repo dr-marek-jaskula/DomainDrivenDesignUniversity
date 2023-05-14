@@ -8,7 +8,7 @@ namespace Shopway.Domain.BaseTypes;
 /// </summary>
 /// <typeparam name="TEntityId">Type of entity id</typeparam>
 public abstract class AggregateRoot<TEntityId> : Entity<TEntityId>, IAggregateRoot
-    where TEntityId : IEntityId<TEntityId>, new()
+    where TEntityId : struct, IEntityId<TEntityId>
 {
     //This allow us to rise the different type of DomainEvents (it is only for AggregateRoots)
     private readonly List<IDomainEvent> _domainEvents = new();

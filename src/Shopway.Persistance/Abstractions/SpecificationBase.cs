@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 namespace Shopway.Persistence.Abstractions;
 
 internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResponse> : SpecificationBase<TEntity, TEntityId>
-    where TEntityId : IEntityId
+    where TEntityId : struct, IEntityId
     where TEntity : Entity<TEntityId>
 {
     internal Expression<Func<TEntity, TResponse>>? Select { get; private set; } = null;
@@ -19,7 +19,7 @@ internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TRespon
 }
 
 internal abstract class SpecificationBase<TEntity, TEntityId>
-    where TEntityId : IEntityId
+    where TEntityId : struct, IEntityId
     where TEntity : Entity<TEntityId>
 {
     //Flags

@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace Shopway.Persistence.Specifications;
 
 internal sealed class CommonQuerySpecificationWithMapping<TEntity, TEntityId, TResponse> : SpecificationWithMappingBase<TEntity, TEntityId, TResponse>
-    where TEntityId : IEntityId
+    where TEntityId : struct, IEntityId
     where TEntity : Entity<TEntityId>
 {
     private CommonQuerySpecificationWithMapping() : base()

@@ -23,7 +23,7 @@ public static class CacheUtilities
 
     public static void Update<TEntity, TEntityId>(this IFusionCache fusionCache, TEntity entity)
         where TEntity : Entity<TEntityId>
-        where TEntityId : IEntityId
+        where TEntityId : struct, IEntityId
     {
         fusionCache.Remove(entity.Id.ToCacheKey());
         fusionCache.Set(entity.Id.ToCacheKey(), entity);
@@ -37,7 +37,7 @@ public static class CacheUtilities
 
     public static void Set<TEntity, TEntityId>(this IFusionCache fusionCache, TEntity entity)
         where TEntity : Entity<TEntityId>
-        where TEntityId : IEntityId
+        where TEntityId : struct, IEntityId
     {
         fusionCache.Set(entity.Id.ToCacheKey(), entity);
         fusionCache.Set(entity.Id.ToCacheReferenceCheckKey(), default(TEntity));

@@ -3,7 +3,7 @@
 namespace Shopway.Domain.BaseTypes;
 
 public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>, IEntity
-    where TEntityId : IEntityId
+    where TEntityId : struct, IEntityId
 {
     protected Entity(TEntityId id)
     {

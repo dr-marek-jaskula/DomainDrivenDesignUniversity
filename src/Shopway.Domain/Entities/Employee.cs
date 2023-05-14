@@ -75,7 +75,7 @@ public sealed class Employee : Person
         return employee;
     }
 
-    public Result<WorkItem> AssignWrokItem(WorkItem workItem)
+    public Result<WorkItem> AssignWorkItem(WorkItem workItem)
     {
         if (_workItems.Contains(workItem))
         {

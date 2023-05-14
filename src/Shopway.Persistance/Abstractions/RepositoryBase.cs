@@ -24,7 +24,7 @@ public abstract class RepositoryBase
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
     private protected IQueryable<TEntity> UseSpecificationWithoutMapping<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
-        where TEntityId : IEntityId
+        where TEntityId : struct, IEntityId
         where TEntity : Entity<TEntityId>
     {
         IQueryable<TEntity> queryable = _dbContext.Set<TEntity>();
@@ -88,7 +88,7 @@ public abstract class RepositoryBase
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
     private protected IQueryable<TResponse> UseSpecificationWithMapping<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
-        where TEntityId : IEntityId
+        where TEntityId : struct, IEntityId
         where TEntity : Entity<TEntityId>
     {
         if (specification.Select is null)
