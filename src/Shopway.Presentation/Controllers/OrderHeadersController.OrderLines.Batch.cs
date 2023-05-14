@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 using static Shopway.Application.CQRS.BatchEntryStatus;
+using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 
 namespace Shopway.Presentation.Controllers;
 
 partial class OrderHeadersController
 {
-    [HttpPost("batch/insert")]
+    [HttpPost("batch/upsert")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BatchUpsertOrderLineResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> OrderLinesBatchInsert([FromBody] BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> OrderLinesBatchUpsert([FromBody] BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
 

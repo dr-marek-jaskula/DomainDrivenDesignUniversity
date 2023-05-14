@@ -729,7 +729,7 @@
 							"response": []
 						},
 						{
-							"name": "BatchInsertOrderLine.MultipleOrderLines.Valid",
+							"name": "BatchUpsertOrderLine.MultipleOrderLines.Valid",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -749,7 +749,7 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:7236/api/OrderHeaders/batch/insert",
+									"raw": "https://localhost:7236/api/OrderHeaders/batch/upsert",
 									"protocol": "https",
 									"host": [
 										"localhost"
@@ -759,7 +759,7 @@
 										"api",
 										"OrderHeaders",
 										"batch",
-										"insert"
+										"upsert"
 									]
 								}
 							},
