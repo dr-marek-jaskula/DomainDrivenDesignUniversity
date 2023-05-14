@@ -90,12 +90,12 @@ public static class ProductMapping
 
     public static ProductKey MapFromRequestToProductKey(ProductBatchUpsertRequest productBatchRequest)
     {
-        return ProductKey.Create(productBatchRequest.ProductKey.ProductName, productBatchRequest.ProductKey.Revision);
+        return productBatchRequest.ProductKey;
     }
 
     public static ProductKey ToProductKey(this ProductBatchUpsertRequest productBatchRequest)
     {
-        return ProductKey.Create(productBatchRequest.ProductKey.ProductName, productBatchRequest.ProductKey.Revision);
+        return productBatchRequest.ProductKey;
     }
 
     public static ProductKey ToProductKey(this Product product)

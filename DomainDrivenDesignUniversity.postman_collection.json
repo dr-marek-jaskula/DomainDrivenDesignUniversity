@@ -11,13 +11,134 @@
 			"name": "Products",
 			"item": [
 				{
+					"name": "Reviews",
+					"item": [
+						{
+							"name": "AddReview.Valid.RequireJwtToken",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjljNWY1M2M1LWU5NTktNDVjMS1iZjRiLWQ2YTEyMGQzYjYzNCIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2ODQ4MjgyMjIsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.VcnSwM-o6wdYAFDZm5NpigZO49wPXuKIcoE1wiNTFGI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle\",\r\n  \"Description\": \"Added review description\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7236/api/Products/{{validProductGuid}}/reviews",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7236",
+									"path": [
+										"api",
+										"Products",
+										"{{validProductGuid}}",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateReview.Valid.RequireJwtToken",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjI0NjA0ZWQ2LTEyODEtNGQ4Yi04NWJjLWJkNzdlNGY0ODdkMiIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2Nzc0OTM2NjYsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.dedqjZ1XvECzZULyDvmbnDUcC4XAmVAvv-3Hkh4UY8E",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"stars\" : 2,\r\n    \"description\" : \"Updated product description\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7236/api/Products/{{validProductGuid}}/Reviews/{{validReviewGuid}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7236",
+									"path": [
+										"api",
+										"Products",
+										"{{validProductGuid}}",
+										"Reviews",
+										"{{validReviewGuid}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteReview.Valid.RequireJwtToken",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjI0NjA0ZWQ2LTEyODEtNGQ4Yi04NWJjLWJkNzdlNGY0ODdkMiIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2Nzc0OTM2NjYsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.dedqjZ1XvECzZULyDvmbnDUcC4XAmVAvv-3Hkh4UY8E",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7236/api/Products/{{validProductGuid}}/Reviews/{{validReviewGuid}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7236",
+									"path": [
+										"api",
+										"Products",
+										"{{validProductGuid}}",
+										"Reviews",
+										"{{validReviewGuid}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "BatchUpsertProduct.MultipleProducts.Valid",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"requests\": [\r\n    {\r\n      \"productKey\" : {\r\n          \"productName\": \"firstProduct\",\r\n          \"revision\": \"1.0\"\r\n      },\r\n      \"price\": 111,\r\n      \"uomCode\": \"pcs\"\r\n    },\r\n    {\r\n      \"productKey\" : {\r\n          \"productName\": \"secondProduct\",\r\n          \"revision\": \"2.0\"\r\n      },\r\n      \"price\": 25,\r\n      \"uomCode\": \"kg\"\r\n    },\r\n    {\r\n      \"productKey\" : {\r\n          \"productName\": \"thridProduct2\",\r\n          \"revision\": \"3.0\"\r\n      },\r\n      \"price\": 132,\r\n      \"uomCode\": \"pcs\"\r\n    }\r\n  ]\r\n}",
+							"raw": "{\r\n  \"requests\": [\r\n    {\r\n      \"productKey\" : {\r\n          \"productName\": \"firstProduct\",\r\n          \"revision\": \"2.0\"\r\n      },\r\n      \"price\": 111,\r\n      \"uomCode\": \"pcs\"\r\n    },\r\n    {\r\n      \"productKey\" : {\r\n          \"productName\": \"secondProduct\",\r\n          \"revision\": \"2.0\"\r\n      },\r\n      \"price\": 25,\r\n      \"uomCode\": \"kg\"\r\n    },\r\n    {\r\n      \"productKey\" : {\r\n          \"productName\": \"thridProduct2\",\r\n          \"revision\": \"3.0\"\r\n      },\r\n      \"price\": 132,\r\n      \"uomCode\": \"pcs\"\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,13 +328,8 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"mode": "urlencoded",
+							"urlencoded": []
 						},
 						"url": {
 							"raw": "https://localhost:7236/api/products/{{validProductGuid}}",
@@ -560,26 +676,193 @@
 			]
 		},
 		{
-			"name": "Reviews",
+			"name": "Orders",
 			"item": [
 				{
-					"name": "AddReview.Valid.RequireJwtToken",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjljNWY1M2M1LWU5NTktNDVjMS1iZjRiLWQ2YTEyMGQzYjYzNCIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2ODMwMTM0MzIsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.tmYnBhmtq_j7BU4wBEzURjJsfyUGOzT9nVJHaXWXvC0",
-									"type": "string"
+					"name": "OrderLines",
+					"item": [
+						{
+							"name": "AddOrderLine.Valid",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjljNWY1M2M1LWU5NTktNDVjMS1iZjRiLWQ2YTEyMGQzYjYzNCIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2ODQ4MjgyMjIsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.VcnSwM-o6wdYAFDZm5NpigZO49wPXuKIcoE1wiNTFGI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Amount\": 5,\r\n  \"Discount\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderGuid}}/{{validProductGuid}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7236",
+									"path": [
+										"api",
+										"OrderHeaders",
+										"{{validOrderHeaderGuid}}",
+										"{{validProductGuid}}"
+									]
 								}
-							]
+							},
+							"response": []
 						},
+						{
+							"name": "BatchInsertOrderLine.MultipleOrderLines.Valid",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"requests\": [\r\n    {\r\n      \"OrderLineKey\" : {\r\n        \"ProductId\": \"08524a93-6c3d-4626-8b79-703b0ece392e\"\r\n      },\r\n        \"Amount\": 2,\r\n        \"Discount\": 0\r\n    },\r\n    {\r\n      \"OrderLineKey\" : {\r\n        \"ProductId\": \"fa73e7d6-33db-4c50-9b21-20012d7c4bff\"\r\n      },\r\n        \"Amount\": 3,\r\n        \"Discount\": 0.1\r\n    }\r\n  ],\r\n  \"OrderHeaderId\": \"b7598897-b448-430d-8564-b598155c614d\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7236/api/OrderHeaders/batch/insert",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7236",
+									"path": [
+										"api",
+										"OrderHeaders",
+										"batch",
+										"insert"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteOrderLine.ById.Valid",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
+										"type": "text"
+									},
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderGuid}}/OrderLines/{{validOrderLineGuid}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7236",
+									"path": [
+										"api",
+										"OrderHeaders",
+										"{{validOrderHeaderGuid}}",
+										"OrderLines",
+										"{{validOrderLineGuid}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateOrderLine.ById.Valid",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
+										"type": "text"
+									},
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Amount\": 54,\r\n  \"Discount\": 0.2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderGuid}}/OrderLines/{{validOrderLineGuid}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7236",
+									"path": [
+										"api",
+										"OrderHeaders",
+										"{{validOrderHeaderGuid}}",
+										"OrderLines",
+										"{{validOrderLineGuid}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CreateOrderHeader.Valid",
+					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "0.1",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle\",\r\n  \"Description\": \"Added review description\"\r\n}",
+							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Pencil\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -587,7 +870,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/Products/{{validProductGuid}}/reviews",
+							"raw": "https://localhost:7236/api/OrderHeaders",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -595,40 +878,30 @@
 							"port": "7236",
 							"path": [
 								"api",
-								"Products",
-								"{{validProductGuid}}",
-								"reviews"
+								"OrderHeaders"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "UpdateReview.Valid.RequireJwtToken",
+					"name": "GetOrderHeader.ById.Valid",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjI0NjA0ZWQ2LTEyODEtNGQ4Yi04NWJjLWJkNzdlNGY0ODdkMiIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2Nzc0OTM2NjYsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.dedqjZ1XvECzZULyDvmbnDUcC4XAmVAvv-3Hkh4UY8E",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"stars\" : 2,\r\n    \"description\" : \"Updated product description\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "0.1",
+								"type": "text"
 							}
-						},
+						],
 						"url": {
-							"raw": "https://localhost:7236/api/Products/{{validProductGuid}}/Reviews/{{validReviewGuid}}",
+							"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderGuid}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -636,43 +909,8 @@
 							"port": "7236",
 							"path": [
 								"api",
-								"Products",
-								"{{validProductGuid}}",
-								"Reviews",
-								"{{validReviewGuid}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DeleteReview.Valid.RequireJwtToken",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjI0NjA0ZWQ2LTEyODEtNGQ4Yi04NWJjLWJkNzdlNGY0ODdkMiIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2Nzc0OTM2NjYsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.dedqjZ1XvECzZULyDvmbnDUcC4XAmVAvv-3Hkh4UY8E",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://localhost:7236/api/Products/{{validProductGuid}}/Reviews/{{validReviewGuid}}",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "7236",
-							"path": [
-								"api",
-								"Products",
-								"{{validProductGuid}}",
-								"Reviews",
-								"{{validReviewGuid}}"
+								"OrderHeaders",
+								"{{validOrderHeaderGuid}}"
 							]
 						}
 					},
@@ -785,6 +1023,16 @@
 		{
 			"key": "emptyGuid",
 			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		},
+		{
+			"key": "validOrderHeaderGuid",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "validOrderLineGuid",
+			"value": "",
 			"type": "string"
 		}
 	]

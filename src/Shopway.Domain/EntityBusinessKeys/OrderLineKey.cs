@@ -5,20 +5,20 @@ namespace Shopway.Domain.EntityBusinessKeys;
 
 public readonly record struct OrderLineKey : IBusinessKey
 {
-    public readonly OrderLineId OrderLineId { get; }
+    public readonly ProductId ProductId { get; }
 
-    public OrderLineKey(OrderLineId orderLineId)
+    public OrderLineKey(ProductId productId)
     {
-        OrderLineId = orderLineId;
+        ProductId = productId;
     }
 
-    public static OrderLineKey Create(OrderLineId orderLineId)
+    public static OrderLineKey Create(ProductId productId)
     {
-        return new OrderLineKey(orderLineId);
+        return new OrderLineKey(productId);
     }
 
     public override string ToString()
     {
-        return $"OrderLine {{ Id: {OrderLineId} }}";
+        return $"OrderLine {{ Id: {ProductId} }}";
     }
 }

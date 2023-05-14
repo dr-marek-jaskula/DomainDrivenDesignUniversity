@@ -4,10 +4,10 @@ using Shopway.Application.CQRS.Orders.Commands.AddOrderLine;
 using Shopway.Application.CQRS.Orders.Commands.RemoveOrderLine;
 using Shopway.Application.CQRS.Orders.Commands.UpdateOrderLine;
 using Shopway.Application.CQRS;
-using Shopway.Application.CQRS.Orders.Commands.BatchInsertOrderLine;
+using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 using Shopway.Domain.EntityBusinessKeys;
-using static Shopway.Application.CQRS.Orders.Commands.BatchInsertOrderLine.BatchInsertOrderLineCommand;
-using Shopway.Domain.EntityIds;
+using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
+using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.Mappings;
 
@@ -50,13 +50,23 @@ public static class OrderLineMapping
         return new UpdateOrderLineResponse(orderLineToUpdate.Id.Value);
     }
 
-    public static BatchInsertOrderLineResponse ToBatchInsertResponse(this IList<BatchResponseEntry> batchResponseEntries)
+    public static BatchUpsertOrderLineResponse ToBatchInsertResponse(this IList<BatchResponseEntry> batchResponseEntries)
     {
-        return new BatchInsertOrderLineResponse(batchResponseEntries);
+        return new BatchUpsertOrderLineResponse(batchResponseEntries);
     }
 
-    public static OrderLineKey MapFromRequestToOrderLineKey(BatchInsertOrderLineRequest orderLineBatchRequest)
+    public static OrderLineKey MapFromRequestToOrderLineKey(BatchUpsertOrderLineRequest orderLineBatchRequest)
     {
-        return OrderLineKey.Create(OrderLineId.New());
+        return orderLineBatchRequest.OrderLineKey;
+    }
+
+    public static OrderLineKey ToOrderLineKey(this BatchUpsertOrderLineRequest orderLineBatchRequest)
+    {
+        return orderLineBatchRequest.OrderLineKey;
+    }
+
+    public static OrderLineKey ToOrderLineKey(this OrderLine orderLine)
+    {
+        return OrderLineKey.Create(orderLine.ProductId);
     }
 }
