@@ -17,10 +17,10 @@ internal sealed class GetOrderHeaderByIdQueryHandler : IQueryHandler<GetOrderHea
 
     public async Task<IResult<OrderHeaderResponse>> Handle(GetOrderHeaderByIdQuery query, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository
+        var orderHeader = await _orderRepository
             .GetByIdAsync(query.Id, cancellationToken);
 
-        return order
+        return orderHeader
             .ToResponse()
             .ToResult();
     }

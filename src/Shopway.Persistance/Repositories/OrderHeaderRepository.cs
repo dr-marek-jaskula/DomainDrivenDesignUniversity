@@ -18,9 +18,9 @@ public sealed class OrderHeaderRepository : RepositoryBase, IOrderHeaderReposito
     {
         return await _dbContext
             .Set<OrderHeader>()
-            .AsSplitQuery()
+            .Include(x => x.OrderLines)
+                .ThenInclude(line => line.Product)
             .Include(x => x.Payment)
-            .Include(x => x.User)
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
@@ -28,6 +28,7 @@ public sealed class OrderHeaderRepository : RepositoryBase, IOrderHeaderReposito
     {
         var baseQuery = _dbContext
             .Set<OrderHeader>()
+            .AsSplitQuery()
             .AsQueryable();
 
         if (includes.Any())
@@ -38,10 +39,8 @@ public sealed class OrderHeaderRepository : RepositoryBase, IOrderHeaderReposito
             }
         }
 
-        OrderHeader? order = await baseQuery
+        return await baseQuery
             .FirstAsync(x => x.Id == id, cancellationToken);
-
-        return order;
     }
 
     public void Create(OrderHeader order)

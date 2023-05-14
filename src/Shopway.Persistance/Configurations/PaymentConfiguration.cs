@@ -26,7 +26,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.Status)
-            .HasColumnType(ColumnTypes.VarChar(10))
+            .HasColumnType(ColumnTypes.VarChar(11))
             .HasConversion(status => status.ToString(), s => (PaymentStatus)Enum.Parse(typeof(PaymentStatus), s))
             .IsRequired(true);
 
