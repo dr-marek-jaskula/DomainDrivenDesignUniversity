@@ -34,10 +34,5 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
         builder.HasMany(o => o.OrderLines)
             .WithOne()
             .HasForeignKey(line => line.OrderHeaderId);
-
-        //Indexes
-        builder.HasIndex(o => o.Status)
-            .HasDatabaseName($"IX_{nameof(OrderLine)}_Status")
-            .HasFilter("Status NOT IN ('Rejected', 'OnHold')");
     }
 }

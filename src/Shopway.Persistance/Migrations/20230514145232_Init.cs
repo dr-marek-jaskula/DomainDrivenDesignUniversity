@@ -83,11 +83,11 @@ namespace Shopway.Persistence.Migrations
                     Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false),
                     Status = table.Column<string>(type: "VarChar(10)", nullable: false),
-                    OrderId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true)
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
+                    OrderHeaderId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -195,48 +195,6 @@ namespace Shopway.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Order",
-                schema: "Shopway",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "VarChar(10)", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    PaymentId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Order", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Order_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Master",
-                        principalTable: "Customer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Order_Payment_PaymentId",
-                        column: x => x.PaymentId,
-                        principalSchema: "Shopway",
-                        principalTable: "Payment",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Order_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalSchema: "Shopway",
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Review",
                 schema: "Shopway",
                 columns: table => new
@@ -292,6 +250,39 @@ namespace Shopway.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderHeader",
+                schema: "Shopway",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Status = table.Column<string>(type: "VarChar(10)", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
+                    PaymentId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderHeader", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderHeader_Payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalSchema: "Shopway",
+                        principalTable: "Payment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderHeader_User_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Master",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleUser",
                 schema: "Master",
                 columns: table => new
@@ -314,6 +305,40 @@ namespace Shopway.Persistence.Migrations
                         column: x => x.UserId,
                         principalSchema: "Master",
                         principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderLine",
+                schema: "Shopway",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Discount = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
+                    ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    OrderHeaderId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderLine", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderLine_OrderHeader_OrderHeaderId",
+                        column: x => x.OrderHeaderId,
+                        principalSchema: "Shopway",
+                        principalTable: "OrderHeader",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderLine_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalSchema: "Shopway",
+                        principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -370,31 +395,29 @@ namespace Shopway.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_CustomerId",
+                name: "IX_OrderHeader_PaymentId",
                 schema: "Shopway",
-                table: "Order",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Order_PaymentId",
-                schema: "Shopway",
-                table: "Order",
+                table: "OrderHeader",
                 column: "PaymentId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_ProductId_Status",
+                name: "IX_OrderHeader_UserId",
                 schema: "Shopway",
-                table: "Order",
-                columns: new[] { "ProductId", "Status" },
-                filter: "Status IN ('New', 'InProgress')");
+                table: "OrderHeader",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_OrderId_Status",
+                name: "IX_OrderLine_OrderHeaderId",
                 schema: "Shopway",
-                table: "Payment",
-                columns: new[] { "OrderId", "Status" },
-                filter: "Status <> 'Rejected'");
+                table: "OrderLine",
+                column: "OrderHeaderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderLine_ProductId",
+                schema: "Shopway",
+                table: "OrderLine",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Review_ProductId",
@@ -445,7 +468,7 @@ namespace Shopway.Persistence.Migrations
                 schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "Order",
+                name: "OrderLine",
                 schema: "Shopway");
 
             migrationBuilder.DropTable(
@@ -469,7 +492,7 @@ namespace Shopway.Persistence.Migrations
                 schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "Payment",
+                name: "OrderHeader",
                 schema: "Shopway");
 
             migrationBuilder.DropTable(
@@ -483,6 +506,10 @@ namespace Shopway.Persistence.Migrations
             migrationBuilder.DropTable(
                 name: "Role",
                 schema: "Master");
+
+            migrationBuilder.DropTable(
+                name: "Payment",
+                schema: "Shopway");
 
             migrationBuilder.DropTable(
                 name: "User",

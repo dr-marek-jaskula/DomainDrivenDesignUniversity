@@ -61,7 +61,7 @@ namespace Shopway.Persistence.Migrations
                     b.ToTable("Customer", "Master");
                 });
 
-            modelBuilder.Entity("Shopway.Domain.Entities.Order", b =>
+            modelBuilder.Entity("Shopway.Domain.Entities.OrderHeader", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
@@ -73,13 +73,7 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("UniqueIdentifier");
-
                     b.Property<Guid>("PaymentId")
-                        .HasColumnType("UniqueIdentifier");
-
-                    b.Property<Guid>("ProductId")
                         .HasColumnType("UniqueIdentifier");
 
                     b.Property<string>("Status")
@@ -92,18 +86,50 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("UniqueIdentifier");
 
-                    b.HasIndex("CustomerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PaymentId")
                         .IsUnique();
 
-                    b.HasIndex("ProductId", "Status")
-                        .HasDatabaseName("IX_Order_ProductId_Status")
-                        .HasFilter("Status IN ('New', 'InProgress')");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Order", "Shopway");
+                    b.ToTable("OrderHeader", "Shopway");
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Entities.OrderLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("UniqueIdentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
+
+                    b.Property<Guid>("OrderHeaderId")
+                        .HasColumnType("UniqueIdentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("UniqueIdentifier");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("VarChar(30)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("DateTimeOffset(2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderLine", "Shopway");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Payment", b =>
@@ -118,7 +144,7 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid>("OrderHeaderId")
                         .HasColumnType("UniqueIdentifier");
 
                     b.Property<string>("Status")
@@ -132,9 +158,6 @@ namespace Shopway.Persistence.Migrations
                         .HasColumnType("DateTimeOffset(2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "OrderId", "Status" }, "IX_Payment_OrderId_Status")
-                        .HasFilter("Status <> 'Rejected'");
 
                     b.ToTable("Payment", "Shopway");
                 });
@@ -550,17 +573,30 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Shopway.Domain.Entities.Order", b =>
+            modelBuilder.Entity("Shopway.Domain.Entities.OrderHeader", b =>
                 {
-                    b.HasOne("Shopway.Domain.Entities.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
+                    b.HasOne("Shopway.Domain.Entities.Payment", "Payment")
+                        .WithOne("OrderHeader")
+                        .HasForeignKey("Shopway.Domain.Entities.OrderHeader", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shopway.Domain.Entities.Payment", "Payment")
-                        .WithOne()
-                        .HasForeignKey("Shopway.Domain.Entities.Order", "PaymentId")
+                    b.HasOne("Shopway.Domain.Entities.User", "User")
+                        .WithMany("OrderHeaders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Payment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Entities.OrderLine", b =>
+                {
+                    b.HasOne("Shopway.Domain.Entities.OrderHeader", null)
+                        .WithMany("OrderLines")
+                        .HasForeignKey("OrderHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -570,36 +606,53 @@ namespace Shopway.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Shopway.Domain.ValueObjects.Discount", "LineDiscount", b1 =>
+                        {
+                            b1.Property<Guid>("OrderLineId")
+                                .HasColumnType("UniqueIdentifier");
+
+                            b1.Property<decimal>("Value")
+                                .HasPrecision(3, 2)
+                                .HasColumnType("decimal(3,2)")
+                                .HasColumnName("Discount");
+
+                            b1.HasKey("OrderLineId");
+
+                            b1.ToTable("OrderLine", "Shopway");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderLineId");
+                        });
+
                     b.OwnsOne("Shopway.Domain.ValueObjects.Amount", "Amount", b1 =>
                         {
-                            b1.Property<Guid>("OrderId")
+                            b1.Property<Guid>("OrderLineId")
                                 .HasColumnType("UniqueIdentifier");
 
                             b1.Property<int>("Value")
                                 .HasColumnType("int")
                                 .HasColumnName("Amount");
 
-                            b1.HasKey("OrderId");
+                            b1.HasKey("OrderLineId");
 
-                            b1.ToTable("Order", "Shopway");
+                            b1.ToTable("OrderLine", "Shopway");
 
                             b1.WithOwner()
-                                .HasForeignKey("OrderId");
+                                .HasForeignKey("OrderLineId");
                         });
 
                     b.Navigation("Amount")
                         .IsRequired();
 
-                    b.Navigation("Customer");
-
-                    b.Navigation("Payment");
+                    b.Navigation("LineDiscount")
+                        .IsRequired();
 
                     b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Payment", b =>
                 {
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Discount", "Discount", b1 =>
+                    b.OwnsOne("Shopway.Domain.ValueObjects.Discount", "TotalDiscount", b1 =>
                         {
                             b1.Property<Guid>("PaymentId")
                                 .HasColumnType("UniqueIdentifier");
@@ -617,7 +670,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("PaymentId");
                         });
 
-                    b.Navigation("Discount")
+                    b.Navigation("TotalDiscount")
                         .IsRequired();
                 });
 
@@ -919,15 +972,29 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Customer", b =>
                 {
-                    b.Navigation("Orders");
-
                     b.Navigation("User")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Entities.OrderHeader", b =>
+                {
+                    b.Navigation("OrderLines");
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Entities.Payment", b =>
+                {
+                    b.Navigation("OrderHeader")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Entities.User", b =>
+                {
+                    b.Navigation("OrderHeaders");
                 });
 #pragma warning restore 612, 618
         }
