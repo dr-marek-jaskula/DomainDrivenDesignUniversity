@@ -9,12 +9,14 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Order : AggregateRoot<OrderId>, IAuditable
 {
-    private Order(
+    private Order
+    (
         OrderId id,
         ProductId productId,
         Amount amount,
-        PersonId customerId,
-        Discount discount)
+        CustomerId customerId,
+        Discount discount
+    )
         : base(id)
     {
         ProductId = productId;
@@ -40,21 +42,25 @@ public sealed class Order : AggregateRoot<OrderId>, IAuditable
     public Payment Payment { get; private set; }
     public PaymentId PaymentId { get; private set; }
     public Customer Customer { get; private set; }
-    public PersonId CustomerId { get; private set; }
+    public CustomerId CustomerId { get; private set; }
 
-    public static Order Create(
+    public static Order Create
+    (
         OrderId id,
         ProductId productId,
         Amount amount,
-        PersonId customerId,
-        Discount discount)
+        CustomerId customerId,
+        Discount discount
+    )
     {
-        var order = new Order(
+        var order = new Order
+        (
             id,
             productId,
             amount,
             customerId,
-            discount);
+            discount
+        );
 
         order.RaiseDomainEvent(OrderCreatedDomainEvent.New(order.Id));
 

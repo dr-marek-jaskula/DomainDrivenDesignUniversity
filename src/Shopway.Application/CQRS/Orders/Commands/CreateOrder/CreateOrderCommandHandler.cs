@@ -55,7 +55,7 @@ internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCom
             id: OrderId.New(),
             productId: ProductId.Create(command.ProductId),
             amount: amountResult.Value,
-            customerId: PersonId.Create(command.CustomerId),
+            customerId: CustomerId.Create(command.CustomerId),
             discount: discountResult.Value
         );
 

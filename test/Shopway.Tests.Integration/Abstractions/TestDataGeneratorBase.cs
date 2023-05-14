@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Entities.Parents;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Tests.Integration.Utilities;
@@ -80,11 +79,9 @@ public abstract class TestDataGeneratorBase
 
         _unitOfWork.Context.Set<Product>().RemoveTestData();
         _unitOfWork.Context.Set<Review>().RemoveTestData();
-        _unitOfWork.Context.Set<Person>().RemoveTestData();
         _unitOfWork.Context.Set<User>().RemoveTestData();
         _unitOfWork.Context.Set<Order>().RemoveTestData();
         _unitOfWork.Context.Set<Payment>().RemoveTestData();
-        _unitOfWork.Context.Set<WorkItem>().RemoveTestData();
 
         _unitOfWork.Context.Database.SetCommandTimeout(TimeSpan.FromMinutes(2));
 

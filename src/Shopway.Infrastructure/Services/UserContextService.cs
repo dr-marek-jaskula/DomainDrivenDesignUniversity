@@ -33,13 +33,13 @@ public sealed class UserContextService : IUserContextService
 
     public string? Username => User?.FindFirstValue(_userNameProperty);
 
-    public PersonId? PersonId
+    public CustomerId? CustomerId
     {
         get
         {
-            if (User?.FindFirstValue(ClaimPolicies.PersonId) is string stringPersonId && stringPersonId.NotNullOrEmptyOrWhiteSpace())
+            if (User?.FindFirstValue(ClaimPolicies.CustomerId) is string stringCustomerId && stringCustomerId.NotNullOrEmptyOrWhiteSpace())
             {
-                return Domain.EntityIds.PersonId.Create(Guid.Parse(stringPersonId));
+                return Domain.EntityIds.CustomerId.Create(Guid.Parse(stringCustomerId));
             }
 
             return null;

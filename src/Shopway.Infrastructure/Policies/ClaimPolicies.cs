@@ -3,5 +3,5 @@
 public static class ClaimPolicies
 {
 
-    public const string PersonId = nameof(PersonId);
+    public const string CustomerId = nameof(CustomerId);
 }

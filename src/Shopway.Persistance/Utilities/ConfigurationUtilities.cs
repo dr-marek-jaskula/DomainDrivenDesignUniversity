@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Shopway.Persistence.Utilities;
 
-public static class ConfigureUtilities
+public static class ConfigurationUtilities
 {
     public static EntityTypeBuilder<TEntity> ConfigureAuditableEntity<TEntity>(this EntityTypeBuilder<TEntity> builder)
         where TEntity : class, IEntity, IAuditable

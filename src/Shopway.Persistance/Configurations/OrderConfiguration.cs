@@ -16,6 +16,7 @@ internal sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Or
         builder.ToTable(TableNames.Order, SchemaNames.Shopway);
 
         builder.HasKey(o => o.Id);
+
         builder.Property(o => o.Id)
             .HasConversion(id => id.Value, guid => OrderId.Create(guid))
             .HasColumnType(ColumnTypes.UniqueIdentifier);

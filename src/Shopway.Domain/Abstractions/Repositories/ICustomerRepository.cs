@@ -6,9 +6,9 @@ namespace Shopway.Domain.Abstractions.Repositories;
 
 public interface ICustomerRepository
 {
-    Task<Customer?> GetByIdAsync(PersonId id, CancellationToken cancellationToken);
+    Task<Customer?> GetByIdAsync(CustomerId id, CancellationToken cancellationToken);
 
-    Task<Customer?> GetByIdWithIncludesAsync(PersonId id, CancellationToken cancellationToken, params Expression<Func<Order, object?>>[] includes);
+    Task<Customer?> GetByIdWithIncludesAsync(CustomerId id, CancellationToken cancellationToken, params Expression<Func<Order, object?>>[] includes);
 
     Task<Customer?> GetAll(CancellationToken cancellationToken);
 

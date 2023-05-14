@@ -28,9 +28,9 @@ internal sealed class JwtProvider : IJwtProvider
             new(ClaimTypes.NameIdentifier, user.Id.Value.ToString()),
             new(JwtRegisteredClaimNames.Name, user.Username.Value),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
-            new(ClaimPolicies.PersonId, user switch
+            new(ClaimPolicies.CustomerId, user switch
             {
-                { PersonId: not null } => $"{user.PersonId}",
+                { CustomerId: not null } => $"{user.CustomerId}",
                 _ => string.Empty
             })
         };

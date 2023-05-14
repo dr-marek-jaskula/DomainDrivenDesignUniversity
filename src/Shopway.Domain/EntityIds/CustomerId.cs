@@ -2,23 +2,23 @@
 
 namespace Shopway.Domain.EntityIds;
 
-public readonly record struct WorkItemId : IEntityId<WorkItemId>
+public readonly record struct CustomerId : IEntityId<CustomerId>
 {
-    private WorkItemId(Guid id)
+    private CustomerId(Guid id)
     {
         Value = id;
     }
 
     public Guid Value { get; init; }
 
-    public static WorkItemId New()
+    public static CustomerId New()
     {
-        return new WorkItemId(Guid.NewGuid());
+        return new CustomerId(Guid.NewGuid());
     }
 
-    public static WorkItemId Create(Guid id)
+    public static CustomerId Create(Guid id)
     {
-        return new WorkItemId(id);
+        return new CustomerId(id);
     }
 
     public override int GetHashCode()

@@ -22,8 +22,28 @@ namespace Shopway.Persistence.Migrations
             migrationBuilder.EnsureSchema(
                 name: "Outbox");
 
-            migrationBuilder.EnsureSchema(
-                name: "Workflow");
+            migrationBuilder.CreateTable(
+                name: "Customer",
+                schema: "Master",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Gender = table.Column<string>(type: "VarChar(7)", nullable: false),
+                    Rank = table.Column<string>(type: "VarChar(8)", nullable: false, defaultValue: "Standard"),
+                    DateOfBirth = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
+                    UserId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customer", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "OutboxMessage",
@@ -31,11 +51,11 @@ namespace Shopway.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "VarChar(100)", nullable: false),
+                    Content = table.Column<string>(type: "VarChar(5000)", nullable: false),
                     OccurredOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ProcessedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Error = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Error = table.Column<string>(type: "VarChar(8000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -123,6 +143,100 @@ namespace Shopway.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Address",
+                schema: "Master",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Building = table.Column<int>(type: "int", maxLength: 1000, nullable: false),
+                    Flat = table.Column<int>(type: "int", maxLength: 1000, nullable: true),
+                    CustomerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Address_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalSchema: "Master",
+                        principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                schema: "Master",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "NChar(514)", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalSchema: "Master",
+                        principalTable: "Customer",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Order",
+                schema: "Shopway",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "VarChar(10)", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
+                    ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    PaymentId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Order_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalSchema: "Master",
+                        principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Order_Payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalSchema: "Shopway",
+                        principalTable: "Payment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Order_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalSchema: "Shopway",
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Review",
                 schema: "Shopway",
                 columns: table => new
@@ -175,184 +289,6 @@ namespace Shopway.Persistence.Migrations
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Address",
-                schema: "Master",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ZipCode = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Building = table.Column<int>(type: "int", maxLength: 1000, nullable: false),
-                    Flat = table.Column<int>(type: "int", maxLength: 1000, nullable: true),
-                    PersonId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Address", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customer",
-                schema: "Master",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    Rank = table.Column<string>(type: "VarChar(8)", nullable: false, defaultValue: "Standard")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Order",
-                schema: "Shopway",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "VarChar(10)", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    PaymentId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Order", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Order_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Master",
-                        principalTable: "Customer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Order_Payment_PaymentId",
-                        column: x => x.PaymentId,
-                        principalSchema: "Shopway",
-                        principalTable: "Payment",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Order_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalSchema: "Shopway",
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employee",
-                schema: "Master",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    HireDate = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
-                    ManagerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employee", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employee_Employee_ManagerId",
-                        column: x => x.ManagerId,
-                        principalSchema: "Master",
-                        principalTable: "Employee",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Person",
-                schema: "Master",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Gender = table.Column<string>(type: "VarChar(7)", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    DateOfBirth = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    EmployeeId = table.Column<Guid>(type: "UniqueIdentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Person", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Person_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalSchema: "Master",
-                        principalTable: "Employee",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkItem",
-                schema: "Workflow",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    Priority = table.Column<byte>(type: "TinyInt", nullable: false, defaultValue: (byte)0),
-                    Status = table.Column<string>(type: "VarChar(10)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(600)", maxLength: 600, nullable: false),
-                    StoryPoints = table.Column<byte>(type: "TinyInt", nullable: false, defaultValue: (byte)1),
-                    EmployeeId = table.Column<Guid>(type: "UniqueIdentifier", nullable: true),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkItem_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalSchema: "Master",
-                        principalTable: "Employee",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                schema: "Master",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    PasswordHash = table.Column<string>(type: "NChar(514)", nullable: false),
-                    PersonId = table.Column<Guid>(type: "UniqueIdentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_Person_PersonId",
-                        column: x => x.PersonId,
-                        principalSchema: "Master",
-                        principalTable: "Person",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -427,17 +363,11 @@ namespace Shopway.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_PersonId",
+                name: "IX_Address_CustomerId",
                 schema: "Master",
                 table: "Address",
-                column: "PersonId",
+                column: "CustomerId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employee_ManagerId",
-                schema: "Master",
-                table: "Employee",
-                column: "ManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerId",
@@ -467,19 +397,6 @@ namespace Shopway.Persistence.Migrations
                 filter: "Status <> 'Rejected'");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Person_EmployeeId",
-                schema: "Master",
-                table: "Person",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "UX_Person_Email",
-                schema: "Master",
-                table: "Person",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Review_ProductId",
                 schema: "Shopway",
                 table: "Review",
@@ -498,12 +415,12 @@ namespace Shopway.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_PersonId",
+                name: "IX_User_CustomerId",
                 schema: "Master",
                 table: "User",
-                column: "PersonId",
+                column: "CustomerId",
                 unique: true,
-                filter: "[PersonId] IS NOT NULL");
+                filter: "[CustomerId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UX_User_Email",
@@ -518,52 +435,11 @@ namespace Shopway.Persistence.Migrations
                 table: "User",
                 column: "Username",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkItem_EmployeeId",
-                schema: "Workflow",
-                table: "WorkItem",
-                column: "EmployeeId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Address_Person_PersonId",
-                schema: "Master",
-                table: "Address",
-                column: "PersonId",
-                principalSchema: "Master",
-                principalTable: "Person",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Customer_Person_Id",
-                schema: "Master",
-                table: "Customer",
-                column: "Id",
-                principalSchema: "Master",
-                principalTable: "Person",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Employee_Person_Id",
-                schema: "Master",
-                table: "Employee",
-                column: "Id",
-                principalSchema: "Master",
-                principalTable: "Person",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Employee_Person_Id",
-                schema: "Master",
-                table: "Employee");
-
             migrationBuilder.DropTable(
                 name: "Address",
                 schema: "Master");
@@ -593,14 +469,6 @@ namespace Shopway.Persistence.Migrations
                 schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "WorkItem",
-                schema: "Workflow");
-
-            migrationBuilder.DropTable(
-                name: "Customer",
-                schema: "Master");
-
-            migrationBuilder.DropTable(
                 name: "Payment",
                 schema: "Shopway");
 
@@ -621,11 +489,7 @@ namespace Shopway.Persistence.Migrations
                 schema: "Master");
 
             migrationBuilder.DropTable(
-                name: "Person",
-                schema: "Master");
-
-            migrationBuilder.DropTable(
-                name: "Employee",
+                name: "Customer",
                 schema: "Master");
         }
     }

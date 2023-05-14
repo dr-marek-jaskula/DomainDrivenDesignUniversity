@@ -1,7 +1,6 @@
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.DomainEvents;
-using Shopway.Domain.Entities.Parents;
 using Shopway.Domain.Enumerations;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
@@ -31,8 +30,8 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     public string CreatedBy { get; set; }
     public string? UpdatedBy { get; set; }
     public PasswordHash PasswordHash { get; set; }
-    public PersonId? PersonId { get; set; }
-    public Person? Person { get; set; }
+    public CustomerId? CustomerId { get; set; }
+    public Customer? Customer { get; set; }
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     public static User Create(UserId id, Username username, Email email)

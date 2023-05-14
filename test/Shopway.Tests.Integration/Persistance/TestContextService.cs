@@ -16,5 +16,5 @@ public sealed class TestContextService : IUserContextService
 
     public string? Username => TestUser.Username;
 
-    public PersonId? PersonId => null;
+    public CustomerId? CustomerId => null;
 }
