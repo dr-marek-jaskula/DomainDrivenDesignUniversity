@@ -8,16 +8,16 @@ namespace Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 
 internal sealed class GetOrderHeaderByIdQueryHandler : IQueryHandler<GetOrderHeaderByIdQuery, OrderHeaderResponse>
 {
-    private readonly IOrderHeaderRepository _orderRepository;
+    private readonly IOrderHeaderRepository _orderHeaderRepository;
 
     public GetOrderHeaderByIdQueryHandler(IOrderHeaderRepository orderRepository)
     {
-        _orderRepository = orderRepository;
+        _orderHeaderRepository = orderRepository;
     }
 
     public async Task<IResult<OrderHeaderResponse>> Handle(GetOrderHeaderByIdQuery query, CancellationToken cancellationToken)
     {
-        var orderHeader = await _orderRepository
+        var orderHeader = await _orderHeaderRepository
             .GetByIdAsync(query.Id, cancellationToken);
 
         return orderHeader

@@ -9,5 +9,6 @@ public sealed record OrderLineResponse
     decimal LineDiscount,
     string ProductName,
     string Revision,
-    decimal ProductPrice
+    decimal ProductPrice,
+    decimal OrderLineCost
 ) : IResponse;

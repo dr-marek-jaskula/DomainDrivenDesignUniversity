@@ -14,12 +14,12 @@ namespace Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
 
 internal sealed class CreateOrderHeaderCommandHandler : ICommandHandler<CreateOrderHeaderCommand, CreateOrderHeaderResponse>
 {
-    private readonly IOrderHeaderRepository _orderRepository;
+    private readonly IOrderHeaderRepository _orderHeaderRepository;
     private readonly IValidator _validator;
 
     public CreateOrderHeaderCommandHandler(IOrderHeaderRepository orderRepository, IValidator validator)
     {
-        _orderRepository = orderRepository;
+        _orderHeaderRepository = orderRepository;
         _validator = validator;
     }
 
@@ -55,7 +55,7 @@ internal sealed class CreateOrderHeaderCommandHandler : ICommandHandler<CreateOr
             discount: discountResult.Value
         );
 
-        _orderRepository.Create(orderToCreate);
+        _orderHeaderRepository.Create(orderToCreate);
 
         return orderToCreate;
     }

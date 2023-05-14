@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shopway.Application.CQRS.Orders.Commands.AddOrderLine;
 using Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
 using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
@@ -10,9 +11,9 @@ using Shopway.Presentation.Abstractions;
 namespace Shopway.Presentation.Controllers;
 
 [ApiVersion("0.1", Deprecated = true)]
-public sealed class OrdersHeaderController : ApiController
+public sealed class OrderHeadersController : ApiController
 {
-    public OrdersHeaderController(ISender sender)
+    public OrderHeadersController(ISender sender)
         : base(sender)
     {
     }
@@ -47,6 +48,29 @@ public sealed class OrdersHeaderController : ApiController
         }
 
         return CreatedAtActionResult(response, nameof(GetOrderHeaderById));
+    }
+
+    [HttpPost($"{{orderHeaderId}}/{{productId}}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddOrderLineResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> AddReview
+    (
+        [FromRoute] OrderHeaderId orderHeaderId,
+        [FromRoute] ProductId productId,
+        [FromBody] AddOrderLineCommand.AddOrderLineRequestBody body,
+        CancellationToken cancellationToken
+    )
+    {
+        var command = new AddOrderLineCommand(orderHeaderId, productId, body);
+
+        var result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return Ok(result.Value);
     }
 }
 

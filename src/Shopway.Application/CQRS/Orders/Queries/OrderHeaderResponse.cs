@@ -6,7 +6,8 @@ namespace Shopway.Application.CQRS.Orders.Queries;
 public sealed record OrderHeaderResponse
 (
     Guid Id,
-    OrderStatus Status,
+    OrderStatus OrderStatus,
+    PaymentStatus PaymentStatus,
     decimal TotalPayment,
     decimal TotalDiscount,
     IReadOnlyCollection<OrderLineResponse> OrderLines

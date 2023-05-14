@@ -12,6 +12,7 @@ public static class OrderHeaderMapping
         (
             orderHeader.Id.Value,
             orderHeader.Status,
+            orderHeader.Payment.Status,
             orderHeader.Payment.CalculateTotalPayment(),
             orderHeader.Payment.TotalDiscount.Value,
             orderHeader.OrderLines.ToResponses()

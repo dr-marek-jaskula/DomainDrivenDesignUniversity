@@ -58,4 +58,13 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
 
         return orderHeader;
     }
+
+    public OrderLine AddOrderLine(OrderLine orderLine)
+    {
+        _orderLines.Add(orderLine);
+
+        RaiseDomainEvent(OrderLineAddedDomainEvent.New(orderLine.Id, Id));
+
+        return orderLine;
+    }
 }
