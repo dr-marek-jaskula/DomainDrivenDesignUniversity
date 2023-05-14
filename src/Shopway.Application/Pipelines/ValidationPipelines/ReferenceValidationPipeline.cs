@@ -55,7 +55,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         var entityType = entityId.GetEntityTypeFromEntityId();
 
         MethodInfo checkCacheAndDatabasedMethod = GetType()
-            .GetFirstGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityId.GetType());
+            .GetSingleGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityId.GetType());
 
         return await (Task<Error>)checkCacheAndDatabasedMethod.Invoke(this, new object[]
         {

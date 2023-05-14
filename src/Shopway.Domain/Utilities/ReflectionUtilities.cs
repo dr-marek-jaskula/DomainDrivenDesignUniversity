@@ -29,12 +29,12 @@ public static class ReflectionUtilities
             .Single();
     }
 
-    public static MethodInfo GetFirstGenericMethod(this Type baseType, string methodName, params Type[] genericType)
+    public static MethodInfo GetSingleGenericMethod(this Type baseType, string methodName, params Type[] genericType)
     {
         var methodFormBaseType = baseType
             .GetMethods()
             .Where(method => method.Name == methodName)
-            .First()!;
+            .Single();
 
         return methodFormBaseType.MakeGenericMethod(genericType);
     }
