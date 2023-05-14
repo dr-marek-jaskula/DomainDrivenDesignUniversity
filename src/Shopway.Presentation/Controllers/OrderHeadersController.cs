@@ -11,7 +11,7 @@ using Shopway.Presentation.Abstractions;
 namespace Shopway.Presentation.Controllers;
 
 [ApiVersion("0.1", Deprecated = true)]
-public sealed class OrderHeadersController : ApiController
+public sealed partial class OrderHeadersController : ApiController
 {
     public OrderHeadersController(ISender sender)
         : base(sender)
@@ -48,29 +48,6 @@ public sealed class OrderHeadersController : ApiController
         }
 
         return CreatedAtActionResult(response, nameof(GetOrderHeaderById));
-    }
-
-    [HttpPost($"{{orderHeaderId}}/{{productId}}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddOrderLineResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> AddReview
-    (
-        [FromRoute] OrderHeaderId orderHeaderId,
-        [FromRoute] ProductId productId,
-        [FromBody] AddOrderLineCommand.AddOrderLineRequestBody body,
-        CancellationToken cancellationToken
-    )
-    {
-        var command = new AddOrderLineCommand(orderHeaderId, productId, body);
-
-        var result = await Sender.Send(command, cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return Ok(result.Value);
     }
 }
 

@@ -67,4 +67,9 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
 
         return orderLine;
     }
+
+    public bool RemoveOrderLine(OrderLine orderLine)
+    {
+        return _orderLines.Remove(orderLine);
+    }
 }

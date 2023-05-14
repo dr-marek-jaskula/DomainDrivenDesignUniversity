@@ -63,4 +63,14 @@ public sealed class OrderLine : Entity<OrderLineId>, IAuditable
     {
         return Math.Round(Product.Price.Value * Amount.Value * (1 - LineDiscount.Value), 2);
     }
+
+    public void UpdateAmount(Amount amount)
+    {
+        Amount = amount;
+    }
+
+    public void UpdateDiscount(Discount discount)
+    {
+        LineDiscount = discount;
+    }
 }
