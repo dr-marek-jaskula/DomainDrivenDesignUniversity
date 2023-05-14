@@ -10,6 +10,7 @@ namespace Shopway.Domain.Entities;
 public sealed class User : AggregateRoot<UserId>, IAuditable
 {
     private readonly List<Role> _roles = new();
+    private readonly List<OrderHeader> _orderHeaders = new();
 
     private User(UserId id, Username username, Email email)
         : base(id)
@@ -33,6 +34,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     public CustomerId? CustomerId { get; set; }
     public Customer? Customer { get; set; }
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
+    public IReadOnlyCollection<OrderHeader> OrderHeaders => _orderHeaders.AsReadOnly();
 
     public static User Create(UserId id, Username username, Email email)
     {

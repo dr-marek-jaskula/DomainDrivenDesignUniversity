@@ -1,16 +1,13 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
-using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Application.CQRS.Orders.Queries;
 
-public sealed record OrderResponse
+public sealed record OrderHeaderResponse
 (
     Guid Id,
-    Amount Amount,
-    Status Status,
-    Product Product,
+    OrderStatus Status,
     Payment Payment,
-    Customer Customer
+    User User
 ) : IResponse;

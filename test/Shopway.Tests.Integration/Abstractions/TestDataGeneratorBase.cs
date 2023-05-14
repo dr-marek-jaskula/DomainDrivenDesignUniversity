@@ -80,7 +80,7 @@ public abstract class TestDataGeneratorBase
         _unitOfWork.Context.Set<Product>().RemoveTestData();
         _unitOfWork.Context.Set<Review>().RemoveTestData();
         _unitOfWork.Context.Set<User>().RemoveTestData();
-        _unitOfWork.Context.Set<Order>().RemoveTestData();
+        _unitOfWork.Context.Set<OrderHeader>().RemoveTestData();
         _unitOfWork.Context.Set<Payment>().RemoveTestData();
 
         _unitOfWork.Context.Database.SetCommandTimeout(TimeSpan.FromMinutes(2));

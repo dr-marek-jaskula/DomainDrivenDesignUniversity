@@ -8,8 +8,6 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Customer : Entity<CustomerId>, IAuditable
 {
-    private readonly List<Order> _orders = new();
-
     private Customer
     (
         CustomerId id,
@@ -22,7 +20,7 @@ public sealed class Customer : Entity<CustomerId>, IAuditable
         User user,
         Rank rank
     )
-        :base(id)
+        : base(id)
     {
         Rank = rank;
         FirstName = firstName;
@@ -52,10 +50,8 @@ public sealed class Customer : Entity<CustomerId>, IAuditable
     public DateTimeOffset? UpdatedOn { get; set; }
     public string CreatedBy { get; set; }
     public string? UpdatedBy { get; set; }
-
     public UserId UserId { get; private set; }
     public User User { get; private set; }
-    public IReadOnlyCollection<Order> Orders => _orders.AsReadOnly();
 
     public static Customer Create
     (

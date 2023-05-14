@@ -10,52 +10,48 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Utilities;
 
-namespace Shopway.Application.CQRS.Orders.Commands.CreateOrder;
+namespace Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
 
-internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, CreateOrderResponse>
+internal sealed class CreateOrderHeaderCommandHandler : ICommandHandler<CreateOrderHeaderCommand, CreateOrderHeaderResponse>
 {
-    private readonly IOrderRepository _orderRepository;
+    private readonly IOrderHeaderRepository _orderRepository;
     private readonly IValidator _validator;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, IValidator validator)
+    public CreateOrderHeaderCommandHandler(IOrderHeaderRepository orderRepository, IValidator validator)
     {
         _orderRepository = orderRepository;
         _validator = validator;
     }
 
-    public Task<IResult<CreateOrderResponse>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
+    public Task<IResult<CreateOrderHeaderResponse>> Handle(CreateOrderHeaderCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<Amount> amountResult = Amount.Create(command.Amount);
         ValidationResult<Discount> discountResult = Discount.Create(command.Discount ?? 0);
 
         _validator
-            .Validate(amountResult)
             .Validate(discountResult);
 
         if (_validator.IsInvalid)
         {
             return _validator
-                .Failure<CreateOrderResponse>()
+                .Failure<CreateOrderHeaderResponse>()
                 .ToResult()
                 .ToTask();
         }
 
-        Order createdOrder = CreateOrder(command, amountResult, discountResult);
+        OrderHeader createdOrderHeader = CreateOrderHeader(command, discountResult);
 
-        return createdOrder
+        return createdOrderHeader
             .ToCreateResponse()
             .ToResult()
             .ToTask();
     }
 
-    private Order CreateOrder(CreateOrderCommand command, Result<Amount> amountResult, Result<Discount> discountResult)
+    private OrderHeader CreateOrderHeader(CreateOrderHeaderCommand command, Result<Discount> discountResult)
     {
-        var orderToCreate = Order.Create
+        var orderToCreate = OrderHeader.Create
         (
-            id: OrderId.New(),
-            productId: ProductId.Create(command.ProductId),
-            amount: amountResult.Value,
-            customerId: CustomerId.Create(command.CustomerId),
+            id: OrderHeaderId.New(),
+            userId: UserId.Create(command.UserId),
             discount: discountResult.Value
         );
 

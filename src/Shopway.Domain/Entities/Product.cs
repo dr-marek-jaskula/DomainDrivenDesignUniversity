@@ -10,12 +10,14 @@ public sealed class Product : AggregateRoot<ProductId>, IAuditable
 {
     private readonly List<Review> _reviews = new();
 
-    private Product(
+    private Product
+    (
         ProductId id,
         ProductName productName,
         Price price,
         UomCode uomCode,
-        Revision revision)
+        Revision revision
+    )
         : base(id)
     {
         ProductName = productName;

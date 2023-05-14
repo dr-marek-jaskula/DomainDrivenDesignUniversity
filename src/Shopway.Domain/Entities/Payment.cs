@@ -11,15 +11,16 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
     private Payment
     (
         PaymentId id,
-        Discount discount,
-        Status status,
-        OrderId orderId
+        Discount totalDiscount,
+        PaymentStatus status,
+        OrderHeader orderHeader
     )
         : base(id)
     {
-        Discount = discount;
+        TotalDiscount = totalDiscount;
         Status = status;
-        OrderId = orderId;
+        OrderHeader = orderHeader;
+        OrderHeaderId = orderHeader.Id;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -27,22 +28,35 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
     {
     }
 
-    public Discount Discount { get; private set; }
-    public Status Status { get; private set; }
-    public OrderId OrderId { get; private set; }
+    public Discount TotalDiscount { get; private set; }
+    public PaymentStatus Status { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
     public string CreatedBy { get; set; }
     public string? UpdatedBy { get; set; }
+    public OrderHeader OrderHeader { get; private set; }
+    public OrderHeaderId OrderHeaderId { get; private set; }
 
-    public static Payment Create(OrderId orderId, Discount discount)
+    public static Payment Create(OrderHeader orderHeader, Discount totalDiscount)
     {
         return new Payment
         (
             id: PaymentId.New(),
-            discount: discount,
-            status: Status.New,
-            orderId: orderId
+            totalDiscount: totalDiscount,
+            status: PaymentStatus.NotReceived,
+            orderHeader: orderHeader
         );
+    }
+
+    public decimal CalculateTotalPayment()
+    {
+        decimal totalPayment = 0;
+
+        foreach (var orderLine in OrderHeader.OrderLines)
+        {
+            totalPayment += orderLine.CalculateLineCost();
+        }
+
+        return Math.Round(totalPayment * (1 - TotalDiscount.Value), 2);
     }
 }

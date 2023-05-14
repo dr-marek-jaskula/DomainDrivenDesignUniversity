@@ -21,19 +21,19 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasConversion(id => id.Value, guid => PaymentId.Create(guid))
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
-        builder.Property(p => p.OrderId)
-            .HasConversion(p => p.Value, guid => OrderId.Create(guid))
+        builder.Property(p => p.OrderHeaderId)
+            .HasConversion(p => p.Value, guid => OrderHeaderId.Create(guid))
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.Status)
             .HasColumnType(ColumnTypes.VarChar(10))
-            .HasConversion(status => status.ToString(), s => (Status)Enum.Parse(typeof(Status), s))
+            .HasConversion(status => status.ToString(), s => (PaymentStatus)Enum.Parse(typeof(PaymentStatus), s))
             .IsRequired(true);
 
         builder.ConfigureAuditableEntity();
 
         builder
-            .OwnsOne(p => p.Discount, navigationBuilder =>
+            .OwnsOne(p => p.TotalDiscount, navigationBuilder =>
             {
                 navigationBuilder
                     .Property(n => n.Value)
@@ -41,9 +41,5 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
                     .IsRequired(true)
                     .HasPrecision(NumberConstants.DiscountPrecision, NumberConstants.DecimalScale);
             });
-
-        //Indexes
-        builder.HasIndex(o => new { o.OrderId, o.Status }, "IX_Payment_OrderId_Status")
-            .HasFilter("Status <> 'Rejected'");
     }
 }

@@ -4,7 +4,8 @@ internal static class TableNames
 {
     internal const string Address = nameof(Address);
     internal const string Customer = nameof(Customer);
-    internal const string Order = nameof(Order);
+    internal const string OrderHeader = nameof(OrderHeader);
+    internal const string OrderLine = nameof(OrderLine);
     internal const string Payment = nameof(Payment);
     internal const string Product = nameof(Product);
     internal const string Review = nameof(Review);

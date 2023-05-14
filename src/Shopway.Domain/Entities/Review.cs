@@ -7,12 +7,14 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Review : Entity<ReviewId>, IAuditable
 {
-    private Review(
+    private Review
+    (
         ReviewId reviewId,
         Title title,
         Description description,
         Username username,
-        Stars stars)
+        Stars stars
+    )
         : base(reviewId)
     {
         Username = username;

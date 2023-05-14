@@ -8,20 +8,20 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-public sealed class CachedOrderRepository : IOrderRepository
+public sealed class CachedOrderHeaderRepository : IOrderHeaderRepository
 {
-    private readonly IOrderRepository _decorated;
+    private readonly IOrderHeaderRepository _decorated;
     private readonly IFusionCache _fusionCache;
     private readonly ShopwayDbContext _context;
 
-    public CachedOrderRepository(IOrderRepository decorated, IFusionCache fusionCache, ShopwayDbContext context)
+    public CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext context)
     {
         _decorated = decorated;
         _fusionCache = fusionCache;
         _context = context;
     }
 
-    public async Task<Order> GetByIdAsync(OrderId id, CancellationToken cancellationToken)
+    public async Task<OrderHeader> GetByIdAsync(OrderHeaderId id, CancellationToken cancellationToken)
     {
         var order = await _fusionCache.GetOrSetAsync
         (
@@ -34,22 +34,22 @@ public sealed class CachedOrderRepository : IOrderRepository
         return _context.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(order);
     }
 
-    public Task<Order> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken, params Expression<Func<Order, object>>[] includes)
+    public Task<OrderHeader> GetByIdWithIncludesAsync(OrderHeaderId id, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes)
     {
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }
 
-    public void Create(Order order)
+    public void Create(OrderHeader order)
     {
         _decorated.Create(order);
     }
 
-    public void Remove(Order order)
+    public void Remove(OrderHeader order)
     {
         _decorated.Remove(order);
     }
 
-    public void Update(Order order)
+    public void Update(OrderHeader order)
     {
         _decorated.Update(order);
     }

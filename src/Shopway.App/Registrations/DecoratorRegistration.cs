@@ -11,7 +11,7 @@ public static class DecoratorRegistration
     {
         services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandlerDecorator<>));
 
-        services.Decorate<IOrderRepository, CachedOrderRepository>();
+        services.Decorate<IOrderHeaderRepository, CachedOrderHeaderRepository>();
         services.Decorate<IProductRepository, CachedProductRepository>();
 
         return services;

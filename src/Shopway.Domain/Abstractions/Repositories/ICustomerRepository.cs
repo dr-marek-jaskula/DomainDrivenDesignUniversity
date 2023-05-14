@@ -8,7 +8,7 @@ public interface ICustomerRepository
 {
     Task<Customer?> GetByIdAsync(CustomerId id, CancellationToken cancellationToken);
 
-    Task<Customer?> GetByIdWithIncludesAsync(CustomerId id, CancellationToken cancellationToken, params Expression<Func<Order, object?>>[] includes);
+    Task<Customer?> GetByIdWithIncludesAsync(CustomerId id, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object?>>[] includes);
 
     Task<Customer?> GetAll(CancellationToken cancellationToken);
 

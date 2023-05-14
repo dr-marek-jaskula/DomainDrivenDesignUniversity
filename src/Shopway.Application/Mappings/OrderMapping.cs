@@ -1,4 +1,4 @@
-﻿using Shopway.Application.CQRS.Orders.Commands.CreateOrder;
+﻿using Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
 using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Domain.Entities;
 
@@ -6,21 +6,19 @@ namespace Shopway.Application.Mappings;
 
 public static class OrderMapping
 {
-    public static OrderResponse ToResponse(this Order order)
+    public static OrderHeaderResponse ToResponse(this OrderHeader orderHeader)
     {
-        return new OrderResponse
+        return new OrderHeaderResponse
         (
-            Id: order.Id.Value,
-            Amount: order.Amount,
-            Status: order.Status,
-            Product: order.Product,
-            Payment: order.Payment,
-            Customer: order.Customer
+            Id: orderHeader.Id.Value,
+            Status: orderHeader.Status,
+            Payment: orderHeader.Payment,
+            User: orderHeader.User
         );
     }
 
-    public static CreateOrderResponse ToCreateResponse(this Order orderToCreate)
+    public static CreateOrderHeaderResponse ToCreateResponse(this OrderHeader orderToCreate)
     {
-        return new CreateOrderResponse(orderToCreate.Id.Value);
+        return new CreateOrderHeaderResponse(orderToCreate.Id.Value);
     }
 }

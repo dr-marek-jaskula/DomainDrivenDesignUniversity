@@ -4,15 +4,15 @@ using System.Linq.Expressions;
 
 namespace Shopway.Domain.Abstractions.Repositories;
 
-public interface IOrderRepository
+public interface IOrderHeaderRepository
 {
-    Task<Order> GetByIdAsync(OrderId id, CancellationToken cancellationToken);
+    Task<OrderHeader> GetByIdAsync(OrderHeaderId id, CancellationToken cancellationToken);
 
-    Task<Order> GetByIdWithIncludesAsync(OrderId id, CancellationToken cancellationToken, params Expression<Func<Order, object>>[] includes);
+    Task<OrderHeader> GetByIdWithIncludesAsync(OrderHeaderId id, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes);
 
-    void Create(Order order);
+    void Create(OrderHeader order);
 
-    void Update(Order order);
+    void Update(OrderHeader order);
 
-    void Remove(Order order);
+    void Remove(OrderHeader order);
 }

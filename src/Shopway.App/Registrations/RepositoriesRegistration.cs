@@ -8,7 +8,7 @@ public static class RepositoriesRegistration
 {
     public static IServiceCollection RegisterRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IOutboxRepository, OutboxRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
