@@ -11,7 +11,6 @@ public static class RepositoriesRegistration
         services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IOutboxRepository, OutboxRepository>();
-        services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
 
