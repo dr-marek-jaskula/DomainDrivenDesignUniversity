@@ -54,7 +54,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             return Result.BatchFailure(responseEntries.ToBatchInsertResponse());
         }
 
-        await InsertOrderLines(command, _responseBuilder.ValidRequestsToInsert, cancellationToken);
+        await InsertOrderLines(_responseBuilder.ValidRequestsToInsert, cancellationToken);
         UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, orderLinesToUpdateDictionary);
 
         return responseEntries
@@ -76,7 +76,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             .ToDictionaryAsync(orderLine => orderLine.ToOrderLineKey(), cancellationToken);
     }
 
-    private async Task InsertOrderLines(BatchUpsertOrderLineCommand command, IReadOnlyList<BatchUpsertOrderLineRequest> validRequestsToInsert, CancellationToken cancellationToken)
+    private async Task InsertOrderLines(IReadOnlyList<BatchUpsertOrderLineRequest> validRequestsToInsert, CancellationToken cancellationToken)
     {
         foreach (var request in validRequestsToInsert)
         {
@@ -84,7 +84,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             (
                 OrderLineId.New(),
                 request.OrderLineKey.ProductId,
-                command.OrderHeaderId,
+                request.OrderLineKey.OrderHeaderId,
                 Amount.Create(request.Amount).Value,
                 Discount.Create(request.Discount ?? 0).Value
             );

@@ -7,11 +7,8 @@ namespace Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 
 public sealed record BatchUpsertOrderLineCommand : IBatchCommand<BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
 {
-    public OrderHeaderId OrderHeaderId { get; init; }
-
-    public BatchUpsertOrderLineCommand(OrderHeaderId orderHeaderId, IList<BatchUpsertOrderLineRequest> requests)
+    public BatchUpsertOrderLineCommand(IList<BatchUpsertOrderLineRequest> requests)
     {
-        OrderHeaderId = orderHeaderId;
         Requests = requests;
     }
 

@@ -7,7 +7,6 @@ using Shopway.Application.CQRS;
 using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 using Shopway.Domain.EntityBusinessKeys;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
-using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.Mappings;
 
@@ -67,6 +66,6 @@ public static class OrderLineMapping
 
     public static OrderLineKey ToOrderLineKey(this OrderLine orderLine)
     {
-        return OrderLineKey.Create(orderLine.ProductId);
+        return OrderLineKey.Create(orderLine.OrderHeaderId, orderLine.ProductId);
     }
 }
