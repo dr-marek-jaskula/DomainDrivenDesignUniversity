@@ -1,8 +1,8 @@
 ﻿namespace Shopway.Domain.Abstractions;
 
 /// <summary>
-/// Unique key that distinguishes the entity. Usually it is a composed key of entity's fields. Can be an id
+/// Unique key that distinguishes the entity in the context of aggregate. Usually it is a composed key of entity's fields. Can contain an id
 /// </summary>
-public interface IBusinessKey
+public interface IUniqueKey
 {
 }

@@ -8,7 +8,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Commands.CreateProduct;

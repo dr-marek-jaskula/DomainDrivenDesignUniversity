@@ -1,10 +1,10 @@
 ﻿using Shopway.Domain.Abstractions;
 
-namespace Shopway.Domain.EntityBusinessKeys;
+namespace Shopway.Domain.EntityKeys;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-public readonly record struct ProductKey : IBusinessKey
+public readonly record struct ProductKey : IUniqueKey
 {
     public readonly string ProductName { get; }
     public readonly string Revision { get; }

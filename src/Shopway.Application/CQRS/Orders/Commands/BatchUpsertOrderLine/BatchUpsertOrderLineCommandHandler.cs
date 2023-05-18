@@ -5,13 +5,11 @@ using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
 using Shopway.Domain.Utilities;
-using Shopway.Persistence.Framework;
-using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
-using Shopway.Persistence.Abstractions;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using Shopway.Application.Abstractions.CQRS.Batch;
+using Shopway.Domain.Abstractions.Repositories;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.Mappings.OrderLineMapping;
 using static Shopway.Application.CQRS.BatchEntryStatus;
@@ -21,17 +19,13 @@ namespace Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 
 public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
 {
-    private readonly IUnitOfWork<ShopwayDbContext> _unitOfWork;
+    private readonly IOrderHeaderRepository _orderHeaderRepository;
     private readonly IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _responseBuilder;
 
-    public BatchUpsertOrderLineCommandHandler
-    (
-        IUnitOfWork<ShopwayDbContext> unitOfWork,
-        IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder
-    )
+    public BatchUpsertOrderLineCommandHandler(IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, IOrderHeaderRepository orderHeaderRepository)
     {
-        _unitOfWork = unitOfWork;
         _responseBuilder = responseBuilder;
+        _orderHeaderRepository = orderHeaderRepository;
     }
 
     public async Task<IResult<BatchUpsertOrderLineResponse>> Handle(BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
@@ -41,7 +35,9 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             return Result.Failure<BatchUpsertOrderLineResponse>(NullOrEmpty(nameof(BatchUpsertOrderLineCommand)));
         }
 
-        var orderLinesToUpdateDictionary = await GetOrderLinesToUpdateDictionary(command, cancellationToken);
+        var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
+
+        var orderLinesToUpdateDictionary = GetOrderLinesToUpdateDictionary(command, orderHeader, cancellationToken);
 
         //Required step: set RequestToProductKeyMapping method for the injected builder
         _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToOrderLineKey);
@@ -54,7 +50,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             return Result.BatchFailure(responseEntries.ToBatchInsertResponse());
         }
 
-        await InsertOrderLines(_responseBuilder.ValidRequestsToInsert, cancellationToken);
+        InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader);
         UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, orderLinesToUpdateDictionary);
 
         return responseEntries
@@ -62,36 +58,33 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             .ToResult();
     }
 
-    private async Task<IDictionary<OrderLineKey, OrderLine>> GetOrderLinesToUpdateDictionary(BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
+    private static IDictionary<OrderLineKey, OrderLine> GetOrderLinesToUpdateDictionary(BatchUpsertOrderLineCommand command, OrderHeader orderHeader, CancellationToken cancellationToken)
     {
         var productIds = command
             .Requests
-            .Select(x => x.OrderLineKey.ProductId)
+            .Select(x => x.ProductId)
             .ToList();
 
-        return await _unitOfWork
-            .Context
-            .Set<OrderLine>()
+        return orderHeader
+            .OrderLines
             .Where(orderLine => productIds.Contains(orderLine.ProductId))
-            .ToDictionaryAsync(orderLine => orderLine.ToOrderLineKey(), cancellationToken);
+            .ToDictionary(orderLine => orderLine.ToOrderLineKey());
     }
 
-    private async Task InsertOrderLines(IReadOnlyList<BatchUpsertOrderLineRequest> validRequestsToInsert, CancellationToken cancellationToken)
+    private static void InsertOrderLines(IReadOnlyList<BatchUpsertOrderLineRequest> validRequestsToInsert, OrderHeader orderHeader)
     {
         foreach (var request in validRequestsToInsert)
         {
             var orderLineToInsert = OrderLine.Create
             (
                 OrderLineId.New(),
-                request.OrderLineKey.ProductId,
-                request.OrderLineKey.OrderHeaderId,
+                request.ProductId,
+                orderHeader.Id,
                 Amount.Create(request.Amount).Value,
                 Discount.Create(request.Discount ?? 0).Value
             );
 
-            await _unitOfWork
-                .Context
-                .AddAsync(orderLineToInsert, cancellationToken);
+            orderHeader.AddOrderLine(orderLineToInsert);
         }
     }
 

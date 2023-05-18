@@ -4,7 +4,7 @@ using Shopway.Domain.Abstractions;
 namespace Shopway.Application.Abstractions.CQRS.Batch;
 
 public abstract record BatchResponseBase<TResponseKey> : IBatchResponse
-    where TResponseKey : struct, IBusinessKey
+    where TResponseKey : struct, IUniqueKey
 {
     protected BatchResponseBase(IList<BatchResponseEntry> entries)
     {

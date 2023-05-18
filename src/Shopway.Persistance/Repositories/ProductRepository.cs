@@ -2,7 +2,7 @@
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
@@ -10,6 +10,7 @@ using Shopway.Persistence.Specifications;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
+using static Shopway.Domain.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
@@ -49,6 +50,20 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
         return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
+    }
+
+    public async Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
+    {
+        var specification = ProductByNamesAndRevisionQuerySpecification.Create(productNames, productRevisions);
+
+        //We query too many products, because we query all combinations of ProductName and Revision. Therefore, we will need to filter them
+        var productsToFilter = await UseSpecificationWithoutMapping(specification)
+            .ToListAsync(cancellationToken);
+
+        return productsToFilter
+            .Where(product => productKeys.Any(key => key.ProductName.CaseInsensitiveEquals(product.ProductName.Value)
+                                                  && key.Revision.CaseInsensitiveEquals(product.Revision.Value)))
+            .ToDictionary(product => toProductKey(product));
     }
 
     public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>

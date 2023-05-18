@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using Shopway.Persistence.Framework;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Utilities;
 
@@ -72,5 +72,10 @@ public sealed class CachedProductRepository : IProductRepository
     public Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
     {
         return _decorated.PageAsync(page, filter, sortBy, select, cancellationToken, includes);
+    }
+
+    public Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
+    {
+        return _decorated.GetProductsDictionaryByNameAndRevision(productNames, productRevisions, productKeys, toProductKey, cancellationToken);
     }
 }

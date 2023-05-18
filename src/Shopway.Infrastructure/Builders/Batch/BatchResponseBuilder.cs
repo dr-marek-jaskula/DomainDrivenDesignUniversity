@@ -8,7 +8,7 @@ namespace Shopway.Infrastructure.Builders.Batch;
 
 public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : IBatchResponseBuilder<TBatchRequest, TResponseKey> 
     where TBatchRequest : class, IBatchRequest
-    where TResponseKey : struct, IBusinessKey
+    where TResponseKey : struct, IUniqueKey
 {
     /// <summary>
     /// Required delegate. Used to map the requests to response keys. 

@@ -1,12 +1,10 @@
 ﻿using Shopway.Domain.Abstractions;
 
-namespace Shopway.Domain.EntityBusinessKeys;
-
-//BusinessKeys for not aggregates can contain keys, because they are only queried as a part of aggregate
+namespace Shopway.Domain.EntityKeys;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-public readonly record struct ReviewKey : IBusinessKey
+public readonly record struct ReviewKey : IUniqueKey
 {
     public readonly ProductKey ProductKey { get; }
     public readonly string Title { get; }

@@ -1,5 +1,4 @@
 ﻿using Shopway.Application.Abstractions.CQRS.Batch;
-using Shopway.Domain.EntityBusinessKeys;
 using Shopway.Domain.EntityIds;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 
@@ -13,10 +12,11 @@ public sealed record BatchUpsertOrderLineCommand : IBatchCommand<BatchUpsertOrde
     }
 
     public IList<BatchUpsertOrderLineRequest> Requests { get; set; }
+    public OrderHeaderId OrderHeaderId { get; set; }
 
     public sealed record BatchUpsertOrderLineRequest
     (
-        OrderLineKey OrderLineKey,
+        ProductId ProductId,
         int Amount,
         decimal? Discount
     )

@@ -14,7 +14,7 @@ namespace Shopway.Infrastructure.Builders.Batch;
 //So to avoid having generic parameters in this entry builder, it is a subclass in the generic BatchResponseBuilder
 partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
     where TBatchRequest : class, IBatchRequest
-    where TResponseKey : struct, IBusinessKey
+    where TResponseKey : struct, IUniqueKey
 {
     /// <summary>
     /// Builder used to build a single response entry from a single request, with possible errors and result status 

@@ -9,7 +9,7 @@ using Shopway.Application.Utilities;
 using Shopway.Persistence.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Commands.AddReview;

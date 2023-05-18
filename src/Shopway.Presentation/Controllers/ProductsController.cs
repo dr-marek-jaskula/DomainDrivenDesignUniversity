@@ -11,7 +11,7 @@ using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
 using Microsoft.AspNetCore.Http;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Application.CQRS;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using Shopway.Application.CQRS.Products.Queries.GetProductByKey;
 using Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;
 

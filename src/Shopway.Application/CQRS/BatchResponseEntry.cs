@@ -11,7 +11,7 @@ namespace Shopway.Application.CQRS;
 /// <param name="Errors">The list of errors for corresponding batch request</param>
 public sealed record BatchResponseEntry
 (
-    IBusinessKey Key,
+    IUniqueKey Key,
     BatchEntryStatus Status,
     IList<Error> Errors
 );

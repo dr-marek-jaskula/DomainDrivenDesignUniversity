@@ -20,7 +20,7 @@ public partial class NamingConventionsTests
             .That()
             .AreNotInterfaces()
             .And()
-            .ImplementInterface(typeof(IBusinessKey))
+            .ImplementInterface(typeof(IUniqueKey))
             .Should()
             .HaveNameEndingWith(Key)
             .GetResult();

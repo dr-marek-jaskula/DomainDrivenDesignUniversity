@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 using Shopway.Application.Mappings;
 using Shopway.Domain.Entities;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 

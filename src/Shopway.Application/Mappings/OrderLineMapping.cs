@@ -5,7 +5,7 @@ using Shopway.Application.CQRS.Orders.Commands.RemoveOrderLine;
 using Shopway.Application.CQRS.Orders.Commands.UpdateOrderLine;
 using Shopway.Application.CQRS;
 using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 
 namespace Shopway.Application.Mappings;
@@ -56,16 +56,16 @@ public static class OrderLineMapping
 
     public static OrderLineKey MapFromRequestToOrderLineKey(BatchUpsertOrderLineRequest orderLineBatchRequest)
     {
-        return orderLineBatchRequest.OrderLineKey;
+        return OrderLineKey.Create(orderLineBatchRequest.ProductId);
     }
 
     public static OrderLineKey ToOrderLineKey(this BatchUpsertOrderLineRequest orderLineBatchRequest)
     {
-        return orderLineBatchRequest.OrderLineKey;
+        return OrderLineKey.Create(orderLineBatchRequest.ProductId);
     }
 
     public static OrderLineKey ToOrderLineKey(this OrderLine orderLine)
     {
-        return OrderLineKey.Create(orderLine.OrderHeaderId, orderLine.ProductId);
+        return OrderLineKey.Create(orderLine.ProductId);
     }
 }

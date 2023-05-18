@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 
 namespace Shopway.Application.CQRS.Products.Commands.CreateProduct;
 

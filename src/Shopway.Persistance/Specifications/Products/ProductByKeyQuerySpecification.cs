@@ -1,5 +1,5 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
 

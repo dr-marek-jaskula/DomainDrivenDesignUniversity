@@ -6,12 +6,12 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
 using Shopway.Domain.Utilities;
 using Shopway.Persistence.Framework;
-using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Abstractions;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using Shopway.Application.Abstractions.CQRS.Batch;
+using Shopway.Domain.Abstractions.Repositories;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.Mappings.ProductMapping;
@@ -22,16 +22,19 @@ namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse>
 {
     private readonly IUnitOfWork<ShopwayDbContext> _unitOfWork;
+    private readonly IProductRepository _productRepository;
     private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _responseBuilder;
 
     public BatchUpsertProductCommandHandler
     (
         IUnitOfWork<ShopwayDbContext> unitOfWork,
         IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder
-    )
+,
+        IProductRepository productRepository)
     {
         _unitOfWork = unitOfWork;
         _responseBuilder = responseBuilder;
+        _productRepository = productRepository;
     }
 
     public async Task<IResult<BatchUpsertProductResponse>> Handle(BatchUpsertProductCommand command, CancellationToken cancellationToken)
@@ -57,7 +60,7 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
         }
 
         //Perform batch upsert
-        await InsertProducts(_responseBuilder.ValidRequestsToInsert, cancellationToken);
+        InsertProducts(_responseBuilder.ValidRequestsToInsert);
         UpdateProducts(_responseBuilder.ValidRequestsToUpdate, productsToUpdateDictionary);
 
         return responseEntries
@@ -69,22 +72,18 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
     {
         var productNames = command.ProductNames();
         var productRevisions = command.ProductRevisions();
-
-        //We query too many products, because we query all combinations of ProductName and Revision. Therefore, we will need to filter them
-        var productsToBeFiltered = await _unitOfWork
-            .Context
-            .Set<Product>()
-            .Where(product => productNames.Contains(product.ProductName.Value))
-            .Where(product => productRevisions.Contains(product.Revision.Value))
-            .ToListAsync(cancellationToken);
-
-        return productsToBeFiltered
-            .Where(product => command.Requests.Any(request => request.ProductKey.ProductName.CaseInsensitiveEquals(product.ProductName.Value) 
-                                                           && request.ProductKey.Revision.CaseInsensitiveEquals(product.Revision.Value)))
-            .ToDictionary(product => product.ToProductKey());
+        
+        return await _productRepository.GetProductsDictionaryByNameAndRevision
+        (
+            productNames, 
+            productRevisions, 
+            command.Requests.Select(x => x.ProductKey).ToList(), 
+            ProductMapping.ToProductKey, 
+            cancellationToken
+        );
     }
 
-    private async Task InsertProducts(IReadOnlyList<ProductBatchUpsertRequest> validRequestsToInsert, CancellationToken cancellationToken)
+    private void InsertProducts(IReadOnlyList<ProductBatchUpsertRequest> validRequestsToInsert)
     {
         foreach (var request in validRequestsToInsert)
         {
@@ -97,9 +96,7 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
                 Revision.Create(request.ProductKey.Revision).Value
             );
 
-            await _unitOfWork
-                .Context
-                .AddAsync(productToInsert, cancellationToken);
+            _productRepository.Create(productToInsert);
         }
     }
 

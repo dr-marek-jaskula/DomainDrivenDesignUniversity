@@ -1,6 +1,5 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
-using System.Threading;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Utilities;
@@ -25,7 +24,6 @@ public static class CacheUtilities
         where TEntity : Entity<TEntityId>
         where TEntityId : struct, IEntityId
     {
-        fusionCache.Remove(entity.Id.ToCacheKey());
         fusionCache.Set(entity.Id.ToCacheKey(), entity);
     }
 

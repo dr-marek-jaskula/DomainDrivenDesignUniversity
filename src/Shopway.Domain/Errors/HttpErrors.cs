@@ -29,7 +29,7 @@ public static class HttpErrors
     /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
     /// <param name="key">Key of the entity that was not found</param>
     /// <returns>NotFound error</returns>
-    public static Error NotFound<TEntity>(IBusinessKey key)
+    public static Error NotFound<TEntity>(IUniqueKey key)
         where TEntity : class, IEntity
     {
         return new($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with Key: '{key}' was not found");
@@ -41,7 +41,7 @@ public static class HttpErrors
     /// <param name="key">business key of the entity that is already in the database</param>
     /// <returns>AlreadyExists error</returns>
     public static Error AlreadyExists<TBusinessKey>(TBusinessKey key)
-        where TBusinessKey : IBusinessKey
+        where TBusinessKey : IUniqueKey
     {
         return new($"{typeof(TBusinessKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TBusinessKey).Name} with key: '{key}' already exists");
     }
@@ -78,7 +78,7 @@ public static class HttpErrors
     /// </summary>
     /// <returns>DuplicatedRequest error</returns>
     public static Error DuplicatedRequest<TBusinessKey>(TBusinessKey key)
-        where TBusinessKey : IBusinessKey
+        where TBusinessKey : IUniqueKey
     {
         return new($"{nameof(Error)}.{nameof(DuplicatedRequest)}", $"Duplicated request for key {key}");
     }

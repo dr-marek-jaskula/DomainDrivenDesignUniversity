@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Abstractions.CQRS.Batch;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;

@@ -1,5 +1,5 @@
 ﻿using RestSharp;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using Shopway.Application.CQRS;
 using Shopway.Tests.Integration.Utilities;
 using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;

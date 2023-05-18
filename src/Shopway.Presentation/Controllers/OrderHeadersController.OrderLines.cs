@@ -11,7 +11,7 @@ partial class OrderHeadersController
 {
     public const string OrderLines = nameof(OrderLines);
 
-    [HttpPost($"{{orderHeaderId}}/{{productId}}")]
+    [HttpPost("{orderHeaderId}/{productId}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddOrderLineResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> AddReview

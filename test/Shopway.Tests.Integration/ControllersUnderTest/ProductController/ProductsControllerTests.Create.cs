@@ -1,6 +1,6 @@
 ﻿using RestSharp;
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
-using Shopway.Domain.EntityBusinessKeys;
+using Shopway.Domain.EntityKeys;
 using Shopway.Domain.ValueObjects;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
