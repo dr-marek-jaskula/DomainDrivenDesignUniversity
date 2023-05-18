@@ -11,8 +11,10 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Abstractions;
 using Shopway.Domain.EntityKeys;
 using Shopway.Application.Abstractions.CQRS.Batch;
+using ZiggyCreatures.Caching.Fusion;
 using Shopway.Domain.Abstractions.Repositories;
 using static Shopway.Domain.Errors.HttpErrors;
+using static Shopway.Persistence.Utilities.CacheUtilities;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.Mappings.ProductMapping;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
@@ -23,6 +25,7 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
 {
     private readonly IUnitOfWork<ShopwayDbContext> _unitOfWork;
     private readonly IProductRepository _productRepository;
+    private readonly IFusionCache _fusionCache;
     private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _responseBuilder;
 
     public BatchUpsertProductCommandHandler
@@ -30,11 +33,13 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
         IUnitOfWork<ShopwayDbContext> unitOfWork,
         IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder
 ,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        IFusionCache fusionCache)
     {
         _unitOfWork = unitOfWork;
         _responseBuilder = responseBuilder;
         _productRepository = productRepository;
+        _fusionCache = fusionCache;
     }
 
     public async Task<IResult<BatchUpsertProductResponse>> Handle(BatchUpsertProductCommand command, CancellationToken cancellationToken)
@@ -97,10 +102,11 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
             );
 
             _productRepository.Create(productToInsert);
+            _fusionCache.Set<Product, ProductId>(productToInsert);
         }
     }
 
-    private static void UpdateProducts
+    private void UpdateProducts
     (
         IReadOnlyList<ProductBatchUpsertRequest> validRequestsToUpdate,
         IDictionary<ProductKey, Product> productsToUpdate
@@ -114,9 +120,10 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
         }
     }
 
-    private static void UpdateProduct(Product product, ProductBatchUpsertRequest request)
+    private void UpdateProduct(Product product, ProductBatchUpsertRequest request)
     {
         product.UpdateUomCode(UomCode.Create(request.UomCode).Value);
         product.UpdatePrice(Price.Create(request.Price).Value);
+        _fusionCache.Update<Product, ProductId>(product);
     }
 }

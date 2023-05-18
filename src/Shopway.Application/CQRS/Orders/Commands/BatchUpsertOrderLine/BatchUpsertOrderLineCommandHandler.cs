@@ -8,8 +8,10 @@ using Shopway.Domain.Utilities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityKeys;
+using ZiggyCreatures.Caching.Fusion;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Domain.Abstractions.Repositories;
+using static Shopway.Persistence.Utilities.CacheUtilities;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.Mappings.OrderLineMapping;
 using static Shopway.Application.CQRS.BatchEntryStatus;
@@ -20,12 +22,14 @@ namespace Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository;
+    private readonly IFusionCache _fusionCache;
     private readonly IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _responseBuilder;
 
-    public BatchUpsertOrderLineCommandHandler(IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, IOrderHeaderRepository orderHeaderRepository)
+    public BatchUpsertOrderLineCommandHandler(IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, IOrderHeaderRepository orderHeaderRepository, IFusionCache fusionCache)
     {
         _responseBuilder = responseBuilder;
         _orderHeaderRepository = orderHeaderRepository;
+        _fusionCache = fusionCache;
     }
 
     public async Task<IResult<BatchUpsertOrderLineResponse>> Handle(BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
@@ -52,6 +56,8 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
 
         InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader);
         UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, orderLinesToUpdateDictionary);
+
+        _fusionCache.Update<OrderHeader, OrderHeaderId>(orderHeader);
 
         return responseEntries
             .ToBatchInsertResponse()
