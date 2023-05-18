@@ -1,4 +1,5 @@
 ﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.Utilities;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -40,7 +41,7 @@ public sealed class EntityIdConverter<TEntityId> : TypeConverter
     {
         if (value is string @string)
         {
-            var guid = Guid.Parse(@string);
+            var guid = @string.Parse<Guid>();
             var createMethod = _type.GetMethod(nameof(IEntityId<object>.Create));
             return createMethod!.Invoke(null, new object[] { guid });
         }

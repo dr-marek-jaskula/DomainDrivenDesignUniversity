@@ -1,4 +1,7 @@
-﻿namespace Shopway.Domain.Utilities;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Shopway.Domain.Utilities;
 
 public static class StringUtilities
 {
@@ -39,6 +42,12 @@ public static class StringUtilities
         return Enum.TryParse<TEnum>(input, out var outPriority) 
             ? outPriority 
             : null;
+    }
+
+    public static TType Parse<TType>(this string input, IFormatProvider? formatProvider = null)
+        where TType : IParsable<TType>
+    {
+        return TType.Parse(input, formatProvider);
     }
 
     public static bool IsLengthInRange(this string input, int lowerBound, int upperBound)

@@ -29,7 +29,7 @@ public sealed class UserContextService : IUserContextService
 
     public UserId? UserId => User is null 
         ? null 
-        : Shopway.Domain.EntityIds.UserId.Create(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
+        : Shopway.Domain.EntityIds.UserId.Create(User.FindFirstValue(ClaimTypes.NameIdentifier)!.Parse<Guid>());
 
     public string? Username => User?.FindFirstValue(_userNameProperty);
 
@@ -39,7 +39,7 @@ public sealed class UserContextService : IUserContextService
         {
             if (User?.FindFirstValue(ClaimPolicies.CustomerId) is string stringCustomerId && stringCustomerId.NotNullOrEmptyOrWhiteSpace())
             {
-                return Domain.EntityIds.CustomerId.Create(Guid.Parse(stringCustomerId));
+                return Domain.EntityIds.CustomerId.Create(stringCustomerId.Parse<Guid>());
             }
 
             return null;
