@@ -30,6 +30,16 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasConversion(status => status.ToString(), s => (PaymentStatus)Enum.Parse(typeof(PaymentStatus), s))
             .IsRequired(true);
 
+        builder
+            .OwnsOne(p => p.Price, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Price))
+                    .IsRequired(true)
+                    .HasPrecision(NumberConstants.DecimalPrecision, NumberConstants.DecimalScale);
+            });
+
         builder.ConfigureAuditableEntity();
     }
 }

@@ -26,9 +26,10 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
         : base(id)
     {
         UserId = userId;
-        Payment = Payment.Create(this);
+        var priceResult = Price.Create(CalculateTotalPrice());
+        Payment = Payment.Create(this, priceResult.Value);
         TotalDiscount = discount;
-        Status = OrderStatus.New;
+        Status = New;
     }
 
     // Empty constructor in this case is required by EF Core
