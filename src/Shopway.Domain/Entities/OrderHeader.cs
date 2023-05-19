@@ -1,15 +1,14 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Results;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Enums;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.Domain.DomainErrors.Status;
 using static Shopway.Domain.Enums.OrderStatus;
 using static Shopway.Domain.Enums.PaymentStatus;
-using Shopway.Domain.Results;
 
 namespace Shopway.Domain.Entities;
 
@@ -28,8 +27,7 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
     {
         UserId = userId;
         TotalDiscount = discount;
-        var priceResult = Price.Create(CalculateTotalPrice());
-        Payment = Payment.Create(this, priceResult.Value);
+        Payment = Payment.Create(this);
         Status = New;
     }
 

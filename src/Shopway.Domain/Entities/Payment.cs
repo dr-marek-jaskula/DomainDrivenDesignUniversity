@@ -13,15 +13,13 @@ public sealed class Payment : AggregateRoot<PaymentId>, IAuditable
     (
         PaymentId id,
         PaymentStatus status,
-        OrderHeader orderHeader,
-        Price price
+        OrderHeader orderHeader
     )
         : base(id)
     {
         Status = status;
         OrderHeader = orderHeader;
         OrderHeaderId = orderHeader.Id;
-        Price = price;
     }
 
     // Empty constructor in this case is required by EF Core
@@ -29,7 +27,6 @@ public sealed class Payment : AggregateRoot<PaymentId>, IAuditable
     {
     }
 
-    public Price Price { get; private set; }
     public PaymentStatus Status { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
@@ -38,14 +35,13 @@ public sealed class Payment : AggregateRoot<PaymentId>, IAuditable
     public OrderHeader OrderHeader { get; private set; }
     public OrderHeaderId OrderHeaderId { get; private set; }
 
-    public static Payment Create(OrderHeader orderHeader, Price price)
+    public static Payment Create(OrderHeader orderHeader)
     {
         return new Payment
         (
             id: PaymentId.New(),
             status: NotReceived,
-            orderHeader: orderHeader,
-            price: price
+            orderHeader: orderHeader
         );
     }
 
