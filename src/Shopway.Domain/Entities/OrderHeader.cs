@@ -4,12 +4,18 @@ using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Enums;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Utilities;
+using static Shopway.Domain.Errors.Domain.DomainErrors.Status;
+using static Shopway.Domain.Enums.OrderStatus;
+using static Shopway.Domain.Enums.PaymentStatus;
 
 namespace Shopway.Domain.Entities;
 
 public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
 {
     private readonly List<OrderLine> _orderLines = new();
+    private bool PaymentReceived => Payment.Status is Received;
 
     private OrderHeader
     (
@@ -20,7 +26,8 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
         : base(id)
     {
         UserId = userId;
-        Payment = Payment.Create(this, discount);
+        Payment = Payment.Create(this);
+        TotalDiscount = discount;
         Status = OrderStatus.New;
     }
 
@@ -29,6 +36,7 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
     {
     }
 
+    public Discount TotalDiscount { get; private set; }
     public OrderStatus Status { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
@@ -71,5 +79,33 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
     public bool RemoveOrderLine(OrderLine orderLine)
     {
         return _orderLines.Remove(orderLine);
+    }
+
+    public Error ChangeStatus(OrderStatus newOrderStatus)
+    {
+        if (Status.CanBeChangedTo(newOrderStatus) is false)
+        {
+            return InvalidStatusChange(Status, newOrderStatus);
+        }
+
+        if (newOrderStatus is InProgress && PaymentReceived is false)
+        {
+            return PaymentNotReceived;
+        }
+
+        Status = newOrderStatus;
+        return Error.None;
+    }
+
+    public decimal CalculateTotalPrice()
+    {
+        decimal totalPayment = 0;
+
+        foreach (var orderLine in OrderLines)
+        {
+            totalPayment += orderLine.CalculateLineCost();
+        }
+
+        return Math.Round(totalPayment * (1 - TotalDiscount.Value), 2);
     }
 }

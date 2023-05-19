@@ -6,22 +6,19 @@ namespace Shopway.Domain.EntityKeys;
 
 public readonly record struct ReviewKey : IUniqueKey
 {
-    public readonly ProductKey ProductKey { get; }
     public readonly string Title { get; }
 
-    public ReviewKey(ProductKey productKey, string title)
+    public ReviewKey(string title)
     {
-        ProductKey = productKey;
-
         if (title is not null)
         {
             Title = NormalizeKeyComponent(title);
         }
     }
 
-    public static ReviewKey Create(ProductKey productKey, string title)
+    public static ReviewKey Create(string title)
     {
-        return new ReviewKey(productKey, title);
+        return new ReviewKey(title);
     }
 
     private static string NormalizeKeyComponent(string keyComponent)
@@ -31,7 +28,7 @@ public readonly record struct ReviewKey : IUniqueKey
 
     public override string ToString()
     {
-        return $"Review {{ Title: {Title}, {ProductKey} }}" ;
+        return $"Review {{ Title: {Title} }}" ;
     }
 }
 

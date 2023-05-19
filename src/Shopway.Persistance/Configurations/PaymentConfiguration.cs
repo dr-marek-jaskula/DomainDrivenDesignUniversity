@@ -31,15 +31,5 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .IsRequired(true);
 
         builder.ConfigureAuditableEntity();
-
-        builder
-            .OwnsOne(p => p.TotalDiscount, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Discount))
-                    .IsRequired(true)
-                    .HasPrecision(NumberConstants.DiscountPrecision, NumberConstants.DecimalScale);
-            });
     }
 }

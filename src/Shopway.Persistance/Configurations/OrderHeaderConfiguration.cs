@@ -5,6 +5,7 @@ using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -24,6 +25,16 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
             .IsRequired(true)
             .HasColumnType(ColumnTypes.VarChar(10))
             .HasConversion(status => status.ToString(), s => (OrderStatus)Enum.Parse(typeof(OrderStatus), s));
+
+        builder
+            .OwnsOne(p => p.TotalDiscount, navigationBuilder =>
+            {
+                navigationBuilder
+                    .Property(n => n.Value)
+                    .HasColumnName(nameof(Discount))
+                    .IsRequired(true)
+                    .HasPrecision(NumberConstants.DiscountPrecision, NumberConstants.DecimalScale);
+            });
 
         builder.ConfigureAuditableEntity();
 

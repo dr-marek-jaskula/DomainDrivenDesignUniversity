@@ -5,7 +5,6 @@ public enum OrderStatus
     New,
     InProgress,
     Shipped,
-    Sent,
     Delivered,
     OnHold,
     Rejected

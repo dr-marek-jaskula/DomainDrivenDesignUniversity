@@ -3,21 +3,20 @@ using Shopway.Domain.Enums;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.Abstractions;
+using static Shopway.Domain.Enums.PaymentStatus;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class Payment : Entity<PaymentId>, IAuditable
+public sealed class Payment : AggregateRoot<PaymentId>, IAuditable
 {
     private Payment
     (
         PaymentId id,
-        Discount totalDiscount,
         PaymentStatus status,
         OrderHeader orderHeader
     )
         : base(id)
     {
-        TotalDiscount = totalDiscount;
         Status = status;
         OrderHeader = orderHeader;
         OrderHeaderId = orderHeader.Id;
@@ -28,7 +27,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
     {
     }
 
-    public Discount TotalDiscount { get; private set; }
+    public Price Price { get; private set; }
     public PaymentStatus Status { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
@@ -37,26 +36,18 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
     public OrderHeader OrderHeader { get; private set; }
     public OrderHeaderId OrderHeaderId { get; private set; }
 
-    public static Payment Create(OrderHeader orderHeader, Discount totalDiscount)
+    public static Payment Create(OrderHeader orderHeader)
     {
         return new Payment
         (
             id: PaymentId.New(),
-            totalDiscount: totalDiscount,
-            status: PaymentStatus.NotReceived,
+            status: NotReceived,
             orderHeader: orderHeader
         );
     }
 
-    public decimal CalculateTotalPayment()
+    public void PaymentReceived()
     {
-        decimal totalPayment = 0;
-
-        foreach (var orderLine in OrderHeader.OrderLines)
-        {
-            totalPayment += orderLine.CalculateLineCost();
-        }
-
-        return Math.Round(totalPayment * (1 - TotalDiscount.Value), 2);
+        Status = Received;
     }
 }
