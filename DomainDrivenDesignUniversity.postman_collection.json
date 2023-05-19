@@ -886,39 +886,6 @@
 					"response": []
 				},
 				{
-					"name": "ProcessPayment.Valid",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
-								"type": "text"
-							},
-							{
-								"key": "api-version",
-								"value": "0.1",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "https://localhost:7236/api/OrderHeaders/Payments/{{validOrderHeaderGuid}}",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "7236",
-							"path": [
-								"api",
-								"OrderHeaders",
-								"Payments",
-								"{{validOrderHeaderGuid}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "ChangeOrderHeaderStatus.Valid",
 					"request": {
 						"method": "PATCH",
