@@ -741,7 +741,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"requests\": [\r\n    {\r\n      \"OrderLineKey\" : {\r\n        \"ProductId\": \"08524a93-6c3d-4626-8b79-703b0ece392e\",\r\n        \"OrderHeaderId\": \"b7598897-b448-430d-8564-b598155c614d\"\r\n      },\r\n        \"Amount\": 2,\r\n        \"Discount\": 0\r\n    },\r\n    {\r\n      \"OrderLineKey\" : {\r\n        \"ProductId\": \"fa73e7d6-33db-4c50-9b21-20012d7c4bff\",\r\n        \"OrderHeaderId\": \"b7598897-b448-430d-8564-b598155c614d\"\r\n      },\r\n        \"Amount\": 3,\r\n        \"Discount\": 0.1\r\n    }\r\n  ],\r\n\r\n}",
+									"raw": "{\r\n  \"requests\": [\r\n    {\r\n        \"ProductId\": \"08524a93-6c3d-4626-8b79-703b0ece392e\",\r\n        \"Amount\": 20,\r\n        \"Discount\": 0.2\r\n    },\r\n    {\r\n        \"ProductId\": \"fa73e7d6-33db-4c50-9b21-20012d7c4bff\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.3\r\n    }\r\n  ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -749,7 +749,7 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:7236/api/OrderHeaders/batch/upsert",
+									"raw": "https://localhost:7236/api/OrderHeaders/batch/upsert/{{validOrderHeaderGuid}}",
 									"protocol": "https",
 									"host": [
 										"localhost"
@@ -759,7 +759,8 @@
 										"api",
 										"OrderHeaders",
 										"batch",
-										"upsert"
+										"upsert",
+										"{{validOrderHeaderGuid}}"
 									]
 								}
 							},
@@ -862,7 +863,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Pencil\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
+							"raw": "{\r\n  \"UserId\": \"ac40004e-5185-454d-8f77-9d411dd8a91b\",\r\n  \"Discount\": 0.2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -879,6 +880,80 @@
 							"path": [
 								"api",
 								"OrderHeaders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ProcessPayment.Valid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "0.1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7236/api/OrderHeaders/Payments/{{validOrderHeaderGuid}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7236",
+							"path": [
+								"api",
+								"OrderHeaders",
+								"Payments",
+								"{{validOrderHeaderGuid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangeOrderHeaderStatus.Valid",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "0.1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"NewOrderHeaderStatus\" : \"New\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderGuid}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7236",
+							"path": [
+								"api",
+								"OrderHeaders",
+								"{{validOrderHeaderGuid}}"
 							]
 						}
 					},
@@ -919,7 +994,7 @@
 			]
 		},
 		{
-			"name": "Auth",
+			"name": "Users",
 			"item": [
 				{
 					"name": "Register",
@@ -980,6 +1055,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GetUserByUsername.Valid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7236/api/users/Marek",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7236",
+							"path": [
+								"api",
+								"users",
+								"Marek"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -1032,6 +1128,11 @@
 		},
 		{
 			"key": "validOrderLineGuid",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "validUserId",
 			"value": "",
 			"type": "string"
 		}
