@@ -17,7 +17,7 @@ internal sealed class RemoveReviewCommandHandler : ICommandHandler<RemoveReviewC
 
     public async Task<IResult<RemoveReviewResponse>> Handle(RemoveReviewCommand command, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
+        var product = await _productRepository.GetByIdWithReviewAsync(command.ProductId, command.ReviewId, cancellationToken);
 
         var reviewToRemove = product
             .Reviews

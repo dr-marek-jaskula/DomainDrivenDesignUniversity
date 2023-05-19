@@ -7,6 +7,7 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityKeys;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Utilities;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -77,5 +78,10 @@ public sealed class CachedProductRepository : IProductRepository
     public Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
     {
         return _decorated.GetProductsDictionaryByNameAndRevision(productNames, productRevisions, productKeys, toProductKey, cancellationToken);
+    }
+
+    public Task<Product> GetByIdWithReviewAsync(ProductId id, ReviewId reviewId, CancellationToken cancellationToken)
+    {
+        return _decorated.GetByIdWithReviewAsync(id, reviewId, cancellationToken);
     }
 }

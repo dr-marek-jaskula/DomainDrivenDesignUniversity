@@ -44,6 +44,14 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
             .FirstAsync(cancellationToken);
     }
 
+    public async Task<Product> GetByIdWithReviewAsync(ProductId id, ReviewId reviewId, CancellationToken cancellationToken)
+    {
+        var specification = ProductByIdWithReviewQuerySpecification.Create(id, reviewId);
+
+        return await UseSpecificationWithoutMapping(specification)
+            .FirstAsync(cancellationToken);
+    }
+
     public async Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
     {
         var specification = ProductByIdWithIncludesQuerySpecification.Create(id, includes);

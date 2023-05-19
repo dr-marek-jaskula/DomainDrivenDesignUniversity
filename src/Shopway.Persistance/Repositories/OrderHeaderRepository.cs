@@ -24,6 +24,14 @@ public sealed class OrderHeaderRepository : RepositoryBase, IOrderHeaderReposito
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<OrderHeader> GetByIdWithOrderLineAsync(OrderHeaderId id, OrderLineId orderLineId, CancellationToken cancellationToken)
+    {
+        return await _dbContext
+            .Set<OrderHeader>()
+            .Include(x => x.OrderLines.Where(line => line.Id == orderLineId))
+            .FirstAsync(x => x.Id == id, cancellationToken);
+    }
+
     public async Task<OrderHeader> GetByIdWithIncludesAsync(OrderHeaderId id, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes)
     {
         var baseQuery = _dbContext

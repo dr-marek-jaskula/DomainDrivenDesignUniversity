@@ -53,5 +53,9 @@ public sealed class CachedOrderHeaderRepository : IOrderHeaderRepository
     {
         _decorated.Update(order);
     }
-}
 
+    public async Task<OrderHeader> GetByIdWithOrderLineAsync(OrderHeaderId id, OrderLineId orderLineId, CancellationToken cancellationToken)
+    {
+        return await _decorated.GetByIdWithOrderLineAsync(id, orderLineId, cancellationToken);
+    }
+}
