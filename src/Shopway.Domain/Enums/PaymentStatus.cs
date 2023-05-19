@@ -2,6 +2,6 @@
 
 public enum PaymentStatus
 {
-    NotReceived,
+    NotReceived = 1,
     Received
 }

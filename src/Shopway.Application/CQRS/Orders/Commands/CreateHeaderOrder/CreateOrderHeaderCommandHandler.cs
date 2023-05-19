@@ -51,7 +51,7 @@ internal sealed class CreateOrderHeaderCommandHandler : ICommandHandler<CreateOr
         var orderToCreate = OrderHeader.Create
         (
             id: OrderHeaderId.New(),
-            userId: UserId.Create(command.UserId),
+            userId: command.UserId,
             discount: discountResult.Value
         );
 

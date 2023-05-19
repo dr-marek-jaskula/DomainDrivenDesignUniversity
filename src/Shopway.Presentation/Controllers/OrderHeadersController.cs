@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.CQRS.Orders.Commands.AddOrderLine;
+using Shopway.Application.CQRS.Orders.Commands.ChangeOrderHeaderStatus;
 using Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
 using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
@@ -38,7 +39,11 @@ public sealed partial class OrderHeadersController : ApiController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateOrderHeaderResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> CreateOrderHeader([FromBody] CreateOrderHeaderCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateOrderHeader
+    (
+        [FromBody] CreateOrderHeaderCommand command, 
+        CancellationToken cancellationToken
+    )
     {
         var response = await Sender.Send(command, cancellationToken);
 
@@ -48,6 +53,27 @@ public sealed partial class OrderHeadersController : ApiController
         }
 
         return CreatedAtActionResult(response, nameof(GetOrderHeaderById));
+    }
+
+    [HttpPatch("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ChangeOrderHeaderStatusResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> ChangeOrderHeaderStatus
+    (
+        [FromRoute] OrderHeaderId id,
+        [FromBody] ChangeOrderHeaderStatusCommand.ChangeOrderHeaderStatusRequestBody body, 
+        CancellationToken cancellationToken
+    )
+    {
+        var command = new ChangeOrderHeaderStatusCommand(id, body);
+        var response = await Sender.Send(command, cancellationToken);
+
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
     }
 }
 

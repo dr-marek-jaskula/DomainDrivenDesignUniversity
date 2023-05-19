@@ -9,6 +9,7 @@ using Shopway.Domain.Utilities;
 using static Shopway.Domain.Errors.Domain.DomainErrors.Status;
 using static Shopway.Domain.Enums.OrderStatus;
 using static Shopway.Domain.Enums.PaymentStatus;
+using Shopway.Domain.Results;
 
 namespace Shopway.Domain.Entities;
 
@@ -26,9 +27,9 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
         : base(id)
     {
         UserId = userId;
+        TotalDiscount = discount;
         var priceResult = Price.Create(CalculateTotalPrice());
         Payment = Payment.Create(this, priceResult.Value);
-        TotalDiscount = discount;
         Status = New;
     }
 
@@ -82,20 +83,20 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
         return _orderLines.Remove(orderLine);
     }
 
-    public Error ChangeStatus(OrderStatus newOrderStatus)
+    public Result ChangeStatus(OrderStatus newOrderStatus)
     {
         if (Status.CanBeChangedTo(newOrderStatus) is false)
         {
-            return InvalidStatusChange(Status, newOrderStatus);
+            return Result.Failure(InvalidStatusChange(Status, newOrderStatus));
         }
 
         if (newOrderStatus is InProgress && PaymentReceived is false)
         {
-            return PaymentNotReceived;
+            return Result.Failure(PaymentNotReceived);
         }
 
         Status = newOrderStatus;
-        return Error.None;
+        return Result.Success();
     }
 
     public decimal CalculateTotalPrice()

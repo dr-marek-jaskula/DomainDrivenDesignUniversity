@@ -36,6 +36,18 @@ public static class HttpErrors
     }
 
     /// <summary>
+    /// Create an Error based on the entity type name and the business key that was not found
+    /// </summary>
+    /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
+    /// <param name="uniqueValue">Unique value of the entity that was not found</param>
+    /// <returns>NotFound error</returns>
+    public static Error NotFound<TEntity>(string uniqueValue)
+        where TEntity : class, IEntity
+    {
+        return new($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} for: '{uniqueValue}' was not found");
+    }
+
+    /// <summary>
     /// Create an Error based on the business key
     /// </summary>
     /// <param name="key">business key of the entity that is already in the database</param>

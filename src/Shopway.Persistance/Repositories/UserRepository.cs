@@ -58,4 +58,12 @@ public sealed class UserRepository : IUserRepository
             .Set<User>()
             .Update(user);
     }
+
+    public async Task<User?> GetByUsernameAsync(Username username, CancellationToken cancellationToken)
+    {
+        return await _dbContext
+            .Set<User>()
+            .Where(user => user.Username.Value == username.Value)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }

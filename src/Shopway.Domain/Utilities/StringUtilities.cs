@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-
-namespace Shopway.Domain.Utilities;
+﻿namespace Shopway.Domain.Utilities;
 
 public static class StringUtilities
 {
@@ -73,5 +70,18 @@ public static class StringUtilities
     public static bool CaseInsensitiveEquals(this string input, string compareTo)
     {
         return string.Equals(input, compareTo, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool Contains(this string input, params string[] strings)
+    {
+        foreach (string @string in strings)
+        {
+            if (input.Contains(@string) is false)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

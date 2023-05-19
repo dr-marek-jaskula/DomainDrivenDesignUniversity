@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="CQRS\Users\Events\" />
-    <Folder Include="CQRS\Users\Queries\" />
   </ItemGroup>
 
 	<ItemGroup>

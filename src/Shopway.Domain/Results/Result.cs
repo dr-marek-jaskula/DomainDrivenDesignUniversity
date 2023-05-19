@@ -1,6 +1,5 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.Errors;
-using Shopway.Domain.Utilities;
 
 namespace Shopway.Domain.Results;
 
@@ -132,6 +131,16 @@ public class Result : IResult
     {
         error.ThrowIfErrorNone();
         return new(default, error);
+    }
+
+    /// <summary>
+    /// Returns a failure of type <see cref="Result{TValue}"/>
+    /// </summary>
+    /// <typeparam name="TValue">The result type</typeparam>
+    /// <returns>A new instance of <see cref="Result{TValue}"/></returns>
+    public Result<TValue> Failure<TValue>()
+    {
+        return Failure<TValue>(Error);
     }
 
     /// <summary>

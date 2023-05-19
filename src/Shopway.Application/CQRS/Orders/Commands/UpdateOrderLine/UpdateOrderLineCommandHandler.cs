@@ -25,9 +25,9 @@ internal sealed class UpdateOrderLineCommandHandler : ICommandHandler<UpdateOrde
     //It is not preferred to make partial updates, but for tutorial purpose it is done here
     public async Task<IResult<UpdateOrderLineResponse>> Handle(UpdateOrderLineCommand command, CancellationToken cancellationToken)
     {
-        var product = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
+        var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
 
-        var orderLineToUpdate = product
+        var orderLineToUpdate = orderHeader
             .OrderLines
             .First(x => x.Id == command.OrderLineId);
 

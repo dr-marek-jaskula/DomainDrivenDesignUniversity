@@ -10,6 +10,8 @@ public interface IUserRepository
 
     Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken);
 
+    Task<User?> GetByUsernameAsync(Username username, CancellationToken cancellationToken);
+
     Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken);
 
     Task<bool> IsEmailTakenAsync(Email email, CancellationToken cancellationToken);

@@ -1,9 +1,9 @@
 ﻿using Shopway.Domain.Enums;
 using static Shopway.Domain.Enums.OrderStatus;
 
-namespace Shopway.Domain.Common;
+namespace Shopway.Domain.Constants;
 
-public static class DomainConstants
+public static class OrderHeaderConstants
 {
     public static List<(OrderStatus source, OrderStatus destination)> AvailableOrderStatusChangeCombinations = new()
     {
@@ -13,6 +13,7 @@ public static class DomainConstants
         (New, OnHold),
         (New, Rejected),
         (InProgress, OnHold),
-        (InProgress, Rejected)
+        (InProgress, Rejected),
+        (OnHold, New)
     };
 }

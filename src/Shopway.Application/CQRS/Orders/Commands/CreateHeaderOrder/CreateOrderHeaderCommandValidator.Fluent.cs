@@ -6,7 +6,6 @@ internal sealed class CreateOrderHeaderCommandValidator : AbstractValidator<Crea
 {
     public CreateOrderHeaderCommandValidator()
     {
-        RuleFor(x => x.UserId).NotNull().NotEmpty();
         RuleFor(x => x.Discount).NotNull();
     }
 }
