@@ -13,8 +13,8 @@ public static class OrderHeaderMapping
             orderHeader.Id.Value,
             orderHeader.Status,
             orderHeader.Payment.Status,
-            orderHeader.Payment.CalculateTotalPayment(),
-            orderHeader.Payment.TotalDiscount.Value,
+            orderHeader.Payment.Price.Value,
+            orderHeader.TotalDiscount.Value,
             orderHeader.OrderLines.ToResponses()
         );
     }
