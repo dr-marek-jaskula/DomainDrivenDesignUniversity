@@ -2,6 +2,7 @@
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.EntityIds;
 using System.Linq.Expressions;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Abstractions.Repositories;
 
@@ -14,6 +15,8 @@ public interface IProductRepository
     Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken);
 
     Task<Product> GetByIdWithReviewAsync(ProductId id, ReviewId reviewId, CancellationToken cancellationToken);
+
+    Task<Product> GetByIdWithReviewAsync(ProductId id, Title title, CancellationToken cancellationToken);
 
     Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes);
 

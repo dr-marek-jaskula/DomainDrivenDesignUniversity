@@ -45,10 +45,10 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
             return _validator.Failure<AddReviewResponse>();
         }
 
-        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
+        var product = await _productRepository.GetByIdWithReviewAsync(command.ProductId, titleResult.Value, cancellationToken);
 
         _validator
-            .If(product.AnyReview(titleResult.Value), thenError: AlreadyExists(ReviewKey.Create(titleResult.Value.Value)));
+            .If(product.Reviews.Any(), thenError: AlreadyExists(ReviewKey.Create(titleResult.Value.Value)));
 
         if (_validator.IsInvalid)
         {

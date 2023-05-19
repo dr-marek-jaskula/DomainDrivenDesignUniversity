@@ -11,6 +11,7 @@ using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
 using static Shopway.Domain.Utilities.StringUtilities;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Repositories;
 
@@ -46,7 +47,15 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<Product> GetByIdWithReviewAsync(ProductId id, ReviewId reviewId, CancellationToken cancellationToken)
     {
-        var specification = ProductByIdWithReviewQuerySpecification.Create(id, reviewId);
+        var specification = ProductByIdWithReviewsQuerySpecification.Create(id, reviewId);
+
+        return await UseSpecificationWithoutMapping(specification)
+            .FirstAsync(cancellationToken);
+    }
+
+    public async Task<Product> GetByIdWithReviewAsync(ProductId id, Title title, CancellationToken cancellationToken)
+    {
+        var specification = ProductByIdWithReviewsQuerySpecification.Create(id, title);
 
         return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);

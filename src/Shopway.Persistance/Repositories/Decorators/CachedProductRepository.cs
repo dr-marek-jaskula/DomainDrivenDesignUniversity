@@ -84,4 +84,9 @@ public sealed class CachedProductRepository : IProductRepository
     {
         return _decorated.GetByIdWithReviewAsync(id, reviewId, cancellationToken);
     }
+
+    public Task<Product> GetByIdWithReviewAsync(ProductId id, Title title, CancellationToken cancellationToken)
+    {
+        return _decorated.GetByIdWithReviewAsync(id, title, cancellationToken);
+    }
 }
