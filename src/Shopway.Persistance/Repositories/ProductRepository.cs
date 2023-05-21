@@ -25,7 +25,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductSpecification.ByKey.Create(key);
 
-        return await UseSpecificationWithoutMapping(specification)
+        return await UseSpecification(specification)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -33,7 +33,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductSpecification.ByKey.Create(key);
 
-        return await UseSpecificationWithoutMapping(specification)
+        return await UseSpecification(specification)
             .AnyAsync(cancellationToken);
     }
 
@@ -41,7 +41,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductSpecification.ById.WithReviews.Create(id);
 
-        return await UseSpecificationWithoutMapping(specification)
+        return await UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -49,7 +49,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductSpecification.ById.WithReview.Create(id, reviewId);
 
-        return await UseSpecificationWithoutMapping(specification)
+        return await UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -57,7 +57,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductSpecification.ById.WithReview.Create(id, title);
 
-        return await UseSpecificationWithoutMapping(specification)
+        return await UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -65,7 +65,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductSpecification.ById.WithIncludes.Create(id, includes);
 
-        return await UseSpecificationWithoutMapping(specification)
+        return await UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -74,7 +74,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
         var specification = ProductSpecification.ByNamesAndRevision.Create(productNames, productRevisions);
 
         //We query too many products, because we query all combinations of ProductName and Revision. Therefore, we will need to filter them
-        var productsToFilter = await UseSpecificationWithoutMapping(specification)
+        var productsToFilter = await UseSpecification(specification)
             .ToListAsync(cancellationToken);
 
         return productsToFilter
@@ -95,7 +95,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
 
-        return await UseSpecificationWithMapping(specification)
+        return await UseSpecification(specification)
             .PageAsync(page, cancellationToken);
     }
 

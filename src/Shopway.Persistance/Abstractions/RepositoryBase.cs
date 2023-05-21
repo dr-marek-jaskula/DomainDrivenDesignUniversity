@@ -23,7 +23,7 @@ public abstract class RepositoryBase
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    private protected IQueryable<TEntity> UseSpecificationWithoutMapping<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
+    private protected IQueryable<TEntity> UseSpecification<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : struct, IEntityId
         where TEntity : Entity<TEntityId>
     {
@@ -87,7 +87,7 @@ public abstract class RepositoryBase
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    private protected IQueryable<TResponse> UseSpecificationWithMapping<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
+    private protected IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
         where TEntityId : struct, IEntityId
         where TEntity : Entity<TEntityId>
     {
@@ -96,7 +96,7 @@ public abstract class RepositoryBase
             throw new ArgumentNullException($"SpecificationWithMappingBase must contain Select statement");
         }
 
-        return UseSpecificationWithoutMapping(specification)
+        return UseSpecification((SpecificationBase<TEntity, TEntityId>)specification)
             .Select(specification.Select);
     }
 }
