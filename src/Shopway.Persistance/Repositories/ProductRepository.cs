@@ -6,12 +6,12 @@ using Shopway.Domain.EntityKeys;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Specifications;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Utilities;
+using Shopway.Domain.ValueObjects;
 using System.Linq.Expressions;
 using static Shopway.Domain.Utilities.StringUtilities;
-using Shopway.Domain.ValueObjects;
+using Shopway.Persistence.Specifications.Common;
 
 namespace Shopway.Persistence.Repositories;
 
@@ -23,7 +23,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<Product?> GetByKeyOrDefaultAsync(ProductKey key, CancellationToken cancellationToken)
     {
-        var specification = ProductByKeyQuerySpecification.Create(key);
+        var specification = ProductSpecification.ByKey.Create(key);
 
         return await UseSpecificationWithoutMapping(specification)
             .FirstOrDefaultAsync(cancellationToken);
@@ -31,7 +31,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken)
     {
-        var specification = ProductByKeyQuerySpecification.Create(key);
+        var specification = ProductSpecification.ByKey.Create(key);
 
         return await UseSpecificationWithoutMapping(specification)
             .AnyAsync(cancellationToken);
@@ -39,7 +39,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
     {
-        var specification = ProductByIdWithReviewsQuerySpecification.Create(id);
+        var specification = ProductSpecification.ById.WithReviews.Create(id);
 
         return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
@@ -47,7 +47,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<Product> GetByIdWithReviewAsync(ProductId id, ReviewId reviewId, CancellationToken cancellationToken)
     {
-        var specification = ProductByIdWithReviewsQuerySpecification.Create(id, reviewId);
+        var specification = ProductSpecification.ById.WithReview.Create(id, reviewId);
 
         return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
@@ -55,7 +55,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<Product> GetByIdWithReviewAsync(ProductId id, Title title, CancellationToken cancellationToken)
     {
-        var specification = ProductByIdWithReviewsQuerySpecification.Create(id, title);
+        var specification = ProductSpecification.ById.WithReview.Create(id, title);
 
         return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
@@ -63,7 +63,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
     {
-        var specification = ProductByIdWithIncludesQuerySpecification.Create(id, includes);
+        var specification = ProductSpecification.ById.WithIncludes.Create(id, includes);
 
         return await UseSpecificationWithoutMapping(specification)
             .FirstAsync(cancellationToken);
@@ -71,7 +71,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
     {
-        var specification = ProductByNamesAndRevisionQuerySpecification.Create(productNames, productRevisions);
+        var specification = ProductSpecification.ByNamesAndRevision.Create(productNames, productRevisions);
 
         //We query too many products, because we query all combinations of ProductName and Revision. Therefore, we will need to filter them
         var productsToFilter = await UseSpecificationWithoutMapping(specification)
@@ -93,8 +93,8 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
         params Expression<Func<Product, object>>[] includes
     )
     {
-        var specification = CommonQuerySpecificationWithMapping<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
-        
+        var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
+
         return await UseSpecificationWithMapping(specification)
             .PageAsync(page, cancellationToken);
     }

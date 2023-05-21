@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Common;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Persistence.Specifications.Products;
+using Shopway.Persistence.Specifications.Products.Sorting;
+using Shopway.Persistence.Specifications.Products.Filtering;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;
 

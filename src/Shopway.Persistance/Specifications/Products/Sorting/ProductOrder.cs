@@ -5,7 +5,7 @@ using Shopway.Persistence.Utilities;
 using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Persistence.Constants.SpecificationConstants;
 
-namespace Shopway.Persistence.Specifications.Products;
+namespace Shopway.Persistence.Specifications.Products.Sorting;
 
 public sealed record ProductOrder : ISortBy<Product>
 {

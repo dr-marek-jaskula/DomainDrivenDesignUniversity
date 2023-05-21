@@ -4,7 +4,7 @@ using Shopway.Domain.Entities;
 using Shopway.Persistence.Utilities;
 using static Shopway.Persistence.Constants.SpecificationConstants;
 
-namespace Shopway.Persistence.Specifications.Products;
+namespace Shopway.Persistence.Specifications.Products.Sorting;
 
 public sealed record CommonProductOrder : ISortBy<Product>
 {

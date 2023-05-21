@@ -22,6 +22,10 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     where TEntityId : struct, IEntityId
     where TEntity : Entity<TEntityId>
 {
+    protected SpecificationBase()
+    {
+    }
+
     //Flags
     internal bool AsSplitQuery { get; private set; }
     internal bool AsNoTracking { get; private set; }

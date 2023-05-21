@@ -2,7 +2,7 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
 
-namespace Shopway.Persistence.Specifications.Products;
+namespace Shopway.Persistence.Specifications.Products.Filtering;
 
 public sealed record ProductFilter : IFilter<Product>
 {

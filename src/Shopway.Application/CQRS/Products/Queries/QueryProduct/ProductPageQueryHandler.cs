@@ -4,7 +4,8 @@ using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Persistence.Specifications.Products;
+using Shopway.Persistence.Specifications.Products.Sorting;
+using Shopway.Persistence.Specifications.Products.Filtering;
 
 namespace Shopway.Application.CQRS.Products.Queries.QueryProduct;
 
