@@ -22,14 +22,7 @@ public partial class ReviewsControllerTests
         //Assert
         response.StatusCode.Should().Be(OK);
 
-        var addedReview = _fixture
-            .Context
-            .Set<Review>()
-            .Where(r => r.Stars.Value == body.Stars)
-            .Where(r => r.Title.Value == body.Title)
-            .Where(r => r.Description.Value == body.Description)
-            .FirstOrDefault();
-
+        Review? addedReview = await GetReview(body);
         addedReview.Should().NotBeNull();
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RestSharp;
+﻿using RestSharp;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;

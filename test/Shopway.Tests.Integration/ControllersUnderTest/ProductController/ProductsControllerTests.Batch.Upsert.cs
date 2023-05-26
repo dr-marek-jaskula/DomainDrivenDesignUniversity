@@ -1,8 +1,9 @@
 ﻿using RestSharp;
 using Shopway.Domain.EntityKeys;
-using Shopway.Application.CQRS;
 using Shopway.Tests.Integration.Utilities;
+using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using static System.Net.HttpStatusCode;
+using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Domain.Errors.Domain.DomainErrors.ProductNameError;
 using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.ProductBatchUpsertCommandUtility;
 
@@ -24,12 +25,7 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(OK);
 
         var batchResponse = response.Deserialize<ProductBatchResponseResult>();
-
-        batchResponse!
-            .Entries
-            .Where(x => x.Status is BatchEntryStatus.Inserted)
-            .Should()
-            .HaveCount(3);
+        batchResponse!.ShouldHaveCount(batchCommand.Requests.Count, Inserted);
     }
 
     [Fact]
@@ -51,33 +47,15 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(BadRequest);
 
         var batchResponse = response.Deserialize<ProductBatchResponseResult>();
-        
-        batchResponse!
-            .Entries
-            .Should()
-            .HaveCount(2);
-
-        var errorEntry = batchResponse!
-            .Entries
-            .Where(x => x.Status is BatchEntryStatus.Error)
-            .First();
-
-        errorEntry
-            .Errors
-            .Should()
-            .Contain(TooLong);
-
-        errorEntry
-            .Errors
-            .Should()
-            .Contain(ContainsIllegalCharacter);
+        batchResponse!.ShouldHaveCount(batchCommand.Requests.Count);
+        batchResponse!.ShouldContainEntryWithErrors(TooLong, ContainsIllegalCharacter);
     }
 
     [Fact]
-    public async Task Batch_Upsert_ShouldReturnProblemDetailsWithTwoErrors_WhenProductNameAndRevisionAreNull()
+    public async Task Batch_Upsert_ShouldReturnProblemDetailsWithTwoErrors_WhenProductNameAndRevisionFromProductKeyAreNull()
     {
         //Arrange
-        var batchCommand = CreateProductBatchUpsertCommandWithSingleRequest(new ProductKey(), 100m, "pcs2");
+        var batchCommand = CreateProductBatchUpsertCommandWithSingleRequest(new ProductKey(), 100m, "pcs");
 
         var request = PostRequest($"batch/upsert", batchCommand);
 
