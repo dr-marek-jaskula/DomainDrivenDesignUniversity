@@ -42,7 +42,7 @@ public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
     {
         try
         {
-            await DataGenerator.CleanDatabaseFromTestData();
+            await DataGenerator.CleanDatabaseFromTestDataAsync();
         }
         catch
         {

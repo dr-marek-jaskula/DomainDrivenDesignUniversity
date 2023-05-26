@@ -11,7 +11,7 @@ public partial class ReviewsControllerTests
     public async Task AddReview_ShouldAddReview_WhenValidData()
     {
         //Arrange
-        var product = await _fixture.DataGenerator.AddProduct();
+        var product = await _fixture.DataGenerator.AddProductAsync();
         var body = CreateAddReviewCommand();
 
         var request = PostRequest($"{product.Id}/{Presentation.Controllers.ProductsController.Reviews}", body);

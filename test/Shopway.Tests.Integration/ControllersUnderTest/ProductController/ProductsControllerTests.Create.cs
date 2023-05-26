@@ -13,7 +13,7 @@ public partial class ProductsControllerTests
     public async Task Create_ShouldReturnFailure_WhenProductExists()
     {
         //Arrange
-        var product = await _fixture.DataGenerator.AddProduct();
+        var product = await _fixture.DataGenerator.AddProductAsync();
         var productKey = ProductKey.From(product);
 
         var body = CreateProductCommand(productKey);

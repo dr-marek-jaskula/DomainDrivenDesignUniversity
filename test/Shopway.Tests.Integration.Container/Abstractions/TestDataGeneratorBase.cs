@@ -69,7 +69,7 @@ public abstract class TestDataGeneratorBase
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
     /// <param name="entity">Entity to be inserted</param>
-    protected async Task AddEntity<TEntity>(TEntity entity)
+    protected async Task AddEntityAsync<TEntity>(TEntity entity)
         where TEntity : class, IEntity
     {
         _unitOfWork.Context

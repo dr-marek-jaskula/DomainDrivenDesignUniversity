@@ -15,7 +15,7 @@ public partial class ProductsControllerTests
     public async Task GetById_ShouldReturnProduct_WhenProductExists()
     {
         //Arrange
-        var expected = await _fixture.DataGenerator.AddProduct();
+        var expected = await _fixture.DataGenerator.AddProductAsync();
 
         var request = GetRequest(expected.Id.Value.ToString());
         request.AddApiKeyAuthentication(apiKeys.PRODUCT_GET);

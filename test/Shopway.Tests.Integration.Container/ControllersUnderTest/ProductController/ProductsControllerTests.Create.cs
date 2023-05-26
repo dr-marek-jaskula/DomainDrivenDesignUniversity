@@ -14,7 +14,7 @@ public partial class ProductsControllerTests
     public async Task Create_ShouldReturnFailure_WhenProductAlreadyExists()
     {
         //Arrange
-        var product = await fixture.DataGenerator.AddProduct();
+        var product = await fixture.DataGenerator.AddProductAsync();
         var productKey = ProductKey.From(product);
 
         var body = CreateProductCommand(productKey);

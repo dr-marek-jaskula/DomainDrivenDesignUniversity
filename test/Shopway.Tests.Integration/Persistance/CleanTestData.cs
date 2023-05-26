@@ -13,9 +13,9 @@ public sealed class CleanTestData : IAsyncLifetime
     }
 
     [Fact(Skip = "Only for cleaning the database manually")]
-    public async Task CleanDatabaseFromTestData()
+    public async Task CleanDatabaseFromTestDataAsync()
     {
-        await _fixture.DataGenerator.CleanDatabaseFromTestData();
+        await _fixture.DataGenerator.CleanDatabaseFromTestDataAsync();
     }
 
     public async Task DisposeAsync()
