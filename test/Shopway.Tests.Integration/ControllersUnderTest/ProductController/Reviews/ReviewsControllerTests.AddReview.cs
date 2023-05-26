@@ -22,7 +22,7 @@ public partial class ReviewsControllerTests
         //Assert
         response.StatusCode.Should().Be(OK);
 
-        Review? addedReview = await GetReview(body);
+        Review? addedReview = await GetReview(body, product.Id);
         addedReview.Should().NotBeNull();
     }
 }

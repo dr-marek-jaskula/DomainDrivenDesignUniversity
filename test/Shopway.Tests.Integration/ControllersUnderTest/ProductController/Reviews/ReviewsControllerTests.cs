@@ -8,6 +8,7 @@ using Shopway.Application.CQRS.Products.Commands.AddReview;
 using Shopway.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using static System.Threading.CancellationToken;
+using Shopway.Domain.EntityIds;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 
@@ -33,11 +34,12 @@ public sealed partial class ReviewsControllerTests : ControllerTestsBase, IAsync
         await _fixture.DisposeAsync();
     }
 
-    private async Task<Review?> GetReview(AddReviewCommand.AddReviewRequestBody body)
+    private async Task<Review?> GetReview(AddReviewCommand.AddReviewRequestBody body, ProductId productId)
     {
         return await _fixture
             .Context
             .Set<Review>()
+            .Where(r => r.ProductId == productId)
             .Where(r => r.Stars.Value == body.Stars)
             .Where(r => r.Title.Value == body.Title)
             .Where(r => r.Description.Value == body.Description)
