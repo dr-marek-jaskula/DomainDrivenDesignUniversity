@@ -1,11 +1,9 @@
 ﻿using RestSharp;
-using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Domain.EntityKeys;
-using Shopway.Domain.ValueObjects;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Errors.HttpErrors;
-using static Shopway.Tests.Integration.Abstractions.TestDataGeneratorBase;
+using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.CreateProductCommandUtility;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
@@ -15,13 +13,11 @@ public partial class ProductsControllerTests
     public async Task Create_ShouldReturnFailure_WhenProductExists()
     {
         //Arrange
-        var productName = TestString(20);
-        var revision = TestString(2);
-        var key = ProductKey.Create(productName, revision);
+        var product = await _fixture.DataGenerator.AddProduct();
+        var productKey = ProductKey.From(product);
 
-        await _fixture.DataGenerator.AddProduct(ProductName.Create(productName).Value, Revision.Create(revision).Value);
+        var body = CreateProductCommand(productKey);
 
-        var body = new CreateProductCommand(key, 10, "kg");
         var request = PostRequest(string.Empty, body);
         request.AddApiKeyAuthentication(apiKeys.PRODUCT_CREATE);
 
@@ -32,6 +28,6 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(BadRequest);
 
         var problemDetails = response.Deserialize<ValidationProblemDetails>();
-        problemDetails!.ShouldContain(AlreadyExists(key));
+        problemDetails!.ShouldContain(AlreadyExists(productKey));
     }
 }

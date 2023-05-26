@@ -1,4 +1,7 @@
 ﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.Entities;
+using Shopway.Domain.ValueObjects;
+using System.Runtime.CompilerServices;
 
 namespace Shopway.Domain.EntityKeys;
 
@@ -35,6 +38,11 @@ public readonly record struct ProductKey : IUniqueKey
     public override string ToString()
     {
         return $"Product {{ Name: {ProductName}, Revision: {Revision} }}";
+    }
+
+    public static ProductKey From(Product product)
+    {
+        return new ProductKey(product.ProductName.Value, product.Revision.Value);
     }
 }
 
