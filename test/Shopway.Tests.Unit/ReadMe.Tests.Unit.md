@@ -15,7 +15,7 @@ This layer contains the unit tests. We distinguish:
 
 3. UtilityTests
 
-	- Test extension method and similar utilities
+	- Test extension methods and similar utilities
 
 Example of strongly type test data:
 > SystemUnderTest/Domain/ValueObjects/ProductNameTests.cs
