@@ -14,10 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
 using Shopway.Tests.Integration.Constants;
 using Shopway.Domain.Enumerations;
-using Shopway.Tests.Integration.ControllersUnderTest;
-using Shopway.Domain.Errors;
 using static RestSharp.Method;
-using static Shopway.Application.Constants.ProblemDetailsConstants;
+
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
 
 namespace Shopway.Tests.Integration.Abstractions;
@@ -164,28 +162,5 @@ public abstract class ControllerTestsBase
         var token = logResponse.Deserialize<LogUserResponse>();
 
         return token!.Token;
-    }
-
-    /// <summary>
-    /// Asserts problem details after the model validation. Specific error should be asserted separately.
-    /// </summary>
-    /// <param name="problemDetails">Deserialized problem details</param>
-    protected static void AssertProblemDetails(ValidationProblemDetails problemDetails)
-    {
-        problemDetails.Type.Should().Be(ValidationError);
-        problemDetails.Status.Should().Be(400);
-        problemDetails.Title.Should().Be(ValidationError);
-        problemDetails.Detail.Should().Be(Error.ValidationError.Message);
-    }
-
-    /// <summary>
-    /// Asserts problem details in case when the request model is invalid. For instance, when some field is null. Specific error should be asserted separately.
-    /// </summary>
-    /// <param name="problemDetails">Deserialized problem details</param>
-    protected static void AssertModelProblemDetails(ModelProblemDetails problemDetails)
-    {
-        problemDetails.Type.Should().Be(InvalidRequest);
-        problemDetails.Status.Should().Be(400);
-        problemDetails.Title.Should().Be(InvalidRequestTitle);
     }
 }

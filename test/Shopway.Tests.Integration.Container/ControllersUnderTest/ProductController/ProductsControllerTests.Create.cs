@@ -2,6 +2,7 @@
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.ValueObjects;
+using Shopway.Tests.Integration.Container.Utilities;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Errors.HttpErrors;
@@ -30,7 +31,7 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(BadRequest);
 
-        var deserializedResponse = response.Deserialize<ValidationProblemDetails>();
-        deserializedResponse!.Errors.Should().Contain(error => error == AlreadyExists(key));
+        var problemDetails = response.Deserialize<ValidationProblemDetails>();
+        problemDetails!.ShouldContain(AlreadyExists(key));
     }
 }

@@ -31,7 +31,7 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(BadRequest);
 
-        var deserializedResponse = response.Deserialize<ValidationProblemDetails>();
-        deserializedResponse!.Errors.Should().Contain(error => error == AlreadyExists(key));
+        var problemDetails = response.Deserialize<ValidationProblemDetails>();
+        problemDetails!.ShouldContain(AlreadyExists(key));
     }
 }

@@ -1,7 +1,9 @@
-﻿using RestSharp;
+﻿using Microsoft.AspNetCore.Mvc;
+using RestSharp;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
+using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Errors.HttpErrors;
@@ -14,9 +16,9 @@ public partial class ProductsControllerTests
     public async Task GetById_ShouldReturnProduct_WhenProductExists()
     {
         //Arrange
-        var generatedProduct = await _fixture.DataGenerator.AddProduct();
+        var expected = await _fixture.DataGenerator.AddProduct();
 
-        var request = GetRequest(generatedProduct.Id.Value.ToString());
+        var request = GetRequest(expected.Id.Value.ToString());
         request.AddApiKeyAuthentication(apiKeys.PRODUCT_GET);
 
         //Act
@@ -25,8 +27,8 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(OK);
 
-        var deserializedResponse = response.DeserializeResponseResult<ProductResponse>();
-        AssertProductResponse(deserializedResponse, generatedProduct, assertReviews: false);
+        var actual = response.DeserializeResponseResult<ProductResponse>();
+        actual.ShouldMatch(expected);
     }
 
     [Fact]
@@ -44,8 +46,7 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(BadRequest);
 
-        var deserializedResponse = response.Deserialize<ValidationProblemDetails>();
-        AssertProblemDetails(deserializedResponse!);
-        deserializedResponse!.Errors.Should().Contain(InvalidReference(invalidProductId.Value, nameof(Product)));
+        var problemDetails = response.Deserialize<ValidationProblemDetails>();
+        problemDetails!.ShouldContain(InvalidReference(invalidProductId.Value, nameof(Product)));
     }
 }

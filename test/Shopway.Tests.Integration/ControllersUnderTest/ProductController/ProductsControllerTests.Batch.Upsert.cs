@@ -2,11 +2,9 @@
 using Shopway.Domain.EntityKeys;
 using Shopway.Application.CQRS;
 using Shopway.Tests.Integration.Utilities;
-using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 using static System.Net.HttpStatusCode;
-using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Domain.Errors.Domain.DomainErrors.ProductNameError;
-using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
+using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.ProductBatchUpsertCommandUtility;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
@@ -16,15 +14,7 @@ public partial class ProductsControllerTests
     public async Task Batch_Upsert_ShouldReturnValidResponseEntries_WhenRequestsAreValid()
     {
         //Arrange
-        var batchRequests = AsList
-        (
-            new ProductBatchUpsertRequest(ProductKey.Create("firstTestProduct", "1,0"), 100m, "pcs"),
-            new ProductBatchUpsertRequest(ProductKey.Create("secondTestProduct", "2,0"), 50m, "kg"),
-            new ProductBatchUpsertRequest(ProductKey.Create("thirdTestProduct", "3,0"), 10m, "pcs")
-        );
-
-        var batchCommand = new BatchUpsertProductCommand(batchRequests);
-
+        var batchCommand = CreateProductBatchUpsertCommand();
         var request = PostRequest($"batch/upsert", batchCommand);
 
         //Act
@@ -33,9 +23,9 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(OK);
 
-        var deserializedResponse = response.Deserialize<ProductBatchResponseResult>();
+        var batchResponse = response.Deserialize<ProductBatchResponseResult>();
 
-        deserializedResponse!
+        batchResponse!
             .Entries
             .Where(x => x.Status is BatchEntryStatus.Inserted)
             .Should()
@@ -46,14 +36,11 @@ public partial class ProductsControllerTests
     public async Task Batch_Upsert_ShouldReturnOneErrorResponseEntry_WhenOneRequestIsInvalid()
     {
         //Arrange
-        var batchRequests = AsList
+        var batchCommand = CreateProductBatchUpsertCommand
         (
-            new ProductBatchUpsertRequest(ProductKey.Create("firstTest+=.,ProductfirstTestProductfirstTestProductfirstTestProductfirstTestProduct", "1,0"), 100m, "pcs"),
-            new ProductBatchUpsertRequest(ProductKey.Create("secondTestProduct", "2,0"), 50m, "kg"),
-            new ProductBatchUpsertRequest(ProductKey.Create("thirdTestProduct", "3,0"), 10m, "pcs")
+            CreateProductBatchUpsertRequest(ProductKey.Create("firstTest+=.,ProductfirstTestProductfirstTestProductfirstTestProductfirstTestProduct", "1,0"), 100m, "pcs"),
+            CreateProductBatchUpsertRequest()
         );
-
-        var batchCommand = new BatchUpsertProductCommand(batchRequests);
 
         var request = PostRequest($"batch/upsert", batchCommand);
 
@@ -63,14 +50,14 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(BadRequest);
 
-        var deserializedResponse = response.Deserialize<ProductBatchResponseResult>();
+        var batchResponse = response.Deserialize<ProductBatchResponseResult>();
         
-        deserializedResponse!
+        batchResponse!
             .Entries
             .Should()
-            .HaveCount(3);
+            .HaveCount(2);
 
-        var errorEntry = deserializedResponse!
+        var errorEntry = batchResponse!
             .Entries
             .Where(x => x.Status is BatchEntryStatus.Error)
             .First();
@@ -90,12 +77,7 @@ public partial class ProductsControllerTests
     public async Task Batch_Upsert_ShouldReturnProblemDetailsWithTwoErrors_WhenProductNameAndRevisionAreNull()
     {
         //Arrange
-        var batchRequests = AsList
-        (
-            new ProductBatchUpsertRequest(new ProductKey(), 100m, "pcs2")
-        );
-
-        var batchCommand = new BatchUpsertProductCommand(batchRequests);
+        var batchCommand = CreateProductBatchUpsertCommandWithSingleRequest(new ProductKey(), 100m, "pcs2");
 
         var request = PostRequest($"batch/upsert", batchCommand);
 
@@ -105,8 +87,7 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(BadRequest);
 
-        var deserializedResponse = response.Deserialize<ModelProblemDetails>();
-        deserializedResponse.Should().NotBeNull();
-        deserializedResponse!.Errors.Should().HaveCount(2);
+        var problemDetails = response.Deserialize<ModelProblemDetails>();
+        problemDetails!.ShouldHaveErrorCount(2);
     }
 }
