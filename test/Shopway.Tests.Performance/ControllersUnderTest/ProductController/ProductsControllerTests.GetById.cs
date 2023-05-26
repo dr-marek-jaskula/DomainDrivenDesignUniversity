@@ -3,7 +3,6 @@ using Shopway.Domain.EntityIds;
 using Shopway.Tests.Performance.Abstractions;
 using Shopway.Tests.Performance.Scenarios;
 using static Shopway.Tests.Performance.Constants.PerformanceSkipReason;
-using static Shopway.Tests.Performance.Constants.OutputHelperContants;
 
 namespace Shopway.Tests.Performance.ControllersUnderTest.ProductController;
 
@@ -24,10 +23,7 @@ public partial class ProductsControllerTests : ControllerTestsBase
         var stats = NBomberRunner
             .RegisterScenarios(scenario)
             .Run();
-
-        _outputHelper.WriteLine($"{OkCount}{stats.AllOkCount}");
-        _outputHelper.WriteLine($"{FailCount}{stats.AllFailCount}");
-        _outputHelper.WriteLine($"{AllCount}{stats.AllRequestCount}");
-        _outputHelper.WriteLine($"{FailPercentage}{stats.AllFailCount / stats.AllRequestCount}");
+        
+        DisplayStatistics(stats);
     }
 }
