@@ -62,6 +62,23 @@ This layer container the performance tests.
 
 We use NBomber as a performance test framework, because we can use it with xunit.
 
+### .Tests Naming Conventions
+
+1. Tests should follow T1_T2_T3 convention where:
+	- T1 is the name of the system functionality that is under test
+	- T2 is the expected result 
+	- T3 is the test scenario
+
+> GetById_ShouldSucceed_WhenCreateValidProduct
+
+Note: Alternative naming conventions is to switch T2 with T3:
+
+> GetById_WhenCreateValidProduct_ShouldSucceed
+
+2. Mocks should end with "Mock" suffix"
+
+> _productRepositoryMock
+
 ### Postman Collection
 
 Use the postman collection to get all endpoints for postman. 
