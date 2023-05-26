@@ -32,9 +32,9 @@ For the architecture tests we use **NetArchTest.Rules** nuget package.
 
 1. Tests should follow T1_T2_T3 convention where:
 
-	a) T1 is the name of the system functionality that is under test
-	b) T2 is the Expected result 
-	c) T3 is the test scenario
+	a T1 is the name of the system functionality that is under test.
+	b T2 is the Expected result 
+	c T3 is the test scenario
 
 > GetById_ShouldSucceed_WhenCreateValidProduct
 
