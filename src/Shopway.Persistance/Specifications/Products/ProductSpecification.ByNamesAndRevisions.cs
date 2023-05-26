@@ -1,21 +1,20 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.EntityKeys;
 using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Persistence.Specifications.Products;
 
 internal abstract partial class ProductSpecification
 {
-    internal partial class ByNamesAndRevision : SpecificationBase<Product, ProductId>
+    internal partial class ByNamesAndRevisions : SpecificationBase<Product, ProductId>
     {
-        private ByNamesAndRevision() : base()
+        private ByNamesAndRevisions() : base()
         {
         }
 
         internal static SpecificationBase<Product, ProductId> Create(IList<string> productNames, IList<string> productRevisions)
         {
-            return new ByNamesAndRevision()
+            return new ByNamesAndRevisions()
                 .AddFilters
                 (
                     product => productNames.Contains(product.ProductName.Value),

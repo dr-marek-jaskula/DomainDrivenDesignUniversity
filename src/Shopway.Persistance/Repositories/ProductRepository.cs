@@ -71,7 +71,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
     {
-        var specification = ProductSpecification.ByNamesAndRevision.Create(productNames, productRevisions);
+        var specification = ProductSpecification.ByNamesAndRevisions.Create(productNames, productRevisions);
 
         //We query too many products, because we query all combinations of ProductName and Revision. Therefore, we will need to filter them
         var productsToFilter = await UseSpecification(specification)

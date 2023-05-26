@@ -18,5 +18,4 @@ public static class NamingConvention
     public const string Job = nameof(Job);
     public const string Configuration = nameof(Configuration);
     public const string Repository = nameof(Repository);
-    public const string Specification = nameof(Specification);
 }
