@@ -1,8 +1,8 @@
-using Shopway.Domain.EntityIds;
 using Shopway.Tests.Unit.Constants;
 using Shopway.Tests.Unit.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Application.CQRS.Products.Queries.GetProductById;
+using Shopway.Tests.Unit.LayerTests.Application.ProductHandlers.Utilities;
 using static System.Threading.CancellationToken;
 
 namespace Shopway.Tests.Unit.LayerTests.Application.ProductHandlers;
@@ -13,11 +13,11 @@ public sealed class GetProductByIdQueryHandlerTests : TestBase
     /// System under tests
     /// </summary>
     private readonly GetProductByIdQueryHandler _sut;
-    private readonly IProductRepository _productRepository = Substitute.For<IProductRepository>();
+    private readonly IProductRepository _productRepositoryMock = Substitute.For<IProductRepository>();
 
     public GetProductByIdQueryHandlerTests()
     {
-        _sut = new(_productRepository);
+        _sut = new(_productRepositoryMock);
     }
 
     [Fact]
@@ -25,25 +25,24 @@ public sealed class GetProductByIdQueryHandlerTests : TestBase
     public async Task GetById_ShouldSucceed_WhenCreateValidProduct()
 	{
         //Arrange
-        var productId = ProductId.New();
-        var expected = CreateProduct(productId);
+        var expected = CreateProduct();
 
-        _productRepository
-            .GetByIdAsync(productId, None)
+        _productRepositoryMock
+            .GetByIdAsync(expected.Id, None)
             .Returns(expected);
 
-        var query = new GetProductByIdQuery(productId);
+        var query = new GetProductByIdQuery(expected.Id);
 
         //Act
-        var result = await _sut
-            .Handle(query, None);
+        var result = await _sut.Handle(query, None);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
         var actual = result.Value;
+        actual.ShouldMatch(expected);
 
-        AssertProductResponse(actual, expected);
+        await _productRepositoryMock.Received(1).GetByIdAsync(expected.Id, None);
     }
 }

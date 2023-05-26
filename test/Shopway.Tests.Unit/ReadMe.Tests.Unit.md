@@ -24,3 +24,21 @@ Domain tests are very fast. They should cover all cases, but be as simple as pos
 ## Architecture tests
 
 For the architecture tests we use **NetArchTest.Rules** nuget package.
+
+## Naming Conventions
+
+1. Tests should follow T1_T2_T3 convention where:
+	a) T1 is the name of the system functionality that is under test
+	b) T2 is the Expected result 
+	c) T3 is the test scenario
+
+> GetById_ShouldSucceed_WhenCreateValidProduct
+
+Note: Alternative naming conventions is to switch T2 with T3:
+
+> GetById_WhenCreateValidProduct_ShouldSucceed
+
+2. Mocks should end with "Mock" suffix"
+
+> _productRepositoryMock
+

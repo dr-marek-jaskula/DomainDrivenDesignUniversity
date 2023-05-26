@@ -85,7 +85,7 @@ public sealed class ProductTests : TestBase
     public void UpdatePrice_ShouldUpdateProductPrice_WhenValidPrice()
     {
         //Arrange
-        var product = CreateProduct(ProductId.New());
+        var product = CreateProduct();
         var newPrice = Price.Create(100).Value;
 
         //Act
@@ -100,7 +100,7 @@ public sealed class ProductTests : TestBase
     public void UpdateUomCode_ShouldUpdateProductUomCode_WhenValidUomCode()
     {
         //Arrange
-        var product = CreateProduct(ProductId.New());
+        var product = CreateProduct();
         var newUomCode = UomCode.Create(UomCode.AllowedUomCodes.Last()).Value;
 
         //Act
@@ -115,8 +115,8 @@ public sealed class ProductTests : TestBase
     public void AddReview_ShouldAddReview_WhenWhenValidReview()
     {
         //Arrange
-        var product = CreateProduct(ProductId.New());
-        var review = CreateReview(ReviewId.New());
+        var product = CreateProduct();
+        var review = CreateReview();
 
         //Act
         product.AddReview(review);
@@ -130,8 +130,8 @@ public sealed class ProductTests : TestBase
     public void AnyReview_ShouldReturnTrue_WhenReviewWithGivenTitleExists()
     {
         //Arrange
-        var product = CreateProduct(ProductId.New());
-        var review = CreateReview(ReviewId.New());
+        var product = CreateProduct();
+        var review = CreateReview();
 
         //Act
         product.AddReview(review);
