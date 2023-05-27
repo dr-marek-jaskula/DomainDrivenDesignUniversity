@@ -45,7 +45,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
             .AnyAsync(cancellationToken);
     }
 
-    public async Task<IList<ProductId>> VerfiyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
+    public async Task<IList<ProductId>> VerifyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.ById.Create(ids);
 
