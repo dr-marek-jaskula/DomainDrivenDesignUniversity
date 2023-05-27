@@ -4,7 +4,7 @@ namespace Shopway.Domain.Utilities;
 
 public static class SortByEntryUtilities
 {
-    public static bool AnyInvalidSortPropertyName(this IList<SortByEntry> sortProperties, IReadOnlyCollection<string> allowedSortProperties)
+    public static bool ContainsInvalidSortProperty(this IList<SortByEntry> sortProperties, IReadOnlyCollection<string> allowedSortProperties)
     {
         return sortProperties
             .Select(x => x.PropertyName)
@@ -12,7 +12,7 @@ public static class SortByEntryUtilities
             .Any();
     }
 
-    public static bool DuplicatedSortPriority(this IList<SortByEntry> sortProperties)
+    public static bool ContainsSortPriorityDuplicate(this IList<SortByEntry> sortProperties)
     {
         return sortProperties
             .ContainsDuplicates(x => x.SortPriority);

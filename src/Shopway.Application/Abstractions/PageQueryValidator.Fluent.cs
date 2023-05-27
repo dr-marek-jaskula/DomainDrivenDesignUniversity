@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions;
+using Shopway.Domain.Utilities;
 using static Shopway.Application.Constants.PageConstants;
+using static Shopway.Application.Constants.SortConstants;
 using static Shopway.Domain.Utilities.SortByEntryUtilities;
 
 namespace Shopway.Application.Abstractions;
@@ -23,48 +25,28 @@ internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSort
 
         RuleFor(query => query.Page.PageSize).Custom((pageSize, context) =>
         {
-            if (AllowedPageSizes.Contains(pageSize) is false)
+            if (AllowedPageSizes.NotContains(pageSize))
             {
-                context.AddFailure(PageSize, $"{PageSize} must be in: [{string.Join(",", AllowedPageSizes)}]");
+                context.AddFailure(PageSize, $"{PageSize} must be in: [{string.Join(", ", AllowedPageSizes)}]");
             }
         });
 
-        RuleFor(query => query.Order)
-            .Must(ValidatePageOrderPropertyNames)
-            .WithMessage($"SortProperties contains invalid property name.");
-
-        RuleFor(query => query.Order)
-            .Must(ValidatePageOrderPropertyPriorities)
-            .WithMessage("SortProperties contains priority duplicates.");
-    }
-
-    private static bool ValidatePageOrderPropertyNames(TSortBy? pageOrder)
-    {
-        if (pageOrder is null)
+        RuleFor(query => query.Order).Custom((order, context) =>
         {
-            return true;
-        }
+            if (order is null)
+            {
+                return;
+            }
 
-        if (pageOrder.SortProperties.AnyInvalidSortPropertyName(pageOrder.AllowedSortProperties))
-        {
-            return false;
-        }
+            if (order.SortProperties.ContainsInvalidSortProperty(order.AllowedSortProperties))
+            {
+                context.AddFailure(SortProperties, $"{SortProperties} contains invalid property name. Allowed property names: {string.Join(", ", order.AllowedSortProperties)}");
+            }
 
-        return true;
-    }
-
-    private static bool ValidatePageOrderPropertyPriorities(TSortBy? pageOrder)
-    {
-        if (pageOrder is null)
-        {
-            return true;
-        }
-
-        if (pageOrder.SortProperties.DuplicatedSortPriority())
-        {
-            return false;
-        }
-
-        return true;
+            if (order.SortProperties.ContainsSortPriorityDuplicate())
+            {
+                context.AddFailure(SortProperties, $"{SortProperties} contains priority duplicates.");
+            }
+        });
     }
 }
