@@ -8,8 +8,22 @@ namespace Shopway.Persistence.Specifications.Products;
 
 internal abstract partial class ProductSpecification
 {
-    internal abstract partial class ById
+    internal sealed partial class ById : SpecificationBase<Product, ProductId>
     {
+        private ById() { }
+
+        internal static SpecificationBase<Product, ProductId> Create(ProductId productId)
+        {
+            return new ById()
+                .AddFilters(product => product.Id == productId);
+        }
+
+        internal static SpecificationBase<Product, ProductId> Create(IList<ProductId> productIds)
+        {
+            return new ById()
+                .AddFilters(product => productIds.Contains(product.Id));
+        }
+
         public sealed class WithIncludes : SpecificationBase<Product, ProductId>
         {
             private WithIncludes() { }

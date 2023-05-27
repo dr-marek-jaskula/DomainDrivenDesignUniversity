@@ -12,6 +12,16 @@ public interface IProductRepository
 
     Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken);
 
+    Task<bool> AnyAsync(ProductId id, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Examines if the product ids refer to existing entities. Returns invalid reference
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Ids that does not refer to any product</returns>
+    Task<IList<ProductId>> VerfiyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken);
+
     Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken);
 
     Task<Product> GetByIdWithReviewAsync(ProductId id, ReviewId reviewId, CancellationToken cancellationToken);

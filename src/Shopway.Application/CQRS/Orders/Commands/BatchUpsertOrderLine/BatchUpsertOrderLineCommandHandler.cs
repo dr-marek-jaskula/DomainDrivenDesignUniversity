@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Shopway.Domain.Errors;
+using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Abstractions;
@@ -14,22 +15,25 @@ using Shopway.Domain.Abstractions.Repositories;
 using static Shopway.Persistence.Utilities.CacheUtilities;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.Mappings.OrderLineMapping;
-using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
+using Microsoft.AspNetCore.Authentication;
+using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
 namespace Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 
 public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository;
+    private readonly IProductRepository _productRepository;
     private readonly IFusionCache _fusionCache;
     private readonly IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _responseBuilder;
 
-    public BatchUpsertOrderLineCommandHandler(IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, IOrderHeaderRepository orderHeaderRepository, IFusionCache fusionCache)
+    public BatchUpsertOrderLineCommandHandler(IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, IOrderHeaderRepository orderHeaderRepository, IFusionCache fusionCache, IProductRepository productRepository)
     {
         _responseBuilder = responseBuilder;
         _orderHeaderRepository = orderHeaderRepository;
         _fusionCache = fusionCache;
+        _productRepository = productRepository;
     }
 
     public async Task<IResult<BatchUpsertOrderLineResponse>> Handle(BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
@@ -37,6 +41,13 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
         if (command.Requests.IsNullOrEmpty())
         {
             return Result.Failure<BatchUpsertOrderLineResponse>(NullOrEmpty(nameof(BatchUpsertOrderLineCommand)));
+        }
+
+        var invalidProductIds = await _productRepository.VerfiyIdsAsync(command.GetRequestsProductIds(), cancellationToken);
+
+        if (invalidProductIds.NotNullOrEmpty())
+        {
+            return Result.Failure<BatchUpsertOrderLineResponse>(InvalidReferences(invalidProductIds.GetGuids(), nameof(Product)));
         }
 
         var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
@@ -49,7 +60,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
         //Perform validation: using the builder, trimmed command and queried productsToUpdate
         var responseEntries = command.Validate(_responseBuilder, orderLinesToUpdateDictionary);
 
-        if (responseEntries.Any(response => response.Status is Error))
+        if (responseEntries.Any(response => response.Status is BatchEntryStatus.Error))
         {
             return Result.BatchFailure(responseEntries.ToBatchInsertResponse());
         }

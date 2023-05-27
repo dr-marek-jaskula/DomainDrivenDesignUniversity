@@ -1,6 +1,7 @@
 ﻿using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 using Shopway.Application.Mappings;
 using Shopway.Domain.Entities;
+using Shopway.Domain.EntityIds;
 using Shopway.Domain.EntityKeys;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
@@ -33,6 +34,14 @@ internal static class BatchUpsertOrderLineCommandUtilities
     {
         return command
             .FilterValidRequests(orderLinesToUpdateWithKeys, Inserted);
+    }
+
+    public static IList<ProductId> GetRequestsProductIds
+    (
+        this BatchUpsertOrderLineCommand command
+    )
+    {
+        return command.Requests.Select(x => x.ProductId).ToList();
     }
 
     /// <summary>

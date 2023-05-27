@@ -17,4 +17,10 @@ public static class IEntityIdUtilities
     {
         return id is not null;
     }
+
+    public static IList<Guid> GetGuids<TEntityId>(this IList<TEntityId> ids)
+        where TEntityId : IEntityId
+    {
+        return ids.Select(x => x.Value).ToList();
+    }
 }

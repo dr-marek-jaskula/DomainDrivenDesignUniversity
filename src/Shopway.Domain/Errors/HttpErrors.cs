@@ -68,6 +68,15 @@ public static class HttpErrors
     }
 
     /// <summary>
+    /// Create an Error describing that the provided reference is invalid
+    /// </summary>
+    /// <returns>InvalidReference error</returns>
+    public static Error InvalidReferences(IList<Guid> references, string entity)
+    {
+        return new($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid references: [{string.Join(", ", references)}] for entity {entity}");
+    }
+
+    /// <summary>
     /// Create an Error describing that the collection is null or empty
     /// </summary>
     /// <returns>NullOrEmpty error</returns>

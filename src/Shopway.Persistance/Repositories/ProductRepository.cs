@@ -37,6 +37,25 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
             .AnyAsync(cancellationToken);
     }
 
+    public async Task<bool> AnyAsync(ProductId id, CancellationToken cancellationToken)
+    {
+        var specification = ProductSpecification.ById.Create(id);
+
+        return await UseSpecification(specification)
+            .AnyAsync(cancellationToken);
+    }
+
+    public async Task<IList<ProductId>> VerfiyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
+    {
+        var specification = ProductSpecification.ById.Create(ids);
+
+        var existing = await UseSpecification(specification)
+            .Select(product => product.Id)
+            .ToListAsync(cancellationToken);
+
+        return ids.Except(existing).ToList();
+    }
+
     public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.ById.WithReviews.Create(id);

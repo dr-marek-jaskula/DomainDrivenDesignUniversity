@@ -4,6 +4,7 @@ using Shopway.Domain.EntityKeys;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
+using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 
