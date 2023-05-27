@@ -19,7 +19,7 @@ public interface IProductRepository
     /// </summary>
     /// <param name="ids"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns>Ids that does not refer to any product</returns>
+    /// <returns>Ids that do not refer to any product</returns>
     Task<IList<ProductId>> VerfiyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken);
 
     Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken);
