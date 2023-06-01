@@ -18,7 +18,7 @@ internal sealed class RemoveOrderLineCommandHandler : ICommandHandler<RemoveOrde
 
     public async Task<IResult<RemoveOrderLineResponse>> Handle(RemoveOrderLineCommand command, CancellationToken cancellationToken)
     {
-        var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
+        var orderHeader = await _orderHeaderRepository.GetByIdWithOrderLineAsync(command.OrderHeaderId, command.OrderLineId, cancellationToken);
 
         var orderLineToRemove = orderHeader
             .OrderLines
