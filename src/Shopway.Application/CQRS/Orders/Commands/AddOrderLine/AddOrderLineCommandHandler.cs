@@ -29,7 +29,8 @@ internal sealed class AddOrderLineCommandHandler : ICommandHandler<AddOrderLineC
         ValidationResult<Amount> amountResult = Amount.Create(command.Body.Amount);
 
         _validator
-            .Validate(discountResult);
+            .Validate(discountResult)
+            .Validate(amountResult);
 
         if (_validator.IsInvalid)
         {
