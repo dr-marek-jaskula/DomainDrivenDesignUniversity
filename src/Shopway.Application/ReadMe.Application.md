@@ -49,35 +49,32 @@ Solution:
 1. Create mapping that returns an expression of func in mapping folder (.Application layer):
 
 ```csharp
-public static Expression<Func<Product, ProductResponse>> ToResponse()
-{
-    return product => new ProductResponse
-    (
-        product.Id.Value,
-        product.ProductName.Value,
-        product.Revision.Value,
-        product.Price.Value,
-        product.UomCode.Value,
-        product.Reviews
-            .Select(review => new ReviewResponse
-            (
-                review.Id.Value,
-                review.Username.Value,
-                review.Stars.Value,
-                review.Title.Value,
-                review.Description.Value
-            ))
-            .ToList()
-            .AsReadOnly()
-    );
-}
+public static Expression<Func<Product, ProductResponse>> ProductResponse => product => new ProductResponse
+(
+    product.Id.Value,
+    product.ProductName.Value,
+    product.Revision.Value,
+    product.Price.Value,
+    product.UomCode.Value,
+    product.Reviews
+        .Select(review => new ReviewResponse
+        (
+            review.Id.Value,
+            review.Username.Value,
+            review.Stars.Value,
+            review.Title.Value,
+            review.Description.Value
+        ))
+        .ToList()
+        .AsReadOnly()
+);
 ```
 
 2. Pass the expression as a parameter of the repository method:
 
 ```csharp
 var page = await _productRepository
-    .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.ToResponse(), cancellationToken);
+    .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.ProductResponse, cancellationToken);
 ```
 
 3. Use the expression as a parameter of the **Select** method. The repository method must be a generic one:

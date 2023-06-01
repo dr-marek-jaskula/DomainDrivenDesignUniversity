@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Enums;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
 using Shopway.Domain.Abstractions;
 using static Shopway.Domain.Enums.PaymentStatus;
 

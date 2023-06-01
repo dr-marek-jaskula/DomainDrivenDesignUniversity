@@ -70,9 +70,7 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
     public OrderLine AddOrderLine(OrderLine orderLine)
     {
         _orderLines.Add(orderLine);
-
         RaiseDomainEvent(OrderLineAddedDomainEvent.New(orderLine.Id, Id));
-
         return orderLine;
     }
 

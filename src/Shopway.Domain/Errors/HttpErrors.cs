@@ -24,7 +24,7 @@ public static class HttpErrors
     }
 
     /// <summary>
-    /// Create an Error based on the entity type name and the business key that was not found
+    /// Create an NotFount Error based on the entity type name and the unique key
     /// </summary>
     /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
     /// <param name="key">Key of the entity that was not found</param>
@@ -36,10 +36,10 @@ public static class HttpErrors
     }
 
     /// <summary>
-    /// Create an Error based on the entity type name and the business key that was not found
+    /// Create an NotFound Error based on the entity type name and the unique value
     /// </summary>
     /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
-    /// <param name="uniqueValue">Unique value of the entity that was not found</param>
+    /// <param name="uniqueValue">unique value of the entity that was not found</param>
     /// <returns>NotFound error</returns>
     public static Error NotFound<TEntity>(string uniqueValue)
         where TEntity : class, IEntity
@@ -48,14 +48,14 @@ public static class HttpErrors
     }
 
     /// <summary>
-    /// Create an Error based on the business key
+    /// Create an Error based on the unique key
     /// </summary>
-    /// <param name="key">business key of the entity that is already in the database</param>
+    /// <param name="key">unique key key of the entity that is already in the database</param>
     /// <returns>AlreadyExists error</returns>
-    public static Error AlreadyExists<TBusinessKey>(TBusinessKey key)
-        where TBusinessKey : IUniqueKey
+    public static Error AlreadyExists<TUniqueKey>(TUniqueKey key)
+        where TUniqueKey : IUniqueKey
     {
-        return new($"{typeof(TBusinessKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TBusinessKey).Name} with key: '{key}' already exists");
+        return new($"{typeof(TUniqueKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TUniqueKey).Name} with key: '{key}' already exists");
     }
 
     /// <summary>

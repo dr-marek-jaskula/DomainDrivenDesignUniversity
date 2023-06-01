@@ -137,6 +137,6 @@ public sealed class ProductTests : TestBase
         product.AddReview(review);
 
         //Assert
-        product.AnyReview(review.Title).Should().BeTrue();
+        product.AnyReviewWithTitle(review.Title).Should().BeTrue();
     }
 }

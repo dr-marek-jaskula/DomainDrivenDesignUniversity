@@ -85,7 +85,7 @@ public sealed class Product : AggregateRoot<ProductId>, IAuditable
         UomCode = uomCode;
     }
 
-    public bool AnyReview(Title title)
+    public bool AnyReviewWithTitle(Title title)
     {
         return Reviews
             .Any(x => x.Title == title);
