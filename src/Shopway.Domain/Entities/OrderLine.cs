@@ -47,7 +47,7 @@ public sealed class OrderLine : Entity<OrderLineId>, IAuditable
         Discount lineDiscount
     )
     {
-        var order = new OrderLine
+        return new OrderLine
         (
             id,
             productId,
@@ -55,8 +55,6 @@ public sealed class OrderLine : Entity<OrderLineId>, IAuditable
             amount,
             lineDiscount
         );
-
-        return order;
     }
 
     public decimal CalculateLineCost()
