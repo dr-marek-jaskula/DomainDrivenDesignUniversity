@@ -7,7 +7,6 @@ using Shopway.Domain.Results;
 using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Shopway.Application.Abstractions;
-using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductByKey;

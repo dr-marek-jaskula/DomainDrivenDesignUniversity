@@ -124,7 +124,7 @@ public abstract class ControllerTestsBase : IDisposable
         var userAlreadyExists = await databaseFixture
             .Context
             .Set<User>()
-            .Where(x => x.Username.Value == TestUser.Username)
+            .Where(x => (string)(object)x.Username == TestUser.Username)
             .AnyAsync();
 
         if (userAlreadyExists is true)
@@ -141,7 +141,7 @@ public abstract class ControllerTestsBase : IDisposable
         var user = await databaseFixture
             .Context
             .Set<User>()
-            .Where(user => user.Username.Value == TestUser.Username)
+            .Where(user => (string)(object)user.Username == TestUser.Username)
             .FirstAsync();
 
         //Give all roles to the test user

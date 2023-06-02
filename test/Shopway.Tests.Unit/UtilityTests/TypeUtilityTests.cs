@@ -2,7 +2,7 @@
 using Shopway.Domain.Results;
 using Shopway.Domain.Utilities;
 using Shopway.Tests.Unit.Constants;
-using static Shopway.Domain.Utilities.TypeUtilities;
+using static Shopway.Domain.Utilities.ResultUtilities;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 

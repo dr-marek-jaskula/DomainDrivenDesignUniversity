@@ -28,7 +28,7 @@ public sealed class UserRepository : IUserRepository
     {
         return await _dbContext
             .Set<User>()
-            .Where(user => user.Email.Value == email.Value)
+            .Where(user => user.Email == email)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -41,7 +41,7 @@ public sealed class UserRepository : IUserRepository
     {
         return await _dbContext
             .Set<User>()
-            .Where(user => user.Email.Value == email.Value)
+            .Where(user => user.Email == email)
             .AnyAsync(cancellationToken);
     }
 
@@ -63,7 +63,7 @@ public sealed class UserRepository : IUserRepository
     {
         return await _dbContext
             .Set<User>()
-            .Where(user => user.Username.Value == username.Value)
+            .Where(user => user.Username == username)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

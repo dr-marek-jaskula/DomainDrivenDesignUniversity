@@ -30,7 +30,7 @@ public sealed record PageResponse<TValue> : IResponse
         TotalItemsCount = totalCount;
         TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-        if (CurrentPage > TotalPages)
+        if (CurrentPage > TotalPages && TotalItemsCount > 0)
         {
             throw new BadRequestException($"Selected page '{CurrentPage}' is greater then total number of pages '{TotalPages}'");
         }

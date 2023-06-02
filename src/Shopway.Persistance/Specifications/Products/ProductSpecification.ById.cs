@@ -64,7 +64,7 @@ internal abstract partial class ProductSpecification
             {
                 return new WithReview()
                     .AddFilters(product => product.Id == productId)
-                    .AddIncludes(product => product.Reviews.Where(review => review.Title.Value == title.Value));
+                    .AddIncludes(product => product.Reviews.Where(review => review.Title == title));
             }
         }
     }

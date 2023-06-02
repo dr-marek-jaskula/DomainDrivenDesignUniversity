@@ -28,7 +28,6 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
 
     public async Task<IResult<LogUserResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
     {
-        //Validate email and password format
         ValidationResult<Email> emailResult = Email.Create(command.Email);
         ValidationResult<Password> passwordResult = Password.Create(command.Password);
 
@@ -41,7 +40,6 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
             return _validator.Failure<LogUserResponse>();
         }
 
-        //Validate if email is already used
         User? user = await _userRepository
             .GetByEmailAsync(emailResult.Value, cancellationToken);
 
@@ -53,7 +51,6 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
             return _validator.Failure<LogUserResponse>();
         }
 
-        //Validate if password matches given email
         var result = _passwordHasher
             .VerifyHashedPassword(user!, user!.PasswordHash.Value, passwordResult.Value.Value);
 
@@ -65,7 +62,6 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
             return _validator.Failure<LogUserResponse>();
         }
 
-        //Credentials are correct
         string token = _jwtProvider.GenerateJwt(user!);
 
         return new LogUserResponse(token)

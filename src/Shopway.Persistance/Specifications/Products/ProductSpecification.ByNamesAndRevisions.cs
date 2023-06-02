@@ -17,8 +17,8 @@ internal abstract partial class ProductSpecification
             return new ByNamesAndRevisions()
                 .AddFilters
                 (
-                    product => productNames.Contains(product.ProductName.Value),
-                    product => productRevisions.Contains(product.Revision.Value)
+                    product => productNames.Contains((string)(object)product.ProductName),
+                    product => productRevisions.Contains((string)(object)product.Revision)
                 );
         }
     }

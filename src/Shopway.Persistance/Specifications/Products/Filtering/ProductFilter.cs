@@ -19,9 +19,9 @@ public sealed record ProductFilter : IFilter<Product>
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
         return queryable
-            .Filter(ByProductName, product => product.ProductName.Value.Contains(ProductName!))
-            .Filter(ByRevision, product => product.Revision.Value.Contains(Revision!))
-            .Filter(ByPrice, product => product.Price.Value == Price!)
-            .Filter(ByUomCode, product => product.UomCode.Value.Contains(UomCode!));
+            .Filter(ByProductName, product => ((string)(object)product.ProductName).Contains(ProductName!))
+            .Filter(ByRevision, product => ((string)(object)product.Revision).Contains(Revision!))
+            .Filter(ByPrice, product => ((decimal)(object)product.Price) == Price)
+            .Filter(ByUomCode, product => ((string)(object)product.UomCode).Contains(UomCode!));
     }
 }

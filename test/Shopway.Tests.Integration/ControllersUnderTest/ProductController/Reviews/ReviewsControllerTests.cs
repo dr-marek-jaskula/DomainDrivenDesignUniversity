@@ -40,9 +40,9 @@ public sealed partial class ReviewsControllerTests : ControllerTestsBase, IAsync
             .Context
             .Set<Review>()
             .Where(r => r.ProductId == productId)
-            .Where(r => r.Stars.Value == body.Stars)
-            .Where(r => r.Title.Value == body.Title)
-            .Where(r => r.Description.Value == body.Description)
+            .Where(r => (decimal)(object)r.Stars == body.Stars)
+            .Where(r => (string)(object)r.Title == body.Title)
+            .Where(r => (string)(object)r.Description == body.Description)
             .FirstOrDefaultAsync(None);
     }
 }
