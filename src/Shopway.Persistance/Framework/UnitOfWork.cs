@@ -2,8 +2,13 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using Shopway.Domain.Abstractions;
+using Shopway.Domain.Utilities;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Outbox;
+using Shopway.Persistence.Utilities;
+using ZiggyCreatures.Caching.Fusion;
+using static Microsoft.EntityFrameworkCore.EntityState;
+using static Shopway.Persistence.Utilities.CacheUtilities;
 
 namespace Shopway.Persistence.Framework;
 
@@ -23,17 +28,20 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
     private readonly IUserContextService _userContext;
     private const string DefaultUsername = "Unknown";
     private readonly IOutboxRepository _outboxRepository;
+    private readonly IFusionCache _fusionCache;
 
     public UnitOfWork
     (
         TContext dbContext,
         IUserContextService userContext,
         IOutboxRepository outboxRepository
-    )
+,
+        IFusionCache fusionCache)
     {
         _dbContext = dbContext;
         _userContext = userContext;
         _outboxRepository = outboxRepository;
+        _fusionCache = fusionCache;
     }
 
     public TContext Context => _dbContext;
@@ -57,6 +65,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
         _outboxRepository.PersistOutboxMessagesFromDomainEvents();
 
         UpdateAuditableEntities();
+        UpdateCache();
 
         return _dbContext.SaveChangesAsync(cancellationToken);
     }
@@ -70,16 +79,41 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
 
         foreach (EntityEntry<IAuditable> entityEntry in entries)
         {
-            if (entityEntry.State == EntityState.Added)
+            if (entityEntry.State is Added)
             {
                 entityEntry.Property(a => a.CreatedOn).CurrentValue = DateTimeOffset.UtcNow;
                 entityEntry.Property(a => a.CreatedBy).CurrentValue ??= _userContext.Username ?? DefaultUsername;
             }
 
-            if (entityEntry.State == EntityState.Modified)
+            if (entityEntry.State is Modified)
             {
                 entityEntry.Property(a => a.UpdatedOn).CurrentValue = DateTimeOffset.UtcNow;
                 entityEntry.Property(a => a.UpdatedBy).CurrentValue = _userContext.Username ?? DefaultUsername;
+            }
+        }
+    }
+
+    private void UpdateCache()
+    {
+        IEnumerable<EntityEntry<IEntity>> entries =
+            _dbContext
+                .ChangeTracker
+                .Entries<IEntity>()
+                .Where(entity => entity.State is not Deleted and not Unchanged and not Modified);
+
+        foreach (EntityEntry<IEntity> entityEntry in entries)
+        {
+            var entityId = entityEntry.Entity.GetEntityIdFromEntity();
+
+            if (entityEntry.State is Added)
+            {
+                _fusionCache.Set(entityId.ToCacheKey(), entityEntry.Entity);
+                _fusionCache.Set(entityId.ToCacheReferenceCheckKey(), default(object));
+            }
+
+            if (entityEntry.State is Deleted)
+            {
+                _fusionCache.Remove(entityId);
             }
         }
     }

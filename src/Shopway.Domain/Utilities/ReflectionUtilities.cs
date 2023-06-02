@@ -38,4 +38,12 @@ public static class ReflectionUtilities
 
         return methodFormBaseType.MakeGenericMethod(genericType);
     }
+
+    public static IEntityId GetEntityIdFromEntity(this IEntity baseType)
+    {
+        return (IEntityId)baseType
+                .GetType()
+                .GetProperty(IEntityId.Id)!
+                .GetValue(baseType)!;
+    }
 }
