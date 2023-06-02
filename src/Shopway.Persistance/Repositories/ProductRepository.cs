@@ -10,8 +10,8 @@ using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Utilities;
 using Shopway.Domain.ValueObjects;
 using System.Linq.Expressions;
-using static Shopway.Domain.Utilities.StringUtilities;
 using Shopway.Persistence.Specifications.Common;
+using static Shopway.Domain.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
@@ -21,17 +21,17 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
     }
 
-    public async Task<Product?> GetByKeyOrDefaultAsync(ProductKey key, CancellationToken cancellationToken)
+    public async Task<Product?> GetByKeyOrDefaultAsync(ProductName productName, Revision revision, CancellationToken cancellationToken)
     {
-        var specification = ProductSpecification.ByKey.Create(key);
+        var specification = ProductSpecification.ByKey.Create(productName, revision);
 
         return await UseSpecification(specification)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken)
+    public async Task<bool> AnyAsync(ProductName productName, Revision revision, CancellationToken cancellationToken)
     {
-        var specification = ProductSpecification.ByKey.Create(key);
+        var specification = ProductSpecification.ByKey.Create(productName, revision);
 
         return await UseSpecification(specification)
             .AnyAsync(cancellationToken);

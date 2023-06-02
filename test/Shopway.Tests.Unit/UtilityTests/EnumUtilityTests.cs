@@ -1,6 +1,5 @@
 ﻿using Shopway.Domain.Enums;
 using Shopway.Tests.Unit.Constants;
-using System.Collections.Generic;
 using static Shopway.Domain.Utilities.EnumUtilities;
 
 namespace Shopway.Tests.Unit.UtilityTests;

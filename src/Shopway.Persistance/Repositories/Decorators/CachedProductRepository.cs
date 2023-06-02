@@ -60,14 +60,14 @@ public sealed class CachedProductRepository : IProductRepository
         _fusionCache.Update<Product, ProductId>(product);
     }
 
-    public Task<Product?> GetByKeyOrDefaultAsync(ProductKey key, CancellationToken cancellationToken)
+    public Task<Product?> GetByKeyOrDefaultAsync(ProductName productName, Revision revision, CancellationToken cancellationToken)
     {
-        return _decorated.GetByKeyOrDefaultAsync(key, cancellationToken);
+        return _decorated.GetByKeyOrDefaultAsync(productName, revision, cancellationToken);
     }
 
-    public Task<bool> AnyAsync(ProductKey key, CancellationToken cancellationToken)
+    public Task<bool> AnyAsync(ProductName productName, Revision revision, CancellationToken cancellationToken)
     {
-        return _decorated.AnyAsync(key, cancellationToken);
+        return _decorated.AnyAsync(productName, revision, cancellationToken);
     }
 
     public Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
