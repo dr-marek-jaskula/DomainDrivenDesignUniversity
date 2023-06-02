@@ -6,6 +6,7 @@ using Shopway.Domain.Enums;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Constants;
 using Shopway.Persistence.Converters;
+using Shopway.Persistence.Converters.EntityIds;
 using static Shopway.Persistence.Utilities.ConfigurationUtilities;
 
 namespace Shopway.Persistence.Configurations;
