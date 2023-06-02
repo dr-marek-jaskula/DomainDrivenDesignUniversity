@@ -69,8 +69,8 @@ specification
     .AddFilters(product => product.Id == productId);
 
 specification
-    .OrderBy(x => x.ProductName.Value, SortDirection.Ascending)
-    .ThenBy(x => x.Price.Value, SortDirection.Descending);
+    .OrderBy(x => x.ProductName, SortDirection.Ascending)
+    .ThenBy(x => x.Price, SortDirection.Descending);
 ```
 
 ## Fusion Cache
@@ -105,21 +105,44 @@ See "CachedProductRepository".
 
 Moreover, we use caching in "ReferenceValidationPipeline".
 
+## Cache and UnitOfWork Pattern
+
+In order to update values in the cache, the preferred way is to update them when SavingChanges.
+We get from the change tracked all added and deleted values and update the cache.
+Modified values are not required to be taken from change tracked, since here I use memory cache
+and therefore the update is done automatically. 
+
+In some specific scenarios we can update cache in the decorator.
+
+We could add to SaveChanges a flag "updateCache" and add a new pipeline (plus add to CommandTransactionPipelineBase a method 
+BeginTransactionWithoutCacheUpdateAsync) that uses this flag, if for some
+endpoints the cache updates should be omitted.
+
 ## Indexes on ValueObjects with Owned Types
 
-There is no support in Entity Framework Core 7 to create unique indexes on multiple columns that are represented by ValueObjects.
-
-Microsoft currently aims to switch from Owned Types to Value Converter for ValueObject configurations:
+Microsoft currently aims to fully switch from Owned Types to Value Converter for ValueObject configurations:
 ```
 It was previously the team view that owned entities, intended for aggregate support, would also be a reasonable approximation to value objects. 
 Experience has shown this not to be the case. Therefore, in EF8, we plan to introduce a better experience focused on the needs of value objects in domain-driven design. 
 This approach will be based on value converters rather than owned entities.
 ```
 
-Current solution is to create a custom migration and use raw sql. 
-See: migration '20230301210403_Add_Unique_Key_To_Product' and Configuration -> CustomMigrations that is used to create the unique key for product: (ProductName, Revision).
+Therefore, this project uses ValueConverter and ValueCompares for ValueObject configurations.
 
-After introducing the Entity Framework 8 this project will use Owned Types, because value converters also have their limitations.
+The only "limitation" for this approach is that we need to add double casting in many expressions, otherwise we would not be able to use wrapped type possibilities.
+Fore example in ProductFilter:
+
+```csharp
+return queryable
+    .Filter(ByProductName, product => ((string)(object)product.ProductName).Contains(ProductName!))
+    .Filter(ByRevision, product => ((string)(object)product.Revision).Contains(Revision!))
+    .Filter(ByPrice, product => ((decimal)(object)product.Price) == Price)
+    .Filter(ByUomCode, product => ((string)(object)product.UomCode).Contains(UomCode!));
+```
+
+We need to use "((string)(object)product.ProductName)" because otherwise we would not be able to call **Contains** method.
+
+I hope that in Entity Framework Core 8 this will be handled less ugly.
 
 ## Dynamic or Static SortBy
 

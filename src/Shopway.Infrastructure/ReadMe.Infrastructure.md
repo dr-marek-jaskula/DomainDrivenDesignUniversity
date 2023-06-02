@@ -67,10 +67,11 @@ In fact, this will be obtain by the use of the Decorator Pattern. We create **Id
 
 ## Redis Cache
 
-1. install NuGet Microsoft.Extensions.Caching.StackExchangeRedis
+1. Preferred way: see ReadMe.Persistance for **FusionCache**
 2. Create CacheOptions
 3. Use caching, for instance in the decorator (see CachedProductRepository)
 4. Add PrivateResolver (in Shopway.Persistance) to be able to deserialized object with private setters
+5. Update cache in UniteOfWork (see Persistence layer) or in the decorator 
 
 IMemory cache is faster, but the Redis cache can be reused between multiple instance of the same application.
 
