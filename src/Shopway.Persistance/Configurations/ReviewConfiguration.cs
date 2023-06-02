@@ -16,7 +16,7 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
 
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
-            .HasConversion<ReviewIdConverter>()
+            .HasConversion<ReviewIdConverter, EntityIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(r => r.ProductId)

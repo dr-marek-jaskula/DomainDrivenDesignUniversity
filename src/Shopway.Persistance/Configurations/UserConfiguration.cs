@@ -17,7 +17,7 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)
-            .HasConversion<UserIdConverter>()
+            .HasConversion<UserIdConverter, EntityIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.ConfigureAuditableEntity();

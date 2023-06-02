@@ -18,7 +18,7 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
-            .HasConversion<ProductIdConverter>()
+            .HasConversion<ProductIdConverter, EntityIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.ConfigureAuditableEntity();

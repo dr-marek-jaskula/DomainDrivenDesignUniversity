@@ -20,7 +20,7 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
-            .HasConversion<CustomerIdConverter>()
+            .HasConversion<CustomerIdConverter, EntityIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.UserId)
