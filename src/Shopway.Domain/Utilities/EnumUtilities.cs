@@ -13,4 +13,18 @@ public static class EnumUtilities
     {
         return Enum.GetNames(type.GetType());
     }
+
+    public static HashSet<string> GetNamesOf<TType>()
+        where TType : Enum
+    {
+        return Enum
+            .GetNames(typeof(TType))
+            .ToHashSet();
+    }
+
+    public static int LongestOf<TType>()
+        where TType : Enum
+    {
+        return Enum.GetNames(typeof(TType)).Max(x => x.Length);
+    }
 }

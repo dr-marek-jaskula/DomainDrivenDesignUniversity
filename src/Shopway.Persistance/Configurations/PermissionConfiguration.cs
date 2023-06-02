@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.Enumerations;
+using static Shopway.Domain.Utilities.EnumUtilities;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -19,15 +20,8 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
         builder.Property(r => r.Name)
             .HasColumnType(ColumnTypes.VarChar(128));
 
-        var permissionsFromEnumeration = Permission
-            .List
-            .Select(p => p.Name)
-            .ToHashSet();
-
-        var permissionsFromEnum = Enum
-            .GetValues<Domain.Enums.Permission>()
-            .Select(p => p.ToString())
-            .ToHashSet();
+        var permissionsFromEnumeration = Permission.GetNames();
+        var permissionsFromEnum = GetNamesOf<Domain.Enums.Permission>();
 
         bool areEnumPermisionsEquivalentToEnumerationPermissions =
             permissionsFromEnumeration.SetEquals(permissionsFromEnum);

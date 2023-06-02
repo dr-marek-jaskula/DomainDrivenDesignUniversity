@@ -5,6 +5,7 @@ using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
+using Shopway.Persistence.Converters.ValueObjects;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -22,46 +23,23 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
 
         builder.ConfigureAuditableEntity();
 
-        builder
-            .OwnsOne(p => p.Username, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Username))
-                    .IsRequired(true)
-                    .HasMaxLength(Username.MaxLength);
+        builder.Property(u => u.Username)
+            .HasConversion<UomCodeConverter, UsernameComparer>()
+            .HasColumnName(nameof(Username))
+            .HasMaxLength(Username.MaxLength)
+            .IsRequired(true);
 
-                navigationBuilder
-                    .HasIndex(username => username.Value)
-                    .HasDatabaseName($"UX_{nameof(Username)}_{nameof(Email)}")
-                    //.IncludeProperties(p => p.Email)
-                    .IsUnique(true);
-            });
+        builder.Property(u => u.Email)
+            .HasConversion<EmailConverter, EmailComparer>()
+            .HasColumnName(nameof(Email))
+            .HasMaxLength(Email.MaxLength)
+            .IsRequired(true);
 
-        builder
-            .OwnsOne(p => p.Email, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Email))
-                    .IsRequired(true)
-                    .HasMaxLength(Email.MaxLength);
-
-                navigationBuilder
-                    .HasIndex(email => email.Value)
-                    .HasDatabaseName($"UX_{nameof(User)}_{nameof(Email)}")
-                    .IsUnique(true);
-            });
-
-        builder
-            .OwnsOne(p => p.PasswordHash, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(PasswordHash))
-                    .HasColumnType(ColumnTypes.NChar(PasswordHash.BytesLong))
-                    .IsRequired(true);
-            });
+        builder.Property(u => u.PasswordHash)
+            .HasConversion<PasswordHashConverter, PasswordHashComparer>()
+            .HasColumnName(nameof(PasswordHash))
+            .HasColumnType(ColumnTypes.NChar(PasswordHash.BytesLong))
+            .IsRequired(true);
 
         builder.HasMany(u => u.Roles)
             .WithMany(r => r.Users)
@@ -74,5 +52,17 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
         builder.HasOne(u => u.Customer)
             .WithOne(c => c.User)
             .HasForeignKey<User>(u => u.CustomerId);
+
+        //Indexes
+        builder
+            .HasIndex(user => user.Username)
+            .HasDatabaseName($"UX_{nameof(Username)}_{nameof(Email)}")
+            .IncludeProperties(user => user.Email)
+            .IsUnique(true);
+
+        builder
+            .HasIndex(user => user.Email)
+            .HasDatabaseName($"UX_{nameof(User)}_{nameof(Email)}")
+            .IsUnique(true);
     }
 }

@@ -5,6 +5,8 @@ using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
+using Shopway.Domain.EntityIds;
+using Shopway.Persistence.Converters.ValueObjects;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -20,50 +22,40 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(r => r.ProductId)
-            .HasConversion<ProductIdConverter>()
+            .HasConversion<ProductIdConverter, EntityIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier)
             .IsRequired(true);
 
         builder.ConfigureAuditableEntity();
 
-        builder
-            .OwnsOne(p => p.Username, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Username))
-                    .IsRequired(true)
-                    .HasMaxLength(Username.MaxLength);
-            });
+        builder.Property(r => r.Username)
+            .HasConversion<UsernameConverter, UsernameComparer>()
+            .HasColumnName(nameof(Username))
+            .HasMaxLength(Username.MaxLength)
+            .IsRequired(true);
 
-        builder
-            .OwnsOne(p => p.Title, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Title))
-                    .IsRequired(true)
-                    .HasMaxLength(Title.MaxLength);
-            });
+        builder.Property(r => r.Title)
+            .HasConversion<TitleConverter, TitleComparer>()
+            .HasColumnName(nameof(Title))
+            .HasMaxLength(Title.MaxLength)
+            .IsRequired(true);
 
-        builder
-            .OwnsOne(p => p.Stars, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Stars))
-                    .HasColumnType(ColumnTypes.TinyInt)
-                    .IsRequired(true);
-            });
+        builder.Property(r => r.Stars)
+            .HasConversion<StarsConverter, StarsComparer>()
+            .HasColumnName(nameof(Stars))
+            .HasColumnType(ColumnTypes.TinyInt)
+            .IsRequired(true);
 
+        builder.Property(r => r.Description)
+            .HasConversion<DescriptionConverter, DescriptionComparer>()
+            .HasColumnName(nameof(Description))
+            .HasMaxLength(Description.MaxLength)
+            .IsRequired(true);
+
+        //Indexes
         builder
-            .OwnsOne(p => p.Description, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Description))
-                    .IsRequired(true)
-                    .HasMaxLength(Description.MaxLength);
-            });
+            .HasIndex(r => new { r.ProductId, r.Title })
+            .HasDatabaseName($"UX_{nameof(Review)}_{nameof(ProductId)}_{nameof(Title)}")
+            .IsUnique();
     }
 }

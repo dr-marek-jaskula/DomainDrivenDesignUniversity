@@ -6,6 +6,9 @@ using Shopway.Persistence.Constants;
 using Shopway.Persistence.Utilities;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Converters.EntityIds;
+using Shopway.Persistence.Converters.Enums;
+using Shopway.Persistence.Converters.ValueObjects;
+using static Shopway.Domain.Utilities.EnumUtilities;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -22,19 +25,15 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.Status)
-            .IsRequired(true)
-            .HasColumnType(ColumnTypes.VarChar(10))
-            .HasConversion(status => status.ToString(), s => (OrderStatus)Enum.Parse(typeof(OrderStatus), s));
+            .HasConversion<OrderStatusConverter>()
+            .HasColumnType(ColumnTypes.VarChar(LongestOf<OrderStatus>()))
+            .IsRequired(true);
 
-        builder
-            .OwnsOne(p => p.TotalDiscount, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Discount))
-                    .IsRequired(true)
-                    .HasPrecision(NumberConstants.DiscountPrecision, NumberConstants.DecimalScale);
-            });
+        builder.Property(p => p.TotalDiscount)
+            .HasConversion<DiscountConverter, DiscountComparer>()
+            .HasColumnName(nameof(Discount))
+            .HasPrecision(NumberConstants.DiscountPrecision, NumberConstants.DecimalScale)
+            .IsRequired(true);
 
         builder.ConfigureAuditableEntity();
 

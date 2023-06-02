@@ -10,12 +10,12 @@ public partial class Add_Unique_Key_To_Product : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql($"{CreateIndex}");
+        //migrationBuilder.Sql($"{CreateIndex}");
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql($"{DropIndex}");
+        //migrationBuilder.Sql($"{DropIndex}");
     }
 }

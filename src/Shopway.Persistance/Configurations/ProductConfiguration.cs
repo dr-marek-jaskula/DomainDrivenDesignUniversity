@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
-using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
+using Shopway.Persistence.Converters.ValueObjects;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -23,48 +23,38 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
 
         builder.ConfigureAuditableEntity();
 
-        builder
-            .OwnsOne(p => p.ProductName, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(ProductName))
-                    .IsRequired(true)
-                    .HasMaxLength(ProductName.MaxLength);
-            });
+        builder.Property(p => p.ProductName)
+            .HasConversion<ProductNameConverter, ProductNameComparer>()
+            .HasColumnName(nameof(ProductName))
+            .HasMaxLength(ProductName.MaxLength)
+            .IsRequired(true);
 
-        builder
-            .OwnsOne(p => p.Revision, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Revision))
-                    .IsRequired(true)
-                    .HasMaxLength(Revision.MaxLength);
-            });
+        builder.Property(p => p.Revision)
+            .HasConversion<RevisionConverter, RevisionComparer>()
+            .HasColumnName(nameof(Revision))
+            .HasMaxLength(Revision.MaxLength)
+            .IsRequired(true);
 
-        builder
-            .OwnsOne(p => p.UomCode, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(UomCode))
-                    .HasColumnType(ColumnTypes.VarChar(8))
-                    .IsRequired(true);
-            });
+        builder.Property(p => p.UomCode)
+            .HasConversion<UomCodeConverter, UomCodeComparer>()
+            .HasColumnName(nameof(UomCode))
+            .HasColumnType(ColumnTypes.VarChar(8))
+            .IsRequired(true);
 
-        builder
-            .OwnsOne(p => p.Price, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(Price))
-                    .IsRequired(true)
-                    .HasPrecision(NumberConstants.DecimalPrecision, NumberConstants.DecimalScale);
-            });
+        builder.Property(p => p.Price)
+            .HasConversion<PriceConverter, PriceComparer>()
+            .HasColumnName(nameof(Price))
+            .HasPrecision(NumberConstants.DecimalPrecision, NumberConstants.DecimalScale)
+            .IsRequired(true);
 
         builder.HasMany(p => p.Reviews)
             .WithOne()
             .HasForeignKey(r => r.ProductId);
+
+        //Indexes
+        builder
+            .HasIndex(p => new { p.ProductName, p.Revision })
+            .HasDatabaseName($"UX_{nameof(Product)}_{nameof(ProductName)}_{nameof(Revision)}")
+            .IsUnique();
     }
 }

@@ -153,6 +153,14 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>, IComp
         return Id.GetHashCode() * 37;
     }
 
+    /// <inheritdoc />
+    public static HashSet<string> GetNames()
+    {
+        return List
+            .Select(p => p.Name)
+            .ToHashSet();
+    }
+
     private static Dictionary<int, TEnum> CreateEnumerationDictionary(Type enumType)
     {
         return GetFieldsForType(enumType)

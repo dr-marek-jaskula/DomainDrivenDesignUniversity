@@ -7,6 +7,10 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Constants;
 using Shopway.Persistence.Converters;
 using Shopway.Persistence.Converters.EntityIds;
+using Shopway.Persistence.Converters.Enums;
+using Shopway.Persistence.Converters.ValueObjects;
+using static Shopway.Domain.Utilities.EnumUtilities;
+using static Shopway.Persistence.Constants.NumberConstants;
 using static Shopway.Persistence.Utilities.ConfigurationUtilities;
 
 namespace Shopway.Persistence.Configurations;
@@ -24,7 +28,7 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.UserId)
-            .HasConversion(p => p.Value, guid => UserId.Create(guid))
+            .HasConversion<UserIdConverter, EntityIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.DateOfBirth)
@@ -34,57 +38,41 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
             .IsRequired(false);
 
         builder.Property(p => p.Gender)
-            .HasColumnType(ColumnTypes.VarChar(7))
-            .HasConversion(g => g.ToString(), s => (Gender)Enum.Parse(typeof(Gender), s))
+            .HasColumnType(ColumnTypes.VarChar(LongestOf<Gender>()))
+            .HasConversion<GenderConverter>()
             .IsRequired(true);
 
         builder.Property(c => c.Rank)
+            .HasConversion<RankConverter>()
             .HasDefaultValue(Rank.Standard)
-            .HasColumnType(ColumnTypes.VarChar(8))
-            .HasConversion(r => r.ToString(), s => (Rank)Enum.Parse(typeof(Rank), s));
+            .HasColumnType(ColumnTypes.VarChar(LongestOf<Rank>()));
 
         builder.ConfigureAuditableEntity();
 
         builder.Property(p => p.FirstName)
-            .HasConversion(p => p.Value, guid => UserId.Create(guid))
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasConversion<FirstNameConverter, FirstNameComparer>()
+            .HasColumnName(nameof(FirstName))
+            .HasMaxLength(FirstName.MaxLength)
+            .IsRequired(true);
 
-        builder
-            .OwnsOne(p => p.FirstName, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(FirstName))
-                    .IsRequired(true)
-                    .HasMaxLength(FirstName.MaxLength);
-            });
+        builder.Property(p => p.LastName)
+            .HasConversion<LastNameConverter, LastNameComparer>()
+            .HasColumnName(nameof(LastName))
+            .IsRequired(true)
+            .HasMaxLength(LastName.MaxLength);
 
-        builder
-            .OwnsOne(p => p.LastName, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(LastName))
-                    .IsRequired(true)
-                    .HasMaxLength(LastName.MaxLength);
-            });
-
-        builder
-            .OwnsOne(p => p.PhoneNumber, navigationBuilder =>
-            {
-                navigationBuilder
-                    .Property(n => n.Value)
-                    .HasColumnName(nameof(PhoneNumber))
-                    .IsRequired(true)
-                    .HasMaxLength(9);
-            });
-
+        builder.Property(p => p.PhoneNumber)
+            .HasConversion<PhoneNumberConverter, PhoneNumberComparer>()
+            .HasColumnName(nameof(PhoneNumber))
+            .IsRequired(true)
+            .HasMaxLength(PhoneNumberMaxLenght);
+            
         builder.OwnsOne(
             p => p.Address,
             addressNavigationBuilder =>
             {
                 //Configures a different table that the entity type maps to when targeting a relational database.
-                addressNavigationBuilder.ToTable(TableNames.Address);
+                addressNavigationBuilder.ToTable(TableNames.Address, SchemaNames.Master);
 
                 //Configures the relationship to the owner, and indicates the Foreign Key.
                 addressNavigationBuilder

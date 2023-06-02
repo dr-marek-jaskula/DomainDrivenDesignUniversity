@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
-using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
+using Shopway.Persistence.Converters.Enums;
+using static Shopway.Domain.Utilities.EnumUtilities;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -22,12 +23,12 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.OrderHeaderId)
-            .HasConversion(p => p.Value, guid => OrderHeaderId.Create(guid))
+            .HasConversion<OrderHeaderIdConverter, EntityIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.Status)
-            .HasColumnType(ColumnTypes.VarChar(11))
-            .HasConversion(status => status.ToString(), s => (PaymentStatus)Enum.Parse(typeof(PaymentStatus), s))
+            .HasConversion<PaymentStatusConverter>()
+            .HasColumnType(ColumnTypes.VarChar(LongestOf<PaymentStatus>()))
             .IsRequired(true);
 
         builder.ConfigureAuditableEntity();
