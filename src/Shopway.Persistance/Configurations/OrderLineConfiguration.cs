@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
-using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
 using Shopway.Domain.Entities;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -17,7 +17,7 @@ internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguratio
         builder.HasKey(o => o.Id);
 
         builder.Property(o => o.Id)
-            .HasConversion(id => id.Value, guid => OrderLineId.Create(guid))
+            .HasConversion<OrderLineIdConverter>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.ConfigureAuditableEntity();

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
-using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
 using Shopway.Domain.ValueObjects;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -18,7 +18,7 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
         builder.HasKey(o => o.Id);
 
         builder.Property(o => o.Id)
-            .HasConversion(id => id.Value, guid => OrderHeaderId.Create(guid))
+            .HasConversion<OrderHeaderIdConverter>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.Status)

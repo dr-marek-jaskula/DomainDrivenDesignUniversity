@@ -5,6 +5,7 @@ using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -17,7 +18,7 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
-            .HasConversion(id => id.Value, guid => ProductId.Create(guid))
+            .HasConversion<ProductIdConverter>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.ConfigureAuditableEntity();

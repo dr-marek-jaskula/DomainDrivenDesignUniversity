@@ -1,9 +1,8 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
-using Shopway.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shopway.Domain.EntityIds;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -16,7 +15,7 @@ internal sealed class RoleUserConfiguration : IEntityTypeConfiguration<RoleUser>
         builder.HasKey(x => new { x.RoleId, x.UserId });
 
         builder.Property(x => x.UserId)
-            .HasConversion(id => id.Value, guid => UserId.Create(guid))
+            .HasConversion<UserIdConverter>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
     }
 }

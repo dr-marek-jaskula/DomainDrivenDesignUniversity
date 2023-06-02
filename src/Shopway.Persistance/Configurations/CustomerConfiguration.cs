@@ -19,7 +19,7 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
-            .HasConversion(id => id.Value, guid => CustomerId.Create(guid))
+            .HasConversion<CustomerIdConverter>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.UserId)
@@ -43,6 +43,10 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
             .HasConversion(r => r.ToString(), s => (Rank)Enum.Parse(typeof(Rank), s));
 
         builder.ConfigureAuditableEntity();
+
+        builder.Property(p => p.FirstName)
+            .HasConversion(p => p.Value, guid => UserId.Create(guid))
+            .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder
             .OwnsOne(p => p.FirstName, navigationBuilder =>

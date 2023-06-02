@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Shopway.Domain.ValueObjects;
-using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -16,11 +16,11 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
 
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
-            .HasConversion(id => id.Value, guid => ReviewId.Create(guid))
+            .HasConversion<ReviewIdConverter>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(r => r.ProductId)
-            .HasConversion(id => id.Value, guid => ProductId.Create(guid))
+            .HasConversion<ProductIdConverter>()
             .HasColumnType(ColumnTypes.UniqueIdentifier)
             .IsRequired(true);
 

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
 using Shopway.Persistence.Constants;
-using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
+using Shopway.Persistence.Converters;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -18,7 +18,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
-            .HasConversion(id => id.Value, guid => PaymentId.Create(guid))
+            .HasConversion<PaymentIdConverter>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.OrderHeaderId)
