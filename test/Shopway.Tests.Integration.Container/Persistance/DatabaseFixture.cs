@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Tests.Integration.Persistance;
 
@@ -17,7 +18,8 @@ public sealed class DatabaseFixture : IDisposable
 
         var testContext = new TestContextService();
         var outboxRepository = new OutboxRepository(_context);
-        var unitOfWork = new UnitOfWork<ShopwayDbContext>(_context, testContext, outboxRepository);
+        var fusionCache = new FusionCache(new FusionCacheOptions());
+        var unitOfWork = new UnitOfWork<ShopwayDbContext>(_context, testContext, outboxRepository, fusionCache);
         _testDataGenerator = new TestDataGenerator(unitOfWork);
     }
 
