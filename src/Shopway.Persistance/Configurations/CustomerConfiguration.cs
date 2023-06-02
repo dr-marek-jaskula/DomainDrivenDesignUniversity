@@ -24,11 +24,11 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
-            .HasConversion<CustomerIdConverter, EntityIdComparer>()
+            .HasConversion<CustomerIdConverter, CustomerIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.UserId)
-            .HasConversion<UserIdConverter, EntityIdComparer>()
+            .HasConversion<UserIdConverter, UserIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.DateOfBirth)

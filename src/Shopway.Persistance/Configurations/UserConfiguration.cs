@@ -18,13 +18,13 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)
-            .HasConversion<UserIdConverter, EntityIdComparer>()
+            .HasConversion<UserIdConverter, UserIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.ConfigureAuditableEntity();
 
         builder.Property(u => u.Username)
-            .HasConversion<UomCodeConverter, UsernameComparer>()
+            .HasConversion<UsernameConverter, UsernameComparer>()
             .HasColumnName(nameof(Username))
             .HasMaxLength(Username.MaxLength)
             .IsRequired(true);

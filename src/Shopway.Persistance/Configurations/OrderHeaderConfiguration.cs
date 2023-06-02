@@ -21,7 +21,7 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
         builder.HasKey(o => o.Id);
 
         builder.Property(o => o.Id)
-            .HasConversion<OrderHeaderIdConverter, EntityIdComparer>()
+            .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(p => p.Status)

@@ -18,7 +18,7 @@ internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguratio
         builder.HasKey(o => o.Id);
 
         builder.Property(o => o.Id)
-            .HasConversion<OrderLineIdConverter, EntityIdComparer>()
+            .HasConversion<OrderLineIdConverter, OrderLineIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.ConfigureAuditableEntity();

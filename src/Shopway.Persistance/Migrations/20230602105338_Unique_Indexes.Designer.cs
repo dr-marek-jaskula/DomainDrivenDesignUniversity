@@ -12,8 +12,8 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    [Migration("20230527090513_Add_Unique_Key_To_Review")]
-    partial class Add_Unique_Key_To_Review
+    [Migration("20230602105338_Unique_Indexes")]
+    partial class Unique_Indexes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,9 +40,27 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset?>("DateOfBirth")
                         .HasColumnType("DateTimeOffset(2)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("FirstName");
+
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("VarChar(7)");
+                        .HasColumnType("VarChar(6)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("LastName");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)")
+                        .HasColumnName("PhoneNumber");
 
                     b.Property<string>("Rank")
                         .IsRequired()
@@ -83,6 +101,11 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("VarChar(10)");
 
+                    b.Property<decimal>("TotalDiscount")
+                        .HasPrecision(3, 2)
+                        .HasColumnType("decimal(3,2)")
+                        .HasColumnName("Discount");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("VarChar(30)");
 
@@ -107,12 +130,21 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("UniqueIdentifier");
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("int")
+                        .HasColumnName("Amount");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("VarChar(30)");
 
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
+
+                    b.Property<decimal>("LineDiscount")
+                        .HasPrecision(3, 2)
+                        .HasColumnType("decimal(3,2)")
+                        .HasColumnName("Discount");
 
                     b.Property<Guid>("OrderHeaderId")
                         .HasColumnType("UniqueIdentifier");
@@ -177,6 +209,28 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
+                    b.Property<decimal>("Price")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("Price");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("ProductName");
+
+                    b.Property<string>("Revision")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasColumnName("Revision");
+
+                    b.Property<string>("UomCode")
+                        .IsRequired()
+                        .HasColumnType("VarChar(8)")
+                        .HasColumnName("UomCode");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("VarChar(30)");
 
@@ -184,6 +238,10 @@ namespace Shopway.Persistence.Migrations
                         .HasColumnType("DateTimeOffset(2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductName", "Revision")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Product_ProductName_Revision");
 
                     b.ToTable("Product", "Shopway");
                 });
@@ -200,8 +258,24 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)")
+                        .HasColumnName("Description");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("UniqueIdentifier");
+
+                    b.Property<decimal>("Stars")
+                        .HasColumnType("TinyInt")
+                        .HasColumnName("Stars");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(45)
+                        .HasColumnType("nvarchar(45)")
+                        .HasColumnName("Title");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("VarChar(30)");
@@ -209,9 +283,17 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("Username");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId", "Title")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Review_ProductId_Title");
 
                     b.ToTable("Review", "Shopway");
                 });
@@ -246,17 +328,44 @@ namespace Shopway.Persistence.Migrations
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("UniqueIdentifier");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("Email");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("NChar(514)")
+                        .HasColumnName("PasswordHash");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("VarChar(30)");
 
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("Username");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId")
                         .IsUnique()
                         .HasFilter("[CustomerId] IS NOT NULL");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("UX_User_Email");
+
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Username_Email");
+
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("Username"), new[] { "Email" });
 
                     b.ToTable("User", "Master");
                 });
@@ -507,73 +616,7 @@ namespace Shopway.Persistence.Migrations
                                 .HasForeignKey("CustomerId");
                         });
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.FirstName", "FirstName", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("FirstName");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer", "Master");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.LastName", "LastName", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("LastName");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer", "Master");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(9)
-                                .HasColumnType("nvarchar(9)")
-                                .HasColumnName("PhoneNumber");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer", "Master");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
                     b.Navigation("Address");
-
-                    b.Navigation("FirstName")
-                        .IsRequired();
-
-                    b.Navigation("LastName")
-                        .IsRequired();
-
-                    b.Navigation("PhoneNumber")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.OrderHeader", b =>
@@ -590,28 +633,7 @@ namespace Shopway.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Discount", "TotalDiscount", b1 =>
-                        {
-                            b1.Property<Guid>("OrderHeaderId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<decimal>("Value")
-                                .HasPrecision(3, 2)
-                                .HasColumnType("decimal(3,2)")
-                                .HasColumnName("Discount");
-
-                            b1.HasKey("OrderHeaderId");
-
-                            b1.ToTable("OrderHeader", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("OrderHeaderId");
-                        });
-
                     b.Navigation("Payment");
-
-                    b.Navigation("TotalDiscount")
-                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -630,137 +652,7 @@ namespace Shopway.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Discount", "LineDiscount", b1 =>
-                        {
-                            b1.Property<Guid>("OrderLineId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<decimal>("Value")
-                                .HasPrecision(3, 2)
-                                .HasColumnType("decimal(3,2)")
-                                .HasColumnName("Discount");
-
-                            b1.HasKey("OrderLineId");
-
-                            b1.ToTable("OrderLine", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("OrderLineId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Amount", "Amount", b1 =>
-                        {
-                            b1.Property<Guid>("OrderLineId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<int>("Value")
-                                .HasColumnType("int")
-                                .HasColumnName("Amount");
-
-                            b1.HasKey("OrderLineId");
-
-                            b1.ToTable("OrderLine", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("OrderLineId");
-                        });
-
-                    b.Navigation("Amount")
-                        .IsRequired();
-
-                    b.Navigation("LineDiscount")
-                        .IsRequired();
-
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Shopway.Domain.Entities.Product", b =>
-                {
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Price", "Price", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<decimal>("Value")
-                                .HasPrecision(10, 2)
-                                .HasColumnType("decimal(10,2)")
-                                .HasColumnName("Price");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Product", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.ProductName", "ProductName", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("ProductName");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Product", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Revision", "Revision", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(10)
-                                .HasColumnType("nvarchar(10)")
-                                .HasColumnName("Revision");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Product", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.UomCode", "UomCode", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("VarChar(8)")
-                                .HasColumnName("UomCode");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Product", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.Navigation("Price")
-                        .IsRequired();
-
-                    b.Navigation("ProductName")
-                        .IsRequired();
-
-                    b.Navigation("Revision")
-                        .IsRequired();
-
-                    b.Navigation("UomCode")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.Review", b =>
@@ -769,92 +661,6 @@ namespace Shopway.Persistence.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Username", "Username", b1 =>
-                        {
-                            b1.Property<Guid>("ReviewId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(30)
-                                .HasColumnType("nvarchar(30)")
-                                .HasColumnName("Username");
-
-                            b1.HasKey("ReviewId");
-
-                            b1.ToTable("Review", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ReviewId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Description", "Description", b1 =>
-                        {
-                            b1.Property<Guid>("ReviewId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(600)
-                                .HasColumnType("nvarchar(600)")
-                                .HasColumnName("Description");
-
-                            b1.HasKey("ReviewId");
-
-                            b1.ToTable("Review", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ReviewId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Stars", "Stars", b1 =>
-                        {
-                            b1.Property<Guid>("ReviewId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<byte>("Value")
-                                .HasColumnType("TinyInt")
-                                .HasColumnName("Stars");
-
-                            b1.HasKey("ReviewId");
-
-                            b1.ToTable("Review", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ReviewId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Title", "Title", b1 =>
-                        {
-                            b1.Property<Guid>("ReviewId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(45)
-                                .HasColumnType("nvarchar(45)")
-                                .HasColumnName("Title");
-
-                            b1.HasKey("ReviewId");
-
-                            b1.ToTable("Review", "Shopway");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ReviewId");
-                        });
-
-                    b.Navigation("Description")
-                        .IsRequired();
-
-                    b.Navigation("Stars")
-                        .IsRequired();
-
-                    b.Navigation("Title")
-                        .IsRequired();
-
-                    b.Navigation("Username")
                         .IsRequired();
                 });
 
@@ -879,80 +685,7 @@ namespace Shopway.Persistence.Migrations
                         .WithOne("User")
                         .HasForeignKey("Shopway.Domain.Entities.User", "CustomerId");
 
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Username", "Username", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(30)
-                                .HasColumnType("nvarchar(30)")
-                                .HasColumnName("Username");
-
-                            b1.HasKey("UserId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique()
-                                .HasDatabaseName("UX_Username_Email");
-
-                            b1.ToTable("User", "Master");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.Email", "Email", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(40)
-                                .HasColumnType("nvarchar(40)")
-                                .HasColumnName("Email");
-
-                            b1.HasKey("UserId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique()
-                                .HasDatabaseName("UX_User_Email");
-
-                            b1.ToTable("User", "Master");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsOne("Shopway.Domain.ValueObjects.PasswordHash", "PasswordHash", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("UniqueIdentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("NChar(514)")
-                                .HasColumnName("PasswordHash");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("User", "Master");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
                     b.Navigation("Customer");
-
-                    b.Navigation("Email")
-                        .IsRequired();
-
-                    b.Navigation("PasswordHash")
-                        .IsRequired();
-
-                    b.Navigation("Username")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shopway.Domain.Enumerations.RolePermission", b =>

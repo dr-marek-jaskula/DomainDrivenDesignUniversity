@@ -18,11 +18,11 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
 
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
-            .HasConversion<ReviewIdConverter, EntityIdComparer>()
+            .HasConversion<ReviewIdConverter, ReviewIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);
 
         builder.Property(r => r.ProductId)
-            .HasConversion<ProductIdConverter, EntityIdComparer>()
+            .HasConversion<ProductIdConverter, ProductIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier)
             .IsRequired(true);
 
