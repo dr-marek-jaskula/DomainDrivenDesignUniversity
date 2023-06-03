@@ -5,16 +5,6 @@ namespace Shopway.Domain.Utilities;
 
 public static class ReflectionUtilities
 {
-    public static Type GetEntityTypeFromEntityId(this PropertyInfo entityId)
-    {
-        if (entityId.PropertyType is not IEntityId entityType)
-        {
-            throw new ArgumentException("Provided property info does not implement IEntityId interface");
-        }
-
-        return entityType.GetEntityTypeFromEntityId();
-    }
-
     public static Type GetEntityTypeFromEntityId(this IEntityId entityId)
     {
         var assembly = Shopway.Domain.AssemblyReference.Assembly;
