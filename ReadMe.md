@@ -2,7 +2,7 @@
 
 This project presents the domain driven design concepts.
 
-I have decided to organize the domain project using folders for respective types. For smaller project (without many entities) it is a preferred approach. Moreover, this structure is easier to follow when studying Domain Driven Design. Nevertheless, for larger projects, the preferred approach is to organize the domain by aggregates, so one folder should contain all files connected to respective aggregate, more or less like vertical slices in the application layer.
+I have decided to organize the domain project using folders for respective types. For smaller project (without many entities) it is the preferred approach. Moreover, this structure is easier to follow when studying Domain Driven Design. Nevertheless, for larger projects, the preferred approach is to organize the domain by aggregates, so one folder should contain all files connected to respective aggregate, more or less like vertical slices in the application layer.
 
 ## Give a Star! :star:
 
