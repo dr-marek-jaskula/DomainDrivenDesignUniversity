@@ -19,8 +19,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.20.0" />
-    <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="0.20.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.21.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="0.21.0" />
   </ItemGroup>
 
   <ItemGroup>
