@@ -40,7 +40,7 @@ internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSort
 
             if (order.SortProperties.ContainsInvalidSortProperty(order.AllowedSortProperties))
             {
-                context.AddFailure(SortProperties, $"{SortProperties} contains invalid property name. Allowed property names: {string.Join(", ", order.AllowedSortProperties)}");
+                context.AddFailure(SortProperties, $"{SortProperties} contains invalid property name. Allowed property names: {string.Join(", ", order.AllowedSortProperties)}. {SortProperties} are case sensitive.");
             }
 
             if (order.SortProperties.ContainsSortPriorityDuplicate())
