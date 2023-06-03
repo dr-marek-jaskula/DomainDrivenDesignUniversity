@@ -21,17 +21,17 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
     }
 
-    public async Task<Product?> GetByKeyOrDefaultAsync(ProductName productName, Revision revision, CancellationToken cancellationToken)
+    public async Task<Product?> GetByKeyOrDefaultAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
-        var specification = ProductSpecification.ByKey.Create(productName, revision);
+        var specification = ProductSpecification.ByKey.Create(productKey);
 
         return await UseSpecification(specification)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<bool> AnyAsync(ProductName productName, Revision revision, CancellationToken cancellationToken)
+    public async Task<bool> AnyAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
-        var specification = ProductSpecification.ByKey.Create(productName, revision);
+        var specification = ProductSpecification.ByKey.Create(productKey);
 
         return await UseSpecification(specification)
             .AnyAsync(cancellationToken);

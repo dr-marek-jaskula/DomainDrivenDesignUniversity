@@ -37,7 +37,7 @@ internal sealed class GetProductByKeyQueryHandler : IQueryHandler<GetProductByKe
         }
 
         var product = await _productRepository
-            .GetByKeyOrDefaultAsync(productNameResult.Value, revisionResult.Value, cancellationToken);
+            .GetByKeyOrDefaultAsync(query.Key, cancellationToken);
 
         if (product is null)
         {

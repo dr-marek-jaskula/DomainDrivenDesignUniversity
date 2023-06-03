@@ -43,7 +43,7 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         }
 
         _validator
-            .If(await ProductAlreadyExists(productNameResult.Value, revisionResult.Value, cancellationToken), AlreadyExists(command.ProductKey));
+            .If(await ProductAlreadyExists(command.ProductKey, cancellationToken), AlreadyExists(command.ProductKey));
 
         if (_validator.IsInvalid)
         {
@@ -57,10 +57,10 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
             .ToResult();
     }
 
-    private async Task<bool> ProductAlreadyExists(ProductName productName, Revision revision, CancellationToken cancellationToken)
+    private async Task<bool> ProductAlreadyExists(ProductKey productKey, CancellationToken cancellationToken)
     {
         return await _productRepository
-            .AnyAsync(productName, revision, cancellationToken);
+            .AnyAsync(productKey, cancellationToken);
     }
 
     private Product CreateProduct

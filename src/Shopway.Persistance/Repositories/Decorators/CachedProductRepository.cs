@@ -60,14 +60,14 @@ public sealed class CachedProductRepository : IProductRepository
         //_fusionCache.Update<Product, ProductId>(product); //Not required because cache update is done in UnitWork. Can be used in specific cases
     }
 
-    public Task<Product?> GetByKeyOrDefaultAsync(ProductName productName, Revision revision, CancellationToken cancellationToken)
+    public Task<Product?> GetByKeyOrDefaultAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
-        return _decorated.GetByKeyOrDefaultAsync(productName, revision, cancellationToken);
+        return _decorated.GetByKeyOrDefaultAsync(productKey, cancellationToken);
     }
 
-    public Task<bool> AnyAsync(ProductName productName, Revision revision, CancellationToken cancellationToken)
+    public Task<bool> AnyAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
-        return _decorated.AnyAsync(productName, revision, cancellationToken);
+        return _decorated.AnyAsync(productKey, cancellationToken);
     }
 
     public Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)

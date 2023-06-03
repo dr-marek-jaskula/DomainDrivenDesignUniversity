@@ -2,6 +2,8 @@
 
 This project presents the domain driven design concepts.
 
+I have decided to organize the domain project using folders for repective types. For example: Entities, ValueObjects. This is because for smaller project (without many entities) it is a preferred approach and because this structure is easier to follow when studying Domain Driven Design. Nevertheless, for larger project, the preferred approach is to organize domain by aggregates, so one folder should contain all files that are connected to respective aggregate, more or less like vertical slices in the application layer.
+
 ## Solution structure
 
 ### .App
