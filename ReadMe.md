@@ -8,11 +8,11 @@ I have decided to organize the domain project using folders for respective types
 
 ### .App
 
-This layer should register dependencies and run the program
+This layer should register dependencies and run the program.
 
 ### .Presentation
 
-This layer should provide the functionality for the end user, so controllers and requests. 
+This layer should provide endpoints for the end user. 
 
 Therefore, it is like a "frontend" for the backed program.
 
@@ -30,7 +30,7 @@ Therefore, we place here services, options, validators, adapters, providers, pol
 
 ### .Persistance
 
-This layer should provide the database specific structures, configurations, repositories, specifications.
+This layer should provide database specific structures, configurations, repositories, specifications.
 
 ### .Domain
 
@@ -44,23 +44,23 @@ It contains also domain tests, architecture tests and utility tests.
 
 ### .Tests.Integration
 
-This layer contains the integrations tests. 
+This layer contains integrations tests. 
 
 Here we do not use the WebApplicationFactory approach, but we create DI container in more manual way.
 
-Moreover, tests are done on the test database, but the test cleaning is required (see TestDataGeneratorBase.CleanDatabaseFromTestData)
+Moreover, tests are done on the test database, but the test cleaning is required (see TestDataGeneratorBase.CleanDatabaseFromTestData).
 
 ### .Tests.Integration.Container
 
-This layer contains the integrations tests. 
+This layer contains integrations tests. 
 
 Here we use the proper approach of using the WebApplicationFactory.
 
-Moreover, we use TestContainers library, to make all integrations test in sql database inside the container, so the additional database cleaning is not required (like in Shopway.Tests.Integration)
+Moreover, we use TestContainers library, to make all integrations test in sql database inside the container, so the additional database cleaning is not required (like in Shopway.Tests.Integration).
 
 ### .Tests.Performance
 
-This layer container the performance tests.
+This layer contains performance tests.
 
 We use NBomber as a performance test framework, because we can use it with xunit.
 
@@ -77,7 +77,7 @@ Note: Alternative naming convention: switch T2 with T3:
 
 > GetById_WhenCreateValidProduct_ShouldSucceed
 
-2. Mocks should end with "Mock" suffix"
+2. Mocks should end with "Mock" suffix:
 
 > _productRepositoryMock
 
