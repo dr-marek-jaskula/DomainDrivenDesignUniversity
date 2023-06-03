@@ -25,6 +25,7 @@ internal abstract partial class CommonSpecification
                 .AddIncludes(includes)
                 .AddFilter(filter)
                 .AddOrder(sortBy)
+                .AddTag($"Common {typeof(TEntity).Name} query")
                 .AsMappingSpecification<TEntity, TEntityId, TResponse>();
         }
     }

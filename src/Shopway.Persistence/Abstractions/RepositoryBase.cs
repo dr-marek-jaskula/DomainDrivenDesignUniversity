@@ -60,6 +60,11 @@ public abstract class RepositoryBase
             }
         }
 
+        if (specification.QueryTag is not null)
+        {
+            queryable = queryable.TagWith(specification.QueryTag);
+        }
+
         if (specification.AsSplitQuery)
         {
             queryable = queryable.AsSplitQuery();

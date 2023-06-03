@@ -26,6 +26,9 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     {
     }
 
+    //Tag
+    internal string? QueryTag { get; private set; }
+
     //Flags
     internal bool AsSplitQuery { get; private set; }
     internal bool AsNoTracking { get; private set; }
@@ -42,6 +45,12 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal ISortBy<TEntity>? SortBy { get; private set; } = null;
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
+
+    internal SpecificationBase<TEntity, TEntityId> AddTag(string queryTag)
+    {
+        QueryTag = queryTag;
+        return this;
+    }
 
     internal SpecificationBase<TEntity, TEntityId> UseSplitQuery()
     {

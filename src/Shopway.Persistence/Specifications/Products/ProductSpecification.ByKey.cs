@@ -2,6 +2,7 @@
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
 using Shopway.Domain.EntityKeys;
+using static Shopway.Persistence.Constants.SpecificationConstants;
 
 namespace Shopway.Persistence.Specifications.Products;
 
@@ -16,7 +17,8 @@ internal abstract partial class ProductSpecification
                 (
                     product => (string)(object)product.ProductName == productKey.ProductName,
                     product => (string)(object)product.Revision == productKey.Revision
-                );
+                )
+                .AddTag(QueryProductByKey);
         }
     }
 }

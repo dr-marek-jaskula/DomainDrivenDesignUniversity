@@ -3,6 +3,7 @@ using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Abstractions;
 using System.Linq.Expressions;
+using static Shopway.Persistence.Constants.SpecificationConstants;
 
 namespace Shopway.Persistence.Specifications.Products;
 
@@ -15,13 +16,15 @@ internal abstract partial class ProductSpecification
         internal static SpecificationBase<Product, ProductId> Create(ProductId productId)
         {
             return new ById()
-                .AddFilters(product => product.Id == productId);
+                .AddFilters(product => product.Id == productId)
+                .AddTag(QueryProductById);
         }
 
         internal static SpecificationBase<Product, ProductId> Create(IList<ProductId> productIds)
         {
             return new ById()
-                .AddFilters(product => productIds.Contains(product.Id));
+                .AddFilters(product => productIds.Contains(product.Id))
+                .AddTag(QueryProductByIds);
         }
 
         public sealed class WithIncludes : SpecificationBase<Product, ProductId>
@@ -33,7 +36,8 @@ internal abstract partial class ProductSpecification
                 return new WithIncludes()
                     .AddFilters(product => product.Id == productId)
                     .AddIncludes(includes)
-                    .UseSplitQuery();
+                    .UseSplitQuery()
+                    .AddTag(QueryProductByIdWithIncludes);
             }
         }
 
@@ -45,7 +49,8 @@ internal abstract partial class ProductSpecification
             {
                 return new WithReviews()
                     .AddFilters(product => product.Id == productId)
-                    .AddIncludes(product => product.Reviews);
+                    .AddIncludes(product => product.Reviews)
+                    .AddTag(QueryProductByIdWithReviews);
             }
         }
 
@@ -57,14 +62,16 @@ internal abstract partial class ProductSpecification
             {
                 return new WithReview()
                     .AddFilters(product => product.Id == productId)
-                    .AddIncludes(product => product.Reviews.Where(review => review.Id == reviewId));
+                    .AddIncludes(product => product.Reviews.Where(review => review.Id == reviewId))
+                    .AddTag(QueryProductByIdWithReviewById);
             }
 
             internal static SpecificationBase<Product, ProductId> Create(ProductId productId, Title title)
             {
                 return new WithReview()
                     .AddFilters(product => product.Id == productId)
-                    .AddIncludes(product => product.Reviews.Where(review => review.Title == title));
+                    .AddIncludes(product => product.Reviews.Where(review => review.Title == title))
+                    .AddTag(QueryProductByIdWithReviewByTitle);
             }
         }
     }
