@@ -89,7 +89,7 @@ public static class QueryableUtilities
         where TEntityId : struct, IEntityId
     {
         return await queryable
-           .Where(c => EF.Property<TEntityId>(c, idPropertyName).Equals(entityId))
+           .Where(entity => EF.Property<TEntityId>(entity, idPropertyName).Equals(entityId))
            .AnyAsync(cancellationToken);
     }
 
