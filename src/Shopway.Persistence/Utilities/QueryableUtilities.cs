@@ -107,7 +107,7 @@ public static class QueryableUtilities
         this IQueryable<TEntity> queryable,
         TEntityId entityId,
         CancellationToken cancellationToken,
-        string idPropertyName = "Id"
+        string idPropertyName = IEntityId.Id
     )
         where TEntity : Entity<TEntityId>
         where TEntityId : struct, IEntityId
