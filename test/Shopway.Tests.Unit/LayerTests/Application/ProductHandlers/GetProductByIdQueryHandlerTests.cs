@@ -22,7 +22,7 @@ public sealed class GetProductByIdQueryHandlerTests : TestBase
 
     [Fact]
     [Trait(TraitConstants.Category, TraitConstants.Application)]
-    public async Task GetById_ShouldSucceed_WhenCreateValidProduct()
+    public async Task GetById_ShouldReturnProduct_WhenProductExists()
 	{
         //Arrange
         var expected = CreateProduct();

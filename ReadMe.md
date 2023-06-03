@@ -75,11 +75,11 @@ We use NBomber as a performance test framework, because we can use it with xunit
 	- T2 is the expected result 
 	- T3 is the test scenario
 
-> GetById_ShouldSucceed_WhenCreateValidProduct
+> GetById_ShouldReturnProduct_WhenProductExists
 
 Note: Alternative naming convention: switch T2 with T3:
 
-> GetById_WhenCreateValidProduct_ShouldSucceed
+> GetById_WhenProductExists_ShouldReturnProduct
 
 2. Mocks should end with "Mock" suffix:
 
