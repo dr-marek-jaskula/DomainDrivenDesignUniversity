@@ -75,7 +75,8 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
         IEnumerable<EntityEntry<IAuditable>> entries =
             _dbContext
                 .ChangeTracker
-                .Entries<IAuditable>();
+                .Entries<IAuditable>()
+                .Where(entry => entry.State is Added or Modified);
 
         foreach (EntityEntry<IAuditable> entityEntry in entries)
         {
@@ -99,7 +100,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
             _dbContext
                 .ChangeTracker
                 .Entries<IEntity>()
-                .Where(entity => entity.State is not Deleted and not Unchanged and not Modified);
+                .Where(entity => entity.State is Added or Deleted);
 
         foreach (EntityEntry<IEntity> entityEntry in entries)
         {
