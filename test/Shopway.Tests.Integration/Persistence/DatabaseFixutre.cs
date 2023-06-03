@@ -4,7 +4,7 @@ using Shopway.Persistence.Outbox;
 using ZiggyCreatures.Caching.Fusion;
 using static Shopway.Persistence.Constants.ConnectionConstants;
 
-namespace Shopway.Tests.Integration.Persistance;
+namespace Shopway.Tests.Integration.Persistence;
 
 public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
 {

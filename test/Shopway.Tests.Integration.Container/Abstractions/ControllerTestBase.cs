@@ -4,7 +4,7 @@ using RestSharp.Authenticators;
 using Shopway.Application.CQRS.Users.Commands.RegisterUser;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
 using Shopway.Domain.Entities;
-using Shopway.Tests.Integration.Persistance;
+using Shopway.Tests.Integration.Persistence;
 using Shopway.Tests.Integration.Utilities;
 using System.Data;
 using Shopway.Persistence.Constants;

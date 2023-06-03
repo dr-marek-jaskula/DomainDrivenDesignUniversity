@@ -3,9 +3,9 @@ using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
-using Shopway.Tests.Integration.Abstractions;
+using Shopway.Tests.Performance.Abstractions;
 
-namespace Shopway.Tests.Integration.Persistance;
+namespace Shopway.Tests.Performance.Persistence;
 
 /// <summary>
 /// Contains methods to add entities to the database and utility methods for test data
@@ -17,8 +17,9 @@ public sealed class TestDataGenerator : TestDataGeneratorBase
     {
     }
 
-    public async Task<Product> AddProductAsync
+    public async Task<Product> AddProduct
     (
+        ProductId productId,
         ProductName? productName = null,
         Revision? revision = null,
         Price? price = null,
@@ -32,14 +33,14 @@ public sealed class TestDataGenerator : TestDataGeneratorBase
 
         var product = Product.Create
         (
-            id: ProductId.New(),
+            id: productId,
             productName: productName,
             price: price,
             uomCode: uomCode,
             revision: revision
         );
 
-        await AddEntityAsync(product);
+        await AddEntity(product);
 
         return product;
     }

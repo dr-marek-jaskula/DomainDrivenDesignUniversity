@@ -114,4 +114,4 @@ private protected IQueryable<TResponse> UseSpecificationWithMapping<TEntity, TEn
 }
 ```
 
-**In the end the queryable will contain the mapping, so no redundant data will be queried, and the .Persistance layer will remain separated from .Application layer.**
+**In the end the queryable will contain the mapping, so no redundant data will be queried, and the .Persistence layer will remain separated from .Application layer.**

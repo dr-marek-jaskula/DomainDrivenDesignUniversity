@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Shopway.Tests.Integration.Persistance;
+namespace Shopway.Tests.Integration.Persistence;
 
 /// <summary>
 /// Test dependency injection container fixture

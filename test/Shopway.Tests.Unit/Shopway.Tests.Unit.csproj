@@ -9,21 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="LayerTests\App\**" />
-    <Compile Remove="LayerTests\Infrastructure\**" />
-    <Compile Remove="LayerTests\Persistance\**" />
-    <Compile Remove="LayerTests\Presentation\**" />
-    <EmbeddedResource Remove="LayerTests\App\**" />
-    <EmbeddedResource Remove="LayerTests\Infrastructure\**" />
-    <EmbeddedResource Remove="LayerTests\Persistance\**" />
-    <EmbeddedResource Remove="LayerTests\Presentation\**" />
-    <None Remove="LayerTests\App\**" />
-    <None Remove="LayerTests\Infrastructure\**" />
-    <None Remove="LayerTests\Persistance\**" />
-    <None Remove="LayerTests\Presentation\**" />
-  </ItemGroup>
-
-  <ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="6.11.0" />
 		<PackageReference Include="NetArchTest.Rules" Version="1.3.2" />
 		<PackageReference Include="NSubstitute" Version="5.0.0" />
@@ -50,7 +35,7 @@
 	  <ProjectReference Include="..\..\src\Shopway.App\Shopway.App.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Domain\Shopway.Domain.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Infrastructure\Shopway.Infrastructure.csproj" />
-	  <ProjectReference Include="..\..\src\Shopway.Persistance\Shopway.Persistence.csproj" />
+	  <ProjectReference Include="..\..\src\Shopway.Persistence\Shopway.Persistence.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Presentation\Shopway.Presentation.csproj" />
 	</ItemGroup>
 	

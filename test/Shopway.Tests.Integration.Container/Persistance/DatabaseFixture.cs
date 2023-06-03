@@ -3,7 +3,7 @@ using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace Shopway.Tests.Integration.Persistance;
+namespace Shopway.Tests.Integration.Persistence;
 
 public sealed class DatabaseFixture : IDisposable
 {

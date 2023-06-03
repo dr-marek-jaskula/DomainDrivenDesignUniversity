@@ -1,6 +1,6 @@
 ﻿using static Shopway.Tests.Integration.Constants.CollectionNames;
 
-namespace Shopway.Tests.Integration.Persistance;
+namespace Shopway.Tests.Integration.Persistence;
 
 [Collection(DatabaseCollection)]
 public sealed class CleanTestData : IAsyncLifetime

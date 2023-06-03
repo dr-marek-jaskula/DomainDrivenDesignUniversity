@@ -1,6 +1,6 @@
 ﻿using RestSharp;
 using Shopway.Tests.Integration.Abstractions;
-using Shopway.Tests.Integration.Persistance;
+using Shopway.Tests.Integration.Persistence;
 using Shopway.Presentation.Controllers;
 using static Shopway.Tests.Integration.Constants.CollectionNames;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;

@@ -3,7 +3,7 @@ using Shopway.Persistence.Abstractions;
 using Shopway.Tests.Performance.Constants;
 using System.Security.Claims;
 
-namespace Shopway.Tests.Performance.Persistance;
+namespace Shopway.Tests.Performance.Persistence;
 
 /// <summary>
 /// Test context service, used to set the "CreatedBy" field to the user name

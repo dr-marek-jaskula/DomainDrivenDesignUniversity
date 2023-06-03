@@ -40,7 +40,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\Shopway.App\Shopway.App.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Domain\Shopway.Domain.csproj" />
-	  <ProjectReference Include="..\..\src\Shopway.Persistance\Shopway.Persistence.csproj" />
+	  <ProjectReference Include="..\..\src\Shopway.Persistence\Shopway.Persistence.csproj" />
 	  <ProjectReference Include="..\..\src\Shopway.Presentation\Shopway.Presentation.csproj" />
 	</ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using Shopway.Tests.Performance.Persistance;
+﻿using Shopway.Tests.Performance.Persistence;
 
 namespace Shopway.Tests.Performance.Abstractions;
 

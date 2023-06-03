@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
 
-namespace Shopway.Tests.Integration.Persistance;
+namespace Shopway.Tests.Integration.Persistence;
 
 public static class ServiceProviderFactory
 {

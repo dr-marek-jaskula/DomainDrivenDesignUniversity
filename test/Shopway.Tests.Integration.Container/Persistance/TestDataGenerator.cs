@@ -5,7 +5,7 @@ using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Tests.Integration.Abstractions;
 
-namespace Shopway.Tests.Integration.Persistance;
+namespace Shopway.Tests.Integration.Persistence;
 
 /// <summary>
 /// Contains methods to add entities to the database and utility methods for test data
