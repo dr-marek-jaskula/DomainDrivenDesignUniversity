@@ -32,7 +32,7 @@ This layer should provide additional tools that we are going to use.
 
 Therefore, we place here services, options, validators, adapters, providers, policies, background jobs and so on.
 
-### .Persistance :books:
+### .Persistence :books:
 
 This layer should provide database specific structures, configurations, repositories, specifications.
 

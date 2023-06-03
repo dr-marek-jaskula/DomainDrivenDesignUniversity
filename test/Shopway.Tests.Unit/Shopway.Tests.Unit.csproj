@@ -9,6 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LayerTests\App\**" />
+    <Compile Remove="LayerTests\Infrastructure\**" />
+    <Compile Remove="LayerTests\Persistance\**" />
+    <Compile Remove="LayerTests\Presentation\**" />
+    <EmbeddedResource Remove="LayerTests\App\**" />
+    <EmbeddedResource Remove="LayerTests\Infrastructure\**" />
+    <EmbeddedResource Remove="LayerTests\Persistance\**" />
+    <EmbeddedResource Remove="LayerTests\Presentation\**" />
+    <None Remove="LayerTests\App\**" />
+    <None Remove="LayerTests\Infrastructure\**" />
+    <None Remove="LayerTests\Persistance\**" />
+    <None Remove="LayerTests\Presentation\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="6.11.0" />
 		<PackageReference Include="NetArchTest.Rules" Version="1.3.2" />
 		<PackageReference Include="NSubstitute" Version="5.0.0" />
@@ -28,13 +43,6 @@
 		<Using Include="Xunit" />
 		<Using Include="FluentAssertions" />
 		<Using Include="NSubstitute" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="LayerTests\Infrastructure\" />
-	  <Folder Include="LayerTests\App\" />
-	  <Folder Include="LayerTests\Presentation\" />
-	  <Folder Include="LayerTests\Persistance\" />
 	</ItemGroup>
 
 	<ItemGroup>
