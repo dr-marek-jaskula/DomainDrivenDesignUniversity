@@ -17,6 +17,7 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
         builder.ToTable(TableNames.Review, SchemaNames.Shopway);
 
         builder.HasKey(r => r.Id);
+
         builder.Property(r => r.Id)
             .HasConversion<ReviewIdConverter, ReviewIdComparer>()
             .HasColumnType(ColumnTypes.UniqueIdentifier);

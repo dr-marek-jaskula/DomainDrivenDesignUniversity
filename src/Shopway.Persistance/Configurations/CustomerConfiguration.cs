@@ -38,12 +38,14 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
             .IsRequired(false);
 
         builder.Property(p => p.Gender)
-            .HasColumnType(ColumnTypes.VarChar(LongestOf<Gender>()))
             .HasConversion<GenderConverter>()
+            .HasColumnName(nameof(Gender))
+            .HasColumnType(ColumnTypes.VarChar(LongestOf<Gender>()))
             .IsRequired(true);
 
         builder.Property(c => c.Rank)
             .HasConversion<RankConverter>()
+            .HasColumnName(nameof(Rank))
             .HasDefaultValue(Rank.Standard)
             .HasColumnType(ColumnTypes.VarChar(LongestOf<Rank>()));
 
