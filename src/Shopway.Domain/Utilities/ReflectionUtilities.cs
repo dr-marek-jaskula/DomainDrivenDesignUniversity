@@ -47,6 +47,13 @@ public static class ReflectionUtilities
                 .GetValue(baseType)!;
     }
 
+    public static bool ImplementsIEntityId(this PropertyInfo property)
+    {
+        return property
+            .PropertyType
+            .ImplementsIEntityId();
+    }
+
     public static bool ImplementsIEntityId(this Type baseType)
     {
         return baseType

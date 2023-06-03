@@ -32,7 +32,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     {
         var entityIds = typeof(TRequest)
             .GetProperties()
-            .Where(prop => prop.PropertyType.ImplementsIEntityId())
+            .Where(prop => prop.ImplementsIEntityId())
             .Select(entityId => entityId.GetValue(request) as IEntityId);
 
         Error[] errors = entityIds
