@@ -1,3 +1,3 @@
-﻿# App Layer
+﻿# App Layer :car:
 
-In this layer we only register dependencies
+In this layer we only register dependencies and run the program.

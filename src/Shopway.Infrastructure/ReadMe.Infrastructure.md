@@ -1,4 +1,4 @@
-﻿# Infrastructure Layer
+﻿# Infrastructure Layer :factory:
 
 This layer is responsible for providing the implementations for abstractions for other layers, mostly for .Application layer.
 Moreover, this layer contains most tools and additional services.
