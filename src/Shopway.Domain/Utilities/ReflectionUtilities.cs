@@ -47,17 +47,17 @@ public static class ReflectionUtilities
                 .GetValue(baseType)!;
     }
 
-    public static bool ImplementsIEntityId(this PropertyInfo property)
+    public static bool Implements<TInterface>(this PropertyInfo property)
     {
         return property
             .PropertyType
-            .ImplementsIEntityId();
+            .Implements<TInterface>();
     }
 
-    public static bool ImplementsIEntityId(this Type baseType)
+    public static bool Implements<TInterface>(this Type baseType)
     {
         return baseType
             .GetInterfaces()
-            .Any(interfaceType => interfaceType == typeof(IEntityId));
+            .Any(interfaceType => interfaceType == typeof(TInterface));
     }
 }
