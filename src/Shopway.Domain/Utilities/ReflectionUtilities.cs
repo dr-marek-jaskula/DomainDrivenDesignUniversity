@@ -46,4 +46,11 @@ public static class ReflectionUtilities
                 .GetProperty(IEntityId.Id)!
                 .GetValue(baseType)!;
     }
+
+    public static bool ImplementsIEntityId(this Type baseType)
+    {
+        return baseType
+            .GetInterfaces()
+            .Any(interfaceType => interfaceType == typeof(IEntityId));
+    }
 }
