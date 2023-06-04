@@ -44,21 +44,7 @@ public static class RandomUtilities
         }
     }
 
-    public static string GenerateTestString()
-    {
-        Guid opportunityId = Guid.NewGuid();
-        Guid systemUserId = Guid.NewGuid();
-        string currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-
-        StringBuilder sb = new();
-        sb.AppendFormat("opportunityid={0}", opportunityId.ToString());
-        sb.AppendFormat("&systemuserid={0}", systemUserId.ToString());
-        sb.AppendFormat("&currenttime={0}", currentTime);
-
-        return sb.ToString();
-    }
-
-    public static byte[] GetRandomData(int length)
+    public static byte[] GetRandomByteArray(int length)
     {
         return RandomNumberGenerator.GetBytes(length);
     }
