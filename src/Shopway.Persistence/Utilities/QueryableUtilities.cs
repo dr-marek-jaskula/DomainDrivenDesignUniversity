@@ -68,6 +68,20 @@ public static class QueryableUtilities
         return queryable;
     }
 
+    public static async Task<bool> AnyAsync<TEntity, TEntityId>
+    (
+        this IQueryable<TEntity> queryable,
+        TEntityId entityId,
+        CancellationToken cancellationToken
+    )
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId
+    {
+        return await queryable
+           .Where(entity => entity.Id.Equals(entityId))
+           .AnyAsync(cancellationToken);
+    }
+
     /// <summary>
     /// Using EF.Property
     /// </summary>
@@ -76,20 +90,18 @@ public static class QueryableUtilities
     /// <param name="queryable"></param>
     /// <param name="entityId"></param>
     /// <param name="cancellationToken"></param>
-    /// <param name="idPropertyName"></param>
     /// <returns></returns>
-    public static async Task<bool> AnyAsync<TEntity, TEntityId>
+    public static async Task<bool> AnyAsyncUsingEFProperty<TEntity, TEntityId>
     (
         this IQueryable<TEntity> queryable,
         TEntityId entityId,
-        CancellationToken cancellationToken,
-        string idPropertyName = IEntityId.Id
+        CancellationToken cancellationToken
     )
-        where TEntity : Entity<TEntityId>
+        where TEntity : IEntity
         where TEntityId : struct, IEntityId
     {
         return await queryable
-           .Where(entity => EF.Property<TEntityId>(entity, idPropertyName).Equals(entityId))
+           .Where(entity => EF.Property<TEntityId>(entity, IEntityId.Id).Equals(entityId))
            .AnyAsync(cancellationToken);
     }
 
@@ -97,23 +109,20 @@ public static class QueryableUtilities
     /// Using dynamic linq
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TEntityId"></typeparam>
     /// <param name="queryable"></param>
     /// <param name="entityId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task<bool> AnyAsyncUsingDynamicLinq<TEntity, TEntityId>
+    public static async Task<bool> AnyAsyncUsingDynamicLinq<TEntity>
     (
         this IQueryable<TEntity> queryable,
-        TEntityId entityId,
-        CancellationToken cancellationToken,
-        string idPropertyName = IEntityId.Id
+        IEntityId entityId,
+        CancellationToken cancellationToken
     )
-        where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId
+        where TEntity : IEntity
     {
         return await queryable
-           .Where($"{idPropertyName} == \"{entityId.Value}\"")
+           .Where($"{IEntityId.Id} == \"{entityId.Value}\"")
            .AnyAsync(cancellationToken);
     }
 }
