@@ -45,19 +45,19 @@ public sealed class CachedProductRepository : IProductRepository
     public void Create(Product product)
     {
         _decorated.Create(product);
-        //_fusionCache.Set<Product, ProductId>(product); //Not required because cache update is done in UnitWork. Can be used in specific cases
+        //_fusionCache.Set<Product, ProductId>(product); //Not required because cache update is done in UnitOfWork. Can be used in specific cases
     }
 
     public void Remove(ProductId id)
     {
         _decorated.Remove(id);
-        //_fusionCache.Remove(id); //Not required because cache update is done in UnitWork. Can be used in specific cases
+        //_fusionCache.Remove(id); //Not required because cache update is done in UnitOfWork. Can be used in specific cases
     }
 
     public void Update(Product product)
     {
         _decorated.Update(product);
-        //_fusionCache.Update<Product, ProductId>(product); //Not required because cache update is done in UnitWork. Can be used in specific cases
+        //_fusionCache.Update<Product, ProductId>(product); //Not required because cache update is done in UnitOfWork. Can be used in specific cases
     }
 
     public Task<Product?> GetByKeyOrDefaultAsync(ProductKey productKey, CancellationToken cancellationToken)

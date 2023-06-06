@@ -75,7 +75,7 @@ specification
 
 ## Fusion Cache
 
-Fusion cache approach is used 
+Fusion cache approach is used.
 
 If no distributed cache is used, fusion cache use memory cache. Nevertheless, fusion cache is very efficient and easy to use.
 If distributed cache is used, fusion cache use the combination of memory and distributed caching (prefer to use redis for distributed cache).
@@ -118,7 +118,7 @@ We could add to SaveChanges a flag "updateCache" and add a new pipeline (plus ad
 BeginTransactionWithoutCacheUpdateAsync) that uses this flag, if for some
 endpoints the cache updates should be omitted.
 
-## Indexes on ValueObjects with Owned Types
+## ValueObjects vs Owned Types
 
 Microsoft currently aims to fully switch from Owned Types to Value Converter for ValueObject configurations:
 ```
