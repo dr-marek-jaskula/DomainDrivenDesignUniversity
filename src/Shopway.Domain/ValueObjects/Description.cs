@@ -24,21 +24,11 @@ public sealed class Description : ValueObject
         return errors.CreateValidationResult(() => new Description(description));
     }
 
-    public static List<Error> Validate(string description)
+    public static IList<Error> Validate(string description)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            errors.Add(DescriptionError.Empty);
-        }
-
-        if (description.Length > MaxLength)
-        {
-            errors.Add(DescriptionError.TooLong);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(description.IsNullOrEmptyOrWhiteSpace(), DescriptionError.Empty)
+            .If(description.Length > MaxLength, DescriptionError.TooLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

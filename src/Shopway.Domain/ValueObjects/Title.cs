@@ -29,21 +29,11 @@ public sealed class Title : ValueObject
         return errors.CreateValidationResult(() => new Title(title));
     }
 
-    public static List<Error> Validate(string title)
+    public static IList<Error> Validate(string title)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            errors.Add(TitleError.Empty);
-        }
-
-        if (title.Length > MaxLength)
-        {
-            errors.Add(TitleError.TooLong);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(title.IsNullOrEmptyOrWhiteSpace(), TitleError.Empty)
+            .If(title.Length > MaxLength, TitleError.TooLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

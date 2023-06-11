@@ -24,23 +24,11 @@ public sealed class PasswordHash : ValueObject
         return errors.CreateValidationResult(() => new PasswordHash(passwordHash));
     }
 
-    public static List<Error> Validate(string passwordHash)
+    public static IList<Error> Validate(string passwordHash)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrWhiteSpace(passwordHash))
-        {
-            errors.Add(PasswordHashError.Empty);
-        }
-
-        var numberOfbytes = Encoding.ASCII.GetByteCount(passwordHash);
-
-        if (numberOfbytes > BytesLong)
-        {
-            errors.Add(PasswordHashError.BytesLong);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(passwordHash.IsNullOrEmptyOrWhiteSpace(), PasswordHashError.Empty)
+            .If(Encoding.ASCII.GetByteCount(passwordHash) > BytesLong, PasswordHashError.BytesLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

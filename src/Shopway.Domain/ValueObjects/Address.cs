@@ -45,41 +45,15 @@ public sealed class Address : ValueObject
         return errors.CreateValidationResult(() => new Address(city, country, zipCode, street, building, flat));
     }
 
-    public static List<Error> Validate(string city, string country, string zipCode, string street, int building, int? flat)
+    public static IList<Error> Validate(string city, string country, string zipCode, string street, int building, int? flat)
     {
-        var errors = Empty<Error>();
-
-        if (ValidateCountry(country) is { IsValid: false } countryValidation)
-        {
-            errors.Add(countryValidation.Error);
-        }
-
-        if (ValidateCity(city) is { IsValid: false } cityValidation)
-        {
-            errors.Add(cityValidation.Error);
-        }
-
-        if (ValidateZipCode(zipCode) is { IsValid: false } zipCodeValidation)
-        {
-            errors.Add(zipCodeValidation.Error);
-        }
-
-        if (ValidateStreet(street) is { IsValid: false } streetValidation)
-        {
-            errors.Add(streetValidation.Error);
-        }
-
-        if (ValidateBuilding(building) is { IsValid: false } buildingValidation)
-        {
-            errors.Add(buildingValidation.Error);
-        }
-
-        if (ValidateFlat(flat) is { IsValid: false } flatValidation)
-        {
-            errors.Add(flatValidation.Error);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .UseValidation(ValidateCountry, country)
+            .UseValidation(ValidateCity, city)
+            .UseValidation(ValidateZipCode, zipCode)
+            .UseValidation(ValidateStreet, street)
+            .UseValidation(ValidateBuilding, building)
+            .UseValidation(ValidateFlat, flat);
     }
 
     /// <returns>Street, City, Country, ZipCode, Building and Flat if not null</returns>
@@ -97,68 +71,43 @@ public sealed class Address : ValueObject
         }
     }
 
-    #region Validation Methods
-
-    private static (bool IsValid, Error Error) ValidateCountry(string country)
+    private static IList<Error> ValidateCountry(IList<Error> errors, string country)
     {
-        return country switch
-        {
-            string when country.IsNullOrEmptyOrWhiteSpace() => (false, AddressError.EmptyCountry),
-            string when AvailableCountries.Contains(country) => (false, AddressError.UnsupportedCountry),
-            _ => (true, Error.None)
-        };
+        return errors
+            .If(country.IsNullOrEmptyOrWhiteSpace(), AddressError.EmptyCountry)
+            .If(AvailableCountries.NotContains(country), AddressError.UnsupportedCountry);
     }
 
-    private static (bool IsValid, Error Error) ValidateCity(string city)
+    private static IList<Error> ValidateCity(IList<Error> errors, string city)
     {
-        return city switch
-        {
-            string when city.IsNullOrEmptyOrWhiteSpace() => (false, AddressError.EmptyCity),
-            string when city.ContainsIllegalCharacter() || city.ContainsDigit() => (false, AddressError.ContainsIllegalCharacterOrDigit),
-            _ => (true, Error.None)
-        };
+        return errors
+            .If(city.IsNullOrEmptyOrWhiteSpace(), AddressError.EmptyCity)
+            .If(city.ContainsIllegalCharacter() || city.ContainsDigit(), AddressError.ContainsIllegalCharacterOrDigit);
     }
 
-    private static (bool IsValid, Error Error) ValidateZipCode(string zipCode)
+    private static IList<Error> ValidateZipCode(IList<Error> errors, string zipCode)
     {
-        var result = _zipCodeRegex.Match(zipCode);
-
-        return result.Success switch
-        {
-            false => (false, AddressError.ZipCodeDoesNotMatch),
-            _ => (true, Error.None)
-        };
+        return errors
+            .If(_zipCodeRegex.NotMatch(zipCode), AddressError.ZipCodeDoesNotMatch);
     }
 
-    private static (bool IsValid, Error Error) ValidateStreet(string street)
+    private static IList<Error> ValidateStreet(IList<Error> errors, string street)
     {
-        return street switch
-        {
-            string when street.IsNullOrEmptyOrWhiteSpace() => (false, AddressError.EmptyCity),
-            string when street.ContainsIllegalCharacter() => (false, AddressError.ContainsIllegalCharacter),
-            _ => (true, Error.None)
-        };
+        return errors
+            .If(street.IsNullOrEmptyOrWhiteSpace(), AddressError.EmptyCity)
+            .If(street.ContainsIllegalCharacter(), AddressError.ContainsIllegalCharacter);
     }
 
-    private static (bool IsValid, Error Error) ValidateBuilding(int building)
+    private static IList<Error> ValidateBuilding(IList<Error> errors, int building)
     {
-        return building switch
-        {
-            < MinBuildingNumber or > MaxBuildingNumber => (false, AddressError.WrongBuildingNumber),
-            _ => (true, Error.None)
-        };
+        return errors
+            .If(building < MinBuildingNumber || building > MaxBuildingNumber, AddressError.WrongBuildingNumber);
     }
 
-    private static (bool IsValid, Error Error) ValidateFlat(int? flat)
+    private static IList<Error> ValidateFlat(IList<Error> errors, int? flat)
     {
-        return flat switch
-        {
-            null => (true, Error.None),
-            < MinFlatNumber or > MaxFlatNumber => (false, AddressError.WrongFlatNumber),
-            _ => (true, Error.None)
-        };
+        return errors
+            .If(flat is not null && (flat < MinFlatNumber || flat > MaxFlatNumber), AddressError.WrongFlatNumber);
     }
-
-    #endregion Validation Methods
 }
 

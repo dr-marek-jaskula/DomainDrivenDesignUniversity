@@ -25,21 +25,11 @@ public sealed class Amount : ValueObject
         return errors.CreateValidationResult(() => new Amount(amount));
     }
 
-    public static List<Error> Validate(int amount)
+    public static IList<Error> Validate(int amount)
     {
-        var errors = Empty<Error>();
-
-        if (amount < MinAmount)
-        {
-            errors.Add(AmountError.TooLow);
-        }
-
-        if (amount > MaxAmount)
-        {
-            errors.Add(AmountError.TooHigh);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(amount < MinAmount, AmountError.TooLow)
+            .If(amount > MaxAmount, AmountError.TooHigh);
     }
 
     public override IEnumerable<object> GetAtomicValues()

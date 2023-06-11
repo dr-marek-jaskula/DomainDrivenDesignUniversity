@@ -27,31 +27,13 @@ public sealed class Password : ValueObject
         return errors.CreateValidationResult(() => new Password(password));
     }
 
-    public static List<Error> Validate(string password)
+    public static IList<Error> Validate(string password)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            errors.Add(PasswordError.Empty);
-        }
-
-        if (password.Length < MinLength)
-        {
-            errors.Add(PasswordError.TooShort);
-        }
-
-        if (password.Length > MaxLength)
-        {
-            errors.Add(PasswordError.TooLong);
-        }
-
-        if (!_regex.IsMatch(password))
-        {
-            errors.Add(PasswordError.Invalid);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(password.IsNullOrEmptyOrWhiteSpace(), PasswordError.Empty)
+            .If(password.Length < MinLength, PasswordError.TooShort)
+            .If(password.Length > MaxLength, PasswordError.TooLong)
+            .If(_regex.NotMatch(password), PasswordError.Invalid);
     }
 
     public override IEnumerable<object> GetAtomicValues()

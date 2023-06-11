@@ -7,7 +7,7 @@ public static class ListUtilities
         return new List<TValue>(items);
     }
 
-    public static List<TValue> Empty<TValue>()
+    public static List<TValue> EmptyList<TValue>()
     {
         return new List<TValue>();
     }

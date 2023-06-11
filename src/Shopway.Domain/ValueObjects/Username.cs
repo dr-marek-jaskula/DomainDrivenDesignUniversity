@@ -24,26 +24,12 @@ public sealed class Username : ValueObject
         return errors.CreateValidationResult(() => new Username(username));
     }
 
-    public static List<Error> Validate(string username)
+    public static IList<Error> Validate(string username)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrWhiteSpace(username))
-        {
-            errors.Add(UsernameError.Empty);
-        }
-
-        if (username.Length > MaxLength)
-        {
-            errors.Add(UsernameError.TooLong);
-        }
-
-        if (username.ContainsIllegalCharacter())
-        {
-            errors.Add(UsernameError.ContainsIllegalCharacter);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(username.IsNullOrEmptyOrWhiteSpace(), UsernameError.Empty)
+            .If(username.Length > MaxLength, UsernameError.TooLong)
+            .If(username.ContainsIllegalCharacter(), UsernameError.ContainsIllegalCharacter);
     }
 
     public override IEnumerable<object> GetAtomicValues()

@@ -11,7 +11,7 @@ public sealed record ProductOrder : ISortBy<Product>
 {
     public IReadOnlyCollection<string> AllowedSortProperties { get; init; } = AllowedProductSortProperties;
 
-    public IList<SortByEntry> SortProperties { get; init; } = Empty<SortByEntry>();
+    public IList<SortByEntry> SortProperties { get; init; } = EmptyList<SortByEntry>();
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {

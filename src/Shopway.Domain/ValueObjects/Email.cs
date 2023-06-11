@@ -27,26 +27,12 @@ public sealed class Email : ValueObject
         return errors.CreateValidationResult(() => new Email(email));
     }
 
-    public static List<Error> Validate(string email)
+    public static IList<Error> Validate(string email)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrEmpty(email))
-        {
-            errors.Add(EmailError.Empty);
-        }
-
-        if (email.Length > MaxLength)
-        {
-            errors.Add(EmailError.TooLong);
-        }
-
-        if (!_regex.IsMatch(email))
-        {
-            errors.Add(EmailError.Invalid);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(email.IsNullOrEmptyOrWhiteSpace(), EmailError.Empty)
+            .If(email.Length > MaxLength, EmailError.TooLong)
+            .If(_regex.NotMatch(email), EmailError.Invalid);
     }
 
     public override IEnumerable<object> GetAtomicValues()

@@ -25,21 +25,11 @@ public sealed class Price : ValueObject
         return errors.CreateValidationResult(() => new Price(decimal.Round(price, 2)));
     }
 
-    public static List<Error> Validate(decimal price)
+    public static IList<Error> Validate(decimal price)
     {
-        var errors = Empty<Error>();
-
-        if (price < MinPrice)
-        {
-            errors.Add(PriceError.TooLow);
-        }
-
-        if (price > MaxPrice)
-        {
-            errors.Add(PriceError.TooHigh);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(price < MinPrice, PriceError.TooLow)
+            .If(price > MaxPrice, PriceError.TooHigh);
     }
 
     public override IEnumerable<object> GetAtomicValues()

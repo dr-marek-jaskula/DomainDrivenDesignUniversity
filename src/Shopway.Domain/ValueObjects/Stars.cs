@@ -24,16 +24,10 @@ public sealed class Stars : ValueObject
         return errors.CreateValidationResult(() => new Stars(stars));
     }
 
-    public static List<Error> Validate(decimal stars)
+    public static IList<Error> Validate(decimal stars)
     {
-        var errors = Empty<Error>();
-
-        if (!AdmissibleStars.Contains(stars))
-        {
-            errors.Add(StarsError.Invalid);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(AdmissibleStars.NotContains(stars), StarsError.Invalid);
     }
 
     public override IEnumerable<object> GetAtomicValues()

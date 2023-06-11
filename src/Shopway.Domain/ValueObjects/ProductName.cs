@@ -29,25 +29,11 @@ public sealed class ProductName : ValueObject
         return errors.CreateValidationResult(() => new ProductName(productName));
     }
 
-    public static List<Error> Validate(string productName)
+    public static IList<Error> Validate(string productName)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrWhiteSpace(productName))
-        {
-            errors.Add(ProductNameError.Empty);
-        }
-
-        if (productName.Length > MaxLength)
-        {
-            errors.Add(ProductNameError.TooLong);
-        }
-
-        if (productName.ContainsIllegalCharacter())
-        {
-            errors.Add(ProductNameError.ContainsIllegalCharacter);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(productName.IsNullOrEmptyOrWhiteSpace(), ProductNameError.Empty)
+            .If(productName.Length > MaxLength, ProductNameError.TooLong)
+            .If(productName.ContainsIllegalCharacter(), ProductNameError.ContainsIllegalCharacter);
     }
 }

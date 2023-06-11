@@ -52,4 +52,44 @@ public static class ErrorUtilities
 
         return ValidationResult<TValueObject>.WithoutErrors(createValueObject.Invoke());
     }
+
+    /// <summary>
+    /// Add error to the list if the condition is true
+    /// </summary>
+    /// <param name="errors">Error list</param>
+    /// <param name="condition">Validation condition</param>
+    /// <param name="error">Error to add to list if the condition is true</param>
+    /// <returns>Same instance of error list</returns>
+    public static IList<Error> If
+    (
+        this IList<Error> errors, 
+        bool condition, 
+        Error error
+    )
+    {
+        if (condition is true)
+        {
+            errors.Add(error);
+        }
+
+        return errors;
+    }
+
+    /// <summary>
+    /// Use external validation that usually group multiple validations into logic group
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="errors">Error list</param>
+    /// <param name="validationSegment">Func that group validations into logic group</param>
+    /// <param name="valueUnderValidation">Value that is being validated</param>
+    /// <returns>Same instance of error list</returns>
+    public static IList<Error> UseValidation<TValue>
+    (
+        this IList<Error> errors,
+        Func<IList<Error>, TValue, IList<Error>> validationSegment, 
+        TValue valueUnderValidation
+    )
+    {
+        return validationSegment(errors, valueUnderValidation);
+    }
 }

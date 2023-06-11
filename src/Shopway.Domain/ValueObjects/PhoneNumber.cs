@@ -24,21 +24,11 @@ public sealed class PhoneNumber : ValueObject
         return errors.CreateValidationResult(() => new PhoneNumber(number));
     }
 
-    public static List<Error> Validate(string number)
+    public static IList<Error> Validate(string number)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrEmpty(number))
-        {
-            errors.Add(PhoneNumberError.Empty);
-        }
-
-        if (!_regex.IsMatch(number))
-        {
-            errors.Add(PhoneNumberError.Invalid);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(number.IsNullOrEmptyOrWhiteSpace(), PhoneNumberError.Empty)
+            .If(_regex.NotMatch(number), PhoneNumberError.Invalid);
     }
 
     public override IEnumerable<object> GetAtomicValues()

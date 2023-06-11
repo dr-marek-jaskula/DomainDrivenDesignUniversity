@@ -24,31 +24,13 @@ public sealed class LastName : ValueObject
         return errors.CreateValidationResult(() => new LastName(lastName));
     }
 
-    public static List<Error> Validate(string lastName)
+    public static IList<Error> Validate(string lastName)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrWhiteSpace(lastName))
-        {
-            errors.Add(LastNameError.Empty);
-        }
-
-        if (lastName.Length > MaxLength)
-        {
-            errors.Add(LastNameError.TooLong);
-        }
-
-        if (lastName.ContainsIllegalCharacter())
-        {
-            errors.Add(LastNameError.ContainsIllegalCharacter);
-        }
-
-        if (lastName.ContainsDigit())
-        {
-            errors.Add(LastNameError.ContainsDigit);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(lastName.IsNullOrEmptyOrWhiteSpace(), LastNameError.Empty)
+            .If(lastName.Length > MaxLength, LastNameError.TooLong)
+            .If(lastName.ContainsIllegalCharacter(), LastNameError.ContainsIllegalCharacter)
+            .If(lastName.ContainsDigit(), LastNameError.ContainsDigit);
     }
 
     public override IEnumerable<object> GetAtomicValues()

@@ -29,16 +29,10 @@ public sealed class UomCode : ValueObject
         return errors.CreateValidationResult(() => new UomCode(uomCode));
     }
 
-    public static List<Error> Validate(string uomCode)
+    public static IList<Error> Validate(string uomCode)
     {
-        var errors = Empty<Error>();
-
-        if (!AllowedUomCodes.Contains(uomCode))
-        {
-            errors.Add(UomCodeError.Invalid);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(AllowedUomCodes.NotContains(uomCode), UomCodeError.Invalid);
     }
 
     public override IEnumerable<object> GetAtomicValues()

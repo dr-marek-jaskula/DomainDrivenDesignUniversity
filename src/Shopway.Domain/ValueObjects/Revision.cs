@@ -29,21 +29,11 @@ public sealed class Revision : ValueObject
         return errors.CreateValidationResult(() => new Revision(revision));
     }
 
-    public static List<Error> Validate(string revision)
+    public static IList<Error> Validate(string revision)
     {
-        var errors = Empty<Error>();
-
-        if (string.IsNullOrWhiteSpace(revision))
-        {
-            errors.Add(RevisionError.Empty);
-        }
-
-        if (revision.Length > MaxLength)
-        {
-            errors.Add(RevisionError.TooLong);
-        }
-
-        return errors;
+        return EmptyList<Error>()
+            .If(revision.IsNullOrEmptyOrWhiteSpace(), RevisionError.Empty)
+            .If(revision.Length > MaxLength, RevisionError.TooLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()
