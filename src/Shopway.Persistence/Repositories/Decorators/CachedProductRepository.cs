@@ -99,4 +99,9 @@ public sealed class CachedProductRepository : IProductRepository
     {
         return _decorated.VerifyIdsAsync(ids, cancellationToken);
     }
+
+    public Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IExpressionFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
+    {
+        return _decorated.PageAsync(page, filter, sortBy, select, cancellationToken, includes);
+    }
 }

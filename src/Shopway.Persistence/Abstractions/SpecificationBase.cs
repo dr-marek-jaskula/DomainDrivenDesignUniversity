@@ -36,6 +36,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
 
     //Filters
     internal IFilter<TEntity>? Filter { get; private set; } = null;
+    internal IExpressionFilter<TEntity>? ExpressionFilter { get; private set; } = null;
     internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = new();
 
     //Includes
@@ -73,6 +74,12 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal SpecificationBase<TEntity, TEntityId> AddFilter(IFilter<TEntity>? filter)
     {
         Filter = filter;
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> AddExpressionFilter(IExpressionFilter<TEntity>? expressionFilter)
+    {
+        ExpressionFilter = expressionFilter;
         return this;
     }
 

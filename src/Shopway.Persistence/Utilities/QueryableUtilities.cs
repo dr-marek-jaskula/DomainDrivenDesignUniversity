@@ -4,6 +4,10 @@ using System.Linq.Dynamic.Core;
 using Shopway.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.BaseTypes;
+using System.Data;
+using System.Linq.Expressions;
+using static Shopway.Domain.Utilities.ExpressionUtilities;
+using Shopway.Domain.Results;
 
 namespace Shopway.Persistence.Utilities;
 
@@ -66,6 +70,71 @@ public static class QueryableUtilities
         }
 
         return queryable;
+    }
+
+    public static IQueryable<TResponse> Where<TResponse>
+    (
+        this IQueryable<TResponse> queryable,
+        IList<FilterByEntry> filterEntries
+    )
+    {
+        var parameter = Expression.Parameter(typeof(TResponse));
+        BinaryExpression? binaryExpression = null;
+        MethodCallExpression? nonBinaryExpression = null;
+
+        foreach (var filter in filterEntries)
+        {
+            var prop = Expression.Property(parameter, filter.PropertyName);
+            var innerType = prop.Type.GetProperty("Value")!.PropertyType;
+            var value = Expression.Convert(Expression.Constant(filter.Value), innerType);
+
+            Expression propertyValueObjectValue = Expression.Property(prop, "Value");
+            propertyValueObjectValue = Expression.Convert(prop, typeof(object));
+            propertyValueObjectValue = Expression.Convert(propertyValueObjectValue, innerType);
+
+            ExpressionType expressionType;
+            var isExpressionType = Enum.TryParse(filter.Operation, out expressionType);
+
+            if (isExpressionType)
+            {
+                var newBinary = Expression.MakeBinary(expressionType, propertyValueObjectValue, value);
+
+                binaryExpression =
+                    binaryExpression == null
+                    ? newBinary
+                    : Expression.MakeBinary(ExpressionType.AndAlso, binaryExpression, newBinary);
+
+                continue;
+            }
+
+            var method = typeof(string).GetMethod(filter.Operation, new[] { typeof(string) });
+            var newNonBinaryExpression = Expression.Call(propertyValueObjectValue, method!, Expression.Constant(filter.Value));
+
+            nonBinaryExpression =
+                nonBinaryExpression == null
+                ? newNonBinaryExpression
+                : Expression.Call(propertyValueObjectValue, method!, Expression.Constant(filter.Value));
+        }
+
+        Expression? finalExpression = null;
+        
+        if (binaryExpression is not null && nonBinaryExpression is not null)
+        {
+            finalExpression = Expression.And(binaryExpression!, nonBinaryExpression!);
+        }
+        else if (binaryExpression is not null)
+        {
+            finalExpression = binaryExpression;
+        }
+        else if (nonBinaryExpression is not null)
+        {
+            finalExpression = nonBinaryExpression;
+        }
+
+        var lambdaExpression = Expression.Lambda<Func<TResponse, bool>>(finalExpression!, parameter);
+
+        return queryable
+            .Where(lambdaExpression);
     }
 
     public static async Task<bool> AnyAsync<TEntity, TEntityId>

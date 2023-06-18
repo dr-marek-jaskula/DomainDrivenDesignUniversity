@@ -28,5 +28,22 @@ internal abstract partial class CommonSpecification
                 .AddTag($"Common {typeof(TEntity).Name} query")
                 .AsMappingSpecification<TEntity, TEntityId, TResponse>();
         }
+
+        internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> Create
+        (
+            IExpressionFilter<TEntity>? filter,
+            ISortBy<TEntity>? sortBy,
+            Expression<Func<TEntity, TResponse>>? select,
+            params Expression<Func<TEntity, object>>[] includes
+        )
+        {
+            return new WithMapping<TEntity, TEntityId, TResponse>()
+                .AddSelect(select)
+                .AddIncludes(includes)
+                .AddExpressionFilter(filter)
+                .AddOrder(sortBy)
+                .AddTag($"Common {typeof(TEntity).Name} query")
+                .AsMappingSpecification<TEntity, TEntityId, TResponse>();
+        }
     }
 }

@@ -118,6 +118,22 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
             .PageAsync(page, cancellationToken);
     }
 
+    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    (
+        IPage page, 
+        IExpressionFilter<Product>? filter, 
+        ISortBy<Product>? sort, 
+        Expression<Func<Product, TResponse>>? select, 
+        CancellationToken cancellationToken, 
+        params Expression<Func<Product, object>>[] includes
+    )
+    {
+        var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
+
+        return await UseSpecification(specification)
+            .PageAsync(page, cancellationToken);
+    }
+
     public void Create(Product product)
     {
         _dbContext

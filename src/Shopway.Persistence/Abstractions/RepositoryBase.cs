@@ -45,6 +45,10 @@ public abstract class RepositoryBase
                 queryable = queryable.Where(filter);
             }
         }
+        else if (specification.ExpressionFilter is not null)
+        {
+            queryable = specification.ExpressionFilter.Apply(queryable);
+        }
 
         if (specification.SortBy is not null)
         {

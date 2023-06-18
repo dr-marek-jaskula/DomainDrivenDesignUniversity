@@ -1,8 +1,10 @@
 ﻿using Shopway.Domain.Common;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Enums;
+using System.Linq.Expressions;
 using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Domain.Utilities.CollectionUtilities;
+using static Shopway.Domain.Utilities.EnumUtilities;
 
 namespace Shopway.Persistence.Constants;
 
@@ -36,4 +38,20 @@ public static class SpecificationConstants
         new SortByEntry() { PropertyName = nameof(Product.ProductName), SortDirection = SortDirection.Ascending, SortPriority = 1 },
         new SortByEntry() { PropertyName = nameof(Product.Revision), SortDirection = SortDirection.Ascending, SortPriority = 2 }
     );
+
+    public static IReadOnlyCollection<string> AllowedProductFilterProperties = AsReadOnlyCollection
+    (
+         nameof(Product.ProductName),
+         nameof(Product.Revision),
+         nameof(Product.Price),
+         nameof(Product.UomCode)
+    );
+
+    public static IReadOnlyCollection<string> AllowedProductFilterOperations = AsList
+    (
+         nameof(string.Contains)
+    )
+        .Concat(GetNamesOf<ExpressionType>())
+        .ToList()
+        .AsReadOnly();
 }

@@ -14,6 +14,7 @@ using Shopway.Application.CQRS;
 using Shopway.Domain.EntityKeys;
 using Shopway.Application.CQRS.Products.Queries.GetProductByKey;
 using Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;
+using Shopway.Application.CQRS.Products.Queries.QueryProductByExpression;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -92,6 +93,21 @@ public sealed partial class ProductsController : ApiController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> QueryProducts([FromBody] ProductPageQuery query, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(query, cancellationToken);
+
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("query/expression")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> QueryExpressionProducts([FromBody] ProductPageExpressionQuery query, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
 
