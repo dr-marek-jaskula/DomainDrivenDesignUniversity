@@ -8,10 +8,16 @@
 //5. Extension for IQueryable should just use this behavior
 //6. Adjust postman and push new collection (adjust ReadMe.md)
 
-//Other: move sort queryable extension into domain
 //Extract some logic for this extension method to SoryByEntry
 
 public sealed record FilterByEntry
+{
+    public required IList<Predicate> Predicates { get; init; }
+    public required string PropertyName { get; init; }
+    public required string Operation { get; init; }
+    public required object Value { get; init; }
+
+    public sealed record Predicate
 {
     public required string PropertyName { get; init; }
     public required string Operation { get; init; }

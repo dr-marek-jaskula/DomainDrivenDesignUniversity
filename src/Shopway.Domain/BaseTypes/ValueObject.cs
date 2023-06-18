@@ -8,6 +8,8 @@
 [Serializable]
 public abstract class ValueObject : IEquatable<ValueObject>
 {
+    public const string Value = nameof(Value);
+
     //For instance the atomic value of a Email is a single character
     /// <summary>
     /// Gets the atomic values of the value object.

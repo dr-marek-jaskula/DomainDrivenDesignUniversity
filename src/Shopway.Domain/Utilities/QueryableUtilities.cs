@@ -2,6 +2,9 @@
 using Shopway.Domain.Enums;
 using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
+using Shopway.Domain.Common;
+using static Shopway.Domain.Utilities.ExpressionUtilities;
+using static Shopway.Domain.Constants.TypeConstants;
 
 namespace Shopway.Domain.Utilities;
 
@@ -41,6 +44,50 @@ public static class QueryableUtilities
         return applyFilter 
             ? queryable.Where(expression) 
             : queryable;
+    }
+
+    public static IQueryable<TResponse> Where<TResponse>
+    (
+        this IQueryable<TResponse> queryable,
+        IList<FilterByEntry> filterEntries
+    )
+    {
+        var parameter = Expression.Parameter(typeof(TResponse));
+        BinaryExpression? binaryExpression = null;
+        MethodCallExpression? nonBinaryExpression = null;
+
+        foreach (var filter in filterEntries)
+        {
+            var memberExpression = parameter.ToMemberExpression(filter.PropertyName);
+            var innerType = memberExpression.GetValueObjectInnerType();
+            var convertedValueForFiltering = innerType.ToConvertedExpression(filter.Value);
+            var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerType);
+
+            var isBinaryOperation = Enum.TryParse(filter.Operation, out ExpressionType expressionType);
+
+            if (isBinaryOperation)
+            {
+                var newBinary = Expression.MakeBinary(expressionType, convertedPropertyToFilterOn, convertedValueForFiltering);
+
+                binaryExpression = binaryExpression is null
+                    ? newBinary
+                    : Expression.MakeBinary(ExpressionType.AndAlso, binaryExpression, newBinary);
+
+                continue;
+            }
+
+            var method = StringType.GetMethod(filter.Operation, new[] { StringType });
+            var newNonBinaryExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(filter.Value));
+
+            nonBinaryExpression = nonBinaryExpression is null
+                ? newNonBinaryExpression
+                : Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(filter.Value));
+        }
+
+        Expression<Func<TResponse, bool>> lambdaExpression = CreateLambdaExpression<TResponse>(parameter, binaryExpression, nonBinaryExpression);
+
+        return queryable
+            .Where(lambdaExpression);
     }
 
     public static IQueryable<TEntity> Page<TEntity>
@@ -88,6 +135,35 @@ public static class QueryableUtilities
             SortDirection.Descending => queryable.ThenByDescending(expression),
             _ => queryable
         };
+    }
+
+    public static IQueryable<TResponse> Sort<TResponse>
+    (
+        this IQueryable<TResponse> queryable,
+        IEnumerable<SortByEntry> sortProperties
+    )
+    {
+        var sortedProperties = sortProperties
+            .Distinct()
+            .OrderBy(x => x.SortPriority);
+
+        var firstElement = sortedProperties.FirstOrDefault();
+
+        if (firstElement is null)
+        {
+            return queryable;
+        }
+
+        queryable = queryable
+            .SortByValueObjectName(firstElement.SortDirection, firstElement.PropertyName);
+
+        foreach (var item in sortedProperties.Skip(1))
+        {
+            queryable = ((IOrderedQueryable<TResponse>)queryable)
+                .ThenSortByValueObjectName(item.SortDirection, item.PropertyName);
+        }
+
+        return queryable;
     }
 
     public static IQueryable<TEntity> SortByValueObjectName<TEntity>

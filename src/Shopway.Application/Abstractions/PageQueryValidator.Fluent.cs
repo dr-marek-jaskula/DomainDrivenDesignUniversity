@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Abstractions;
 using Shopway.Domain.Utilities;
+using Shopway.Domain.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 using static Shopway.Application.Constants.PageConstants;
 using static Shopway.Application.Constants.SortConstants;
 using static Shopway.Application.Constants.FilterConstants;
