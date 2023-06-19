@@ -61,7 +61,10 @@ public static class QueryableUtilities
             var memberExpression = parameter.ToMemberExpression(filter.PropertyName);
             var innerType = memberExpression.GetValueObjectInnerType();
             var convertedValueForFiltering = innerType.ToConvertedExpression(filter.Value);
-            var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerType);
+
+            Expression convertedPropertyToFilterOn = Expression.Property(memberExpression, "Value");
+            convertedPropertyToFilterOn = Expression.Convert(memberExpression, typeof(object));
+            convertedPropertyToFilterOn = Expression.Convert(convertedPropertyToFilterOn, innerType);
 
             var isBinaryOperation = Enum.TryParse(filter.Operation, out ExpressionType expressionType);
 

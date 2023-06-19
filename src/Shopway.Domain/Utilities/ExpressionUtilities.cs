@@ -36,31 +36,27 @@ public static class ExpressionUtilities
 
     public static Expression ConvertToType(this Expression expression, Type type)
     {
-        return Expression.Convert(expression, ObjectType);
+        return Expression.Convert(expression, type);
     }
 
     public static Expression<Func<TResponse, bool>> CreateLambdaExpression<TResponse>(ParameterExpression parameter, BinaryExpression? binaryExpression, MethodCallExpression? nonBinaryExpression)
     {
-        Expression? finalExpression;
-
-        if (binaryExpression is not null && nonBinaryExpression is not null)
-        {
-            finalExpression = Expression.And(binaryExpression!, nonBinaryExpression!);
-        }
-        else if (binaryExpression is not null)
-        {
-            finalExpression = binaryExpression;
-        }
-        else if (nonBinaryExpression is not null)
-        {
-            finalExpression = nonBinaryExpression;
-        }
-        else
+        if (binaryExpression is null && nonBinaryExpression is null)
         {
             throw new ArgumentException("At least one of: binaryExpression, NonBinaryExpression must not be null");
         }
 
-        return Expression.Lambda<Func<TResponse, bool>>(finalExpression!, parameter);
+        if (binaryExpression is not null && nonBinaryExpression is not null)
+        {
+            return Expression.Lambda<Func<TResponse, bool>>(Expression.And(binaryExpression!, nonBinaryExpression!)!, parameter);
+        }
+
+        if (binaryExpression is not null)
+        {
+            return Expression.Lambda<Func<TResponse, bool>>(binaryExpression!, parameter);
+        }
+
+        return Expression.Lambda<Func<TResponse, bool>>(nonBinaryExpression!, parameter);
     }
 
     public static Expression<Func<TType, bool>> Or<TType>(params Expression<Func<TType, bool>>[] expressions)
