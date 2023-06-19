@@ -29,9 +29,7 @@ public static class ExpressionUtilities
     /// <returns></returns>
     public static Expression ConvertInnerValueToInnerTypeAndObject(this MemberExpression property, Type innerType)
     {
-        return Expression.Property(property, Value)
-            .ConvertToType(ObjectType)
-            .ConvertToType(innerType);
+        return Expression.Convert(Expression.Convert(property, typeof(object)), innerType);
     }
 
     public static Expression ConvertToType(this Expression expression, Type type)
