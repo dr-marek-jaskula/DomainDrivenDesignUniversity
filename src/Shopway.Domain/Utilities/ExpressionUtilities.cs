@@ -32,31 +32,6 @@ public static class ExpressionUtilities
         return Expression.Convert(Expression.Convert(property, typeof(object)), innerType);
     }
 
-    public static Expression ConvertToType(this Expression expression, Type type)
-    {
-        return Expression.Convert(expression, type);
-    }
-
-    public static Expression<Func<TResponse, bool>> CreateLambdaExpression<TResponse>(ParameterExpression parameter, BinaryExpression? binaryExpression, MethodCallExpression? nonBinaryExpression)
-    {
-        if (binaryExpression is null && nonBinaryExpression is null)
-        {
-            throw new ArgumentException("At least one of: binaryExpression, NonBinaryExpression must not be null");
-        }
-
-        if (binaryExpression is not null && nonBinaryExpression is not null)
-        {
-            return Expression.Lambda<Func<TResponse, bool>>(Expression.And(binaryExpression!, nonBinaryExpression!)!, parameter);
-        }
-
-        if (binaryExpression is not null)
-        {
-            return Expression.Lambda<Func<TResponse, bool>>(binaryExpression!, parameter);
-        }
-
-        return Expression.Lambda<Func<TResponse, bool>>(nonBinaryExpression!, parameter);
-    }
-
     public static Expression<Func<TType, bool>> Or<TType>(params Expression<Func<TType, bool>>[] expressions)
     {
         Expression<Func<TType, bool>> result = expressions.First();

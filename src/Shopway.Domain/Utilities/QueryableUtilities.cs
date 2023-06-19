@@ -53,8 +53,7 @@ public static class QueryableUtilities
     )
     {
         var parameter = Expression.Parameter(typeof(TResponse));
-        BinaryExpression? binaryExpression = null;
-        MethodCallExpression? nonBinaryExpression = null;
+        Expression? expression = null;
 
         foreach (var filter in filterEntries)
         {
@@ -69,22 +68,22 @@ public static class QueryableUtilities
             {
                 var newBinary = Expression.MakeBinary(expressionType, convertedPropertyToFilterOn, convertedValueForFiltering);
 
-                binaryExpression = binaryExpression is null
+                expression = expression is null
                     ? newBinary
-                    : Expression.MakeBinary(ExpressionType.AndAlso, binaryExpression, newBinary);
+                    : Expression.MakeBinary(ExpressionType.AndAlso, expression, newBinary);
 
                 continue;
             }
 
             var method = StringType.GetMethod(filter.Operation, new[] { StringType });
-            var newNonBinaryExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(filter.Value));
+            var newMethodCallExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(filter.Value));
 
-            nonBinaryExpression = nonBinaryExpression is null
-                ? newNonBinaryExpression
-                : Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(filter.Value));
+            expression = expression is null
+                ? newMethodCallExpression
+                : Expression.AndAlso(expression, newMethodCallExpression);
         }
 
-        Expression<Func<TResponse, bool>> lambdaExpression = CreateLambdaExpression<TResponse>(parameter, binaryExpression, nonBinaryExpression);
+        Expression<Func<TResponse, bool>> lambdaExpression = Expression.Lambda<Func<TResponse, bool>>(expression!, parameter);
 
         return queryable
             .Where(lambdaExpression);
