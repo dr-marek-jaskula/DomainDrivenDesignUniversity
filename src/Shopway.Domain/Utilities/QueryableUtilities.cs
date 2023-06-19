@@ -3,7 +3,7 @@ using Shopway.Domain.Enums;
 using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
 using Shopway.Domain.Common;
-using static Shopway.Domain.Utilities.ExpressionUtilities;
+using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Domain.Constants.TypeConstants;
 
 namespace Shopway.Domain.Utilities;
@@ -53,34 +53,49 @@ public static class QueryableUtilities
     )
     {
         var parameter = Expression.Parameter(typeof(TResponse));
-        Expression? expression = null;
+        var filterEntryExpressions = EmptyList<Expression>();
 
-        foreach (var filter in filterEntries)
+        foreach (var filterEntry in filterEntries)
         {
-            var memberExpression = parameter.ToMemberExpression(filter.PropertyName);
-            var innerType = memberExpression.GetValueObjectInnerType();
-            var convertedValueForFiltering = innerType.ToConvertedExpression(filter.Value);
-            var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerType);
+            Expression? filterEntryExpression = null;
 
-            var isBinaryOperation = Enum.TryParse(filter.Operation, out ExpressionType expressionType);
-
-            if (isBinaryOperation)
+            foreach (var perdicate in filterEntry.Predicates)
             {
-                var newBinary = Expression.MakeBinary(expressionType, convertedPropertyToFilterOn, convertedValueForFiltering);
+                var memberExpression = parameter.ToMemberExpression(perdicate.PropertyName);
+                var innerType = memberExpression.GetValueObjectInnerType();
+                var convertedValueForFiltering = innerType.ToConvertedExpression(perdicate.Value);
+                var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerType);
 
-                expression = expression is null
-                    ? newBinary
-                    : Expression.MakeBinary(ExpressionType.AndAlso, expression, newBinary);
+                var isBinaryOperation = Enum.TryParse(perdicate.Operation, out ExpressionType expressionType);
 
-                continue;
+                if (isBinaryOperation)
+                {
+                    var newBinary = Expression.MakeBinary(expressionType, convertedPropertyToFilterOn, convertedValueForFiltering);
+
+                    filterEntryExpression = filterEntryExpression is null
+                        ? newBinary
+                        : Expression.MakeBinary(ExpressionType.OrElse, filterEntryExpression, newBinary);
+
+                    continue;
+                }
+
+                var method = StringType.GetMethod(perdicate.Operation, new[] { StringType });
+                var newMethodCallExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(perdicate.Value));
+
+                filterEntryExpression = filterEntryExpression is null
+                    ? newMethodCallExpression
+                    : Expression.OrElse(filterEntryExpression, newMethodCallExpression);
             }
 
-            var method = StringType.GetMethod(filter.Operation, new[] { StringType });
-            var newMethodCallExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(filter.Value));
+            filterEntryExpressions.Add(filterEntryExpression!);
+        }
 
+        Expression? expression = null;
+        foreach (var filterEntryExpression in filterEntryExpressions)
+        {
             expression = expression is null
-                ? newMethodCallExpression
-                : Expression.AndAlso(expression, newMethodCallExpression);
+                    ? filterEntryExpression
+                    : Expression.AndAlso(expression!, filterEntryExpression);
         }
 
         Expression<Func<TResponse, bool>> lambdaExpression = Expression.Lambda<Func<TResponse, bool>>(expression!, parameter);
