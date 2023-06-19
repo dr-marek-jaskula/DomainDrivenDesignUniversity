@@ -3,6 +3,7 @@ using Shopway.Domain.EntityKeys;
 using Shopway.Domain.EntityIds;
 using System.Linq.Expressions;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Domain.Abstractions.Repositories;
 
@@ -32,9 +33,17 @@ public interface IProductRepository
 
     Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken);
 
-    Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes);
-    
-    Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IExpressionFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes);
+    Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    (
+        IPage page,
+        CancellationToken cancellationToken,
+        IDynamicFilter<Product>? dynamicFilter = null,
+        IStaticFilter<Product>? staticFilter = null,
+        IStaticSortBy<Product>? staticSort = null,
+        IDynamicSortBy<Product>? dynamicSort = null,
+        Expression<Func<Product, TResponse>>? mapping = null,
+        params Expression<Func<Product, object>>[] includes
+    );
 
     void Create(Product product);
 

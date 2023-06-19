@@ -50,29 +50,6 @@ We create a background job using the Quartz NuGet Package. This will be a part o
 
 We represent the requirement that our database entities are supposed to meet, in order to satisfy the specification and to be returned from the database.
 
-#### Filter & Order
-
-Filtering and sorting is done by objects that implements IFilter<TEntity> and ISortBy<TEntity> interfaces. The apply method 
-applied in the BaseRepository. To set the filtering in the specification we use 
-
-```
-specification
-    .AddFilters(filter);
-
-specification
-    .AddOrder(sortBy);
-```
-
-We can also determine filtering and sorting in the specification without these objects, using 
-```
-specification
-    .AddFilters(product => product.Id == productId);
-
-specification
-    .OrderBy(x => x.ProductName, SortDirection.Ascending)
-    .ThenBy(x => x.Price, SortDirection.Descending);
-```
-
 ## Fusion Cache
 
 Fusion cache approach is used.
@@ -144,6 +121,90 @@ We need to use "((string)(object)product.ProductName)" because otherwise we woul
 
 I hope that in Entity Framework Core 8 this will be handled less ugly.
 
+## Filter & Order
+
+Filtering and sorting is done by objects that implements ```IDynamicFilter<TEntity>```, ```IStaticFilter<TEntity>```, ```IDynamicSortBy<TEntity>```, ```IStaticSortBy<TEntity>``` interfaces. The apply method 
+applied in the BaseRepository. To set the filtering in the specification we use 
+
+```
+specification
+    .AddFilter(filter);
+
+specification
+    .AddSortBy(sortBy);
+```
+
+We can also determine filtering and sorting in the specification without these objects, using 
+```
+specification
+    .AddFilters(product => product.Id == productId);
+
+specification
+    .OrderBy(x => x.ProductName, SortDirection.Ascending)
+    .ThenBy(x => x.Price, SortDirection.Descending);
+```
+
+## Dynamic or Static Filter
+
+Dynamic filter creates expression trees. Method that handles creating and applying them is the extension method in **QueryableUtilities**
+in the Domain called **Where**.
+
+Principles:
+1. Each FilterByEntry will generate one or more expressions (see point 3.)
+   
+   Example: ```Price < 15```
+
+2. Final expression is a combination of all FilterByEntry expressions separated by AND operator 
+
+    Example: ```Price < 15 && Name == "Marek"```
+
+3. Each FilterByEntry generates multiple expressions that are separated by OR operator
+
+    Example: ```Price < 15 || Description = "Fine"```
+
+4. Each expression from multiple FilterByEntry expression is generated based on a single Predicate
+5. Each FilterByEntry contains a list of Predicates 
+
+Final expression will look like this:
+
+```(Price < 15 || || Description = "Fine") && Name == "Marek"```
+
+To sum up, each expression created from Predicate will be separated by ||, and each predicate created from FilterByEntry
+will be separated by &&.
+
+Therefore, we dynamically create any expression we need. 
+
+**Moreover**, we can extend each dynamic filter in the **Apply** method by any static filters, so we have full control on 
+filtering.
+
+Static option for filtering the result applies the predicates we have written on our own:
+
+```csharp
+public sealed record ProductStaticFilter : IStaticFilter<Product>
+{
+    public string? ProductName { get; init; }
+    public string? Revision { get; init; }
+    public decimal? Price { get; init; }
+    public string? UomCode { get; init; }
+
+    private bool ByProductName => ProductName.NotNullOrEmptyOrWhiteSpace();
+    private bool ByRevision => Revision.NotNullOrEmptyOrWhiteSpace();
+    private bool ByPrice => Price.HasValue;
+    private bool ByUomCode => UomCode.NotNullOrEmptyOrWhiteSpace();
+
+    public IQueryable<Product> Apply(IQueryable<Product> queryable)
+    {
+        return queryable
+            .Filter(ByProductName, product => ((string)(object)product.ProductName).Contains(ProductName!))
+            .Filter(ByRevision, product => ((string)(object)product.Revision).Contains(Revision!))
+            .Filter(ByPrice, product => ((decimal)(object)product.Price) == Price)
+            .Filter(ByUomCode, product => ((string)(object)product.UomCode).Contains(UomCode!));
+    }
+}
+```
+
+Nevertheless, ISortBy and PageQueryValidator should be adjusted to static approach.
+
 ## Dynamic or Static SortBy
 
 Dynamic sort use Linq.Dynamic.Core library.
@@ -151,7 +212,7 @@ Dynamic sort use Linq.Dynamic.Core library.
 Static option for sorting the result:
 
 ```csharp
-public sealed record ProductOrderStaticOption : ISortBy<Product>
+public sealed record ProductStaticSortBy : IStaticSortBy<Product>
 {
     public SortDirection? ProductName { get; init; }
     public SortDirection? Revision { get; init; }
@@ -166,16 +227,16 @@ public sealed record ProductOrderStaticOption : ISortBy<Product>
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
         queryable = queryable
-            .SortBy(ProductName, product => product.ProductName.Value)
-            .SortBy(Revision, product => product.Revision.Value)
-            .SortBy(Price, product => product.Price.Value)
-            .SortBy(UomCode, product => product.UomCode.Value);
+            .SortBy(ProductName, product => product.ProductName)
+            .SortBy(Revision, product => product.Revision)
+            .SortBy(Price, product => product.Price)
+            .SortBy(UomCode, product => product.UomCode);
 
         return ((IOrderedQueryable<Product>)queryable)
-            .ThenSortBy(ThenProductName, product => product.ProductName.Value)
-            .ThenSortBy(ThenRevision, product => product.Revision.Value)
-            .ThenSortBy(ThenPrice, product => product.Price.Value)
-            .ThenSortBy(ThenUomCode, product => product.UomCode.Value);
+            .ThenSortBy(ThenProductName, product => product.ProductName)
+            .ThenSortBy(ThenRevision, product => product.Revision)
+            .ThenSortBy(ThenPrice, product => product.Price)
+            .ThenSortBy(ThenUomCode, product => product.UomCode);
     }
 }
 ```

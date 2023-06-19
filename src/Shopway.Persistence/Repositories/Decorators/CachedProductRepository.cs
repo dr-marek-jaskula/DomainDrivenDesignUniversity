@@ -2,12 +2,12 @@
 using Shopway.Domain.EntityIds;
 using System.Linq.Expressions;
 using Shopway.Persistence.Framework;
-using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.EntityKeys;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Utilities;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -70,11 +70,6 @@ public sealed class CachedProductRepository : IProductRepository
         return _decorated.AnyAsync(productKey, cancellationToken);
     }
 
-    public Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
-    {
-        return _decorated.PageAsync(page, filter, sortBy, select, cancellationToken, includes);
-    }
-
     public Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
     {
         return _decorated.GetProductsDictionaryByNameAndRevision(productNames, productRevisions, productKeys, toProductKey, cancellationToken);
@@ -100,8 +95,18 @@ public sealed class CachedProductRepository : IProductRepository
         return _decorated.VerifyIdsAsync(ids, cancellationToken);
     }
 
-    public Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, IExpressionFilter<Product>? filter, ISortBy<Product>? sortBy, Expression<Func<Product, TResponse>>? select, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
+    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, CancellationToken cancellationToken, IDynamicFilter<Product>? dynamicFilter = null, IStaticFilter<Product>? staticFilter = null, IStaticSortBy<Product>? staticSort = null, IDynamicSortBy<Product>? dynamicSort = null, Expression<Func<Product, TResponse>>? mapping = null, params Expression<Func<Product, object>>[] includes)
     {
-        return _decorated.PageAsync(page, filter, sortBy, select, cancellationToken, includes);
+        return await _decorated.PageAsync
+        (
+            page,
+            cancellationToken,
+            dynamicFilter: dynamicFilter,
+            staticFilter: staticFilter,
+            staticSort: staticSort,
+            dynamicSort: dynamicSort,
+            mapping: mapping,
+            includes: includes
+        );
     }
 }

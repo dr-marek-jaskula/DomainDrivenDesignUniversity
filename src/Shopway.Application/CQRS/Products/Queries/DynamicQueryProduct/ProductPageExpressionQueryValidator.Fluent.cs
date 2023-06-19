@@ -5,9 +5,9 @@ using Shopway.Persistence.Specifications.Products.Sorting;
 
 namespace Shopway.Application.CQRS.Products.Queries.QueryProductByExpression;
 
-internal sealed class ProductPageExpressionQueryValidator : PageQueryValidator<ProductPageExpressionQuery, ProductResponse, ProductExpressionFilter, ProductOrder, Page>
+internal sealed class ProductPageDynamicQueryValidator : PageQueryValidator<ProductPageDynamicQuery, ProductResponse, ProductDynamicFilter, ProductDynamicSortBy, Page>
 {
-    public ProductPageExpressionQueryValidator()
+    public ProductPageDynamicQueryValidator()
         : base()
     {
     }

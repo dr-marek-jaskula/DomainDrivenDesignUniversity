@@ -1,4 +1,5 @@
 ﻿using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.Common;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Enums;
 using System.Linq.Expressions;
@@ -9,11 +10,11 @@ internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TRespon
     where TEntityId : struct, IEntityId
     where TEntity : Entity<TEntityId>
 {
-    internal Expression<Func<TEntity, TResponse>>? Select { get; private set; } = null;
+    internal Expression<Func<TEntity, TResponse>>? Mapping { get; private set; } = null;
 
-    internal SpecificationWithMappingBase<TEntity, TEntityId, TResponse> AddSelect(Expression<Func<TEntity, TResponse>>? select)
+    internal SpecificationWithMappingBase<TEntity, TEntityId, TResponse> AddMapping(Expression<Func<TEntity, TResponse>>? mapping)
     {
-        Select = select;
+        Mapping = mapping;
         return this;
     }
 }
@@ -35,17 +36,18 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal bool AsNoTrackingWithIdentityResolution { get; private set; }
 
     //Filters
-    internal IFilter<TEntity>? Filter { get; private set; } = null;
-    internal IExpressionFilter<TEntity>? ExpressionFilter { get; private set; } = null;
+    internal IStaticFilter<TEntity>? StaticFilter { get; private set; } = null;
+    internal IDynamicFilter<TEntity>? DynamicFilter { get; private set; } = null;
     internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = new();
+
+    //SortBy
+    internal IDynamicSortBy<TEntity>? DynamicSortBy { get; private set; } = null;
+    internal IStaticSortBy<TEntity>? StaticSortBy { get; private set; } = null;
+    internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
+    internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
 
     //Includes
     internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = new();
-
-    //OrderBy
-    internal ISortBy<TEntity>? SortBy { get; private set; } = null;
-    internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
-    internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
 
     internal SpecificationBase<TEntity, TEntityId> AddTag(string queryTag)
     {
@@ -71,21 +73,15 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddFilter(IFilter<TEntity>? filter)
+    internal SpecificationBase<TEntity, TEntityId> AddFilter(IStaticFilter<TEntity>? filter)
     {
-        Filter = filter;
+        StaticFilter = filter;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddExpressionFilter(IExpressionFilter<TEntity>? expressionFilter)
+    internal SpecificationBase<TEntity, TEntityId> AddFilter(IDynamicFilter<TEntity>? filter)
     {
-        ExpressionFilter = expressionFilter;
-        return this;
-    }
-
-    internal SpecificationBase<TEntity, TEntityId> AddOrder(ISortBy<TEntity>? order)
-    {
-        SortBy = order;
+        DynamicFilter = filter;
         return this;
     }
 
@@ -99,13 +95,15 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddIncludes(params Expression<Func<TEntity, object>>[] includeExpressions)
+    internal SpecificationBase<TEntity, TEntityId> AddSortBy(IDynamicSortBy<TEntity>? sortBy)
     {
-        foreach (var includeExpression in includeExpressions)
-        {
-            IncludeExpressions.Add(includeExpression);
-        }
+        DynamicSortBy = sortBy;
+        return this;
+    }
 
+    internal SpecificationBase<TEntity, TEntityId> AddSortBy(IStaticSortBy<TEntity>? sortBy)
+    {
+        StaticSortBy = sortBy;
         return this;
     }
 
@@ -128,6 +126,16 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         }
 
         ThenByExpression = (thenByExpression, sortDirection);
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> AddIncludes(params Expression<Func<TEntity, object>>[] includeExpressions)
+    {
+        foreach (var includeExpression in includeExpressions)
+        {
+            IncludeExpressions.Add(includeExpression);
+        }
+
         return this;
     }
 }

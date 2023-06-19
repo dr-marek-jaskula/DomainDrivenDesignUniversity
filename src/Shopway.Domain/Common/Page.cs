@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Domain.Common;
 

@@ -9,7 +9,7 @@ using Shopway.Persistence.Specifications.Products.Filtering;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;
 
-internal sealed class ProductDictionaryPageQueryHandler : IPageQueryHandler<ProductDictionaryPageQuery, DictionaryResponseEntry, ProductDictionaryFilter, ProductOrder, Page>
+internal sealed class ProductDictionaryPageQueryHandler : IPageQueryHandler<ProductDictionaryPageQuery, DictionaryResponseEntry, ProductDictionaryStaticFilter, ProductDynamicSortBy, Page>
 {
     private readonly IProductRepository _productRepository;
 
@@ -21,7 +21,7 @@ internal sealed class ProductDictionaryPageQueryHandler : IPageQueryHandler<Prod
     public async Task<IResult<PageResponse<DictionaryResponseEntry>>> Handle(ProductDictionaryPageQuery pageQuery, CancellationToken cancellationToken)
     {
         var page = await _productRepository
-            .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.DictionaryResponseEntry, cancellationToken);
+            .PageAsync(pageQuery.Page, cancellationToken, staticFilter: pageQuery.Filter, dynamicSort: pageQuery.SortBy, mapping: ProductMapping.DictionaryResponseEntry);
 
         return page
             .ToPageResponse(pageQuery.Page)

@@ -1,4 +1,4 @@
-﻿namespace Shopway.Domain.Abstractions;
+﻿namespace Shopway.Domain.Abstractions.Common;
 
 public interface IPage
 {

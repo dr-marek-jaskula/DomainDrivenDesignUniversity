@@ -1,10 +1,10 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Specifications.Products.Filtering;
 
-public sealed record ProductDictionaryFilter : IFilter<Product>
+public sealed record ProductDictionaryStaticFilter : IStaticFilter<Product>
 {
     public string? LikeQuery { get; init; }
     private bool ByLikeQuery => LikeQuery.NotNullOrEmptyOrWhiteSpace();

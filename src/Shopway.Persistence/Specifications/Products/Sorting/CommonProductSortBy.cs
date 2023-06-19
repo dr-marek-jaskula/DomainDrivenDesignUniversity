@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Abstractions.Common;
 using Shopway.Domain.Common;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
@@ -6,7 +6,7 @@ using static Shopway.Persistence.Constants.SpecificationConstants;
 
 namespace Shopway.Persistence.Specifications.Products.Sorting;
 
-public sealed record CommonProductOrder : ISortBy<Product>
+public sealed record CommonProductSortBy : IDynamicSortBy<Product>
 {
     public IReadOnlyCollection<string> AllowedSortProperties { get; init; } = CommonAllowedProductSortProperties;
 

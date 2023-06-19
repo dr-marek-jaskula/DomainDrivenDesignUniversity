@@ -1,13 +1,13 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.Common;
+﻿using Shopway.Domain.Common;
 using Shopway.Domain.Entities;
+using Shopway.Domain.Abstractions.Common;
 using static Shopway.Domain.Utilities.QueryableUtilities;
 using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Persistence.Constants.SpecificationConstants;
 
 namespace Shopway.Persistence.Specifications.Products.Filtering;
 
-public sealed record ProductExpressionFilter : IExpressionFilter<Product>
+public sealed record ProductDynamicFilter : IDynamicFilter<Product>
 {
     public IReadOnlyCollection<string> AllowedFilterProperties { get; init; } = AllowedProductFilterProperties;
 

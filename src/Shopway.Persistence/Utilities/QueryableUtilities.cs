@@ -4,6 +4,7 @@ using Shopway.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.BaseTypes;
 using System.Data;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Utilities;
 

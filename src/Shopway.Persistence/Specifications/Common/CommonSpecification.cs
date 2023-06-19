@@ -3,6 +3,7 @@ using Shopway.Domain.BaseTypes;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
 using Shopway.Persistence.Abstractions;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Specifications.Common;
 
@@ -14,34 +15,21 @@ internal abstract partial class CommonSpecification
     {
         internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> Create
         (
-            IFilter<TEntity>? filter,
-            ISortBy<TEntity>? sortBy,
-            Expression<Func<TEntity, TResponse>>? select,
+            IStaticFilter<TEntity>? staticFilter = null,
+            IDynamicFilter<TEntity>? dynamicFilter = null,
+            IStaticSortBy<TEntity>? staticSortBy = null,
+            IDynamicSortBy<TEntity>? dynamicSortBy = null,
+            Expression<Func<TEntity, TResponse>>? mapping = null,
             params Expression<Func<TEntity, object>>[] includes
         )
         {
             return new WithMapping<TEntity, TEntityId, TResponse>()
-                .AddSelect(select)
+                .AddMapping(mapping)
                 .AddIncludes(includes)
-                .AddFilter(filter)
-                .AddOrder(sortBy)
-                .AddTag($"Common {typeof(TEntity).Name} query")
-                .AsMappingSpecification<TEntity, TEntityId, TResponse>();
-        }
-
-        internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> Create
-        (
-            IExpressionFilter<TEntity>? filter,
-            ISortBy<TEntity>? sortBy,
-            Expression<Func<TEntity, TResponse>>? select,
-            params Expression<Func<TEntity, object>>[] includes
-        )
-        {
-            return new WithMapping<TEntity, TEntityId, TResponse>()
-                .AddSelect(select)
-                .AddIncludes(includes)
-                .AddExpressionFilter(filter)
-                .AddOrder(sortBy)
+                .AddFilter(staticFilter)
+                .AddFilter(dynamicFilter)
+                .AddSortBy(staticSortBy)
+                .AddSortBy(dynamicSortBy)
                 .AddTag($"Common {typeof(TEntity).Name} query")
                 .AsMappingSpecification<TEntity, TEntityId, TResponse>();
         }

@@ -1,10 +1,10 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Abstractions.Common;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
 
 namespace Shopway.Persistence.Specifications.Products.Filtering;
 
-public sealed record ProductFilter : IFilter<Product>
+public sealed record ProductStaticFilter : IStaticFilter<Product>
 {
     public string? ProductName { get; init; }
     public string? Revision { get; init; }

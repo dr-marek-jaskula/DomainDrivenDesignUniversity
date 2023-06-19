@@ -1,8 +1,8 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Enums;
+using Shopway.Domain.Common;
 using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
-using Shopway.Domain.Common;
+using Shopway.Domain.Abstractions.Common;
 using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Domain.Constants.TypeConstants;
 
@@ -46,6 +46,10 @@ public static class QueryableUtilities
             : queryable;
     }
 
+    /// <summary>
+    /// This method generates expressions that will be use to filter entities by their ValueObjects with single inner value. 
+    /// For primitive types use simplified version of this method
+    /// </summary>
     public static IQueryable<TResponse> Where<TResponse>
     (
         this IQueryable<TResponse> queryable,
@@ -57,16 +61,17 @@ public static class QueryableUtilities
 
         foreach (var filterEntry in filterEntries)
         {
+            //We create expression that is logic OR of all provided predicates
             Expression? filterEntryExpression = null;
 
-            foreach (var perdicate in filterEntry.Predicates)
+            foreach (var predicate in filterEntry.Predicates)
             {
-                var memberExpression = parameter.ToMemberExpression(perdicate.PropertyName);
+                var memberExpression = parameter.ToMemberExpression(predicate.PropertyName);
                 var innerType = memberExpression.GetValueObjectInnerType();
-                var convertedValueForFiltering = innerType.ToConvertedExpression(perdicate.Value);
+                var convertedValueForFiltering = innerType.ToConvertedExpression(predicate.Value);
                 var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerType);
 
-                var isBinaryOperation = Enum.TryParse(perdicate.Operation, out ExpressionType expressionType);
+                var isBinaryOperation = Enum.TryParse(predicate.Operation, out ExpressionType expressionType);
 
                 if (isBinaryOperation)
                 {
@@ -79,8 +84,8 @@ public static class QueryableUtilities
                     continue;
                 }
 
-                var method = StringType.GetMethod(perdicate.Operation, new[] { StringType });
-                var newMethodCallExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(perdicate.Value));
+                var method = StringType.GetMethod(predicate.Operation, new[] { StringType });
+                var newMethodCallExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(predicate.Value));
 
                 filterEntryExpression = filterEntryExpression is null
                     ? newMethodCallExpression
@@ -90,6 +95,7 @@ public static class QueryableUtilities
             filterEntryExpressions.Add(filterEntryExpression!);
         }
 
+        //We create expression that is logic AND of all provided Filter Entries
         Expression? expression = null;
         foreach (var filterEntryExpression in filterEntryExpressions)
         {

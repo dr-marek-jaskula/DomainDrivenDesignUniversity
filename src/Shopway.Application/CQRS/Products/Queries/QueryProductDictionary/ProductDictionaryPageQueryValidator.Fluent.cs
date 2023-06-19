@@ -5,7 +5,7 @@ using Shopway.Persistence.Specifications.Products.Filtering;
 
 namespace Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;
 
-internal sealed class ProductDictionaryPageQueryValidator : PageQueryValidator<ProductDictionaryPageQuery, DictionaryResponseEntry, ProductDictionaryFilter, ProductOrder, Page>
+internal sealed class ProductDictionaryPageQueryValidator : PageQueryValidator<ProductDictionaryPageQuery, DictionaryResponseEntry, ProductDictionaryStaticFilter, ProductDynamicSortBy, Page>
 {
     public ProductDictionaryPageQueryValidator()
         : base()

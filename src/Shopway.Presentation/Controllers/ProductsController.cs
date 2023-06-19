@@ -104,10 +104,10 @@ public sealed partial class ProductsController : ApiController
         return Ok(response);
     }
 
-    [HttpPost("query/expression")]
+    [HttpPost("query/dynamic")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> QueryExpressionProducts([FromBody] ProductPageExpressionQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> QueryExpressionProducts([FromBody] ProductPageDynamicQuery query, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
 

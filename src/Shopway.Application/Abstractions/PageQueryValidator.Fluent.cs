@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Shopway.Domain.Utilities;
-using Shopway.Domain.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using static Shopway.Application.Constants.PageConstants;
 using static Shopway.Application.Constants.SortConstants;
@@ -8,6 +7,7 @@ using static Shopway.Application.Constants.FilterConstants;
 using static Shopway.Domain.Utilities.SortByEntryUtilities;
 using static Shopway.Domain.Utilities.FilterByEntryUtilities;
 using static Shopway.Persistence.Constants.SpecificationConstants;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.Abstractions;
 
@@ -34,19 +34,24 @@ internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSort
             }
         });
 
-        RuleFor(query => query.Order).Custom((order, context) =>
+        RuleFor(query => query.SortBy).Custom((sortBy, context) =>
         {
-            if (order is null)
+            if (sortBy is null)
             {
                 return;
             }
 
-            if (order.SortProperties.ContainsInvalidSortProperty(order.AllowedSortProperties))
+            if (sortBy is not IDynamicSortBy dynamicSortBy)
             {
-                context.AddFailure(SortProperties, $"{SortProperties} contains invalid property name. Allowed property names: {string.Join(", ", order.AllowedSortProperties)}. {SortProperties} are case sensitive.");
+                return;
             }
 
-            if (order.SortProperties.ContainsSortPriorityDuplicate())
+            if (dynamicSortBy.SortProperties.ContainsInvalidSortProperty(dynamicSortBy.AllowedSortProperties))
+            {
+                context.AddFailure(SortProperties, $"{SortProperties} contains invalid property name. Allowed property names: {string.Join(", ", dynamicSortBy.AllowedSortProperties)}. {SortProperties} are case sensitive.");
+            }
+
+            if (dynamicSortBy.SortProperties.ContainsSortPriorityDuplicate())
             {
                 context.AddFailure(SortProperties, $"{SortProperties} contains priority duplicates.");
             }
@@ -59,18 +64,18 @@ internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSort
                 return;
             }
 
-            if (filter is not IExpressionFilter expressionFilter)
+            if (filter is not IDynamicFilter dynamicFilter)
             {
                 return;
             }
 
-            if (expressionFilter.FilterProperties.ContainsInvalidFilterProperty(expressionFilter.AllowedFilterProperties))
+            if (dynamicFilter.FilterProperties.ContainsInvalidFilterProperty(dynamicFilter.AllowedFilterProperties))
             {
-                context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid property name. Allowed property names: {string.Join(", ", expressionFilter.AllowedFilterProperties)}. {FilterProperties} are case sensitive.");
+                context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid property name. Allowed property names: {string.Join(", ", dynamicFilter.AllowedFilterProperties)}. {FilterProperties} are case sensitive.");
             }
 
             IReadOnlyCollection<string> invalidOperations;
-            if (expressionFilter.FilterProperties.ContainsOnlyOperationsFrom(AllowedProductFilterOperations, out invalidOperations))
+            if (dynamicFilter.FilterProperties.ContainsOnlyOperationsFrom(AllowedProductFilterOperations, out invalidOperations))
             {
                 context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid operations: {string.Join(", ", invalidOperations)}. Allowed operations: {string.Join(", ", AllowedProductFilterOperations)}.");
             }

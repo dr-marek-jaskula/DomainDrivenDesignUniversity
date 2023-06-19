@@ -9,19 +9,19 @@ using Shopway.Domain.Common;
 
 namespace Shopway.Application.CQRS.Products.Queries.QueryProductByExpression;
 
-internal sealed class ProductPageExpressionQueryHandler : IPageQueryHandler<ProductPageExpressionQuery, ProductResponse, ProductExpressionFilter, ProductOrder, Page>
+internal sealed class ProductPageDynamicQueryHandler : IPageQueryHandler<ProductPageDynamicQuery, ProductResponse, ProductDynamicFilter, ProductDynamicSortBy, Page>
 {
     private readonly IProductRepository _productRepository;
 
-    public ProductPageExpressionQueryHandler(IProductRepository productRepository)
+    public ProductPageDynamicQueryHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
     }
 
-    public async Task<IResult<PageResponse<ProductResponse>>> Handle(ProductPageExpressionQuery pageQuery, CancellationToken cancellationToken)
+    public async Task<IResult<PageResponse<ProductResponse>>> Handle(ProductPageDynamicQuery pageQuery, CancellationToken cancellationToken)
     {
         var page = await _productRepository
-            .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.ProductResponse, cancellationToken);
+            .PageAsync(pageQuery.Page, cancellationToken, dynamicFilter: pageQuery.Filter, dynamicSort: pageQuery.SortBy, mapping: ProductMapping.ProductResponse);
 
         return page
             .ToPageResponse(pageQuery.Page)

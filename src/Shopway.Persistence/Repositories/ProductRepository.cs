@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityKeys;
@@ -12,6 +11,7 @@ using Shopway.Domain.ValueObjects;
 using System.Linq.Expressions;
 using Shopway.Persistence.Specifications.Common;
 using static Shopway.Domain.Utilities.StringUtilities;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Repositories;
 
@@ -104,31 +104,25 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
-        IPage page, 
-        IFilter<Product>? filter, 
-        ISortBy<Product>? sort, 
-        Expression<Func<Product, TResponse>>? select, 
-        CancellationToken cancellationToken, 
+        IPage page,
+        CancellationToken cancellationToken,
+        IDynamicFilter<Product>? dynamicFilter = null,
+        IStaticFilter<Product>? staticFilter = null,
+        IStaticSortBy<Product>? staticSort = null,
+        IDynamicSortBy<Product>? dynamicSort = null,
+        Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
     )
     {
-        var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
-
-        return await UseSpecification(specification)
-            .PageAsync(page, cancellationToken);
-    }
-
-    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
-    (
-        IPage page, 
-        IExpressionFilter<Product>? filter, 
-        ISortBy<Product>? sort, 
-        Expression<Func<Product, TResponse>>? select, 
-        CancellationToken cancellationToken, 
-        params Expression<Func<Product, object>>[] includes
-    )
-    {
-        var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create(filter, sort, select, includes);
+        var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create
+        (
+            staticFilter,
+            dynamicFilter,
+            staticSort,
+            dynamicSort, 
+            mapping: mapping, 
+            includes: includes
+        );
 
         return await UseSpecification(specification)
             .PageAsync(page, cancellationToken);

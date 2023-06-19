@@ -34,27 +34,35 @@ public abstract class RepositoryBase
             queryable = queryable.Include(includeExpression);
         }
 
-        if (specification.Filter is not null)
+        if (specification.StaticFilter is not null)
         {
-            queryable = specification.Filter.Apply(queryable);
+            queryable = specification.StaticFilter.Apply(queryable);
         }
-        else if (specification.FilterExpressions.NotNullOrEmpty())
+
+        if (specification.DynamicFilter is not null)
+        {
+            queryable = specification.DynamicFilter.Apply(queryable);
+        }
+
+        if (specification.FilterExpressions.NotNullOrEmpty())
         {
             foreach (var filter in specification.FilterExpressions)
             {
                 queryable = queryable.Where(filter);
             }
         }
-        else if (specification.ExpressionFilter is not null)
+
+        if (specification.DynamicSortBy is not null)
         {
-            queryable = specification.ExpressionFilter.Apply(queryable);
+            queryable = specification.DynamicSortBy.Apply(queryable);
         }
 
-        if (specification.SortBy is not null)
+        if (specification.StaticSortBy is not null)
         {
-            queryable = specification.SortBy.Apply(queryable);
+            queryable = specification.StaticSortBy.Apply(queryable);
         }
-        else if (specification.SortByExpression is not null and var sort)
+
+        if (specification.SortByExpression is not null and var sort)
         {
             queryable = queryable.OrderBy(sort.Value.SortBy, sort.Value.SortDirection);
 
@@ -100,12 +108,12 @@ public abstract class RepositoryBase
         where TEntityId : struct, IEntityId
         where TEntity : Entity<TEntityId>
     {
-        if (specification.Select is null)
+        if (specification.Mapping is null)
         {
             throw new ArgumentNullException($"SpecificationWithMappingBase must contain Select statement");
         }
 
         return UseSpecification((SpecificationBase<TEntity, TEntityId>)specification)
-            .Select(specification.Select);
+            .Select(specification.Mapping);
     }
 }

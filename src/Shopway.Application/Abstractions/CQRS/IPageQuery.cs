@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.CQRS;
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.Abstractions.CQRS;
 
@@ -18,5 +18,5 @@ public interface IPageQuery<TResponse, TFilter, TSortBy, TPage> : IQuery<PageRes
 {
     TPage Page { get; }
     TFilter? Filter { get; }
-    TSortBy? Order { get; }
+    TSortBy? SortBy { get; }
 }
