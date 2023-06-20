@@ -74,7 +74,7 @@ public static Expression<Func<Product, ProductResponse>> ProductResponse => prod
 
 ```csharp
 var page = await _productRepository
-    .PageAsync(pageQuery.Page, pageQuery.Filter, pageQuery.Order, ProductMapping.ProductResponse, cancellationToken);
+    .PageAsync(pageQuery.Page, cancellationToken, staticFilter: pageQuery.Filter, staticSort: pageQuery.SortBy, mapping: ProductMapping.ProductResponse);
 ```
 
 3. Use the expression as a parameter of the **Select** method. The repository method must be a generic one:
@@ -82,17 +82,27 @@ var page = await _productRepository
 ```csharp
 public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
 (
-    IPage page, 
-    IFilter<Product>? filter, 
-    ISortBy<Product>? sort, 
-    Expression<Func<Product, TResponse>>? select, 
-    CancellationToken cancellationToken, 
+    IPage page,
+    CancellationToken cancellationToken,
+    IDynamicFilter<Product>? dynamicFilter = null,
+    IStaticFilter<Product>? staticFilter = null,
+    IStaticSortBy<Product>? staticSort = null,
+    IDynamicSortBy<Product>? dynamicSort = null,
+    Expression<Func<Product, TResponse>>? mapping = null,
     params Expression<Func<Product, object>>[] includes
 )
 {
-    var specification = ProductQuerySpecification<TResponse>.Create(filter, sort, select, includes);
-        
-    return await UseSpecificationWithMapping(specification)
+    var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create
+    (
+        staticFilter,
+        dynamicFilter,
+        staticSort,
+        dynamicSort, 
+        mapping: mapping, 
+        includes: includes
+    );
+
+    return await UseSpecification(specification)
         .PageAsync(page, cancellationToken);
 }
 ```
@@ -100,17 +110,17 @@ public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TRespo
 Note: in this solution we use the **SpecificationPattern**. Therefore, the expression is applied using the concrete specification.
 
 ```charp
-private protected IQueryable<TResponse> UseSpecificationWithMapping<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
-    where TEntityId : IEntityId
+private protected IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
+    where TEntityId : struct, IEntityId
     where TEntity : Entity<TEntityId>
 {
-    if (specification.Select is null)
+    if (specification.Mapping is null)
     {
         throw new ArgumentNullException($"SpecificationWithMappingBase must contain Select statement");
     }
 
-    return UseSpecificationWithoutMapping(specification)
-        .Select(specification.Select);
+    return UseSpecification((SpecificationBase<TEntity, TEntityId>)specification)
+        .Select(specification.Mapping);
 }
 ```
 
