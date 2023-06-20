@@ -8,7 +8,7 @@ In this layer we store components connected to the specific ORM and database ope
 - Specifications
 - Repositories
 - Migrations
-- Outbox pattern classes
+- Outbox pattern
 - Database Diagram
 
 ## Outbox pattern
@@ -95,7 +95,7 @@ We could add to SaveChanges a flag "updateCache" and add a new pipeline (plus ad
 BeginTransactionWithoutCacheUpdateAsync) that uses this flag, if for some
 endpoints the cache updates should be omitted.
 
-## ValueObjects vs Owned Types
+## ValueObjects vs OwnedTypes
 
 Microsoft currently aims to fully switch from Owned Types to Value Converter for ValueObject configurations:
 ```

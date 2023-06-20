@@ -21,7 +21,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjljNWY1M2M1LWU5NTktNDVjMS1iZjRiLWQ2YTEyMGQzYjYzNCIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2ODQ4MjgyMjIsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.VcnSwM-o6wdYAFDZm5NpigZO49wPXuKIcoE1wiNTFGI",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjgwNTAyNDRhLTc4MzYtNGE1Yi1hMmU0LTY5MmEzYzY1YTA5YyIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiQ3VzdG9tZXJJZCI6IiIsImV4cCI6MTY4NjU4ODM0MywiaXNzIjoiU2hvcHdheSIsImF1ZCI6IlNob3B3YXkifQ.v4VW6NnXHrWIxRv1PCwZrXKR1WjUNlfgyT5ED6mCJ6Q",
 											"type": "string"
 										}
 									]
@@ -104,7 +104,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjI0NjA0ZWQ2LTEyODEtNGQ4Yi04NWJjLWJkNzdlNGY0ODdkMiIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiUGVyc29uSWQiOiIiLCJleHAiOjE2Nzc0OTM2NjYsImlzcyI6IlNob3B3YXkiLCJhdWQiOiJTaG9wd2F5In0.dedqjZ1XvECzZULyDvmbnDUcC4XAmVAvv-3Hkh4UY8E",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjgwNTAyNDRhLTc4MzYtNGE1Yi1hMmU0LTY5MmEzYzY1YTA5YyIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiQ3VzdG9tZXJJZCI6IiIsImV4cCI6MTY4NjU4ODM0MywiaXNzIjoiU2hvcHdheSIsImF1ZCI6IlNob3B3YXkifQ.v4VW6NnXHrWIxRv1PCwZrXKR1WjUNlfgyT5ED6mCJ6Q",
 											"type": "string"
 										}
 									]
@@ -432,7 +432,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"ProductName\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductNameInvalid\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 2\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 11\r\n  },\r\n  \"Filter\" : {\r\n    \"ProductName\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductNameInvalid\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 2\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -456,13 +456,13 @@
 					"response": []
 				},
 				{
-					"name": "QueryProducts.ByName.Valid",
+					"name": "QueryProducts.Static.ByName.Valid",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"ProductName\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"ProductName\" : \"Product\"\r\n  },\r\n  \"SortBy\" : {\r\n      \"ProductName\": \"Ascending\",\r\n      \"ThenRevision\": \"Descending\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -470,7 +470,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/query",
+							"raw": "https://localhost:7236/api/products/query/static",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -479,7 +479,39 @@
 							"path": [
 								"api",
 								"products",
-								"query"
+								"query",
+								"static"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "QueryProducts.Dynamic.ByName.Valid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"firstpr\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7236/api/products/query/dynamic",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7236",
+							"path": [
+								"api",
+								"products",
+								"query",
+								"dynamic"
 							]
 						}
 					},
@@ -559,7 +591,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"price\": 11\r\n}",
+							"raw": "{\r\n  \"price\": 21\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -704,7 +736,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"Amount\": 5,\r\n  \"Discount\": 0\r\n}",
+									"raw": "{\r\n  \"Amount\": 999,\r\n  \"Discount\": 0\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -741,7 +773,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"requests\": [\r\n    {\r\n        \"ProductId\": \"08524a93-6c3d-4626-8b79-703b0ece392e\",\r\n        \"Amount\": 20,\r\n        \"Discount\": 0.2\r\n    },\r\n    {\r\n        \"ProductId\": \"fa73e7d6-33db-4c50-9b21-20012d7c4bff\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.3\r\n    }\r\n  ]\r\n}",
+									"raw": "{\r\n  \"requests\": [\r\n    {\r\n        \"ProductId\": \"f3ca3224-3ce3-44e8-9745-8564845eb286\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.4\r\n    },\r\n    {\r\n        \"ProductId\": \"9c3aca24-b719-417d-afa7-2057b9df99f9\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.3\r\n    }\r\n  ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -863,7 +895,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"UserId\": \"ac40004e-5185-454d-8f77-9d411dd8a91b\",\r\n  \"Discount\": 0.2\r\n}",
+							"raw": "{\r\n  \"UserId\": \"{{validUserId}}\",\r\n  \"Discount\": 0.2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -903,7 +935,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"NewOrderHeaderStatus\" : \"New\"\r\n}",
+							"raw": "{\r\n    \"NewOrderHeaderStatus\" : \"OnHold\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
