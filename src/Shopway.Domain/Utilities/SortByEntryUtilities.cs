@@ -4,12 +4,15 @@ namespace Shopway.Domain.Utilities;
 
 public static class SortByEntryUtilities
 {
-    public static bool ContainsInvalidSortProperty(this IList<SortByEntry> sortProperties, IReadOnlyCollection<string> allowedSortProperties)
+    public static bool ContainsInvalidSortProperty(this IList<SortByEntry> sortProperties, IReadOnlyCollection<string> allowedSortProperties, out IReadOnlyCollection<string> invalidProperties)
     {
-        return sortProperties
+        invalidProperties = sortProperties
             .Select(x => x.PropertyName)
             .Except(allowedSortProperties)
-            .Any();
+            .ToList()
+            .AsReadOnly();
+
+        return invalidProperties.Any();
     }
 
     public static bool ContainsSortPriorityDuplicate(this IList<SortByEntry> sortProperties)

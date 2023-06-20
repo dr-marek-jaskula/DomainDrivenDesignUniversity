@@ -124,7 +124,7 @@ I hope that in Entity Framework Core 8 this will be handled less ugly.
 ## Filter & Order
 
 Filtering and sorting is done by objects that implements ```IDynamicFilter<TEntity>```, ```IStaticFilter<TEntity>```, ```IDynamicSortBy<TEntity>```, ```IStaticSortBy<TEntity>``` interfaces. The apply method 
-applied in the BaseRepository. To set the filtering in the specification we use 
+applied in the BaseRepository. To set the filtering/sorting in the specification we use 
 
 ```
 specification
@@ -242,3 +242,15 @@ public sealed record ProductStaticSortBy : IStaticSortBy<Product>
 ```
 
 Nevertheless, ISortBy and PageQueryValidator should be adjusted to static approach.
+
+## Customize Dynamic or Static Filtering/Sorting
+
+We can add any custom conditions (filters/sort statements) into "Apply" method for additional filtering/sorting.
+
+We can also combine dynamic and static filtering/sorting.
+
+Moreover, we can combine dynamic/static filtering/sorting with manual approach
+```
+specification
+    .AddFilters(product => product.Id == productId);
+```

@@ -89,10 +89,12 @@ public sealed partial class ProductsController : ApiController
         return Ok(response);
     }
 
-    [HttpPost("query")]
+    //These static or dynamic suffixes are only for tutorial purpose
+
+    [HttpPost("query/static")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> QueryProducts([FromBody] ProductPageQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> StaticQueryProducts([FromBody] ProductPageQuery query, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
 
@@ -107,7 +109,7 @@ public sealed partial class ProductsController : ApiController
     [HttpPost("query/dynamic")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> QueryExpressionProducts([FromBody] ProductPageDynamicQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> DynamicQueryProducts([FromBody] ProductPageDynamicQuery query, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
 

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Shopway.Domain.Utilities;
+using Shopway.Domain.Abstractions.Common;
 using Shopway.Application.Abstractions.CQRS;
 using static Shopway.Application.Constants.PageConstants;
 using static Shopway.Application.Constants.SortConstants;
@@ -7,7 +8,6 @@ using static Shopway.Application.Constants.FilterConstants;
 using static Shopway.Domain.Utilities.SortByEntryUtilities;
 using static Shopway.Domain.Utilities.FilterByEntryUtilities;
 using static Shopway.Persistence.Constants.SpecificationConstants;
-using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.Abstractions;
 
@@ -46,9 +46,9 @@ internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSort
                 return;
             }
 
-            if (dynamicSortBy.SortProperties.ContainsInvalidSortProperty(dynamicSortBy.AllowedSortProperties))
+            if (dynamicSortBy.SortProperties.ContainsInvalidSortProperty(dynamicSortBy.AllowedSortProperties, out IReadOnlyCollection<string> invalidProperties))
             {
-                context.AddFailure(SortProperties, $"{SortProperties} contains invalid property name. Allowed property names: {string.Join(", ", dynamicSortBy.AllowedSortProperties)}. {SortProperties} are case sensitive.");
+                context.AddFailure(SortProperties, $"{SortProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", dynamicSortBy.AllowedSortProperties)}. {SortProperties} are case sensitive.");
             }
 
             if (dynamicSortBy.SortProperties.ContainsSortPriorityDuplicate())
@@ -69,13 +69,12 @@ internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSort
                 return;
             }
 
-            if (dynamicFilter.FilterProperties.ContainsInvalidFilterProperty(dynamicFilter.AllowedFilterProperties))
+            if (dynamicFilter.FilterProperties.ContainsInvalidFilterProperty(dynamicFilter.AllowedFilterProperties, out IReadOnlyCollection<string> invalidProperties))
             {
-                context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid property name. Allowed property names: {string.Join(", ", dynamicFilter.AllowedFilterProperties)}. {FilterProperties} are case sensitive.");
+                context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", dynamicFilter.AllowedFilterProperties)}. {FilterProperties} are case sensitive.");
             }
 
-            IReadOnlyCollection<string> invalidOperations;
-            if (dynamicFilter.FilterProperties.ContainsOnlyOperationsFrom(AllowedProductFilterOperations, out invalidOperations))
+            if (dynamicFilter.FilterProperties.ContainsOnlyOperationsFrom(AllowedProductFilterOperations, out IReadOnlyCollection<string> invalidOperations))
             {
                 context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid operations: {string.Join(", ", invalidOperations)}. Allowed operations: {string.Join(", ", AllowedProductFilterOperations)}.");
             }

@@ -4,13 +4,16 @@ namespace Shopway.Domain.Utilities;
 
 public static class FilterByEntryUtilities
 {
-    public static bool ContainsInvalidFilterProperty(this IList<FilterByEntry> filterProperties, IReadOnlyCollection<string> allowedFilterProperties)
+    public static bool ContainsInvalidFilterProperty(this IList<FilterByEntry> filterProperties, IReadOnlyCollection<string> allowedFilterProperties, out IReadOnlyCollection<string> invalidProperties)
     {
-        return filterProperties
+        invalidProperties = filterProperties
             .SelectMany(x => x.Predicates)
             .Select(x => x.PropertyName)
             .Except(allowedFilterProperties)
-            .Any();
+            .ToList()
+            .AsReadOnly();
+
+        return invalidProperties.Any();
     }
 
     public static bool ContainsOnlyOperationsFrom(this IList<FilterByEntry> filterProperties, IReadOnlyCollection<string> allowedOperations, out IReadOnlyCollection<string> invalidOperations)
