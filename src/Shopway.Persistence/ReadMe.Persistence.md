@@ -107,7 +107,8 @@ This approach will be based on value converters rather than owned entities.
 Therefore, this project uses ValueConverter and ValueCompares for ValueObject configurations.
 
 The only "limitation" for this approach is that we need to add double casting in many expressions, otherwise we would not be able to use wrapped type possibilities.
-Fore example in ProductFilter:
+
+For example in ProductStaticFilter:
 
 ```csharp
 return queryable
@@ -118,8 +119,6 @@ return queryable
 ```
 
 We need to use "((string)(object)product.ProductName)" because otherwise we would not be able to call **Contains** method.
-
-I hope that in Entity Framework Core 8 this will be handled less ugly.
 
 ## Filter & Order
 
@@ -167,7 +166,7 @@ Principles:
 
 Final expression will look like this:
 
-```(Price < 15 || || Description = "Fine") && Name == "Marek"```
+```(Price < 15 || Description = "Fine") && Name == "Marek"```
 
 To sum up, each expression created from Predicate will be separated by ||, and each predicate created from FilterByEntry
 will be separated by &&.
@@ -202,8 +201,6 @@ public sealed record ProductStaticFilter : IStaticFilter<Product>
     }
 }
 ```
-
-Nevertheless, ISortBy and PageQueryValidator should be adjusted to static approach.
 
 ## Dynamic or Static SortBy
 
@@ -250,6 +247,8 @@ We can add any custom conditions (filters/sort statements) into "Apply" method f
 We can also combine dynamic and static filtering/sorting.
 
 Moreover, we can combine dynamic/static filtering/sorting with manual approach
+
+Example of manual approach:
 ```
 specification
     .AddFilters(product => product.Id == productId);
