@@ -21,6 +21,13 @@ There are two authorization approaches implemented in this project:
 1. Permission approach (examine if user has required permission). See ReviewController in Shopway.Presentation layer.
 2. ApiKey approach (examine if request contains required api key in the "X-Api-Key" header for given endpoint). See ProductController in Shopway.Presentation layer.
 
+Note: Remember to set the ClockSkew to 5s (or max 30s)
+
+```csharp
+options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(_authenticationOptions.ClockSkew); 
+```
+
+
 ## Validator
 
 Defined validator stores all errors up to the moment when Failure is called. Then, the validation result with all errors is created.
