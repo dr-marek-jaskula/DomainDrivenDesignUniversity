@@ -60,7 +60,7 @@ This layer contains integrations tests.
 
 Here we use the proper approach of using the WebApplicationFactory.
 
-Moreover, we use TestContainers library, to make all integrations test in sql database inside the container, so the additional database cleaning is not required (like in Shopway.Tests.Integration).
+Moreover, we use TestContainers library, to make all integrations tests in sql database inside the container, so the additional database cleaning is not required (like in Shopway.Tests.Integration).
 
 ### .Tests.Performance :heavy_check_mark:
 
