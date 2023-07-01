@@ -57,7 +57,7 @@ public sealed class CachedProductRepository : IProductRepository
     public void Update(Product product)
     {
         _decorated.Update(product);
-        //_fusionCache.Update<Product, ProductId>(product); //Not required because cache update is done in UnitOfWork. Can be used in specific cases
+        _fusionCache.Update<Product, ProductId>(product);
     }
 
     public Task<Product?> GetByKeyOrDefaultAsync(ProductKey productKey, CancellationToken cancellationToken)
