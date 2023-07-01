@@ -17,13 +17,13 @@ public sealed class PermissionRequirementHandler : AuthorizationHandler<Permissi
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        string? userId = context
+        string? userIdentifier = context
             .User
             .Claims
             .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)
             ?.Value;
 
-        if (Guid.TryParse(userId, out Guid parsedUserId) is false)
+        if (Guid.TryParse(userIdentifier, out Guid userGuid) is false)
         {
             return;
         }
@@ -33,10 +33,10 @@ public sealed class PermissionRequirementHandler : AuthorizationHandler<Permissi
         var permissionRepository = scope.ServiceProvider
             .GetRequiredService<IPermissionRepository>();
 
-        HashSet<string> permissions = await permissionRepository
-            .GetPermissionsAsync(UserId.Create(parsedUserId));
+        var userHasPermission = await permissionRepository
+            .HasPermissionAsync(UserId.Create(userGuid), requirement.Permission);
 
-        if (permissions.Contains(requirement.Permission))
+        if (userHasPermission)
         {
             context.Succeed(requirement);
         }
