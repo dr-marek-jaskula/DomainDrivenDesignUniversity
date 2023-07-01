@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Shopway.Infrastructure.Options;
 
-public class BearerAuthenticationOptionsSetup : IPostConfigureOptions<JwtBearerOptions>
+public sealed class BearerAuthenticationOptionsSetup : IPostConfigureOptions<JwtBearerOptions>
 {
     private readonly AuthenticationOptions _authenticationOptions;
 

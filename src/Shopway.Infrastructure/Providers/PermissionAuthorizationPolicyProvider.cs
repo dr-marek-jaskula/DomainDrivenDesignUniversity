@@ -4,7 +4,7 @@ using Shopway.Infrastructure.Authentication.Requirements;
 
 namespace Shopway.Infrastructure.Providers;
 
-public class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
+public sealed class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
 {
     public PermissionAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options)
         : base(options)

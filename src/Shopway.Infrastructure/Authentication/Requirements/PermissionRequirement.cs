@@ -2,7 +2,7 @@
 
 namespace Shopway.Infrastructure.Authentication.Requirements;
 
-public class PermissionRequirement : IAuthorizationRequirement
+public sealed class PermissionRequirement : IAuthorizationRequirement
 {
     public PermissionRequirement(string permission)
     {

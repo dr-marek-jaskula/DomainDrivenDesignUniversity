@@ -4,7 +4,7 @@ using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.Pipelines;
 
-public class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public sealed class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : IResult
 {
