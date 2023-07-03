@@ -5,7 +5,7 @@ namespace Shopway.Domain.Abstractions.Common;
 public interface IDynamicSortBy : ISortBy
 {
     IList<SortByEntry> SortProperties { get; init; }
-    IReadOnlyCollection<string> AllowedSortProperties { get; init; }
+    IReadOnlyCollection<string> AllowedSortProperties { get; }
 }
 
 public interface IDynamicSortBy<TEntity> : IDynamicSortBy
