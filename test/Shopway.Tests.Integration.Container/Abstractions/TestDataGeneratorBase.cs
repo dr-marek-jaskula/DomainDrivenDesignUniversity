@@ -27,7 +27,7 @@ public abstract class TestDataGeneratorBase
     {
         if (length - AUTO_PREFIX.Length <= 0)
         {
-            throw new ArgumentException($"{length} must be greater than AUTO_PREFIX length");
+            throw new ArgumentException($"{length} must be greater than {nameof(AUTO_PREFIX)} length");
         }
 
         return $"{AUTO_PREFIX}{GenerateString(length - AUTO_PREFIX.Length)}";

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Shopway.Persistence.Framework;
 using Shopway.Tests.Integration.Configurations;
 using Shopway.Infrastructure.Options;
+using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+using Shopway.Tests.Integration.Container.Persistance;
 
 namespace Shopway.Tests.Integration;
 
@@ -46,13 +48,9 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
                 ShopwayApiUrl = "https://localhost:7236/api/"
             });
 
-            services.AddSingleton(x => new ApiKeyTestOptions()
-            {
-                PRODUCT_GET = "d3f72374-ef67-42cb-b25b-fbfee58b1054",
-                PRODUCT_UPDATE = "ae5bd500-6d11-4f67-950f-85d87b1d81c4",
-                PRODUCT_REMOVE = "36777477-d70c-4a9a-b5bd-a1eb286fa16b",
-                PRODUCT_CREATE = "51b4c4e8-d246-4dcf-b7c7-05811a9123c0"
-            });
+            //Mock api key authentication
+            services.RemoveAll(typeof(IApiKeyService));
+            services.AddScoped<IApiKeyService, TestApiKeyService>();
 
             //Re-register database context to use the connection to the database in the container
             services.Configure<DatabaseOptions>(options =>

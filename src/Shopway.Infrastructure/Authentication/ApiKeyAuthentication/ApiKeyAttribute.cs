@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Configuration;
 using static Shopway.Infrastructure.Authentication.ApiKeyAuthentication.ApiKeyConstants;
 
 namespace Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
@@ -20,13 +19,13 @@ public sealed class ApiKeyAttribute : TypeFilterAttribute
     /// </summary>
     private sealed class ApiKeyFilter : IAuthorizationFilter
     {
-        private readonly IConfiguration _configuration;
+        private readonly IApiKeyService _apiKeyService;
         private readonly RequiredApiKey _requiredApiKey;
 
-        public ApiKeyFilter(RequiredApiKey requiredApiKey, IConfiguration configuration)
+        public ApiKeyFilter(RequiredApiKey requiredApiKey, IApiKeyService apiKeyService)
         {
             _requiredApiKey = requiredApiKey;
-            _configuration = configuration;
+            _apiKeyService = apiKeyService;
         }
 
         /// <summary>
@@ -46,13 +45,7 @@ public sealed class ApiKeyAttribute : TypeFilterAttribute
                 return;
             }
 
-            //For tutorial purpose, api keys are stored in appsettings
-            var requiredApiKeyValue = _configuration
-                .GetValue<string>($"{ApiKeySection}:{_requiredApiKey}")!;
-
-            bool isProvidedApiKeyEqualToRequiredApiKey = requiredApiKeyValue.Equals(apiKeyFromHeader);
-
-            if (isProvidedApiKeyEqualToRequiredApiKey is false)
+            if (_apiKeyService.IsProvidedApiKeyEqualToRequiredApiKey(_requiredApiKey, apiKeyFromHeader) is false)
             {
                 context.Result = new UnauthorizedObjectResult("Invalid Api Key");
                 return;

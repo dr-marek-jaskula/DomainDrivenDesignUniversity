@@ -18,9 +18,7 @@ public partial class ProductsControllerTests
         var productKey = ProductKey.From(product);
 
         var body = CreateProductCommand(productKey);
-
         var request = PostRequest(string.Empty, body);
-        request.AddApiKeyAuthentication(apiKeys.PRODUCT_CREATE);
 
         //Act
         var response = await _restClient!.ExecutePostAsync(request);

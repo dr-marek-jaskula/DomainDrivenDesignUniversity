@@ -15,7 +15,7 @@ using Shopway.Tests.Integration.Configurations;
 using Shopway.Tests.Integration.Constants;
 using Shopway.Domain.Enumerations;
 using static RestSharp.Method;
-
+using static Shopway.Tests.Integration.Container.Constants.HeaderConstants;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
 
 namespace Shopway.Tests.Integration.Abstractions;
@@ -26,12 +26,10 @@ public abstract class ControllerTestsBase
     protected HttpClient httpClient;
     protected readonly string shopwayApiUrl;
     protected readonly string controllerUrl;
-    protected readonly ApiKeyTestOptions apiKeys;
     protected readonly DatabaseFixture fixture;
 
     public ControllerTestsBase(ShopwayApiFactory apiFactory)
     {
-        apiKeys = apiFactory.Services.GetRequiredService<ApiKeyTestOptions>();
         shopwayApiUrl = apiFactory.Services.GetRequiredService<IntegrationTestsUrlOptions>().ShopwayApiUrl!;
         controllerUrl = GetType().Name[..^ControllerTests.Length];
 
@@ -53,7 +51,9 @@ public abstract class ControllerTestsBase
         var token = await LogTestUser();
 
         restClientOptions.Authenticator = new JwtAuthenticator(token);
-        return new RestClient(httpClient, restClientOptions);
+        var client = new RestClient(httpClient, restClientOptions);
+        EnsureApiKeyAuthenticationForMockedIApiKeyService(client);
+        return client;
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public abstract class ControllerTestsBase
     /// </summary>
     /// <param name="endpointUri">Endpoint</param>
     /// <returns></returns>
-	protected static RestRequest GetRequest(string endpointUri)
+    protected static RestRequest GetRequest(string endpointUri)
 	{
 		return new RestRequest(endpointUri, Get);
     }
@@ -162,5 +162,14 @@ public abstract class ControllerTestsBase
         var token = logResponse.Deserialize<LogUserResponse>();
 
         return token!.Token;
+    }
+
+    /// <summary>
+    /// This method add api key header with dummy value for every request. IApiKeyService should be mocked to return true for each validation. 
+    /// </summary>
+    /// <param name="client">RestClient that will be used for tests</param>
+    private static void EnsureApiKeyAuthenticationForMockedIApiKeyService(RestClient client)
+    {
+        client.AddDefaultHeader(ApiKeyHeader, nameof(ApiKeyHeader));
     }
 }

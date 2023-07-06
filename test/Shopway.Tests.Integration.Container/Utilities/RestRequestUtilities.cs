@@ -1,15 +1,12 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Serializers;
 using Shopway.Domain.Utilities;
+using static Shopway.Tests.Integration.Container.Constants.HeaderConstants;
 
 namespace Shopway.Tests.Integration.Utilities;
 
 public static class RestRequestUtilities
 {
-    private const string ContentTypeHeader = "content-type";
-    private const string ApiKeyHeader = "x-api-key";
-
     /// <summary>
     /// Appends the request path by query parameters (variable=value). 
     /// </summary>
