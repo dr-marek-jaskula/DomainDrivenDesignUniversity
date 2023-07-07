@@ -5,23 +5,14 @@ using static Shopway.Tests.Integration.Constants.CollectionNames;
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
 [Collection(WebApplicationFactoryCollection)]
-public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyncLifetime
+public sealed partial class ProductsControllerTests : ControllerTestsBase
 {
-    private RestClient? _restClient;
+    private readonly RestClient? _restClient;
 
     public ProductsControllerTests(ShopwayApiFactory apiFactory)
         : base(apiFactory)
     {
-    }
-
-    public async Task InitializeAsync()
-    {
         var clientUri = new Uri($"{shopwayApiUrl}{controllerUrl}");
-        _restClient = await RestClient(httpClient, new RestClientOptions(clientUri), fixture);
-    }
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
+        _restClient = RestClient(httpClient, new RestClientOptions(clientUri));
     }
 }

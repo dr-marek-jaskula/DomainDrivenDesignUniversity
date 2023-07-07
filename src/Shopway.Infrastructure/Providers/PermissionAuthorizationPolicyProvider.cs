@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
-using Shopway.Infrastructure.Authentication.Requirements;
+using Shopway.Infrastructure.Authentication.PermissionAuthentication.Requirements;
 
 namespace Shopway.Infrastructure.Providers;
 

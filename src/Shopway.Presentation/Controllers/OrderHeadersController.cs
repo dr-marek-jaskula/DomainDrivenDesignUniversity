@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Application.CQRS.Orders.Commands.AddOrderLine;
 using Shopway.Application.CQRS.Orders.Commands.ChangeOrderHeaderStatus;
 using Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
 using Shopway.Application.CQRS.Orders.Queries;

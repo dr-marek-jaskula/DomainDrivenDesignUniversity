@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.EntityIds;
-using Shopway.Infrastructure.Authentication;
+using Shopway.Infrastructure.Authentication.PermissionAuthentication;
 using Shopway.Application.CQRS.Products.Commands.AddReview;
 using Shopway.Application.CQRS.Products.Commands.RemoveReview;
 using Shopway.Application.CQRS.Products.Commands.UpdateReview;
@@ -33,7 +33,7 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return Ok(result);
     }
 
 
@@ -58,7 +58,7 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return Ok(result);
     }
 
     [HttpDelete($"{{productId}}/{Reviews}/{{reviewId}}")]
@@ -74,6 +74,6 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return Ok(result);
     }
 }

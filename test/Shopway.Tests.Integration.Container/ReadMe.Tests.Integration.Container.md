@@ -27,10 +27,17 @@ services.RemoveAll(typeof(IApiKeyService));
 services.AddScoped<IApiKeyService, TestApiKeyService>();
 ```
 
-Finally, we need to add api key header to requests:
+Finally, we need to add api key header to requests (at ControllerTestBase):
 
 ```csharp
-
+/// <summary>
+/// This method add api key header with dummy value for every request. IApiKeyService should be mocked to return true for each validation. 
+/// </summary>
+/// <param name="client">RestClient that will be used for tests</param>
+private static void EnsureApiKeyAuthenticationForMockedIApiKeyService(RestClient client)
+{
+    client.AddDefaultHeader(ApiKeyHeader, nameof(ApiKeyHeader));
+}
 ```
 
 ## Manual ApiKey authentication
@@ -64,3 +71,35 @@ Finally, then we will need to add api keys headers like that:
 ```csharp
 request.AddApiKeyAuthentication(apiKeys.PRODUCT_GET);
 ```
+
+## Mock jwt authentication
+
+The preferred way is to use TestPermissionService that always confirms the authentication:
+
+```csharp
+public sealed class TestPermissionService : IPermissionService
+{
+    private static readonly Guid _testUserGuid = Guid.Parse("2df39cb3-8645-4462-8d3f-06b6f1547b9f");
+
+    public Result<UserId> GetUserId(AuthorizationHandlerContext context)
+    {
+        return UserId.Create(_testUserGuid);
+    }
+
+    public Task<bool> HasPermissionAsync(UserId userId, string permission)
+    {
+        return Task.FromResult(true);
+    }
+}
+```
+
+and substitute ITestPermissionService registration in ShopwayApiFactory
+
+```csharp
+services.RemoveAll(typeof(IPermissionService));
+services.AddScoped<IPermissionService, TestPermissionService>();
+```
+
+## Manual jwt authentication
+
+See "Shopway.Tests.Integration" in Abstraction/ControllerTestBase where we ensure that the test user is created with all privileges and the we log him for test purposes.

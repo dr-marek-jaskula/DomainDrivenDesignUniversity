@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Shopway.Infrastructure.Authentication.Requirements;
+using Shopway.Infrastructure.Authentication.PermissionAuthentication.Requirements;
 using Shopway.Infrastructure.Providers;
 using Shopway.Infrastructure.Services;
 using Shopway.Persistence.Abstractions;

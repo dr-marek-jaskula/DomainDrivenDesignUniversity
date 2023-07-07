@@ -1,19 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RestSharp;
-using RestSharp.Authenticators;
-using Shopway.Application.CQRS.Users.Commands.RegisterUser;
-using Shopway.Application.CQRS.Users.Commands.LogUser;
-using Shopway.Domain.Entities;
+﻿using RestSharp;
 using Shopway.Tests.Integration.Persistence;
 using Shopway.Tests.Integration.Utilities;
-using System.Data;
-using Shopway.Persistence.Constants;
-using Shopway.Domain.EntityIds;
 using Gatherly.Presentation.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
-using Shopway.Tests.Integration.Constants;
-using Shopway.Domain.Enumerations;
 using static RestSharp.Method;
 using static Shopway.Tests.Integration.Container.Constants.HeaderConstants;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
@@ -45,12 +35,8 @@ public abstract class ControllerTestsBase
     /// <param name="httpClient">Controller url</param>
     /// <param name="databaseFixture">Database fixture</param>
     /// <returns></returns>
-    protected async Task<RestClient> RestClient(HttpClient httpClient, RestClientOptions restClientOptions, DatabaseFixture databaseFixture)
+    protected static RestClient RestClient(HttpClient httpClient, RestClientOptions restClientOptions)
     {
-        await EnsureThatTheTestUserIsRegistered(databaseFixture);
-        var token = await LogTestUser();
-
-        restClientOptions.Authenticator = new JwtAuthenticator(token);
         var client = new RestClient(httpClient, restClientOptions);
         EnsureApiKeyAuthenticationForMockedIApiKeyService(client);
         return client;
@@ -102,66 +88,6 @@ public abstract class ControllerTestsBase
     protected static RestRequest DeleteRequest(string endpointUri)
     {
         return new RestRequest(endpointUri, Delete);
-    }
-
-    /// <summary>
-    /// Ensure that the test user is registered
-    /// </summary>
-    /// <param name="databaseFixture"></param>
-    /// <returns>Jwt token</returns>
-    private async Task EnsureThatTheTestUserIsRegistered(DatabaseFixture databaseFixture)
-    {
-        var userAlreadyExists = await databaseFixture
-            .Context
-            .Set<User>()
-            .Where(x => (string)(object)x.Username == TestUser.Username)
-            .AnyAsync();
-
-        if (userAlreadyExists is true)
-        {
-            return;
-        }
-
-        var registerCommand = new RegisterUserCommand(TestUser.Username, TestUser.Email, TestUser.Password, TestUser.Password);
-
-        var registerRequest = PostRequest(nameof(UsersController.Register), registerCommand);
-
-        await _userClient.PostAsync(registerRequest);
-
-        var user = await databaseFixture
-            .Context
-            .Set<User>()
-            .Where(user => (string)(object)user.Username == TestUser.Username)
-            .FirstAsync();
-
-        //Give all roles to the test user
-        foreach (var role in Role.Ids)
-        {
-            await databaseFixture.Context.Database.ExecuteSqlRawAsync(@$"
-            INSERT INTO {SchemaNames.Master}.{TableNames.RoleUser} (RoleId, {nameof(UserId)})
-            VALUES ({role}, '{user.Id.Value}');     
-            ");
-        }
-
-        await databaseFixture.Context.SaveChangesAsync();
-    }
-
-    /// <summary>
-    /// Register and log the test user
-    /// </summary>
-    /// <param name="databaseFixture"></param>
-    /// <returns>Jwt token</returns>
-    private async Task<string> LogTestUser()
-    {
-        var logCommand = new LogUserCommand(TestUser.Email, TestUser.Password);
-
-        var loginRequest = PostRequest(nameof(UsersController.Login), logCommand);
-
-        var logResponse = await _userClient.PostAsync(loginRequest);
-
-        var token = logResponse.Deserialize<LogUserResponse>();
-
-        return token!.Token;
     }
 
     /// <summary>

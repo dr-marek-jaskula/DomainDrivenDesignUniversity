@@ -12,6 +12,8 @@ using Shopway.Tests.Integration.Configurations;
 using Shopway.Infrastructure.Options;
 using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
 using Shopway.Tests.Integration.Container.Persistance;
+using Shopway.Infrastructure.Authentication.PermissionAuthentication;
+using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Tests.Integration;
 
@@ -51,6 +53,14 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
             //Mock api key authentication
             services.RemoveAll(typeof(IApiKeyService));
             services.AddScoped<IApiKeyService, TestApiKeyService>();
+
+            //Mock jwt authentication
+            services.RemoveAll(typeof(IPermissionService));
+            services.AddScoped<IPermissionService, TestPermissionService>();
+
+            //Mock user context
+            services.RemoveAll(typeof(IUserContextService));
+            services.AddScoped<IUserContextService, TestUserContextService>();
 
             //Re-register database context to use the connection to the database in the container
             services.Configure<DatabaseOptions>(options =>
