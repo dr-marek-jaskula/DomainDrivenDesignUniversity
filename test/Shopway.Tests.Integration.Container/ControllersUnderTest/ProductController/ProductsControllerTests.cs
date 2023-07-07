@@ -7,7 +7,7 @@ namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 [Collection(WebApplicationFactoryCollection)]
 public sealed partial class ProductsControllerTests : ControllerTestsBase
 {
-    private readonly RestClient? _restClient;
+    private readonly RestClient _restClient;
 
     public ProductsControllerTests(ShopwayApiFactory apiFactory)
         : base(apiFactory)
