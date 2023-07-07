@@ -66,7 +66,7 @@ where
 protected readonly ApiKeyTestOptions apiKeys;
 ```
 
-Finally, then we will need to add api keys headers like that:
+Finally, we will need to add api keys headers like that:
 
 ```csharp
 request.AddApiKeyAuthentication(apiKeys.PRODUCT_GET);
