@@ -1,7 +1,6 @@
 ﻿using RestSharp;
 using Shopway.Tests.Integration.Persistence;
 using Shopway.Tests.Integration.Utilities;
-using Gatherly.Presentation.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
 using static RestSharp.Method;
@@ -12,7 +11,6 @@ namespace Shopway.Tests.Integration.Abstractions;
 
 public abstract class ControllerTestsBase
 {
-    private readonly RestClient _userClient;
     protected HttpClient httpClient;
     protected readonly string shopwayApiUrl;
     protected readonly string controllerUrl;
@@ -24,8 +22,6 @@ public abstract class ControllerTestsBase
         controllerUrl = GetType().Name[..^ControllerTests.Length];
 
         httpClient = apiFactory.CreateClient();
-        var userUri = new Uri($"{shopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
-        _userClient = new(httpClient, new RestClientOptions(userUri));
         fixture = new DatabaseFixture(apiFactory.ContainerConnectionString);
     }
 
@@ -91,7 +87,7 @@ public abstract class ControllerTestsBase
     }
 
     /// <summary>
-    /// This method add api key header with dummy value for every request. IApiKeyService should be mocked to return true for each validation. 
+    /// This method add api key header with dummy value for every request. IApiKeyService should be mocked in ShopwayApiFactory to return true for each validation. 
     /// </summary>
     /// <param name="client">RestClient that will be used for tests</param>
     private static void EnsureApiKeyAuthenticationForMockedIApiKeyService(RestClient client)
