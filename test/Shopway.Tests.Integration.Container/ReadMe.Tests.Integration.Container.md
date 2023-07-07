@@ -102,4 +102,4 @@ services.AddScoped<IPermissionService, TestPermissionService>();
 
 ## Manual jwt authentication
 
-See "Shopway.Tests.Integration" in Abstraction/ControllerTestBase where we ensure that the test user is created with all privileges and the we log him for test purposes.
+See "Shopway.Tests.Integration" in Abstraction/ControllerTestBase where we ensure that the test user is created with all privileges and then we log him for test purposes.
