@@ -24,7 +24,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     /// This cache is provided due to the performance optimizations. We do not want to use reflection calls for each request.
     /// </summary>
     /// <example>Key: typeof(ProductId), Value: (typeof(Product), CheckCacheAndDatabase<Product, ProductId> method</example>
-    private static readonly Dictionary<Type, (Type EntityType, MethodInfo CheckCacheAndDatabase)> ReferenceValidationCache = new();
+    private static readonly Dictionary<Type, (Type EntityType, MethodInfo CheckCacheAndDatabase)> ValidationCache = new();
 
     private readonly ShopwayDbContext _context;
     private readonly IFusionCache _fusionCache;
@@ -40,7 +40,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<TRequest, TResponse>)
                 .GetSingleGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityIdType);
 
-            ReferenceValidationCache.Add(entityIdType, (entityType, checkCacheAndDatabasedMethod));
+            ValidationCache.Add(entityIdType, (entityType, checkCacheAndDatabasedMethod));
         }
     }
 
@@ -74,7 +74,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
     private async Task<Error> Validate(IEntityId entityId, CancellationToken cancellationToken)
     {
-        return await (Task<Error>)ReferenceValidationCache[entityId.GetType()].CheckCacheAndDatabase.Invoke(this, new object[]
+        return await (Task<Error>)ValidationCache[entityId.GetType()].CheckCacheAndDatabase.Invoke(this, new object[]
         {
             entityId,
             cancellationToken
