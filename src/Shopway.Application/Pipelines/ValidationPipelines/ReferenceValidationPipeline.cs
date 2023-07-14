@@ -19,8 +19,30 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     where TRequest : IRequest<TResponse>
     where TResponse : class, IResult
 {
+    /// <summary>
+    /// This cache stores key-value pairs where: EntityId type is the key, tuple of corresponding Entity type and generic method that requires these two types
+    /// This cache is provided due to the performance optimizations. We do not want to use reflections calls for each request
+    /// </summary>
+    /// <example>Key: typeof(ProductId), Value: (typeof(Product), CheckCacheAndDatabase<Product, ProductId> method</example>
+    private static readonly Dictionary<Type, (Type EntityType, MethodInfo CheckCacheAndDatabase)> ApplicationMemoryCache = new();
+
     private readonly ShopwayDbContext _context;
     private readonly IFusionCache _fusionCache;
+
+    static ReferenceValidationPipeline()
+    {
+        var entityIdTypes = GetEntityIdTypes();
+
+        foreach (var entityIdType in entityIdTypes)
+        {
+            Type entityType = GetEntityTypeFromEntityIdType(entityIdType);
+
+            MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<TRequest, TResponse>)
+                .GetSingleGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityIdType);
+
+            ApplicationMemoryCache.Add(entityIdType, (entityType, checkCacheAndDatabasedMethod));
+        }
+    }
 
     public ReferenceValidationPipeline(ShopwayDbContext context, IFusionCache fusionCache)
     {
@@ -52,12 +74,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
     private async Task<Error> Validate(IEntityId entityId, CancellationToken cancellationToken)
     {
-        var entityType = entityId.GetEntityTypeFromEntityId();
-
-        MethodInfo checkCacheAndDatabasedMethod = GetType()
-            .GetSingleGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityId.GetType());
-
-        return await (Task<Error>)checkCacheAndDatabasedMethod.Invoke(this, new object[]
+        return await (Task<Error>)ApplicationMemoryCache[entityId.GetType()].CheckCacheAndDatabase.Invoke(this, new object[]
         {
             entityId,
             cancellationToken
@@ -83,7 +100,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
         if (isEntityInDatabase)
         {
-            //We should not store entities in cache using this pipeline, therefore we just store null
+            //We should not store entities in the cache using this pipeline, therefore we just store null
             await _fusionCache.SetAsync(cacheReferenceCheckKey, default(TEntity), token: cancellationToken);
             return Error.None;
         }

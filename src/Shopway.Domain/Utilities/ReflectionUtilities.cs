@@ -5,6 +5,26 @@ namespace Shopway.Domain.Utilities;
 
 public static class ReflectionUtilities
 {
+    public static Type GetEntityTypeFromEntityIdType(Type entityIdType)
+    {
+        var skipAmount = IEntityId.Id.Length;
+        var typeName = entityIdType.Name[0..^skipAmount];
+
+        return Domain.AssemblyReference.Assembly
+            .GetTypes()
+            .Where(type => type.Name == typeName)
+            .Single();
+    }
+
+    public static Type[] GetEntityIdTypes()
+    {
+        return Domain.AssemblyReference.Assembly
+            .GetTypes()
+            .Where(type => type.Implements<IEntityId>())
+            .Where(type => type.IsValueType)
+            .ToArray();
+    }
+
     public static Type GetEntityTypeFromEntityId(this IEntityId entityId)
     {
         var assembly = Shopway.Domain.AssemblyReference.Assembly;
