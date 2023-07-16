@@ -1,5 +1,4 @@
-﻿using Shopway.Domain.Errors;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Abstractions;
@@ -12,12 +11,11 @@ using Shopway.Domain.EntityKeys;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Domain.Abstractions.Repositories;
-using static Shopway.Persistence.Utilities.CacheUtilities;
+using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 using static Shopway.Domain.Errors.HttpErrors;
+using static Shopway.Persistence.Utilities.CacheUtilities;
 using static Shopway.Application.Mappings.OrderLineMapping;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
-using Microsoft.AspNetCore.Authentication;
-using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
 namespace Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
 
@@ -43,7 +41,8 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             return Result.Failure<BatchUpsertOrderLineResponse>(NullOrEmpty(nameof(BatchUpsertOrderLineCommand)));
         }
 
-        var invalidProductIds = await _productRepository.VerifyIdsAsync(command.GetRequestsProductIds(), cancellationToken);
+        var productIdsFromCommand = command.GetRequestsProductIds();
+        var invalidProductIds = await _productRepository.VerifyIdsAsync(productIdsFromCommand, cancellationToken);
 
         if (invalidProductIds.NotNullOrEmpty())
         {
@@ -52,7 +51,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
 
         var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
 
-        var orderLinesToUpdateDictionary = GetOrderLinesToUpdateDictionary(command, orderHeader, cancellationToken);
+        var orderLinesToUpdateDictionary = GetOrderLinesToUpdateDictionary(productIdsFromCommand, orderHeader);
 
         //Required step: set RequestToProductKeyMapping method for the injected builder
         _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToOrderLineKey);
@@ -75,13 +74,8 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             .ToResult();
     }
 
-    private static IDictionary<OrderLineKey, OrderLine> GetOrderLinesToUpdateDictionary(BatchUpsertOrderLineCommand command, OrderHeader orderHeader, CancellationToken cancellationToken)
+    private static IDictionary<OrderLineKey, OrderLine> GetOrderLinesToUpdateDictionary(IList<ProductId> productIds, OrderHeader orderHeader)
     {
-        var productIds = command
-            .Requests
-            .Select(x => x.ProductId)
-            .ToList();
-
         return orderHeader
             .OrderLines
             .Where(orderLine => productIds.Contains(orderLine.ProductId))
