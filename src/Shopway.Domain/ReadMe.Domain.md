@@ -32,7 +32,7 @@ because the conversion will be done behind the scenes. If conversion fails, the 
 
 To create a new id we use a static method "New". For instance, "ProductId.New()".
 
-To create a strongly typed id based on a given guid, we use "Create" method. For instance, "Product.Create()".
+To create a strongly typed id based on a given guid, we use "Create" method. For instance, "Product.Create(guid)".
 
 Due to the fact that entity id is a record struct, we can use the '==' operator to compare ids.
 
