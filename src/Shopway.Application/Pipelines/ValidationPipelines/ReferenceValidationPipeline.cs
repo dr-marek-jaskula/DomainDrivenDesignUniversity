@@ -23,7 +23,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     /// This cache stores key-value pairs where: EntityId type is the key and a value is a tuple of corresponding Entity type and generic method that requires these two types.
     /// This cache is provided due to the performance optimizations. We do not want to use reflection calls for each request.
     /// </summary>
-    /// <example>Key: typeof(ProductId), Value: (typeof(Product), CheckCacheAndDatabase<Product, ProductId> method</example>
+    /// <example>Key: typeof(ProductId), Value: (typeof(Product), CheckCacheAndDatabase<Product, ProductId> method)</example>
     private static readonly Dictionary<Type, (Type EntityType, MethodInfo CheckCacheAndDatabase)> ValidationCache = new();
 
     private readonly ShopwayDbContext _context;
