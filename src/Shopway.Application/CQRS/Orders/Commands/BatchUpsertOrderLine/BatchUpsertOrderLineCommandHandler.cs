@@ -51,13 +51,13 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
 
         var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
 
-        var orderLinesToUpdateDictionary = GetOrderLinesToUpdateDictionary(productIdsFromCommand, orderHeader);
+        var dictionaryOfOrderLinesToUpdate = GetDictionaryOfOrderLinesToUpdate(productIdsFromCommand, orderHeader);
 
         //Required step: set RequestToProductKeyMapping method for the injected builder
         _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToOrderLineKey);
 
         //Perform validation: using the builder, trimmed command and queried productsToUpdate
-        var responseEntries = command.Validate(_responseBuilder, orderLinesToUpdateDictionary);
+        var responseEntries = command.Validate(_responseBuilder, dictionaryOfOrderLinesToUpdate);
 
         if (responseEntries.Any(response => response.Status is BatchEntryStatus.Error))
         {
@@ -65,7 +65,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
         }
 
         InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader);
-        UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, orderLinesToUpdateDictionary);
+        UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);
 
         _fusionCache.Update<OrderHeader, OrderHeaderId>(orderHeader);
 
@@ -74,7 +74,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
             .ToResult();
     }
 
-    private static IDictionary<OrderLineKey, OrderLine> GetOrderLinesToUpdateDictionary(IList<ProductId> productIds, OrderHeader orderHeader)
+    private static IDictionary<OrderLineKey, OrderLine> GetDictionaryOfOrderLinesToUpdate(IList<ProductId> productIds, OrderHeader orderHeader)
     {
         return orderHeader
             .OrderLines
