@@ -8,7 +8,8 @@ namespace Shopway.Domain.Utilities;
 
 public static class RandomUtilities
 {
-    private const string _base64NonAlpaNumbericCharactersPattern = "(?:[/+=]+)";
+    //To exclude more characters, adjust this regex
+    private const string _base64NonAlpaNumbericCharactersPattern = "(?:[/+=0-9]+)";
     private static readonly Regex _base64NonAlphaNumbericCharacterRegex = new(_base64NonAlpaNumbericCharactersPattern, Compiled | CultureInvariant | Singleline);
 
     public static string GenerateString(int length)

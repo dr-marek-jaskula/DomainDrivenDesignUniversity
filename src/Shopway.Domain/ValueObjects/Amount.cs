@@ -12,7 +12,7 @@ public sealed class Amount : ValueObject
     public const int MaxAmount = 1000;
     public const int MinAmount = 1;
 
-    public int Value { get; }
+    public new int Value { get; }
 
     private Amount(int value)
     {

@@ -14,7 +14,7 @@ public sealed class Password : ValueObject
     
     public const int MaxLength = 30;
     public const int MinLength = 9;
-    public string Value { get; }
+    public new string Value { get; }
 
     private Password(string value)
     {

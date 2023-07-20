@@ -12,7 +12,7 @@ public sealed class Price : ValueObject
     public const decimal MaxPrice = 100000;
     public const decimal MinPrice = 0;
 
-    public decimal Value { get; }
+    public new decimal Value { get; }
 
     private Price(decimal value)
     {

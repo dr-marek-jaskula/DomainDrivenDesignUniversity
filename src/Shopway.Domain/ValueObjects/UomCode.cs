@@ -11,7 +11,7 @@ public sealed class UomCode : ValueObject
 {
     public readonly static string[] AllowedUomCodes = new string[2] { "pcs", "kg" };
 
-    public string Value { get; }
+    public new string Value { get; }
 
     private UomCode(string value)
     {

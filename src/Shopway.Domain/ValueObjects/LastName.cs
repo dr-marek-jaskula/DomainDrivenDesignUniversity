@@ -16,7 +16,7 @@ public sealed class LastName : ValueObject
         Value = value;
     }
 
-    public string Value { get; }
+    public new string Value { get; }
 
     public static ValidationResult<LastName> Create(string lastName)
     {

@@ -16,7 +16,7 @@ public sealed class Description : ValueObject
         Value = value;
     }
 
-    public string Value { get; }
+    public new string Value { get; }
 
     public static ValidationResult<Description> Create(string description)
     {

@@ -11,7 +11,7 @@ namespace Shopway.Domain.ValueObjects;
 public sealed class PasswordHash : ValueObject
 {
     public const int BytesLong = 514;
-    public string Value { get; }
+    public new string Value { get; }
 
     private PasswordHash(string value)
     {

@@ -11,7 +11,7 @@ namespace Shopway.Domain.ValueObjects;
 public sealed class PhoneNumber : ValueObject
 {
     private static readonly Regex _regex = new(@"^([1-9])[0-9]{8}$", RegexOptions.Compiled);
-    public string Value { get; }
+    public new string Value { get; }
 
     private PhoneNumber(string value)
     {

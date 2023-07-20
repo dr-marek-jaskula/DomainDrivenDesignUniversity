@@ -11,7 +11,7 @@ public sealed class Revision : ValueObject
 {
     public const int MaxLength = 10;
 
-    public string Value { get; }
+    public new string Value { get; }
 
     private Revision(string value)
     {
