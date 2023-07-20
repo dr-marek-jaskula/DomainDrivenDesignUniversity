@@ -7,9 +7,9 @@ namespace Shopway.Tests.Unit.Abstractions;
 /// </summary>
 public abstract partial class TestBase
 {
-    protected readonly string CreatedBy = $"{APP_PREFIX}{GenerateString(Length)}";
+    protected readonly string CreatedBy = $"{AUTO_PREFIX}{GenerateString(Length)}";
     protected static readonly Random _random = new();
-    private const string APP_PREFIX = "auto";
+    private const string AUTO_PREFIX = "auto";
     private const int Length = 22;
 
     /// <summary>
@@ -19,7 +19,23 @@ public abstract partial class TestBase
     /// <returns>Test string</returns>
     protected static string TestString(int length = Length)
     {
-        return $"{APP_PREFIX}{GenerateString(length)}";
+        return $"{GenerateString(length)}";
+    }
+
+    /// <summary>
+    /// Generates test string with 'auto' prefix
+    /// </summary>
+    /// <param name="length">Must be greater than 4</param>
+    /// <returns>Test string with prefix</returns>
+    /// <exception cref="ArgumentException"></exception>
+    public static string TestStringWithPrefix(int length = Length)
+    {
+        if (length - AUTO_PREFIX.Length <= 0)
+        {
+            throw new ArgumentException($"{length} must be greater than {nameof(AUTO_PREFIX)} length: {AUTO_PREFIX.Length}");
+        }
+
+        return $"{AUTO_PREFIX}{GenerateString(length - AUTO_PREFIX.Length)}";
     }
 
     /// <summary>
@@ -29,7 +45,7 @@ public abstract partial class TestBase
     /// <returns>Test string with enter, tabs and white spaces from both sides</returns>
     protected static string NotTrimmedTestString(int length = Length)
     {
-        return $" \n  \t \n    \t {APP_PREFIX}{GenerateString(length)}  \n \t   \n ";
+        return $" \n  \t \n    \t {GenerateString(length)}  \n \t   \n ";
     }
 
     /// <summary>
