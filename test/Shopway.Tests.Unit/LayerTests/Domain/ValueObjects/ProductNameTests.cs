@@ -17,7 +17,6 @@ public sealed class ProductNameTests : TestBase
             Add(productNameWithNotAllowedCharacter, ProductNameError.ContainsIllegalCharacter);
 
             var tooLongProductName = TestString(1000);
-            var sss = tooLongProductName.Length;
             Add(tooLongProductName, ProductNameError.TooLong);
 
             string emptyProductName = string.Empty;
