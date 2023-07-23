@@ -5,8 +5,8 @@ namespace Shopway.Persistence.Abstractions;
 
 public interface IUserContextService
 {
-    public ClaimsPrincipal? User { get; }
-    public UserId? UserId { get; }
-    public CustomerId? CustomerId { get; }
-    public string? Username { get; }
+    ClaimsPrincipal? User { get; }
+    UserId? UserId { get; }
+    CustomerId? CustomerId { get; }
+    string? Username { get; }
 }

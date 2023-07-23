@@ -9,16 +9,16 @@ public interface IEntityId<out TEntityId> : IEntityId
     /// <summary>
     /// Create a new entity id using given guid
     /// </summary>
-    public abstract static TEntityId Create(Guid id);
+    abstract static TEntityId Create(Guid id);
 
     /// <summary>
     /// Create a new entity id using randomly generated guid
     /// </summary>
-    public abstract static TEntityId New();
+    abstract static TEntityId New();
 }
 
 public interface IEntityId
 {
-    public const string Id =  nameof(Id);
-    public Guid Value { get; init; }
+    const string Id =  nameof(Id);
+    Guid Value { get; init; }
 }
