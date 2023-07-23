@@ -2,6 +2,6 @@
 
 public interface IPage
 {
-    public int PageSize { get; init; }
-    public int PageNumber { get; init; }
+    int PageSize { get; init; }
+    int PageNumber { get; init; }
 }
