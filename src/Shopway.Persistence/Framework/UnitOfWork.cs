@@ -34,9 +34,9 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
     (
         TContext dbContext,
         IUserContextService userContext,
-        IOutboxRepository outboxRepository
-,
-        IFusionCache fusionCache)
+        IOutboxRepository outboxRepository,
+        IFusionCache fusionCache
+    )
     {
         _dbContext = dbContext;
         _userContext = userContext;
