@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  ddduniversitydb:
+    container_name: ddduniversitydb
+    environment:
+      MSSQL_SA_PASSWORD: "DDDUniversity123$"
+      ACCEPT_EULA: "Y"
+    #env_file:
+    #  - docker-mssql.env
+    restart: always
+    networks:
+      - db-net
+    ports:
+      - "1434:1433" #ports are modified because I have installed SQL Server locally
+    volumes:
+      - ddduniversity_data:/var/opt/mssql
+
+
+  shopway.app:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity123$;TrustServerCertificate=True;"
+      - "ConnectionStrings:TestConnection=Server=ddduniversitydb=DDDUniversityTest;User Id=sa;Password=DDDUniversity123$;TrustServerCertificate=True;"
+    #env_file:
+    #  - docker-shopway.env
+    restart: unless-stopped
+    networks:
+      - db-net
+    depends_on:
+      - ddduniversitydb
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    secrets:
+      - db_ConnectionString

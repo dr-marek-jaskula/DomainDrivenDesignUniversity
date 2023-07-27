@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  ddduniversitydb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+  shopway.app:
+    image: ${DOCKER_REGISTRY-}shopwayapp
+    build:
+      context: .
+      dockerfile: src/Shopway.App/Dockerfile
+
+networks:
+  db-net:
+    name: db-network
+
+volumes:
+  ddduniversity_data:
+    name: ddduniversity-volume
+
+secrets:
+  db_ConnectionString:
+    file: connectionStrings.json
