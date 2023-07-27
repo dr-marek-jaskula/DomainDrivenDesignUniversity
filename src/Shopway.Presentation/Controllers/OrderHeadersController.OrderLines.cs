@@ -10,11 +10,12 @@ namespace Shopway.Presentation.Controllers;
 partial class OrderHeadersController
 {
     public const string OrderLines = nameof(OrderLines);
+    public const string Products = nameof(Products);
 
-    [HttpPost("{orderHeaderId}/{productId}")]
+    [HttpPost($"{{orderHeaderId}}/{Products}/{{productId}}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddOrderLineResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> AddReview
+    public async Task<IActionResult> AddOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] ProductId productId,
@@ -37,7 +38,7 @@ partial class OrderHeadersController
     [HttpDelete($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveOrderLineResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> RemoveReview
+    public async Task<IActionResult> RemoveOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] OrderLineId orderLineId,
@@ -59,7 +60,7 @@ partial class OrderHeadersController
     [HttpPut($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateOrderLineResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> UpdateReview
+    public async Task<IActionResult> UpdateOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] OrderLineId orderLineId,
