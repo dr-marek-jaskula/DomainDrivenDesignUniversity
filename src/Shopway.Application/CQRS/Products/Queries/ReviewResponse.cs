@@ -4,7 +4,7 @@ namespace Shopway.Application.CQRS.Products.Queries;
 
 public sealed record ReviewResponse
 (
-    Guid Id,
+    Ulid Id,
     string Username,
     decimal Stars,
     string Title,

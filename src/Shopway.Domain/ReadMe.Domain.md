@@ -25,14 +25,14 @@ We can examine handling the in-domain validation in for instance "CreateProductC
 
 ## EntityIds and EntityIdConverter
 
-EntityId is a strongly typed id that is a readonly record struct (due to the fact that guid is a struct).
+EntityId is a strongly typed id that is a readonly record struct (due to the fact that ulid is a struct).
 
 The EntityIdConverter handles the conversion from and to string, so we can have controllers parameters like "PersonId",
 because the conversion will be done behind the scenes. If conversion fails, the proper error message is returned.
 
 To create a new id we use a static method "New". For instance, "ProductId.New()".
 
-To create a strongly typed id based on a given guid, we use "Create" method. For instance, "Product.Create(guid)".
+To create a strongly typed id based on a given ulid, we use "Create" method. For instance, "Product.Create(ulid)".
 
 Due to the fact that entity id is a record struct, we can use the '==' operator to compare ids.
 

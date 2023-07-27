@@ -4,5 +4,5 @@ namespace Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 
 public sealed record UpdateProductResponse
 (
-    Guid Id
+    Ulid Id
 ) : IResponse;

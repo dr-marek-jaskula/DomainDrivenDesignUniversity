@@ -3,5 +3,5 @@ namespace Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
 
 public sealed record CreateOrderHeaderResponse
 (
-    Guid Id
+    Ulid Id
 ) : IResponse;

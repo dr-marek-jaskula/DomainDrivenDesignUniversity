@@ -4,9 +4,9 @@ namespace Shopway.Application.CQRS.Users.Queries;
 
 public sealed record UserResponse
 (
-    Guid Id,
+    Ulid Id,
     string Username,
     string Email,
-    Guid? CustomerId
+    Ulid? CustomerId
 )
     : IResponse;

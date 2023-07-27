@@ -4,19 +4,19 @@ namespace Shopway.Domain.EntityIds;
 
 public readonly record struct ProductId : IEntityId<ProductId>
 {
-    private ProductId(Guid id)
+    private ProductId(Ulid id)
     {
         Value = id;
     }
 
-    public Guid Value { get; init; }
+    public Ulid Value { get; init; }
 
     public static ProductId New()
     {
-        return new ProductId(Guid.NewGuid());
+        return new ProductId(Ulid.NewUlid());
     }
 
-    public static ProductId Create(Guid id)
+    public static ProductId Create(Ulid id)
     {
         return new ProductId(id);
     }

@@ -11,16 +11,16 @@ public sealed class ProductTests : TestBase
 {
     [Fact]
     [Trait(TraitConstants.Category, TraitConstants.Domain)]
-    public void ProductId_ShouldCreateProductIdFromGuid_WhenInputGuid()
+    public void ProductId_ShouldCreateProductIdFromUlid_WhenInputUlid()
     {
         //Arrange
-        var guid = Guid.NewGuid();
+        var ulid = Ulid.NewUlid();
 
         //Act
-        var productId = ProductId.Create(guid);
+        var productId = ProductId.Create(ulid);
 
         //Assert
-        productId.Value.Should().Be(guid);
+        productId.Value.Should().Be(ulid);
     }
 
     [Fact]

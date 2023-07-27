@@ -25,11 +25,11 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
 
         builder.Property(p => p.Id)
             .HasConversion<CustomerIdConverter, CustomerIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.Property(p => p.UserId)
             .HasConversion<UserIdConverter, UserIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.Property(p => p.DateOfBirth)
             .HasConversion<DateOnlyConverter, DateOnlyComparer>()
@@ -83,7 +83,8 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
 
                 //Configure a property of the owned entity type, in this case the to be used as Primary Key
                 addressNavigationBuilder
-                    .Property<Guid>(ShadowColumnNames.Id); //Shadow property
+                    .Property<Ulid>(ShadowColumnNames.Id)
+                    .HasConversion<UlidToStringConverter>(); //Shadow property
 
                 //Sets the properties that make up the primary key for this owned entity type.
                 addressNavigationBuilder

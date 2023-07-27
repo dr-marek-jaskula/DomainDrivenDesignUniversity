@@ -7,12 +7,12 @@ namespace Shopway.Domain.Abstractions;
 public interface IEntityId<out TEntityId> : IEntityId
 {
     /// <summary>
-    /// Create a new entity id using given guid
+    /// Create a new entity id using given ulid
     /// </summary>
-    abstract static TEntityId Create(Guid id);
+    abstract static TEntityId Create(Ulid id);
 
     /// <summary>
-    /// Create a new entity id using randomly generated guid
+    /// Create a new entity id using randomly generated ulid
     /// </summary>
     abstract static TEntityId New();
 }
@@ -20,5 +20,5 @@ public interface IEntityId<out TEntityId> : IEntityId
 public interface IEntityId
 {
     const string Id =  nameof(Id);
-    Guid Value { get; init; }
+    Ulid Value { get; init; }
 }

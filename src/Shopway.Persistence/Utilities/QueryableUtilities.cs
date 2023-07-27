@@ -13,8 +13,6 @@ public static class QueryableUtilities
     /// <summary>
     /// Get page items and total count
     /// </summary>
-    /// <typeparam name="TEntity">Entity type</typeparam>
-    /// <typeparam name="TEntityId">Entity id type</typeparam>
     /// <typeparam name="TResponse">Response type to map to</typeparam>
     /// <param name="queryable">Queryable</param>
     /// <param name="cancellationToken">Cancellation token</param>

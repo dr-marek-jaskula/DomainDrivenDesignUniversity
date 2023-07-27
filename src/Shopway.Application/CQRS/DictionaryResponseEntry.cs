@@ -8,4 +8,4 @@ namespace Shopway.Application.CQRS;
 /// </summary>
 /// <param name="Id"></param>
 /// <param name="BusinessKey"></param>
-public record DictionaryResponseEntry(Guid Id, IUniqueKey BusinessKey) : IResponse;
+public record DictionaryResponseEntry(Ulid Id, IUniqueKey BusinessKey) : IResponse;

@@ -4,5 +4,5 @@ namespace Shopway.Application.CQRS.Orders.Commands.AddOrderLine;
 
 public sealed record AddOrderLineResponse
 (
-    Guid Id
+    Ulid Id
 ) : IResponse;

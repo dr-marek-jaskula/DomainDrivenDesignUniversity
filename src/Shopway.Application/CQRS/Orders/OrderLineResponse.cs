@@ -4,7 +4,7 @@ namespace Shopway.Application.CQRS.Orders;
 
 public sealed record OrderLineResponse
 (
-    Guid Id,
+    Ulid Id,
     decimal Amount,
     decimal LineDiscount,
     string ProductName,

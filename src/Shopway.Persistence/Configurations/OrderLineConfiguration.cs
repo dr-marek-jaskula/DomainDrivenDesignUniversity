@@ -6,6 +6,7 @@ using Shopway.Persistence.Utilities;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
+using static Shopway.Persistence.Constants.NumberConstants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -19,7 +20,15 @@ internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguratio
 
         builder.Property(o => o.Id)
             .HasConversion<OrderLineIdConverter, OrderLineIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+
+        builder.Property(o => o.ProductId)
+            .HasConversion<ProductIdConverter, ProductIdComparer>()
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+
+        builder.Property(o => o.OrderHeaderId)
+            .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.ConfigureAuditableEntity();
 
@@ -31,7 +40,7 @@ internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguratio
         builder.Property(o => o.LineDiscount)
             .HasConversion<DiscountConverter, DiscountComparer>()
             .HasColumnName(nameof(Discount))
-            .HasPrecision(NumberConstants.DiscountPrecision, NumberConstants.DecimalScale)
+            .HasPrecision(DiscountPrecision, DecimalScale)
             .IsRequired(true);
 
         builder.HasOne(o => o.Product)

@@ -4,5 +4,5 @@ namespace Shopway.Application.CQRS.Orders.Commands.RemoveOrderLine;
 
 public sealed record RemoveOrderLineResponse
 (
-    Guid Id
+    Ulid Id
 ) : IResponse;

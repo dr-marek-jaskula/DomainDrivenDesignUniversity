@@ -4,19 +4,19 @@ namespace Shopway.Domain.EntityIds;
 
 public readonly record struct OrderHeaderId : IEntityId<OrderHeaderId>
 {
-    private OrderHeaderId(Guid id)
+    private OrderHeaderId(Ulid id)
     {
         Value = id;
     }
 
-    public Guid Value { get; init; }
+    public Ulid Value { get; init; }
 
     public static OrderHeaderId New()
     {
-        return new OrderHeaderId(Guid.NewGuid());
+        return new OrderHeaderId(Ulid.NewUlid());
     }
 
-    public static OrderHeaderId Create(Guid id)
+    public static OrderHeaderId Create(Ulid id)
     {
         return new OrderHeaderId(id);
     }

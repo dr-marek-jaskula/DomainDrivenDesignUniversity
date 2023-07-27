@@ -24,6 +24,6 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(OK);
 
         var actual = response.DeserializeResponseResult<AddReviewResponse>();
-        actual.Id.Should().NotBeEmpty();
+        actual.Id.Should().NotBe(Ulid.Empty);
     }
 }

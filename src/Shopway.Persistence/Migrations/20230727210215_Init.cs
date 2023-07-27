@@ -27,10 +27,10 @@ namespace Shopway.Persistence.Migrations
                 schema: "Master",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Gender = table.Column<string>(type: "VarChar(7)", nullable: false),
+                    Gender = table.Column<string>(type: "VarChar(6)", nullable: false),
                     Rank = table.Column<string>(type: "VarChar(8)", nullable: false, defaultValue: "Standard"),
                     DateOfBirth = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
@@ -38,7 +38,7 @@ namespace Shopway.Persistence.Migrations
                     UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
                     UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    UserId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                    UserId = table.Column<string>(type: "Char(26)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +50,7 @@ namespace Shopway.Persistence.Migrations
                 schema: "Outbox",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     Type = table.Column<string>(type: "VarChar(100)", nullable: false),
                     Content = table.Column<string>(type: "VarChar(5000)", nullable: false),
                     OccurredOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -67,7 +67,7 @@ namespace Shopway.Persistence.Migrations
                 schema: "Outbox",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -80,13 +80,13 @@ namespace Shopway.Persistence.Migrations
                 schema: "Shopway",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     Status = table.Column<string>(type: "VarChar(11)", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
                     UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    OrderHeaderId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                    OrderHeaderId = table.Column<string>(type: "Char(26)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -112,7 +112,7 @@ namespace Shopway.Persistence.Migrations
                 schema: "Shopway",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Revision = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
@@ -146,14 +146,14 @@ namespace Shopway.Persistence.Migrations
                 schema: "Master",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ZipCode = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Building = table.Column<int>(type: "int", maxLength: 1000, nullable: false),
                     Flat = table.Column<int>(type: "int", maxLength: 1000, nullable: true),
-                    CustomerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                    CustomerId = table.Column<string>(type: "Char(26)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,7 +172,7 @@ namespace Shopway.Persistence.Migrations
                 schema: "Master",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
@@ -180,7 +180,7 @@ namespace Shopway.Persistence.Migrations
                     CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
                     UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
                     PasswordHash = table.Column<string>(type: "NChar(514)", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "UniqueIdentifier", nullable: true)
+                    CustomerId = table.Column<string>(type: "Char(26)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -198,12 +198,12 @@ namespace Shopway.Persistence.Migrations
                 schema: "Shopway",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Stars = table.Column<byte>(type: "TinyInt", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(600)", maxLength: 600, nullable: false),
-                    ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    ProductId = table.Column<string>(type: "Char(26)", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
@@ -253,15 +253,15 @@ namespace Shopway.Persistence.Migrations
                 schema: "Shopway",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false),
                     Status = table.Column<string>(type: "VarChar(10)", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
                     UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    PaymentId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                    PaymentId = table.Column<string>(type: "Char(26)", nullable: false),
+                    UserId = table.Column<string>(type: "Char(26)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -288,7 +288,7 @@ namespace Shopway.Persistence.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<byte>(type: "TinyInt", nullable: false),
-                    UserId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                    UserId = table.Column<string>(type: "Char(26)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -314,15 +314,15 @@ namespace Shopway.Persistence.Migrations
                 schema: "Shopway",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    Id = table.Column<string>(type: "Char(26)", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: false),
                     UpdatedOn = table.Column<DateTimeOffset>(type: "DateTimeOffset(2)", nullable: true),
                     CreatedBy = table.Column<string>(type: "VarChar(30)", nullable: false),
                     UpdatedBy = table.Column<string>(type: "VarChar(30)", nullable: true),
-                    ProductId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    OrderHeaderId = table.Column<Guid>(type: "UniqueIdentifier", nullable: false)
+                    ProductId = table.Column<string>(type: "Char(26)", nullable: false),
+                    OrderHeaderId = table.Column<string>(type: "Char(26)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -420,10 +420,18 @@ namespace Shopway.Persistence.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Review_ProductId",
+                name: "UX_Product_ProductName_Revision",
+                schema: "Shopway",
+                table: "Product",
+                columns: new[] { "ProductName", "Revision" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "UX_Review_ProductId_Title",
                 schema: "Shopway",
                 table: "Review",
-                column: "ProductId");
+                columns: new[] { "ProductId", "Title" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RolePermission_PermissionId",
@@ -457,7 +465,8 @@ namespace Shopway.Persistence.Migrations
                 schema: "Master",
                 table: "User",
                 column: "Username",
-                unique: true);
+                unique: true)
+                .Annotation("SqlServer:Include", new[] { "Email" });
         }
 
         /// <inheritdoc />

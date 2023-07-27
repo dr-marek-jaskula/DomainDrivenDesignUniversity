@@ -4,19 +4,19 @@ namespace Shopway.Domain.EntityIds;
 
 public readonly record struct ReviewId : IEntityId<ReviewId>
 {
-    private ReviewId(Guid id)
+    private ReviewId(Ulid id)
     {
         Value = id;
     }
 
-    public Guid Value { get; init; }
+    public Ulid Value { get; init; }
 
     public static ReviewId New()
     {
-        return new ReviewId(Guid.NewGuid());
+        return new ReviewId(Ulid.NewUlid());
     }
 
-    public static ReviewId Create(Guid id)
+    public static ReviewId Create(Ulid id)
     {
         return new ReviewId(id);
     }
