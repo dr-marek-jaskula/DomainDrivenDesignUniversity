@@ -15,6 +15,7 @@ public sealed class EntityIdConverter<TEntityId> : TypeConverter
     where TEntityId : struct, IEntityId
 {
     private readonly Type _type;
+    //Cache the method for performance reasons
     private readonly Func<Ulid, TEntityId> _createIdMethod;
 
     public EntityIdConverter(Type type)
