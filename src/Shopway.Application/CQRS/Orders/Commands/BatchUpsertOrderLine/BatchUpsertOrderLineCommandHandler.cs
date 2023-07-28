@@ -67,8 +67,6 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
         InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader);
         UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);
 
-        _fusionCache.Update<OrderHeader, OrderHeaderId>(orderHeader);
-
         return responseEntries
             .ToBatchInsertResponse()
             .ToResult();

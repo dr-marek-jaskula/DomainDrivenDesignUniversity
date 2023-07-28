@@ -1,17 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Abstractions.Repositories;
+﻿using System.Linq.Expressions;
 using Shopway.Domain.Entities;
-using Shopway.Domain.EntityKeys;
 using Shopway.Domain.EntityIds;
-using Shopway.Persistence.Abstractions;
-using Shopway.Persistence.Framework;
-using Shopway.Persistence.Specifications.Products;
-using Shopway.Persistence.Utilities;
+using Shopway.Domain.EntityKeys;
 using Shopway.Domain.ValueObjects;
-using System.Linq.Expressions;
+using Shopway.Persistence.Utilities;
+using Shopway.Persistence.Framework;
+using Microsoft.EntityFrameworkCore;
+using Shopway.Persistence.Abstractions;
+using Shopway.Domain.Abstractions.Common;
+using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Specifications.Common;
 using static Shopway.Domain.Utilities.StringUtilities;
-using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Repositories;
 
@@ -92,7 +92,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
         var specification = ProductSpecification.ByNamesAndRevisions.Create(productNames, productRevisions);
 
-        //We query too many products, because we query all combinations of ProductName and Revision. Therefore, we will need to filter them
+        //We query too many products: all combinations of ProductName and Revision. Therefore, we will need to filter them
         var productsToFilter = await UseSpecification(specification)
             .ToListAsync(cancellationToken);
 
@@ -142,11 +142,13 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     )
         where TResponse : class, IHasCursor
     {
+        Expression<Func<Product, bool>> cursorFilter = product => product.Id >= ProductId.Create(page.Cursor);
+
         var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create
         (
             staticFilter,
             dynamicFilter,
-            product => product.Id >= ProductId.Create(page.Cursor),
+            cursorFilter,
             staticSort,
             dynamicSort, 
             mapping: mapping, 
