@@ -28,7 +28,7 @@ We can examine handling the in-domain validation in for instance "CreateProductC
 Ulid is a Universally Unique Lexicographically Sortable Identifier. 
 
 The biggest advantage of Ulid is that is it Lexicographically sortable. This is very important feature, because it allows 
-to use cursor pagination and therefore significantly increase the performance or some queries.
+to use cursor pagination and therefore significantly increase the performance of some queries.
 
 Other advantages of ulid:
 - Canonically encoded as a 26 character string
@@ -52,7 +52,7 @@ To create a strongly typed id based on a given ulid, we use "Create" method. For
 
 Due to the fact that entity id is a record struct, we can use the '==' operator to compare ids.
 
-Ulid base EntityId allows the comparing two entities. Therefore, the IComparable intefrace is implemented for IEntityId. Nevertheless,
+Ulid base EntityId allows the comparing two entities. Therefore, the IComparable interface is implemented for IEntityId. Nevertheless,
 overriding the '<', '>', '>=', '<=' operator should be done both in the interface and for each concrete EntityId (for instance ProductId).
 
 ## Domain Event
