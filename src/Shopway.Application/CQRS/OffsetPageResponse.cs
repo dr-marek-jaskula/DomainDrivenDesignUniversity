@@ -44,7 +44,7 @@ public sealed record OffsetPageResponse<TValue> : IResponse
 
         if (CurrentPage > TotalPages && TotalItemsCount > 0)
         {
-            throw new BadRequestException($"Selected page '{CurrentPage}' is greater then total number of pages '{TotalPages}'");
+            throw new BadRequestException($"Selected page '{CurrentPage}' is greater than total number of pages '{TotalPages}'");
         }
 
         ItemsFrom = Math.Min(pageSize * (pageNumber - 1) + 1, totalCount);

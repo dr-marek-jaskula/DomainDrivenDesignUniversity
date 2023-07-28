@@ -27,8 +27,8 @@ We can examine handling the in-domain validation in for instance "CreateProductC
 
 Ulid is a Universally Unique Lexicographically Sortable Identifier. 
 
-The biggest advantage of Ulid is that is it Lexicographically sortable. This is very important feature, because we can 
-then apply cursor pagination and significantly increase the performance or some queries.
+The biggest advantage of Ulid is that is it Lexicographically sortable. This is very important feature, because it allows 
+to use cursor pagination and therefore significantly increase the performance or some queries.
 
 Other advantages of ulid:
 - Canonically encoded as a 26 character string
@@ -37,7 +37,7 @@ Other advantages of ulid:
 - No special characters (URL safe)
 - Monotonic sort order (correctly detects and handles the same millisecond)
 
-Moreover, we use [Ulid](https://github.com/Cysharp/Ulid) NuGet Package that is more efficient then guid.
+Moreover, we use [Ulid](https://github.com/Cysharp/Ulid) NuGet Package that provides more efficient operation on Uilds than similar ones on Guids.
 
 ## EntityIds and EntityIdConverter
 

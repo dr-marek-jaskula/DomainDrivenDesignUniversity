@@ -29,7 +29,7 @@ public sealed class CursorPageResponse<TValue> : IResponse
 
         if (notLastPage && invalidCursor)
         {
-            throw new BadRequestException($"Selected cursor '{currentCursor}' is greater then next cursor '{nextCursor}'");
+            throw new BadRequestException($"Selected cursor '{currentCursor}' is greater than next cursor '{nextCursor}'");
         }
 
         CurrentCursor = currentCursor;
