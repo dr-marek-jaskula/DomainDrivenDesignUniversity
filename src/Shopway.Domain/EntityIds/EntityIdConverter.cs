@@ -15,10 +15,12 @@ public sealed class EntityIdConverter<TEntityId> : TypeConverter
     where TEntityId : struct, IEntityId
 {
     private readonly Type _type;
+    private readonly Func<Ulid, TEntityId> _createIdMethod;
 
     public EntityIdConverter(Type type)
     {
         _type = type;
+        _createIdMethod = _type.GetMethod(nameof(IEntityId<object>.Create))!.CreateDelegate<Func<Ulid, TEntityId>>();
     }
 
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
@@ -41,9 +43,7 @@ public sealed class EntityIdConverter<TEntityId> : TypeConverter
     {
         if (value is string @string)
         {
-            var ulid = Ulid.Parse(@string);
-            var createMethod = _type.GetMethod(nameof(IEntityId<object>.Create));
-            return createMethod!.Invoke(null, new object[] { ulid });
+            return _createIdMethod(Ulid.Parse(@string));
         }
 
         return base.ConvertFrom(context, culture, value);
