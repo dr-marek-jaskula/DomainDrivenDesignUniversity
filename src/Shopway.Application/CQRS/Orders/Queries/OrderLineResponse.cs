@@ -1,6 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 
-namespace Shopway.Application.CQRS.Orders;
+namespace Shopway.Application.CQRS.Orders.Queries;
 
 public sealed record OrderLineResponse
 (
@@ -11,5 +11,5 @@ public sealed record OrderLineResponse
     string Revision,
     decimal ProductPrice,
     decimal OrderLineCost
-) 
+)
     : IResponse;
