@@ -4,18 +4,19 @@ using Shopway.Domain.Abstractions.Common;
 namespace Shopway.Application.Abstractions.CQRS;
 
 /// <summary>
-/// Represents the page query handler interface
+/// Represents the page query interface
 /// </summary>
-/// <typeparam name="TQuery">The page query type</typeparam>
 /// <typeparam name="TResponse">The page query response type</typeparam>
 /// <typeparam name="TFilter">The provided filter type</typeparam>
 /// <typeparam name="TSortBy">The provided order type</typeparam>
-/// <typeparam name="TPage">The provided page type</typeparam>
-public interface IPageQueryHandler<TQuery, TResponse, TFilter, TSortBy, TPage> : IQueryHandler<TQuery, PageResponse<TResponse>>
-    where TQuery : IPageQuery<TResponse, TFilter, TSortBy, TPage>
+/// <typeparam name="TPage">The provided cursor page type</typeparam>
+public interface ICursorPageQuery<TResponse, TFilter, TSortBy, TPage> : IQuery<CursorPageResponse<TResponse>>
     where TResponse : IResponse
     where TFilter : IFilter
     where TSortBy : ISortBy
-    where TPage : IPage
+    where TPage : ICursorPage
 {
+    TPage Page { get; }
+    TFilter? Filter { get; }
+    TSortBy? SortBy { get; }
 }

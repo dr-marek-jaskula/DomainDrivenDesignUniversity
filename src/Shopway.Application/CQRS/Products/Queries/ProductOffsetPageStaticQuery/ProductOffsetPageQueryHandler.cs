@@ -7,18 +7,18 @@ using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Persistence.Specifications.Products.Sorting;
 using Shopway.Persistence.Specifications.Products.Filtering;
 
-namespace Shopway.Application.CQRS.Products.Queries.QueryProduct;
+namespace Shopway.Application.CQRS.Products.Queries.QueryOffsetPageProduct;
 
-internal sealed class ProductPageQueryHandler : IPageQueryHandler<ProductPageQuery, ProductResponse, ProductStaticFilter, ProductStaticSortBy, Page>
+internal sealed class ProductOffsetPageQueryHandler : IOffsetPageQueryHandler<ProductOffsetPageQuery, ProductResponse, ProductStaticFilter, ProductStaticSortBy, OffsetPage>
 {
     private readonly IProductRepository _productRepository;
 
-    public ProductPageQueryHandler(IProductRepository productRepository)
+    public ProductOffsetPageQueryHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
     }
 
-    public async Task<IResult<PageResponse<ProductResponse>>> Handle(ProductPageQuery pageQuery, CancellationToken cancellationToken)
+    public async Task<IResult<OffsetPageResponse<ProductResponse>>> Handle(ProductOffsetPageQuery pageQuery, CancellationToken cancellationToken)
     {
         var page = await _productRepository
             .PageAsync(pageQuery.Page, cancellationToken, staticFilter: pageQuery.Filter, staticSort: pageQuery.SortBy, mapping: ProductMapping.ProductResponse);

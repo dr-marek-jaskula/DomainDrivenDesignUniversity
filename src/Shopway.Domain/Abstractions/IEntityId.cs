@@ -4,21 +4,26 @@ using System.ComponentModel;
 namespace Shopway.Domain.Abstractions;
 
 [TypeConverter(typeof(EntityIdConverter))]
-public interface IEntityId<out TEntityId> : IEntityId
+public interface IEntityId<TEntityId> : IEntityId
 {
     /// <summary>
-    /// Create a new entity id using given guid
+    /// Create a new entity id using given ulid
     /// </summary>
-    abstract static TEntityId Create(Guid id);
+    abstract static TEntityId Create(Ulid id);
 
     /// <summary>
-    /// Create a new entity id using randomly generated guid
+    /// Create a new entity id using randomly generated ulid
     /// </summary>
     abstract static TEntityId New();
 }
 
-public interface IEntityId
+public interface IEntityId : IComparable<IEntityId>
 {
-    const string Id =  nameof(Id);
-    Guid Value { get; init; }
+    const string Id = nameof(Id);
+    Ulid Value { get; init; }
+
+    static bool operator >(IEntityId a, IEntityId b) => a.CompareTo(b) is 1;
+    static bool operator <(IEntityId a, IEntityId b) => a.CompareTo(b) is -1;
+    static bool operator >=(IEntityId a, IEntityId b) => a.CompareTo(b) >= 0;
+    static bool operator <=(IEntityId a, IEntityId b) => a.CompareTo(b) <= 0;
 }

@@ -4,19 +4,19 @@ namespace Shopway.Domain.EntityIds;
 
 public readonly record struct UserId : IEntityId<UserId>
 {
-    private UserId(Guid id)
+    private UserId(Ulid id)
     {
         Value = id;
     }
 
-    public Guid Value { get; init; }
+    public Ulid Value { get; init; }
 
     public static UserId New()
     {
-        return new UserId(Guid.NewGuid());
+        return new UserId(Ulid.NewUlid());
     }
 
-    public static UserId Create(Guid id)
+    public static UserId Create(Ulid id)
     {
         return new UserId(id);
     }
@@ -30,4 +30,24 @@ public readonly record struct UserId : IEntityId<UserId>
     {
         return Value.ToString();
     }
+
+    public int CompareTo(IEntityId? other)
+    {
+        if (other is null)
+        {
+            return 1;
+        }
+
+        if (other is not UserId otherUserId)
+        {
+            throw new ArgumentNullException($"IEntity is not {GetType().FullName}");
+        }
+
+        return Value.CompareTo(otherUserId.Value);
+    }
+
+    public static bool operator >(UserId a, UserId b) => a.CompareTo(b) is 1;
+    public static bool operator <(UserId a, UserId b) => a.CompareTo(b) is -1;
+    public static bool operator >=(UserId a, UserId b) => a.CompareTo(b) >= 0;
+    public static bool operator <=(UserId a, UserId b) => a.CompareTo(b) <= 0;
 }

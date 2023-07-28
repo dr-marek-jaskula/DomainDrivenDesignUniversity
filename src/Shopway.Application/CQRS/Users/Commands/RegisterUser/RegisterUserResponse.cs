@@ -4,5 +4,5 @@ namespace Shopway.Application.CQRS.Users.Commands.RegisterUser;
 
 public sealed record RegisterUserResponse
 (
-    Guid Id
+    Ulid Id
 ) : IResponse;

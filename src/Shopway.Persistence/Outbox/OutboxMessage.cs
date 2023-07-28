@@ -2,7 +2,7 @@
 
 public sealed class OutboxMessage
 {
-    public required Guid Id { get; set; }
+    public required Ulid Id { get; set; }
 
     public required string Type { get; set; }
 

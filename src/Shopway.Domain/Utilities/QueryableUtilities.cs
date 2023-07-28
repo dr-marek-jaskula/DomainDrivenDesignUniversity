@@ -122,7 +122,7 @@ public static class QueryableUtilities
             .Take(pageSize);
     }
 
-    public static IQueryable<TEntity> Page<TEntity>(this IQueryable<TEntity> queryable, IPage page)
+    public static IQueryable<TEntity> Page<TEntity>(this IQueryable<TEntity> queryable, IOffsetPage page)
     {
         return queryable.Page(page.PageSize, page.PageNumber);
     }

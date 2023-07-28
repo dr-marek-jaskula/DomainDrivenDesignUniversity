@@ -6,6 +6,7 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
+using static Shopway.Persistence.Constants.NumberConstants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -19,7 +20,7 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
 
         builder.Property(u => u.Id)
             .HasConversion<UserIdConverter, UserIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.ConfigureAuditableEntity();
 

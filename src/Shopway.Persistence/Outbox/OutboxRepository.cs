@@ -71,7 +71,7 @@ public sealed class OutboxRepository : RepositoryBase, IOutboxRepository
     {
         return new OutboxMessage
         {
-            Id = Guid.NewGuid(),
+            Id = Ulid.NewUlid(),
             Type = domainEvent.GetType().Name,
             Content = domainEvent.Serialize(TypeNameHandling.All),
             OccurredOn = DateTimeOffset.UtcNow

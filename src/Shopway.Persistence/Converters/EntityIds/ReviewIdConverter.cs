@@ -4,9 +4,9 @@ using Shopway.Domain.EntityIds;
 
 namespace Shopway.Persistence.Converters.EntityIds;
 
-public sealed class ReviewIdConverter : ValueConverter<ReviewId, Guid>
+public sealed class ReviewIdConverter : ValueConverter<ReviewId, string>
 {
-    public ReviewIdConverter() : base(id => id.Value, guid => ReviewId.Create(guid)) { }
+    public ReviewIdConverter() : base(id => id.Value.ToString(), ulid => ReviewId.Create(Ulid.Parse(ulid))) { }
 }
 
 public sealed class ReviewIdComparer : ValueComparer<ReviewId>

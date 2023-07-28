@@ -2,9 +2,9 @@
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
 using Shopway.Application.Abstractions.CQRS;
-using static Shopway.Application.Constants.PageConstants;
 using static Shopway.Application.Constants.SortConstants;
 using static Shopway.Application.Constants.FilterConstants;
+using static Shopway.Application.Constants.PageConstants;
 using static Shopway.Domain.Utilities.SortByEntryUtilities;
 using static Shopway.Domain.Utilities.FilterByEntryUtilities;
 using static Shopway.Persistence.Constants.SpecificationConstants;
@@ -12,16 +12,17 @@ using static Shopway.Persistence.Constants.SpecificationConstants;
 namespace Shopway.Application.Abstractions;
 
 /// <summary>
-/// A generic page query validator, created to encapsulate common page query validation logic
+/// A generic offset page query validator, created to encapsulate common offset page query validation logic
 /// </summary>
-internal abstract class PageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TPage> : AbstractValidator<TPageQuery>
+internal abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TPage> : AbstractValidator<TPageQuery>
     where TResponse : IResponse
     where TFilter : IFilter
     where TSortBy : ISortBy
-    where TPage : IPage
-    where TPageQuery : IPageQuery<TResponse, TFilter, TSortBy, TPage>
+    where TPage : IOffsetPage
+    where TPageQuery : IOffsetPageQuery<TResponse, TFilter, TSortBy, TPage>
 {
-    public PageQueryValidator()
+    public OffsetPageQueryValidator() 
+        : base()
     {
         RuleFor(query => query.Page.PageNumber)
             .GreaterThanOrEqualTo(1);

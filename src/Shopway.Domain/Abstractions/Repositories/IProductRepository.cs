@@ -35,7 +35,7 @@ public interface IProductRepository
 
     Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
-        IPage page,
+        IOffsetPage page,
         CancellationToken cancellationToken,
         IDynamicFilter<Product>? dynamicFilter = null,
         IStaticFilter<Product>? staticFilter = null,
@@ -44,6 +44,19 @@ public interface IProductRepository
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
     );
+
+    Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    (
+        ICursorPage page,
+        CancellationToken cancellationToken,
+        IDynamicFilter<Product>? dynamicFilter = null,
+        IStaticFilter<Product>? staticFilter = null,
+        IStaticSortBy<Product>? staticSort = null,
+        IDynamicSortBy<Product>? dynamicSort = null,
+        Expression<Func<Product, TResponse>>? mapping = null,
+        params Expression<Func<Product, object>>[] includes
+    )
+        where TResponse : class, IHasCursor;
 
     void Create(Product product);
 

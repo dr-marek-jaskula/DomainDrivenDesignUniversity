@@ -7,6 +7,7 @@ using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
+using static Shopway.Persistence.Constants.NumberConstants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -20,11 +21,10 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
 
         builder.Property(r => r.Id)
             .HasConversion<ReviewIdConverter, ReviewIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.Property(r => r.ProductId)
             .HasConversion<ProductIdConverter, ProductIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier)
             .IsRequired(true);
 
         builder.ConfigureAuditableEntity();

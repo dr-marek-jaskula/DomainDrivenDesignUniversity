@@ -7,6 +7,7 @@ using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.Enums;
 using static Shopway.Domain.Utilities.EnumUtilities;
+using static Shopway.Persistence.Constants.NumberConstants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -20,11 +21,11 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
 
         builder.Property(p => p.Id)
             .HasConversion<PaymentIdConverter, PaymentIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.Property(p => p.OrderHeaderId)
             .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.Property(p => p.Status)
             .HasConversion<PaymentStatusConverter>()

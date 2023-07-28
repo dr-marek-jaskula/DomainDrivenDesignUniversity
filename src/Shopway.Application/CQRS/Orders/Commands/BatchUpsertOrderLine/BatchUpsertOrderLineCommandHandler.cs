@@ -46,7 +46,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
 
         if (invalidProductIds.NotNullOrEmpty())
         {
-            return Result.Failure<BatchUpsertOrderLineResponse>(InvalidReferences(invalidProductIds.GetGuids(), nameof(Product)));
+            return Result.Failure<BatchUpsertOrderLineResponse>(InvalidReferences(invalidProductIds.GetUlids(), nameof(Product)));
         }
 
         var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);

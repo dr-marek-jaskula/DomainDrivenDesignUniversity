@@ -7,4 +7,5 @@ internal static class NumberConstants
     internal const int DiscountPrecision = 3;
     internal const int DiscountScale = 2;
     internal const int PhoneNumberMaxLenght = 9;
+    internal const int UlidCharLenght = 26;
 }

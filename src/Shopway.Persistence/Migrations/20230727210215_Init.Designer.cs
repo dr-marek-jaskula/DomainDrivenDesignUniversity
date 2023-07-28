@@ -12,8 +12,8 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    [Migration("20230602105338_Unique_Indexes")]
-    partial class Unique_Indexes
+    [Migration("20230727210215_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,8 +27,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Customer", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -48,7 +48,8 @@ namespace Shopway.Persistence.Migrations
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("VarChar(6)");
+                        .HasColumnType("VarChar(6)")
+                        .HasColumnName("Gender");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -66,7 +67,8 @@ namespace Shopway.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("VarChar(8)")
-                        .HasDefaultValue("Standard");
+                        .HasDefaultValue("Standard")
+                        .HasColumnName("Rank");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("VarChar(30)");
@@ -74,8 +76,9 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("Char(26)");
 
                     b.HasKey("Id");
 
@@ -84,8 +87,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.OrderHeader", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -94,8 +97,9 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
-                    b.Property<Guid>("PaymentId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("PaymentId")
+                        .IsRequired()
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -112,8 +116,9 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("Char(26)");
 
                     b.HasKey("Id");
 
@@ -127,8 +132,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.OrderLine", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<int>("Amount")
                         .HasColumnType("int")
@@ -146,11 +151,13 @@ namespace Shopway.Persistence.Migrations
                         .HasColumnType("decimal(3,2)")
                         .HasColumnName("Discount");
 
-                    b.Property<Guid>("OrderHeaderId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("OrderHeaderId")
+                        .IsRequired()
+                        .HasColumnType("Char(26)");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("VarChar(30)");
@@ -169,8 +176,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Payment", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -179,8 +186,9 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
-                    b.Property<Guid>("OrderHeaderId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("OrderHeaderId")
+                        .IsRequired()
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -199,8 +207,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Product", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -248,8 +256,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.Review", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -264,8 +272,9 @@ namespace Shopway.Persistence.Migrations
                         .HasColumnType("nvarchar(600)")
                         .HasColumnName("Description");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("Char(26)");
 
                     b.Property<decimal>("Stars")
                         .HasColumnType("TinyInt")
@@ -303,8 +312,8 @@ namespace Shopway.Persistence.Migrations
                     b.Property<byte>("RoleId")
                         .HasColumnType("TinyInt");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("Char(26)");
 
                     b.HasKey("RoleId", "UserId");
 
@@ -315,8 +324,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Domain.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -325,8 +334,8 @@ namespace Shopway.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
 
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("UniqueIdentifier");
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -527,9 +536,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Persistence.Outbox.OutboxMessage", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -555,8 +563,8 @@ namespace Shopway.Persistence.Migrations
 
             modelBuilder.Entity("Shopway.Persistence.Outbox.OutboxMessageConsumer", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
@@ -570,9 +578,8 @@ namespace Shopway.Persistence.Migrations
                 {
                     b.OwnsOne("Shopway.Domain.ValueObjects.Address", "Address", b1 =>
                         {
-                            b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<string>("Id")
+                                .HasColumnType("nvarchar(450)");
 
                             b1.Property<int>("Building")
                                 .HasMaxLength(1000)
@@ -588,8 +595,9 @@ namespace Shopway.Persistence.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("UniqueIdentifier");
+                            b1.Property<string>("CustomerId")
+                                .IsRequired()
+                                .HasColumnType("Char(26)");
 
                             b1.Property<int?>("Flat")
                                 .HasMaxLength(1000)

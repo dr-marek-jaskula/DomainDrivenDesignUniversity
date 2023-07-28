@@ -89,4 +89,4 @@ Note: Alternative naming convention: switch T2 with T3:
 
 Use the postman collection to get all endpoints for postman. 
 
-Replace variables current values like "validProductGuid" or "validReviewGuid" to your custom ones.
+Replace variables current values like "validProductUlid" or "validReviewUlid" to your custom ones.

@@ -85,6 +85,15 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
+    internal SpecificationBase<TEntity, TEntityId> AddFilter(Expression<Func<TEntity, bool>>? filterExpression)
+    {
+        if (filterExpression is not null)
+        {
+            FilterExpressions.Add(filterExpression);
+        }
+        return this;
+    }
+
     internal SpecificationBase<TEntity, TEntityId> AddFilters(params Expression<Func<TEntity, bool>>[] filterExpressions)
     {
         foreach (var filterExpression in filterExpressions)

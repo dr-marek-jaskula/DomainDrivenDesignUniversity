@@ -34,6 +34,14 @@ public abstract class RepositoryBase
             queryable = queryable.Include(includeExpression);
         }
 
+        if (specification.FilterExpressions.NotNullOrEmpty())
+        {
+            foreach (var filter in specification.FilterExpressions)
+            {
+                queryable = queryable.Where(filter);
+            }
+        }
+
         if (specification.StaticFilter is not null)
         {
             queryable = specification.StaticFilter.Apply(queryable);
@@ -42,14 +50,6 @@ public abstract class RepositoryBase
         if (specification.DynamicFilter is not null)
         {
             queryable = specification.DynamicFilter.Apply(queryable);
-        }
-
-        if (specification.FilterExpressions.NotNullOrEmpty())
-        {
-            foreach (var filter in specification.FilterExpressions)
-            {
-                queryable = queryable.Where(filter);
-            }
         }
 
         if (specification.DynamicSortBy is not null)
