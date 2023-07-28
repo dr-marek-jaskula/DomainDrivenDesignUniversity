@@ -4,36 +4,26 @@ services:
   ddduniversitydb:
     container_name: ddduniversitydb
     environment:
-      MSSQL_SA_PASSWORD: "DDDUniversity123$"
-      ACCEPT_EULA: "Y"
-    #env_file:
-    #  - docker-mssql.env
+      - SA_PASSWORD=DDDUniversity1233
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
     restart: always
     networks:
-      - db-net
+      - db_net
     ports:
-      - "1434:1433" #ports are modified because I have installed SQL Server locally
+      - "1434:1433" #external port was modified to 1434, because I have installed SQL Server locally, so the port 1433 is already used
     volumes:
       - ddduniversity_data:/var/opt/mssql
-
 
   shopway.app:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity123$;TrustServerCertificate=True;"
-      - "ConnectionStrings:TestConnection=Server=ddduniversitydb=DDDUniversityTest;User Id=sa;Password=DDDUniversity123$;TrustServerCertificate=True;"
-    #env_file:
-    #  - docker-shopway.env
+      - "ConnectionStrings__DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
+      - "ConnectionStrings__TestConnection=Server=ddduniversitydb;Database=DDDUniversityTest;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
     restart: unless-stopped
     networks:
-      - db-net
+      - db_net
     depends_on:
       - ddduniversitydb
     ports:
       - "8080:80"
-      - "8443:443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    secrets:
-      - db_ConnectionString

@@ -15,7 +15,13 @@ public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
     {
         var factory = new ShopwayDbContextFactory();
         _context = factory.CreateDbContext(new[] { TestConnection });
-        _context.Database.Migrate();
+
+        var pendingMigrations = _context.Database.GetPendingMigrations();
+
+        if (pendingMigrations.Any())
+        {
+            _context.Database.Migrate();
+        }
 
         var testContext = new TestContextService();
         var outboxRepository = new OutboxRepository(_context);

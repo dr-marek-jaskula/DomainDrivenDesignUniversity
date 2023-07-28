@@ -11,13 +11,7 @@ services:
       dockerfile: src/Shopway.App/Dockerfile
 
 networks:
-  db-net:
-    name: db-network
+  db_net:
 
 volumes:
   ddduniversity_data:
-    name: ddduniversity-volume
-
-secrets:
-  db_ConnectionString:
-    file: connectionStrings.json

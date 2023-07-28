@@ -14,7 +14,5 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
-    <None Include="docker-mssql.env" />
-    <None Include="docker-shopway.env" />
   </ItemGroup>
 </Project>
