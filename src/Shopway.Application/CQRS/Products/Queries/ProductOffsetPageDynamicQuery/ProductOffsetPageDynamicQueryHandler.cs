@@ -7,18 +7,18 @@ using Shopway.Persistence.Specifications.Products.Sorting;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common;
 
-namespace Shopway.Application.CQRS.Products.Queries.QueryProductByExpression;
+namespace Shopway.Application.CQRS.Products.Queries.DynamicOffsetProductQuery;
 
-internal sealed class ProductPageDynamicQueryHandler : IPageQueryHandler<ProductPageDynamicQuery, ProductResponse, ProductDynamicFilter, ProductDynamicSortBy, Page>
+internal sealed class ProductOffsetPageDynamicQueryHandler : IOffsetPageQueryHandler<ProductOffsetPageDynamicQuery, ProductResponse, ProductDynamicFilter, ProductDynamicSortBy, OffsetPage>
 {
     private readonly IProductRepository _productRepository;
 
-    public ProductPageDynamicQueryHandler(IProductRepository productRepository)
+    public ProductOffsetPageDynamicQueryHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
     }
 
-    public async Task<IResult<PageResponse<ProductResponse>>> Handle(ProductPageDynamicQuery pageQuery, CancellationToken cancellationToken)
+    public async Task<IResult<OffsetPageResponse<ProductResponse>>> Handle(ProductOffsetPageDynamicQuery pageQuery, CancellationToken cancellationToken)
     {
         var page = await _productRepository
             .PageAsync(pageQuery.Page, cancellationToken, dynamicFilter: pageQuery.Filter, dynamicSort: pageQuery.SortBy, mapping: ProductMapping.ProductResponse);

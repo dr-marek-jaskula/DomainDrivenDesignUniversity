@@ -6,15 +6,16 @@ using Shopway.Application.CQRS.Products.Queries.GetProductById;
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
-using Shopway.Application.CQRS.Products.Queries.QueryProduct;
+using Shopway.Application.CQRS.Products.Queries.QueryOffsetPageProduct;
 using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
 using Microsoft.AspNetCore.Http;
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Application.CQRS;
 using Shopway.Domain.EntityKeys;
 using Shopway.Application.CQRS.Products.Queries.GetProductByKey;
-using Shopway.Application.CQRS.Products.Queries.GetProductsDictionary;
-using Shopway.Application.CQRS.Products.Queries.QueryProductByExpression;
+using Shopway.Application.CQRS.Products.Queries.GetProductsOffsetDictionary;
+using Shopway.Application.CQRS.Products.Queries.DynamicOffsetProductQuery;
+using Shopway.Application.CQRS.Products.Queries.GetProductsCursorDictionary;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -74,10 +75,26 @@ public sealed partial class ProductsController : ApiController
         return Ok(response);
     }
 
-    [HttpPost("query/dictionary")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<DictionaryResponseEntry>))]
+    [HttpPost("query/dictionary/offset")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OffsetPageResponse<DictionaryResponseEntry>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> QueryProductsDictionary([FromBody] ProductDictionaryPageQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> QueryProductsOffsetDictionary([FromBody] ProductDictionaryOffsetPageQuery query, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(query, cancellationToken);
+
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
+    }
+
+
+    [HttpPost("query/dictionary/cursor")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CursorPageResponse<DictionaryResponseEntry>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> QueryProductsCursorDictionary([FromBody] ProductDictionaryCursorPageQuery query, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
 
@@ -92,9 +109,9 @@ public sealed partial class ProductsController : ApiController
     //These static or dynamic suffixes are only for tutorial purpose
 
     [HttpPost("query/static")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OffsetPageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> StaticQueryProducts([FromBody] ProductPageQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> StaticQueryProducts([FromBody] ProductOffsetPageQuery query, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
 
@@ -107,9 +124,9 @@ public sealed partial class ProductsController : ApiController
     }
 
     [HttpPost("query/dynamic")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<ProductResponse>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OffsetPageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<IActionResult> DynamicQueryProducts([FromBody] ProductPageDynamicQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> DynamicQueryProducts([FromBody] ProductOffsetPageDynamicQuery query, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(query, cancellationToken);
 

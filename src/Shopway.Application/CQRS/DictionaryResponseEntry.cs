@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.CQRS;
 
@@ -8,4 +9,4 @@ namespace Shopway.Application.CQRS;
 /// </summary>
 /// <param name="Id"></param>
 /// <param name="BusinessKey"></param>
-public record DictionaryResponseEntry(Ulid Id, IUniqueKey BusinessKey) : IResponse;
+public record DictionaryResponseEntry(Ulid Id, IUniqueKey BusinessKey) : IResponse, IHasCursor;

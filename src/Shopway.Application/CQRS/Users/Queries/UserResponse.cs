@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Abstractions;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.CQRS.Users.Queries;
 
@@ -9,4 +10,4 @@ public sealed record UserResponse
     string Email,
     Ulid? CustomerId
 )
-    : IResponse;
+    : IResponse, IHasCursor;

@@ -10,6 +10,8 @@ namespace Shopway.Persistence.Utilities;
 
 public static class QueryableUtilities
 {
+    private const int AdditionalRecordForCursor = 1;
+
     /// <summary>
     /// Get page items and total count
     /// </summary>
@@ -20,7 +22,7 @@ public static class QueryableUtilities
     public static async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
         this IQueryable<TResponse> queryable,
-        IPage page,
+        IOffsetPage page,
         CancellationToken cancellationToken
     )
     {
@@ -36,6 +38,35 @@ public static class QueryableUtilities
             .ToListAsync(cancellationToken);
 
         return (responses, totalCount);
+    }
+
+    /// <summary>
+    /// Get page items and the next cursor
+    /// </summary>
+    /// <typeparam name="TResponse">Response type to map to</typeparam>
+    /// <param name="queryable">Queryable</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Tuple of  items and next cursor. If the last record was reach, the Ulid.Empty is returned as next cursor</returns>
+    public static async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    (
+        this IQueryable<TResponse> queryable,
+        int take,
+        CancellationToken cancellationToken
+    )
+        where TResponse : class, IHasCursor
+    {
+        var responsesWithCursor = await queryable
+            .Take(take + AdditionalRecordForCursor)
+            .ToListAsync(cancellationToken);
+
+        var cursor = Ulid.Empty;
+        if (responsesWithCursor.Count > take)
+        {
+            cursor = responsesWithCursor.Last().Id;
+            responsesWithCursor = responsesWithCursor.SkipLast(1).ToList();
+        }
+
+        return (responsesWithCursor, cursor);
     }
 
     public static async Task<bool> AnyAsync<TEntity, TEntityId>

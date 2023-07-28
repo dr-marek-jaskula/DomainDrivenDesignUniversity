@@ -30,4 +30,24 @@ public readonly record struct PaymentId : IEntityId<PaymentId>
     {
         return Value.ToString();
     }
+
+    public int CompareTo(IEntityId? other)
+    {
+        if (other is null)
+        {
+            return 1;
+        }
+
+        if (other is not PaymentId otherPaymentId)
+        {
+            throw new ArgumentNullException($"IEntity is not {GetType().FullName}");
+        }
+
+        return Value.CompareTo(otherPaymentId.Value);
+    }
+
+    public static bool operator >(PaymentId a, PaymentId b) => a.CompareTo(b) is 1;
+    public static bool operator <(PaymentId a, PaymentId b) => a.CompareTo(b) is -1;
+    public static bool operator >=(PaymentId a, PaymentId b) => a.CompareTo(b) >= 0;
+    public static bool operator <=(PaymentId a, PaymentId b) => a.CompareTo(b) <= 0;
 }

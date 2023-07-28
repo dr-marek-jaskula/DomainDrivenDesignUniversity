@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Abstractions;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.CQRS.Products.Queries;
 
@@ -11,4 +12,4 @@ public sealed record ProductResponse
     string UomCode,
     IReadOnlyCollection<ReviewResponse> Reviews
 )
-    : IResponse;
+    : IResponse, IHasCursor;

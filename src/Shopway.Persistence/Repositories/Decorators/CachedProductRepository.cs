@@ -95,7 +95,23 @@ public sealed class CachedProductRepository : IProductRepository
         return _decorated.VerifyIdsAsync(ids, cancellationToken);
     }
 
-    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IPage page, CancellationToken cancellationToken, IDynamicFilter<Product>? dynamicFilter = null, IStaticFilter<Product>? staticFilter = null, IStaticSortBy<Product>? staticSort = null, IDynamicSortBy<Product>? dynamicSort = null, Expression<Func<Product, TResponse>>? mapping = null, params Expression<Func<Product, object>>[] includes)
+    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IOffsetPage page, CancellationToken cancellationToken, IDynamicFilter<Product>? dynamicFilter = null, IStaticFilter<Product>? staticFilter = null, IStaticSortBy<Product>? staticSort = null, IDynamicSortBy<Product>? dynamicSort = null, Expression<Func<Product, TResponse>>? mapping = null, params Expression<Func<Product, object>>[] includes)
+    {
+        return await _decorated.PageAsync
+        (
+            page,
+            cancellationToken,
+            dynamicFilter: dynamicFilter,
+            staticFilter: staticFilter,
+            staticSort: staticSort,
+            dynamicSort: dynamicSort,
+            mapping: mapping,
+            includes: includes
+        );
+    }
+
+    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>(ICursorPage page, CancellationToken cancellationToken, IDynamicFilter<Product>? dynamicFilter = null, IStaticFilter<Product>? staticFilter = null, IStaticSortBy<Product>? staticSort = null, IDynamicSortBy<Product>? dynamicSort = null, Expression<Func<Product, TResponse>>? mapping = null, params Expression<Func<Product, object>>[] includes)
+        where TResponse : class, IHasCursor
     {
         return await _decorated.PageAsync
         (

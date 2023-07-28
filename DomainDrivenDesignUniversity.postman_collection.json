@@ -550,7 +550,7 @@
 					"response": []
 				},
 				{
-					"name": "QueryProducts.Dictionary.Valid",
+					"name": "QueryProducts.Dictionary.Offset.Valid",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -564,7 +564,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/query/dictionary",
+							"raw": "https://localhost:7236/api/products/query/dictionary/offset",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -574,7 +574,40 @@
 								"api",
 								"products",
 								"query",
-								"dictionary"
+								"dictionary",
+								"offset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "QueryProducts.Dictionary.Cursor.Valid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"Cursor\": \"00000000000000000000000000\",\r\n    \"PageSize\": 5\r\n  },\r\n  \"Filter\" : {\r\n    \"LikeQuery\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7236/api/products/query/dictionary/cursor",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7236",
+							"path": [
+								"api",
+								"products",
+								"query",
+								"dictionary",
+								"cursor"
 							]
 						}
 					},

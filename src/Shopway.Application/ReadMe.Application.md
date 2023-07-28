@@ -33,6 +33,26 @@ There is not need to save changes inside handlers, because it is done in the tra
 Moreover, the pipeline provides the transaction scope, so if at least one database operation fail, all operations are rollbacked.
 Therefore in some cases, we return a task, which slightly increases the performance.
 
+## Paginations
+
+There are two types of paginations:
+
+1. Offset pagination (see **ProductDictionaryOffsetPageQueryHandler**)
+2. Cursor pagination (see **ProductDictionaryCursorPageQueryHandler**)
+
+Both of them have their advantages and disadvantages.
+
+Standard offset pagination can give us informations about items total count and total amout of pages. This technique is easy to implement and easy to maintain.
+In this methodology, we specify the **PageSize** and **PageNumber**. As a response, we obtain items with additional informations. We can also use approach of providing the **Limit** and **Offset**, if the team prefers that way.
+
+Cursor pagination is a way more efficient methodology when we struggle with massive databases. Nevertheless in this approach, we do not get the information about the total count. Thus, it is good for infinite scrolling.
+We specify the **PageSize** and the **Cursor** that is the **Ulid** (id) of the record from which we want to start from. 
+As a response, we get items and the next cursor which is the **Ulid** (id) of the next record. If we reached the last record, then we return the ```Ulid.Empty``` or Ulid of the last record (team should decide).
+For this project I use the ```Ulid.Empty``` as a next cursor if the last element was reached. Moreover, if we provide the ```Ulid.Empty``` as a cursor, we will retrieve all records. 
+If such behavior is undesirable, then we can validate the input to deny the ```Ulid.Empty``` as an input parameter (in ```CursorPageQueryValidator```). 
+
+Note: for cursor pagination the response must implement the **IHasCursor** interface.
+
 ## Mapping 
 
 Manual mapping is way faster than mapping done by external libraries like automapper. Therefore, manual mapping

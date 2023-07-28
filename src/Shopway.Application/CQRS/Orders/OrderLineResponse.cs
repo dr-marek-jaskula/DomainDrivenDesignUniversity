@@ -11,4 +11,5 @@ public sealed record OrderLineResponse
     string Revision,
     decimal ProductPrice,
     decimal OrderLineCost
-) : IResponse;
+) 
+    : IResponse;

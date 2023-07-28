@@ -104,7 +104,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
     public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
-        IPage page,
+        IOffsetPage page,
         CancellationToken cancellationToken,
         IDynamicFilter<Product>? dynamicFilter = null,
         IStaticFilter<Product>? staticFilter = null,
@@ -118,6 +118,7 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
         (
             staticFilter,
             dynamicFilter,
+            null,
             staticSort,
             dynamicSort, 
             mapping: mapping, 
@@ -126,6 +127,34 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
         return await UseSpecification(specification)
             .PageAsync(page, cancellationToken);
+    }
+
+    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    (
+        ICursorPage page,
+        CancellationToken cancellationToken,
+        IDynamicFilter<Product>? dynamicFilter = null,
+        IStaticFilter<Product>? staticFilter = null,
+        IStaticSortBy<Product>? staticSort = null,
+        IDynamicSortBy<Product>? dynamicSort = null,
+        Expression<Func<Product, TResponse>>? mapping = null,
+        params Expression<Func<Product, object>>[] includes
+    )
+        where TResponse : class, IHasCursor
+    {
+        var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create
+        (
+            staticFilter,
+            dynamicFilter,
+            product => product.Id >= ProductId.Create(page.Cursor),
+            staticSort,
+            dynamicSort, 
+            mapping: mapping, 
+            includes: includes
+        );
+
+        return await UseSpecification(specification)
+            .PageAsync(page.PageSize, cancellationToken);
     }
 
     public void Create(Product product)
