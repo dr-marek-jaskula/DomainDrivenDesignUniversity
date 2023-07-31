@@ -8,6 +8,8 @@ namespace Shopway.Infrastructure.Options;
 public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
 {
     private readonly string _configurationSectionName = "DatabaseOptions";
+    private readonly string _defaultConnection = "DefaultConnection";
+    private readonly string _testConnection = "TestConnection";
     private readonly IConfiguration _configuration;
     private readonly IWebHostEnvironment _environment;
 
@@ -22,12 +24,12 @@ public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
         if (_environment.IsProduction() is true)
         {
             options.ConnectionString = _configuration
-                .GetConnectionString("DefaultConnection");
+                .GetConnectionString(_defaultConnection);
         }
         else if (_environment.IsDevelopment() is true)
         {
             options.ConnectionString = _configuration
-                .GetConnectionString("TestConnection");
+                .GetConnectionString(_testConnection);
         }
 
         _configuration

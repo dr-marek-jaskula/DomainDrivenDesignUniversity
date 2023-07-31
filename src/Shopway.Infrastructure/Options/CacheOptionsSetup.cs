@@ -5,6 +5,7 @@ namespace Shopway.Infrastructure.Options;
 
 public sealed class CacheOptionsSetup : IConfigureOptions<CacheOptions>
 {
+    private readonly string _configurationSectionName = "CacheConnection";
     private readonly IConfiguration _configuration;
 
     public CacheOptionsSetup(IConfiguration configuration)
@@ -15,6 +16,6 @@ public sealed class CacheOptionsSetup : IConfigureOptions<CacheOptions>
     public void Configure(CacheOptions options)
     {
         options.ConnectionString = _configuration
-            .GetConnectionString("CacheConnection");
+            .GetConnectionString(_configurationSectionName);
     }
 }
