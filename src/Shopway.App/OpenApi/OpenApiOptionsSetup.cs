@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+﻿using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public sealed class ConfigureOpenApiOptions : IConfigureOptions<SwaggerGenOptions>
+public sealed class OpenApiOptionsSetup : IConfigureOptions<SwaggerGenOptions>
 {
     private readonly IApiVersionDescriptionProvider _provider;
 
-    public ConfigureOpenApiOptions(IApiVersionDescriptionProvider provider)
+    public OpenApiOptionsSetup(IApiVersionDescriptionProvider provider)
     {
         _provider = provider;
     }

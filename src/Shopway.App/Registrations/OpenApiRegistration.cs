@@ -10,7 +10,7 @@ public static class OpenApiRegistration
 {
     public static IServiceCollection RegisterOpenApi(this IServiceCollection services)
     {
-        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureOpenApiOptions>();
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, OpenApiOptionsSetup>();
 
         services.AddSwaggerGen(options =>
         {
