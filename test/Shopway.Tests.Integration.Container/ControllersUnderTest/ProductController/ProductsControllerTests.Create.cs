@@ -27,6 +27,6 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(BadRequest);
 
         var problemDetails = response.Deserialize<ValidationProblemDetails>();
-        problemDetails!.ShouldContain(AlreadyExists(productKey));
+        problemDetails!.ShouldConsistOf(AlreadyExists(productKey));
     }
 }
