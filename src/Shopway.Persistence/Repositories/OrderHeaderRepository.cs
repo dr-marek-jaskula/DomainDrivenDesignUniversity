@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Abstractions.Repositories;
+﻿using System.Linq.Expressions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
-using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Shopway.Persistence.Abstractions;
+using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Persistence.Specifications.OrderHeaders;
 
 namespace Shopway.Persistence.Repositories;
 
@@ -16,11 +17,9 @@ public sealed class OrderHeaderRepository : RepositoryBase, IOrderHeaderReposito
 
     public async Task<OrderHeader> GetByIdAsync(OrderHeaderId id, CancellationToken cancellationToken)
     {
-        return await _dbContext
-            .Set<OrderHeader>()
-            .Include(x => x.OrderLines)
-                .ThenInclude(line => line.Product)
-            .Include(x => x.Payment)
+        var specification = OrderHeaderSpecification.ById.WithOrderLines.AndProducts.Create(id);
+
+        return await UseSpecification(specification)
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
 

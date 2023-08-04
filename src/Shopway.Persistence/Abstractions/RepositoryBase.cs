@@ -29,6 +29,11 @@ public abstract class RepositoryBase
     {
         IQueryable<TEntity> queryable = _dbContext.Set<TEntity>();
 
+        if (specification.IncludeAction is not null)
+        {
+            queryable = specification.IncludeAction(queryable);
+        }
+
         foreach (var includeExpression in specification.IncludeExpressions)
         {
             queryable = queryable.Include(includeExpression);
@@ -85,6 +90,11 @@ public abstract class RepositoryBase
         if (specification.AsNoTracking)
         {
             queryable = queryable.AsNoTracking();
+        }
+
+        if (specification.AsTracking)
+        {
+            queryable = queryable.AsTracking();
         }
 
         if (specification.AsNoTrackingWithIdentityResolution)

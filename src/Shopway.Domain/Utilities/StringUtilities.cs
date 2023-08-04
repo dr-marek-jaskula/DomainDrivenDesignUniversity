@@ -72,6 +72,30 @@ public static class StringUtilities
         return string.Equals(input, compareTo, StringComparison.OrdinalIgnoreCase);
     }
 
+    public static bool NotContains(this string input, string value)
+    {
+        return input.Contains(value) is false;
+    }
+
+    public static string RemoveAll(this string input, params string[] removeStrings)
+    {
+        foreach (var removeString in removeStrings)
+        {
+            int index = input.IndexOf(removeString);
+
+            while (index > 0)
+            {
+                input = (index < 0)
+                    ? input
+                    : input.Remove(index, removeString.Length);
+
+                index = input.IndexOf(removeString);
+            }
+        }
+
+        return input;
+    }
+
     public static bool Contains(this string input, params string[] strings)
     {
         foreach (string @string in strings)
