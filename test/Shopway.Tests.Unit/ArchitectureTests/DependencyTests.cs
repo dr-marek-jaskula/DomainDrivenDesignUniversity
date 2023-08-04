@@ -3,10 +3,10 @@ using Shopway.Tests.Unit.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
 
+[Trait(nameof(UnitTest), UnitTest.Architecture)]
 public sealed class DependencyTests
 {
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Domain_ShouldNotHaveDependencyOnOtherProjects()
     {
         //Arrange
@@ -33,7 +33,6 @@ public sealed class DependencyTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Persistence_ShouldNotHaveDependencyOnOtherProjectsThanDomain()
     {
         //Arrange
@@ -59,7 +58,6 @@ public sealed class DependencyTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Infrastructure_ShouldNotHaveDependencyOnOtherProjectsThanDomainAndPersistence()
     {
         //Arrange
@@ -84,7 +82,6 @@ public sealed class DependencyTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Application_ShouldNotHaveDependencyOnOtherProjectsThanDomainAndPersistenceAndInfrastructure()
     {
         //Arrange
@@ -108,7 +105,6 @@ public sealed class DependencyTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Presentation_ShouldHaveDependencyDomainAndPersistenceAndInfrastructureAndApplication()
     {
         //Arrange

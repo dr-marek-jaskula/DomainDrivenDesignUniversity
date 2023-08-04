@@ -7,6 +7,7 @@ using static System.Threading.CancellationToken;
 
 namespace Shopway.Tests.Unit.LayerTests.Application.ProductHandlers;
 
+[Trait(nameof(UnitTest), UnitTest.Application)]
 public sealed class GetProductByIdQueryHandlerTests : TestBase
 {
     /// <summary>
@@ -21,7 +22,6 @@ public sealed class GetProductByIdQueryHandlerTests : TestBase
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Application)]
     public async Task GetById_ShouldReturnProduct_WhenProductExists()
 	{
         //Arrange

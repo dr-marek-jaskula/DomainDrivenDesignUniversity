@@ -6,6 +6,7 @@ using static Shopway.Domain.Utilities.ResultUtilities;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 
+[Trait(nameof(UnitTest), UnitTest.Utility)]
 public sealed class TypeUtilityTests
 {
     private sealed class ResultTestData : TheoryData<Type>
@@ -42,7 +43,6 @@ public sealed class TypeUtilityTests
 
     [Theory]
     [ClassData(typeof(ResultTestData))]
-    [Trait(TraitConstants.Category, TraitConstants.Utility)]
     public void IsResult_ShouldReturnTrue_WhenProvidedTypeIsResult(Type type)
     {
         //Act
@@ -53,7 +53,6 @@ public sealed class TypeUtilityTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Utility)]
     public void IsResult_ShouldReturnFalse_WhenProvidedTypeIsBotResult()
     {
         //Act
@@ -65,7 +64,6 @@ public sealed class TypeUtilityTests
 
     [Theory]
     [ClassData(typeof(OnlyGenericResultTestData))]
-    [Trait(TraitConstants.Category, TraitConstants.Utility)]
     public void IsGenericResult_ShouldReturnTrue_WhenProvidedTypeIsGenericResult(Type type)
     {
         //Act
@@ -77,7 +75,6 @@ public sealed class TypeUtilityTests
 
     [Theory]
     [ClassData(typeof(OnlyGenericResultWithUnderlyingTypeTestData))]
-    [Trait(TraitConstants.Category, TraitConstants.Utility)]
     public void GetUnderlyingType_ShouldReturnUnderlyingType_WhenProvidedTypeIsGenericResult(Type type, Type underlyingType)
     {
         //Act

@@ -7,10 +7,10 @@ using Shopway.Tests.Unit.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.Products;
 
+[Trait(nameof(UnitTest), UnitTest.Domain)]
 public sealed class ProductTests : TestBase
 {
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void ProductId_ShouldCreateProductIdFromUlid_WhenInputUlid()
     {
         //Arrange
@@ -24,7 +24,6 @@ public sealed class ProductTests : TestBase
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void CreateProduct_ShouldCreateProduct_WhenValidValueObjects()
     {
         //Arrange
@@ -53,7 +52,6 @@ public sealed class ProductTests : TestBase
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void CreateProduct_ShouldRiseProductCreatedDomainEvent_WhenValidValueObjects()
     {
         //Arrange
@@ -81,7 +79,6 @@ public sealed class ProductTests : TestBase
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void UpdatePrice_ShouldUpdateProductPrice_WhenValidPrice()
     {
         //Arrange
@@ -96,7 +93,6 @@ public sealed class ProductTests : TestBase
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void UpdateUomCode_ShouldUpdateProductUomCode_WhenValidUomCode()
     {
         //Arrange
@@ -111,7 +107,6 @@ public sealed class ProductTests : TestBase
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void AddReview_ShouldAddReview_WhenWhenValidReview()
     {
         //Arrange
@@ -126,7 +121,6 @@ public sealed class ProductTests : TestBase
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void AnyReview_ShouldReturnTrue_WhenReviewWithGivenTitleExists()
     {
         //Arrange

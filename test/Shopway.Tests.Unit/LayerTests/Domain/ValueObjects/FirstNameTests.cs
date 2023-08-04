@@ -6,6 +6,7 @@ using static Shopway.Domain.Errors.Domain.DomainErrors;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
 
+[Trait(nameof(UnitTest), UnitTest.Domain)]
 public sealed class FirstNameTests : TestBase
 {
     private sealed class InvalidFirstNameTestData : TheoryData<string, Error>
@@ -29,7 +30,6 @@ public sealed class FirstNameTests : TestBase
 
     [Theory]
     [ClassData(typeof(InvalidFirstNameTestData))]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void FirstName_ShouldNotCreate_WhenInvalidInput(string invalidFirstName, Error exceptedError)
     {
         //Act

@@ -1,8 +1,7 @@
 ﻿namespace Shopway.Tests.Unit.Constants;
 
-public static class TraitConstants
+public static class UnitTest
 {
-    public const string Category = nameof(Category);
     public const string Utility = nameof(Utility);
     public const string Architecture = nameof(Architecture);
     public const string Domain = nameof(Domain);

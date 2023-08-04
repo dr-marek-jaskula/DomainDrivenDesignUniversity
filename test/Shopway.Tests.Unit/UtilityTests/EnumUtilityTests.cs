@@ -4,10 +4,10 @@ using static Shopway.Domain.Utilities.EnumUtilities;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 
+[Trait(nameof(UnitTest), UnitTest.Utility)]
 public sealed class EnumUtilityTests
 {
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Utility)]
     public void LongestOf_ShouldReturnRankStandardLength()
     {
         //Act
