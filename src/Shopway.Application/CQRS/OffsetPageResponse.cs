@@ -35,6 +35,16 @@ public sealed record OffsetPageResponse<TValue> : IResponse
     /// </summary>
     public int ItemsTo { get; private init; }
 
+    /// <summary>
+    /// True if current page is not the first page
+    /// </summary>
+    public bool HasPreviousPage => CurrentPage > 1;
+
+    /// <summary>
+    /// True if current page is not the last page
+    /// </summary>
+    public bool HasNextPage => CurrentPage < TotalPages;
+
     public OffsetPageResponse(IList<TValue> items, int totalCount, int pageSize, int pageNumber)
     {
         Items = items;
