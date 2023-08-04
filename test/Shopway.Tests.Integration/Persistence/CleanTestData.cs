@@ -1,8 +1,10 @@
-﻿using static Shopway.Tests.Integration.Constants.CollectionNames;
+﻿using Shopway.Tests.Integration.Constants;
+using static Shopway.Tests.Integration.Constants.CollectionNames;
 
 namespace Shopway.Tests.Integration.Persistence;
 
 [Collection(DatabaseCollection)]
+[Trait(nameof(IntegrationTest), IntegrationTest.CleanDatabase)]
 public sealed class CleanTestData : IAsyncLifetime
 {
     private readonly DatabaseFixture _fixture;

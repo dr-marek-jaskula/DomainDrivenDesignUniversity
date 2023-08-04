@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 using Shopway.Domain.EntityKeys;
+using Shopway.Tests.Integration.Constants;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Errors.HttpErrors;
@@ -10,6 +11,7 @@ namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 public partial class ProductsControllerTests
 {
     [Fact]
+    [Trait(nameof(IntegrationTest), IntegrationTest.Api)]
     public async Task Create_ShouldReturnFailure_WhenProductExists()
     {
         //Arrange

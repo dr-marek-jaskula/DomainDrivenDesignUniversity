@@ -9,10 +9,12 @@ using Shopway.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using static System.Threading.CancellationToken;
 using Shopway.Domain.EntityIds;
+using Shopway.Tests.Integration.Constants;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 
 [Collection(ProductControllerCollection)]
+[Trait(nameof(IntegrationTest), IntegrationTest.Api)]
 public sealed partial class ReviewsControllerTests : ControllerTestsBase, IAsyncLifetime
 {
     private RestClient? _restClient;

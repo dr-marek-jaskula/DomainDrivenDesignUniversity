@@ -2,8 +2,9 @@
 using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
-using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
+using Shopway.Tests.Integration.Constants;
 using Shopway.Tests.Integration.Utilities;
+using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Errors.HttpErrors;
 
@@ -12,6 +13,7 @@ namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 public partial class ProductsControllerTests
 {
     [Fact]
+    [Trait(nameof(IntegrationTest), IntegrationTest.Api)]
     public async Task GetById_ShouldReturnProduct_WhenProductExists()
     {
         //Arrange
@@ -31,6 +33,7 @@ public partial class ProductsControllerTests
     }
 
     [Fact]
+    [Trait(nameof(IntegrationTest), IntegrationTest.Api)]
     public async Task GetById_ShouldReturnErrorResponse_WhenProductNotExists()
     {
         //Arrange
