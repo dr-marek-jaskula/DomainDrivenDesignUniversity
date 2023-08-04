@@ -1,8 +1,8 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.Abstractions.Common;
-using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Enums;
 using System.Linq.Expressions;
+using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Abstractions;
 
@@ -34,6 +34,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal bool AsSplitQuery { get; private set; }
     internal bool AsNoTracking { get; private set; }
     internal bool AsNoTrackingWithIdentityResolution { get; private set; }
+    internal bool UseGlobalFilters { get; private set; } = true;
 
     //Filters
     internal IStaticFilter<TEntity>? StaticFilter { get; private set; } = null;
@@ -52,6 +53,12 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal SpecificationBase<TEntity, TEntityId> AddTag(string queryTag)
     {
         QueryTag = queryTag;
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> IgnoreGlobalFilters()
+    {
+        UseGlobalFilters = false;
         return this;
     }
 

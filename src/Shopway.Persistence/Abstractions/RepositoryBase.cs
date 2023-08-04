@@ -92,6 +92,11 @@ public abstract class RepositoryBase
             queryable = queryable.AsNoTrackingWithIdentityResolution();
         }
 
+        if (specification.UseGlobalFilters is false)
+        {
+            queryable = queryable.IgnoreQueryFilters();
+        }
+
         return queryable;
     }
 
