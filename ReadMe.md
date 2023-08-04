@@ -114,7 +114,7 @@ docker compose -f docker-compose.yml -f docker-compose.override.yml down
 
 If image rebuild is required:
 ```console
-> docker compose -f .\docker-compose.yml -f .\docker-compose.override.yml up --build
+docker compose -f .\docker-compose.yml -f .\docker-compose.override.yml up --build
 ```
 
 ### Postman Collection :construction:
