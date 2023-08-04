@@ -180,7 +180,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
             throw new InvalidOperationException($"Input of {AddIncludesWithThenIncludesAction} must contain 'ThenInclude' call. Use {nameof(AddIncludes)} if 'ThenInclude' is not required.");
         }
 
-        if (ContainsMethodCallOtherThenIncludeOrThenInclude(includeActionBody))
+        if (ContainsMethodCallDifferentFromIncludeOrThenInclude(includeActionBody))
         {
             throw new InvalidOperationException($"Input can only contain 'Include' or 'ThenInclude' calls.");
         }
@@ -189,7 +189,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    private static bool ContainsMethodCallOtherThenIncludeOrThenInclude(string includeActionBody)
+    private static bool ContainsMethodCallDifferentFromIncludeOrThenInclude(string includeActionBody)
     {
         return includeActionBody
             .RemoveAll("ThenInclude(", "Include(")
