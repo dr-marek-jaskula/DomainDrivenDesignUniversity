@@ -5,7 +5,7 @@ namespace Shopway.Infrastructure.Options;
 
 public sealed class AuthenticationOptionsSetup : IConfigureOptions<AuthenticationOptions>
 {
-    private readonly string _configurationSectionName = "AuthenticationOptions";
+    private const string _configurationSectionName = "AuthenticationOptions";
     private readonly IConfiguration _configuration;
 
     public AuthenticationOptionsSetup(IConfiguration configuration)

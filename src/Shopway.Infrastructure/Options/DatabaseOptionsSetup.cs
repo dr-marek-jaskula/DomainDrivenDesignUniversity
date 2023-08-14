@@ -7,9 +7,9 @@ namespace Shopway.Infrastructure.Options;
 
 public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
 {
-    private readonly string _configurationSectionName = "DatabaseOptions";
-    private readonly string _defaultConnection = "DefaultConnection";
-    private readonly string _testConnection = "TestConnection";
+    private const string _configurationSectionName = "DatabaseOptions";
+    private const string _defaultConnection = "DefaultConnection";
+    private const string _testConnection = "TestConnection";
     private readonly IConfiguration _configuration;
     private readonly IWebHostEnvironment _environment;
 
