@@ -118,7 +118,7 @@ public static class HttpErrors
     /// Create an Error describing that value was not parsed properly
     /// </summary>
     /// <param name="errorMessage">Exception message</param>
-    /// <returns>Exception error</returns>
+    /// <returns>ParseFailure error</returns>
     public static Error ParseFailure<ParseType>(string valueParsedName)
     {
         return new($"{nameof(Error)}.{nameof(ParseFailure)}", $"Parsing {valueParsedName} to type {nameof(ParseType)} failed");
