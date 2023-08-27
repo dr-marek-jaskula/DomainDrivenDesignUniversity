@@ -8,7 +8,7 @@ public sealed record OffsetPageResponse<TValue> : IResponse
     /// <summary>
     /// Generic list that stores the pagination result
     /// </summary>
-    public IList<TValue> Items { get; private init; }
+    public IReadOnlyList<TValue> Items { get; private init; }
 
     /// <summary>
     /// Total number or items
@@ -47,7 +47,7 @@ public sealed record OffsetPageResponse<TValue> : IResponse
 
     public OffsetPageResponse(IList<TValue> items, int totalCount, int pageSize, int pageNumber)
     {
-        Items = items;
+        Items = items.AsReadOnly();
         CurrentPage = pageNumber;
         TotalItemsCount = totalCount;
         TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);

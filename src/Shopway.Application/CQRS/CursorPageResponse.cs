@@ -8,7 +8,7 @@ public sealed class CursorPageResponse<TValue> : IResponse
     /// <summary>
     /// Generic list that stores the pagination result
     /// </summary>
-    public IList<TValue> Items { get; private init; }
+    public IReadOnlyList<TValue> Items { get; private init; }
 
     /// <summary>
     /// Current page cursor. Id from which we query records
@@ -22,7 +22,7 @@ public sealed class CursorPageResponse<TValue> : IResponse
 
     public CursorPageResponse(IList<TValue> items, Ulid currentCursor, Ulid nextCursor)
     {
-        Items = items;
+        Items = items.AsReadOnly();
 
         var notLastPage = nextCursor != Ulid.Empty;
         var invalidCursor = currentCursor.CompareTo(nextCursor) > 0;
