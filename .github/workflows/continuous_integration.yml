@@ -24,9 +24,3 @@ jobs:
         run: dotnet build DomainDrivenDesignUniversity.sln --no-restore
       - name: UnitTests
         run: dotnet test DomainDrivenDesignUniversity.sln --results-directory "TestResults" --no-build --verbosity normal --filter "UnitTest=Application|UnitTest=Architecture|UnitTest=Domain|UnitTest=Utility"
-      - name: Upload dotnet test results
-        uses: actions/upload-artifact@v3
-        with:
-            name: dotnet-test-results
-            path: TestResults
-        if: ${{ always() }}
