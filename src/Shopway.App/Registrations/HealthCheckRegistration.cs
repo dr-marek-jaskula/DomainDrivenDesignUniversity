@@ -5,8 +5,8 @@ using Newtonsoft.Json.Linq;
 using Shopway.Infrastructure.Options;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Framework;
-using static Newtonsoft.Json.Formatting;
 using static Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus;
+using System.Text.Json;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -89,21 +89,31 @@ public static class HealthCheckRegistration
         return await Task.FromResult(products.Count > 0);
     }
 
-    private static Task WriteResponse(HttpContext context, HealthReport result)
+    private static Task WriteResponse(HttpContext context, HealthReport report)
     {
         context.Response.ContentType = "application/json";
 
-        var json = new JObject(
-            new JProperty("status", result.Status.ToString()),
-            new JProperty("result", new JObject(result.Entries.Select(pair =>
-                new JProperty(pair.Key, new JObject(
-                    new JProperty("status", pair.Value.Status.ToString()),
-                    new JProperty("description", pair.Value.Description),
-                    new JProperty("data", new JObject(pair.Value.Data.Select(
-                        p => new JProperty(p.Key, p.Value))))))))));
-
         return context
             .Response
-            .WriteAsync(json.ToString(Indented));
+            .WriteAsync(JsonSerializer.Serialize
+            (
+                new
+                {
+                    status = report.Status.ToString(),
+                    checks = report.Entries.Select(e => new
+                    {
+                        name = e.Key,
+                        status = e.Value.Status.ToString(),
+                        exception = e.Value.Exception?.Message,
+                        duration = e.Value.Duration.ToString(),
+                        description = e.Value.Description,
+                        data = e.Value.Data.Select(p => new
+                        {
+                            p.Key,
+                            p.Value
+                        })
+                    })
+                })
+            );
     }
 }
