@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Newtonsoft.Json.Linq;
-using Shopway.Infrastructure.Options;
+﻿using System.Text.Json;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Framework;
+using Microsoft.EntityFrameworkCore;
+using Shopway.Infrastructure.Options;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using static Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus;
-using System.Text.Json;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+//To add other custom health checks, use AddCheck method and as a generic parameter pass a class that implements IHealthCheck interface
 public static class HealthCheckRegistration
 {
     private const string Basic = nameof(Basic);
@@ -93,27 +93,33 @@ public static class HealthCheckRegistration
     {
         context.Response.ContentType = "application/json";
 
+        var healthCheckDictionary = report
+            .Entries
+            .Select(e => (e.Key, new
+            {
+                status = e.Value.Status.ToString(),
+                exception = e.Value.Exception?.Message,
+                duration = e.Value.Duration.ToString(),
+                description = e.Value.Description,
+                data = e.Value.Data.Select(p => new
+                {
+                    p.Key,
+                    p.Value
+                })
+            }))
+            .ToDictionary(x => x.Key, x => x.Item2);
+
+        var json = JsonSerializer.Serialize
+        (
+            new
+            {
+                status = report.Status.ToString(),
+                checks = healthCheckDictionary
+            }
+        );
+
         return context
             .Response
-            .WriteAsync(JsonSerializer.Serialize
-            (
-                new
-                {
-                    status = report.Status.ToString(),
-                    checks = report.Entries.Select(e => new
-                    {
-                        name = e.Key,
-                        status = e.Value.Status.ToString(),
-                        exception = e.Value.Exception?.Message,
-                        duration = e.Value.Duration.ToString(),
-                        description = e.Value.Description,
-                        data = e.Value.Data.Select(p => new
-                        {
-                            p.Key,
-                            p.Value
-                        })
-                    })
-                })
-            );
+            .WriteAsync(json);
     }
 }
