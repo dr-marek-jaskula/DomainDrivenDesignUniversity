@@ -25,15 +25,15 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     /// This cache stores key-value pairs where: EntityId type is the key and a value is a tuple of corresponding Entity type and generic method that requires these two types.
     /// This cache is provided due to the performance optimizations. We do not want to use reflection calls for each request.
     /// </summary>
-    /// <example>Key: typeof(ProductId), Value: (typeof(Product), CheckCacheAndDatabase<Product, ProductId> method)</example>
-    private static readonly ReadOnlyDictionary<Type, (Type EntityType, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>> CheckCacheAndDatabase)> ValidationCache;
+    /// <example>Key: typeof(ProductId), Value: CheckCacheAndDatabase<Product, ProductId> method</example>
+    private static readonly ReadOnlyDictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> ValidationCache;
 
     private readonly ShopwayDbContext _context;
     private readonly IFusionCache _fusionCache;
 
     static ReferenceValidationPipeline()
     {
-        Dictionary<Type, (Type EntityType, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>> CheckCacheAndDatabase)> validationCache = new();
+        Dictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> validationCache = new();
         var entityIdTypes = GetEntityIdTypes();
 
         foreach (var entityIdType in entityIdTypes)
@@ -45,7 +45,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
             var compiledFunc = CompileFunc(entityIdType, checkCacheAndDatabasedMethod);
 
-            validationCache.Add(entityIdType, (entityType, compiledFunc!));
+            validationCache.Add(entityIdType, compiledFunc!);
         }
 
         ValidationCache = validationCache.AsReadOnly();
@@ -81,11 +81,16 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
     private async Task<Error> Validate(IEntityId entityId, CancellationToken cancellationToken)
     {
-        return await ValidationCache[entityId.GetType()]
-            .CheckCacheAndDatabase(_context, _fusionCache, entityId, cancellationToken);
+        return await ValidationCache[entityId.GetType()](_context, _fusionCache, entityId, cancellationToken);
     }
 
-    public static async Task<Error> CheckCacheAndDatabase<TEntity, TEntityId>(ShopwayDbContext context, IFusionCache cache, TEntityId entityId, CancellationToken cancellationToken)
+    public static async Task<Error> CheckCacheAndDatabase<TEntity, TEntityId>
+    (
+        ShopwayDbContext context, 
+        IFusionCache cache, 
+        TEntityId entityId, 
+        CancellationToken cancellationToken
+    )
         where TEntity : Entity<TEntityId>
         where TEntityId : struct, IEntityId
     {
@@ -127,17 +132,17 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         var param3 = Expression.Parameter(typeof(IEntityId));
         var param4 = Expression.Parameter(typeof(CancellationToken));
 
-        var convertedParameterExpressions = new Expression[]
+        var correctParameters = new Expression[]
         {
             param1,
             param2,
-            Expression.Convert(param3, entityIdType), //we convert the incorrect type IEntityId (it could be even object) to correct EntityIdType
+            Expression.Convert(param3, entityIdType), //we convert the incorrect type IEntityId (it could be even object) to correct EntityId type
             param4
         };
 
         return Expression.Lambda<Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>>
         (
-            Expression.Call(null, methodInfo, convertedParameterExpressions),
+            Expression.Call(null, methodInfo, correctParameters),
             tailCall: false,
             parameters: new[]
             {
