@@ -45,7 +45,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
             var compiledFunc = CompileFunc(entityIdType, checkCacheAndDatabasedMethod);
 
-            validationCache.Add(entityIdType, compiledFunc!);
+            validationCache.Add(entityIdType, compiledFunc);
         }
 
         ValidationCache = validationCache.AsReadOnly();
@@ -118,12 +118,12 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     }
 
     /// <summary>
-    /// This method provides the compiled delegate to the performance will be increased. 
-    /// However, if the level of complicity is to hight, we can use store method info in the cache and then compile the method at runtime. 
+    /// This method compiles the method info to func, so the performance will be increased. 
+    /// However, if the level of complicity is too hight, we can store methodInfo in the cache and then compile the method at runtime. 
     /// If so, we can use non static version of CheckCacheAndDatabase method (without context and cache variable explicitly passed as a parameters)
     /// </summary>
-    /// <param name="entityIdType"></param>
-    /// <param name="methodInfo"></param>
+    /// <param name="entityIdType">dynamically obtained entityIdType</param>
+    /// <param name="methodInfo">methodInfo to compile</param>
     /// <returns></returns>
     private static Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>> CompileFunc(Type entityIdType, MethodInfo methodInfo)
     {
@@ -136,7 +136,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         {
             param1,
             param2,
-            Expression.Convert(param3, entityIdType), //we convert the incorrect type IEntityId (it could be even object) to correct EntityId type
+            Expression.Convert(param3, entityIdType), //we convert the incorrect type IEntityId to correct EntityId type
             param4
         };
 
