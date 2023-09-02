@@ -9,6 +9,7 @@ using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Utilities;
 using ZiggyCreatures.Caching.Fusion;
+using System.Collections.ObjectModel;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
@@ -24,13 +25,14 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     /// This cache is provided due to the performance optimizations. We do not want to use reflection calls for each request.
     /// </summary>
     /// <example>Key: typeof(ProductId), Value: (typeof(Product), CheckCacheAndDatabase<Product, ProductId> method)</example>
-    private static readonly Dictionary<Type, (Type EntityType, MethodInfo CheckCacheAndDatabase)> ValidationCache = new();
+    private static readonly ReadOnlyDictionary<Type, (Type EntityType, MethodInfo CheckCacheAndDatabase)> ValidationCache;
 
     private readonly ShopwayDbContext _context;
     private readonly IFusionCache _fusionCache;
 
     static ReferenceValidationPipeline()
     {
+        Dictionary<Type, (Type EntityType, MethodInfo CheckCacheAndDatabase)> validationCache = new();
         var entityIdTypes = GetEntityIdTypes();
 
         foreach (var entityIdType in entityIdTypes)
@@ -40,8 +42,10 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<TRequest, TResponse>)
                 .GetSingleGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityIdType);
 
-            ValidationCache.Add(entityIdType, (entityType, checkCacheAndDatabasedMethod));
+            validationCache.Add(entityIdType, (entityType, checkCacheAndDatabasedMethod));
         }
+
+        ValidationCache = validationCache.AsReadOnly();
     }
 
     public ReferenceValidationPipeline(ShopwayDbContext context, IFusionCache fusionCache)
