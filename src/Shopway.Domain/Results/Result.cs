@@ -85,9 +85,17 @@ public class Result : IResult
     /// <returns>A new instance of <see cref="Result"/></returns>
     public static Result<TValue> Create<TValue>(TValue? value)
     {
-        return value is not null
-            ? Success(value)
-            : Failure<TValue>(Error.NullValue);
+        if (value is null)
+        {
+            return Failure<TValue>(Error.NullValue);
+        }
+
+        if (value is Error)
+        {
+            throw new InvalidOperationException("Provided value is an Error");
+        }
+
+        return Success(value);
     }
 
     /// <summary>
