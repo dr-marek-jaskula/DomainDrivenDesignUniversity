@@ -1,0 +1,63 @@
+{
+	"id": "c04585e8-0116-4385-8347-e95bf37d1b64",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "SELECT ENVIRONMENT",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "access_token",
+			"value": "LOG IN",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "api_key_product_get",
+			"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "api_key_product_update",
+			"value": "ae5bd500-6d11-4f67-950f-85d87b1d81c4",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "api_key_product_remove",
+			"value": "36777477-d70c-4a9a-b5bd-a1eb286fa16b",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "api_key_product_create",
+			"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "username",
+			"value": "Marek",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "email",
+			"value": "marek123@gmail.com",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "password",
+			"value": "Password123!",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2023-09-22T12:46:33.747Z",
+	"_postman_exported_using": "Postman/10.17.7"
+}

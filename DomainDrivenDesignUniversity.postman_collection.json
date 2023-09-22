@@ -1,10 +1,11 @@
 {
 	"info": {
-		"_postman_id": "b6262224-d30f-46b3-8cc9-ba31e8f5ad38",
+		"_postman_id": "c427976a-e8a9-4123-b432-4faa2cb6b3ee",
 		"name": "DomainDrivenDesignUniversity",
 		"description": "# Introduction\nTutorial solution to present Domain Driven Design approach\n\n# Authentication\nJwt and ApiKey authorizations\n",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17572840"
+		"_exporter_id": "17572840",
+		"_collection_link": "https://www.postman.com/eltin13/workspace/domaindrivendesignuniversityworkspace/collection/17572840-c427976a-e8a9-4123-b432-4faa2cb6b3ee?action=share&source=collection_link&creator=17572840"
 	},
 	"item": [
 		{
@@ -15,13 +16,38 @@
 					"item": [
 						{
 							"name": "AddReview.Valid.RequireJwtToken",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(200))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validReviewUlid\", response.value.id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxSDZDSlcwU0tNNjZDWUc0MTBUTjYzRFAxIiwibmFtZSI6Ik1hcmVrIiwiZW1haWwiOiJtYXJlazEyM0BnbWFpbC5jb20iLCJDdXN0b21lcklkIjoiIiwiZXhwIjoxNjkxMzQ4ODgxLCJpc3MiOiJTaG9wd2F5IiwiYXVkIjoiU2hvcHdheSJ9.yOjS8wyBOTWMOBWrIoMAtwLmK7FUCZk_nBkIPxBzCaI",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -30,7 +56,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle\",\r\n  \"Description\": \"Added review description\"\r\n}",
+									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle3\",\r\n  \"Description\": \"Added review description\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -38,15 +64,12 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:7236/api/Products/{{validProductUlid}}/reviews",
-									"protocol": "https",
+									"raw": "{{base_url}}/products/{{validProductUlid}}/reviews",
 									"host": [
-										"localhost"
+										"{{base_url}}"
 									],
-									"port": "7236",
 									"path": [
-										"api",
-										"Products",
+										"products",
 										"{{validProductUlid}}",
 										"reviews"
 									]
@@ -62,7 +85,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjgwNTAyNDRhLTc4MzYtNGE1Yi1hMmU0LTY5MmEzYzY1YTA5YyIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiQ3VzdG9tZXJJZCI6IiIsImV4cCI6MTY4OTU3MDg5MiwiaXNzIjoiU2hvcHdheSIsImF1ZCI6IlNob3B3YXkifQ.9BM06tXYHLXD77kOjCCNGAN7lMEklrU8xlG5f7Vp4-Q",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -79,17 +102,14 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:7236/api/Products/{{validProductUlid}}/Reviews/{{validReviewUlid}}",
-									"protocol": "https",
+									"raw": "{{base_url}}/products/{{validProductUlid}}/reviews/{{validReviewUlid}}",
 									"host": [
-										"localhost"
+										"{{base_url}}"
 									],
-									"port": "7236",
 									"path": [
-										"api",
-										"Products",
+										"products",
 										"{{validProductUlid}}",
-										"Reviews",
+										"reviews",
 										"{{validReviewUlid}}"
 									]
 								}
@@ -104,7 +124,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjgwNTAyNDRhLTc4MzYtNGE1Yi1hMmU0LTY5MmEzYzY1YTA5YyIsIm5hbWUiOiJNYXJlayIsImVtYWlsIjoibWFyZWsxMjNAZ21haWwuY29tIiwiQ3VzdG9tZXJJZCI6IiIsImV4cCI6MTY4NjU4ODM0MywiaXNzIjoiU2hvcHdheSIsImF1ZCI6IlNob3B3YXkifQ.v4VW6NnXHrWIxRv1PCwZrXKR1WjUNlfgyT5ED6mCJ6Q",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -112,17 +132,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:7236/api/Products/{{validProductUlid}}/Reviews/{{validReviewUlid}}",
-									"protocol": "https",
+									"raw": "{{base_url}}/products/{{validProductUlid}}/reviews/{{validReviewUlid}}",
 									"host": [
-										"localhost"
+										"{{base_url}}"
 									],
-									"port": "7236",
 									"path": [
-										"api",
-										"Products",
+										"products",
 										"{{validProductUlid}}",
-										"Reviews",
+										"reviews",
 										"{{validReviewUlid}}"
 									]
 								}
@@ -146,14 +163,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/batch/upsert",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/batch/upsert",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"batch",
 								"upsert"
@@ -177,14 +191,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/batch/upsert",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/batch/upsert",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"batch",
 								"upsert"
@@ -195,12 +206,28 @@
 				},
 				{
 					"name": "CreateProduct.Valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if(pm.response.to.have.status(201))\r",
+									"{\r",
+									"    pm.collectionVariables.set(\"validProductUlid\", response.id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
+								"value": "{{api_key_product_create}}",
 								"type": "text"
 							}
 						],
@@ -214,14 +241,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products",
-							"protocol": "https",
+							"raw": "{{base_url}}/products",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products"
 							]
 						}
@@ -243,14 +267,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products",
-							"protocol": "https",
+							"raw": "{{base_url}}/products",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products"
 							]
 						}
@@ -264,7 +285,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
+								"value": "{{api_key_product_create}}",
 								"type": "text"
 							}
 						],
@@ -278,14 +299,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products",
-							"protocol": "https",
+							"raw": "{{base_url}}/products",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products"
 							]
 						}
@@ -298,14 +316,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:7236/api/products/{{validProductUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/{{validProductUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"{{validProductUlid}}"
 							]
@@ -323,7 +338,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
+								"value": "{{api_key_product_get}}",
 								"type": "text"
 							}
 						],
@@ -332,14 +347,11 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/{{validProductUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/{{validProductUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"{{validProductUlid}}"
 							]
@@ -357,7 +369,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
+								"value": "{{api_key_product_get}}",
 								"type": "text"
 							}
 						],
@@ -371,14 +383,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/{{invalidProductUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/{{invalidProductUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"{{invalidProductUlid}}"
 							]
@@ -396,7 +405,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
+								"value": "{{api_key_product_get}}",
 								"type": "text"
 							}
 						],
@@ -410,14 +419,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/key",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/key",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"key"
 							]
@@ -440,14 +446,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/query/static",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/query/static",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"query",
 								"static"
@@ -471,14 +474,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/query/static",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/query/static",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"query",
 								"static"
@@ -502,14 +502,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/query/dynamic",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/query/dynamic",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"query",
 								"dynamic"
@@ -533,14 +530,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/query/dynamic",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/query/dynamic",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"query",
 								"dynamic"
@@ -564,14 +558,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/query/dictionary/offset",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/query/dictionary/offset",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"query",
 								"dictionary",
@@ -596,14 +587,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/query/dictionary/cursor",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/query/dictionary/cursor",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"query",
 								"dictionary",
@@ -628,14 +616,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/{{validProductUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/{{validProductUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"{{validProductUlid}}"
 							]
@@ -650,7 +635,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "ae5bd500-6d11-4f67-950f-85d87b1d81c4",
+								"value": "{{api_key_product_update}}",
 								"type": "text"
 							}
 						],
@@ -664,14 +649,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/{{validProductUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/{{validProductUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"{{validProductUlid}}"
 							],
@@ -692,14 +674,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:7236/api/products/{{validProductUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/{{validProductUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"{{validProductUlid}}"
 							]
@@ -714,7 +693,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "36777477-d70c-4a9a-b5bd-a1eb286fa16b",
+								"value": "{{api_key_product_remove}}",
 								"type": "text"
 							}
 						],
@@ -728,14 +707,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/products/{{validProductUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/{{validProductUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"{{validProductUlid}}"
 							]
@@ -750,19 +726,16 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "36777477-d70c-4a9a-b5bd-a1eb286fa16b",
+								"value": "{{api_key_product_remove}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://localhost:7236/api/products/{{emptyUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/products/{{emptyUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"products",
 								"{{emptyUlid}}"
 							]
@@ -780,6 +753,22 @@
 					"item": [
 						{
 							"name": "AddOrderLine.Valid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(200))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderLineUlid\", response.value.id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -809,14 +798,11 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderUlid}}/Products/{{validProductUlid}}",
-									"protocol": "https",
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/Products/{{validProductUlid}}",
 									"host": [
-										"localhost"
+										"{{base_url}}"
 									],
-									"port": "7236",
 									"path": [
-										"api",
 										"OrderHeaders",
 										"{{validOrderHeaderUlid}}",
 										"Products",
@@ -847,14 +833,11 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:7236/api/OrderHeaders/batch/upsert/{{validOrderHeaderUlid}}",
-									"protocol": "https",
+									"raw": "{{base_url}}/OrderHeaders/batch/upsert/{{validOrderHeaderUlid}}",
 									"host": [
-										"localhost"
+										"{{base_url}}"
 									],
-									"port": "7236",
 									"path": [
-										"api",
 										"OrderHeaders",
 										"batch",
 										"upsert",
@@ -870,25 +853,17 @@
 								"method": "DELETE",
 								"header": [
 									{
-										"key": "x-api-key",
-										"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
-										"type": "text"
-									},
-									{
 										"key": "api-version",
 										"value": "0.1",
 										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderUlid}}/OrderLines/{{validOrderLineUlid}}",
-									"protocol": "https",
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/OrderLines/{{validOrderLineUlid}}",
 									"host": [
-										"localhost"
+										"{{base_url}}"
 									],
-									"port": "7236",
 									"path": [
-										"api",
 										"OrderHeaders",
 										"{{validOrderHeaderUlid}}",
 										"OrderLines",
@@ -903,11 +878,6 @@
 							"request": {
 								"method": "PUT",
 								"header": [
-									{
-										"key": "x-api-key",
-										"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
-										"type": "text"
-									},
 									{
 										"key": "api-version",
 										"value": "0.1",
@@ -924,14 +894,11 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderUlid}}/OrderLines/{{validOrderLineUlid}}",
-									"protocol": "https",
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/OrderLines/{{validOrderLineUlid}}",
 									"host": [
-										"localhost"
+										"{{base_url}}"
 									],
-									"port": "7236",
 									"path": [
-										"api",
 										"OrderHeaders",
 										"{{validOrderHeaderUlid}}",
 										"OrderLines",
@@ -945,14 +912,25 @@
 				},
 				{
 					"name": "CreateOrderHeader.Valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if(pm.response.to.have.status(201))\r",
+									"{\r",
+									"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
-							{
-								"key": "x-api-key",
-								"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
-								"type": "text"
-							},
 							{
 								"key": "api-version",
 								"value": "0.1",
@@ -969,14 +947,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/OrderHeaders",
-							"protocol": "https",
+							"raw": "{{base_url}}/OrderHeaders",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"OrderHeaders"
 							]
 						}
@@ -988,11 +963,6 @@
 					"request": {
 						"method": "PATCH",
 						"header": [
-							{
-								"key": "x-api-key",
-								"value": "51b4c4e8-d246-4dcf-b7c7-05811a9123c0",
-								"type": "text"
-							},
 							{
 								"key": "api-version",
 								"value": "0.1",
@@ -1009,14 +979,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"OrderHeaders",
 								"{{validOrderHeaderUlid}}"
 							]
@@ -1030,25 +997,17 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-api-key",
-								"value": "d3f72374-ef67-42cb-b25b-fbfee58b1054",
-								"type": "text"
-							},
-							{
 								"key": "api-version",
 								"value": "0.1",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://localhost:7236/api/OrderHeaders/{{validOrderHeaderUlid}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"OrderHeaders",
 								"{{validOrderHeaderUlid}}"
 							]
@@ -1063,12 +1022,28 @@
 			"item": [
 				{
 					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if (pm.response.to.have.status(200))\r",
+									"{\r",
+									"    pm.collectionVariables.set(\"validUserId\", response.value.id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Username\": \"Marek\",\r\n  \"Email\": \"marek123@gmail.com\",\r\n  \"Password\": \"Password123!\",\r\n  \"ConfirmPassword\": \"Password123!\"\r\n}",
+							"raw": "{\r\n  \"Username\": \"{{username}}\",\r\n  \"Email\": \"{{email}}\",\r\n  \"Password\": \"{{password}}\",\r\n  \"ConfirmPassword\": \"{{password}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1076,14 +1051,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/users/register",
-							"protocol": "https",
+							"raw": "{{base_url}}/users/register",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"users",
 								"register"
 							]
@@ -1093,12 +1065,28 @@
 				},
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if (pm.response.to.have.status(200))\r",
+									"{\r",
+									"    pm.globals.set(\"access_token\", response.token);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Email\": \"marek123@gmail.com\",\r\n  \"Password\": \"Password123!\"\r\n}",
+							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"Password\": \"{{password}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1106,14 +1094,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7236/api/users/login",
-							"protocol": "https",
+							"raw": "{{base_url}}/users/login",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"users",
 								"login"
 							]
@@ -1127,16 +1112,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:7236/api/users/Marek",
-							"protocol": "https",
+							"raw": "{{base_url}}/users/{{username}}",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "7236",
 							"path": [
-								"api",
 								"users",
-								"Marek"
+								"{{username}}"
 							]
 						}
 					},
@@ -1198,7 +1180,7 @@
 		},
 		{
 			"key": "validUserId",
-			"value": "01H6CJW0SKM66CYG410TN63DP1",
+			"value": "01H6EC2836W3MYRAFKM6VADBGB",
 			"type": "string"
 		}
 	]

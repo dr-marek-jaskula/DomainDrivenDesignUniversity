@@ -107,7 +107,6 @@ public sealed partial class ProductsController : ApiController
     }
 
     //These static or dynamic suffixes are only for tutorial purpose
-
     [HttpPost("query/static")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OffsetPageResponse<ProductResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
