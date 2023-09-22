@@ -1,4 +1,4 @@
-# This workflow will build a .NET project and than run unit tests
+# This workflow will build a .NET project, than run unit tests and publish test results
 
 name: continuous_integration
 
@@ -23,4 +23,11 @@ jobs:
       - name: Build
         run: dotnet build DomainDrivenDesignUniversity.sln --no-restore
       - name: UnitTests
-        run: dotnet test DomainDrivenDesignUniversity.sln --results-directory "TestResults" --no-build --verbosity normal --filter "UnitTest=Application|UnitTest=Architecture|UnitTest=Domain|UnitTest=Utility"
+        run: dotnet test DomainDrivenDesignUniversity.sln --logger "trx;LogFileName=test-results.trx" --no-build --verbosity normal --filter "UnitTest=Application|UnitTest=Architecture|UnitTest=Domain|UnitTest=Utility"
+      - name: Test reports
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: UnitTests report
+          path: 'test/**/*.trx'
+          reporter: dotnet-trx
