@@ -20,7 +20,7 @@ public interface IEntityId<TEntityId> : IEntityId
 public interface IEntityId : IComparable<IEntityId>
 {
     const string Id = nameof(Id);
-    Ulid Value { get; init; }
+    Ulid Value { get; }
 
     static bool operator >(IEntityId a, IEntityId b) => a.CompareTo(b) is 1;
     static bool operator <(IEntityId a, IEntityId b) => a.CompareTo(b) is -1;

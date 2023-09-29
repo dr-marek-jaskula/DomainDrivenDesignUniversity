@@ -9,7 +9,7 @@ public readonly record struct OrderLineId : IEntityId<OrderLineId>
         Value = id;
     }
 
-    public Ulid Value { get; init; }
+    public Ulid Value { get; }
 
     public static OrderLineId New()
     {

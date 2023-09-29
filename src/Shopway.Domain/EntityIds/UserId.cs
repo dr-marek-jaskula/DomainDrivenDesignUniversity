@@ -9,7 +9,7 @@ public readonly record struct UserId : IEntityId<UserId>
         Value = id;
     }
 
-    public Ulid Value { get; init; }
+    public Ulid Value { get; }
 
     public static UserId New()
     {

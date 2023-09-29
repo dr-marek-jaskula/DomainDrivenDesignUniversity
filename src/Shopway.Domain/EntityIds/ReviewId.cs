@@ -9,7 +9,7 @@ public readonly record struct ReviewId : IEntityId<ReviewId>
         Value = id;
     }
 
-    public Ulid Value { get; init; }
+    public Ulid Value { get; }
 
     public static ReviewId New()
     {
