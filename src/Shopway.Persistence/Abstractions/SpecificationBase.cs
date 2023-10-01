@@ -8,7 +8,7 @@ using Shopway.Domain.Abstractions.Common;
 namespace Shopway.Persistence.Abstractions;
 
 internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResponse> : SpecificationBase<TEntity, TEntityId>
-    where TEntityId : struct, IEntityId
+    where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
     internal Expression<Func<TEntity, TResponse>>? Mapping { get; private set; } = null;
@@ -21,7 +21,7 @@ internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TRespon
 }
 
 internal abstract class SpecificationBase<TEntity, TEntityId>
-    where TEntityId : struct, IEntityId
+    where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
     protected SpecificationBase()
