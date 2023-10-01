@@ -92,7 +92,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         CancellationToken cancellationToken
     )
         where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
     {
         var cacheReferenceCheckKey = entityId.ToCacheReferenceCheckKey();
 

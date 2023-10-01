@@ -76,7 +76,7 @@ public static class QueryableUtilities
         CancellationToken cancellationToken
     )
         where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
     {
         return await queryable
            .Where(entity => entity.Id.Equals(entityId))

@@ -15,7 +15,7 @@ internal static class SpecificationUtilities
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
     internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> AsMappingSpecification<TEntity, TEntityId, TResponse>(this SpecificationBase<TEntity, TEntityId> specification)
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
         return (SpecificationWithMappingBase<TEntity, TEntityId, TResponse>)specification;
