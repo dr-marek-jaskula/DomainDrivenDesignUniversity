@@ -79,11 +79,11 @@ The preferred way is to use TestPermissionService that always confirms the authe
 ```csharp
 public sealed class TestPermissionService : IPermissionService
 {
-    private static readonly Guid _testUserGuid = Guid.Parse("2df39cb3-8645-4462-8d3f-06b6f1547b9f");
+    private static readonly Ulid _testUserUlid = Ulid.Parse("01AN4Z07BY79KA1307SR9X4MV3");
 
     public Result<UserId> GetUserId(AuthorizationHandlerContext context)
     {
-        return UserId.Create(_testUserGuid);
+        return UserId.Create(_testUserUlid);
     }
 
     public Task<bool> HasPermissionAsync(UserId userId, string permission)

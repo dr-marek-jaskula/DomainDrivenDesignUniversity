@@ -4,9 +4,9 @@ using Shopway.Domain.EntityIds;
 
 namespace Shopway.Persistence.Converters.EntityIds;
 
-public sealed class PaymentIdConverter : ValueConverter<PaymentId, Guid>
+public sealed class PaymentIdConverter : ValueConverter<PaymentId, string>
 {
-    public PaymentIdConverter() : base(id => id.Value, guid => PaymentId.Create(guid)) { }
+    public PaymentIdConverter() : base(id => id.Value.ToString(), ulid => PaymentId.Create(Ulid.Parse(ulid))) { }
 }
 
 public sealed class PaymentIdComparer : ValueComparer<PaymentId>

@@ -1,6 +1,7 @@
 ﻿using RestSharp;
 using Shopway.Domain.EntityKeys;
 using Shopway.Tests.Integration.Utilities;
+using Shopway.Tests.Integration.Constants;
 using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using static System.Net.HttpStatusCode;
 using static Shopway.Application.CQRS.BatchEntryStatus;
@@ -12,6 +13,7 @@ namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 public partial class ProductsControllerTests
 {
     [Fact]
+    [Trait(nameof(IntegrationTest), IntegrationTest.PublicApi)]
     public async Task Batch_Upsert_ShouldReturnValidResponseEntries_WhenRequestsAreValid()
     {
         //Arrange
@@ -29,6 +31,7 @@ public partial class ProductsControllerTests
     }
 
     [Fact]
+    [Trait(nameof(IntegrationTest), IntegrationTest.PublicApi)]
     public async Task Batch_Upsert_ShouldReturnOneErrorResponseEntry_WhenOneRequestIsInvalid()
     {
         //Arrange
@@ -52,6 +55,7 @@ public partial class ProductsControllerTests
     }
 
     [Fact]
+    [Trait(nameof(IntegrationTest), IntegrationTest.PublicApi)]
     public async Task Batch_Upsert_ShouldReturnProblemDetailsWithTwoErrors_WhenProductNameAndRevisionFromProductKeyAreNull()
     {
         //Arrange

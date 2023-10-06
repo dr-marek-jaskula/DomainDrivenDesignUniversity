@@ -5,10 +5,10 @@ using static Shopway.Tests.Unit.Constants.NamingConvention;
 
 namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
+[Trait(nameof(UnitTest), UnitTest.Architecture)]
 public sealed partial class NamingConventionsTests
 {
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void CommandNames_ShouldEndWithCommand()
     {
         //Arrange
@@ -30,7 +30,6 @@ public sealed partial class NamingConventionsTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void GenericCommandNames_ShouldEndWithCommand()
     {
         //Arrange
@@ -52,7 +51,6 @@ public sealed partial class NamingConventionsTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void CommandHandlerNames_ShouldEndWithCommandHandler()
     {
         //Arrange
@@ -74,7 +72,6 @@ public sealed partial class NamingConventionsTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void GenericCommandHandlerNames_ShouldEndWithCommandHandler()
     {
         //Arrange
@@ -96,7 +93,6 @@ public sealed partial class NamingConventionsTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void QueryNames_ShouldEndWithQuery()
     {
         //Arrange
@@ -118,7 +114,6 @@ public sealed partial class NamingConventionsTests
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void QueryHandlerNames_ShouldEndWithQueryHandler()
     {
         //Arrange

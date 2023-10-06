@@ -4,19 +4,19 @@ namespace Shopway.Domain.EntityIds;
 
 public readonly record struct OrderLineId : IEntityId<OrderLineId>
 {
-    private OrderLineId(Guid id)
+    private OrderLineId(Ulid id)
     {
         Value = id;
     }
 
-    public Guid Value { get; init; }
+    public Ulid Value { get; }
 
     public static OrderLineId New()
     {
-        return new OrderLineId(Guid.NewGuid());
+        return new OrderLineId(Ulid.NewUlid());
     }
 
-    public static OrderLineId Create(Guid id)
+    public static OrderLineId Create(Ulid id)
     {
         return new OrderLineId(id);
     }
@@ -30,4 +30,24 @@ public readonly record struct OrderLineId : IEntityId<OrderLineId>
     {
         return Value.ToString();
     }
+
+    public int CompareTo(IEntityId? other)
+    {
+        if (other is null)
+        {
+            return 1;
+        }
+
+        if (other is not OrderLineId otherOrderLineId)
+        {
+            throw new ArgumentNullException($"IEntity is not {GetType().FullName}");
+        }
+
+        return Value.CompareTo(otherOrderLineId.Value);
+    }
+
+    public static bool operator >(OrderLineId a, OrderLineId b) => a.CompareTo(b) is 1;
+    public static bool operator <(OrderLineId a, OrderLineId b) => a.CompareTo(b) is -1;
+    public static bool operator >=(OrderLineId a, OrderLineId b) => a.CompareTo(b) >= 0;
+    public static bool operator <=(OrderLineId a, OrderLineId b) => a.CompareTo(b) <= 0;
 }

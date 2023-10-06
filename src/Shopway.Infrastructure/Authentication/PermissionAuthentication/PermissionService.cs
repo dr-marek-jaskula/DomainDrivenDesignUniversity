@@ -24,12 +24,12 @@ public sealed class PermissionService : IPermissionService
             .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)
             ?.Value;
 
-        if (Guid.TryParse(userIdentifier, out Guid userGuid) is false)
+        if (Ulid.TryParse(userIdentifier, out Ulid userUlid) is false)
         {
-            return Result.Failure<UserId>(ParseFailure<Guid>(nameof(ClaimTypes.NameIdentifier)));
+            return Result.Failure<UserId>(ParseFailure<Ulid>(nameof(ClaimTypes.NameIdentifier)));
         }
 
-        return UserId.Create(userGuid);
+        return UserId.Create(userUlid);
     }
 
     public async Task<bool> HasPermissionAsync(UserId userId, string permission)

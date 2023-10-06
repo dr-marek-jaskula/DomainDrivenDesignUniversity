@@ -1,13 +1,14 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.Abstractions.Common;
-using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Enums;
 using System.Linq.Expressions;
+using Shopway.Domain.Utilities;
+using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Abstractions;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Abstractions;
 
 internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResponse> : SpecificationBase<TEntity, TEntityId>
-    where TEntityId : struct, IEntityId
+    where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
     internal Expression<Func<TEntity, TResponse>>? Mapping { get; private set; } = null;
@@ -20,7 +21,7 @@ internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TRespon
 }
 
 internal abstract class SpecificationBase<TEntity, TEntityId>
-    where TEntityId : struct, IEntityId
+    where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
     protected SpecificationBase()
@@ -33,7 +34,9 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     //Flags
     internal bool AsSplitQuery { get; private set; }
     internal bool AsNoTracking { get; private set; }
+    internal bool AsTracking { get; private set; }
     internal bool AsNoTrackingWithIdentityResolution { get; private set; }
+    internal bool UseGlobalFilters { get; private set; } = true;
 
     //Filters
     internal IStaticFilter<TEntity>? StaticFilter { get; private set; } = null;
@@ -48,10 +51,17 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
 
     //Includes
     internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = new();
+    internal Func<IQueryable<TEntity>, IQueryable<TEntity>>? IncludeAction { get; private set; } = null; 
 
     internal SpecificationBase<TEntity, TEntityId> AddTag(string queryTag)
     {
         QueryTag = queryTag;
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> IgnoreGlobalFilters()
+    {
+        UseGlobalFilters = false;
         return this;
     }
 
@@ -64,6 +74,12 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal SpecificationBase<TEntity, TEntityId> UseNoTracking()
     {
         AsNoTracking = true;
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> UseTracking()
+    {
+        AsTracking = true;
         return this;
     }
 
@@ -82,6 +98,15 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal SpecificationBase<TEntity, TEntityId> AddFilter(IDynamicFilter<TEntity>? filter)
     {
         DynamicFilter = filter;
+        return this;
+    }
+
+    internal SpecificationBase<TEntity, TEntityId> AddFilter(Expression<Func<TEntity, bool>>? filterExpression)
+    {
+        if (filterExpression is not null)
+        {
+            FilterExpressions.Add(filterExpression);
+        }
         return this;
     }
 
@@ -137,5 +162,37 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         }
 
         return this;
+    }
+
+    /// <summary>
+    /// Use only when there is a need for ThenInclude for collection and then further include.
+    /// </summary>
+    /// <remarks>
+    /// Example usage: .AddIncludeAction(orderHeader => orderHeader.Include(o => o.OrderLines).ThenInclude(od => od.Product)) 
+    /// </remarks>
+    /// <param name="includeAction"></param>
+    internal SpecificationBase<TEntity, TEntityId> AddIncludesWithThenIncludesAction(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
+    {
+        var includeActionBody = includeAction.ToString();
+
+        if (includeActionBody.NotContains("ThenInclude"))
+        {
+            throw new InvalidOperationException($"Input of {AddIncludesWithThenIncludesAction} must contain 'ThenInclude' call. Use {nameof(AddIncludes)} if 'ThenInclude' is not required.");
+        }
+
+        if (ContainsMethodCallDifferentFromIncludeOrThenInclude(includeActionBody))
+        {
+            throw new InvalidOperationException($"Input can only contain 'Include' or 'ThenInclude' calls.");
+        }
+
+        IncludeAction = includeAction.Compile();
+        return this;
+    }
+
+    private static bool ContainsMethodCallDifferentFromIncludeOrThenInclude(string includeActionBody)
+    {
+        return includeActionBody
+            .RemoveAll("ThenInclude(", "Include(")
+            .Contains('(');
     }
 }

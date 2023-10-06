@@ -4,9 +4,9 @@ using Shopway.Domain.EntityIds;
 
 namespace Shopway.Persistence.Converters.EntityIds;
 
-public sealed class OrderHeaderIdConverter : ValueConverter<OrderHeaderId, Guid>
+public sealed class OrderHeaderIdConverter : ValueConverter<OrderHeaderId, string>
 {
-    public OrderHeaderIdConverter() : base(id => id.Value, guid => OrderHeaderId.Create(guid)) { }
+    public OrderHeaderIdConverter() : base(id => id.Value.ToString(), ulid => OrderHeaderId.Create(Ulid.Parse(ulid))) { }
 }
 
 public sealed class OrderHeaderIdComparer : ValueComparer<OrderHeaderId>

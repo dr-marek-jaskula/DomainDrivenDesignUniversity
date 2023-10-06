@@ -21,6 +21,27 @@ public static class ProblemDetailsUtilities
     }
 
     /// <summary>
+    /// Asserts problem details after the model validation. Asserts that all problem details errors are the ones that were specified.
+    /// Specific error should be asserted separately.
+    /// </summary>
+    /// <param name="problemDetails">Deserialized problem details</param>
+    public static void ShouldConsistOf(this ValidationProblemDetails problemDetails, params Error[] errors)
+    {
+        problemDetails.Should().NotBeNull();
+        problemDetails.Type.Should().Be(ValidationError);
+        problemDetails.Status.Should().Be(400);
+        problemDetails.Title.Should().Be(ValidationError);
+        problemDetails.Detail.Should().Be(Error.ValidationError.Message);
+
+        foreach (var error in errors)
+        {
+            problemDetails!.Errors.Should().Contain(error);
+        }
+
+        problemDetails!.Errors.Should().HaveCount(errors.Length);
+    }
+
+    /// <summary>
     /// Asserts problem details in case when the request model is invalid. For instance, when some field is null. Specific error should be asserted separately.
     /// </summary>
     /// <param name="problemDetails">Deserialized problem details</param>

@@ -27,7 +27,8 @@ public sealed class ProcessOutboxMessagesJob : IJob
         IPublisher publisher, 
         ILoggerAdapter<ProcessOutboxMessagesJob> logger, 
         IDateTimeProvider dateTimeProvider,
-        IOutboxRepository outboxRepository)
+        IOutboxRepository outboxRepository
+    )
     {
         _dbContext = dbContext;
         _publisher = publisher;

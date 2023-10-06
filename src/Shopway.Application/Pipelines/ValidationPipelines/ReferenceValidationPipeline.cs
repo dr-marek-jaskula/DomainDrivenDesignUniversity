@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System.Reflection;
 using Shopway.Domain.Errors;
+using System.Linq.Expressions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Utilities;
 using System.Linq.Dynamic.Core;
@@ -9,6 +10,7 @@ using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Utilities;
 using ZiggyCreatures.Caching.Fusion;
+using System.Collections.ObjectModel;
 using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
@@ -23,14 +25,15 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     /// This cache stores key-value pairs where: EntityId type is the key and a value is a tuple of corresponding Entity type and generic method that requires these two types.
     /// This cache is provided due to the performance optimizations. We do not want to use reflection calls for each request.
     /// </summary>
-    /// <example>Key: typeof(ProductId), Value: (typeof(Product), CheckCacheAndDatabase<Product, ProductId> method)</example>
-    private static readonly Dictionary<Type, (Type EntityType, MethodInfo CheckCacheAndDatabase)> ValidationCache = new();
+    /// <example>Key: typeof(ProductId), Value: CheckCacheAndDatabase<Product, ProductId> method</example>
+    private static readonly ReadOnlyDictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> ValidationCache;
 
     private readonly ShopwayDbContext _context;
     private readonly IFusionCache _fusionCache;
 
     static ReferenceValidationPipeline()
     {
+        Dictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> validationCache = new();
         var entityIdTypes = GetEntityIdTypes();
 
         foreach (var entityIdType in entityIdTypes)
@@ -40,8 +43,12 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<TRequest, TResponse>)
                 .GetSingleGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityIdType);
 
-            ValidationCache.Add(entityIdType, (entityType, checkCacheAndDatabasedMethod));
+            var compiledFunc = CompileFunc(entityIdType, checkCacheAndDatabasedMethod);
+
+            validationCache.Add(entityIdType, compiledFunc);
         }
+
+        ValidationCache = validationCache.AsReadOnly();
     }
 
     public ReferenceValidationPipeline(ShopwayDbContext context, IFusionCache fusionCache)
@@ -74,37 +81,76 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
 
     private async Task<Error> Validate(IEntityId entityId, CancellationToken cancellationToken)
     {
-        return await (Task<Error>)ValidationCache[entityId.GetType()].CheckCacheAndDatabase.Invoke(this, new object[]
-        {
-            entityId,
-            cancellationToken
-        })!;
+        return await ValidationCache[entityId.GetType()](_context, _fusionCache, entityId, cancellationToken);
     }
 
-    public async Task<Error> CheckCacheAndDatabase<TEntity, TEntityId>(TEntityId entityId, CancellationToken cancellationToken)
+    public static async Task<Error> CheckCacheAndDatabase<TEntity, TEntityId>
+    (
+        ShopwayDbContext context, 
+        IFusionCache cache, 
+        TEntityId entityId, 
+        CancellationToken cancellationToken
+    )
         where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
     {
         var cacheReferenceCheckKey = entityId.ToCacheReferenceCheckKey();
 
-        var isEntityInCache = await _fusionCache.AnyAsync<TEntity, TEntityId>(cacheReferenceCheckKey, cancellationToken);
+        var isEntityInCache = await cache.AnyAsync<TEntity, TEntityId>(cacheReferenceCheckKey, cancellationToken);
 
         if (isEntityInCache)
         {
             return Error.None;
         }
 
-        var isEntityInDatabase = await _context
+        var isEntityInDatabase = await context
             .Set<TEntity>()
             .AnyAsync(entityId, cancellationToken);
 
         if (isEntityInDatabase)
         {
             //We should not store entities in the cache using this pipeline, therefore we just store null
-            await _fusionCache.SetAsync(cacheReferenceCheckKey, default(TEntity), token: cancellationToken);
+            await cache.SetAsync(cacheReferenceCheckKey, default(TEntity), token: cancellationToken);
             return Error.None;
         }
 
         return InvalidReference(entityId.Value, typeof(TEntity).Name);
+    }
+
+    /// <summary>
+    /// This method compiles the method info to func, so the performance will be increased. 
+    /// However, if the level of complicity is too hight, we can store methodInfo in the cache and then compile the method at runtime. 
+    /// If so, we can use non static version of CheckCacheAndDatabase method (without context and cache variable explicitly passed as a parameters)
+    /// </summary>
+    /// <param name="entityIdType">dynamically obtained entityIdType</param>
+    /// <param name="methodInfo">methodInfo to compile</param>
+    /// <returns></returns>
+    private static Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>> CompileFunc(Type entityIdType, MethodInfo methodInfo)
+    {
+        var param1 = Expression.Parameter(typeof(ShopwayDbContext));
+        var param2 = Expression.Parameter(typeof(IFusionCache));
+        var param3 = Expression.Parameter(typeof(IEntityId));
+        var param4 = Expression.Parameter(typeof(CancellationToken));
+
+        var correctParameters = new Expression[]
+        {
+            param1,
+            param2,
+            Expression.Convert(param3, entityIdType), //we convert the incorrect type IEntityId to correct EntityId type
+            param4
+        };
+
+        return Expression.Lambda<Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>>
+        (
+            Expression.Call(null, methodInfo, correctParameters),
+            tailCall: false,
+            parameters: new[]
+            {
+                param1,
+                param2,
+                param3,
+                param4
+            }
+        ).Compile();
     }
 }

@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Newtonsoft.Json.Linq;
-using Shopway.Infrastructure.Options;
+﻿using System.Text.Json;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Framework;
-using static Newtonsoft.Json.Formatting;
+using Microsoft.EntityFrameworkCore;
+using Shopway.Infrastructure.Options;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using static Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+//To add other custom health checks, use AddCheck method and as a generic parameter pass a class that implements IHealthCheck interface
 public static class HealthCheckRegistration
 {
     private const string Basic = nameof(Basic);
@@ -89,21 +89,37 @@ public static class HealthCheckRegistration
         return await Task.FromResult(products.Count > 0);
     }
 
-    private static Task WriteResponse(HttpContext context, HealthReport result)
+    private static Task WriteResponse(HttpContext context, HealthReport report)
     {
         context.Response.ContentType = "application/json";
 
-        var json = new JObject(
-            new JProperty("status", result.Status.ToString()),
-            new JProperty("result", new JObject(result.Entries.Select(pair =>
-                new JProperty(pair.Key, new JObject(
-                    new JProperty("status", pair.Value.Status.ToString()),
-                    new JProperty("description", pair.Value.Description),
-                    new JProperty("data", new JObject(pair.Value.Data.Select(
-                        p => new JProperty(p.Key, p.Value))))))))));
+        var healthCheckDictionary = report
+            .Entries
+            .Select(e => (e.Key, new
+            {
+                status = e.Value.Status.ToString(),
+                exception = e.Value.Exception?.Message,
+                duration = e.Value.Duration.ToString(),
+                description = e.Value.Description,
+                data = e.Value.Data.Select(p => new
+                {
+                    p.Key,
+                    p.Value
+                })
+            }))
+            .ToDictionary(x => x.Key, x => x.Item2);
+
+        var json = JsonSerializer.Serialize
+        (
+            new
+            {
+                status = report.Status.ToString(),
+                checks = healthCheckDictionary
+            }
+        );
 
         return context
             .Response
-            .WriteAsync(json.ToString(Indented));
+            .WriteAsync(json);
     }
 }

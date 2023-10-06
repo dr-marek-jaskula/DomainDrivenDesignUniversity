@@ -4,6 +4,7 @@ using static Shopway.Domain.Utilities.StringUtilities;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 
+[Trait(nameof(UnitTest), UnitTest.Utility)]
 public sealed class StringUtilityTests
 {
     private sealed class DigitTestData : TheoryData<int>
@@ -19,7 +20,6 @@ public sealed class StringUtilityTests
 
     [Theory]
     [ClassData(typeof(DigitTestData))]
-    [Trait(TraitConstants.Category, TraitConstants.Utility)]
     public void ContainsDigit_ShouldReturnTrue_WhenDigitIsPresent(int digit)
     {
         //Arrange
@@ -36,7 +36,6 @@ public sealed class StringUtilityTests
     [InlineData("string", "String")]
     [InlineData("STRING", "string")]
     [InlineData("string", "string")]
-    [Trait(TraitConstants.Category, TraitConstants.Utility)]
     public void CaseInsensitiveEquals_ShouldReturnTrue_WhenStringsDifferByCaseSensitiveness(string first, string second)
     {
         //Act
@@ -50,7 +49,6 @@ public sealed class StringUtilityTests
     [InlineData("string2", "String")]
     [InlineData("STRING", "astring")]
     [InlineData("str", "string")]
-    [Trait(TraitConstants.Category, TraitConstants.Utility)]
     public void CaseInsensitiveEquals_ShouldReturnFalse_WhenStringsDifferByContent(string first, string second)
     {
         //Act

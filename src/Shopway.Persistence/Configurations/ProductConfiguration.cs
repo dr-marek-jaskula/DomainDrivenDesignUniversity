@@ -6,6 +6,7 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
+using static Shopway.Persistence.Constants.NumberConstants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -19,7 +20,7 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
 
         builder.Property(p => p.Id)
             .HasConversion<ProductIdConverter, ProductIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.ConfigureAuditableEntity();
 
@@ -44,7 +45,7 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.Property(p => p.Price)
             .HasConversion<PriceConverter, PriceComparer>()
             .HasColumnName(nameof(Price))
-            .HasPrecision(NumberConstants.DecimalPrecision, NumberConstants.DecimalScale)
+            .HasPrecision(DecimalPrecision, DecimalScale)
             .IsRequired(true);
 
         builder.HasMany(p => p.Reviews)

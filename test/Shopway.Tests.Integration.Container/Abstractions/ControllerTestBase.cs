@@ -87,7 +87,7 @@ public abstract class ControllerTestsBase
     }
 
     /// <summary>
-    /// This method add api key header with dummy value for every request. IApiKeyService should be mocked in ShopwayApiFactory to return true for each validation. 
+    /// This method adds api key header with dummy value for every request. IApiKeyService should be mocked in ShopwayApiFactory to return true for each validation. 
     /// </summary>
     /// <param name="client">RestClient that will be used for tests</param>
     private static void EnsureApiKeyAuthenticationForMockedIApiKeyService(RestClient client)

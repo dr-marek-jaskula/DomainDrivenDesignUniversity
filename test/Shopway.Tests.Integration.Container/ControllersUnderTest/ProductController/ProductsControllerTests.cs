@@ -1,10 +1,12 @@
 ﻿using RestSharp;
 using Shopway.Tests.Integration.Abstractions;
+using Shopway.Tests.Integration.Container.Constants;
 using static Shopway.Tests.Integration.Constants.CollectionNames;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
 [Collection(WebApplicationFactoryCollection)]
+[Trait(nameof(IntegrationTest), IntegrationTest.Api)]
 public sealed partial class ProductsControllerTests : ControllerTestsBase
 {
     private readonly RestClient _restClient;

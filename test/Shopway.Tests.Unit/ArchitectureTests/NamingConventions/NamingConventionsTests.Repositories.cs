@@ -5,10 +5,10 @@ using static Shopway.Tests.Unit.Constants.NamingConvention;
 
 namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
+[Trait(nameof(UnitTest), UnitTest.Architecture)]
 public partial class NamingConventionsTests
 {
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void RepositoryNames_ShouldEndWithRepository()
     {
         //Arrange

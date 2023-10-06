@@ -62,7 +62,7 @@ public static class HttpErrors
     /// Create an Error describing that the provided reference is invalid
     /// </summary>
     /// <returns>InvalidReference error</returns>
-    public static Error InvalidReference(Guid reference, string entity)
+    public static Error InvalidReference(Ulid reference, string entity)
     {
         return new($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid reference {reference} for entity {entity}");
     }
@@ -71,7 +71,7 @@ public static class HttpErrors
     /// Create an Error describing that the provided reference is invalid
     /// </summary>
     /// <returns>InvalidReference error</returns>
-    public static Error InvalidReferences(IList<Guid> references, string entity)
+    public static Error InvalidReferences(IList<Ulid> references, string entity)
     {
         return new($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid references: [{string.Join(", ", references)}] for entity {entity}");
     }
@@ -118,7 +118,7 @@ public static class HttpErrors
     /// Create an Error describing that value was not parsed properly
     /// </summary>
     /// <param name="errorMessage">Exception message</param>
-    /// <returns>Exception error</returns>
+    /// <returns>ParseFailure error</returns>
     public static Error ParseFailure<ParseType>(string valueParsedName)
     {
         return new($"{nameof(Error)}.{nameof(ParseFailure)}", $"Parsing {valueParsedName} to type {nameof(ParseType)} failed");

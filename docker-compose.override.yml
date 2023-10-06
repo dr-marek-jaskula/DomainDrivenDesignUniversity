@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  ddduniversitydb:
+    container_name: ddduniversitydb
+    environment:
+      - SA_PASSWORD=DDDUniversity1233
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+    restart: always
+    networks:
+      - db_net
+    ports:
+      - "1434:1433" #external port was modified to 1434, because I have installed SQL Server locally, so the port 1433 is already used
+    volumes:
+      - ddduniversity_data:/var/opt/mssql
+
+  shopway.app:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings__DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
+      - "ConnectionStrings__TestConnection=Server=ddduniversitydb;Database=DDDUniversityTest;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
+    restart: unless-stopped
+    networks:
+      - db_net
+    depends_on:
+      - ddduniversitydb
+    ports:
+      - "8080:80"

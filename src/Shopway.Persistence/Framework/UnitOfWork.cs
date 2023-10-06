@@ -34,9 +34,9 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
     (
         TContext dbContext,
         IUserContextService userContext,
-        IOutboxRepository outboxRepository
-,
-        IFusionCache fusionCache)
+        IOutboxRepository outboxRepository,
+        IFusionCache fusionCache
+    )
     {
         _dbContext = dbContext;
         _userContext = userContext;
@@ -96,13 +96,13 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
 
     private void UpdateCache()
     {
-        IEnumerable<EntityEntry<IEntity>> entries =
+        IEnumerable<EntityEntry<IAggregateRoot>> entries =
             _dbContext
                 .ChangeTracker
-                .Entries<IEntity>()
+                .Entries<IAggregateRoot>()
                 .Where(entity => entity.State is Added or Deleted);
 
-        foreach (EntityEntry<IEntity> entityEntry in entries)
+        foreach (var entityEntry in entries)
         {
             var entityId = entityEntry.Entity.GetEntityIdFromEntity();
 

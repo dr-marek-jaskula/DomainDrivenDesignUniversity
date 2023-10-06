@@ -1,4 +1,5 @@
 ﻿using Quartz;
+using Shopway.Infrastructure.Options;
 using Shopway.Infrastructure.BackgroundJobs;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -9,24 +10,17 @@ public static class BackgroundServiceRegistration
     {
         services.AddScoped<IJob, ProcessOutboxMessagesJob>();
 
-        services.AddQuartz(configure =>
+        services.AddQuartz(options =>
         {
-            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
-
-            configure
-                .AddJob<ProcessOutboxMessagesJob>(jobKey)
-                .AddTrigger(trigger =>
-                    trigger
-                        .ForJob(jobKey)
-                        .WithSimpleSchedule(schedule =>
-                            schedule
-                                .WithIntervalInSeconds(10)
-                                .RepeatForever()));
-
-            configure.UseMicrosoftDependencyInjectionJobFactory();
+            options.UseMicrosoftDependencyInjectionJobFactory();
         });
 
-        services.AddQuartzHostedService();
+        services.AddQuartzHostedService(options =>
+        {
+            options.WaitForJobsToComplete = true;
+        });
+
+        services.ConfigureOptions<QuartzOptionsSetup>();
 
         return services;
     }

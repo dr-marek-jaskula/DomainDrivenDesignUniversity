@@ -54,6 +54,8 @@ Here we do not use the WebApplicationFactory approach, but we create DI containe
 
 Moreover, tests are done on the test database, but the test cleaning is required (see TestDataGeneratorBase.CleanDatabaseFromTestData).
 
+Note: use these tests without containerized application and for the database that is locally installed.
+
 ### .Tests.Integration.Container :heavy_check_mark:
 
 This layer contains integrations tests. 
@@ -67,6 +69,8 @@ Moreover, we use TestContainers library, to make all integrations tests in sql d
 This layer contains performance tests.
 
 We use NBomber as a performance test framework, because we can use it with xunit.
+
+Note: use these tests without containerized application and for the database that is locally installed.
 
 ### .Tests Naming Conventions :scroll:
 
@@ -85,8 +89,41 @@ Note: Alternative naming convention: switch T2 with T3:
 
 > _productRepositoryMock
 
+### Run Application with Local Database :arrow_forward:
+
+1. Select **Shopway.App** as startup project. 
+2. Create databases called **DDDUniveristy** and **DDDUniversityTest**.
+3. Run the application
+
+### Run Containerized Application with Containerized Database :whale:
+
+1. Select **docker-compose** as startup project.
+2. Run the application
+
+Alternatively: 
+1. Open console at the solution level ```..\DomainDrivenDesignUniversity>```
+2. Run in detached mode:
+```console
+docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
+```
+
+To stop containers use:
+```console
+docker compose -f docker-compose.yml -f docker-compose.override.yml down
+```
+
+If image rebuild is required:
+```console
+docker compose -f .\docker-compose.yml -f .\docker-compose.override.yml up --build
+```
+
 ### Postman Collection :construction:
 
-Use the postman collection to get all endpoints for postman. 
+To get all postman endpoints configured for local environment and docker containers:
+1. Import collection ```DomainDrivenDesignUniversity.postman_collection.json```
+2. Import workspace globals ```workspace.postman_globals```
+3. Import local postman environment ```LOCAL.postman_environment```
+4. Import docker postman environment ```DOCKER.postman_environment```
 
-Replace variables current values like "validProductGuid" or "validReviewGuid" to your custom ones.
+All collection and global variables are set after requests. For instance, **Login** endpoint automatically
+sets a bearer token. Then, this token is used in the authentication process.

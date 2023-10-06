@@ -6,6 +6,7 @@ using static Shopway.Domain.Errors.Domain.DomainErrors;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
 
+[Trait(nameof(UnitTest), UnitTest.Domain)]
 public sealed class ProductNameTests : TestBase
 {
     private sealed class InvalidProductNameTestData : TheoryData<string, Error>
@@ -28,7 +29,6 @@ public sealed class ProductNameTests : TestBase
     }
 
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void CreateProductName_ShouldCreateProductName_WhenValidInput()
     {
         //Arrange
@@ -44,7 +44,6 @@ public sealed class ProductNameTests : TestBase
 
     [Theory]
     [ClassData(typeof(InvalidProductNameTestData))]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void CreateProductName_ShouldNotCreateProductName_WhenInvalidInput(string invalidProductName, Error expectedError)
     {
         //Act

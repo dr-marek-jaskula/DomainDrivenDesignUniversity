@@ -52,6 +52,7 @@ public sealed class CachedOrderHeaderRepository : IOrderHeaderRepository
     public void Update(OrderHeader order)
     {
         _decorated.Update(order);
+        _fusionCache.Update<OrderHeader, OrderHeaderId>(order);
     }
 
     public async Task<OrderHeader> GetByIdWithOrderLineAsync(OrderHeaderId id, OrderLineId orderLineId, CancellationToken cancellationToken)

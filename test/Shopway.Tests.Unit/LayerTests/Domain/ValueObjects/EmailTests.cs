@@ -6,6 +6,7 @@ using static Shopway.Domain.Errors.Domain.DomainErrors;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
 
+[Trait(nameof(UnitTest), UnitTest.Domain)]
 public sealed class EmailTests : TestBase
 {
     private sealed class InvalidEmailTestData : TheoryData<string, Error[]>
@@ -25,7 +26,6 @@ public sealed class EmailTests : TestBase
 
     [Theory]
     [ClassData(typeof(InvalidEmailTestData))]
-    [Trait(TraitConstants.Category, TraitConstants.Domain)]
     public void Email_ShouldNotCreate_WhenInvalidInput(string invalidEmail, Error[] exceptedError)
     {
         //Act

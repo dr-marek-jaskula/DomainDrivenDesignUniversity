@@ -3,10 +3,10 @@ using Shopway.Domain.EntityIds;
 
 namespace Shopway.Domain.DomainEvents;
 
-public sealed record OrderLineAddedDomainEvent(Guid Id, OrderLineId OrderLineId, OrderHeaderId OrderHeaderId) : DomainEvent(Id)
+public sealed record OrderLineAddedDomainEvent(Ulid Id, OrderLineId OrderLineId, OrderHeaderId OrderHeaderId) : DomainEvent(Id)
 {
     public static OrderLineAddedDomainEvent New(OrderLineId OrderLineId, OrderHeaderId OrderHeaderId)
     {
-        return new OrderLineAddedDomainEvent(Guid.NewGuid(), OrderLineId, OrderHeaderId);
+        return new OrderLineAddedDomainEvent(Ulid.NewUlid(), OrderLineId, OrderHeaderId);
     }
 }

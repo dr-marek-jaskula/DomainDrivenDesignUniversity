@@ -12,7 +12,7 @@ public partial class ProductsControllerTests : ControllerTestsBase
     public void GetById_ShouldHandleAtLeast100RequestPerSecond()
     {
         var productId = ProductId.New();
-        string url = $"{ShopwayApiUrl}/{controllerUri}/{productId.Value}";
+        string url = $"{ShopwayApiUrl}/{ControllerUri}/{productId.Value}";
 
         var scenario = ProductScenarios.CreateGetScenario("GetProductByIdScenario", url, GetApiKey)
             .WithInit(async context => await InsertProduct(productId))

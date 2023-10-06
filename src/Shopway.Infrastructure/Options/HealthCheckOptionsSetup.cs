@@ -5,7 +5,7 @@ namespace Shopway.Infrastructure.Options;
 
 public sealed class HealthCheckOptionsSetup : IConfigureOptions<HealthOptions>
 {
-    private readonly string _configurationSectionName = "HealthOptions";
+    private const string _configurationSectionName = "HealthOptions";
     private readonly IConfiguration _configuration;
 
     public HealthCheckOptionsSetup(IConfiguration configuration)

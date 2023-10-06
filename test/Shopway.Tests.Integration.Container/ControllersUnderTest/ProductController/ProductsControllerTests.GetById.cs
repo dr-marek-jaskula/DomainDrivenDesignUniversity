@@ -45,6 +45,6 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(BadRequest);
 
         var problemDetails = response.Deserialize<ValidationProblemDetails>();
-        problemDetails!.ShouldContain(InvalidReference(invalidProductId.Value, nameof(Product)));
+        problemDetails!.ShouldConsistOf(InvalidReference(invalidProductId.Value, nameof(Product)));
     }
 }

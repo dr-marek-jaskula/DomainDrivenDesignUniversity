@@ -10,13 +10,14 @@ namespace Shopway.Persistence.Specifications.Common;
 internal abstract partial class CommonSpecification
 {
     internal sealed partial class WithMapping<TEntity, TEntityId, TResponse> : SpecificationWithMappingBase<TEntity, TEntityId, TResponse>
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
         internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> Create
         (
             IStaticFilter<TEntity>? staticFilter = null,
             IDynamicFilter<TEntity>? dynamicFilter = null,
+            Expression<Func<TEntity, bool>>? customFilter = null,
             IStaticSortBy<TEntity>? staticSortBy = null,
             IDynamicSortBy<TEntity>? dynamicSortBy = null,
             Expression<Func<TEntity, TResponse>>? mapping = null,
@@ -27,6 +28,7 @@ internal abstract partial class CommonSpecification
                 .AddMapping(mapping)
                 .AddIncludes(includes)
                 .AddFilter(staticFilter)
+                .AddFilter(customFilter)
                 .AddFilter(dynamicFilter)
                 .AddSortBy(staticSortBy)
                 .AddSortBy(dynamicSortBy)

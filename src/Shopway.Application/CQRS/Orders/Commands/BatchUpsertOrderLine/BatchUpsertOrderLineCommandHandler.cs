@@ -46,7 +46,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
 
         if (invalidProductIds.NotNullOrEmpty())
         {
-            return Result.Failure<BatchUpsertOrderLineResponse>(InvalidReferences(invalidProductIds.GetGuids(), nameof(Product)));
+            return Result.Failure<BatchUpsertOrderLineResponse>(InvalidReferences(invalidProductIds.GetUlids(), nameof(Product)));
         }
 
         var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
@@ -66,8 +66,6 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
 
         InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader);
         UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);
-
-        _fusionCache.Update<OrderHeader, OrderHeaderId>(orderHeader);
 
         return responseEntries
             .ToBatchInsertResponse()

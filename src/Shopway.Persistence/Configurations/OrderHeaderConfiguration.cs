@@ -9,6 +9,7 @@ using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.Enums;
 using Shopway.Persistence.Converters.ValueObjects;
 using static Shopway.Domain.Utilities.EnumUtilities;
+using static Shopway.Persistence.Constants.NumberConstants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -22,7 +23,11 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
 
         builder.Property(o => o.Id)
             .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
-            .HasColumnType(ColumnTypes.UniqueIdentifier);
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+
+        builder.Property(o => o.PaymentId)
+            .HasConversion<PaymentIdConverter, PaymentIdComparer>()
+            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
 
         builder.Property(p => p.Status)
             .HasConversion<OrderStatusConverter>()
@@ -32,7 +37,7 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
         builder.Property(p => p.TotalDiscount)
             .HasConversion<DiscountConverter, DiscountComparer>()
             .HasColumnName(nameof(Discount))
-            .HasPrecision(NumberConstants.DiscountPrecision, NumberConstants.DecimalScale)
+            .HasPrecision(DiscountPrecision, DecimalScale)
             .IsRequired(true);
 
         builder.ConfigureAuditableEntity();

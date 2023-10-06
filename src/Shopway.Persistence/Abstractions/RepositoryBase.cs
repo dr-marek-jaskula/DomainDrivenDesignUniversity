@@ -24,14 +24,27 @@ public abstract class RepositoryBase
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
     private protected IQueryable<TEntity> UseSpecification<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
         IQueryable<TEntity> queryable = _dbContext.Set<TEntity>();
 
+        if (specification.IncludeAction is not null)
+        {
+            queryable = specification.IncludeAction(queryable);
+        }
+
         foreach (var includeExpression in specification.IncludeExpressions)
         {
             queryable = queryable.Include(includeExpression);
+        }
+
+        if (specification.FilterExpressions.NotNullOrEmpty())
+        {
+            foreach (var filter in specification.FilterExpressions)
+            {
+                queryable = queryable.Where(filter);
+            }
         }
 
         if (specification.StaticFilter is not null)
@@ -42,14 +55,6 @@ public abstract class RepositoryBase
         if (specification.DynamicFilter is not null)
         {
             queryable = specification.DynamicFilter.Apply(queryable);
-        }
-
-        if (specification.FilterExpressions.NotNullOrEmpty())
-        {
-            foreach (var filter in specification.FilterExpressions)
-            {
-                queryable = queryable.Where(filter);
-            }
         }
 
         if (specification.DynamicSortBy is not null)
@@ -87,9 +92,19 @@ public abstract class RepositoryBase
             queryable = queryable.AsNoTracking();
         }
 
+        if (specification.AsTracking)
+        {
+            queryable = queryable.AsTracking();
+        }
+
         if (specification.AsNoTrackingWithIdentityResolution)
         {
             queryable = queryable.AsNoTrackingWithIdentityResolution();
+        }
+
+        if (specification.UseGlobalFilters is false)
+        {
+            queryable = queryable.IgnoreQueryFilters();
         }
 
         return queryable;
@@ -105,7 +120,7 @@ public abstract class RepositoryBase
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
     private protected IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
         if (specification.Mapping is null)

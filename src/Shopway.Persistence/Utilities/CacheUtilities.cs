@@ -22,7 +22,7 @@ public static class CacheUtilities
 
     public static void Update<TEntity, TEntityId>(this IFusionCache fusionCache, TEntity entity)
         where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
     {
         fusionCache.Set(entity.Id.ToCacheKey(), entity);
     }
@@ -35,7 +35,7 @@ public static class CacheUtilities
 
     public static void Set<TEntity, TEntityId>(this IFusionCache fusionCache, TEntity entity)
         where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
     {
         fusionCache.Set(entity.Id.ToCacheKey(), entity);
         fusionCache.Set(entity.Id.ToCacheReferenceCheckKey(), default(TEntity));
@@ -43,7 +43,7 @@ public static class CacheUtilities
 
     public static async Task<bool> AnyAsync<TEntity, TEntityId>(this IFusionCache fusionCache, string key, CancellationToken cancellationToken)
         where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId
+        where TEntityId : struct, IEntityId<TEntityId>
     {
         return (await fusionCache.TryGetAsync<TEntity>(key, null, cancellationToken)).HasValue;
     }

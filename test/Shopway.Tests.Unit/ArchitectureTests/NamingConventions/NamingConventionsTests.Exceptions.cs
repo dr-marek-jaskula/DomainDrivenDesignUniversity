@@ -3,10 +3,10 @@ using Shopway.Tests.Unit.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
+[Trait(nameof(UnitTest), UnitTest.Architecture)]
 public partial class NamingConventionsTests
 {
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void ExceptionNames_ShouldEndWithException()
     {
         //Arrange

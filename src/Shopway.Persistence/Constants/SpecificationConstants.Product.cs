@@ -49,7 +49,9 @@ public static class SpecificationConstants
 
     public static IReadOnlyCollection<string> AllowedProductFilterOperations = AsList
     (
-         nameof(string.Contains)
+         nameof(string.Contains),
+         nameof(string.StartsWith),
+         nameof(string.EndsWith)
     )
         .Concat(GetNamesOf<ExpressionType>())
         .ToList()

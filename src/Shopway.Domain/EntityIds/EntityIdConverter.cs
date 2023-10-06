@@ -8,17 +8,18 @@ using System.Globalization;
 namespace Shopway.Domain.EntityIds;
 
 /// <summary>
-/// Converter used to allow conversion between guid in string format and specified entity id
+/// Converter used to allow conversion between ulid in string format and specified entity id
 /// </summary>
 /// <typeparam name="TEntityId">Type of entity id</typeparam>
 public sealed class EntityIdConverter<TEntityId> : TypeConverter
     where TEntityId : struct, IEntityId
 {
-    private readonly Type _type;
+    //Cache the method for performance reasons
+    private readonly Func<Ulid, TEntityId> _createIdMethod;
 
     public EntityIdConverter(Type type)
     {
-        _type = type;
+        _createIdMethod = type.GetMethod(nameof(IEntityId<object>.Create))!.CreateDelegate<Func<Ulid, TEntityId>>();
     }
 
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
@@ -34,16 +35,14 @@ public sealed class EntityIdConverter<TEntityId> : TypeConverter
     }
 
     /// <summary>
-    /// Convert from guid in string format to entity id
+    /// Convert from ulid in string format to entity id
     /// </summary>
     /// <returns>EntityId</returns>
     public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
         if (value is string @string)
         {
-            var guid = @string.Parse<Guid>();
-            var createMethod = _type.GetMethod(nameof(IEntityId<object>.Create));
-            return createMethod!.Invoke(null, new object[] { guid });
+            return _createIdMethod(Ulid.Parse(@string));
         }
 
         return base.ConvertFrom(context, culture, value);
@@ -52,7 +51,7 @@ public sealed class EntityIdConverter<TEntityId> : TypeConverter
     /// <summary>
     /// Convert from entity id to string 
     /// </summary>
-    /// <returns>Guid in string format</returns>
+    /// <returns>Ulid in string format</returns>
     /// <exception cref="ArgumentNullException">Thrown if value to convert is null</exception>
     public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
@@ -79,7 +78,6 @@ public sealed class EntityIdConverter<TEntityId> : TypeConverter
 public sealed class EntityIdConverter : TypeConverter
 {
     private static readonly ConcurrentDictionary<Type, TypeConverter> ActualConverters = new();
-
     private readonly TypeConverter _innerConverter;
 
     public EntityIdConverter(Type entityIdType)

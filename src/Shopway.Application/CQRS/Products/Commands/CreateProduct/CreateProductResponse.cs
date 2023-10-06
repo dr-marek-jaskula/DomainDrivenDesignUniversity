@@ -4,5 +4,5 @@ namespace Shopway.Application.CQRS.Products.Commands.CreateProduct;
 
 public sealed record CreateProductResponse
 (
-    Guid Id
+    Ulid Id
 ) : IResponse;

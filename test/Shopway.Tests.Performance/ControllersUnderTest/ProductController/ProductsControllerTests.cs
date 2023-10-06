@@ -2,16 +2,18 @@
 using NBomber.Contracts.Stats;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
+using Shopway.Tests.Performance.Constants;
 using Xunit.Abstractions;
 using static System.Threading.CancellationToken;
 using static Shopway.Tests.Performance.Constants.OutputHelperContants;
 
 namespace Shopway.Tests.Performance.ControllersUnderTest.ProductController;
 
+[Trait(nameof(IntegrationTest), IntegrationTest.Performance)]
 public sealed partial class ProductsControllerTests
 {
     private readonly ITestOutputHelper _outputHelper;
-    private const string controllerUri = "products";
+    private const string ControllerUri = "products";
     private const string GetApiKey = "d3f72374-ef67-42cb-b25b-fbfee58b1054";
 
     public ProductsControllerTests(ITestOutputHelper outputHelper)

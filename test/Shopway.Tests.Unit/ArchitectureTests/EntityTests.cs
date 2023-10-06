@@ -5,10 +5,10 @@ using Shopway.Tests.Unit.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
 
+[Trait(nameof(UnitTest), UnitTest.Architecture)]
 public sealed class EntityTests
 {
     [Fact]
-    [Trait(TraitConstants.Category, TraitConstants.Architecture)]
     public void Entities_ShouldDefineCreateMethod()
     {
         //Arrange

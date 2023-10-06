@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shopway.Domain.Abstractions;
 using Shopway.Domain.EntityIds;
 
 namespace Shopway.Persistence.Converters.EntityIds;
 
-public sealed class CustomerIdConverter : ValueConverter<CustomerId, Guid>
+public sealed class CustomerIdConverter : ValueConverter<CustomerId, string>
 {
-    public CustomerIdConverter() : base(id => id.Value, guid => CustomerId.Create(guid)) { }
+    public CustomerIdConverter() : base(id => id.Value.ToString(), ulid => CustomerId.Create(Ulid.Parse(ulid))) { }
 }
 
 public sealed class CustomerIdComparer : ValueComparer<CustomerId>

@@ -3,10 +3,10 @@ using Shopway.Domain.EntityIds;
 
 namespace Shopway.Domain.DomainEvents;
 
-public sealed record UserRegisteredDomainEvent(Guid Id, UserId UserId) : DomainEvent(Id)
+public sealed record UserRegisteredDomainEvent(Ulid Id, UserId UserId) : DomainEvent(Id)
 {
     public static UserRegisteredDomainEvent New(UserId userId)
     {
-        return new UserRegisteredDomainEvent(Guid.NewGuid(), userId);
+        return new UserRegisteredDomainEvent(Ulid.NewUlid(), userId);
     }
 }
