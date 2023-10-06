@@ -39,7 +39,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     public static User Create(UserId id, Username username, Email email)
     {
         var user = new User(id, username, email);
-        user.RaiseDomainEvent(new UserRegisteredDomainEvent(Ulid.NewUlid(), user.Id));
+        user.RaiseDomainEvent(UserRegisteredDomainEvent.New(user.Id));
         return user;
     }
 
