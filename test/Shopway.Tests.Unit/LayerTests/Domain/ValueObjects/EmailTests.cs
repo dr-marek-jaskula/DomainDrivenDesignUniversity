@@ -13,14 +13,14 @@ public sealed class EmailTests : TestBase
     {
         public InvalidEmailTestData()
         {
-            var tooLongProductName = TestString(1000);
-            Add(tooLongProductName, new[] { EmailError.TooLong, EmailError.Invalid });
+            var tooLongEmail = TestString(1000);
+            Add(tooLongEmail, new[] { EmailError.TooLong, EmailError.Invalid });
 
-            string emptyProductName = string.Empty;
-            Add(emptyProductName, new[] { EmailError.Empty, EmailError.Invalid });
+            string emptyEmail = string.Empty;
+            Add(emptyEmail, new[] { EmailError.Empty, EmailError.Invalid });
 
-            string whitespaceProductName = "    ";
-            Add(whitespaceProductName, new[] { EmailError.Empty, EmailError.Invalid });
+            string whitespaceEmail = "    ";
+            Add(whitespaceEmail, new[] { EmailError.Empty, EmailError.Invalid });
         }
     }
 
@@ -29,12 +29,12 @@ public sealed class EmailTests : TestBase
     public void Email_ShouldNotCreate_WhenInvalidInput(string invalidEmail, Error[] exceptedError)
     {
         //Act
-        var firstName = Email.Create(invalidEmail);
+        var emailResult = Email.Create(invalidEmail);
 
         //Assert
-        firstName.IsFailure.Should().BeTrue();
-        firstName.Error.Should().Be(Error.ValidationError);
-        firstName.ValidationErrors.Should().HaveCount(2);
-        firstName.ValidationErrors.Should().Contain(exceptedError);
+        emailResult.IsFailure.Should().BeTrue();
+        emailResult.Error.Should().Be(Error.ValidationError);
+        emailResult.ValidationErrors.Should().HaveCount(2);
+        emailResult.ValidationErrors.Should().Contain(exceptedError);
     }
 }

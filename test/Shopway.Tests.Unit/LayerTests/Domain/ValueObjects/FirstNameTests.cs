@@ -14,17 +14,17 @@ public sealed class FirstNameTests : TestBase
         public InvalidFirstNameTestData()
         {
             var invalidCharacter = "_";
-            var productNameWithNotAllowedCharacter = $"{TestString(10)}{invalidCharacter}";
-            Add(productNameWithNotAllowedCharacter, FirstNameError.ContainsIllegalCharacter);
+            var firstNameWithNotAllowedCharacter = $"{TestString(10)}{invalidCharacter}";
+            Add(firstNameWithNotAllowedCharacter, FirstNameError.ContainsIllegalCharacter);
 
-            var tooLongProductName = TestString(1000);
-            Add(tooLongProductName, FirstNameError.TooLong);
+            var tooLongFirstName = TestString(1000);
+            Add(tooLongFirstName, FirstNameError.TooLong);
 
-            string emptyProductName = string.Empty;
-            Add(emptyProductName, FirstNameError.Empty);
+            string emptyFirstName = string.Empty;
+            Add(emptyFirstName, FirstNameError.Empty);
 
-            string whitespaceProductName = "    ";
-            Add(whitespaceProductName, FirstNameError.Empty);
+            string whitespaceFirstName = "    ";
+            Add(whitespaceFirstName, FirstNameError.Empty);
         }
     }
 
@@ -33,12 +33,12 @@ public sealed class FirstNameTests : TestBase
     public void FirstName_ShouldNotCreate_WhenInvalidInput(string invalidFirstName, Error exceptedError)
     {
         //Act
-        var firstName = FirstName.Create(invalidFirstName);
+        var firstNameResult = FirstName.Create(invalidFirstName);
 
         //Assert
-        firstName.IsFailure.Should().BeTrue();
-        firstName.Error.Should().Be(Error.ValidationError);
-        firstName.ValidationErrors.Should().HaveCount(1);
-        firstName.ValidationErrors.Should().Contain(exceptedError);
+        firstNameResult.IsFailure.Should().BeTrue();
+        firstNameResult.Error.Should().Be(Error.ValidationError);
+        firstNameResult.ValidationErrors.Should().HaveCount(1);
+        firstNameResult.ValidationErrors.Should().Contain(exceptedError);
     }
 }
