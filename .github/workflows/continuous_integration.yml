@@ -9,6 +9,9 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
+permissions:
+  checks: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
