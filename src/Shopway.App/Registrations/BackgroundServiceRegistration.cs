@@ -9,11 +9,8 @@ public static class BackgroundServiceRegistration
     public static IServiceCollection RegisterBackgroundServices(this IServiceCollection services)
     {
         services.AddScoped<IJob, ProcessOutboxMessagesJob>();
-
-        services.AddQuartz(options =>
-        {
-            options.UseMicrosoftDependencyInjectionJobFactory();
-        });
+        services.AddScoped<IJob, DeleteOutdatedSoftDeletableEntities>();
+        services.AddQuartz();
 
         services.AddQuartzHostedService(options =>
         {
