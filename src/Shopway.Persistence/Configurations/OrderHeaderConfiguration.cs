@@ -40,7 +40,9 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
             .HasPrecision(DiscountPrecision, DecimalScale)
             .IsRequired(true);
 
-        builder.ConfigureAuditableEntity();
+        builder
+            .ConfigureAuditableEntity()
+            .ConfigureSoftDeletableEntity();
 
         builder.HasOne(p => p.Payment)
             .WithOne(p => p.OrderHeader)

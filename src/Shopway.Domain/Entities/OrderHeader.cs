@@ -12,7 +12,7 @@ using static Shopway.Domain.Enums.PaymentStatus;
 
 namespace Shopway.Domain.Entities;
 
-public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
+public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISoftDeletable
 {
     private readonly List<OrderLine> _orderLines = new();
     private bool PaymentReceived => Payment.Status is Received;
@@ -47,6 +47,9 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
     public User User { get; private set; }
     public UserId UserId { get; private set; }
     public IReadOnlyCollection<OrderLine> OrderLines => _orderLines.AsReadOnly();
+
+    public DateTimeOffset? SoftDeletedOn { get; set; }
+    public bool SoftDeleted { get; set; }
 
     public static OrderHeader Create
     (
@@ -105,5 +108,11 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable
         }
 
         return Math.Round(totalPayment * (1 - TotalDiscount.Value), 2);
+    }
+
+    public void SoftDelete()
+    {
+        SoftDeleted = true;
+        SoftDeletedOn = DateTimeOffset.UtcNow;
     }
 }

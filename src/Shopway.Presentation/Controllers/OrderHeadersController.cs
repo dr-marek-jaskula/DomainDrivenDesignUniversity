@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.CQRS.Orders.Commands.ChangeOrderHeaderStatus;
 using Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
+using Shopway.Application.CQRS.Orders.Commands.DeleteOrderHeader;
 using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 using Shopway.Domain.EntityIds;
@@ -52,6 +53,25 @@ public sealed partial class OrderHeadersController : ApiController
         }
 
         return CreatedAtActionResult(response, nameof(GetOrderHeaderById));
+    }
+
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> SoftDeleteOrderHeader
+    (
+        [FromBody] SoftDeleteOrderHeaderCommand command, 
+        CancellationToken cancellationToken
+    )
+    {
+        var response = await Sender.Send(command, cancellationToken);
+
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return NoContent();
     }
 
     [HttpPatch("{id}")]
