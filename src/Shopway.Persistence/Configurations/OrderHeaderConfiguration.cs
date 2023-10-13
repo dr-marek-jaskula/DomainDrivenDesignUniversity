@@ -40,7 +40,9 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
             .HasPrecision(DiscountPrecision, DecimalScale)
             .IsRequired(true);
 
-        builder.ConfigureAuditableEntity();
+        builder
+            .ConfigureAuditableEntity()
+            .ConfigureSoftDeletableEntity();
 
         builder.HasOne(p => p.Payment)
             .WithOne(p => p.OrderHeader)
@@ -48,6 +50,7 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
 
         builder.HasMany(o => o.OrderLines)
             .WithOne()
-            .HasForeignKey(line => line.OrderHeaderId);
+            .HasForeignKey(line => line.OrderHeaderId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -27,6 +27,20 @@ public static class ConfigurationUtilities
         return builder;
     }
 
+    public static EntityTypeBuilder<TEntity> ConfigureSoftDeletableEntity<TEntity>(this EntityTypeBuilder<TEntity> builder)
+    where TEntity : class, IEntity, ISoftDeletable
+    {
+        builder.Property(o => o.SoftDeleted)
+            .HasColumnType(ColumnTypes.Bit)
+            .HasDefaultValue(false);
+
+        builder.Property(o => o.SoftDeletedOn)
+            .HasColumnType(ColumnTypes.DateTimeOffset(2))
+            .IsRequired(false);
+
+        return builder;
+    }
+
     public static EntityTypeBuilder<TEntity> ConfigureDiscriminator<TEntity>(this EntityTypeBuilder<TEntity> builder, string discriminatorName = "Discriminator")
         where TEntity : class, IEntity
     {

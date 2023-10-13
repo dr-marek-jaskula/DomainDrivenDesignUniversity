@@ -91,3 +91,9 @@ Create and run the docker container from the redis images in the detached mode
 ```cmd
 docker run -p 6379:6379 --name redis -d redis
 ```
+
+## Delete OutDated SoftDeleted Entities
+
+Background Job **DeleteOutdatedSoftDeletableEntitiesJob** runs once per month and gets at runtime 
+all entities that implements ISoftDeletable interface and then permanently deletes entities that 
+were soft deleted one year in the past.
