@@ -20,14 +20,13 @@ public sealed class QuartzOptionsSetup : IConfigureOptions<QuartzOptions>
                             .WithIntervalInSeconds(10)
                             .RepeatForever()));
 
-        var deleteOutdatedSoftDeletableEntitiesJobKey = JobKey.Create(nameof(DeleteOutdatedSoftDeletableEntities));
+        var deleteOutdatedSoftDeletableEntitiesJobKey = JobKey.Create(nameof(DeleteOutdatedSoftDeletableEntitiesJob));
 
         options
-            .AddJob<DeleteOutdatedSoftDeletableEntities>(jobBuilder => jobBuilder.WithIdentity(deleteOutdatedSoftDeletableEntitiesJobKey))
+            .AddJob<DeleteOutdatedSoftDeletableEntitiesJob>(jobBuilder => jobBuilder.WithIdentity(deleteOutdatedSoftDeletableEntitiesJobKey))
             .AddTrigger(trigger =>
                 trigger
                     .ForJob(deleteOutdatedSoftDeletableEntitiesJobKey)
-                    .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(5).RepeatForever()));
-                    //.WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(1, 23, 0)));
+                    .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(1, 23, 0)));
     }
 }

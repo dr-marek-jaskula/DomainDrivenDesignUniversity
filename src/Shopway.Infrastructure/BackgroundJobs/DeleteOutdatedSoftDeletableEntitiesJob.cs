@@ -9,13 +9,13 @@ using Shopway.Application.Abstractions;
 namespace Shopway.Infrastructure.BackgroundJobs;
 
 [DisallowConcurrentExecution]
-public sealed class DeleteOutdatedSoftDeletableEntities : IJob
+public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
 {
     private readonly ShopwayDbContext _dbContext;
-    private readonly ILoggerAdapter<DeleteOutdatedSoftDeletableEntities> _logger;
+    private readonly ILoggerAdapter<DeleteOutdatedSoftDeletableEntitiesJob> _logger;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public DeleteOutdatedSoftDeletableEntities(ShopwayDbContext dbContext, ILoggerAdapter<DeleteOutdatedSoftDeletableEntities> logger, IDateTimeProvider dateTimeProvider)
+    public DeleteOutdatedSoftDeletableEntitiesJob(ShopwayDbContext dbContext, ILoggerAdapter<DeleteOutdatedSoftDeletableEntitiesJob> logger, IDateTimeProvider dateTimeProvider)
     {
         _dbContext = dbContext;
         _logger = logger;
@@ -34,13 +34,15 @@ public sealed class DeleteOutdatedSoftDeletableEntities : IJob
 
         foreach (var entityType in entityTypes)
         {
-            MethodInfo deleteOutdatedEntitiesMethod = typeof(DeleteOutdatedSoftDeletableEntities)
+            //This job is called once per month. Therefore, the performance is not important. We can use MetodInfo and then invoke it
+            MethodInfo deleteOutdatedEntitiesMethod = typeof(DeleteOutdatedSoftDeletableEntitiesJob)
                 .GetSingleGenericMethod(nameof(DeleteOutdatedEntities), entityType);
 
             await (Task)deleteOutdatedEntitiesMethod.Invoke(this, new object[]
             {
                 _dbContext,
                 _logger,
+                _dateTimeProvider,
                 context.CancellationToken
             })!;
         }
@@ -50,10 +52,14 @@ public sealed class DeleteOutdatedSoftDeletableEntities : IJob
         await _dbContext.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Delete entities that were soft deleted one year in the past. Scheduler is defines in QuartzOptionsSetup
+    /// </summary>
     public static async Task DeleteOutdatedEntities<TEntity>
     (
         ShopwayDbContext context,
-        ILoggerAdapter<DeleteOutdatedSoftDeletableEntities> logger,
+        ILoggerAdapter<DeleteOutdatedSoftDeletableEntitiesJob> logger,
+        IDateTimeProvider dateTimeProvider,
         CancellationToken cancellationToken
     )
         where TEntity : class, ISoftDeletable
@@ -61,7 +67,7 @@ public sealed class DeleteOutdatedSoftDeletableEntities : IJob
         var entitiesToDelete = await context
             .Set<TEntity>()
             .Where(x => x.SoftDeleted)
-            .Where(x => x.SoftDeletedOn < DateTimeOffset.UtcNow.AddYears(1))
+            .Where(x => x.SoftDeletedOn < dateTimeProvider.UtcNow.AddYears(-1))
             .ToListAsync(cancellationToken);
 
         logger.LogInformation($"Deletes '{entitiesToDelete.Count}' entities of type '{nameof(TEntity)}'.");

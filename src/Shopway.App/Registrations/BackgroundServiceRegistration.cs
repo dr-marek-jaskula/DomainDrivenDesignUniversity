@@ -9,7 +9,7 @@ public static class BackgroundServiceRegistration
     public static IServiceCollection RegisterBackgroundServices(this IServiceCollection services)
     {
         services.AddScoped<IJob, ProcessOutboxMessagesJob>();
-        services.AddScoped<IJob, DeleteOutdatedSoftDeletableEntities>();
+        services.AddScoped<IJob, DeleteOutdatedSoftDeletableEntitiesJob>();
         services.AddQuartz();
 
         services.AddQuartzHostedService(options =>
