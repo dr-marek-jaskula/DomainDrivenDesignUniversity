@@ -29,8 +29,8 @@ public sealed class DeleteOutdatedSoftDeletableEntities : IJob
         var entityTypes = _dbContext
             .Model
             .GetEntityTypes()
-            .Where(t => t.ClrType.Implements<ISoftDeletable>())
-            .Select(x => x.GetType());
+            .Select(x => x.ClrType)
+            .Where(t => t.Implements<ISoftDeletable>());
 
         foreach (var entityType in entityTypes)
         {
@@ -60,7 +60,8 @@ public sealed class DeleteOutdatedSoftDeletableEntities : IJob
     {
         var entitiesToDelete = await context
             .Set<TEntity>()
-            .Where(x => x.SoftDeletedOn < DateTimeOffset.UtcNow.AddYears(-1))
+            .Where(x => x.SoftDeleted)
+            .Where(x => x.SoftDeletedOn < DateTimeOffset.UtcNow.AddYears(1))
             .ToListAsync(cancellationToken);
 
         logger.LogInformation($"Deletes '{entitiesToDelete.Count}' entities of type '{nameof(TEntity)}'.");

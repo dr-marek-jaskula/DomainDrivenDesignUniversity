@@ -27,6 +27,7 @@ public sealed class QuartzOptionsSetup : IConfigureOptions<QuartzOptions>
             .AddTrigger(trigger =>
                 trigger
                     .ForJob(deleteOutdatedSoftDeletableEntitiesJobKey)
-                    .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(1, 23, 0)));
+                    .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(5).RepeatForever()));
+                    //.WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(1, 23, 0)));
     }
 }

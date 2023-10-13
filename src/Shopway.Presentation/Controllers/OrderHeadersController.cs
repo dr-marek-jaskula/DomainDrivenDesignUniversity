@@ -55,15 +55,16 @@ public sealed partial class OrderHeadersController : ApiController
         return CreatedAtActionResult(response, nameof(GetOrderHeaderById));
     }
 
-    [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> SoftDeleteOrderHeader
     (
-        [FromBody] SoftDeleteOrderHeaderCommand command, 
+        [FromRoute] OrderHeaderId id, 
         CancellationToken cancellationToken
     )
     {
+        var command = new SoftDeleteOrderHeaderCommand(id);
         var response = await Sender.Send(command, cancellationToken);
 
         if (response.IsFailure)
@@ -71,7 +72,7 @@ public sealed partial class OrderHeadersController : ApiController
             return HandleFailure(response);
         }
 
-        return NoContent();
+        return Ok();
     }
 
     [HttpPatch("{id}")]

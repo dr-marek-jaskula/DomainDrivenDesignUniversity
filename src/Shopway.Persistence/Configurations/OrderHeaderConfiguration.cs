@@ -50,6 +50,7 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
 
         builder.HasMany(o => o.OrderLines)
             .WithOne()
-            .HasForeignKey(line => line.OrderHeaderId);
+            .HasForeignKey(line => line.OrderHeaderId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
