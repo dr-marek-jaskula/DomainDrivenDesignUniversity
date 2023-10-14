@@ -1,4 +1,6 @@
-﻿namespace Shopway.Domain.Errors;
+﻿using System.Text.Json.Serialization;
+
+namespace Shopway.Domain.Errors;
 
 /// <summary>
 /// Represents an error that contains the informations about the failure
@@ -25,15 +27,30 @@ public class Error : IEquatable<Error>
     /// </summary>
     public static readonly Error ValidationError = new($"{nameof(ValidationError)}", "A validation problem occurred.");
 
+    public Error(string code, string message)
+    {
+        Code = code;
+        Message = message;
+    }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Error"/> class
     /// </summary>
     /// <param name="code">The error code</param>
     /// <param name="message">The error message</param>
-    public Error(string code, string message)
+    public static Error New(string code, string message)
     {
-        Code = code;
-        Message = message;
+        return new Error(code, message);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Error"/> class from provided exception
+    /// </summary>
+    /// <param name="exception">The thrown exception</param>
+    public static Error FromException<TException>(TException exception)
+        where TException : Exception
+    {
+        return New(exception.GetType().Name, exception.Message);
     }
 
     /// <summary>
@@ -107,5 +124,15 @@ public class Error : IEquatable<Error>
         {
             throw new InvalidOperationException("Provided error is Error.None");
         }
+    }
+
+    public string? MessageOrNullIfErrorNone()
+    {
+        if (this == None)
+        {
+            return null;
+        }
+
+        return Message;
     }
 }

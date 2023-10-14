@@ -1014,6 +1014,30 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "SoftDeleteOrderHeader.ById.Valid",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api-version",
+								"value": "0.1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"OrderHeaders",
+								"{{validOrderHeaderUlid}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.CQRS.Orders.Commands.ChangeOrderHeaderStatus;
 using Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
-using Shopway.Application.CQRS.Orders.Commands.DeleteOrderHeader;
+using Shopway.Application.CQRS.Orders.Commands.SoftDeleteOrderHeader;
 using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Application.CQRS.Orders.Queries.GetOrderById;
 using Shopway.Domain.EntityIds;

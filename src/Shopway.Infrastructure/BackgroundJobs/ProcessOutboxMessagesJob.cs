@@ -1,5 +1,4 @@
-﻿using Polly;
-using Quartz;
+﻿using Quartz;
 using MediatR;
 using Newtonsoft.Json;
 using Shopway.Persistence.Outbox;
@@ -7,6 +6,7 @@ using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using Shopway.Infrastructure.Policies;
 using Shopway.Application.Abstractions;
+using Shopway.Infrastructure.Utilities;
 
 namespace Shopway.Infrastructure.BackgroundJobs;
 
@@ -57,10 +57,10 @@ public sealed class ProcessOutboxMessagesJob : IJob
                 continue;
             }
 
-            PolicyResult result = await PollyPolicies.AsyncRetryPolicy.ExecuteAndCaptureAsync(() =>
-                _publisher.Publish(domainEvent, context.CancellationToken));
+            var result = await PollyPipelines.MigrationRetryPipeline.ExecuteAndReturnResult(async token => 
+                await _publisher.Publish(domainEvent, token), context.CancellationToken);
 
-            message.UpdatePostProcessProperties(_dateTimeProvider.UtcNow, result.FinalException?.ToString());
+            message.UpdatePostProcessProperties(_dateTimeProvider.UtcNow, result.Error.MessageOrNullIfErrorNone());
         }
 
         await _dbContext.SaveChangesAsync();
