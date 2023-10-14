@@ -5,7 +5,7 @@ namespace Shopway.Domain.Constants;
 
 public static class OrderHeaderConstants
 {
-    public static List<(OrderStatus source, OrderStatus destination)> AvailableOrderStatusChangeCombinations = new()
+    public readonly static List<(OrderStatus source, OrderStatus destination)> AvailableOrderStatusChangeCombinations = new()
     {
         (New, InProgress),
         (InProgress, Shipped),
