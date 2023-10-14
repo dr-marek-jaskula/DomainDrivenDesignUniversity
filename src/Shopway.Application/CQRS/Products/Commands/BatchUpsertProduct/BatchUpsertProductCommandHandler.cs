@@ -5,10 +5,8 @@ using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Results;
 using Shopway.Domain.Utilities;
-using Shopway.Persistence.Framework;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
-using Shopway.Persistence.Abstractions;
 using Shopway.Domain.EntityKeys;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using ZiggyCreatures.Caching.Fusion;
@@ -23,20 +21,17 @@ namespace Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 
 public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse>
 {
-    private readonly IUnitOfWork<ShopwayDbContext> _unitOfWork;
-    private readonly IProductRepository _productRepository;
     private readonly IFusionCache _fusionCache;
+    private readonly IProductRepository _productRepository;
     private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _responseBuilder;
 
     public BatchUpsertProductCommandHandler
     (
-        IUnitOfWork<ShopwayDbContext> unitOfWork,
-        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder
-,
+        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder,
         IProductRepository productRepository,
-        IFusionCache fusionCache)
+        IFusionCache fusionCache
+    )
     {
-        _unitOfWork = unitOfWork;
         _responseBuilder = responseBuilder;
         _productRepository = productRepository;
         _fusionCache = fusionCache;

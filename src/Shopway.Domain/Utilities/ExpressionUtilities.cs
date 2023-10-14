@@ -43,6 +43,16 @@ public static class ExpressionUtilities
         return result;
     }
 
+    public static Expression<Func<TType, bool>> Or<TType>(this Expression<Func<TType, bool>> leftExpression, Expression<Func<TType, bool>> rightExpression)
+    {
+        var parameter = Expression.Parameter(typeof(TType));
+
+        var left = ReplaceParameter(leftExpression, parameter);
+        var right = ReplaceParameter(rightExpression, parameter);
+
+        return Expression.Lambda<Func<TType, bool>>(Expression.Or(left, right), parameter);
+    }
+
     public static Expression<Func<TType, bool>> And<TType>(params Expression<Func<TType, bool>>[] expressions)
     {
         Expression<Func<TType, bool>> result = expressions.First();
@@ -53,16 +63,6 @@ public static class ExpressionUtilities
         }
 
         return result;
-    }
-
-    public static Expression<Func<TType, bool>> Or<TType>(this Expression<Func<TType, bool>> leftExpression, Expression<Func<TType, bool>> rightExpression)
-    {
-        var parameter = Expression.Parameter(typeof(TType));
-
-        var left = ReplaceParameter(leftExpression, parameter);
-        var right = ReplaceParameter(rightExpression, parameter);
-
-        return Expression.Lambda<Func<TType, bool>>(Expression.Or(left, right), parameter);
     }
 
     public static Expression<Func<TType, bool>> And<TType>(this Expression<Func<TType, bool>> leftExpression, Expression<Func<TType, bool>> rightExpression)
@@ -81,7 +81,7 @@ public static class ExpressionUtilities
         return visitor.Visit(expression.Body);
     }
 
-    private class ReplaceExpressionVisitor : ExpressionVisitor
+    private sealed class ReplaceExpressionVisitor : ExpressionVisitor
     {
         private readonly Expression _oldValue;
         private readonly Expression _newValue;

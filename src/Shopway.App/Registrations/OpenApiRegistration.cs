@@ -44,9 +44,9 @@ public static class OpenApiRegistration
 
             app.UseSwaggerUI(options =>
             {
-                foreach (var description in provider.ApiVersionDescriptions)
+                foreach (var groupName in provider.ApiVersionDescriptions.Select(x => x.GroupName))
                 {
-                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    options.SwaggerEndpoint($"/swagger/{groupName}/swagger.json", groupName.ToUpperInvariant());
                 }
 
                 options.InjectStylesheet("/swaggerstyles/SwaggerDark.css");

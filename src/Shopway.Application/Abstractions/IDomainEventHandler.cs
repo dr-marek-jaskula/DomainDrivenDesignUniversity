@@ -3,7 +3,7 @@ using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.Abstractions;
 
-public interface IDomainEventHandler<TEvent> : INotificationHandler<TEvent>
+public interface IDomainEventHandler<in TEvent> : INotificationHandler<TEvent>
     where TEvent : IDomainEvent
 {
 }

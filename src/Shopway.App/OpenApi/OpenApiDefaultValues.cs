@@ -25,17 +25,17 @@ public sealed class OpenApiDefaultValues : IOperationFilter
         foreach (var responseType in context.ApiDescription.SupportedResponseTypes)
         {
             var responseKey = responseType.IsDefaultResponse 
-                ? @Default
+                ? @Default 
                 : responseType.StatusCode.ToString();
 
             var response = operation.Responses[responseKey];
 
-            foreach (var contentType in response.Content.Keys)
+            var contentKeysToRemove = response.Content.Keys
+                .Where(contentType => responseType.ApiResponseFormats.Any(x => x.MediaType == contentType) is false);
+
+            foreach (var contentType in contentKeysToRemove)
             {
-                if (responseType.ApiResponseFormats.Any(x => x.MediaType == contentType) is false)
-                {
-                    response.Content.Remove(contentType);
-                }
+                response.Content.Remove(contentType);
             }
         }
 

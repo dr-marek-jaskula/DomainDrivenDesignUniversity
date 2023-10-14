@@ -65,6 +65,11 @@ public sealed class CachedProductRepository : IProductRepository
         return _decorated.GetByKeyOrDefaultAsync(productKey, cancellationToken);
     }
 
+    public Task<bool> AnyAsync(ProductId id, CancellationToken cancellationToken)
+    {
+        return _decorated.AnyAsync(id, cancellationToken);
+    }
+
     public Task<bool> AnyAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
         return _decorated.AnyAsync(productKey, cancellationToken);
@@ -83,11 +88,6 @@ public sealed class CachedProductRepository : IProductRepository
     public Task<Product> GetByIdWithReviewAsync(ProductId id, Title title, CancellationToken cancellationToken)
     {
         return _decorated.GetByIdWithReviewAsync(id, title, cancellationToken);
-    }
-
-    public Task<bool> AnyAsync(ProductId id, CancellationToken cancellationToken)
-    {
-        return _decorated.AnyAsync(id, cancellationToken);
     }
 
     public Task<IList<ProductId>> VerifyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
