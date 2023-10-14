@@ -79,18 +79,14 @@ public static class StringUtilities
 
     public static string RemoveAll(this string input, params string[] removeStrings)
     {
+        removeStrings = removeStrings
+            .Where(@string => input.Contains(@string))
+            .ToArray();
+
         foreach (var removeString in removeStrings)
         {
             int index = input.IndexOf(removeString);
-
-            while (index > 0)
-            {
-                input = (index < 0)
-                    ? input
-                    : input.Remove(index, removeString.Length);
-
-                index = input.IndexOf(removeString);
-            }
+            input = input.Remove(index, removeString.Length);
         }
 
         return input;
