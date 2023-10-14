@@ -10,7 +10,7 @@ public abstract class NotMigratedEntityConfigurationBase<TEntity> : IEntityTypeC
 {
     protected readonly bool _excludeFromMigrations;
 
-    public NotMigratedEntityConfigurationBase(bool excludeFromMigrations)
+    protected NotMigratedEntityConfigurationBase(bool excludeFromMigrations)
     {
         _excludeFromMigrations = excludeFromMigrations;
     }

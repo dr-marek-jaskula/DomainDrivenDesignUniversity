@@ -1,19 +1,17 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.Mappings;
-using Shopway.Application.Utilities;
-using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Results;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Results;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
 using Shopway.Domain.EntityKeys;
-using ZiggyCreatures.Caching.Fusion;
-using Shopway.Application.Abstractions.CQRS.Batch;
+using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Abstractions;
+using Shopway.Application.Mappings;
+using Shopway.Application.Utilities;
+using Microsoft.IdentityModel.Tokens;
 using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 using static Shopway.Domain.Errors.HttpErrors;
-using static Shopway.Persistence.Utilities.CacheUtilities;
 using static Shopway.Application.Mappings.OrderLineMapping;
 using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 
@@ -23,14 +21,12 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository;
     private readonly IProductRepository _productRepository;
-    private readonly IFusionCache _fusionCache;
     private readonly IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _responseBuilder;
 
-    public BatchUpsertOrderLineCommandHandler(IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, IOrderHeaderRepository orderHeaderRepository, IFusionCache fusionCache, IProductRepository productRepository)
+    public BatchUpsertOrderLineCommandHandler(IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, IOrderHeaderRepository orderHeaderRepository, IProductRepository productRepository)
     {
         _responseBuilder = responseBuilder;
         _orderHeaderRepository = orderHeaderRepository;
-        _fusionCache = fusionCache;
         _productRepository = productRepository;
     }
 

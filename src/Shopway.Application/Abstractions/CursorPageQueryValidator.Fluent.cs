@@ -21,7 +21,7 @@ internal abstract class CursorPageQueryValidator<TPageQuery, TResponse, TFilter,
     where TPage : ICursorPage
     where TPageQuery : ICursorPageQuery<TResponse, TFilter, TSortBy, TPage>
 {
-    public CursorPageQueryValidator() 
+    protected CursorPageQueryValidator() 
         : base()
     {
         RuleFor(query => query.Page.PageSize).Custom((pageSize, context) =>

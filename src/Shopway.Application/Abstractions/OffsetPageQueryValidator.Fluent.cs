@@ -21,7 +21,7 @@ internal abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TFilter,
     where TPage : IOffsetPage
     where TPageQuery : IOffsetPageQuery<TResponse, TFilter, TSortBy, TPage>
 {
-    public OffsetPageQueryValidator() 
+    protected OffsetPageQueryValidator() 
         : base()
     {
         RuleFor(query => query.Page.PageNumber)
