@@ -3,7 +3,7 @@ using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Domain.Results;
 
-namespace Shopway.Application.CQRS.Orders.Commands.DeleteOrderHeader;
+namespace Shopway.Application.CQRS.Orders.Commands.SoftDeleteOrderHeader;
 
 internal sealed class SoftDeleteOrderHeaderCommandHandler : ICommandHandler<SoftDeleteOrderHeaderCommand>
 {

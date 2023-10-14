@@ -143,7 +143,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         {
             if (parameteres.Any(parameter => parameter is null))
             {
-                _errors.Add(new Error($"Error.{nameof(ValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
+                _errors.Add(Domain.Errors.Error.New($"Error.{nameof(ValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
                 return true;
             }
 

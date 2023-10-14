@@ -33,7 +33,7 @@ public sealed class FluentValidationPipeline<TRequest, TResponse> : IPipelineBeh
             .Select(validator => validator.Validate(request))
             .SelectMany(validationResult => validationResult.Errors)
             .Where(validationFailure => validationFailure is not null)
-            .Select(failure => new Error(failure.PropertyName, failure.ErrorMessage))
+            .Select(failure => Error.New(failure.PropertyName, failure.ErrorMessage))
             .Distinct()
             .ToArray();
 

@@ -53,7 +53,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
     }
 
     /// <summary>
-    /// Delete entities that were soft deleted one year in the past. Scheduler is defines in QuartzOptionsSetup
+    /// Delete entities that were soft deleted one year in the past. Scheduler is defined in QuartzOptionsSetup
     /// </summary>
     public static async Task DeleteOutdatedEntities<TEntity>
     (

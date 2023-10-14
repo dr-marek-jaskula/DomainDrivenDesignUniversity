@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Application.Exceptions;
 using Shopway.Infrastructure.Policies;
+using Shopway.Infrastructure.Utilities;
 using Shopway.Persistence.Exceptions;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -25,11 +26,11 @@ public static class MigrationsUtilities
 
         if (pendingMigrations.Any())
         {
-            var result = PollyPolicies.MigrationRetryPolicy.ExecuteAndCapture(() => dbContext.Database.Migrate());
+            var result = PollyPipelines.MigrationRetryPipeline.ExecuteAndReturnResult(() => dbContext.Database.Migrate());
 
-            if (result.FinalException is not null)
+            if (result.IsFailure)
             {
-                throw new MigrationException("Applying migrations failed.", result.FinalException);
+                throw new MigrationException(result.Error);
             }
         }
 

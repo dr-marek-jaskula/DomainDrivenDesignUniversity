@@ -1,10 +1,12 @@
-﻿namespace Shopway.Persistence.Exceptions;
+﻿using Shopway.Domain.Errors;
+
+namespace Shopway.Persistence.Exceptions;
 
 [Serializable]
 public sealed class MigrationException : Exception
 {
-    public MigrationException(string message, Exception innerException)
-        : base(message, innerException)
+    public MigrationException(Error error)
+        : base(error.Message)
     {
     }
 }
