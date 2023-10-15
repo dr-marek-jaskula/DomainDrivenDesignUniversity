@@ -26,7 +26,7 @@ jobs:
       - name: Build
         run: dotnet build DomainDrivenDesignUniversity.sln --no-restore
       - name: UnitTests
-        run: dotnet test DomainDrivenDesignUniversity.sln --logger "trx;LogFileName=test-results.trx" --no-build --verbosity normal --filter "UnitTest=Application|UnitTest=Architecture|UnitTest=Domain|UnitTest=Utility"
+        run: dotnet test DomainDrivenDesignUniversity.sln --logger "trx;LogFileName=test-results.trx" --no-build --verbosity normal --filter "UnitTest=Application|UnitTest=Architecture|UnitTest=Domain|UnitTest=Utility|UnitTest=Infrastructure"
       - name: Test reports
         uses: dorny/test-reporter@v1
         if: always()
