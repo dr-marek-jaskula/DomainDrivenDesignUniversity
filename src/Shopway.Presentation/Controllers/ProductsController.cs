@@ -16,6 +16,8 @@ using Shopway.Application.CQRS.Products.Queries.GetProductByKey;
 using Shopway.Application.CQRS.Products.Queries.GetProductsOffsetDictionary;
 using Shopway.Application.CQRS.Products.Queries.DynamicOffsetProductQuery;
 using Shopway.Application.CQRS.Products.Queries.GetProductsCursorDictionary;
+using Shopway.Application.CQRS.Products.Queries.FuzzySearchProductByName;
+using Shopway.Domain.Common;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -64,6 +66,36 @@ public sealed partial class ProductsController : ApiController
     public async Task<IActionResult> GetProductByKey([FromBody] ProductKey key, CancellationToken cancellationToken)
     {
         var query = new GetProductByKeyQuery(key);
+
+        var response = await Sender.Send(query, cancellationToken);
+
+        if (response.IsFailure)
+        {
+            return HandleFailure(response);
+        }
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Fuzzy search product by name
+    /// </summary>
+    /// <param name="productName">Product name</param>
+    /// <param name="page">Offset page</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Product</returns>
+    [HttpPost("fuzzy-search/{productName}")]
+    [ApiKey(RequiredApiKey.PRODUCT_GET)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> FuzzySearchProductByName
+    (
+        [FromRoute] string productName,
+        [FromBody] OffsetPage page,
+        CancellationToken cancellationToken
+    )
+    {
+        var query = new FuzzySearchProductByNameQuery(page, productName);
 
         var response = await Sender.Send(query, cancellationToken);
 

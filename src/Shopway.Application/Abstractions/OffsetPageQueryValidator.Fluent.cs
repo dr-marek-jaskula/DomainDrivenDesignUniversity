@@ -4,7 +4,6 @@ using Shopway.Domain.Abstractions.Common;
 using Shopway.Application.Abstractions.CQRS;
 using static Shopway.Application.Constants.SortConstants;
 using static Shopway.Application.Constants.FilterConstants;
-using static Shopway.Application.Constants.PageConstants;
 using static Shopway.Domain.Utilities.SortByEntryUtilities;
 using static Shopway.Domain.Utilities.FilterByEntryUtilities;
 using static Shopway.Persistence.Constants.SpecificationConstants;
@@ -14,7 +13,7 @@ namespace Shopway.Application.Abstractions;
 /// <summary>
 /// A generic offset page query validator, created to encapsulate common offset page query validation logic
 /// </summary>
-internal abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TPage> : AbstractValidator<TPageQuery>
+internal abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TPage> : OffsetPageValidator<TPageQuery, TResponse, TPage>
     where TResponse : IResponse
     where TFilter : IFilter
     where TSortBy : ISortBy
@@ -24,17 +23,6 @@ internal abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TFilter,
     protected OffsetPageQueryValidator() 
         : base()
     {
-        RuleFor(query => query.Page.PageNumber)
-            .GreaterThanOrEqualTo(1);
-
-        RuleFor(query => query.Page.PageSize).Custom((pageSize, context) =>
-        {
-            if (AllowedPageSizes.NotContains(pageSize))
-            {
-                context.AddFailure(PageSize, $"{PageSize} must be in: [{string.Join(", ", AllowedPageSizes)}]");
-            }
-        });
-
         RuleFor(query => query.SortBy).Custom((sortBy, context) =>
         {
             if (sortBy is null)

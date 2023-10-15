@@ -21,6 +21,15 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     {
     }
 
+    public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
+    {
+        var specification = ProductSpecification.Names.Create();
+
+        return await UseSpecification(specification)
+            .Distinct()
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Product?> GetByKeyOrDefaultAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.ByKey.Create(productKey);

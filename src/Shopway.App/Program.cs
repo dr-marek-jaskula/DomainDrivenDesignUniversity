@@ -1,4 +1,5 @@
 using Serilog;
+using Shopway.App.Registrations;
 using Shopway.Persistence.Framework;
 using static Microsoft.Extensions.DependencyInjection.LoggerUtilities;
 
@@ -35,7 +36,8 @@ try
         .RegisterDecorators()
         .RegisterHealthChecks()
         .RegisterVersioning()
-        .RegisterOpenApi();
+        .RegisterOpenApi()
+        .RegisterFuzzySearch();
 
     //Build the application
 

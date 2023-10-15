@@ -60,6 +60,11 @@ public sealed class CachedProductRepository : IProductRepository
         _fusionCache.Update<Product, ProductId>(product);
     }
 
+    public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
+    {
+        return await _decorated.GetNamesAsync(cancellationToken);
+    }
+
     public Task<Product?> GetByKeyOrDefaultAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
         return _decorated.GetByKeyOrDefaultAsync(productKey, cancellationToken);
