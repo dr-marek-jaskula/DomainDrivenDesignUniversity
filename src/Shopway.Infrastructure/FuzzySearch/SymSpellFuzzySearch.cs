@@ -87,8 +87,14 @@ public sealed class SymSpellFuzzySearch : IFuzzySearch
     /// <param name="inputTerm">Term to be segmented, preferred input should contain non segmented text without misspellings</param>
     /// <param name="maxEditDistance">>Distance from the strings in inputTerm</param>
     /// <returns>The segmented string</returns>
-    public string WordSegmentation(string inputTerm, int maxEditDistance = 0)
+    public Result<string> WordSegmentation(string inputTerm, int maxEditDistance = 0)
     {
+        if (maxEditDistance < 0)
+        {
+            var error = Error.New(nameof(SymSpellFuzzySearch), $"Distance must be a non negative value. Current value: '{maxEditDistance}'.");
+            return Result.Failure<string>(error);
+        }
+
         var suggestion = _fuzzySearchEngine.WordSegmentation(inputTerm, maxEditDistance);
         return suggestion.correctedString;
     }
