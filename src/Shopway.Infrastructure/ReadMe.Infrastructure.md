@@ -97,3 +97,9 @@ docker run -p 6379:6379 --name redis -d redis
 Background Job **DeleteOutdatedSoftDeletableEntitiesJob** runs once per month and gets at runtime 
 all entities that implements ISoftDeletable interface and then permanently deletes entities that 
 were soft deleted one year in the past.
+
+## FuzzySearch
+
+FuzzySearch is used to approximate strings, spell checking, word segmentation. The use of fuzzy search is presented in 
+**.Application/CQRS/Products/Queries/FuzzySearchProductByName**. We should inject the **IFuzzySearchFactory** and then create an
+instance of a **FuzzySearch** that matches our expectations.
