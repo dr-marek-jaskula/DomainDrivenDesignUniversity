@@ -19,7 +19,7 @@ public sealed class SymSpellFuzzySearchFactory : IFuzzySearchFactory
         SymSpell symSpell = new(NumberOfWordsInEnDictionary, 2);
 
         var assembly = AssemblyReference.Assembly;
-        var embeddedResourceName = $"{typeof(AssemblyReference).Namespace}.{EnDictionaryFileName}";
+        var embeddedResourceName = $"{typeof(SymSpellFuzzySearchFactory).Namespace}.{EnDictionaryFileName}";
 
         using Stream stream = assembly.GetManifestResourceStream(embeddedResourceName)!;
 

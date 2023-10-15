@@ -7,13 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="C:\Users\Marek\.nuget\packages\symspell\6.7.2\contentFiles\any\netcoreapp3.0\frequency_bigramdictionary_en_243_342.txt" />
-    <Content Remove="C:\Users\Marek\.nuget\packages\symspell\6.7.2\contentFiles\any\netcoreapp3.0\frequency_dictionary_en_82_765.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="C:\Users\Marek\.nuget\packages\symspell\6.7.2\contentFiles\any\netcoreapp3.0\frequency_bigramdictionary_en_243_342.txt" />
-    <EmbeddedResource Include="C:\Users\Marek\.nuget\packages\symspell\6.7.2\contentFiles\any\netcoreapp3.0\frequency_dictionary_en_82_765.txt" />
+    <EmbeddedResource Include="FuzzySearch\frequency_dictionary_en_82_765.txt" />
   </ItemGroup>
 
   <ItemGroup>
