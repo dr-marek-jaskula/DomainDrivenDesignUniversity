@@ -9,6 +9,8 @@ namespace Shopway.Domain.Abstractions.Repositories;
 
 public interface IProductRepository
 {
+    Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken);
+
     Task<Product?> GetByKeyOrDefaultAsync(ProductKey productKey, CancellationToken cancellationToken);
 
     Task<bool> AnyAsync(ProductKey productKey, CancellationToken cancellationToken);

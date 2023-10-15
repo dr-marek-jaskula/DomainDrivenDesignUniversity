@@ -18,6 +18,7 @@ public static class SpecificationConstants
     public const string QueryProductByIdWithReviewByTitle = "Query product by id with review by title";
     public const string QueryProductByIds = "Query product by ids";
     public const string QueryProductByProductNamesAndProductRevisions = "Query product by names and revisions";
+    public const string QueryProductNames = "Query product names";
 
     public readonly static IReadOnlyCollection<string> AllowedProductSortProperties = AsReadOnlyCollection
     (
