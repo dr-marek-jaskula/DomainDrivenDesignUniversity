@@ -44,7 +44,7 @@ public sealed class SymSpellFuzzySearchTests
         var result = _fuzzySearch.WordSegmentation(toSegment);
 
         //Assert
-        result.Should().Be(segmented);
+        result.Value.Should().Be(segmented);
     }
 
     [Theory]
