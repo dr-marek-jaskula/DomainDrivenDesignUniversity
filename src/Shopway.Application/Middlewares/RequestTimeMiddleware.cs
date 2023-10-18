@@ -5,7 +5,7 @@ using Shopway.Application.Abstractions;
 namespace Shopway.Application.Middlewares;
 
 /// <summary>
-/// Examines if the request takes at least 'RequestDurationLogLevel' seconds. If so, then log a warning
+/// Examines if the request takes at least 'RequestDurationLogLevel' seconds. If so, then log a warning.
 /// </summary>
 public sealed class RequestTimeMiddleware : IMiddleware
 {
@@ -25,7 +25,7 @@ public sealed class RequestTimeMiddleware : IMiddleware
 
         if (requestDuration.Seconds >= RequestDurationLogLevel)
         {
-            _logger.LogWarning($"Request [{context.Request.Method}] at {context.Request.Path} took {requestDuration.Milliseconds} ms");
+            _logger.LogWarning("Request [{Method}] at {Path} took {Milliseconds} ms", context.Request.Method, context.Request.Path, requestDuration.Milliseconds);
         }
     }
 }

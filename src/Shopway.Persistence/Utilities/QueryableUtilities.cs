@@ -1,9 +1,9 @@
-﻿using Shopway.Domain.Utilities;
+﻿using System.Data;
+using Shopway.Domain.Utilities;
 using System.Linq.Dynamic.Core;
+using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.BaseTypes;
-using System.Data;
 using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Utilities;

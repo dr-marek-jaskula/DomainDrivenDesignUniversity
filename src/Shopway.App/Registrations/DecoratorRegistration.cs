@@ -1,7 +1,7 @@
-﻿using Shopway.Infrastructure.Decoratos;
-using MediatR;
-using Shopway.Persistence.Repositories.Decorators;
+﻿using MediatR;
+using Shopway.Infrastructure.Decoratos;
 using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Persistence.Repositories.Decorators;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Shopway.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Persistence.Converters.ValueObjects;
 

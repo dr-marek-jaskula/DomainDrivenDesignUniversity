@@ -8,5 +8,7 @@ public interface ILoggerAdapter<TType>
 
     void LogWarning(string message, params object[] args);
 
+    void LogError(string message, params object[] args);
+
     void Log(LogLevel logLevel, string message, params object[] args);
 }

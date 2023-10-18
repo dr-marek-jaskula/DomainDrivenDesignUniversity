@@ -1,23 +1,23 @@
 ﻿using MediatR;
+using Shopway.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Presentation.Abstractions;
 using Shopway.Domain.EntityIds;
+using Shopway.Application.CQRS;
+using Shopway.Domain.EntityKeys;
+using Microsoft.AspNetCore.Http;
+using Shopway.Presentation.Abstractions;
+using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Application.CQRS.Products.Queries.GetProductById;
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
-using Shopway.Application.CQRS.Products.Queries.QueryOffsetPageProduct;
-using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
-using Microsoft.AspNetCore.Http;
-using Shopway.Application.CQRS.Products.Queries;
-using Shopway.Application.CQRS;
-using Shopway.Domain.EntityKeys;
 using Shopway.Application.CQRS.Products.Queries.GetProductByKey;
-using Shopway.Application.CQRS.Products.Queries.GetProductsOffsetDictionary;
-using Shopway.Application.CQRS.Products.Queries.DynamicOffsetProductQuery;
-using Shopway.Application.CQRS.Products.Queries.GetProductsCursorDictionary;
+using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+using Shopway.Application.CQRS.Products.Queries.QueryOffsetPageProduct;
 using Shopway.Application.CQRS.Products.Queries.FuzzySearchProductByName;
-using Shopway.Domain.Common;
+using Shopway.Application.CQRS.Products.Queries.DynamicOffsetProductQuery;
+using Shopway.Application.CQRS.Products.Queries.GetProductsOffsetDictionary;
+using Shopway.Application.CQRS.Products.Queries.GetProductsCursorDictionary;
 
 namespace Shopway.Presentation.Controllers;
 

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Shopway.Domain.Abstractions;
 using IResult = Shopway.Domain.Abstractions.IResult;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;

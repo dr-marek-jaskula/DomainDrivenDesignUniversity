@@ -1,5 +1,5 @@
-﻿using Shopway.Persistence.Constants;
-using Shopway.Domain.Enumerations;
+﻿using Shopway.Domain.Enumerations;
+using Shopway.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Permission = Shopway.Domain.Enumerations.Permission;

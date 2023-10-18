@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Shopway.Presentation.Abstractions;
+using Shopway.Application.CQRS.Orders.Queries;
 using Shopway.Application.CQRS.Users.Commands.LogUser;
 using Shopway.Application.CQRS.Users.Commands.RegisterUser;
-using Microsoft.AspNetCore.Http;
 using Shopway.Application.CQRS.Users.Queries.GetUserByUsername;
-using Shopway.Application.CQRS.Orders.Queries;
 
 namespace Gatherly.Presentation.Controllers;
 

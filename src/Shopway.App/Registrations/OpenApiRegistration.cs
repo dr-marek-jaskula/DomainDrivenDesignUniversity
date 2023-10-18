@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+﻿using Shopway.App.Utilities;
 using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.Filters;
-using Shopway.App.Utilities;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

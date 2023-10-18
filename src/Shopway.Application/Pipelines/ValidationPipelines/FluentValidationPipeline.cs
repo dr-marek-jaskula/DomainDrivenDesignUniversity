@@ -1,8 +1,8 @@
-﻿using FluentValidation;
-using MediatR;
-using Shopway.Domain.Abstractions;
+﻿using MediatR;
+using FluentValidation;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.Pipelines.ValidationPipelines;
 

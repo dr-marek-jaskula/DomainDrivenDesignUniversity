@@ -1,10 +1,10 @@
-﻿using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Entities;
+using System.Linq.Expressions;
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
-using System.Linq.Expressions;
 using ZiggyCreatures.Caching.Fusion;
+using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 

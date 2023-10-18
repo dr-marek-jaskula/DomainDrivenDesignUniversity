@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 

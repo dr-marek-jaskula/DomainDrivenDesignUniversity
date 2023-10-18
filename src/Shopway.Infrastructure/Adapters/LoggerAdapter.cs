@@ -17,6 +17,11 @@ public sealed class LoggerAdapter<TType> : ILoggerAdapter<TType>
         _logger.Log(logLevel, message, args);
     }
 
+    public void LogError(string message, params object[] args)
+    {
+        Log(LogLevel.Error, message, args);
+    }
+
     public void LogInformation(string message, params object[] args)
     {
         Log(LogLevel.Information, message, args);

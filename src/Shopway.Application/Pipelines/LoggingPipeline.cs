@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using Shopway.Domain.Abstractions;
+using Shopway.Application.Abstractions;
 
 namespace Shopway.Application.Pipelines;
 
@@ -8,9 +8,9 @@ public sealed class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRe
     where TRequest : IRequest<TResponse>
     where TResponse : IResult
 {
-    private readonly ILogger<LoggingPipeline<TRequest, TResponse>> _logger;
+    private readonly ILoggerAdapter<LoggingPipeline<TRequest, TResponse>> _logger;
 
-    public LoggingPipeline(ILogger<LoggingPipeline<TRequest, TResponse>> logger)
+    public LoggingPipeline(ILoggerAdapter<LoggingPipeline<TRequest, TResponse>> logger)
     {
         _logger = logger;
     }
@@ -22,24 +22,13 @@ public sealed class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRe
         CancellationToken cancellationToken
     )
     {
-        _logger.LogInformation
-        (
-            "Starting request {@RequestName}, {@DateTimeUtc}",
-            typeof(TRequest).Name,
-            DateTime.UtcNow
-        );
+        _logger.LogInformation("Starting request {@RequestName}, {@DateTimeUtc}", typeof(TRequest).Name, DateTime.UtcNow);
 
         var result = await next();
 
         if (result.IsSuccess)
         {
-            _logger.LogInformation
-            (
-                "Request completed {@RequestName}, {@DateTimeUtc}",
-                typeof(TRequest).Name,
-                DateTime.UtcNow
-            );
-
+            _logger.LogInformation("Request completed {@RequestName}, {@DateTimeUtc}", typeof(TRequest).Name, DateTime.UtcNow);
             return result;
         }
 

@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Shopway.Domain.Entities;
+using Shopway.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Constants;
-using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Utilities;
-using Shopway.Domain.Entities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Shopway.Persistence.Constants.NumberConstants;
 
 namespace Shopway.Persistence.Configurations;

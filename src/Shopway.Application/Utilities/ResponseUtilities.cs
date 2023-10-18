@@ -1,6 +1,6 @@
-﻿using Shopway.Application.Abstractions;
+﻿using Shopway.Domain.Results;
 using Shopway.Domain.Abstractions;
-using Shopway.Domain.Results;
+using Shopway.Application.Abstractions;
 
 namespace Shopway.Application.Utilities;
 

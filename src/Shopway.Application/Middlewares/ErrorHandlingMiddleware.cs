@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Errors;
-using Shopway.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
+using Shopway.Application.Exceptions;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
 using static Shopway.Application.Constants.ProblemDetailsConstants;
 
@@ -11,6 +11,8 @@ namespace Shopway.Application.Middlewares;
 /// </summary>
 public sealed class ErrorHandlingMiddleware : IMiddleware
 {
+    private const string ProblemDetailsContentType = "application/problem+json";
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
@@ -50,7 +52,7 @@ public sealed class ErrorHandlingMiddleware : IMiddleware
     {
         var problemDetails = CreateProblemDetails
         (
-           title: ExceptionOccured,
+           title: ExceptionOccurred,
            status: context.Response.StatusCode,
            error: HttpErrors.Exception(exception.Message),
            context: context
@@ -58,6 +60,6 @@ public sealed class ErrorHandlingMiddleware : IMiddleware
 
         await context
             .Response
-            .WriteAsJsonAsync(problemDetails, problemDetails.GetType(), options: null, contentType: "application/problem+json");
+            .WriteAsJsonAsync(problemDetails, problemDetails.GetType(), options: null, contentType: ProblemDetailsContentType);
     }
 }

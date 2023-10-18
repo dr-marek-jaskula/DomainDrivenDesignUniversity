@@ -1,8 +1,8 @@
-﻿using Shopway.Domain.Entities;
+﻿using System.Linq.Expressions;
+using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Abstractions;
-using System.Linq.Expressions;
 using static Shopway.Persistence.Constants.SpecificationConstants;
 
 namespace Shopway.Persistence.Specifications.Products;
