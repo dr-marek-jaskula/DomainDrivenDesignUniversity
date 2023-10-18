@@ -13,7 +13,7 @@ internal static class SpecificationUtilities
     /// <typeparam name="TEntityId">EntityId type</typeparam>
     /// <typeparam name="TResponse">Response type</typeparam>
     /// <param name="specification">Input specification</param>
-    /// <returns>Queryable</returns>
+    /// <returns>SpecificationWithMappingBase</returns>
     internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> AsMappingSpecification<TEntity, TEntityId, TResponse>(this SpecificationBase<TEntity, TEntityId> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
