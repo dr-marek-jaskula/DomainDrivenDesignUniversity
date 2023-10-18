@@ -1,7 +1,7 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Reflection;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Reflection;
 
 namespace Shopway.App.Utilities;
 

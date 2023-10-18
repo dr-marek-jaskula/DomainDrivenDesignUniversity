@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Application.CQRS.Users.Commands.RegisterUser;
 using Shopway.Application.CQRS.Users.Queries;
+using Shopway.Application.CQRS.Users.Commands.RegisterUser;
 
 namespace Shopway.Application.Mappings;
 

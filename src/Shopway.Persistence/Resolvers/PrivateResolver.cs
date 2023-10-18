@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Reflection;
+using Newtonsoft.Json.Serialization;
 
 namespace Shopway.Persistence.Resolvers;
 

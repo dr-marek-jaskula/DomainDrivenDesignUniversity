@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using System.Linq.Expressions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Persistence.Utilities;
-using System.Linq.Expressions;
+using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Abstractions;
 using Shopway.Domain.Abstractions.Common;
 

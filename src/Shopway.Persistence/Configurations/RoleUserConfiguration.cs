@@ -1,8 +1,8 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shopway.Persistence.Converters.EntityIds;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Shopway.Persistence.Configurations;
 

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Outbox;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Persistence.Utilities;
 

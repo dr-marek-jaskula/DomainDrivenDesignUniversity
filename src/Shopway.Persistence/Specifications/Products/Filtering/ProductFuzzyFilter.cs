@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Abstractions.Common;
+﻿using System.Linq.Expressions;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
-using System.Linq.Expressions;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Specifications.Products.Filtering;
 

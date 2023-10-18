@@ -1,5 +1,5 @@
-﻿using Shopway.Infrastructure.Resolvers;
-using Newtonsoft.Json.Converters;
+﻿using Newtonsoft.Json.Converters;
+using Shopway.Infrastructure.Resolvers;
 using static Newtonsoft.Json.ReferenceLoopHandling;
 using static Newtonsoft.Json.Formatting;
 using ApiBehaviorOptions = Shopway.Infrastructure.Options.ApiBehaviorOptions;

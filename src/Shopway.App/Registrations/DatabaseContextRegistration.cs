@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Shopway.Persistence.Framework;
 using Shopway.Infrastructure.Options;
 using Shopway.Persistence.Abstractions;
-using Shopway.Persistence.Framework;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

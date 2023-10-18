@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Persistence.Outbox;
+﻿using Shopway.Persistence.Outbox;
 using Shopway.Persistence.Repositories;
+using Shopway.Domain.Abstractions.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

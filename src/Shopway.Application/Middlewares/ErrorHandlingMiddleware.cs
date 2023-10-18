@@ -52,7 +52,7 @@ public sealed class ErrorHandlingMiddleware : IMiddleware
     {
         var problemDetails = CreateProblemDetails
         (
-           title: ExceptionOccured,
+           title: ExceptionOccurred,
            status: context.Response.StatusCode,
            error: HttpErrors.Exception(exception.Message),
            context: context

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shopway.Persistence.Utilities;
 

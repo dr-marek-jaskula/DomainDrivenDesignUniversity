@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Shopway.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Constants;
-using Shopway.Persistence.Outbox;
 using Shopway.Persistence.Converters;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Shopway.Persistence.Constants.NumberConstants;
 
 namespace Shopway.Persistence.Configurations;
@@ -26,4 +26,3 @@ internal sealed class OutboxMessageConsumerConfiguration : IEntityTypeConfigurat
         });
     }
 }
-

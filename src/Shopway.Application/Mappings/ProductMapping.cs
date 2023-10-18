@@ -1,13 +1,13 @@
 ﻿using Shopway.Application.CQRS;
-using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
+using System.Linq.Expressions;
+using Shopway.Domain.Entities;
+using Shopway.Domain.EntityIds;
+using Shopway.Domain.EntityKeys;
+using Shopway.Application.CQRS.Products.Queries;
 using Shopway.Application.CQRS.Products.Commands.CreateProduct;
 using Shopway.Application.CQRS.Products.Commands.RemoveProduct;
 using Shopway.Application.CQRS.Products.Commands.UpdateProduct;
-using Shopway.Application.CQRS.Products.Queries;
-using Shopway.Domain.Entities;
-using Shopway.Domain.EntityKeys;
-using Shopway.Domain.EntityIds;
-using System.Linq.Expressions;
+using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
 using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.Mappings;

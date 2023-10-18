@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Abstractions.Common;
+﻿using Shopway.Domain.Enums;
 using Shopway.Domain.Entities;
-using Shopway.Domain.Enums;
 using Shopway.Domain.Utilities;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Specifications.Products.Sorting;
 
