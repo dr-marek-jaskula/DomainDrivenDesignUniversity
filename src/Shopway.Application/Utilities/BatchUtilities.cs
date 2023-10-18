@@ -1,6 +1,6 @@
-﻿using Shopway.Application.Abstractions.CQRS.Batch;
-using Shopway.Application.CQRS;
+﻿using Shopway.Application.CQRS;
 using Shopway.Domain.Abstractions;
+using Shopway.Application.Abstractions.CQRS.Batch;
 using static Shopway.Application.CQRS.BatchEntryStatus;
 
 namespace Shopway.Application.Utilities;
