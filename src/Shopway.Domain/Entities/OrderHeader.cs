@@ -48,8 +48,8 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISof
     public UserId UserId { get; private set; }
     public IReadOnlyCollection<OrderLine> OrderLines => _orderLines.AsReadOnly();
 
-    public DateTimeOffset? SoftDeletedOn { get; private set; }
-    public bool SoftDeleted { get; private set; }
+    public DateTimeOffset? SoftDeletedOn { get; set; }
+    public bool SoftDeleted { get; set; }
 
     public static OrderHeader Create
     (
