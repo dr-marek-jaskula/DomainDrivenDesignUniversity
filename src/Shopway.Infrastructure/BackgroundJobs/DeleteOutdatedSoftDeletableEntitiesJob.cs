@@ -24,7 +24,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        _logger.LogInformation("DeleteOutdatedSoftDeletableEntities job starts");
+        _logger.LogInformation($"{nameof(DeleteOutdatedSoftDeletableEntitiesJob)} starts");
 
         var entityTypes = _dbContext
             .Model
@@ -47,7 +47,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
             })!;
         }
 
-        _logger.LogInformation("DeleteOutdatedSoftDeletableEntities job ends");
+        _logger.LogInformation($"{nameof(DeleteOutdatedSoftDeletableEntitiesJob)} job ends");
 
         await _dbContext.SaveChangesAsync();
     }
@@ -62,7 +62,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
         IDateTimeProvider dateTimeProvider,
         CancellationToken cancellationToken
     )
-        where TEntity : class, ISoftDeletable
+        where TEntity : class, IEntity, ISoftDeletable
     {
         var entitiesToDelete = await context
             .Set<TEntity>()
