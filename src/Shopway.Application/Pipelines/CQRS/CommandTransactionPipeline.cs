@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
+using Microsoft.EntityFrameworkCore;
+using Shopway.Persistence.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 
 namespace Shopway.Application.Pipelines.CQRS;
 
