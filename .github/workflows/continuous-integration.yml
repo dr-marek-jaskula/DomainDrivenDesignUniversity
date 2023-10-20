@@ -1,6 +1,6 @@
 # This workflow will build a .NET project, than run unit tests and publish test results
 
-name: continuous_integration
+name: Continuous Integration
 
 on:
   push:
