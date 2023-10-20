@@ -1,10 +1,10 @@
-﻿using Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct;
+﻿using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 using static Shopway.Tests.Integration.Constants.ProductBatchUpsertConstants;
-using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
+using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 using static Shopway.Domain.Utilities.ListUtilities;
 using Shopway.Domain.EntityKeys;
 using Shopway.Application.Abstractions.CQRS.Batch;
-using Shopway.Application.CQRS;
+using Shopway.Application.Features;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 

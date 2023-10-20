@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Shopway.Domain.Errors;
+﻿namespace Shopway.Domain.Errors;
 
 /// <summary>
 /// Represents an error that contains the informations about the failure

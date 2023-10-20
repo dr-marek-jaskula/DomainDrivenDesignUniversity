@@ -1,12 +1,12 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Application.CQRS;
 using Shopway.Domain.EntityKeys;
-using Shopway.Application.CQRS.Orders.Queries;
-using Shopway.Application.CQRS.Orders.Commands.AddOrderLine;
-using Shopway.Application.CQRS.Orders.Commands.RemoveOrderLine;
-using Shopway.Application.CQRS.Orders.Commands.UpdateOrderLine;
-using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
-using static Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
+using Shopway.Application.Features;
+using Shopway.Application.Features.Orders.Queries;
+using Shopway.Application.Features.Orders.Commands.AddOrderLine;
+using Shopway.Application.Features.Orders.Commands.RemoveOrderLine;
+using Shopway.Application.Features.Orders.Commands.UpdateOrderLine;
+using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
+using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 
 namespace Shopway.Application.Mappings;
 

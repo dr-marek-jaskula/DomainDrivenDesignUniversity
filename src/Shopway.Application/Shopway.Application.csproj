@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Users\Events\" />
+    <Folder Include="Features\Users\Events\" />
   </ItemGroup>
 
 	<ItemGroup>

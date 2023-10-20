@@ -4,7 +4,7 @@ using Shopway.Tests.Integration.Utilities;
 using Shopway.Tests.Integration.Constants;
 using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using static System.Net.HttpStatusCode;
-using static Shopway.Application.CQRS.BatchEntryStatus;
+using static Shopway.Application.Features.BatchEntryStatus;
 using static Shopway.Domain.Errors.Domain.DomainErrors.ProductNameError;
 using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.ProductBatchUpsertCommandUtility;
 

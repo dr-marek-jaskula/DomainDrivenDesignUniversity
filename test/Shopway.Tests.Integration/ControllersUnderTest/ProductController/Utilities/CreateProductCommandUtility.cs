@@ -1,4 +1,4 @@
-﻿using Shopway.Application.CQRS.Products.Commands.CreateProduct;
+﻿using Shopway.Application.Features.Products.Commands.CreateProduct;
 using Shopway.Domain.EntityKeys;
 using static Shopway.Tests.Integration.Constants.ProductConstants;
 

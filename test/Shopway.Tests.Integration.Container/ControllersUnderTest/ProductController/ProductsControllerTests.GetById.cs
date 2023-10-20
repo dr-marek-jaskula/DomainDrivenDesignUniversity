@@ -2,7 +2,7 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Tests.Integration.Utilities;
-using Shopway.Application.CQRS.Products.Queries;
+using Shopway.Application.Features.Products.Queries;
 using Shopway.Tests.Integration.Container.Utilities;
 using Shopway.Tests.Integration.Container.ControllersUnderTest.ProductController.Utilities;
 using static System.Net.HttpStatusCode;

@@ -1,4 +1,4 @@
-﻿using Shopway.Application.CQRS.Products.Commands.AddReview;
+﻿using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Tests.Integration.Constants;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
