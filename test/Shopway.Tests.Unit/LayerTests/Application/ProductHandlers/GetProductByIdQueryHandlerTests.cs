@@ -1,7 +1,7 @@
 using Shopway.Tests.Unit.Constants;
 using Shopway.Tests.Unit.Abstractions;
 using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Application.CQRS.Products.Queries.GetProductById;
+using Shopway.Application.Features.Products.Queries.GetProductById;
 using Shopway.Tests.Unit.LayerTests.Application.ProductHandlers.Utilities;
 using static System.Threading.CancellationToken;
 

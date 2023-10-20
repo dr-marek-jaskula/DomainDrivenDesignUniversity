@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.EntityIds;
 using Microsoft.AspNetCore.Http;
-using Shopway.Application.CQRS.Products.Commands.AddReview;
-using Shopway.Application.CQRS.Products.Commands.RemoveReview;
-using Shopway.Application.CQRS.Products.Commands.UpdateReview;
+using Shopway.Application.Features.Products.Commands.AddReview;
+using Shopway.Application.Features.Products.Commands.RemoveReview;
+using Shopway.Application.Features.Products.Commands.UpdateReview;
 using Shopway.Infrastructure.Authentication.PermissionAuthentication;
 
 namespace Shopway.Presentation.Controllers;

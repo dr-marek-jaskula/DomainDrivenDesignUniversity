@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Application.CQRS.Orders.Queries;
-using Shopway.Application.CQRS.Orders.Commands.CreateHeaderOrder;
-using Shopway.Application.CQRS.Orders.Commands.ChangeOrderHeaderStatus;
+using Shopway.Application.Features.Orders.Queries;
+using Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
+using Shopway.Application.Features.Orders.Commands.ChangeOrderHeaderStatus;
 
 namespace Shopway.Application.Mappings;
 

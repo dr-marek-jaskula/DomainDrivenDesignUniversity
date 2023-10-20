@@ -1,9 +1,9 @@
 ﻿using Shopway.Domain.EntityIds;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Shopway.Application.CQRS.Orders.Commands.AddOrderLine;
-using Shopway.Application.CQRS.Orders.Commands.RemoveOrderLine;
-using Shopway.Application.CQRS.Orders.Commands.UpdateOrderLine;
+using Shopway.Application.Features.Orders.Commands.AddOrderLine;
+using Shopway.Application.Features.Orders.Commands.RemoveOrderLine;
+using Shopway.Application.Features.Orders.Commands.UpdateOrderLine;
 
 namespace Shopway.Presentation.Controllers;
 

@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.EntityKeys;
 using static Shopway.Domain.Utilities.ListUtilities;
-using static Shopway.Application.CQRS.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
+using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Tests.Integration.Constants;
 

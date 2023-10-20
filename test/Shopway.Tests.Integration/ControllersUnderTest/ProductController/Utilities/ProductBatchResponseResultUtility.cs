@@ -1,4 +1,4 @@
-﻿using Shopway.Application.CQRS;
+﻿using Shopway.Application.Features;
 using Shopway.Domain.Errors;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;

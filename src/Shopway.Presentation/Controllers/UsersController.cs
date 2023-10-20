@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Shopway.Presentation.Abstractions;
-using Shopway.Application.CQRS.Orders.Queries;
-using Shopway.Application.CQRS.Users.Commands.LogUser;
-using Shopway.Application.CQRS.Users.Commands.RegisterUser;
-using Shopway.Application.CQRS.Users.Queries.GetUserByUsername;
+using Shopway.Application.Features.Orders.Queries;
+using Shopway.Application.Features.Users.Commands.LogUser;
+using Shopway.Application.Features.Users.Commands.RegisterUser;
+using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 
 namespace Gatherly.Presentation.Controllers;
 

@@ -1,5 +1,5 @@
 ﻿using Shopway.Domain.Common;
-using Shopway.Application.CQRS;
+using Shopway.Application.Features;
 using Shopway.Application.Abstractions;
 
 namespace Shopway.Application.Utilities;

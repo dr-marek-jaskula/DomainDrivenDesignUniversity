@@ -1,8 +1,8 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Application.CQRS.Products.Queries;
-using Shopway.Application.CQRS.Products.Commands.AddReview;
-using Shopway.Application.CQRS.Products.Commands.RemoveReview;
-using Shopway.Application.CQRS.Products.Commands.UpdateReview;
+using Shopway.Application.Features.Products.Queries;
+using Shopway.Application.Features.Products.Commands.AddReview;
+using Shopway.Application.Features.Products.Commands.RemoveReview;
+using Shopway.Application.Features.Products.Commands.UpdateReview;
 
 namespace Shopway.Application.Mappings;
 

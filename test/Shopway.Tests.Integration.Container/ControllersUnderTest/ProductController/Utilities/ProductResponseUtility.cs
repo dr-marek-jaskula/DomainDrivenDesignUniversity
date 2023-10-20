@@ -1,4 +1,4 @@
-﻿using Shopway.Application.CQRS.Products.Queries;
+﻿using Shopway.Application.Features.Products.Queries;
 using Shopway.Domain.Entities;
 
 namespace Shopway.Tests.Integration.Container.ControllersUnderTest.ProductController.Utilities;

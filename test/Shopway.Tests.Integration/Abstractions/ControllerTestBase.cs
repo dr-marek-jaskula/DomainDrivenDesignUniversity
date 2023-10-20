@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestSharp;
 using RestSharp.Authenticators;
-using Shopway.Application.CQRS.Users.Commands.RegisterUser;
-using Shopway.Application.CQRS.Users.Commands.LogUser;
+using Shopway.Application.Features.Users.Commands.RegisterUser;
+using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Domain.Entities;
 using Shopway.Tests.Integration.Persistence;
 using Shopway.Tests.Integration.Utilities;

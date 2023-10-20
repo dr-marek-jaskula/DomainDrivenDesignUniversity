@@ -1,8 +1,8 @@
 ﻿using Shopway.Application.Abstractions.CQRS.Batch;
-using Shopway.Application.CQRS;
+using Shopway.Application.Features;
 using Shopway.Domain.Abstractions;
 using static Shopway.Domain.Errors.HttpErrors;
-using static Shopway.Application.CQRS.BatchEntryStatus;
+using static Shopway.Application.Features.BatchEntryStatus;
 
 namespace Shopway.Infrastructure.Builders.Batch;
 

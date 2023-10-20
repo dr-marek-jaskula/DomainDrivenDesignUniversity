@@ -1,8 +1,8 @@
 ﻿using Shopway.Domain.EntityIds;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using static Shopway.Application.CQRS.BatchEntryStatus;
-using Shopway.Application.CQRS.Orders.Commands.BatchUpsertOrderLine;
+using static Shopway.Application.Features.BatchEntryStatus;
+using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
 namespace Shopway.Presentation.Controllers;
 

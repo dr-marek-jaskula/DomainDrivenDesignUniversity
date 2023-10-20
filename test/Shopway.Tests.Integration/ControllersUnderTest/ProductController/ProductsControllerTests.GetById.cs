@@ -1,5 +1,5 @@
 ﻿using RestSharp;
-using Shopway.Application.CQRS.Products.Queries;
+using Shopway.Application.Features.Products.Queries;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Tests.Integration.Constants;

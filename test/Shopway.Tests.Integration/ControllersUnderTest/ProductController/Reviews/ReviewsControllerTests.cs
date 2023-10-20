@@ -4,7 +4,7 @@ using Shopway.Tests.Integration.Persistence;
 using Shopway.Presentation.Controllers;
 using static Shopway.Tests.Integration.Constants.CollectionNames;
 using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
-using Shopway.Application.CQRS.Products.Commands.AddReview;
+using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using static System.Threading.CancellationToken;
