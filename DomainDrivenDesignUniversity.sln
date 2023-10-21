@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{49B6585D-A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63AD0D7C-F45A-4430-BCCB-4980C8BC2FD7}"
 	ProjectSection(SolutionItems) = preProject
+		docs\LICENSE = docs\LICENSE
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
@@ -39,7 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B04EB689-F
 		docs\CODE_OF_CONDUCT.md = docs\CODE_OF_CONDUCT.md
 		docs\CONTRIBUTING.md = docs\CONTRIBUTING.md
 		docs\DOCKER.postman_environment.json = docs\DOCKER.postman_environment.json
-		docs\LICENSE = docs\LICENSE
 		docs\LOCAL.postman_environment.json = docs\LOCAL.postman_environment.json
 		docs\SECURITY.md = docs\SECURITY.md
 		docs\workspace.postman_globals.json = docs\workspace.postman_globals.json
