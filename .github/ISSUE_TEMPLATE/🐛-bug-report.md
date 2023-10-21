@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: "\U0001F41B Bug report"
 about: Create a report to help this project improve
 title: 'Bug: Product update command fails'
 labels: bug
