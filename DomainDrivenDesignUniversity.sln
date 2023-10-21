@@ -34,6 +34,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Persistence", "src\
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{43FBCFE6-B562-4CB5-A521-8EF9321FDE0F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B04EB689-F716-43E2-8A09-88D2696D111A}"
+	ProjectSection(SolutionItems) = preProject
+		docs\CODE_OF_CONDUCT.md = docs\CODE_OF_CONDUCT.md
+		docs\CONTRIBUTING.md = docs\CONTRIBUTING.md
+		docs\DOCKER.postman_environment.json = docs\DOCKER.postman_environment.json
+		docs\LICENSE = docs\LICENSE
+		docs\LOCAL.postman_environment.json = docs\LOCAL.postman_environment.json
+		docs\SECURITY.md = docs\SECURITY.md
+		docs\workspace.postman_globals.json = docs\workspace.postman_globals.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
