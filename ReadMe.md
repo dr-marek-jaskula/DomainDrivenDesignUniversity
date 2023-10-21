@@ -120,10 +120,11 @@ docker compose -f .\docker-compose.yml -f .\docker-compose.override.yml up --bui
 ### Postman Collection :construction:
 
 To get all postman endpoints configured for local environment and docker containers:
-1. Import collection ```DomainDrivenDesignUniversity.postman_collection.json```
-2. Import workspace globals ```workspace.postman_globals```
-3. Import local postman environment ```LOCAL.postman_environment```
-4. Import docker postman environment ```DOCKER.postman_environment```
+1. Go to ```docs``` folder.
+2. Import collection ```DomainDrivenDesignUniversity.postman_collection.json```
+3. Import workspace globals ```workspace.postman_globals```
+4. Import local postman environment ```LOCAL.postman_environment```
+5. Import docker postman environment ```DOCKER.postman_environment```
 
 All collection and global variables are set after requests. For instance, **Login** endpoint automatically
 sets a bearer token. Then, this token is used in the authentication process.
