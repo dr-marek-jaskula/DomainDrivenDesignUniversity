@@ -21,8 +21,8 @@ There is a GitHub workflow for verifying the Conventional Commits standards. Mor
 2. Create a new branch based on a main.
 3. Make sure that unit tests and integration tests pass on your machine. For integration tests You can just run just ones with the database spinned in the container.
 4. Make your change, add tests, and make sure the tests still pass.
-6. Push to your fork and [submit a pull request][pr].
-7. Pat your self on the back and wait for your pull request to be reviewed and merged.
+6. Create a pull request.
+7. Wait for your pull request to be reviewed and merged.
 
 ## Resources
 
