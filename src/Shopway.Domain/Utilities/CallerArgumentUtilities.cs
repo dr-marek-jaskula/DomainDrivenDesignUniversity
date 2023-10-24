@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Utilities;
 
-public static class CallerArugmentUtilities
+public static class CallerArgumentUtilities
 {
     public static (T? Parameter, string CallerParameterName) WithName<T>
     (
