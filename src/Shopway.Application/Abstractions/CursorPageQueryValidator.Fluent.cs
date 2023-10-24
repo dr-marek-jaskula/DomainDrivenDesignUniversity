@@ -7,7 +7,6 @@ using static Shopway.Application.Constants.SortConstants;
 using static Shopway.Application.Constants.FilterConstants;
 using static Shopway.Domain.Utilities.SortByEntryUtilities;
 using static Shopway.Domain.Utilities.FilterByEntryUtilities;
-using static Shopway.Persistence.Constants.SpecificationConstants;
 
 namespace Shopway.Application.Abstractions;
 
@@ -72,9 +71,9 @@ internal abstract class CursorPageQueryValidator<TPageQuery, TResponse, TFilter,
                 context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", dynamicFilter.AllowedFilterProperties)}. {FilterProperties} are case sensitive.");
             }
 
-            if (dynamicFilter.FilterProperties.ContainsOnlyOperationsFrom(AllowedProductFilterOperations, out IReadOnlyCollection<string> invalidOperations))
+            if (dynamicFilter.FilterProperties.ContainsOnlyOperationsFrom(dynamicFilter.AllowedFilterOperations, out IReadOnlyCollection<string> invalidOperations))
             {
-                context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid operations: {string.Join(", ", invalidOperations)}. Allowed operations: {string.Join(", ", AllowedProductFilterOperations)}.");
+                context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid operations: {string.Join(", ", invalidOperations)}. Allowed operations: {string.Join(", ", dynamicFilter.AllowedFilterOperations)}.");
             }
         });
     }
