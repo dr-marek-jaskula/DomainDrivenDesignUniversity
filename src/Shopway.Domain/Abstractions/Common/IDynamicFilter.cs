@@ -6,6 +6,7 @@ public interface IDynamicFilter : IFilter
 {
     IList<FilterByEntry> FilterProperties { get; init; }
     IReadOnlyCollection<string> AllowedFilterProperties { get; }
+    IReadOnlyCollection<string> AllowedFilterOperations { get; }
 }
 
 public interface IDynamicFilter<TEntity> : IDynamicFilter
