@@ -10,7 +10,7 @@ public abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TPage> : P
     where TPage : IOffsetPage
     where TPageQuery : IOffsetPageQuery<TResponse, TPage>
 {
-    public OffsetPageQueryValidator()
+    protected OffsetPageQueryValidator()
         : base()
     {
         RuleFor(query => query.Page.PageNumber)

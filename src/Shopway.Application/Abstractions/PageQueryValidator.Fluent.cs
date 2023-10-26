@@ -11,7 +11,7 @@ public abstract class PageQueryValidator<TPageQuery, TPageResponse, TPage> : Abs
     where TPage : IPage
     where TPageQuery : IPageQuery<TPageResponse, TPage>
 {
-    public PageQueryValidator()
+    protected PageQueryValidator()
     {
         RuleFor(query => query.Page.PageSize).Custom((pageSize, context) =>
         {

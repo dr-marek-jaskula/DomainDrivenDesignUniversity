@@ -32,7 +32,12 @@ public static partial class ApplicationCache
             Type entityType = GetEntityTypeFromEntityIdType(entityIdType);
 
             MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<IRequest<IResult<IResponse>>, IResult<IResponse>>)
-                .GetSingleGenericMethod("CheckCacheAndDatabase", entityType, entityIdType);
+                .GetSingleGenericMethod
+                (
+                    nameof(ReferenceValidationPipeline<IRequest<IResult<IResponse>>, IResult<IResponse>>.CheckCacheAndDatabase), 
+                    entityType, 
+                    entityIdType
+                );
 
             var compiledFunc = CompileFunc(entityIdType, checkCacheAndDatabasedMethod);
 
@@ -65,17 +70,16 @@ public static partial class ApplicationCache
             param4
         };
 
-        return Expression.Lambda<Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>>
+        var lambda = Expression.Lambda<Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>>
         (
             Expression.Call(null, methodInfo, correctParameters),
-            tailCall: false,
-            parameters: new[]
-            {
-                param1,
-                param2,
-                param3,
-                param4
-            }
-        ).Compile();
+            false,
+            param1,
+            param2,
+            param3,
+            param4
+        );
+        
+        return lambda.Compile();
     }
 }
