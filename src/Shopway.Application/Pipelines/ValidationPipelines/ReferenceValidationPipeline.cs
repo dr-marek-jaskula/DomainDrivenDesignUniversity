@@ -1,7 +1,5 @@
 ﻿using MediatR;
-using System.Reflection;
 using Shopway.Domain.Errors;
-using System.Linq.Expressions;
 using Shopway.Domain.BaseTypes;
 using Shopway.Domain.Utilities;
 using System.Linq.Dynamic.Core;
@@ -10,8 +8,8 @@ using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Utilities;
 using ZiggyCreatures.Caching.Fusion;
-using System.Collections.ObjectModel;
 using static Shopway.Domain.Errors.HttpErrors;
+using static Shopway.Application.Cache.ApplicationCache;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
 
@@ -21,35 +19,8 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
     where TRequest : IRequest<TResponse>
     where TResponse : class, IResult
 {
-    /// <summary>
-    /// This cache stores key-value pairs where: EntityId type is the key and a value is a tuple of corresponding Entity type and generic method that requires these two types.
-    /// This cache is provided due to the performance optimizations. We do not want to use reflection calls for each request.
-    /// </summary>
-    /// <example>Key: typeof(ProductId), Value: CheckCacheAndDatabase<Product, ProductId> method</example>
-    private static readonly ReadOnlyDictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> ValidationCache;
-
     private readonly ShopwayDbContext _context;
     private readonly IFusionCache _fusionCache;
-
-    static ReferenceValidationPipeline()
-    {
-        Dictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> validationCache = new();
-        var entityIdTypes = GetEntityIdTypes();
-
-        foreach (var entityIdType in entityIdTypes)
-        {
-            Type entityType = GetEntityTypeFromEntityIdType(entityIdType);
-
-            MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<TRequest, TResponse>)
-                .GetSingleGenericMethod(nameof(CheckCacheAndDatabase), entityType, entityIdType);
-
-            var compiledFunc = CompileFunc(entityIdType, checkCacheAndDatabasedMethod);
-
-            validationCache.Add(entityIdType, compiledFunc);
-        }
-
-        ValidationCache = validationCache.AsReadOnly();
-    }
 
     public ReferenceValidationPipeline(ShopwayDbContext context, IFusionCache fusionCache)
     {
@@ -115,42 +86,5 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
         }
 
         return InvalidReference(entityId.Value, typeof(TEntity).Name);
-    }
-
-    /// <summary>
-    /// This method compiles the method info to func, so the performance will be increased. 
-    /// However, if the level of complicity is too hight, we can store methodInfo in the cache and then compile the method at runtime. 
-    /// If so, we can use non static version of CheckCacheAndDatabase method (without context and cache variable explicitly passed as a parameters)
-    /// </summary>
-    /// <param name="entityIdType">dynamically obtained entityIdType</param>
-    /// <param name="methodInfo">methodInfo to compile</param>
-    /// <returns></returns>
-    private static Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>> CompileFunc(Type entityIdType, MethodInfo methodInfo)
-    {
-        var param1 = Expression.Parameter(typeof(ShopwayDbContext));
-        var param2 = Expression.Parameter(typeof(IFusionCache));
-        var param3 = Expression.Parameter(typeof(IEntityId));
-        var param4 = Expression.Parameter(typeof(CancellationToken));
-
-        var correctParameters = new Expression[]
-        {
-            param1,
-            param2,
-            Expression.Convert(param3, entityIdType), //we convert the incorrect type IEntityId to correct EntityId type
-            param4
-        };
-
-        return Expression.Lambda<Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>>
-        (
-            Expression.Call(null, methodInfo, correctParameters),
-            tailCall: false,
-            parameters: new[]
-            {
-                param1,
-                param2,
-                param3,
-                param4
-            }
-        ).Compile();
     }
 }

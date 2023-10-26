@@ -9,7 +9,7 @@ namespace Shopway.Persistence.Specifications.Products.Sorting;
 
 public sealed record ProductDynamicSortBy : IDynamicSortBy<Product>
 {
-    public IReadOnlyCollection<string> AllowedSortProperties { get; } = AllowedProductSortProperties;
+    public static IReadOnlyCollection<string> AllowedSortProperties { get; } = AllowedProductSortProperties;
 
     public IList<SortByEntry> SortProperties { get; init; } = EmptyList<SortByEntry>();
 

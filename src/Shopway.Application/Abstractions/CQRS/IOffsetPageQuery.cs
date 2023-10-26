@@ -4,7 +4,7 @@ using Shopway.Domain.Abstractions.Common;
 namespace Shopway.Application.Abstractions.CQRS;
 
 /// <summary>
-/// Represents the page query interface
+/// Represents the offset page query interface
 /// </summary>
 /// <typeparam name="TResponse">The page query response type</typeparam>
 /// <typeparam name="TFilter">The provided filter type</typeparam>
@@ -21,13 +21,12 @@ public interface IOffsetPageQuery<TResponse, TFilter, TSortBy, TPage> : IOffsetP
 }
 
 /// <summary>
-/// Represents the page interface
+/// Represents the offset page interface
 /// </summary>
 /// <typeparam name="TResponse">The page query response type</typeparam>
 /// <typeparam name="TPage">The provided offset page type</typeparam>
-public interface IOffsetPageQuery<TResponse, TPage> : IQuery<OffsetPageResponse<TResponse>>
+public interface IOffsetPageQuery<TResponse, TPage> : IPageQuery<OffsetPageResponse<TResponse>, TPage>
     where TResponse : IResponse
     where TPage : IOffsetPage
 {
-    TPage Page { get; }
 }

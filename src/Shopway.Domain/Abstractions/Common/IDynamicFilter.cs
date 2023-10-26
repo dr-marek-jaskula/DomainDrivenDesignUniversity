@@ -5,8 +5,8 @@ namespace Shopway.Domain.Abstractions.Common;
 public interface IDynamicFilter : IFilter
 {
     IList<FilterByEntry> FilterProperties { get; init; }
-    IReadOnlyCollection<string> AllowedFilterProperties { get; }
-    IReadOnlyCollection<string> AllowedFilterOperations { get; }
+    abstract static IReadOnlyCollection<string> AllowedFilterProperties { get; }
+    abstract static IReadOnlyCollection<string> AllowedFilterOperations { get; }
 }
 
 public interface IDynamicFilter<TEntity> : IDynamicFilter

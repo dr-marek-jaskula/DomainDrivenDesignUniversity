@@ -9,8 +9,8 @@ namespace Shopway.Persistence.Specifications.Products.Filtering;
 
 public sealed record ProductDynamicFilter : IDynamicFilter<Product>
 {
-    public IReadOnlyCollection<string> AllowedFilterProperties { get; } = AllowedProductFilterProperties;
-    public IReadOnlyCollection<string> AllowedFilterOperations { get; } = AllowedProductFilterOperations;
+    public static IReadOnlyCollection<string> AllowedFilterProperties { get; } = AllowedProductFilterProperties;
+    public static IReadOnlyCollection<string> AllowedFilterOperations { get; } = AllowedProductFilterOperations;
 
     public IList<FilterByEntry> FilterProperties { get; init; } = EmptyList<FilterByEntry>();
 
