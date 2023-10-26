@@ -18,12 +18,18 @@ public static class FluentValidationUtilities
         {
             return;
         }
+        
+        if (dynamicFilter.FilterProperties.IsNullOrEmpty())
+        {
+            context.AddFailure(FilterProperties, $"{FilterProperties} cannot be null or empty.");
+            return;
+        }
 
         var filterType = filter.GetType();
 
         AllowedFilterPropertiesCache.TryGetValue(filterType, out var allowedFilterPropertiesCache);
 
-        if (dynamicFilter.FilterProperties.ContainsInvalidFilterProperty(allowedFilterPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
+        if (dynamicFilter.FilterProperties!.ContainsInvalidFilterProperty(allowedFilterPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
         {
             context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedFilterPropertiesCache!)}. {FilterProperties} are case sensitive.");
         }
@@ -41,6 +47,12 @@ public static class FluentValidationUtilities
     {
         if (sortBy is not IDynamicSortBy dynamicSortBy)
         {
+            return;
+        }
+
+        if (dynamicSortBy.SortProperties.IsNullOrEmpty())
+        {
+            context.AddFailure(FilterProperties, $"{SortProperties} cannot be null or empty.");
             return;
         }
 

@@ -12,7 +12,7 @@ public sealed record ProductDynamicFilter : IDynamicFilter<Product>
     public static IReadOnlyCollection<string> AllowedFilterProperties { get; } = AllowedProductFilterProperties;
     public static IReadOnlyCollection<string> AllowedFilterOperations { get; } = AllowedProductFilterOperations;
 
-    public IList<FilterByEntry> FilterProperties { get; init; } = EmptyList<FilterByEntry>();
+    public required IList<FilterByEntry> FilterProperties { get; init; }
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {

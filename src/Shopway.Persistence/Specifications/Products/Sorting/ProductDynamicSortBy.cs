@@ -11,7 +11,7 @@ public sealed record ProductDynamicSortBy : IDynamicSortBy<Product>
 {
     public static IReadOnlyCollection<string> AllowedSortProperties { get; } = AllowedProductSortProperties;
 
-    public IList<SortByEntry> SortProperties { get; init; } = EmptyList<SortByEntry>();
+    public required IList<SortByEntry> SortProperties { get; init; }
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {
