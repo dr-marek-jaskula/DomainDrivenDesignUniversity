@@ -18,8 +18,8 @@ public static partial class ApplicationCache
 
         foreach (var type in dynamicSortByTypes)
         {
-            var typeAllowedFilterProperties = type!.GetProperty(nameof(IDynamicSortBy.AllowedSortProperties))!.GetValue(null) as IReadOnlyCollection<string>;
-            allowedSortPropertiesCache.TryAdd(type, typeAllowedFilterProperties!);
+            var typeAllowedSortByProperties = type!.GetProperty(nameof(IDynamicSortBy.AllowedSortProperties))!.GetValue(null) as IReadOnlyCollection<string>;
+            allowedSortPropertiesCache.TryAdd(type, typeAllowedSortByProperties!);
         }
 
         return allowedSortPropertiesCache.AsReadOnly();
