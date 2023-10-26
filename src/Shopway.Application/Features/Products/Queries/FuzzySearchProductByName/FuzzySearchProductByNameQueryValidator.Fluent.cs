@@ -4,7 +4,7 @@ using Shopway.Application.Abstractions;
 
 namespace Shopway.Application.Features.Products.Queries.FuzzySearchProductByName;
 
-internal sealed class FuzzySearchProductByNameQueryValidator : OffsetPageValidator<FuzzySearchProductByNameQuery, ProductResponse, OffsetPage>
+internal sealed class FuzzySearchProductByNameQueryValidator : OffsetPageQueryValidator<FuzzySearchProductByNameQuery, ProductResponse, OffsetPage>
 {
     public FuzzySearchProductByNameQueryValidator()
     {

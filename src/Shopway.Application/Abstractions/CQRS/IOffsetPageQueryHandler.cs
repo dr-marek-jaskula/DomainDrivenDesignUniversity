@@ -21,7 +21,7 @@ public interface IOffsetPageQueryHandler<TQuery, TResponse, TFilter, TSortBy, TP
 }
 
 /// <summary>
-/// Represents the page handler interface
+/// Represents the page query handler interface
 /// </summary>
 /// <typeparam name="TQuery">The page query type</typeparam>
 /// <typeparam name="TResponse">The page query response type</typeparam>

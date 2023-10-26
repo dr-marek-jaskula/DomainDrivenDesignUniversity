@@ -1,15 +1,11 @@
-﻿using Shopway.Application.Exceptions;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Exceptions;
 
 namespace Shopway.Application.Features;
 
-public sealed class CursorPageResponse<TValue> : IResponse
+public sealed record CursorPageResponse<TValue> : PageResponse<TValue>
+    where TValue : IResponse
 {
-    /// <summary>
-    /// Generic list that stores the pagination result
-    /// </summary>
-    public IReadOnlyList<TValue> Items { get; private init; }
-
     /// <summary>
     /// Current page cursor. Id from which we query records
     /// </summary>
@@ -21,9 +17,8 @@ public sealed class CursorPageResponse<TValue> : IResponse
     public Ulid NextCursor { get; private init; }
 
     public CursorPageResponse(IList<TValue> items, Ulid currentCursor, Ulid nextCursor)
+        : base(items)
     {
-        Items = items.AsReadOnly();
-
         var notLastPage = nextCursor != Ulid.Empty;
         var invalidCursor = currentCursor.CompareTo(nextCursor) > 0;
 

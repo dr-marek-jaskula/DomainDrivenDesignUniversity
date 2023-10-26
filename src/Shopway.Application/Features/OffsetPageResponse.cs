@@ -1,15 +1,11 @@
-﻿using Shopway.Application.Exceptions;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Exceptions;
 
 namespace Shopway.Application.Features;
 
-public sealed record OffsetPageResponse<TValue> : IResponse
+public sealed record OffsetPageResponse<TValue> : PageResponse<TValue>
+    where TValue : IResponse
 {
-    /// <summary>
-    /// Generic list that stores the pagination result
-    /// </summary>
-    public IReadOnlyList<TValue> Items { get; private init; }
-
     /// <summary>
     /// Total number or items
     /// </summary>
@@ -46,8 +42,8 @@ public sealed record OffsetPageResponse<TValue> : IResponse
     public bool HasNextPage => CurrentPage < TotalPages;
 
     public OffsetPageResponse(IList<TValue> items, int totalCount, int pageSize, int pageNumber)
+        : base(items)
     {
-        Items = items.AsReadOnly();
         CurrentPage = pageNumber;
         TotalItemsCount = totalCount;
         TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
