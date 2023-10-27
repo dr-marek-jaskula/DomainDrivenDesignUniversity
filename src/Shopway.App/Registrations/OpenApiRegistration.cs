@@ -22,13 +22,7 @@ public static class OpenApiRegistration
             options.AddJwtAuthorization();
             options.AddApiKeyAuthorization();
         });
-
-        //services.AddVersionedApiExplorer(options =>
-        //{
-        //    options.GroupNameFormat = "'v'VVV";
-        //    options.SubstituteApiVersionInUrl = true;
-        //});
-
+        
         services.AddSwaggerExamplesFromAssemblies(Shopway.App.AssemblyReference.Assembly);
 
         return services;
