@@ -1,8 +1,8 @@
 ﻿using Shopway.App.Utilities;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -23,11 +23,11 @@ public static class OpenApiRegistration
             options.AddApiKeyAuthorization();
         });
 
-        services.AddVersionedApiExplorer(options =>
-        {
-            options.GroupNameFormat = "'v'VVV";
-            options.SubstituteApiVersionInUrl = true;
-        });
+        //services.AddVersionedApiExplorer(options =>
+        //{
+        //    options.GroupNameFormat = "'v'VVV";
+        //    options.SubstituteApiVersionInUrl = true;
+        //});
 
         services.AddSwaggerExamplesFromAssemblies(Shopway.App.AssemblyReference.Assembly);
 
