@@ -134,6 +134,6 @@ sets a bearer token. Then, this token is used in the authentication process.
 
 Currently there are two workflows setup for this repository:
 1. Continuous Integration
-	- This workflow setups and builds the application. Then, it ruins unit tests and publish test reports.
+	- This workflow setups and builds the application. Then, it runs unit tests and publish test reports.
 2. Conventional Pull Request Validation
 	- This workflow validates if the pull request name matches the conventional commit rules. If validation succeeds, it adds a meaningful label to the pull request.
