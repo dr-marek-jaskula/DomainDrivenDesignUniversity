@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
