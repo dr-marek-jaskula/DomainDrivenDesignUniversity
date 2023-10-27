@@ -122,10 +122,11 @@ We need to use "((string)(object)product.ProductName)" because otherwise we woul
 
 ## Filter & Order
 
-Filtering and sorting is done by objects that implements ```IDynamicFilter<TEntity>```, ```IStaticFilter<TEntity>```, ```IDynamicSortBy<TEntity>```, ```IStaticSortBy<TEntity>``` interfaces. The apply method 
-applied in the BaseRepository. To set the filtering/sorting in the specification we use 
+Filtering and sorting is done by objects that implements ```IFilter<TEntity>``` and ```ISortBy<TEntity>``` interfaces. The apply method 
+invoked in UseSpecification method that is located in the BaseRepository. The dynamic filtering and sorting can be obtained by objects 
+that implements ```IDynamicFilter<TEntity>``` and ```IDynamicSortBy<TEntity>```. To set the filtering/sorting in the specification we use 
 
-```
+```csharp
 specification
     .AddFilter(filter);
 
@@ -179,7 +180,7 @@ filtering.
 Static option for filtering the result applies the predicates we have written on our own:
 
 ```csharp
-public sealed record ProductStaticFilter : IStaticFilter<Product>
+public sealed record ProductStaticFilter : IFilter<Product>
 {
     public string? ProductName { get; init; }
     public string? Revision { get; init; }
@@ -209,7 +210,7 @@ Dynamic sort use Linq.Dynamic.Core library.
 Static option for sorting the result:
 
 ```csharp
-public sealed record ProductStaticSortBy : IStaticSortBy<Product>
+public sealed record ProductStaticSortBy : ISortBy<Product>
 {
     public SortDirection? ProductName { get; init; }
     public SortDirection? Revision { get; init; }
@@ -238,15 +239,13 @@ public sealed record ProductStaticSortBy : IStaticSortBy<Product>
 }
 ```
 
-Nevertheless, ISortBy and PageQueryValidator should be adjusted to static approach.
-
 ## Customize Dynamic or Static Filtering/Sorting
 
 We can add any custom conditions (filters/sort statements) into "Apply" method for additional filtering/sorting.
 
 We can also combine dynamic and static filtering/sorting.
 
-Moreover, we can combine dynamic/static filtering/sorting with manual approach
+Moreover, we can combine dynamic/static filtering/sorting with manual approach.
 
 Example of manual approach:
 ```
