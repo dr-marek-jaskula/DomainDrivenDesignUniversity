@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityKeys;
-using Shopway.Domain.EntityIds;
 using System.Linq.Expressions;
+using Shopway.Domain.EntityIds;
+using Shopway.Domain.EntityKeys;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.Abstractions.Common;
 
@@ -39,10 +39,8 @@ public interface IProductRepository
     (
         IOffsetPage page,
         CancellationToken cancellationToken,
-        IDynamicFilter<Product>? dynamicFilter = null,
-        IStaticFilter<Product>? staticFilter = null,
-        IStaticSortBy<Product>? staticSort = null,
-        IDynamicSortBy<Product>? dynamicSort = null,
+        IFilter<Product>? filter = null,
+        ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
     );
@@ -51,10 +49,8 @@ public interface IProductRepository
     (
         ICursorPage page,
         CancellationToken cancellationToken,
-        IDynamicFilter<Product>? dynamicFilter = null,
-        IStaticFilter<Product>? staticFilter = null,
-        IStaticSortBy<Product>? staticSort = null,
-        IDynamicSortBy<Product>? dynamicSort = null,
+        IFilter<Product>? filter = null,
+        ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
     )

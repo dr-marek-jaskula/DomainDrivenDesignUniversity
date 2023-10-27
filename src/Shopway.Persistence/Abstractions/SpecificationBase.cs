@@ -39,13 +39,11 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal bool UseGlobalFilters { get; private set; } = true;
 
     //Filters
-    internal IStaticFilter<TEntity>? StaticFilter { get; private set; } = null;
-    internal IDynamicFilter<TEntity>? DynamicFilter { get; private set; } = null;
+    internal IFilter<TEntity>? Filter { get; private set; } = null;
     internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = new();
 
     //SortBy
-    internal IDynamicSortBy<TEntity>? DynamicSortBy { get; private set; } = null;
-    internal IStaticSortBy<TEntity>? StaticSortBy { get; private set; } = null;
+    internal ISortBy<TEntity>? SortBy { get; private set; } = null;
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
 
@@ -89,15 +87,9 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddFilter(IStaticFilter<TEntity>? filter)
+    internal SpecificationBase<TEntity, TEntityId> AddFilter(IFilter<TEntity>? filter)
     {
-        StaticFilter = filter;
-        return this;
-    }
-
-    internal SpecificationBase<TEntity, TEntityId> AddFilter(IDynamicFilter<TEntity>? filter)
-    {
-        DynamicFilter = filter;
+        Filter = filter;
         return this;
     }
 
@@ -120,15 +112,9 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddSortBy(IDynamicSortBy<TEntity>? sortBy)
+    internal SpecificationBase<TEntity, TEntityId> AddSortBy(ISortBy<TEntity>? sortBy)
     {
-        DynamicSortBy = sortBy;
-        return this;
-    }
-
-    internal SpecificationBase<TEntity, TEntityId> AddSortBy(IStaticSortBy<TEntity>? sortBy)
-    {
-        StaticSortBy = sortBy;
+        SortBy = sortBy;
         return this;
     }
 

@@ -9,8 +9,7 @@ public interface IDynamicFilter : IFilter
     abstract static IReadOnlyCollection<string> AllowedFilterOperations { get; }
 }
 
-public interface IDynamicFilter<TEntity> : IDynamicFilter
+public interface IDynamicFilter<TEntity> : IFilter<TEntity>, IDynamicFilter
     where TEntity : class, IEntity
 {
-    abstract IQueryable<TEntity> Apply(IQueryable<TEntity> queryable);
 }

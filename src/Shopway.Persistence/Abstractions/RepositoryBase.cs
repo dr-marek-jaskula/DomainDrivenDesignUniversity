@@ -47,24 +47,14 @@ public abstract class RepositoryBase
             }
         }
 
-        if (specification.StaticFilter is not null)
+        if (specification.Filter is not null)
         {
-            queryable = specification.StaticFilter.Apply(queryable);
+            queryable = specification.Filter.Apply(queryable);
         }
 
-        if (specification.DynamicFilter is not null)
+        if (specification.SortBy is not null)
         {
-            queryable = specification.DynamicFilter.Apply(queryable);
-        }
-
-        if (specification.DynamicSortBy is not null)
-        {
-            queryable = specification.DynamicSortBy.Apply(queryable);
-        }
-
-        if (specification.StaticSortBy is not null)
-        {
-            queryable = specification.StaticSortBy.Apply(queryable);
+            queryable = specification.SortBy.Apply(queryable);
         }
 
         if (specification.SortByExpression is not null and var sort)
@@ -125,7 +115,7 @@ public abstract class RepositoryBase
     {
         if (specification.Mapping is null)
         {
-            throw new ArgumentNullException($"SpecificationWithMappingBase must contain Select statement");
+            throw new ArgumentNullException($"{nameof(SpecificationWithMappingBase<TEntity, TEntityId, TResponse>)} must contain Select statement");
         }
 
         return UseSpecification((SpecificationBase<TEntity, TEntityId>)specification)

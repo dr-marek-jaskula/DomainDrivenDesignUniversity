@@ -8,8 +8,7 @@ public interface IDynamicSortBy : ISortBy
     static abstract IReadOnlyCollection<string> AllowedSortProperties { get; }
 }
 
-public interface IDynamicSortBy<TEntity> : IDynamicSortBy
+public interface IDynamicSortBy<TEntity> : ISortBy<TEntity>, IDynamicSortBy
     where TEntity : class, IEntity
 {
-    abstract IQueryable<TEntity> Apply(IQueryable<TEntity> queryable);
 }

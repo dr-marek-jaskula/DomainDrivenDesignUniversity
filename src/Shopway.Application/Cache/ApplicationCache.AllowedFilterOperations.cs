@@ -1,5 +1,6 @@
-﻿using Shopway.Domain.Abstractions.Common;
+﻿using Shopway.Domain.Utilities;
 using System.Collections.ObjectModel;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.Cache;
 
@@ -12,13 +13,12 @@ public static partial class ApplicationCache
         Dictionary<Type, IReadOnlyCollection<string>> allowedFilterOperations = new();
 
         var dynamicFilterTypes = Persistence.AssemblyReference.Assembly
-            .GetTypes()
-            .Where(type => type.GetInterface(nameof(IDynamicFilter)) is not null)
-            .ToArray();
+            .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicFilter)));
 
         foreach (var type in dynamicFilterTypes)
         {
-            var typeAllowedFilterOperations = type!.GetProperty(nameof(IDynamicFilter.AllowedFilterOperations))!.GetValue(null) as IReadOnlyCollection<string>;
+            var typeAllowedFilterOperations = type!.GetProperty(nameof(IDynamicFilter.AllowedFilterOperations))
+                !.GetValue(null) as IReadOnlyCollection<string>;
             allowedFilterOperations.TryAdd(type, typeAllowedFilterOperations!);
         }
 
