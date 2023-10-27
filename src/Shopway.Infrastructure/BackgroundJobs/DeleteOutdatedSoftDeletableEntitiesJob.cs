@@ -2,6 +2,7 @@
 using System.Reflection;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
 using Shopway.Application.Abstractions;
@@ -12,10 +13,10 @@ namespace Shopway.Infrastructure.BackgroundJobs;
 public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
 {
     private readonly ShopwayDbContext _dbContext;
-    private readonly ILoggerAdapter<DeleteOutdatedSoftDeletableEntitiesJob> _logger;
+    private readonly ILogger<DeleteOutdatedSoftDeletableEntitiesJob> _logger;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public DeleteOutdatedSoftDeletableEntitiesJob(ShopwayDbContext dbContext, ILoggerAdapter<DeleteOutdatedSoftDeletableEntitiesJob> logger, IDateTimeProvider dateTimeProvider)
+    public DeleteOutdatedSoftDeletableEntitiesJob(ShopwayDbContext dbContext, ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger, IDateTimeProvider dateTimeProvider)
     {
         _dbContext = dbContext;
         _logger = logger;
@@ -24,7 +25,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        _logger.LogWarning("{DeleteOutdatedSoftDeletableEntitiesJob} starts", nameof(DeleteOutdatedSoftDeletableEntitiesJob));
+        _logger.LogStartingJob(nameof(DeleteOutdatedSoftDeletableEntitiesJob));
 
         var entityTypes = _dbContext
             .Model
@@ -47,7 +48,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
             })!;
         }
 
-        _logger.LogWarning("{DeleteOutdatedSoftDeletableEntitiesJob} job ends", nameof(DeleteOutdatedSoftDeletableEntitiesJob));
+        _logger.LogEndingJob(nameof(DeleteOutdatedSoftDeletableEntitiesJob));
 
         await _dbContext.SaveChangesAsync();
     }
@@ -58,7 +59,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
     public static async Task DeleteOutdatedEntities<TEntity>
     (
         ShopwayDbContext context,
-        ILoggerAdapter<DeleteOutdatedSoftDeletableEntitiesJob> logger,
+        ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger,
         IDateTimeProvider dateTimeProvider,
         CancellationToken cancellationToken
     )
@@ -70,8 +71,41 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
             .Where(x => x.SoftDeletedOn < dateTimeProvider.UtcNow.AddYears(-1))
             .ToListAsync(cancellationToken);
 
-        logger.LogWarning("Deletes '{Count}' entities of type '{EntityType}'.", entitiesToDelete.Count, typeof(TEntity));
+        logger.LogDeletingOutdatedSoftDeletedEntities(entitiesToDelete.Count, typeof(TEntity).Name);
 
         context.RemoveRange(entitiesToDelete);
     }
+}
+
+public static partial class LoggerMessageDefinitionsUtilities
+{
+    [LoggerMessage
+    (
+        EventId = 7,
+        EventName = $"{nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
+        Level = LogLevel.Warning,
+        Message = "{jobName} starts",
+        SkipEnabledCheck = true
+    )]
+    public static partial void LogStartingJob(this ILogger logger, string jobName);
+
+    [LoggerMessage
+    (
+        EventId = 8,
+        EventName = $"{nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
+        Level = LogLevel.Warning,
+        Message = "{jobName} job ends",
+        SkipEnabledCheck = true
+    )]
+    public static partial void LogEndingJob(this ILogger logger, string jobName);
+
+    [LoggerMessage
+    (
+        EventId = 9,
+        EventName = $"{nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
+        Level = LogLevel.Warning,
+        Message = "Deletes '{Count}' entities of type '{EntityType}'.",
+        SkipEnabledCheck = true
+    )]
+    public static partial void LogDeletingOutdatedSoftDeletedEntities(this ILogger logger, int count, string entityType);
 }

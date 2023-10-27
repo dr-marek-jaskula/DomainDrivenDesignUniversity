@@ -145,3 +145,12 @@ private protected IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TRe
 ```
 
 **In the end the queryable will contain the mapping, so no redundant data will be queried, and the .Persistence layer will remain separated from .Application layer.**
+
+## Logging using CodeGeneration
+
+The most efficient way is to use CodeGeneration logging. It can be obtained by using the **LoggerMessageAttribute**.
+See examples in **LoggingPipeline**. To further increase performance of logs we can manage **SkipEnabledCheck** option. If, we 
+are sure that the log level will not exceed the one in the current log, then we can set SkipEnabledCheck to **true**. Otherwise, its better to keep it as **false**.
+
+Logging is a crucial feature for almost any application. Nevertheless, most of developers do not pay enough attention on the massive performance impact that logs can have.
+Gaining even small boosts in this field can significantly improve the overall application performance. Thus, in this project we aim to reach the most efficient way of logging.

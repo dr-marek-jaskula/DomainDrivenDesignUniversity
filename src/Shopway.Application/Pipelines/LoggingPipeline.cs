@@ -1,6 +1,7 @@
 ﻿using MediatR;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Abstractions;
-using Shopway.Application.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Shopway.Application.Pipelines;
 
@@ -8,9 +9,9 @@ public sealed class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRe
     where TRequest : IRequest<TResponse>
     where TResponse : IResult
 {
-    private readonly ILoggerAdapter<LoggingPipeline<TRequest, TResponse>> _logger;
+    private readonly ILogger<LoggingPipeline<TRequest, TResponse>> _logger;
 
-    public LoggingPipeline(ILoggerAdapter<LoggingPipeline<TRequest, TResponse>> logger)
+    public LoggingPipeline(ILogger<LoggingPipeline<TRequest, TResponse>> logger)
     {
         _logger = logger;
     }
@@ -22,37 +23,66 @@ public sealed class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRe
         CancellationToken cancellationToken
     )
     {
-        _logger.LogInformation("Starting request {@RequestName}, {@DateTimeUtc}", typeof(TRequest).Name, DateTime.UtcNow);
-
+        _logger.LogStartingRequest(typeof(TRequest).Name, DateTime.UtcNow);
+        
         var result = await next();
 
         if (result.IsSuccess)
         {
-            _logger.LogInformation("Request completed {@RequestName}, {@DateTimeUtc}", typeof(TRequest).Name, DateTime.UtcNow);
+            _logger.LogCompletingRequest(typeof(TRequest).Name, DateTime.UtcNow);
             return result;
         }
 
         if (result is IValidationResult validationResult)
         {
-            _logger.LogError
-            (
-                "Request failed {@RequestName}, {@ValidationErrors}, {@DateTimeUtc}",
-                typeof(TRequest).Name,
-                validationResult.ValidationErrors,
-                DateTime.UtcNow
-            );
-
+            _logger.LogFailedRequestBasedOnValidationErrors(typeof(TRequest).Name, validationResult.ValidationErrors, DateTime.UtcNow);
             return result;
         }
 
-        _logger.LogError
-        (
-            "Request failed {@RequestName}, {@Error}, {@DateTimeUtc}",
-            typeof(TRequest).Name,
-            result.Error,
-            DateTime.UtcNow
-        );
-
+        _logger.LogFailedRequestBasedOnSingleError(typeof(TRequest).Name, result.Error, DateTime.UtcNow);
         return result;
     }
+}
+
+public static partial class LoggerMessageDefinitionsUtilities
+{
+    [LoggerMessage
+    (
+        EventId = 1,
+        EventName = $"{nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
+        Level = LogLevel.Information,
+        Message = "Starting request {RequestName}, {DateTimeUtc}",
+        SkipEnabledCheck = false
+    )]
+    public static partial void LogStartingRequest(this ILogger logger, string requestName, DateTime dateTimeUtc);
+
+    [LoggerMessage
+    (
+        EventId = 2,
+        EventName = $"{nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
+        Level = LogLevel.Information,
+        Message = "Request completed {requestName}, {DateTimeUtc}",
+        SkipEnabledCheck = false
+    )]
+    public static partial void LogCompletingRequest(this ILogger logger, string requestName, DateTime dateTimeUtc);
+
+    [LoggerMessage
+    (
+        EventId = 3,
+        EventName = $"{nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
+        Level = LogLevel.Error,
+        Message = "Request failed {RequestName}, {Error}, {DateTimeUtc}",
+        SkipEnabledCheck = true
+    )]
+    public static partial void LogFailedRequestBasedOnSingleError(this ILogger logger, string requestName, Error error, DateTime dateTimeUtc);
+
+    [LoggerMessage
+    (
+        EventId = 4,
+        EventName = $"{nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
+        Level = LogLevel.Error,
+        Message = "Request failed {RequestName}, {ValidationErrors}, {DateTimeUtc}",
+        SkipEnabledCheck = true
+    )]
+    public static partial void LogFailedRequestBasedOnValidationErrors(this ILogger logger, string requestName, Error[] validationErrors, DateTime dateTimeUtc);
 }
