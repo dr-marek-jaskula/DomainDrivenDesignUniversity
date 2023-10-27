@@ -27,7 +27,6 @@ Note: Remember to set the ClockSkew to 5s (or max 30s)
 options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(_authenticationOptions.ClockSkew); 
 ```
 
-
 ## Validator
 
 Defined validator stores all errors up to the moment when Failure is called. Then, the validation result with all errors is created.

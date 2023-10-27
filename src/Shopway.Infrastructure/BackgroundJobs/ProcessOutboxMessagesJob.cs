@@ -2,6 +2,7 @@
 using MediatR;
 using Newtonsoft.Json;
 using Shopway.Persistence.Outbox;
+using Microsoft.Extensions.Logging;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using Shopway.Infrastructure.Policies;
@@ -17,7 +18,7 @@ public sealed class ProcessOutboxMessagesJob : IJob
     //We can inject scoped services, because Quartz jobs have scoped lifetime
     private readonly ShopwayDbContext _dbContext;
     private readonly IPublisher _publisher;
-    private readonly ILoggerAdapter<ProcessOutboxMessagesJob> _logger;
+    private readonly ILogger<ProcessOutboxMessagesJob> _logger;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IOutboxRepository _outboxRepository;
 
@@ -25,7 +26,7 @@ public sealed class ProcessOutboxMessagesJob : IJob
     (
         ShopwayDbContext dbContext, 
         IPublisher publisher, 
-        ILoggerAdapter<ProcessOutboxMessagesJob> logger, 
+        ILogger<ProcessOutboxMessagesJob> logger, 
         IDateTimeProvider dateTimeProvider,
         IOutboxRepository outboxRepository
     )
@@ -53,7 +54,7 @@ public sealed class ProcessOutboxMessagesJob : IJob
 
             if (domainEvent is null)
             {
-                _logger.LogWarning("DomainEvent was not deserialized properly: {message.Content}", message.Content);
+                _logger.LogDomainEventInvalidDeserialization(message.Content);
                 continue;
             }
 
@@ -65,4 +66,17 @@ public sealed class ProcessOutboxMessagesJob : IJob
 
         await _dbContext.SaveChangesAsync();
     }
+}
+
+public static partial class LoggerMessageDefinitionsUtilities
+{
+    [LoggerMessage
+    (
+        EventId = 6,
+        EventName = $"{nameof(ProcessOutboxMessagesJob)}",
+        Level = LogLevel.Warning,
+        Message = "DomainEvent was not deserialized properly: {Content}",
+        SkipEnabledCheck = true
+    )]
+    public static partial void LogDomainEventInvalidDeserialization(this ILogger logger, string content);
 }

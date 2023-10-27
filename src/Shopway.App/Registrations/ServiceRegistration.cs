@@ -1,7 +1,6 @@
 ﻿using Scrutor;
 using Shopway.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Shopway.Infrastructure.Adapters;
 using Shopway.Application.Abstractions;
 using Shopway.Infrastructure.Providers;
 using Shopway.Infrastructure.Validators;
@@ -29,10 +28,6 @@ public static class ServiceRegistration
         //Providers
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
-
-        //Adapters
-
-        services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
         //Scan for the rest
 

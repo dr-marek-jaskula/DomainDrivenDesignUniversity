@@ -113,7 +113,7 @@ public class Error : IEquatable<Error>
     /// <inheritdoc />
     public override string ToString()
     {
-        return Code;
+        return Message;
     }
 
     public void ThrowIfErrorNone()
