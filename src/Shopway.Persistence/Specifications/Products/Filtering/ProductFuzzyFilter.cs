@@ -5,7 +5,7 @@ using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Specifications.Products.Filtering;
 
-public sealed record ProductFuzzyFilter : IStaticFilter<Product>
+public sealed record ProductFuzzyFilter : IFilter<Product>
 {
     public required Expression<Func<Product, bool>> FuzzyFilter { get; set; }
 

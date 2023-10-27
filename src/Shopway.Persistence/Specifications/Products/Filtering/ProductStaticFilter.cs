@@ -4,7 +4,7 @@ using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Specifications.Products.Filtering;
 
-public sealed record ProductStaticFilter : IStaticFilter<Product>
+public sealed record ProductStaticFilter : IFilter<Product>
 {
     public string? ProductName { get; init; }
     public string? Revision { get; init; }

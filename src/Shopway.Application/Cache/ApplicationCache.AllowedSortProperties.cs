@@ -1,5 +1,6 @@
-﻿using Shopway.Domain.Abstractions.Common;
+﻿using Shopway.Domain.Utilities;
 using System.Collections.ObjectModel;
+using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.Cache;
 
@@ -12,13 +13,12 @@ public static partial class ApplicationCache
         Dictionary<Type, IReadOnlyCollection<string>> allowedSortPropertiesCache = new();
 
         var dynamicSortByTypes = Persistence.AssemblyReference.Assembly
-            .GetTypes()
-            .Where(type => type.GetInterface(nameof(IDynamicSortBy)) is not null)
-            .ToArray();
+            .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicSortBy)));
 
         foreach (var type in dynamicSortByTypes)
         {
-            var typeAllowedSortByProperties = type!.GetProperty(nameof(IDynamicSortBy.AllowedSortProperties))!.GetValue(null) as IReadOnlyCollection<string>;
+            var typeAllowedSortByProperties = type!.GetProperty(nameof(IDynamicSortBy.AllowedSortProperties))
+                !.GetValue(null) as IReadOnlyCollection<string>;
             allowedSortPropertiesCache.TryAdd(type, typeAllowedSortByProperties!);
         }
 

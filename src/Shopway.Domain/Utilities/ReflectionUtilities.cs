@@ -70,4 +70,12 @@ public static class ReflectionUtilities
             .GetInterfaces()
             .Any(interfaceType => interfaceType == typeof(TInterface));
     }
+
+    public static Type[] GetTypesWithAnyMatchingInterface(this Assembly assembly, Func<Type, bool> typeInterfaceMatch)
+    {
+        return assembly
+            .GetTypes()
+            .Where(type => type.GetInterfaces().Any(typeInterfaceMatch))
+            .ToArray();
+    }
 }

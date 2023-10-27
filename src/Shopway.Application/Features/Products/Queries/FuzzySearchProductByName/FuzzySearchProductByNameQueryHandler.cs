@@ -49,7 +49,7 @@ internal sealed class FuzzySearchProductByNameQueryHandler : IOffsetPageQueryHan
         };
 
         var page = await _productRepository
-            .PageAsync(query.Page, cancellationToken, staticFilter: productByNameFilter, mapping: ProductMapping.ProductResponse);
+            .PageAsync(query.Page, cancellationToken, filter: productByNameFilter, mapping: ProductMapping.ProductResponse);
 
         return page
             .ToPageResponse(query.Page)

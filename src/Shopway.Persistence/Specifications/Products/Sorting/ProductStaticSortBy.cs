@@ -5,7 +5,7 @@ using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Specifications.Products.Sorting;
 
-public sealed record ProductStaticSortBy : IStaticSortBy<Product>
+public sealed record ProductStaticSortBy : ISortBy<Product>
 {
     public SortDirection? ProductName { get; init; }
     public SortDirection? Revision { get; init; }

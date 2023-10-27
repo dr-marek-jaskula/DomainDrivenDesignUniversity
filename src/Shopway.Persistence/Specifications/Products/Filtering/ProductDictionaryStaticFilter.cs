@@ -4,7 +4,7 @@ using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Persistence.Specifications.Products.Filtering;
 
-public sealed record ProductDictionaryStaticFilter : IStaticFilter<Product>
+public sealed record ProductDictionaryStaticFilter : IFilter<Product>
 {
     public string? LikeQuery { get; init; }
     private bool ByLikeQuery => LikeQuery.NotNullOrEmptyOrWhiteSpace();

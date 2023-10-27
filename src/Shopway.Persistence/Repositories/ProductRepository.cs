@@ -115,21 +115,17 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     (
         IOffsetPage page,
         CancellationToken cancellationToken,
-        IDynamicFilter<Product>? dynamicFilter = null,
-        IStaticFilter<Product>? staticFilter = null,
-        IStaticSortBy<Product>? staticSort = null,
-        IDynamicSortBy<Product>? dynamicSort = null,
+        IFilter<Product>? filter = null,
+        ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
     )
     {
         var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create
         (
-            staticFilter,
-            dynamicFilter,
+            filter,
             null,
-            staticSort,
-            dynamicSort, 
+            sort,
             mapping: mapping, 
             includes: includes
         );
@@ -142,10 +138,8 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
     (
         ICursorPage page,
         CancellationToken cancellationToken,
-        IDynamicFilter<Product>? dynamicFilter = null,
-        IStaticFilter<Product>? staticFilter = null,
-        IStaticSortBy<Product>? staticSort = null,
-        IDynamicSortBy<Product>? dynamicSort = null,
+        IFilter<Product>? filter = null,
+        ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
     )
@@ -155,11 +149,9 @@ public sealed class ProductRepository : RepositoryBase, IProductRepository
 
         var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create
         (
-            staticFilter,
-            dynamicFilter,
+            filter,
             cursorFilter,
-            staticSort,
-            dynamicSort, 
+            sort,
             mapping: mapping, 
             includes: includes
         );

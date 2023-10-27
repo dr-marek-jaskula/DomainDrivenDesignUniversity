@@ -15,11 +15,9 @@ internal abstract partial class CommonSpecification
     {
         internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> Create
         (
-            IStaticFilter<TEntity>? staticFilter = null,
-            IDynamicFilter<TEntity>? dynamicFilter = null,
+            IFilter<TEntity>? filter = null,
             Expression<Func<TEntity, bool>>? customFilter = null,
-            IStaticSortBy<TEntity>? staticSortBy = null,
-            IDynamicSortBy<TEntity>? dynamicSortBy = null,
+            ISortBy<TEntity>? sortBy = null,
             Expression<Func<TEntity, TResponse>>? mapping = null,
             params Expression<Func<TEntity, object>>[] includes
         )
@@ -27,11 +25,9 @@ internal abstract partial class CommonSpecification
             return new WithMapping<TEntity, TEntityId, TResponse>()
                 .AddMapping(mapping)
                 .AddIncludes(includes)
-                .AddFilter(staticFilter)
+                .AddFilter(filter)
                 .AddFilter(customFilter)
-                .AddFilter(dynamicFilter)
-                .AddSortBy(staticSortBy)
-                .AddSortBy(dynamicSortBy)
+                .AddSortBy(sortBy)
                 .AddTag($"Common {typeof(TEntity).Name} query")
                 .AsMappingSpecification<TEntity, TEntityId, TResponse>();
         }
