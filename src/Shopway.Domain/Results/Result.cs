@@ -42,6 +42,8 @@ public class Result<TValue> : Result, IResult<TValue>
 /// </summary>
 public class Result : IResult
 {
+    private static Result _success = new(Error.None);
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Result"/> class with the specified parameters
     /// </summary>
@@ -104,7 +106,7 @@ public class Result : IResult
     /// <returns>A new instance of <see cref="Result"/></returns>
     public static Result Success()
     {
-        return new(Error.None);
+        return _success;
     }
 
     /// <summary>

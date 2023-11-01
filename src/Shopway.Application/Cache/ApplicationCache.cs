@@ -1,4 +1,6 @@
-﻿namespace Shopway.Application.Cache;
+﻿using Shopway.Domain.Results;
+
+namespace Shopway.Application.Cache;
 
 public static partial class ApplicationCache
 {
@@ -7,6 +9,7 @@ public static partial class ApplicationCache
     static ApplicationCache()
     {
         SeedCache = true;
+        Result.Success();
         ValidationCache = CreateValidationCache();
         AllowedFilterPropertiesCache = CreateAllowedFilterPropertiesCache();
         AllowedFilterOperationsCache = CreateAllowedFilterOperationsCache();
