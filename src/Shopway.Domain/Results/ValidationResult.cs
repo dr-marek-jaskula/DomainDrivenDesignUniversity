@@ -42,6 +42,8 @@ public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
 
 public sealed class ValidationResult : Result, IValidationResult
 {
+    private static readonly ValidationResult _successValidationResult = new();
+
     private ValidationResult(Error[] validationErrors)
         : base(Error.ValidationError)
     {
@@ -72,6 +74,6 @@ public sealed class ValidationResult : Result, IValidationResult
     /// <returns>Success ValidationResult</returns>
     public static ValidationResult WithoutErrors()
     {
-        return new();
+        return _successValidationResult;
     }
 }
