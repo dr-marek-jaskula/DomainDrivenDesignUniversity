@@ -2,7 +2,7 @@
 using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Abstractions;
-using static Shopway.Persistence.Constants.SpecificationConstants;
+using static Shopway.Persistence.Constants.Constants.Specification.Product;
 
 namespace Shopway.Persistence.Specifications.Products;
 

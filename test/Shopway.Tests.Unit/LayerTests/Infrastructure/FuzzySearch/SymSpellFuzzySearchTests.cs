@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Infrastructure.FuzzySearch;
-using Shopway.Tests.Unit.Constants;
+using static Shopway.Tests.Unit.Constants.Constants;
 using static Shopway.Domain.Utilities.ListUtilities;
 
 namespace Shopway.Tests.Unit.LayerTests.Infrastructure.FuzzySearch;

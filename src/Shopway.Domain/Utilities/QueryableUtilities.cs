@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
 using Shopway.Domain.Abstractions.Common;
 using static Shopway.Domain.Utilities.ListUtilities;
-using static Shopway.Domain.Constants.TypeConstants;
+using static Shopway.Domain.Constants.Constants.Type;
 
 namespace Shopway.Domain.Utilities;
 

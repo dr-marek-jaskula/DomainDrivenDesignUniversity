@@ -1,8 +1,8 @@
 ﻿using Shopway.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Shopway.Domain.Utilities.EnumUtilities;
+using static Shopway.Persistence.Constants.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -10,15 +10,15 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 {
     public void Configure(EntityTypeBuilder<Permission> builder)
     {
-        builder.ToTable(TableNames.Permission, SchemaNames.Master);
+        builder.ToTable(TableName.Permission, SchemaName.Master);
 
         builder.HasKey(p => p.Id);
 
         builder.Property(r => r.Id)
-            .HasColumnType(ColumnTypes.TinyInt);
+            .HasColumnType(ColumnType.TinyInt);
 
         builder.Property(r => r.Name)
-            .HasColumnType(ColumnTypes.VarChar(128));
+            .HasColumnType(ColumnType.VarChar(128));
 
         var permissionsFromEnumeration = Permission.GetNames();
         var permissionsFromEnum = GetNamesOf<Domain.Enums.Permission>();

@@ -1,11 +1,11 @@
 ﻿using RestSharp;
-using Shopway.Tests.Integration.Persistence;
 using Shopway.Tests.Integration.Utilities;
+using Shopway.Tests.Integration.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
 using static RestSharp.Method;
-using static Shopway.Tests.Integration.Container.Constants.HeaderConstants;
-using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
+using static Shopway.Tests.Integration.Container.Constants.Constants.Header;
+using static Shopway.Tests.Integration.Container.Constants.Constants.IntegrationTest;
 
 namespace Shopway.Tests.Integration.Abstractions;
 

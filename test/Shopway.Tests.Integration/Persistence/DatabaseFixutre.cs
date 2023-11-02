@@ -2,7 +2,7 @@
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;
 using ZiggyCreatures.Caching.Fusion;
-using static Shopway.Persistence.Constants.ConnectionConstants;
+using static Shopway.Persistence.Constants.Constants.Connection;
 
 namespace Shopway.Tests.Integration.Persistence;
 

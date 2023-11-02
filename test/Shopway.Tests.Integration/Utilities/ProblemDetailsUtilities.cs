@@ -1,6 +1,6 @@
 ﻿using Shopway.Tests.Integration.ControllersUnderTest;
 using Shopway.Domain.Errors;
-using static Shopway.Application.Constants.ProblemDetailsConstants;
+using static Shopway.Application.Constants.Constants.ProblemDetails;
 
 namespace Shopway.Tests.Integration.Utilities;
 

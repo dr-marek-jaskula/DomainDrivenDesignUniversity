@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
+using static Shopway.Persistence.Constants.Constants;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Shopway.Persistence.Configurations;
@@ -9,15 +9,15 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
-        builder.ToTable(TableNames.Role, SchemaNames.Master);
+        builder.ToTable(TableName.Role, SchemaName.Master);
 
         builder.HasKey(r => r.Id);
 
         builder.Property(r => r.Id)
-            .HasColumnType(ColumnTypes.TinyInt);
+            .HasColumnType(ColumnType.TinyInt);
 
         builder.Property(r => r.Name)
-            .HasColumnType(ColumnTypes.VarChar(128));
+            .HasColumnType(ColumnType.VarChar(128));
 
         builder.HasMany(x => x.Permissions)
             .WithMany()

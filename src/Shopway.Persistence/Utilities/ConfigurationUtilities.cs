@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static Shopway.Persistence.Constants.Constants;
 
 namespace Shopway.Persistence.Utilities;
 
@@ -11,17 +11,17 @@ public static class ConfigurationUtilities
         where TEntity : class, IEntity, IAuditable
     {
         builder.Property(o => o.CreatedOn)
-            .HasColumnType(ColumnTypes.DateTimeOffset(2));
+            .HasColumnType(ColumnType.DateTimeOffset(2));
 
         builder.Property(o => o.UpdatedOn)
-            .HasColumnType(ColumnTypes.DateTimeOffset(2))
+            .HasColumnType(ColumnType.DateTimeOffset(2))
             .IsRequired(false);
 
         builder.Property(o => o.CreatedBy)
-            .HasColumnType(ColumnTypes.VarChar(30));
+            .HasColumnType(ColumnType.VarChar(30));
 
         builder.Property(o => o.UpdatedBy)
-            .HasColumnType(ColumnTypes.VarChar(30))
+            .HasColumnType(ColumnType.VarChar(30))
             .IsRequired(false);
 
         return builder;
@@ -31,11 +31,11 @@ public static class ConfigurationUtilities
     where TEntity : class, IEntity, ISoftDeletable
     {
         builder.Property(o => o.SoftDeleted)
-            .HasColumnType(ColumnTypes.Bit)
+            .HasColumnType(ColumnType.Bit)
             .HasDefaultValue(false);
 
         builder.Property(o => o.SoftDeletedOn)
-            .HasColumnType(ColumnTypes.DateTimeOffset(2))
+            .HasColumnType(ColumnType.DateTimeOffset(2))
             .IsRequired(false);
 
         return builder;

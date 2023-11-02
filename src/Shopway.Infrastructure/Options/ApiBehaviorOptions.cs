@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames.Application;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
-using static Shopway.Application.Constants.ProblemDetailsConstants;
+using static Shopway.Application.Constants.Constants.ProblemDetails;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState;
 
 namespace Shopway.Infrastructure.Options;

@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Errors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using static Shopway.Application.Constants.ProblemDetailsConstants;
+using static Shopway.Application.Constants.Constants.ProblemDetails;
 
 namespace Shopway.Application.Utilities;
 

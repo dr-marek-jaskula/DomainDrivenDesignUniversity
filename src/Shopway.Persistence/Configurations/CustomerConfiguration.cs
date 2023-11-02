@@ -2,7 +2,6 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
-using Shopway.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Converters;
 using Shopway.Persistence.Converters.Enums;
@@ -10,7 +9,8 @@ using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Shopway.Domain.Utilities.EnumUtilities;
-using static Shopway.Persistence.Constants.NumberConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Persistence.Constants.Constants.Number;
 using static Shopway.Persistence.Utilities.ConfigurationUtilities;
 
 namespace Shopway.Persistence.Configurations;
@@ -19,35 +19,35 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        builder.ToTable(TableNames.Customer, SchemaNames.Master);
+        builder.ToTable(TableName.Customer, SchemaName.Master);
 
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
             .HasConversion<CustomerIdConverter, CustomerIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.Property(p => p.UserId)
             .HasConversion<UserIdConverter, UserIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.Property(p => p.DateOfBirth)
             .HasConversion<DateOnlyConverter, DateOnlyComparer>()
-            .HasColumnType(ColumnTypes.DateTimeOffset(2))
+            .HasColumnType(ColumnType.DateTimeOffset(2))
             .HasDefaultValue(null)
             .IsRequired(false);
 
         builder.Property(p => p.Gender)
             .HasConversion<GenderConverter>()
             .HasColumnName(nameof(Gender))
-            .HasColumnType(ColumnTypes.VarChar(LongestOf<Gender>()))
+            .HasColumnType(ColumnType.VarChar(LongestOf<Gender>()))
             .IsRequired(true);
 
         builder.Property(c => c.Rank)
             .HasConversion<RankConverter>()
             .HasColumnName(nameof(Rank))
             .HasDefaultValue(Rank.Standard)
-            .HasColumnType(ColumnTypes.VarChar(LongestOf<Rank>()));
+            .HasColumnType(ColumnType.VarChar(LongestOf<Rank>()));
 
         builder.ConfigureAuditableEntity();
 
@@ -74,7 +74,7 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
             addressNavigationBuilder =>
             {
                 //Configures a different table that the entity type maps to when targeting a relational database.
-                addressNavigationBuilder.ToTable(TableNames.Address, SchemaNames.Master);
+                addressNavigationBuilder.ToTable(TableName.Address, SchemaName.Master);
 
                 //Configures the relationship to the owner, and indicates the Foreign Key.
                 addressNavigationBuilder
@@ -83,12 +83,12 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
 
                 //Configure a property of the owned entity type, in this case the to be used as Primary Key
                 addressNavigationBuilder
-                    .Property<Ulid>(ShadowColumnNames.Id)
+                    .Property<Ulid>(ShadowColumnName.Id)
                     .HasConversion<UlidToStringConverter>(); //Shadow property
 
                 //Sets the properties that make up the primary key for this owned entity type.
                 addressNavigationBuilder
-                    .HasKey(ShadowColumnNames.Id); //Shadow Primary Key
+                    .HasKey(ShadowColumnName.Id); //Shadow Primary Key
 
                 addressNavigationBuilder
                     .Property(p => p.Country)

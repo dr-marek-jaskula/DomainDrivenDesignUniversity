@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Abstractions;
-using System.Reflection;
+﻿using System.Reflection;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Domain.Utilities;
 
@@ -7,11 +7,17 @@ public static class ReflectionUtilities
 {
     public static Type GetEntityTypeFromEntityIdType(Type entityIdType)
     {
+        if (entityIdType.Implements<IEntityId>() is false)
+        {
+            throw new ArgumentException($"{entityIdType.Name} must implements {nameof(IEntityId)}");
+        }
+
         var skipAmount = IEntityId.Id.Length;
         var typeName = entityIdType.Name[0..^skipAmount];
 
         return Domain.AssemblyReference.Assembly
             .GetTypes()
+            .Where(type => type.Implements<IEntity>())
             .Where(type => type.Name == typeName)
             .Single();
     }
@@ -27,24 +33,18 @@ public static class ReflectionUtilities
 
     public static Type GetEntityTypeFromEntityId(this IEntityId entityId)
     {
-        var assembly = Shopway.Domain.AssemblyReference.Assembly;
-
-        var skipAmount = IEntityId.Id.Length;
-
-        var typeName = entityId.GetType().Name[0..^skipAmount];
-
-        return assembly
-            .GetTypes()
-            .Where(type => type.Name == typeName)
-            .Single();
+        return GetEntityTypeFromEntityIdType(entityId.GetType());
     }
 
     public static MethodInfo GetSingleGenericMethod(this Type baseType, string methodName, params Type[] genericType)
     {
         var methodFormBaseType = baseType
-            .GetMethods()
-            .Where(method => method.Name == methodName)
-            .Single();
+            .GetMethod(methodName);
+
+        if (methodFormBaseType is null || methodFormBaseType.IsGenericMethod is false)
+        {
+            throw new ArgumentException($"{baseType.Name} does not contain generic method {methodName}");
+        }
 
         return methodFormBaseType.MakeGenericMethod(genericType);
     }
@@ -67,8 +67,7 @@ public static class ReflectionUtilities
     public static bool Implements<TInterface>(this Type baseType)
     {
         return baseType
-            .GetInterfaces()
-            .Any(interfaceType => interfaceType == typeof(TInterface));
+            .GetInterface(typeof(TInterface).Name) is not null;
     }
 
     public static Type[] GetTypesWithAnyMatchingInterface(this Assembly assembly, Func<Type, bool> typeInterfaceMatch)

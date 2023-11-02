@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.EntityIds;
+﻿using System.Security.Claims;
+using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Abstractions;
-using System.Security.Claims;
-using Shopway.Tests.Integration.Constants;
+using static Shopway.Tests.Integration.Container.Constants.Constants;
 
 namespace Shopway.Tests.Integration.Container.Persistance;
 

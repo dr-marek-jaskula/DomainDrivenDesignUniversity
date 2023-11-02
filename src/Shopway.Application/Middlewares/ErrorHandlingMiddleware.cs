@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Shopway.Application.Exceptions;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
-using static Shopway.Application.Constants.ProblemDetailsConstants;
+using static Shopway.Application.Constants.Constants.ProblemDetails;
 
 namespace Shopway.Application.Middlewares;
 

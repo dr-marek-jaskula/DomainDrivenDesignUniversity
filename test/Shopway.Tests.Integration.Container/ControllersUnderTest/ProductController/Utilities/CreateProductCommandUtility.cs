@@ -1,6 +1,6 @@
-﻿using Shopway.Application.Features.Products.Commands.CreateProduct;
-using Shopway.Domain.EntityKeys;
-using static Shopway.Tests.Integration.Container.Constants.ProductConstants;
+﻿using Shopway.Domain.EntityKeys;
+using Shopway.Application.Features.Products.Commands.CreateProduct;
+using static Shopway.Tests.Integration.Container.Constants.Constants.Product;
 
 namespace Shopway.Tests.Integration.Container.ControllersUnderTest.ProductController.Utilities;
 

@@ -1,9 +1,9 @@
 ﻿using Shopway.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
 using Shopway.Persistence.Converters;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Shopway.Persistence.Constants.NumberConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -11,13 +11,13 @@ internal sealed class OutboxMessageConsumerConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<OutboxMessageConsumer> builder)
     {
-        builder.ToTable(TableNames.OutboxMessageConsumer, SchemaNames.Outbox);
+        builder.ToTable(TableName.OutboxMessageConsumer, SchemaName.Outbox);
 
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
             .HasConversion<UlidToStringConverter>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.HasKey(outboxMessageConsumer => new
         {

@@ -2,7 +2,7 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
-using static Shopway.Persistence.Constants.SpecificationConstants;
+using static Shopway.Persistence.Constants.Constants.Specification.Product;
 
 namespace Shopway.Persistence.Specifications.Products.Sorting;
 

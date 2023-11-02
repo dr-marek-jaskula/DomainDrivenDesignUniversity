@@ -2,14 +2,15 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.Enums;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Shopway.Domain.Utilities.EnumUtilities;
-using static Shopway.Persistence.Constants.NumberConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Persistence.Constants.Constants.Number;
+using static Shopway.Persistence.Utilities.ConfigurationUtilities;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -17,21 +18,21 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<OrderHeader> builder)
     {
-        builder.ToTable(TableNames.OrderHeader, SchemaNames.Shopway);
+        builder.ToTable(TableName.OrderHeader, SchemaName.Shopway);
 
         builder.HasKey(o => o.Id);
 
         builder.Property(o => o.Id)
             .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.Property(o => o.PaymentId)
             .HasConversion<PaymentIdConverter, PaymentIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.Property(p => p.Status)
             .HasConversion<OrderStatusConverter>()
-            .HasColumnType(ColumnTypes.VarChar(LongestOf<OrderStatus>()))
+            .HasColumnType(ColumnType.VarChar(LongestOf<OrderStatus>()))
             .IsRequired(true);
 
         builder.Property(p => p.TotalDiscount)

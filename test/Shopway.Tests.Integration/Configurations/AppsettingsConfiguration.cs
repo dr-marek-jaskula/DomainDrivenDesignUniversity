@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
+using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
 
 namespace Shopway.Tests.Integration.Configurations;
 
@@ -11,7 +11,7 @@ public static class AppsettingsConfiguration
             .AddEnvironmentVariables();
 
         var path = Directory.GetParent(Environment.CurrentDirectory)!.Parent!.Parent!.FullName;
-        builder.AddJsonFile($@"{path}/{AppsetingsTestJson}");
+        builder.AddJsonFile($@"{path}/{AppsettingsTestJson}");
 
         return builder.Build();
     }

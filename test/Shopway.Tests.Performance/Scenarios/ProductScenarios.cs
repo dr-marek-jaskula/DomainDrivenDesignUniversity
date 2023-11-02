@@ -1,7 +1,7 @@
-﻿using NBomber.Contracts;
-using NBomber.CSharp;
+﻿using NBomber.CSharp;
+using NBomber.Contracts;
 using NBomber.Http.CSharp;
-using Shopway.Tests.Performance.Constants;
+using static Shopway.Tests.Performance.Constants.Constants.Http;
 
 namespace Shopway.Tests.Performance.Scenarios;
 
@@ -11,10 +11,10 @@ public static class ProductScenarios
     {
         return Scenario.Create(scenarioName, async context =>
         {
-            var request = Http.CreateRequest(HttpConstants.GET, url)
-                    .WithHeader(HttpConstants.ApiKey, apiKey);
+            var request = Http.CreateRequest(GET, url)
+                    .WithHeader(ApiKey, apiKey);
 
-            var response = await Http.Send(HttpConstants.HttpClient, request);
+            var response = await Http.Send(Client, request);
 
             return response;
         });

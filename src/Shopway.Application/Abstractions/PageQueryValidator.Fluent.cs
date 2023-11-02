@@ -2,7 +2,7 @@
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
 using Shopway.Application.Abstractions.CQRS;
-using static Shopway.Application.Constants.PageConstants;
+using static Shopway.Application.Constants.Constants.Page;
 
 namespace Shopway.Application.Abstractions;
 

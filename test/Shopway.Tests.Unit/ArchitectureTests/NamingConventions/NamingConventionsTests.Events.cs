@@ -1,8 +1,8 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Abstractions;
-using Shopway.Tests.Unit.Constants;
-using static Shopway.Tests.Unit.Constants.NamingConvention;
+using static Shopway.Tests.Unit.Constants.Constants;
+using static Shopway.Tests.Unit.Constants.Constants.NamingConvention;
 
 namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 

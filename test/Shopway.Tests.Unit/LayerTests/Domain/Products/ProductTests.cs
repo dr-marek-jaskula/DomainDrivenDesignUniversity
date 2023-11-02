@@ -3,7 +3,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.DomainEvents;
-using Shopway.Tests.Unit.Constants;
+using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.Products;
 

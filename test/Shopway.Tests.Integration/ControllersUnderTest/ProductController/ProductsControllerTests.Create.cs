@@ -1,9 +1,9 @@
 ﻿using RestSharp;
 using Shopway.Domain.EntityKeys;
-using Shopway.Tests.Integration.Constants;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
 using static Shopway.Domain.Errors.HttpErrors;
+using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.CreateProductCommandUtility;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;

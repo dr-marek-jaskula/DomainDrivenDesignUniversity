@@ -1,21 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RestSharp;
-using RestSharp.Authenticators;
-using Shopway.Application.Features.Users.Commands.RegisterUser;
-using Shopway.Application.Features.Users.Commands.LogUser;
-using Shopway.Domain.Entities;
-using Shopway.Tests.Integration.Persistence;
-using Shopway.Tests.Integration.Utilities;
+﻿using RestSharp;
 using System.Data;
-using Shopway.Persistence.Constants;
+using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
-using Gatherly.Presentation.Controllers;
-using Microsoft.Extensions.DependencyInjection;
-using Shopway.Tests.Integration.Configurations;
-using Shopway.Tests.Integration.Constants;
+using RestSharp.Authenticators;
 using Shopway.Domain.Enumerations;
+using Microsoft.EntityFrameworkCore;
+using Gatherly.Presentation.Controllers;
+using Shopway.Tests.Integration.Utilities;
+using Shopway.Tests.Integration.Persistence;
+using Shopway.Tests.Integration.Configurations;
+using Microsoft.Extensions.DependencyInjection;
+using Shopway.Application.Features.Users.Commands.LogUser;
+using Shopway.Application.Features.Users.Commands.RegisterUser;
 using static RestSharp.Method;
-using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Tests.Integration.Constants.Constants;
+using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
@@ -148,7 +148,7 @@ public abstract class ControllerTestsBase : IDisposable
         foreach (var role in Role.Ids)
         {
             await databaseFixture.Context.Database.ExecuteSqlRawAsync(@$"
-            INSERT INTO {SchemaNames.Master}.{TableNames.RoleUser} (RoleId, {nameof(UserId)})
+            INSERT INTO {SchemaName.Master}.{TableName.RoleUser} (RoleId, {nameof(UserId)})
             VALUES ({role}, '{user.Id.Value}');     
             ");
         }

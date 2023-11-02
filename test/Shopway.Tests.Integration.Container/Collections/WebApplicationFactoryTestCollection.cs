@@ -1,4 +1,4 @@
-﻿using static Shopway.Tests.Integration.Constants.CollectionNames;
+﻿using static Shopway.Tests.Integration.Container.Constants.Constants.CollectionName;
 
 namespace Shopway.Tests.Integration.Collections;
 
