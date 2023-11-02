@@ -10,6 +10,7 @@ public static partial class ApplicationCache
     {
         SeedCache = true;
         Result.Success();
+        ValidationResult.WithoutErrors();
         ValidationCache = CreateValidationCache();
         AllowedFilterPropertiesCache = CreateAllowedFilterPropertiesCache();
         AllowedFilterOperationsCache = CreateAllowedFilterOperationsCache();
