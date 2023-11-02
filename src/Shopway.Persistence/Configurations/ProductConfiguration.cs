@@ -1,12 +1,12 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Shopway.Persistence.Constants.NumberConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -14,13 +14,13 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.ToTable(TableNames.Product, SchemaNames.Shopway);
+        builder.ToTable(TableName.Product, SchemaName.Shopway);
 
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
             .HasConversion<ProductIdConverter, ProductIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.ConfigureAuditableEntity();
 
@@ -39,7 +39,7 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.Property(p => p.UomCode)
             .HasConversion<UomCodeConverter, UomCodeComparer>()
             .HasColumnName(nameof(UomCode))
-            .HasColumnType(ColumnTypes.VarChar(8))
+            .HasColumnType(ColumnType.VarChar(8))
             .IsRequired(true);
 
         builder.Property(p => p.Price)

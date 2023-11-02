@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
+using Newtonsoft.Json;
 using Shopway.Domain.Utilities;
-using static Shopway.Tests.Integration.Container.Constants.HeaderConstants;
+using static Shopway.Tests.Integration.Container.Constants.Constants.Header;
 
 namespace Shopway.Tests.Integration.Utilities;
 

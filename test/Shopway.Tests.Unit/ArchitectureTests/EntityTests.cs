@@ -1,7 +1,7 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Domain.BaseTypes;
 using Shopway.Tests.Unit.ArchitectureTests.CustomRules;
-using Shopway.Tests.Unit.Constants;
+using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
 

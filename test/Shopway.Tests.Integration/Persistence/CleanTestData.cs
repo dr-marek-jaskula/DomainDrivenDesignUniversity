@@ -1,5 +1,5 @@
-﻿using Shopway.Tests.Integration.Constants;
-using static Shopway.Tests.Integration.Constants.CollectionNames;
+﻿using static Shopway.Tests.Integration.Constants.Constants;
+using static Shopway.Tests.Integration.Constants.Constants.CollectionName;
 
 namespace Shopway.Tests.Integration.Persistence;
 

@@ -1,5 +1,5 @@
-﻿using Shopway.Tests.Unit.Constants;
-using static Shopway.Domain.Utilities.RangeUtility;
+﻿using static Shopway.Domain.Utilities.RangeUtility;
+using static Shopway.Tests.Unit.Constants.Constants;
 using static Shopway.Domain.Utilities.StringUtilities;
 
 namespace Shopway.Tests.Unit.UtilityTests;

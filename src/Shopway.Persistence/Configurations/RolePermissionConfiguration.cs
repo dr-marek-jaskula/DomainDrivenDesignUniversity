@@ -1,8 +1,8 @@
 ﻿using Shopway.Domain.Enumerations;
-using Shopway.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Permission = Shopway.Domain.Enumerations.Permission;
+using static Shopway.Persistence.Constants.Constants;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -10,7 +10,7 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
 {
     public void Configure(EntityTypeBuilder<RolePermission> builder)
     {
-        builder.ToTable(TableNames.RolePermission, SchemaNames.Master);
+        builder.ToTable(TableName.RolePermission, SchemaName.Master);
 
         builder.HasKey(x => new { x.RoleId, x.PermissionId });
 

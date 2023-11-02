@@ -1,12 +1,12 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Shopway.Persistence.Constants.NumberConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -14,13 +14,13 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable(TableNames.User, SchemaNames.Master);
+        builder.ToTable(TableName.User, SchemaName.Master);
 
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)
             .HasConversion<UserIdConverter, UserIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.ConfigureAuditableEntity();
 
@@ -39,7 +39,7 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
         builder.Property(u => u.PasswordHash)
             .HasConversion<PasswordHashConverter, PasswordHashComparer>()
             .HasColumnName(nameof(PasswordHash))
-            .HasColumnType(ColumnTypes.NChar(PasswordHash.BytesLong))
+            .HasColumnType(ColumnType.NChar(PasswordHash.BytesLong))
             .IsRequired(true);
 
         builder.HasMany(u => u.Roles)

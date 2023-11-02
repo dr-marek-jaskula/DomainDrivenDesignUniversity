@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Features.Products.Commands.AddReview;
-using Shopway.Tests.Integration.Constants;
+using static Shopway.Tests.Integration.Constants.Constants.Review;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 
@@ -9,9 +9,9 @@ public static class AddReviewCommandUtility
     {
         return new AddReviewCommand.AddReviewRequestBody
         (
-            stars ?? ReviewConstants.Stars,
-            title ?? ReviewConstants.Title, 
-            description ?? ReviewConstants.Description
+            stars ?? Stars,
+            title ?? Title, 
+            description ?? Description
         );
     }
 }

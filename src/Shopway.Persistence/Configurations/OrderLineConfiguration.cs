@@ -1,12 +1,14 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Shopway.Persistence.Constants.NumberConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Persistence.Constants.Constants.Number;
+using static Shopway.Persistence.Utilities.ConfigurationUtilities;
+
 
 namespace Shopway.Persistence.Configurations;
 
@@ -14,21 +16,21 @@ internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguratio
 {
     public void Configure(EntityTypeBuilder<OrderLine> builder)
     {
-        builder.ToTable(TableNames.OrderLine, SchemaNames.Shopway);
+        builder.ToTable(TableName.OrderLine, SchemaName.Shopway);
 
         builder.HasKey(o => o.Id);
 
         builder.Property(o => o.Id)
             .HasConversion<OrderLineIdConverter, OrderLineIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.Property(o => o.ProductId)
             .HasConversion<ProductIdConverter, ProductIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.Property(o => o.OrderHeaderId)
             .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.ConfigureAuditableEntity();
 

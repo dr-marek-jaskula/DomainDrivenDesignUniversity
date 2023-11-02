@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Xunit.Abstractions;
 using NBomber.Contracts.Stats;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
-using Shopway.Tests.Performance.Constants;
-using Xunit.Abstractions;
+using Microsoft.EntityFrameworkCore;
 using static System.Threading.CancellationToken;
-using static Shopway.Tests.Performance.Constants.OutputHelperContants;
+using static Shopway.Tests.Performance.Constants.Constants;
+using static Shopway.Tests.Performance.Constants.Constants.OutputHelper;
 
 namespace Shopway.Tests.Performance.ControllersUnderTest.ProductController;
 

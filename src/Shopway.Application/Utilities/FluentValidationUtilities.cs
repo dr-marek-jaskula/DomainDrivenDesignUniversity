@@ -2,9 +2,9 @@
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
 using static Shopway.Application.Cache.ApplicationCache;
-using static Shopway.Application.Constants.SortConstants;
-using static Shopway.Application.Constants.FilterConstants;
+using static Shopway.Application.Constants.Constants.Sort;
 using static Shopway.Domain.Utilities.SortByEntryUtilities;
+using static Shopway.Application.Constants.Constants.Filter;
 using static Shopway.Domain.Utilities.FilterByEntryUtilities;
 
 namespace Shopway.Application.Utilities;

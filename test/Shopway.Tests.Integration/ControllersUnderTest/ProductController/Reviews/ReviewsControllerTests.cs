@@ -1,20 +1,20 @@
 ﻿using RestSharp;
-using Shopway.Tests.Integration.Abstractions;
-using Shopway.Tests.Integration.Persistence;
-using Shopway.Presentation.Controllers;
-using static Shopway.Tests.Integration.Constants.CollectionNames;
-using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
-using Shopway.Application.Features.Products.Commands.AddReview;
-using Shopway.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using static System.Threading.CancellationToken;
 using Shopway.Domain.EntityIds;
-using Shopway.Tests.Integration.Constants;
+using Microsoft.EntityFrameworkCore;
+using Shopway.Presentation.Controllers;
+using Shopway.Tests.Integration.Persistence;
+using Shopway.Tests.Integration.Abstractions;
+using Shopway.Application.Features.Products.Commands.AddReview;
+using Review  = Shopway.Domain.Entities.Review;
+using static System.Threading.CancellationToken;
+using static Shopway.Tests.Integration.Constants.Constants;
+using static Shopway.Tests.Integration.Constants.Constants.CollectionName;
+using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 
 [Collection(ProductControllerCollection)]
-[Trait(nameof(IntegrationTest), IntegrationTest.Api)]
+[Trait(nameof(IntegrationTest), Api)]
 public sealed partial class ReviewsControllerTests : ControllerTestsBase, IAsyncLifetime
 {
     private RestClient? _restClient;

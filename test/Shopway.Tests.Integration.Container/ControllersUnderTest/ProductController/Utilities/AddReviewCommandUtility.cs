@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Features.Products.Commands.AddReview;
-using static Shopway.Tests.Integration.Container.Constants.ReviewConstants;
+using static Shopway.Tests.Integration.Container.Constants.Constants.Review;
 
 namespace Shopway.Tests.Integration.Container.ControllersUnderTest.ProductController.Utilities;
 

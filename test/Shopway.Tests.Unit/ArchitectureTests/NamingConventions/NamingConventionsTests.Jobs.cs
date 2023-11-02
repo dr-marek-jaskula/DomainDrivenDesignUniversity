@@ -1,7 +1,7 @@
 ﻿using Quartz;
 using NetArchTest.Rules;
-using static Shopway.Tests.Unit.Constants.NamingConvention;
-using Shopway.Tests.Unit.Constants;
+using static Shopway.Tests.Unit.Constants.Constants;
+using static Shopway.Tests.Unit.Constants.Constants.NamingConvention;
 
 namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 

@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
+using Shopway.Persistence.Abstractions;
 using static Shopway.Domain.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Performance.Abstractions;
@@ -20,17 +20,17 @@ public abstract class TestDataGeneratorBase
     /// <summary>
     /// Generates test string with 'auto' prefix
     /// </summary>
-    /// <param name="lenght">Must be greater than 4</param>
+    /// <param name="length">Must be greater than 4</param>
     /// <returns>Test string with prefix</returns>
     /// <exception cref="ArgumentException"></exception>
-    public static string TestStringWithPrefix(int lenght = Length)
+    public static string TestStringWithPrefix(int length = Length)
     {
-        if (lenght - AUTO_PREFIX.Length <= 0)
+        if (length - AUTO_PREFIX.Length <= 0)
         {
-            throw new ArgumentException($"{lenght} must be greater than AUTO_PREFIX length");
+            throw new ArgumentException($"{length} must be greater than AUTO_PREFIX length");
         }
 
-        return $"{AUTO_PREFIX}{GenerateString(lenght - AUTO_PREFIX.Length)}";
+        return $"{AUTO_PREFIX}{GenerateString(length - AUTO_PREFIX.Length)}";
     }
 
     /// <summary>

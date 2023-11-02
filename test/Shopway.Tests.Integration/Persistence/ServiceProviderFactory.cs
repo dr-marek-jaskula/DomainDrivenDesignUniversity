@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Configurations;
-using static Shopway.Tests.Integration.Constants.IntegrationTestsConstants;
+using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
 
 namespace Shopway.Tests.Integration.Persistence;
 

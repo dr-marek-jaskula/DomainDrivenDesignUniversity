@@ -1,13 +1,13 @@
 ﻿using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
-using Shopway.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Shopway.Persistence.Constants.NumberConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -15,13 +15,13 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
-        builder.ToTable(TableNames.Review, SchemaNames.Shopway);
+        builder.ToTable(TableName.Review, SchemaName.Shopway);
 
         builder.HasKey(r => r.Id);
 
         builder.Property(r => r.Id)
             .HasConversion<ReviewIdConverter, ReviewIdComparer>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.Property(r => r.ProductId)
             .HasConversion<ProductIdConverter, ProductIdComparer>()
@@ -44,7 +44,7 @@ internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<R
         builder.Property(r => r.Stars)
             .HasConversion<StarsConverter, StarsComparer>()
             .HasColumnName(nameof(Stars))
-            .HasColumnType(ColumnTypes.TinyInt)
+            .HasColumnType(ColumnType.TinyInt)
             .IsRequired(true);
 
         builder.Property(r => r.Description)

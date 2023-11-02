@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Shopway.Domain.Abstractions;
 using IResult = Shopway.Domain.Abstractions.IResult;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
-using static Shopway.Application.Constants.ProblemDetailsConstants;
+using static Shopway.Application.Constants.Constants.ProblemDetails;
 
 namespace Shopway.Presentation.Abstractions;
 

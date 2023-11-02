@@ -1,9 +1,9 @@
 ﻿using Shopway.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Constants;
 using Shopway.Persistence.Converters;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Shopway.Persistence.Constants.NumberConstants;
+using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -11,21 +11,21 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
 {
     public void Configure(EntityTypeBuilder<OutboxMessage> builder)
     {
-        builder.ToTable(TableNames.OutboxMessage, SchemaNames.Outbox);
+        builder.ToTable(TableName.OutboxMessage, SchemaName.Outbox);
 
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
             .HasConversion<UlidToStringConverter>()
-            .HasColumnType(ColumnTypes.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
 
         builder.Property(x => x.Type)
-            .HasColumnType(ColumnTypes.VarChar(100));
+            .HasColumnType(ColumnType.VarChar(100));
 
         builder.Property(x => x.Content)
-            .HasColumnType(ColumnTypes.VarChar(5000));
+            .HasColumnType(ColumnType.VarChar(5000));
 
         builder.Property(x => x.Error)
-            .HasColumnType(ColumnTypes.VarChar(8000));
+            .HasColumnType(ColumnType.VarChar(8000));
     }
 }
