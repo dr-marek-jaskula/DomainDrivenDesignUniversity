@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.EntityIds;
@@ -11,7 +12,6 @@ using Microsoft.IdentityModel.Tokens;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
-using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.Mappings.OrderLineMapping;
 using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 
@@ -34,7 +34,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
     {
         if (command.Requests.IsNullOrEmpty())
         {
-            return Result.Failure<BatchUpsertOrderLineResponse>(NullOrEmpty(nameof(BatchUpsertOrderLineCommand)));
+            return Result.Failure<BatchUpsertOrderLineResponse>(Error.NullOrEmpty(nameof(BatchUpsertOrderLineCommand)));
         }
 
         var productIdsFromCommand = command.GetRequestsProductIds();
@@ -42,7 +42,7 @@ public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHa
 
         if (invalidProductIds.NotNullOrEmpty())
         {
-            return Result.Failure<BatchUpsertOrderLineResponse>(InvalidReferences(invalidProductIds.GetUlids(), nameof(Product)));
+            return Result.Failure<BatchUpsertOrderLineResponse>(Error.InvalidReferences(invalidProductIds.GetUlids(), nameof(Product)));
         }
 
         var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);

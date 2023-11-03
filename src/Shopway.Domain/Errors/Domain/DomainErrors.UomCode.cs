@@ -8,6 +8,6 @@ public static partial class DomainErrors
     {
         public static readonly Error Invalid = Error.New(
             $"{nameof(UomCode)}.{nameof(Invalid)}",
-            $"{nameof(UomCode)} name must be: {string.Join(',', UomCode.AllowedUomCodes)}");
+            $"{nameof(UomCode)} name must be: {string.Join(',', UomCode.AllowedUomCodes)}.");
     }
 }

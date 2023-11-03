@@ -8,7 +8,6 @@ using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Utilities;
 using ZiggyCreatures.Caching.Fusion;
-using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Application.Cache.ApplicationCache;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
@@ -85,6 +84,6 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             return Error.None;
         }
 
-        return InvalidReference(entityId.Value, typeof(TEntity).Name);
+        return Error.InvalidReference(entityId.Value, typeof(TEntity).Name);
     }
 }

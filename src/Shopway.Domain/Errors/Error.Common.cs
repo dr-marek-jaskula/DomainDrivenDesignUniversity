@@ -4,12 +4,12 @@ using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Errors;
 
-public static class HttpErrors
+public sealed partial class Error
 {
     /// <summary>
     /// Create an Error describing that a password or an email are invalid
     /// </summary>
-    public static readonly Error InvalidPasswordOrEmail = Error.New($"{nameof(User)}.{nameof(InvalidPasswordOrEmail)}", $"Invalid {nameof(Password)} or {nameof(Email)}");
+    public static readonly Error InvalidPasswordOrEmail = New($"{nameof(User)}.{nameof(InvalidPasswordOrEmail)}", $"Invalid {nameof(Password)} or {nameof(Email)}.");
 
     /// <summary>
     /// Create an Error based on the entity type name and the id that was not found
@@ -20,7 +20,7 @@ public static class HttpErrors
     public static Error NotFound<TEntity>(IEntityId<TEntity> id)
         where TEntity : class, IEntity
     {
-        return Error.New($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with Id: '{id.Value}' was not found");
+        return New($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with id '{id.Value}' was not found.");
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public static class HttpErrors
     public static Error NotFound<TEntity>(IUniqueKey key)
         where TEntity : class, IEntity
     {
-        return Error.New($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with Key: '{key}' was not found");
+        return New($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with key '{key}' was not found.");
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public static class HttpErrors
     public static Error NotFound<TEntity>(string uniqueValue)
         where TEntity : class, IEntity
     {
-        return Error.New($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} for: '{uniqueValue}' was not found");
+        return New($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} for '{uniqueValue}' was not found.");
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public static class HttpErrors
     public static Error AlreadyExists<TUniqueKey>(TUniqueKey key)
         where TUniqueKey : IUniqueKey
     {
-        return Error.New($"{typeof(TUniqueKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TUniqueKey).Name} with key: '{key}' already exists");
+        return New($"{typeof(TUniqueKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TUniqueKey).Name} '{key}' already exists.");
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public static class HttpErrors
     /// <returns>InvalidReference error</returns>
     public static Error InvalidReference(Ulid reference, string entity)
     {
-        return Error.New($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid reference {reference} for entity {entity}");
+        return New($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid reference '{reference}' for entity '{entity}'.");
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public static class HttpErrors
     /// <returns>InvalidReference error</returns>
     public static Error InvalidReferences(IList<Ulid> references, string entity)
     {
-        return Error.New($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid references: [{string.Join(", ", references)}] for entity {entity}");
+        return New($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid references [{string.Join(", ", references)}] for entity '{entity}'.");
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public static class HttpErrors
     /// <returns>NullOrEmpty error</returns>
     public static Error NullOrEmpty(string collectionName)
     {
-        return Error.New($"{nameof(Error)}.{nameof(NullOrEmpty)}", $"{collectionName} is null or empty");
+        return New($"{nameof(Error)}.{nameof(NullOrEmpty)}", $"{collectionName} is null or empty.");
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public static class HttpErrors
     /// <returns>InvalidBatchCommand error</returns>
     public static Error InvalidBatchCommand(string batchCommand)
     {
-        return Error.New($"{nameof(Error)}.{nameof(InvalidBatchCommand)}", $"{batchCommand} is invalid");
+        return New($"{nameof(Error)}.{nameof(InvalidBatchCommand)}", $"{batchCommand} is invalid.");
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public static class HttpErrors
     public static Error DuplicatedRequest<TBusinessKey>(TBusinessKey key)
         where TBusinessKey : IUniqueKey
     {
-        return Error.New($"{nameof(Error)}.{nameof(DuplicatedRequest)}", $"Duplicated request for key {key}");
+        return New($"{nameof(Error)}.{nameof(DuplicatedRequest)}", $"Duplicated request for key '{key}'.");
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public static class HttpErrors
     /// <returns>Exception error</returns>
     public static Error Exception(string exceptionMessage)
     {
-        return Error.New($"{nameof(Error)}.{nameof(Exception)}", exceptionMessage);
+        return New($"{nameof(Error)}.{nameof(Exception)}", exceptionMessage);
     }
 
     /// <summary>
@@ -121,6 +121,6 @@ public static class HttpErrors
     /// <returns>ParseFailure error</returns>
     public static Error ParseFailure<ParseType>(string valueParsedName)
     {
-        return Error.New($"{nameof(Error)}.{nameof(ParseFailure)}", $"Parsing {valueParsedName} to type {nameof(ParseType)} failed");
+        return New($"{nameof(Error)}.{nameof(ParseFailure)}", $"Parsing '{valueParsedName}' to type '{nameof(ParseType)}' failed.");
     }
 }

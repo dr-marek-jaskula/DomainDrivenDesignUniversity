@@ -8,6 +8,6 @@ public static partial class DomainErrors
     {
         public static readonly Error Invalid = Error.New(
             $"{nameof(Stars)}.{nameof(Invalid)}",
-            $"{nameof(Stars)} name must be: {string.Join(',', Stars.AdmissibleStars)}");
+            $"{nameof(Stars)} name must be: {string.Join(',', Stars.AdmissibleStars)}.");
     }
 }

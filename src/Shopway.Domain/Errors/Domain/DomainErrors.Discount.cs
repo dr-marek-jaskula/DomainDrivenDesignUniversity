@@ -8,10 +8,10 @@ public static partial class DomainErrors
     {
         public static readonly Error TooLow = Error.New(
             $"{nameof(Discount)}.{nameof(TooLow)}",
-            $"{nameof(Discount)} must be at least {Discount.MinDiscount}");
+            $"{nameof(Discount)} must be at least {Discount.MinDiscount}.");
 
         public static readonly Error TooHigh = Error.New(
             $"{nameof(Discount)}.{nameof(TooHigh)}",
-            $"{nameof(Discount)} must be at most {Discount.MaxDiscount}");
+            $"{nameof(Discount)} must be at most {Discount.MaxDiscount}.");
     }
 }

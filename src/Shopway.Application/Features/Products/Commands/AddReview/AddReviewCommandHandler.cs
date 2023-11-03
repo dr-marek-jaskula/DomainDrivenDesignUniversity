@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.EntityKeys;
@@ -10,7 +11,6 @@ using Shopway.Application.Abstractions;
 using Shopway.Persistence.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
-using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.Features.Products.Commands.AddReview;
 
@@ -48,7 +48,7 @@ internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand
         var product = await _productRepository.GetByIdWithReviewAsync(command.ProductId, titleResult.Value, cancellationToken);
 
         _validator
-            .If(product.Reviews.Any(), thenError: AlreadyExists(ReviewKey.Create(titleResult.Value.Value)));
+            .If(product.Reviews.Any(), thenError: Error.AlreadyExists(ReviewKey.Create(titleResult.Value.Value)));
 
         if (_validator.IsInvalid)
         {
