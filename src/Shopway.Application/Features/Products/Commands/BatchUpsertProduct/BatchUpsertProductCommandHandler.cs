@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.Utilities;
@@ -11,10 +12,8 @@ using Shopway.Application.Utilities;
 using Microsoft.IdentityModel.Tokens;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Application.Abstractions.CQRS.Batch;
-using static Shopway.Domain.Errors.HttpErrors;
-using static Shopway.Persistence.Utilities.CacheUtilities;
-using static Shopway.Application.Features.BatchEntryStatus;
 using static Shopway.Application.Mappings.ProductMapping;
+using static Shopway.Persistence.Utilities.CacheUtilities;
 using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
@@ -41,7 +40,7 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
     {
         if (command.Requests.IsNullOrEmpty())
         {
-            return Result.Failure<BatchUpsertProductResponse>(NullOrEmpty(nameof(BatchUpsertProductCommand)));
+            return Result.Failure<BatchUpsertProductResponse>(Error.NullOrEmpty(nameof(BatchUpsertProductCommand)));
         }
 
         command = command.Trim();
@@ -54,7 +53,7 @@ public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHand
         //Perform validation: using the builder, trimmed command and queried productsToUpdate
         var responseEntries = command.Validate(_responseBuilder, productsToUpdateDictionary);
 
-        if (responseEntries.Any(response => response.Status is Error))
+        if (responseEntries.Any(response => response.Status is BatchEntryStatus.Error))
         {
             return Result.BatchFailure(responseEntries.ToBatchUpsertResponse());
         }

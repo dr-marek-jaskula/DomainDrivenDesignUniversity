@@ -1,8 +1,8 @@
 ﻿using RestSharp;
+using Shopway.Domain.Errors;
 using Shopway.Domain.EntityKeys;
 using Shopway.Tests.Integration.Utilities;
 using static System.Net.HttpStatusCode;
-using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.CreateProductCommandUtility;
 
@@ -30,6 +30,6 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(BadRequest);
 
         var problemDetails = response.Deserialize<ValidationProblemDetails>();
-        problemDetails!.ShouldContain(AlreadyExists(productKey));
+        problemDetails!.ShouldContain(Error.AlreadyExists(productKey));
     }
 }

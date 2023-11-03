@@ -1,11 +1,11 @@
 ﻿using RestSharp;
+using Shopway.Domain.Errors;
 using Shopway.Domain.EntityIds;
 using Shopway.Tests.Integration.Utilities;
 using Shopway.Application.Features.Products.Queries;
 using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using Product = Shopway.Domain.Entities.Product;
 using static System.Net.HttpStatusCode;
-using static Shopway.Domain.Errors.HttpErrors;
 using static Shopway.Tests.Integration.Constants.Constants;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
@@ -49,6 +49,6 @@ public partial class ProductsControllerTests
         response.StatusCode.Should().Be(BadRequest);
 
         var problemDetails = response.Deserialize<ValidationProblemDetails>();
-        problemDetails!.ShouldContain(InvalidReference(invalidProductId.Value, nameof(Product)));
+        problemDetails!.ShouldContain(Error.InvalidReference(invalidProductId.Value, nameof(Product)));
     }
 }

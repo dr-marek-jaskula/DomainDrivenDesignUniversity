@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.Entities;
 using Shopway.Domain.ValueObjects;
 using Shopway.Domain.Abstractions;
@@ -7,7 +8,6 @@ using Shopway.Application.Utilities;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
-using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.Features.Users.Queries.GetUserByUsername;
 
@@ -39,7 +39,7 @@ internal sealed class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUse
 
         if (user is null)
         {
-            return Result.Failure<UserResponse>(NotFound<User>(query.Username));
+            return Result.Failure<UserResponse>(Error.NotFound<User>(query.Username));
         }
 
         return user

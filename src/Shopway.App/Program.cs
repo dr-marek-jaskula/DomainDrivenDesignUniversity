@@ -48,7 +48,6 @@ try
 
     webApplication
         .ConfigureOpenApi()
-        .ConfigureSerilogRequestLogging()
         .UseStaticFiles()
         .UseHealthChecks()
         .UseMiddlewares()

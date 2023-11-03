@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.EntityKeys;
@@ -9,7 +10,6 @@ using Shopway.Application.Utilities;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
-using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.Features.Products.Commands.CreateProduct;
 
@@ -43,7 +43,7 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
         }
 
         _validator
-            .If(await ProductAlreadyExists(command.ProductKey, cancellationToken), AlreadyExists(command.ProductKey));
+            .If(await ProductAlreadyExists(command.ProductKey, cancellationToken), Error.AlreadyExists(command.ProductKey));
 
         if (_validator.IsInvalid)
         {

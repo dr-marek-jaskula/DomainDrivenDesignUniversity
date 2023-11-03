@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents an error that contains the informations about the failure
 /// </summary>
-public class Error : IEquatable<Error>
+public sealed partial class Error : IEquatable<Error>
 {
     /// <summary>
     /// The empty error instance used to represent that no error has occurred
@@ -13,7 +13,7 @@ public class Error : IEquatable<Error>
     /// <summary>
     /// The null value error instance
     /// </summary>
-    public static readonly Error NullValue = new($"{nameof(Error)}.{nameof(NullValue)}", "The result value is null");
+    public static readonly Error NullValue = new($"{nameof(Error)}.{nameof(NullValue)}", "The result value is null.");
 
     /// <summary>
     /// The condition not satisfied error instance
@@ -87,7 +87,7 @@ public class Error : IEquatable<Error>
     }
 
     /// <inheritdoc />
-    public virtual bool Equals(Error? other)
+    public bool Equals(Error? other)
     {
         if (other is null)
         {

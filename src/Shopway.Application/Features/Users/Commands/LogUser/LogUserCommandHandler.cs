@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.Entities;
 using Shopway.Domain.Abstractions;
 using Shopway.Domain.ValueObjects;
@@ -7,7 +8,6 @@ using Shopway.Application.Utilities;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
-using static Shopway.Domain.Errors.HttpErrors;
 
 namespace Shopway.Application.Features.Users.Commands.LogUser;
 
@@ -44,7 +44,7 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
             .GetByEmailAsync(emailResult.Value, cancellationToken);
 
         _validator
-            .If(user is null, thenError: InvalidPasswordOrEmail);
+            .If(user is null, thenError: Error.InvalidPasswordOrEmail);
 
         if (_validator.IsInvalid)
         {
@@ -55,7 +55,7 @@ internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, Lo
             .VerifyHashedPassword(user!, user!.PasswordHash.Value, passwordResult.Value.Value);
 
         _validator
-            .If(result is PasswordVerificationResult.Failed, thenError: InvalidPasswordOrEmail);
+            .If(result is PasswordVerificationResult.Failed, thenError: Error.InvalidPasswordOrEmail);
 
         if (_validator.IsInvalid)
         {

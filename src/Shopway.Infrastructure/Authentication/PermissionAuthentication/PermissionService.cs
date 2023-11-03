@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
 using System.Security.Claims;
-using static Shopway.Domain.Errors.HttpErrors;
+using Shopway.Domain.Results;
+using Shopway.Domain.EntityIds;
+using Microsoft.AspNetCore.Authorization;
+using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Infrastructure.Authentication.PermissionAuthentication;
 
@@ -26,7 +26,7 @@ public sealed class PermissionService : IPermissionService
 
         if (Ulid.TryParse(userIdentifier, out Ulid userUlid) is false)
         {
-            return Result.Failure<UserId>(ParseFailure<Ulid>(nameof(ClaimTypes.NameIdentifier)));
+            return Result.Failure<UserId>(Error.ParseFailure<Ulid>(nameof(ClaimTypes.NameIdentifier)));
         }
 
         return UserId.Create(userUlid);

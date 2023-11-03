@@ -23,14 +23,4 @@ public static class LoggerUtilities
             .ReadFrom.Services(services)
             .Enrich.FromLogContext());
     }
-
-    public static IApplicationBuilder ConfigureSerilogRequestLogging(this IApplicationBuilder app)
-    {
-        app.UseSerilogRequestLogging(options =>
-        {
-            options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} ({UserId}) responded {StatusCode} in {Elapsed:0.0000}ms";
-        });
-
-        return app;
-    }
 }
