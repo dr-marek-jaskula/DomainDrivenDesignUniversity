@@ -5,7 +5,7 @@ using Shopway.Domain.EntityIds;
 using RestSharp.Authenticators;
 using Shopway.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
-using Gatherly.Presentation.Controllers;
+using Shopway.Presentation.Controllers;
 using Shopway.Tests.Integration.Utilities;
 using Shopway.Tests.Integration.Persistence;
 using Shopway.Tests.Integration.Configurations;

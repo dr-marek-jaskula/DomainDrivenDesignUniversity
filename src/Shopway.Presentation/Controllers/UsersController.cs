@@ -7,7 +7,7 @@ using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 
-namespace Gatherly.Presentation.Controllers;
+namespace Shopway.Presentation.Controllers;
 
 public sealed class UsersController : ApiController
 {

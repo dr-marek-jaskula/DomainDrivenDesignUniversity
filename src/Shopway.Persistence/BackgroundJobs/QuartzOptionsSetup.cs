@@ -1,8 +1,8 @@
 ﻿using Quartz;
 using Microsoft.Extensions.Options;
-using Shopway.Infrastructure.BackgroundJobs;
+using Shopway.Persistence.BackgroundJobs;
 
-namespace Shopway.Infrastructure.Options;
+namespace Shopway.Persistence.Options;
 
 public sealed class QuartzOptionsSetup : IConfigureOptions<QuartzOptions>
 {

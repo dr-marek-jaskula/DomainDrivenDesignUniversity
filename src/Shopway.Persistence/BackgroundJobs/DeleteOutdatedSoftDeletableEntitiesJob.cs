@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
 using Shopway.Application.Abstractions;
 
-namespace Shopway.Infrastructure.BackgroundJobs;
+namespace Shopway.Persistence.BackgroundJobs;
 
 [DisallowConcurrentExecution]
 public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob

@@ -9,7 +9,7 @@ using Shopway.Infrastructure.Policies;
 using Shopway.Application.Abstractions;
 using Shopway.Infrastructure.Utilities;
 
-namespace Shopway.Infrastructure.BackgroundJobs;
+namespace Shopway.Persistence.BackgroundJobs;
 
 //This attribute determines that only one instance of a job will run at once
 [DisallowConcurrentExecution]

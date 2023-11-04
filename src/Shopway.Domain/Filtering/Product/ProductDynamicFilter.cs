@@ -3,9 +3,9 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Abstractions.Common;
 using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Domain.Utilities.QueryableUtilities;
-using static Shopway.Persistence.Constants.Constants.Specification.Product;
+using static Shopway.Domain.Constants.Constants.Filtering.Product;
 
-namespace Shopway.Persistence.Specifications.Products.Filtering;
+namespace Shopway.Domain.Filering.Products;
 
 public sealed record ProductDynamicFilter : IDynamicFilter<Product>
 {

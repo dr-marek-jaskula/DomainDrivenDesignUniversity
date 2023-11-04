@@ -1,5 +1,6 @@
 using Serilog;
 using Shopway.App.Registrations;
+using Shopway.App.Utilities;
 using Shopway.Application.Cache;
 using Shopway.Persistence.Framework;
 using static Microsoft.Extensions.DependencyInjection.LoggerUtilities;
@@ -57,7 +58,7 @@ try
 
     webApplication.MapControllers();
 
-    Log.Information("Seeding cache: {SeedCache}", ApplicationCache.SeedCache);
+    SeedMemoryCaches.Execute();
 
     //Run the application
     webApplication.Run();

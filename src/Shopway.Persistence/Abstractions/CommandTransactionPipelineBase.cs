@@ -1,9 +1,8 @@
 ﻿using MediatR;
 using Shopway.Domain.Abstractions;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 
-namespace Shopway.Application.Abstractions.CQRS;
+namespace Shopway.Persistence.Abstractions;
 
 public class CommandTransactionPipelineBase<TCommandResponse>
     where TCommandResponse : IResult

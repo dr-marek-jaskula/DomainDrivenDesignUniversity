@@ -2,7 +2,7 @@
 using Shopway.Domain.Abstractions;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace Shopway.Persistence.Utilities;
+namespace Shopway.Application.Utilities;
 
 public static class CacheUtilities
 {

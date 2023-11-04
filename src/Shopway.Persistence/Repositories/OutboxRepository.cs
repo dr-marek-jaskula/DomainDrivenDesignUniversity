@@ -4,8 +4,9 @@ using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Abstractions;
+using Shopway.Persistence.Outbox;
 
-namespace Shopway.Persistence.Outbox;
+namespace Shopway.Persistence.Repositories;
 
 public sealed class OutboxRepository : RepositoryBase, IOutboxRepository
 {

@@ -2,13 +2,13 @@
 using Shopway.Persistence.Outbox;
 using Shopway.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Utilities;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Abstractions;
+using Shopway.Application.Abstractions;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using static Microsoft.EntityFrameworkCore.EntityState;
-using static Shopway.Persistence.Utilities.CacheUtilities;
+using static Shopway.Application.Utilities.CacheUtilities;
 
 namespace Shopway.Persistence.Framework;
 

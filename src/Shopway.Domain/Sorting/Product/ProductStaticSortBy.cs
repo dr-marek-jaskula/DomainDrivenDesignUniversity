@@ -3,7 +3,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
 
-namespace Shopway.Persistence.Specifications.Products.Sorting;
+namespace Shopway.Domain.Sorting.Products;
 
 public sealed record ProductStaticSortBy : ISortBy<Product>
 {

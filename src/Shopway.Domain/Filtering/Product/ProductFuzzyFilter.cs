@@ -3,7 +3,7 @@ using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
 
-namespace Shopway.Persistence.Specifications.Products.Filtering;
+namespace Shopway.Domain.Filering.Products;
 
 public sealed record ProductFuzzyFilter : IFilter<Product>
 {

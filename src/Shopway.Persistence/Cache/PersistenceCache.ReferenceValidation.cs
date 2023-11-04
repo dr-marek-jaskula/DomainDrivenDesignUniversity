@@ -6,14 +6,14 @@ using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Framework;
 using ZiggyCreatures.Caching.Fusion;
+using Shopway.Persistence.Pipelines;
 using System.Collections.ObjectModel;
 using Shopway.Application.Abstractions;
-using Shopway.Application.Pipelines.ValidationPipelines;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 
-namespace Shopway.Application.Cache;
+namespace Shopway.Persistence.Cache;
 
-public static partial class ApplicationCache
+public static partial class PersistenceCache
 {
     /// <summary>
     /// This cache stores key-value pairs where: EntityId type is the key and a value is a tuple of corresponding Entity type and generic method that requires these two types.

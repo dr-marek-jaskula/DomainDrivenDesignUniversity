@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Shopway.Domain.Abstractions;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using static Microsoft.EntityFrameworkCore.QueryTrackingBehavior;
 
-namespace Shopway.Application.Abstractions.CQRS;
+namespace Shopway.Persistence.Abstractions;
 
 public abstract class QueryTransactionPipelineBase<TQueryResponse>
     where TQueryResponse : IResult

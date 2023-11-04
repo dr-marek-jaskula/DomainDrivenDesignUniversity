@@ -19,12 +19,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.23.0" />
-    <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="0.23.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Shopway.Domain\Shopway.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +32,10 @@
 		<InternalsVisibleTo Include="Shopway.Tests.Integration.Container" />
 		<InternalsVisibleTo Include="Shopway.Tests.Unit" />
 		<InternalsVisibleTo Include="Shopway.Tests.Performance" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Shopway.Infrastructure\Shopway.Infrastructure.csproj" />
 	</ItemGroup>
 	
 </Project>

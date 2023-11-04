@@ -1,19 +1,18 @@
 ﻿using MediatR;
 using Shopway.Domain.Abstractions;
-using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using Shopway.Application.Abstractions;
+using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 
-namespace Shopway.Application.Pipelines.CQRS;
+namespace Shopway.Persistence.Pipelines;
 
-public sealed class CommandWithResponseTransactionPipeline<TCommandRequest, TCommandResponse>
+public sealed class CommandTransactionPipeline<TCommandRequest, TCommandResponse>
     : CommandTransactionPipelineBase<TCommandResponse>, IPipelineBehavior<TCommandRequest, TCommandResponse>
-    where TCommandRequest : class, IRequest<TCommandResponse>, ICommand<IResponse>
-    where TCommandResponse : class, IResult<IResponse>
+    where TCommandRequest : class, IRequest<TCommandResponse>, ICommand
+    where TCommandResponse : class, IResult
 {
-    public CommandWithResponseTransactionPipeline(IUnitOfWork<ShopwayDbContext> unitOfWork)
+    public CommandTransactionPipeline(IUnitOfWork<ShopwayDbContext> unitOfWork)
         : base(unitOfWork)
     {
     }

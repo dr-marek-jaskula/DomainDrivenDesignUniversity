@@ -8,7 +8,6 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Domain.Abstractions;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
-using Microsoft.IdentityModel.Tokens;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;

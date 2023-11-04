@@ -42,8 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shopway.Application\Shopway.Application.csproj" />
-    <ProjectReference Include="..\Shopway.Infrastructure\Shopway.Infrastructure.csproj" />
     <ProjectReference Include="..\Shopway.Persistence\Shopway.Persistence.csproj" />
     <ProjectReference Include="..\Shopway.Presentation\Shopway.Presentation.csproj" />
   </ItemGroup>

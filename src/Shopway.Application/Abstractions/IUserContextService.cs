@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Shopway.Domain.EntityIds;
 
-namespace Shopway.Persistence.Abstractions;
+namespace Shopway.Application.Abstractions;
 
 public interface IUserContextService
 {

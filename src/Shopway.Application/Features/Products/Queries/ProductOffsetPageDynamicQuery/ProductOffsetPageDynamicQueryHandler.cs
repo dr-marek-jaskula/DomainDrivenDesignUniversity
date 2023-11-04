@@ -2,10 +2,10 @@
 using Shopway.Domain.Abstractions;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
+using Shopway.Domain.Sorting.Products;
+using Shopway.Domain.Filering.Products;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
-using Shopway.Persistence.Specifications.Products.Sorting;
-using Shopway.Persistence.Specifications.Products.Filtering;
 
 namespace Shopway.Application.Features.Products.Queries.DynamicOffsetProductQuery;
 

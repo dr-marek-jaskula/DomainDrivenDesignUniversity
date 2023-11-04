@@ -4,7 +4,7 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions;
 
-namespace Shopway.Application.Pipelines.ValidationPipelines;
+namespace Shopway.Application.Pipelines;
 
 public sealed class FluentValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

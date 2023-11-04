@@ -6,13 +6,13 @@ using System.Linq.Dynamic.Core;
 using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Utilities;
+using Shopway.Application.Utilities;
 using ZiggyCreatures.Caching.Fusion;
-using static Shopway.Application.Cache.ApplicationCache;
+using static Shopway.Persistence.Cache.PersistenceCache;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
 
-namespace Shopway.Application.Pipelines.ValidationPipelines;
+namespace Shopway.Persistence.Pipelines;
 
 public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

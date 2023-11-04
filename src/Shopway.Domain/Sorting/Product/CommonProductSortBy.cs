@@ -2,9 +2,9 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
-using static Shopway.Persistence.Constants.Constants.Specification.Product;
+using static Shopway.Domain.Constants.Constants.Sorting.Product;
 
-namespace Shopway.Persistence.Specifications.Products.Sorting;
+namespace Shopway.Domain.Sorting.Products;
 
 public sealed record CommonProductSortBy : IDynamicSortBy<Product>
 {

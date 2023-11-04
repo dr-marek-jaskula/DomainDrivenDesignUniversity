@@ -12,8 +12,9 @@ public static partial class ApplicationCache
     {
         Dictionary<Type, IReadOnlyCollection<string>> allowedFilterPropertiesCache = new();
 
-        var dynamicFilterTypes = Persistence.AssemblyReference.Assembly
-            .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicFilter)));
+        var dynamicFilterTypes = Domain.AssemblyReference.Assembly
+            .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicFilter)))
+            .Where(type => type.IsInterface is false);
 
         foreach (var type in dynamicFilterTypes)
         {
