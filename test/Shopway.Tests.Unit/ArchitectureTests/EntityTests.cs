@@ -28,4 +28,23 @@ public sealed class EntityTests
         //Assert
         result.IsSuccessful.Should().BeTrue();
     }
+
+    [Fact]
+    public void Entities_ShouldHavePrivateParameterlessConstructor()
+    {
+        //Arrange
+        var assembly = Domain.AssemblyReference.Assembly;
+
+        var result = Types.InAssembly(assembly)
+            .That()
+            .Inherit(typeof(Entity<>))
+            .And()
+            .AreNotAbstract()
+            .Should()
+            .MeetCustomRule(new HavePrivateParameterlessConstructor())
+            .GetResult();
+
+        //Assert
+        result.IsSuccessful.Should().BeTrue();
+    }
 }

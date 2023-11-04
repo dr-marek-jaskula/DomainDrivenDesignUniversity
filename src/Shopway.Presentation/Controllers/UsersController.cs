@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Shopway.Presentation.Abstractions;
-using Shopway.Application.Features.Orders.Queries;
+using Shopway.Application.Features.Users.Queries;
 using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
@@ -47,7 +47,7 @@ public sealed class UsersController : ApiController
     }
 
     [HttpGet("{username}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderHeaderResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetUserByUsername([FromRoute] string username, CancellationToken cancellationToken)
     {
