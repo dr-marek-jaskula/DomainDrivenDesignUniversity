@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Application.Features.Products.Commands.RemoveReview;
 using Shopway.Application.Features.Products.Commands.UpdateReview;
-using Shopway.Infrastructure.Authentication.PermissionAuthentication;
+using Shopway.Presentation.Authentication.PermissionAuthentication;
 
 namespace Shopway.Presentation.Controllers;
 

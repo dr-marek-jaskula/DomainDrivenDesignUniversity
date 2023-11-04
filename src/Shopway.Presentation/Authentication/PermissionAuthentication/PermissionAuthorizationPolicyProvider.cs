@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
-using Shopway.Infrastructure.Authentication.PermissionAuthentication.Requirements;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
+using Shopway.Presentation.Authentication.PermissionAuthentication.Requirements;
 
-namespace Shopway.Infrastructure.Providers;
+namespace Shopway.Presentation.Authentication.PermissionAuthentication;
 
 public sealed class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
 {

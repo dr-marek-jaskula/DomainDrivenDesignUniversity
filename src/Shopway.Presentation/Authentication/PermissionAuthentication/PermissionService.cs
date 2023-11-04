@@ -5,7 +5,7 @@ using Shopway.Domain.EntityIds;
 using Microsoft.AspNetCore.Authorization;
 using Shopway.Domain.Abstractions.Repositories;
 
-namespace Shopway.Infrastructure.Authentication.PermissionAuthentication;
+namespace Shopway.Presentation.Authentication.PermissionAuthentication;
 
 public sealed class PermissionService : IPermissionService
 {

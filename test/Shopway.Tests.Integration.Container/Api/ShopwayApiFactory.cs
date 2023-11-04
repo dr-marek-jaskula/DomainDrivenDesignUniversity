@@ -12,8 +12,8 @@ using Shopway.Tests.Integration.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Container.Persistance;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
-using Shopway.Infrastructure.Authentication.PermissionAuthentication;
+using Shopway.Presentation.Authentication.ApiKeyAuthentication;
+using Shopway.Presentation.Authentication.PermissionAuthentication;
 
 namespace Shopway.Tests.Integration;
 

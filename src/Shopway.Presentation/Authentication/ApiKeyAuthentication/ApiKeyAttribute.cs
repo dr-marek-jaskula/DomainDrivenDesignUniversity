@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using static Shopway.Infrastructure.Authentication.ApiKeyAuthentication.ApiKeyConstants;
+using static Shopway.Presentation.Authentication.ApiKeyAuthentication.ApiKeyConstants;
 
-namespace Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
 /// <summary>
 /// Use to verify the api key in header "X-Api-Key"

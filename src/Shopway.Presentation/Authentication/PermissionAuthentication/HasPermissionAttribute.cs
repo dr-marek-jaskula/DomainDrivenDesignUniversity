@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Shopway.Infrastructure.Authentication.PermissionAuthentication;
+namespace Shopway.Presentation.Authentication.PermissionAuthentication;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
 public sealed class HasPermissionAttribute : AuthorizeAttribute

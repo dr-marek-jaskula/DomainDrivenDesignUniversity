@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using static Shopway.Infrastructure.Authentication.ApiKeyAuthentication.ApiKeyConstants;
+using static Shopway.Presentation.Authentication.ApiKeyAuthentication.ApiKeyConstants;
 
-namespace Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
 public sealed class ApiKeyService : IApiKeyService
 {

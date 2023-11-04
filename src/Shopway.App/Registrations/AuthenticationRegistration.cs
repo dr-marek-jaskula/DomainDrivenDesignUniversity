@@ -1,9 +1,9 @@
 ﻿using Shopway.Infrastructure.Services;
-using Shopway.Infrastructure.Providers;
 using Shopway.Application.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Shopway.Infrastructure.Authentication.PermissionAuthentication.Requirements;
+using Shopway.Presentation.Authentication.PermissionAuthentication;
+using Shopway.Presentation.Authentication.PermissionAuthentication.Requirements;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

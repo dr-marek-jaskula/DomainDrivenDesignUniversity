@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Shopway.Domain.Results;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.Results;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Shopway.Infrastructure.Authentication.PermissionAuthentication;
+namespace Shopway.Presentation.Authentication.PermissionAuthentication;
 
 public interface IPermissionService
 {

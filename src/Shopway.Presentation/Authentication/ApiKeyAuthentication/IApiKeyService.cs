@@ -1,4 +1,4 @@
-﻿namespace Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+﻿namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
 public interface IApiKeyService
 {

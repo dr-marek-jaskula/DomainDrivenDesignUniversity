@@ -34,6 +34,7 @@ public static class ServiceRegistration
         services.Scan(selector => selector
             .FromAssemblies(
                 Shopway.Infrastructure.AssemblyReference.Assembly,
+                Shopway.Presentation.AssemblyReference.Assembly,
                 Shopway.Persistence.AssemblyReference.Assembly)
             .AddClasses(false)
             .UsingRegistrationStrategy(RegistrationStrategy.Skip)

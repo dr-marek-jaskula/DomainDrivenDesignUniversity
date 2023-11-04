@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Shopway.Infrastructure.Authentication.PermissionAuthentication.Requirements;
+namespace Shopway.Presentation.Authentication.PermissionAuthentication.Requirements;
 
 public sealed class PermissionRequirementHandler : AuthorizationHandler<PermissionRequirement>
 {

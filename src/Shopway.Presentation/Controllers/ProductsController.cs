@@ -7,7 +7,7 @@ using Shopway.Domain.EntityKeys;
 using Shopway.Application.Features;
 using Shopway.Presentation.Abstractions;
 using Shopway.Application.Features.Products.Queries;
-using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+using Shopway.Presentation.Authentication.ApiKeyAuthentication;
 using Shopway.Application.Features.Products.Queries.GetProductById;
 using Shopway.Application.Features.Products.Commands.CreateProduct;
 using Shopway.Application.Features.Products.Commands.UpdateProduct;
