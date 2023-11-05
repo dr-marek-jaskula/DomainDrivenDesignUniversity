@@ -23,6 +23,7 @@ try
     //Configure Services
 
     builder.Services
+        .RegisterAppOptions()
         .RegisterApplicationLayer()
         .RegisterPersistenceLayer(builder.Environment)
         .RegisterInfrastructureLayer()
