@@ -10,7 +10,7 @@ public interface IUnitOfWork
     IExecutionStrategy CreateExecutionStrategy();
 }
 
-public interface IUnitOfWork<TContext> : IUnitOfWork
+public interface IUnitOfWork<out TContext> : IUnitOfWork
     where TContext : DbContext
 {
     TContext Context { get; }
