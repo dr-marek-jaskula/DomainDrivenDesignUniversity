@@ -22,7 +22,7 @@ Therefore, it is like a "frontend" for the backed program.
 
 ### .Application :computer:
 
-This layer should provide handlers that orchestrate domain objects to obtain business feature. 
+This layer should provide handlers that orchestrate domain objects to obtain business features. 
 
 Therefore, we place here middlewares, CQRS structure and mappings.
 
