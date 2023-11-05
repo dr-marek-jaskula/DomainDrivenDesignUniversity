@@ -58,7 +58,7 @@ public sealed class ProcessOutboxMessagesJob : IJob
                 continue;
             }
 
-            var result = await PollyPipelines.MigrationRetryPipeline.ExecuteAndReturnResult(async token => 
+            var result = await PollyPipelines.AsyncRetryPipeline.ExecuteAndReturnResult(async token => 
                 await _publisher.Publish(domainEvent, token), context.CancellationToken);
 
             message.UpdatePostProcessProperties(_dateTimeProvider.UtcNow, result.Error.MessageOrNullIfErrorNone());
