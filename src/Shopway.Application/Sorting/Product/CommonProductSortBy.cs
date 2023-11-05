@@ -4,13 +4,13 @@ using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
 using static Shopway.Domain.Constants.Constants.Sorting.Product;
 
-namespace Shopway.Domain.Sorting.Products;
+namespace Shopway.Application.Sorting.Products;
 
-public sealed record ProductDynamicSortBy : IDynamicSortBy<Product>
+public sealed record CommonProductSortBy : IDynamicSortBy<Product>
 {
-    public static IReadOnlyCollection<string> AllowedSortProperties { get; } = AllowedProductSortProperties;
+    public static IReadOnlyCollection<string> AllowedSortProperties { get; } = CommonAllowedProductSortProperties;
 
-    public required IList<SortByEntry> SortProperties { get; init; }
+    public IList<SortByEntry> SortProperties { get; init; } = CommonProductSortProperties;
 
     public IQueryable<Product> Apply(IQueryable<Product> queryable)
     {

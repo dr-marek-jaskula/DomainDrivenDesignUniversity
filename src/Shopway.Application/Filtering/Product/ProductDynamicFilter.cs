@@ -5,7 +5,7 @@ using static Shopway.Domain.Utilities.ListUtilities;
 using static Shopway.Domain.Utilities.QueryableUtilities;
 using static Shopway.Domain.Constants.Constants.Filtering.Product;
 
-namespace Shopway.Domain.Filering.Products;
+namespace Shopway.Application.Filering.Products;
 
 public sealed record ProductDynamicFilter : IDynamicFilter<Product>
 {

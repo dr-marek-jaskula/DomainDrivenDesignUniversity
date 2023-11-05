@@ -2,7 +2,7 @@
 using Shopway.Domain.Utilities;
 using Shopway.Domain.Abstractions.Common;
 
-namespace Shopway.Domain.Filering.Products;
+namespace Shopway.Application.Filering.Products;
 
 public sealed record ProductStaticFilter : IFilter<Product>
 {

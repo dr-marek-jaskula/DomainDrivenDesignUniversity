@@ -4,7 +4,7 @@ using Shopway.Domain.Abstractions;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using ZiggyCreatures.Caching.Fusion;
-using Shopway.Domain.Filering.Products;
+using Shopway.Application.Filering.Products;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
 

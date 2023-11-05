@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Common;
-using Shopway.Domain.Sorting.Products;
-using Shopway.Domain.Filering.Products;
+using Shopway.Application.Sorting.Products;
+using Shopway.Application.Filering.Products;
 using Shopway.Application.Abstractions.CQRS;
 
 namespace Shopway.Application.Features.Products.Queries.QueryOffsetPageProduct;
