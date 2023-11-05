@@ -5,6 +5,7 @@ using Shopway.Domain.EntityKeys;
 using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Framework;
 using ZiggyCreatures.Caching.Fusion;
+using Shopway.Application.Utilities;
 using Shopway.Persistence.Utilities;
 using Shopway.Domain.Abstractions.Common;
 using Shopway.Domain.Abstractions.Repositories;

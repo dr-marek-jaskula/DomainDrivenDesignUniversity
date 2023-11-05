@@ -1,42 +1,23 @@
 ﻿# Infrastructure Layer :factory:
 
 This layer is responsible for providing the implementations for abstractions for other layers, mostly for .Application layer.
-Moreover, this layer contains most tools and additional services.
+Moreover, this layer contains most tools and additional services. I decided to split database specific implementation to the **.Persistence** layer,
+therefore here we have only implementations that are not related to the database.
 
 Therefore, in this project we store:
 
-- Background jobs
 - Providers
 - Adapters
 - Decorators
 - Validators
 - Services
-- Authorization components
 - Policies
 - Options
-
-## Authorization
-
-There are two authorization approaches implemented in this project:
-1. Permission approach (examine if user has required permission). See ReviewController in Shopway.Presentation layer.
-2. ApiKey approach (examine if request contains required api key in the "X-Api-Key" header for given endpoint). See ProductController in Shopway.Presentation layer.
-
-Note: Remember to set the ClockSkew to 5s (or max 30s)
-
-```csharp
-options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(_authenticationOptions.ClockSkew); 
-```
+- Outbox pattern
 
 ## Validator
 
 Defined validator stores all errors up to the moment when Failure is called. Then, the validation result with all errors is created.
-
-## Background jobs by Quartz
-
-Background jobs from Quartz NuGet Package have Scoped lifetime.
-Therefore, we can inject scoped services.
-
-In Shopway.App to configure Quartz background jobs we need Quartz.Extensions.Hosting NuGet Package. This integrates with background service in ASP.NET.
 
 ## Idempotency
 
@@ -70,32 +51,19 @@ In fact, this will be obtain by the use of the Decorator Pattern. We create **Id
 	- If so, skip this handler. Otherwise, proceed (handle the domain event).
 - After the handler is processed, add to database a new OutboxMessageConsumer with domain event id and handler name.
 	- SaveChangesAsync
+	
+## Outbox pattern
 
-## Redis Cache
+This pattern is used to publish domain events. 
 
-1. Preferred way: see ReadMe.Persistence for **FusionCache**
-2. Create CacheOptions
-3. Use caching, for instance in the decorator (see CachedProductRepository)
-4. Add PrivateResolver (in Shopway.Persistence) to be able to deserialized object with private setters
-5. Update cache in UniteOfWork (see Persistence layer) or in the decorator 
+It is useful if we want to ensure that our transaction completes in a anatomic way.
 
-IMemory cache is faster, but the Redis cache can be reused between multiple instance of the same application.
+Inside the transaction we generate one or more outbox messages and we save them in the outbox. 
+Later, we process the outbox and publish the messages one by one, so they are handled by they respective consumers.
 
-If we do not want to use decorator pattern for cache, we can create a CacheService or a CachePipeline
+Only AggregateRoots can rise domain events. The IOutboxRepository implementation is in .Persistence project.
 
-## Spin the Docker Container with Redis
-
-Create and run the docker container from the redis images in the detached mode
-
-```cmd
-docker run -p 6379:6379 --name redis -d redis
-```
-
-## Delete OutDated SoftDeleted Entities
-
-Background Job **DeleteOutdatedSoftDeletableEntitiesJob** runs once per month and gets at runtime 
-all entities that implements ISoftDeletable interface and then permanently deletes entities that 
-were soft deleted one year in the past.
+The OutboxMessageConsumer is explained in ReadMe.Infrastructur.md chapter **Idempotency**
 
 ## FuzzySearch
 

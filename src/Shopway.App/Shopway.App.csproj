@@ -18,32 +18,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
-    <PackageReference Include="MediatR" Version="12.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.13" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.13" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.13" />
+    <Compile Include="wwwroot\IApiMarker.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
-    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.7.0" />
-    <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
     <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="SerilogTimings" Version="3.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shopway.Application\Shopway.Application.csproj" />
-    <ProjectReference Include="..\Shopway.Infrastructure\Shopway.Infrastructure.csproj" />
     <ProjectReference Include="..\Shopway.Persistence\Shopway.Persistence.csproj" />
     <ProjectReference Include="..\Shopway.Presentation\Shopway.Presentation.csproj" />
   </ItemGroup>

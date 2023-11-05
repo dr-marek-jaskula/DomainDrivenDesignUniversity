@@ -1,19 +1,20 @@
 ﻿using Quartz;
+using Shopway.App.wwwroot;
 using Testcontainers.MsSql;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.TestHost;
 using Shopway.Persistence.Framework;
-using Shopway.Tests.Integration.Configurations;
 using Shopway.Infrastructure.Options;
-using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Shopway.Application.Abstractions;
+using Shopway.Tests.Integration.Configurations;
+using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Container.Persistance;
-using Shopway.Infrastructure.Authentication.PermissionAuthentication;
-using Shopway.Persistence.Abstractions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Shopway.Presentation.Authentication.ApiKeyAuthentication;
+using Shopway.Presentation.Authentication.PermissionAuthentication;
 
 namespace Shopway.Tests.Integration;
 

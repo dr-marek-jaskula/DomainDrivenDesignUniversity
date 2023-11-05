@@ -12,8 +12,9 @@ public static partial class ApplicationCache
     {
         Dictionary<Type, IReadOnlyCollection<string>> allowedSortPropertiesCache = new();
 
-        var dynamicSortByTypes = Persistence.AssemblyReference.Assembly
-            .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicSortBy)));
+        var dynamicSortByTypes = Application.AssemblyReference.Assembly
+            .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicSortBy)))
+            .Where(type => type.IsInterface is false);
 
         foreach (var type in dynamicSortByTypes)
         {

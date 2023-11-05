@@ -1,7 +1,7 @@
 using Serilog;
-using Shopway.App.Registrations;
-using Shopway.Application.Cache;
-using Shopway.Persistence.Framework;
+using Shopway.Persistence.Registration;
+using Shopway.Presentation.Registration;
+using Shopway.Infrastructure.Registration;
 using static Microsoft.Extensions.DependencyInjection.LoggerUtilities;
 
 Log.Logger = CreateSerilogLogger();
@@ -21,24 +21,13 @@ try
     builder.ConfigureSerilog();
 
     //Configure Services
-    
+
     builder.Services
-        .RegisterControllers()
-        .RegisterOptions()
-        .RegisterFluentValidation()
-        .RegisterMediator()
-        .RegisterCache()
-        .RegisterDatabaseContext(builder.Environment.IsDevelopment())
-        .RegisterBackgroundServices()
-        .RegisterMiddlewares()
-        .RegisterAuthentication()
-        .RegisterServices()
-        .RegisterRepositories()
-        .RegisterDecorators()
-        .RegisterHealthChecks()
-        .RegisterVersioning()
-        .RegisterOpenApi()
-        .RegisterFuzzySearch();
+        .RegisterAppOptions()
+        .RegisterApplicationLayer()
+        .RegisterPersistenceLayer(builder.Environment)
+        .RegisterInfrastructureLayer()
+        .RegisterPresentationLayer();
 
     //Build the application
 
@@ -47,17 +36,12 @@ try
     //Configure HTTP request pipeline
 
     webApplication
-        .ConfigureOpenApi()
-        .UseStaticFiles()
-        .UseHealthChecks()
-        .UseMiddlewares()
         .UseHttpsRedirection()
-        .ApplyMigrations<ShopwayDbContext>()
-        .UseAuthorization();
+        .UseApplicationLayer()
+        .UsePresentationLayer(builder.Environment)
+        .UsePersistenceLayer();
 
     webApplication.MapControllers();
-
-    Log.Information("Seeding cache: {SeedCache}", ApplicationCache.SeedCache);
 
     //Run the application
     webApplication.Run();

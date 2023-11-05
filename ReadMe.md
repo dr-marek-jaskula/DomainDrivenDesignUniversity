@@ -22,19 +22,19 @@ Therefore, it is like a "frontend" for the backed program.
 
 ### .Application :computer:
 
-This layer should provide handlers, that are called by controllers. 
+This layer should provide handlers that orchestrate domain objects to obtain business feature. 
 
-Therefore, we place here handler pipelines, CQRS structure and mappings.
+Therefore, we place here middlewares, CQRS structure and mappings.
 
 ### .Infrastructure :factory:
 
-This layer should provide additional tools that we are going to use.
+This layer should provide additional tools (not database specific) that we are going to use.
 
-Therefore, we place here services, options, validators, adapters, providers, policies, background jobs and so on.
+Therefore, we place here services, options, validators, adapters, providers, policies and so on.
 
 ### .Persistence :books:
 
-This layer should provide database specific structures, configurations, repositories, specifications.
+This layer should provide database specific structures, configurations, repositories, specifications, background jobs.
 
 ### .Domain :anchor:
 

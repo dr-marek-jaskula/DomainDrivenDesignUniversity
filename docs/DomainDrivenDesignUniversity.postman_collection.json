@@ -1183,6 +1183,71 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "HealthChecks",
+			"item": [
+				{
+					"name": "SqlServer.Health",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key_product_get}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DbContext.Readiness",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key_product_get}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{base_url}}/readiness",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [

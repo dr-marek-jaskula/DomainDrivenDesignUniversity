@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Shopway.Domain.Results;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.Results;
-using Shopway.Infrastructure.Authentication.PermissionAuthentication;
+using Microsoft.AspNetCore.Authorization;
+using Shopway.Presentation.Authentication.PermissionAuthentication;
 
 namespace Shopway.Tests.Integration.Container.Persistance;
 

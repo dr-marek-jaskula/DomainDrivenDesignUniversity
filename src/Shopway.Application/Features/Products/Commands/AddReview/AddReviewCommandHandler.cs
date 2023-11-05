@@ -8,7 +8,6 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Application.Abstractions;
-using Shopway.Persistence.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
 

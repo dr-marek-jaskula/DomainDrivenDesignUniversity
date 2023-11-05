@@ -70,11 +70,10 @@ public static class ReflectionUtilities
             .GetInterface(typeof(TInterface).Name) is not null;
     }
 
-    public static Type[] GetTypesWithAnyMatchingInterface(this Assembly assembly, Func<Type, bool> typeInterfaceMatch)
+    public static IEnumerable<Type> GetTypesWithAnyMatchingInterface(this Assembly assembly, Func<Type, bool> typeInterfaceMatch)
     {
         return assembly
             .GetTypes()
-            .Where(type => type.GetInterfaces().Any(typeInterfaceMatch))
-            .ToArray();
+            .Where(type => type.GetInterfaces().Any(typeInterfaceMatch));
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Outbox;
 using ZiggyCreatures.Caching.Fusion;
+using Shopway.Persistence.Repositories;
 
 namespace Shopway.Tests.Integration.Persistence;
 

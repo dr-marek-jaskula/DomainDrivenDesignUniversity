@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Shopway.Domain.EntityIds;
+﻿using System.Security.Claims;
 using Shopway.Domain.Utilities;
+using Shopway.Domain.EntityIds;
+using Microsoft.AspNetCore.Http;
 using Shopway.Infrastructure.Policies;
-using Shopway.Persistence.Abstractions;
-using System.Security.Claims;
-using System.Threading;
+using Shopway.Application.Abstractions;
 
 namespace Shopway.Infrastructure.Services;
 

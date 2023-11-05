@@ -1,4 +1,4 @@
-﻿using Shopway.Infrastructure.Authentication.ApiKeyAuthentication;
+﻿using Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
 namespace Shopway.Tests.Integration.Container.Persistance;
 

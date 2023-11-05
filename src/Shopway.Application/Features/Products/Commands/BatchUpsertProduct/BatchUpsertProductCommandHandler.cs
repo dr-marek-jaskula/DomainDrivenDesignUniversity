@@ -9,11 +9,10 @@ using Shopway.Domain.ValueObjects;
 using Shopway.Application.Mappings;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Application.Utilities;
-using Microsoft.IdentityModel.Tokens;
 using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using static Shopway.Application.Mappings.ProductMapping;
-using static Shopway.Persistence.Utilities.CacheUtilities;
+using static Shopway.Application.Utilities.CacheUtilities;
 using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
