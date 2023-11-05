@@ -82,4 +82,12 @@ public static class OpenApiRegistration
                 });
         }
     }
+
+    /// <summary>
+    /// Used for the WebApplicationFactory (tests) reason.
+    /// </summary>
+    public static string GetWebRootPath()
+    {
+        return Path.Combine($"{Directory.GetParent(Directory.GetCurrentDirectory())}", ShopwayPresentation, WwwRootDirectoryName);
+    }
 }

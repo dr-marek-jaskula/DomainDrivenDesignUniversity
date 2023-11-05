@@ -1,4 +1,5 @@
 ﻿using Quartz;
+using Shopway.App.wwwroot;
 using Testcontainers.MsSql;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;

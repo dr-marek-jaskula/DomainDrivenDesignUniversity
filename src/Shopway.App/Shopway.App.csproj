@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="wwwroot\IApiMarker.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
@@ -48,7 +52,6 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

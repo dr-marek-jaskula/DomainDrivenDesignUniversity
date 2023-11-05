@@ -12,7 +12,7 @@ public static partial class ApplicationCache
     {
         Dictionary<Type, IReadOnlyCollection<string>> allowedFilterOperations = new();
 
-        var dynamicFilterTypes = Domain.AssemblyReference.Assembly
+        var dynamicFilterTypes = Application.AssemblyReference.Assembly
             .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicFilter)))
             .Where(type => type.IsInterface is false);
 
