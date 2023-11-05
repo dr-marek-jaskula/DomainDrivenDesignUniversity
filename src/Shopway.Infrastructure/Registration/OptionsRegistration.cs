@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class OptionsRegistration
 {
-    public static IServiceCollection RegisterOptions(this IServiceCollection services)
+    internal static IServiceCollection RegisterOptions(this IServiceCollection services)
     {
         services.ConfigureOptions<DatabaseOptionsSetup>();
         services.ConfigureOptions<CacheOptionsSetup>();

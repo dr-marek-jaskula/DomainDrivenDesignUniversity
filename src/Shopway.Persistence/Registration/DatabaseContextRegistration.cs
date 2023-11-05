@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
 using Shopway.Infrastructure.Options;
 using Shopway.Persistence.Abstractions;
@@ -8,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DatabaseContextRegistration
 {
-    public static IServiceCollection RegisterDatabaseContext(this IServiceCollection services, bool isDevelopment)
+    internal static IServiceCollection RegisterDatabaseContext(this IServiceCollection services, bool isDevelopment)
     {
         services.AddDbContextPool<ShopwayDbContext>((serviceProvider, optionsBuilder) =>
         {

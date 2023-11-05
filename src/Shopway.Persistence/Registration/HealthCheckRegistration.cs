@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
 using Shopway.Domain.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Builder;
 using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Infrastructure.Options;
@@ -16,7 +18,7 @@ public static class HealthCheckRegistration
     private const string Critical = nameof(Critical);
     private const string Readiness = nameof(Readiness);
 
-    public static IServiceCollection RegisterHealthChecks(this IServiceCollection services)
+    internal static IServiceCollection RegisterHealthChecks(this IServiceCollection services)
     {
         var healthOptions = services.GetOptions<HealthOptions>();
         var databaseOptions = services.GetOptions<DatabaseOptions>();
@@ -50,7 +52,7 @@ public static class HealthCheckRegistration
         return services;
     }
 
-    public static IApplicationBuilder UseHealthChecks(this IApplicationBuilder app)
+    internal static IApplicationBuilder UseHealthChecks(this IApplicationBuilder app)
     {
         app.UseHealthChecks("/api/health", new HealthCheckOptions
         {

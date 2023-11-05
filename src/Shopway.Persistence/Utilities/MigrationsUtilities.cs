@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Exceptions;
 using Shopway.Application.Exceptions;
 using Shopway.Infrastructure.Policies;
@@ -8,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class MigrationsUtilities
 {
-    public static IApplicationBuilder ApplyMigrations<TDbContext>(this IApplicationBuilder app)
+    internal static IApplicationBuilder ApplyMigrations<TDbContext>(this IApplicationBuilder app)
         where TDbContext : DbContext
     {
         var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();

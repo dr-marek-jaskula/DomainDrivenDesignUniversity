@@ -6,7 +6,7 @@ public static class VersioningRegistration
 {
     private const string ApiVersionHeader = "api-version";
 
-    public static IServiceCollection RegisterVersioning(this IServiceCollection services)
+    internal static IServiceCollection RegisterVersioning(this IServiceCollection services)
     {
         services.AddApiVersioning(options =>
         {

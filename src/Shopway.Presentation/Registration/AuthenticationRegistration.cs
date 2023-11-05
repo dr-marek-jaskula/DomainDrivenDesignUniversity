@@ -1,5 +1,4 @@
-﻿using Shopway.Infrastructure.Services;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Shopway.Presentation.Authentication.PermissionAuthentication;
@@ -9,9 +8,9 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class AuthenticationRegistration
 {
-    public static IServiceCollection RegisterAuthentication(this IServiceCollection services)
+    internal static IServiceCollection RegisterAuthentication(this IServiceCollection services)
     {
-        services.AddScoped<IUserContextService, UserContextService>();
+
         services.AddHttpContextAccessor();
 
         services

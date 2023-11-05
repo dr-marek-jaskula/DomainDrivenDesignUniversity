@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class CacheRegistration
 {
-    public static IServiceCollection RegisterCache(this IServiceCollection services)
+    internal static IServiceCollection RegisterCache(this IServiceCollection services)
     {
         var cacheOptions = services.GetOptions<CacheOptions>();
 

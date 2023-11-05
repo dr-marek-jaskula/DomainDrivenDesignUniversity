@@ -4,7 +4,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class FluentValidationRegistration
 {
-    public static IServiceCollection RegisterFluentValidation(this IServiceCollection services)
+    internal static IServiceCollection RegisterFluentValidation(this IServiceCollection services)
     {
         services
             .AddValidatorsFromAssembly

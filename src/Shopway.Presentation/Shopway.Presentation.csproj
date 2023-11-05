@@ -12,7 +12,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Include="OpenApi\SwaggerDark.css" />
+	</ItemGroup>
+
+	<ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
+    <PackageReference Include="Scrutor" Version="4.2.2" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.13" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,10 +1,11 @@
-﻿using Shopway.Application.Middlewares;
+﻿using Microsoft.AspNetCore.Builder;
+using Shopway.Application.Middlewares;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class MiddlewaresRegistration
 {
-    public static IServiceCollection RegisterMiddlewares(this IServiceCollection services)
+    internal static IServiceCollection RegisterMiddlewares(this IServiceCollection services)
     {
         //Order is not important
         services.AddScoped<ErrorHandlingMiddleware>();
@@ -13,7 +14,7 @@ public static class MiddlewaresRegistration
         return services;
     }
 
-    public static IApplicationBuilder UseMiddlewares(this IApplicationBuilder app)
+    internal static IApplicationBuilder UseMiddlewares(this IApplicationBuilder app)
     {
         //Order is important
         app.UseMiddleware<ErrorHandlingMiddleware>();

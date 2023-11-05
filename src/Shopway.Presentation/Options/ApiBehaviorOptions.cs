@@ -5,7 +5,7 @@ using static Shopway.Application.Utilities.ProblemDetailsUtilities;
 using static Shopway.Application.Constants.Constants.ProblemDetails;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState;
 
-namespace Shopway.Infrastructure.Options;
+namespace Shopway.Presentation.Options;
 
 public static class ApiBehaviorOptions
 {

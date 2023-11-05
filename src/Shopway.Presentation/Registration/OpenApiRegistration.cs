@@ -1,14 +1,20 @@
-﻿using Shopway.App.Utilities;
-using Asp.Versioning.ApiExplorer;
+﻿using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Filters;
+using Shopway.Presentation.Utilities;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.Extensions.FileProviders;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class OpenApiRegistration
 {
-    public static IServiceCollection RegisterOpenApi(this IServiceCollection services)
+    private const string SwaggerDarkThameStyleFileName = "SwaggerDark.css";
+    private const string WwwRootDirectoryName = "OpenApi";
+    private const string ShopwayPresentation = $"{nameof(Shopway)}.{nameof(Shopway.Presentation)}";
+
+    internal static IServiceCollection RegisterOpenApi(this IServiceCollection services)
     {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, OpenApiOptionsSetup>();
 
@@ -22,19 +28,25 @@ public static class OpenApiRegistration
             options.AddJwtAuthorization();
             options.AddApiKeyAuthorization();
         });
-        
-        services.AddSwaggerExamplesFromAssemblies(Shopway.App.AssemblyReference.Assembly);
+
+        services.AddSwaggerExamplesFromAssemblies(Shopway.Presentation.AssemblyReference.Assembly);
 
         return services;
     }
 
-    public static IApplicationBuilder ConfigureOpenApi(this WebApplication app)
+    internal static IApplicationBuilder ConfigureOpenApi(this IApplicationBuilder app, bool isDevelopment)
     {
-        if (app.Environment.IsDevelopment())
+        if (isDevelopment)
         {
-            var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+            var provider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
 
             app.UseSwagger();
+
+            app
+                .UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine($"{Directory.GetParent(Directory.GetCurrentDirectory())}", ShopwayPresentation, WwwRootDirectoryName))
+                });
 
             app.UseSwaggerUI(options =>
             {
@@ -43,7 +55,7 @@ public static class OpenApiRegistration
                     options.SwaggerEndpoint($"/swagger/{groupName}/swagger.json", groupName.ToUpperInvariant());
                 }
 
-                options.InjectStylesheet("/swaggerstyles/SwaggerDark.css");
+                options.InjectStylesheet($"/{SwaggerDarkThameStyleFileName}");
             });
         }
 

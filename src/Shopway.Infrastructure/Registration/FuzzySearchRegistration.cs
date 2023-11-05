@@ -1,12 +1,14 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Infrastructure.FuzzySearch;
 
-namespace Shopway.App.Registrations;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class FuzzySearchRegistration
 {
-    public static void RegisterFuzzySearch(this IServiceCollection services)
+    internal static IServiceCollection RegisterFuzzySearch(this IServiceCollection services)
     {
         services.AddScoped<IFuzzySearchFactory, SymSpellFuzzySearchFactory>();
+
+        return services;
     }
 }

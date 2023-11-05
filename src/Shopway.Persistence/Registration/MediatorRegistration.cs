@@ -5,7 +5,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class MediatorRegistration
 {
-    public static IServiceCollection RegisterMediator(this IServiceCollection services)
+    internal static IServiceCollection RegisterMediator(this IServiceCollection services)
     {
         services.AddMediatR(configuration =>
         {

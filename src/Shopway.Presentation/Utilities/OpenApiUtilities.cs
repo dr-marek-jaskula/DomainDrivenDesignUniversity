@@ -2,8 +2,9 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Shopway.App.Utilities;
+namespace Shopway.Presentation.Utilities;
 
 public static class OpenApiUtilities
 {

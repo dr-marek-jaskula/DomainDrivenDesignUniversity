@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json.Converters;
-using Shopway.Infrastructure.Resolvers;
+using Shopway.Presentation.Resolvers;
 using static Newtonsoft.Json.ReferenceLoopHandling;
 using static Newtonsoft.Json.Formatting;
-using ApiBehaviorOptions = Shopway.Infrastructure.Options.ApiBehaviorOptions;
+using ApiBehaviorOptions = Shopway.Presentation.Options.ApiBehaviorOptions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ControllerRegistration
 {
-    public static IServiceCollection RegisterControllers(this IServiceCollection services)
+    internal static IServiceCollection RegisterControllers(this IServiceCollection services)
     {
         services
             .AddControllers()

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using static Newtonsoft.Json.Required;
 
-namespace Shopway.Infrastructure.Resolvers;
+namespace Shopway.Presentation.Resolvers;
 
 public sealed class RequiredPropertiesCamelCaseContractResolver : CamelCasePropertyNamesContractResolver
 {

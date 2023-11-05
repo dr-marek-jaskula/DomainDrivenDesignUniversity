@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class RepositoriesRegistration
 {
-    public static IServiceCollection RegisterRepositories(this IServiceCollection services)
+    internal static IServiceCollection RegisterRepositories(this IServiceCollection services)
     {
         services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();

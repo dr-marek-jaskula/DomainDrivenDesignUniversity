@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class BackgroundServiceRegistration
 {
-    public static IServiceCollection RegisterBackgroundServices(this IServiceCollection services)
+    internal static IServiceCollection RegisterBackgroundServices(this IServiceCollection services)
     {
         services.AddScoped<IJob, ProcessOutboxMessagesJob>();
         services.AddScoped<IJob, DeleteOutdatedSoftDeletableEntitiesJob>();

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Shopway.App.OpenApi.Examples;
+namespace Shopway.Presentation.OpenApi.Examples;
 
 public sealed class ProblemDetailsExample : IExamplesProvider<ProblemDetails>
 {
