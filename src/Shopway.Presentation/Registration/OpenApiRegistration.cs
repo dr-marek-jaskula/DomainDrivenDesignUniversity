@@ -42,11 +42,7 @@ public static class OpenApiRegistration
 
             app.UseSwagger();
 
-            app
-                .UseStaticFiles(new StaticFileOptions()
-                {
-                    FileProvider = new PhysicalFileProvider(Path.Combine($"{Directory.GetParent(Directory.GetCurrentDirectory())}", ShopwayPresentation, WwwRootDirectoryName))
-                });
+            UseStaticFiles(app);
 
             app.UseSwaggerUI(options =>
             {
@@ -60,5 +56,30 @@ public static class OpenApiRegistration
         }
 
         return app;
+    }
+
+    /// <summary>
+    /// Used for the WebApplicationFactory (tests) reason.
+    /// </summary>
+    private static void UseStaticFiles(IApplicationBuilder app)
+    {
+        var wwwRoot = Path.Combine($"{Directory.GetParent(Directory.GetCurrentDirectory())}", ShopwayPresentation, WwwRootDirectoryName);
+
+        try
+        {
+            app
+                .UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(wwwRoot)
+                });
+        }
+        catch
+        {
+            app
+                .UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory())
+                });
+        }
     }
 }
