@@ -3,7 +3,7 @@ using Mono.Cecil.Rocks;
 using NetArchTest.Rules;
 using System.Reflection;
 
-namespace Shopway.Tests.Unit.ArchitectureTests.CustomRules;
+namespace Shopway.Tests.Unit.ArchitectureTests.Utilities.CustomRules;
 
 public sealed class HavePrivateParameterlessConstructor : ICustomRule
 {

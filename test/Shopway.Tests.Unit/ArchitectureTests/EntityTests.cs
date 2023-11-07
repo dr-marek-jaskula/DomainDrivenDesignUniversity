@@ -1,6 +1,6 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Domain.BaseTypes;
-using Shopway.Tests.Unit.ArchitectureTests.CustomRules;
+using Shopway.Tests.Unit.ArchitectureTests.Utilities;
 using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
@@ -22,7 +22,7 @@ public sealed class EntityTests
             .And()
             .AreNotAbstract()
             .Should()
-            .MeetCustomRule(new ContainsMethod("Create"))
+            .ContainMethod("Create")
             .GetResult();
 
         //Assert
@@ -41,7 +41,7 @@ public sealed class EntityTests
             .And()
             .AreNotAbstract()
             .Should()
-            .MeetCustomRule(new HavePrivateParameterlessConstructor())
+            .HavePrivateParameterlessConstructor()
             .GetResult();
 
         //Assert
