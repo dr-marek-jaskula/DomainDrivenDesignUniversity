@@ -3,11 +3,11 @@ using NetArchTest.Rules;
 
 namespace Shopway.Tests.Unit.ArchitectureTests.Utilities.CustomRules;
 
-public sealed class ContainsMethod : ICustomRule
+public sealed class DefinesMethod : ICustomRule
 {
     private readonly Func<TypeDefinition, bool> _test;
 
-    public ContainsMethod(string methodName)
+    public DefinesMethod(string methodName)
     {
         _test = typeDefinition => typeDefinition
             .Methods

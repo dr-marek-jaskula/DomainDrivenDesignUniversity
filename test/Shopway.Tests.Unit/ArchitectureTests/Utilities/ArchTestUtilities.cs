@@ -10,8 +10,8 @@ public static class ArchTestUtilities
         return conditions.MeetCustomRule(new HavePrivateParameterlessConstructor());
     }
 
-    public static ConditionList ContainMethod(this Conditions conditions, string methodName)
+    public static ConditionList DefineMethod(this Conditions conditions, string methodName)
     {
-        return conditions.MeetCustomRule(new ContainsMethod(methodName));
+        return conditions.MeetCustomRule(new DefinesMethod(methodName));
     }
 }
