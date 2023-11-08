@@ -22,7 +22,7 @@ public sealed class EntityTests
             .And()
             .AreNotAbstract()
             .Should()
-            .ContainMethod("Create")
+            .DefineMethod("Create")
             .GetResult();
 
         //Assert

@@ -41,7 +41,7 @@ public sealed class ValueObjectTests
             .That()
             .Inherit(typeof(ValueObject))
             .Should()
-            .ContainMethod(methodName)
+            .DefineMethod(methodName)
             .GetResult();
 
         //Assert
