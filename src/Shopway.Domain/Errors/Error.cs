@@ -48,7 +48,12 @@ public sealed partial class Error : IEquatable<Error>
     public static Error FromException<TException>(TException exception)
         where TException : Exception
     {
-        return New(exception.GetType().Name, exception.Message);
+        if (exception is AggregateException || exception.InnerException is null)
+        {
+            return New(exception.GetType().Name, exception.Message);
+        }
+
+        return New(exception.GetType().Name, $"{exception.Message}. ({exception.InnerException.Message})");
     }
 
     /// <summary>
