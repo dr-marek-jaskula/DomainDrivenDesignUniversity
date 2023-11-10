@@ -43,14 +43,14 @@ public sealed partial class ProductsController : ApiController
     {
         var query = new GetProductByIdQuery(id);
 
-        var response = await Sender.Send(query, cancellationToken);
+        var result = await Sender.Send(query, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 
     /// <summary>
@@ -67,14 +67,14 @@ public sealed partial class ProductsController : ApiController
     {
         var query = new GetProductByKeyQuery(key);
 
-        var response = await Sender.Send(query, cancellationToken);
+        var result = await Sender.Send(query, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 
     /// <summary>
@@ -97,14 +97,14 @@ public sealed partial class ProductsController : ApiController
     {
         var query = new FuzzySearchProductByNameQuery(page, productName);
 
-        var response = await Sender.Send(query, cancellationToken);
+        var result = await Sender.Send(query, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 
     [HttpPost("query/dictionary/offset")]
@@ -112,14 +112,14 @@ public sealed partial class ProductsController : ApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> QueryProductsOffsetDictionary([FromBody] ProductDictionaryOffsetPageQuery query, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(query, cancellationToken);
+        var result = await Sender.Send(query, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 
 
@@ -128,14 +128,14 @@ public sealed partial class ProductsController : ApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> QueryProductsCursorDictionary([FromBody] ProductDictionaryCursorPageQuery query, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(query, cancellationToken);
+        var result = await Sender.Send(query, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 
     //These static or dynamic suffixes are only for tutorial purpose
@@ -144,14 +144,14 @@ public sealed partial class ProductsController : ApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> StaticQueryProducts([FromBody] ProductOffsetPageQuery query, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(query, cancellationToken);
+        var result = await Sender.Send(query, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 
     [HttpPost("query/dynamic")]
@@ -159,14 +159,14 @@ public sealed partial class ProductsController : ApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> DynamicQueryProducts([FromBody] ProductOffsetPageDynamicQuery query, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(query, cancellationToken);
+        var result = await Sender.Send(query, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 
     [HttpPost]
@@ -175,14 +175,14 @@ public sealed partial class ProductsController : ApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return CreatedAtActionResult(response, nameof(GetProductById));
+        return CreatedAtActionResult(result, nameof(GetProductById));
     }
 
     [HttpPut("{id}")]

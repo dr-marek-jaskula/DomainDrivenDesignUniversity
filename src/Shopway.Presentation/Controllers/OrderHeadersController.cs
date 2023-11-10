@@ -27,14 +27,14 @@ public sealed partial class OrderHeadersController : ApiController
     {
         var query = new GetOrderHeaderByIdQuery(id);
 
-        var response = await Sender.Send(query, cancellationToken);
+        var result = await Sender.Send(query, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 
     [HttpPost]
@@ -46,14 +46,14 @@ public sealed partial class OrderHeadersController : ApiController
         CancellationToken cancellationToken
     )
     {
-        var response = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return CreatedAtActionResult(response, nameof(GetOrderHeaderById));
+        return CreatedAtActionResult(result, nameof(GetOrderHeaderById));
     }
 
     [HttpDelete("{id}")]
@@ -66,11 +66,12 @@ public sealed partial class OrderHeadersController : ApiController
     )
     {
         var command = new SoftDeleteOrderHeaderCommand(id);
-        var response = await Sender.Send(command, cancellationToken);
 
-        if (response.IsFailure)
+        var result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
         return Ok();
@@ -87,14 +88,15 @@ public sealed partial class OrderHeadersController : ApiController
     )
     {
         var command = new ChangeOrderHeaderStatusCommand(id, body);
-        var response = await Sender.Send(command, cancellationToken);
 
-        if (response.IsFailure)
+        var result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response);
+        return Ok(result);
     }
 }
 

@@ -21,14 +21,14 @@ public sealed class UsersController : ApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> Login([FromBody] LogUserCommand command, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command, cancellationToken);
 
-        if (response.IsFailure)
+        if (result.IsFailure)
         {
-            return HandleFailure(response);
+            return HandleFailure(result);
         }
 
-        return Ok(response.Value);
+        return Ok(result.Value);
     }
 
     [HttpPost("[action]")]
