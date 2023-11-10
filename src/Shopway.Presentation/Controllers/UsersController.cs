@@ -43,7 +43,7 @@ public sealed class UsersController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpGet("{username}")]
@@ -59,6 +59,6 @@ public sealed class UsersController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 }

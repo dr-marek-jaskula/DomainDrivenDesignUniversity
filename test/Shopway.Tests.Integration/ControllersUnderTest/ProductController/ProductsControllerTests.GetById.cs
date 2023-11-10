@@ -28,7 +28,7 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(OK);
 
-        var actual = response.DeserializeResponseResult<ProductResponse>();
+        var actual = response.Deserialize<ProductResponse>();
         actual.ShouldMatch(expected);
     }
 

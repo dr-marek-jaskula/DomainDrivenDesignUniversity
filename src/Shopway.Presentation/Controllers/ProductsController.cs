@@ -50,7 +50,7 @@ public sealed partial class ProductsController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public sealed partial class ProductsController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public sealed partial class ProductsController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpPost("query/dictionary/offset")]
@@ -119,7 +119,7 @@ public sealed partial class ProductsController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
 
@@ -135,7 +135,7 @@ public sealed partial class ProductsController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     //These static or dynamic suffixes are only for tutorial purpose
@@ -151,7 +151,7 @@ public sealed partial class ProductsController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpPost("query/dynamic")]
@@ -166,7 +166,7 @@ public sealed partial class ProductsController : ApiController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpPost]

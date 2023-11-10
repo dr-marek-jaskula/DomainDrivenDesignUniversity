@@ -32,7 +32,7 @@ partial class OrderHeadersController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpDelete($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
@@ -54,7 +54,7 @@ partial class OrderHeadersController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpPut($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
@@ -77,6 +77,6 @@ partial class OrderHeadersController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 }

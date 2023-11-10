@@ -33,7 +33,7 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
 
@@ -58,7 +58,7 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpDelete($"{{productId}}/{Reviews}/{{reviewId}}")]
@@ -74,6 +74,6 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 }
