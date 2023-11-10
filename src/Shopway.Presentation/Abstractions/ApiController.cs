@@ -49,13 +49,13 @@ public abstract class ApiController : ControllerBase
         };
     }
 
-    protected IActionResult CreatedAtActionResult<T>(IResult<T> response, string? actionName)
+    protected IActionResult CreatedAtActionResult<T>(IResult<T> result, string? actionName)
     {
         return CreatedAtAction
         (
             actionName,
-            new { id = response.Value },
-            response.Value
+            new { id = result.Value },
+            result.Value
         );
     }
 }

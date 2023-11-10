@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
+using Newtonsoft.Json;
 using Shopway.Tests.Integration.ControllersUnderTest;
 
 namespace Shopway.Tests.Integration.Utilities;
@@ -13,14 +13,14 @@ public static class RestResponseUtilities
     /// <param name="response">RestResponse</param>
     /// <returns>Deserialized response content</returns>
     /// <exception cref="ArgumentNullException">Thrown if response content is null</exception>
-    public static TValue? Deserialize<TValue>(this RestResponse response)
+    public static TValue Deserialize<TValue>(this RestResponse response)
     {
         if (response.Content is null)
         {
             throw new ArgumentNullException(nameof(response.Content));
         }
 
-        return JsonConvert.DeserializeObject<TValue>(response.Content);
+        return JsonConvert.DeserializeObject<TValue>(response.Content)!;
     }
 
     /// <summary>

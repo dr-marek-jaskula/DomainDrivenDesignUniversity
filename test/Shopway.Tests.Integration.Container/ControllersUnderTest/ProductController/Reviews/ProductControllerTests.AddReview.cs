@@ -23,7 +23,7 @@ public partial class ProductsControllerTests
         //Assert
         response.StatusCode.Should().Be(OK);
 
-        var actual = response.DeserializeResponseResult<AddReviewResponse>();
+        var actual = response.Deserialize<AddReviewResponse>();
         actual.Id.Should().NotBe(Ulid.Empty);
     }
 }
