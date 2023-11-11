@@ -584,7 +584,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"LikeQuery\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"LikeQuery\" : \"Product\"\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -613,7 +613,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Page\" : {\r\n    \"Cursor\": \"00000000000000000000000000\",\r\n    \"PageSize\": 5\r\n  },\r\n  \"Filter\" : {\r\n    \"LikeQuery\" : \"Product\"\r\n  },\r\n  \"Order\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"Cursor\": \"00000000000000000000000000\",\r\n    \"PageSize\": 5\r\n  },\r\n  \"Filter\" : {\r\n    \"LikeQuery\" : \"Product\"\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

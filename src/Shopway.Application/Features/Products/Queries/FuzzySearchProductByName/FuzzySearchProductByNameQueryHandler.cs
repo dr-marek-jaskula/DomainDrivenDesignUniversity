@@ -7,6 +7,7 @@ using ZiggyCreatures.Caching.Fusion;
 using Shopway.Application.Filering.Products;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Application.Sorting.Products;
 
 namespace Shopway.Application.Features.Products.Queries.FuzzySearchProductByName;
 
@@ -26,17 +27,7 @@ internal sealed class FuzzySearchProductByNameQueryHandler : IOffsetPageQueryHan
 
     public async Task<IResult<OffsetPageResponse<ProductResponse>>> Handle(FuzzySearchProductByNameQuery query, CancellationToken cancellationToken)
     {
-        var productNames = await _fusionCache.GetOrSetAsync
-        (
-            ProductNames,
-            _productRepository.GetNamesAsync!,
-            TimeSpan.FromMinutes(1),
-            cancellationToken
-        );
-
-        var fuzzySearch = _fuzzySearchFactory.Create(productNames!);
-
-        var approximatedNameResult = fuzzySearch.FindBestSuggestion(query.ProductName);
+        var approximatedNameResult = await ApproximateProductName(query, cancellationToken);
 
         if (approximatedNameResult.IsFailure)
         {
@@ -49,10 +40,25 @@ internal sealed class FuzzySearchProductByNameQueryHandler : IOffsetPageQueryHan
         };
 
         var page = await _productRepository
-            .PageAsync(query.Page, cancellationToken, filter: productByNameFilter, mapping: ProductMapping.ProductResponse);
+            .PageAsync(query.Page, cancellationToken, filter: productByNameFilter, sort: ProductSortBy.Common, mapping: ProductMapping.ProductResponse);
 
         return page
             .ToPageResponse(query.Page)
             .ToResult();
+    }
+
+    private async Task<Result<string>> ApproximateProductName(FuzzySearchProductByNameQuery query, CancellationToken cancellationToken)
+    {
+        var productNames = await _fusionCache.GetOrSetAsync
+        (
+            ProductNames,
+            _productRepository.GetNamesAsync!,
+            TimeSpan.FromMinutes(1),
+            cancellationToken
+        );
+
+        var fuzzySearch = _fuzzySearchFactory.Create(productNames!);
+
+        return fuzzySearch.FindBestSuggestion(query.ProductName);
     }
 }
