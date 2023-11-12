@@ -37,7 +37,7 @@ public static class HealthCheckRegistration
             (
                 failureStatus: Unhealthy,
                 name: "DbContext readiness",
-                customTestQuery: Products,
+                customTestQuery: GetProduct,
                 tags: new[] { Readiness }
             );
 
@@ -81,14 +81,14 @@ public static class HealthCheckRegistration
         return app;
     }
 
-    private static async Task<bool> Products(ShopwayDbContext context, CancellationToken cancellationToken)
+    private static async Task<bool> GetProduct(ShopwayDbContext context, CancellationToken cancellationToken)
     {
         var products = await context
             .Set<Product>()
-            .Take(2)
-            .ToListAsync(cancellationToken);
+            .OrderBy(x => x.ProductName)
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return await Task.FromResult(products.Count > 0);
+        return products is not null;
     }
 
     private static Task WriteResponse(HttpContext context, HealthReport report)
