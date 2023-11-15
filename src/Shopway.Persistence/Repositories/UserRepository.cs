@@ -7,14 +7,9 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class UserRepository : IUserRepository
+public sealed class UserRepository(ShopwayDbContext dbContext) : IUserRepository
 {
-    private readonly ShopwayDbContext _dbContext;
-
-    public UserRepository(ShopwayDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ShopwayDbContext _dbContext = dbContext;
 
     public async Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken)
     {

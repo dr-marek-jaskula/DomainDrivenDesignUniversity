@@ -5,16 +5,9 @@ namespace Shopway.Persistence.Abstractions;
 
 //When inherit from this class, override the ConfigureNotMigratedEntity and implement there the standard configuration
 //Then ApplyConfiguration explicitly in OnModelCreating
-public abstract class ExcludeFromMigrationsEntityTypeConfigurationBase<TEntity> : IEntityTypeConfiguration<TEntity>
+public abstract class ExcludeFromMigrationsEntityTypeConfigurationBase<TEntity>(bool excludeFromMigrations) : IEntityTypeConfiguration<TEntity>
     where TEntity : class
 {
-    protected readonly bool _excludeFromMigrations;
-
-    protected ExcludeFromMigrationsEntityTypeConfigurationBase(bool excludeFromMigrations)
-    {
-        _excludeFromMigrations = excludeFromMigrations;
-    }
-
     public void Configure(EntityTypeBuilder<TEntity> builder)
     {
         ExcludeFromMigrations(builder);
@@ -27,6 +20,6 @@ public abstract class ExcludeFromMigrationsEntityTypeConfigurationBase<TEntity> 
     {
         builder
             .Metadata
-            .SetIsTableExcludedFromMigrations(_excludeFromMigrations);
+            .SetIsTableExcludedFromMigrations(excludeFromMigrations);
     }
 }

@@ -19,7 +19,7 @@ internal abstract class CursorPageQueryValidator<TPageQuery, TResponse, TFilter,
     protected CursorPageQueryValidator() 
         : base()
     {
-        RuleFor(query => query.SortBy).Custom(ValidateSortBy);
-        RuleFor(query => query.Filter).Custom(ValidateFilter);
+        RuleFor(query => query.SortBy).Custom(ValidateSortBy!);
+        RuleFor(query => query.Filter).Custom(ValidateFilter!);
     }
 }

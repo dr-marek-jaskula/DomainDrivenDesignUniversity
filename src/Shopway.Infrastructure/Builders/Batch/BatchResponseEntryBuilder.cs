@@ -1,11 +1,11 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.Abstractions.CQRS.Batch;
-using Shopway.Application.Features;
-using Shopway.Domain.Abstractions;
-using Shopway.Domain.BaseTypes;
+﻿using System.Reflection;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
-using System.Reflection;
+using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Abstractions;
+using Shopway.Application.Features;
+using Microsoft.IdentityModel.Tokens;
+using Shopway.Application.Abstractions.CQRS.Batch;
 using static Shopway.Application.Features.BatchEntryStatus;
 
 namespace Shopway.Infrastructure.Builders.Batch;
@@ -19,32 +19,25 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
     /// <summary>
     /// Builder used to build a single response entry from a single request, with possible errors and result status 
     /// </summary>
-    public sealed class BatchResponseEntryBuilder : IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>
+    internal sealed class BatchResponseEntryBuilder(TBatchRequest request, TResponseKey responseKey, BatchEntryStatus successStatus)
+        : IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>
     {
-        private readonly TBatchRequest _request;
+        private readonly TBatchRequest _request = request;
         
         /// <summary>
         /// The key, that represents the request uniqueness. Usually the unique composed key, created by few entity properties
         /// </summary>
-        private readonly TResponseKey _responseKey;
+        private readonly TResponseKey _responseKey = responseKey;
 
         /// <summary>
         /// This status that will be used, if validation succeeds. If not, the 'Error' status will be used instead.
         /// </summary>
-        private readonly BatchEntryStatus _successStatus;
+        private readonly BatchEntryStatus _successStatus = successStatus;
 
         /// <summary>
         /// If there are no errors, then the validation succeeds and the success status is used.
         /// </summary>
-        private readonly List<Error> _errors;
-
-        internal BatchResponseEntryBuilder(TBatchRequest request, TResponseKey responseKey, BatchEntryStatus successStatus)
-        {
-            _request = request;
-            _responseKey = responseKey;
-            _successStatus = successStatus;
-            _errors = new();
-        }
+        private readonly List<Error> _errors = [];
 
         /// <summary>
         /// Request used to create the ResponseKey and being validated to inspect errors.

@@ -1,17 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 namespace Shopway.Infrastructure.Options;
 
-public sealed class HealthCheckOptionsSetup : IConfigureOptions<HealthOptions>
+internal sealed class HealthCheckOptionsSetup(IConfiguration configuration) : IConfigureOptions<HealthOptions>
 {
     private const string _configurationSectionName = "HealthOptions";
-    private readonly IConfiguration _configuration;
-
-    public HealthCheckOptionsSetup(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    private readonly IConfiguration _configuration = configuration;
 
     public void Configure(HealthOptions options)
     {

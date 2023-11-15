@@ -8,16 +8,11 @@ using Shopway.Application.Abstractions.CQRS;
 
 namespace Shopway.Persistence.Pipelines;
 
-public sealed class QueryTransactionPipeline<TQueryRequest, TQueryResponse>
-    : QueryTransactionPipelineBase<TQueryResponse>, IPipelineBehavior<TQueryRequest, TQueryResponse>
+public sealed class QueryTransactionPipeline<TQueryRequest, TQueryResponse>(IUnitOfWork<ShopwayDbContext> unitOfWork)
+    : QueryTransactionPipelineBase<TQueryResponse>(unitOfWork), IPipelineBehavior<TQueryRequest, TQueryResponse>
     where TQueryRequest : class, IRequest<TQueryResponse>, IQuery<IResponse>
     where TQueryResponse : class, IResult<IResponse>
 {
-    public QueryTransactionPipeline(IUnitOfWork<ShopwayDbContext> unitOfWork)
-        : base(unitOfWork)
-    {
-    }
-
     public async Task<TQueryResponse> Handle(TQueryRequest request, RequestHandlerDelegate<TQueryResponse> next, CancellationToken cancellationToken)
     {
         var executionStrategy = UnitOfWork.CreateExecutionStrategy();

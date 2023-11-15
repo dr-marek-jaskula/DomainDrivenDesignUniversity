@@ -1,25 +1,20 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Text;
 using System.Security.Claims;
-using System.Text;
+using Shopway.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.Abstractions;
-using Shopway.Domain.Entities;
 using Shopway.Infrastructure.Options;
+using System.IdentityModel.Tokens.Jwt;
 using Shopway.Infrastructure.Policies;
+using Shopway.Application.Abstractions;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace Shopway.Infrastructure.Providers;
 
-internal sealed class JwtProvider : IJwtProvider
+internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, IDateTimeProvider dateTimeProvider) : IJwtProvider
 {
-    private readonly AuthenticationOptions _options;
-    private readonly IDateTimeProvider _dateTimeProvider;
-
-    public JwtProvider(IOptions<AuthenticationOptions> options, IDateTimeProvider dateTimeProvider)
-    {
-        _options = options.Value;
-        _dateTimeProvider = dateTimeProvider;
-    }
+    private readonly AuthenticationOptions _options = options.Value;
+    private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
 
     public string GenerateJwt(User user)
     {

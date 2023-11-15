@@ -5,16 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Shopway.Application.Pipelines;
 
-public sealed class LoggingPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public sealed class LoggingPipeline<TRequest, TResponse>(ILogger<LoggingPipeline<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : IResult
 {
-    private readonly ILogger<LoggingPipeline<TRequest, TResponse>> _logger;
-
-    public LoggingPipeline(ILogger<LoggingPipeline<TRequest, TResponse>> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<LoggingPipeline<TRequest, TResponse>> _logger = logger;
 
     public async Task<TResponse> Handle
     (
@@ -49,7 +44,7 @@ public static partial class LoggerMessageDefinitionsUtilities
     [LoggerMessage
     (
         EventId = 1,
-        EventName = $"{nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
+        EventName = $"StartingRequest in {nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
         Level = LogLevel.Information,
         Message = "Starting request {RequestName}, {DateTimeUtc}",
         SkipEnabledCheck = false
@@ -59,7 +54,7 @@ public static partial class LoggerMessageDefinitionsUtilities
     [LoggerMessage
     (
         EventId = 2,
-        EventName = $"{nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
+        EventName = $"CompletingRequest in {nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
         Level = LogLevel.Information,
         Message = "Request completed {requestName}, {DateTimeUtc}",
         SkipEnabledCheck = false
@@ -69,7 +64,7 @@ public static partial class LoggerMessageDefinitionsUtilities
     [LoggerMessage
     (
         EventId = 3,
-        EventName = $"{nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
+        EventName = $"FailedRequestBasedOnSingleError in {nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
         Level = LogLevel.Error,
         Message = "Request failed {RequestName}, {Error}, {DateTimeUtc}",
         SkipEnabledCheck = true
@@ -79,7 +74,7 @@ public static partial class LoggerMessageDefinitionsUtilities
     [LoggerMessage
     (
         EventId = 4,
-        EventName = $"{nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
+        EventName = $"FailedRequestBasedOnValidationErrors in {nameof(LoggingPipeline<IRequest<IResult>, IResult>)}",
         Level = LogLevel.Error,
         Message = "Request failed {RequestName}, {ValidationErrors}, {DateTimeUtc}",
         SkipEnabledCheck = true

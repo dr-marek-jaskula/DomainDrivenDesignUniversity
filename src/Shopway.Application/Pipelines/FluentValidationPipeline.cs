@@ -6,16 +6,11 @@ using Shopway.Domain.Abstractions;
 
 namespace Shopway.Application.Pipelines;
 
-public sealed class FluentValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public sealed class FluentValidationPipeline<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : class, IResult
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
-
-    public FluentValidationPipeline(IEnumerable<IValidator<TRequest>> validators)
-    {
-        _validators = validators;
-    }
+    private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
     public async Task<TResponse> Handle
     (
@@ -37,7 +32,7 @@ public sealed class FluentValidationPipeline<TRequest, TResponse> : IPipelineBeh
             .Distinct()
             .ToArray();
 
-        if (errors.Any())
+        if (errors.Length is not 0)
         {
             return errors.CreateValidationResult<TResponse>();
         }

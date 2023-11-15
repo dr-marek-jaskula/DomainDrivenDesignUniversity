@@ -9,13 +9,8 @@ using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 
 namespace Shopway.Presentation.Controllers;
 
-public sealed class UsersController : ApiController
+public sealed class UsersController(ISender sender) : ApiController(sender)
 {
-    public UsersController(ISender sender)
-        : base(sender)
-    {
-    }
-
     [HttpPost("[action]")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

@@ -11,19 +11,18 @@ using Shopway.Application.Sorting.Products;
 
 namespace Shopway.Application.Features.Products.Queries.FuzzySearchProductByName;
 
-internal sealed class FuzzySearchProductByNameQueryHandler : IOffsetPageQueryHandler<FuzzySearchProductByNameQuery, ProductResponse, OffsetPage>
+internal sealed class FuzzySearchProductByNameQueryHandler
+(
+    IProductRepository productRepository, 
+    IFusionCache fusionCache, 
+    IFuzzySearchFactory fuzzySearchFactory
+)
+    : IOffsetPageQueryHandler<FuzzySearchProductByNameQuery, ProductResponse, OffsetPage>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IFusionCache _fusionCache;
-    private readonly IFuzzySearchFactory _fuzzySearchFactory;
     private const string ProductNames = nameof(ProductNames);
-
-    public FuzzySearchProductByNameQueryHandler(IProductRepository productRepository, IFusionCache fusionCache, IFuzzySearchFactory fuzzySearchFactory)
-    {
-        _productRepository = productRepository;
-        _fusionCache = fusionCache;
-        _fuzzySearchFactory = fuzzySearchFactory;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IFusionCache _fusionCache = fusionCache;
+    private readonly IFuzzySearchFactory _fuzzySearchFactory = fuzzySearchFactory;
 
     public async Task<IResult<OffsetPageResponse<ProductResponse>>> Handle(FuzzySearchProductByNameQuery query, CancellationToken cancellationToken)
     {

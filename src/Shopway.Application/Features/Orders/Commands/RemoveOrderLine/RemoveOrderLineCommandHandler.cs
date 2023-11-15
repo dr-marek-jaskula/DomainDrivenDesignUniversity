@@ -7,14 +7,10 @@ using Shopway.Application.Features.Orders.Commands.RemoveOrderLine;
 
 namespace Shopway.Application.Features.Products.Commands.RemoveReview;
 
-internal sealed class RemoveOrderLineCommandHandler : ICommandHandler<RemoveOrderLineCommand, RemoveOrderLineResponse>
+internal sealed class RemoveOrderLineCommandHandler(IOrderHeaderRepository orderHeaderRepository)
+    : ICommandHandler<RemoveOrderLineCommand, RemoveOrderLineResponse>
 {
-    private readonly IOrderHeaderRepository _orderHeaderRepository;
-
-    public RemoveOrderLineCommandHandler(IOrderHeaderRepository orderHeaderRepository)
-    {
-        _orderHeaderRepository = orderHeaderRepository;
-    }
+    private readonly IOrderHeaderRepository _orderHeaderRepository = orderHeaderRepository;
 
     public async Task<IResult<RemoveOrderLineResponse>> Handle(RemoveOrderLineCommand command, CancellationToken cancellationToken)
     {

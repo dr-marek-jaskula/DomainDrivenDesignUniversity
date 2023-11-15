@@ -6,14 +6,10 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Orders.Queries.GetOrderById;
 
-internal sealed class GetOrderHeaderByIdQueryHandler : IQueryHandler<GetOrderHeaderByIdQuery, OrderHeaderResponse>
+internal sealed class GetOrderHeaderByIdQueryHandler(IOrderHeaderRepository orderRepository) 
+    : IQueryHandler<GetOrderHeaderByIdQuery, OrderHeaderResponse>
 {
-    private readonly IOrderHeaderRepository _orderHeaderRepository;
-
-    public GetOrderHeaderByIdQueryHandler(IOrderHeaderRepository orderRepository)
-    {
-        _orderHeaderRepository = orderRepository;
-    }
+    private readonly IOrderHeaderRepository _orderHeaderRepository = orderRepository;
 
     public async Task<IResult<OrderHeaderResponse>> Handle(GetOrderHeaderByIdQuery query, CancellationToken cancellationToken)
     {

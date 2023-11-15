@@ -1,20 +1,14 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.Abstractions;
-using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Results;
+using Shopway.Domain.BaseTypes;
+using Microsoft.IdentityModel.Tokens;
+using Shopway.Application.Abstractions;
 
 namespace Shopway.Infrastructure.Validators;
 
 public sealed class Validator : IValidator
 {
-    private readonly List<Error> _errors;
-
-    public Validator()
-    {
-        _errors = new();
-    }
-
+    private readonly List<Error> _errors = [];
     public bool IsValid => _errors.IsNullOrEmpty();
     public bool IsInvalid => !IsValid;
 

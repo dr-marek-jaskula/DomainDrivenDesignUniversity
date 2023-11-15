@@ -147,7 +147,7 @@ public abstract class ControllerTestsBase : IDisposable
         //Give all roles to the test user
         foreach (var role in Role.Ids)
         {
-            await databaseFixture.Context.Database.ExecuteSqlRawAsync(@$"
+            await databaseFixture.Context.Database.ExecuteSqlAsync(@$"
             INSERT INTO {SchemaName.Master}.{TableName.RoleUser} (RoleId, {nameof(UserId)})
             VALUES ({role}, '{user.Id.Value}');     
             ");

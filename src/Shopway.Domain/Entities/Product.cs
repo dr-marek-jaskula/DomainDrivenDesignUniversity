@@ -8,7 +8,7 @@ namespace Shopway.Domain.Entities;
 
 public sealed class Product : AggregateRoot<ProductId>, IAuditable
 {
-    private readonly List<Review> _reviews = new();
+    private readonly List<Review> _reviews = [];
 
     private Product
     (

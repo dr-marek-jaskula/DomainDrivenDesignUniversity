@@ -21,13 +21,8 @@ using Shopway.Application.Features.Products.Queries.GetProductsCursorDictionary;
 
 namespace Shopway.Presentation.Controllers;
 
-public sealed partial class ProductsController : ApiController
+public sealed partial class ProductsController(ISender sender) : ApiController(sender)
 {
-    public ProductsController(ISender sender)
-        : base(sender)
-    {
-    }
-
     /// <summary>
     /// Gets product by specified id
     /// </summary>

@@ -9,16 +9,11 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Commands.UpdateProduct;
 
-internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProductCommand, UpdateProductResponse>
+internal sealed class UpdateProductCommandHandler(IProductRepository productRepository, IValidator validator)
+    : ICommandHandler<UpdateProductCommand, UpdateProductResponse>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IValidator _validator;
-
-    public UpdateProductCommandHandler(IProductRepository productRepository, IValidator validator)
-    {
-        _productRepository = productRepository;
-        _validator = validator;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IValidator _validator = validator;
 
     public async Task<IResult<UpdateProductResponse>> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {

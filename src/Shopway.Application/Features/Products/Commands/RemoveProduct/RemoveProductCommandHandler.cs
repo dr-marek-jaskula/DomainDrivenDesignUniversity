@@ -8,14 +8,10 @@ using static Shopway.Domain.Utilities.ResultUtilities;
 
 namespace Shopway.Application.Features.Products.Commands.RemoveProduct;
 
-internal sealed class RemoveProductCommandHandler : ICommandHandler<RemoveProductCommand, RemoveProductResponse>
+internal sealed class RemoveProductCommandHandler(IProductRepository productRepository) 
+    : ICommandHandler<RemoveProductCommand, RemoveProductResponse>
 {
-    private readonly IProductRepository _productRepository;
-
-    public RemoveProductCommandHandler(IProductRepository productRepository)
-    {
-        _productRepository = productRepository;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
 
     public Task<IResult<RemoveProductResponse>> Handle(RemoveProductCommand command, CancellationToken cancellationToken)
     {

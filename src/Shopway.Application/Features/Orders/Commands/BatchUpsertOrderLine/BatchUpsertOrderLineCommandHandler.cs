@@ -16,18 +16,17 @@ using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.B
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
-public sealed partial class BatchUpsertOrderLineCommandHandler : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
+internal sealed partial class BatchUpsertOrderLineCommandHandler
+(
+    IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, 
+    IOrderHeaderRepository orderHeaderRepository, 
+    IProductRepository productRepository
+) 
+    : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
 {
-    private readonly IOrderHeaderRepository _orderHeaderRepository;
-    private readonly IProductRepository _productRepository;
-    private readonly IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _responseBuilder;
-
-    public BatchUpsertOrderLineCommandHandler(IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, IOrderHeaderRepository orderHeaderRepository, IProductRepository productRepository)
-    {
-        _responseBuilder = responseBuilder;
-        _orderHeaderRepository = orderHeaderRepository;
-        _productRepository = productRepository;
-    }
+    private readonly IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _responseBuilder = responseBuilder;
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IOrderHeaderRepository _orderHeaderRepository = orderHeaderRepository;
 
     public async Task<IResult<BatchUpsertOrderLineResponse>> Handle(BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
     {

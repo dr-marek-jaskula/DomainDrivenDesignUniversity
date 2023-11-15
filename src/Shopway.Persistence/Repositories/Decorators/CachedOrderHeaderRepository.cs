@@ -9,18 +9,11 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-public sealed class CachedOrderHeaderRepository : IOrderHeaderRepository
+public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext context) : IOrderHeaderRepository
 {
-    private readonly IOrderHeaderRepository _decorated;
-    private readonly IFusionCache _fusionCache;
-    private readonly ShopwayDbContext _context;
-
-    public CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext context)
-    {
-        _decorated = decorated;
-        _fusionCache = fusionCache;
-        _context = context;
-    }
+    private readonly IOrderHeaderRepository _decorated = decorated;
+    private readonly IFusionCache _fusionCache = fusionCache;
+    private readonly ShopwayDbContext _context = context;
 
     public async Task<OrderHeader> GetByIdAsync(OrderHeaderId id, CancellationToken cancellationToken)
     {

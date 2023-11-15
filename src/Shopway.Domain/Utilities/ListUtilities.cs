@@ -9,7 +9,7 @@ public static class ListUtilities
 
     public static List<TValue> EmptyList<TValue>()
     {
-        return new List<TValue>();
+        return [];
     }
 
     public static bool NotNullOrEmpty<TValue>(this IList<TValue> list)

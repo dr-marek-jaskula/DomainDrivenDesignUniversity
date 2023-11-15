@@ -7,15 +7,8 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Presentation.Authentication.PermissionAuthentication;
 
-public sealed class PermissionService : IPermissionService
+public sealed class PermissionService(IPermissionRepository permissionRepository) : IPermissionService
 {
-    private readonly IPermissionRepository _permissionRepository;
-
-    public PermissionService(IPermissionRepository permissionRepository)
-    {
-        _permissionRepository = permissionRepository;
-    }
-
     public Result<UserId> GetUserId(AuthorizationHandlerContext context)
     {
         string? userIdentifier = context
@@ -34,7 +27,7 @@ public sealed class PermissionService : IPermissionService
 
     public async Task<bool> HasPermissionAsync(UserId userId, string permission)
     {
-        return await _permissionRepository
+        return await permissionRepository
             .HasPermissionAsync(userId, permission);
     }
 }

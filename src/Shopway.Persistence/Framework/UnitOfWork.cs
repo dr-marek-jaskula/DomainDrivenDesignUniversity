@@ -21,28 +21,21 @@ namespace Shopway.Persistence.Framework;
 //So this removes the responsibility of SavingChanges from the repositories and moves it to the UnitOfWork
 //b) since we use IUnitOfWork interface we can provide a mock for this interface
 //3. Move the logic from the interceptors to the UnitOfWork
-public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
-    where TContext : DbContext
+public sealed class UnitOfWork<TContext>
+(
+    TContext dbContext,
+    IUserContextService userContext,
+    IOutboxRepository outboxRepository,
+    IFusionCache fusionCache
+)
+    : IUnitOfWork<TContext>
+        where TContext : DbContext
 {
-    private readonly TContext _dbContext;
-    private readonly IUserContextService _userContext;
     private const string DefaultUsername = "Unknown";
-    private readonly IOutboxRepository _outboxRepository;
-    private readonly IFusionCache _fusionCache;
-
-    public UnitOfWork
-    (
-        TContext dbContext,
-        IUserContextService userContext,
-        IOutboxRepository outboxRepository,
-        IFusionCache fusionCache
-    )
-    {
-        _dbContext = dbContext;
-        _userContext = userContext;
-        _outboxRepository = outboxRepository;
-        _fusionCache = fusionCache;
-    }
+    private readonly TContext _dbContext = dbContext;
+    private readonly IUserContextService _userContext = userContext;
+    private readonly IOutboxRepository _outboxRepository = outboxRepository;
+    private readonly IFusionCache _fusionCache = fusionCache;
 
     public TContext Context => _dbContext;
 

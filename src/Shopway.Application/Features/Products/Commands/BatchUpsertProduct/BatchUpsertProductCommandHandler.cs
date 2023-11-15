@@ -17,23 +17,17 @@ using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.B
 
 namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 
-public sealed partial class BatchUpsertProductCommandHandler : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse>
+public sealed partial class BatchUpsertProductCommandHandler
+(
+    IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder,
+    IProductRepository productRepository,
+    IFusionCache fusionCache
+)
+    : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse>
 {
-    private readonly IFusionCache _fusionCache;
-    private readonly IProductRepository _productRepository;
-    private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _responseBuilder;
-
-    public BatchUpsertProductCommandHandler
-    (
-        IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder,
-        IProductRepository productRepository,
-        IFusionCache fusionCache
-    )
-    {
-        _responseBuilder = responseBuilder;
-        _productRepository = productRepository;
-        _fusionCache = fusionCache;
-    }
+    private readonly IFusionCache _fusionCache = fusionCache;
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _responseBuilder = responseBuilder;
 
     public async Task<IResult<BatchUpsertProductResponse>> Handle(BatchUpsertProductCommand command, CancellationToken cancellationToken)
     {

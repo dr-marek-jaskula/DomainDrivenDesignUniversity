@@ -13,13 +13,8 @@ using Shopway.Application.Features.Orders.Commands.ChangeOrderHeaderStatus;
 namespace Shopway.Presentation.Controllers;
 
 [ApiVersion("0.1", Deprecated = true)]
-public sealed partial class OrderHeadersController : ApiController
+public sealed partial class OrderHeadersController(ISender sender) : ApiController(sender)
 {
-    public OrderHeadersController(ISender sender)
-        : base(sender)
-    {
-    }
-
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderHeaderResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

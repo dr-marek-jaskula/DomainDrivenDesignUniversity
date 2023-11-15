@@ -7,16 +7,12 @@ using Shopway.Application.Abstractions.CQRS;
 
 namespace Shopway.Persistence.Pipelines;
 
-public sealed class CommandTransactionPipeline<TCommandRequest, TCommandResponse>
-    : CommandTransactionPipelineBase<TCommandResponse>, IPipelineBehavior<TCommandRequest, TCommandResponse>
-    where TCommandRequest : class, IRequest<TCommandResponse>, ICommand
-    where TCommandResponse : class, IResult
+public sealed class CommandTransactionPipeline<TCommandRequest, TCommandResponse>(IUnitOfWork<ShopwayDbContext> unitOfWork)
+    : CommandTransactionPipelineBase<TCommandResponse>(unitOfWork), 
+      IPipelineBehavior<TCommandRequest, TCommandResponse>
+        where TCommandRequest : class, IRequest<TCommandResponse>, ICommand
+        where TCommandResponse : class, IResult
 {
-    public CommandTransactionPipeline(IUnitOfWork<ShopwayDbContext> unitOfWork)
-        : base(unitOfWork)
-    {
-    }
-
     public async Task<TCommandResponse> Handle(TCommandRequest command, RequestHandlerDelegate<TCommandResponse> next, CancellationToken cancellationToken)
     {
         var executionStrategy = UnitOfWork.CreateExecutionStrategy();

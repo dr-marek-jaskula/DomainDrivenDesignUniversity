@@ -11,16 +11,11 @@ using Shopway.Application.Features.Orders.Commands.UpdateOrderLine;
 
 namespace Shopway.Application.Features.Products.Commands.UpdateReview;
 
-internal sealed class UpdateOrderLineCommandHandler : ICommandHandler<UpdateOrderLineCommand, UpdateOrderLineResponse>
+internal sealed class UpdateOrderLineCommandHandler(IOrderHeaderRepository orderHeaderRepository, IValidator validator)
+    : ICommandHandler<UpdateOrderLineCommand, UpdateOrderLineResponse>
 {
-    private readonly IOrderHeaderRepository _orderHeaderRepository;
-    private readonly IValidator _validator;
-
-    public UpdateOrderLineCommandHandler(IOrderHeaderRepository orderHeaderRepository, IValidator validator)
-    {
-        _orderHeaderRepository = orderHeaderRepository;
-        _validator = validator;
-    }
+    private readonly IOrderHeaderRepository _orderHeaderRepository = orderHeaderRepository;
+    private readonly IValidator _validator = validator;
 
     //It is not preferred to make partial updates, but for tutorial purpose it is done here
     public async Task<IResult<UpdateOrderLineResponse>> Handle(UpdateOrderLineCommand command, CancellationToken cancellationToken)

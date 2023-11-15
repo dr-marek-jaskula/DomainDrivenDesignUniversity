@@ -14,7 +14,7 @@ namespace Shopway.Domain.Entities;
 
 public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISoftDeletable
 {
-    private readonly List<OrderLine> _orderLines = new();
+    private readonly List<OrderLine> _orderLines = [];
     private bool PaymentReceived => Payment.Status is Received;
 
     private OrderHeader

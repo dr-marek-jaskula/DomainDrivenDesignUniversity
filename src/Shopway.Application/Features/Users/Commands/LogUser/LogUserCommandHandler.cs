@@ -11,20 +11,19 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Users.Commands.LogUser;
 
-internal sealed class LogUserCommandHandler : ICommandHandler<LogUserCommand, LogUserResponse>
+internal sealed class LogUserCommandHandler
+(
+    IUserRepository userRepository, 
+    IJwtProvider jwtProvider, 
+    IValidator validator, 
+    IPasswordHasher<User> passwordHasher
+) 
+    : ICommandHandler<LogUserCommand, LogUserResponse>
 {
-    private readonly IPasswordHasher<User> _passwordHasher;
-    private readonly IUserRepository _userRepository;
-    private readonly IJwtProvider _jwtProvider;
-    private readonly IValidator _validator;
-
-    public LogUserCommandHandler(IUserRepository userRepository, IJwtProvider jwtProvider, IValidator validator, IPasswordHasher<User> passwordHasher)
-    {
-        _userRepository = userRepository;
-        _jwtProvider = jwtProvider;
-        _validator = validator;
-        _passwordHasher = passwordHasher;
-    }
+    private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IJwtProvider _jwtProvider = jwtProvider;
+    private readonly IValidator _validator = validator;
 
     public async Task<IResult<LogUserResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
     {

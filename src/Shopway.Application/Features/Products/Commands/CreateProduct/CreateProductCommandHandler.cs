@@ -13,16 +13,11 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Commands.CreateProduct;
 
-internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, CreateProductResponse>
+internal sealed class CreateProductCommandHandler(IProductRepository productRepository, IValidator validator)
+    : ICommandHandler<CreateProductCommand, CreateProductResponse>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IValidator _validator;
-
-    public CreateProductCommandHandler(IProductRepository productRepository, IValidator validator)
-    {
-        _productRepository = productRepository;
-        _validator = validator;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IValidator _validator = validator;
 
     public async Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {

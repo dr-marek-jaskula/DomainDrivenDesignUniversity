@@ -11,16 +11,11 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductByKey;
 
-internal sealed class GetProductByKeyQueryHandler : IQueryHandler<GetProductByKeyQuery, ProductResponse>
+internal sealed class GetProductByKeyQueryHandler(IProductRepository productRepository, IValidator validator)
+    : IQueryHandler<GetProductByKeyQuery, ProductResponse>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IValidator _validator;
-
-    public GetProductByKeyQueryHandler(IProductRepository productRepository, IValidator validator)
-    {
-        _productRepository = productRepository;
-        _validator = validator;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IValidator _validator = validator;
 
     public async Task<IResult<ProductResponse>> Handle(GetProductByKeyQuery query, CancellationToken cancellationToken)
     {

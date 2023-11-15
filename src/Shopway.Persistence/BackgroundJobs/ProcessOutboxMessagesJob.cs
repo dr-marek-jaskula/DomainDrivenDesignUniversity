@@ -13,30 +13,22 @@ namespace Shopway.Persistence.BackgroundJobs;
 
 //This attribute determines that only one instance of a job will run at once
 [DisallowConcurrentExecution]
-public sealed class ProcessOutboxMessagesJob : IJob
+public sealed class ProcessOutboxMessagesJob
+(
+    ShopwayDbContext dbContext,
+    IPublisher publisher,
+    ILogger<ProcessOutboxMessagesJob> logger,
+    IDateTimeProvider dateTimeProvider,
+    IOutboxRepository outboxRepository
+)
+    : IJob
 {
     //We can inject scoped services, because Quartz jobs have scoped lifetime
-    private readonly ShopwayDbContext _dbContext;
-    private readonly IPublisher _publisher;
-    private readonly ILogger<ProcessOutboxMessagesJob> _logger;
-    private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly IOutboxRepository _outboxRepository;
-
-    public ProcessOutboxMessagesJob
-    (
-        ShopwayDbContext dbContext, 
-        IPublisher publisher, 
-        ILogger<ProcessOutboxMessagesJob> logger, 
-        IDateTimeProvider dateTimeProvider,
-        IOutboxRepository outboxRepository
-    )
-    {
-        _dbContext = dbContext;
-        _publisher = publisher;
-        _logger = logger;
-        _dateTimeProvider = dateTimeProvider;
-        _outboxRepository = outboxRepository;
-    }
+    private readonly ShopwayDbContext _dbContext = dbContext;
+    private readonly IPublisher _publisher = publisher;
+    private readonly ILogger<ProcessOutboxMessagesJob> _logger = logger;
+    private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
+    private readonly IOutboxRepository _outboxRepository = outboxRepository;
 
     public async Task Execute(IJobExecutionContext context)
     {

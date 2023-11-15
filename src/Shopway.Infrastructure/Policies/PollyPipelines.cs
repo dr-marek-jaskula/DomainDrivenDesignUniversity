@@ -1,11 +1,10 @@
 ﻿using Polly;
-using Polly.CircuitBreaker;
-using Polly.RateLimit;
 using Polly.Retry;
 using Polly.Timeout;
-using Shopway.Domain.Results;
-using System.Collections.Immutable;
+using Polly.RateLimit;
 using System.Net.Sockets;
+using Polly.CircuitBreaker;
+using System.Collections.Immutable;
 
 namespace Shopway.Infrastructure.Policies;
 

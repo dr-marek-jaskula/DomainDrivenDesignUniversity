@@ -13,18 +13,12 @@ using static Shopway.Domain.Errors.Domain.DomainErrors;
 
 namespace Shopway.Application.Features.Users.Commands.RegisterUser;
 
-internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, RegisterUserResponse>
+internal sealed class RegisterUserCommandHandler(IUserRepository userRepository, IValidator validator, IPasswordHasher<User> passwordHasher)
+    : ICommandHandler<RegisterUserCommand, RegisterUserResponse>
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IPasswordHasher<User> _passwordHasher;
-    private readonly IValidator _validator;
-
-    public RegisterUserCommandHandler(IUserRepository userRepository, IValidator validator, IPasswordHasher<User> passwordHasher)
-    {
-        _validator = validator;
-        _userRepository = userRepository;
-        _passwordHasher = passwordHasher;
-    }
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
+    private readonly IValidator _validator = validator;
 
     public async Task<IResult<RegisterUserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {

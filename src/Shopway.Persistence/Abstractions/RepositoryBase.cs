@@ -6,14 +6,9 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Abstractions;
 
-public abstract class RepositoryBase
+public abstract class RepositoryBase(ShopwayDbContext dbContext)
 {
-    private protected readonly ShopwayDbContext _dbContext;
-
-    private protected RepositoryBase(ShopwayDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private protected readonly ShopwayDbContext _dbContext = dbContext;
 
     /// <summary>
     /// Apply a specification and return a queryable

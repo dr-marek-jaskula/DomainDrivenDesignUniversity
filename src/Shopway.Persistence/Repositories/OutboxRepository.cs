@@ -8,13 +8,9 @@ using Shopway.Persistence.Outbox;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OutboxRepository : RepositoryBase, IOutboxRepository
+public sealed class OutboxRepository(ShopwayDbContext dbContext) : RepositoryBase(dbContext), IOutboxRepository
 {
     private const int AmountOfProcessedMessages = 20;
-
-    public OutboxRepository(ShopwayDbContext dbContext) : base(dbContext)
-    {
-    }
 
     public async Task<IList<OutboxMessage>> GetOutboxMessagesAsync(CancellationToken cancellationToken)
     {

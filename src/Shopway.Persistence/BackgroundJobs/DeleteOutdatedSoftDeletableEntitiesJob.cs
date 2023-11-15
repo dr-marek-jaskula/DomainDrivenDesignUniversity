@@ -10,18 +10,17 @@ using Shopway.Application.Abstractions;
 namespace Shopway.Persistence.BackgroundJobs;
 
 [DisallowConcurrentExecution]
-public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
+public sealed class DeleteOutdatedSoftDeletableEntitiesJob
+(
+    ShopwayDbContext dbContext, 
+    ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger, 
+    IDateTimeProvider dateTimeProvider
+) 
+    : IJob
 {
-    private readonly ShopwayDbContext _dbContext;
-    private readonly ILogger<DeleteOutdatedSoftDeletableEntitiesJob> _logger;
-    private readonly IDateTimeProvider _dateTimeProvider;
-
-    public DeleteOutdatedSoftDeletableEntitiesJob(ShopwayDbContext dbContext, ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger, IDateTimeProvider dateTimeProvider)
-    {
-        _dbContext = dbContext;
-        _logger = logger;
-        _dateTimeProvider = dateTimeProvider;
-    }
+    private readonly ShopwayDbContext _dbContext = dbContext;
+    private readonly ILogger<DeleteOutdatedSoftDeletableEntitiesJob> _logger = logger;
+    private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
 
     public async Task Execute(IJobExecutionContext context)
     {

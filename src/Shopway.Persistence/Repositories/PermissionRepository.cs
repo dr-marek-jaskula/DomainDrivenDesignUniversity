@@ -7,12 +7,8 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class PermissionRepository : RepositoryBase, IPermissionRepository
+public sealed class PermissionRepository(ShopwayDbContext dbContext) : RepositoryBase(dbContext), IPermissionRepository
 {
-    public PermissionRepository(ShopwayDbContext dbContext) : base(dbContext)
-    {
-    }
-
     public async Task<HashSet<string>> GetPermissionsAsync(UserId userId)
     {
         var permissions = await _dbContext
