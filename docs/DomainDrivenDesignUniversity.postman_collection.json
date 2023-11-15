@@ -34,7 +34,7 @@
 											"\r",
 											"if(pm.response.to.have.status(200))\r",
 											"{\r",
-											"    pm.collectionVariables.set(\"validReviewUlid\", response.value.id);\r",
+											"    pm.collectionVariables.set(\"validReviewUlid\", response.id);\r",
 											"}"
 										],
 										"type": "text/javascript"
@@ -56,7 +56,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle3\",\r\n  \"Description\": \"Added review description\"\r\n}",
+									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle5\",\r\n  \"Description\": \"Added review description\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -796,7 +796,7 @@
 											"\r",
 											"if(pm.response.to.have.status(200))\r",
 											"{\r",
-											"    pm.collectionVariables.set(\"validOrderLineUlid\", response.value.id);\r",
+											"    pm.collectionVariables.set(\"validOrderLineUlid\", response.id);\r",
 											"}"
 										],
 										"type": "text/javascript"
@@ -1089,7 +1089,7 @@
 									"\r",
 									"if (pm.response.to.have.status(200))\r",
 									"{\r",
-									"    pm.collectionVariables.set(\"validUserId\", response.value.id);\r",
+									"    pm.collectionVariables.set(\"validUserId\", response.id);\r",
 									"}"
 								],
 								"type": "text/javascript"
