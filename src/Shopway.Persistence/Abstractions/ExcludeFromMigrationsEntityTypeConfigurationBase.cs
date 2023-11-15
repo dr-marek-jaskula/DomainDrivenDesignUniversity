@@ -8,6 +8,8 @@ namespace Shopway.Persistence.Abstractions;
 public abstract class ExcludeFromMigrationsEntityTypeConfigurationBase<TEntity>(bool excludeFromMigrations) : IEntityTypeConfiguration<TEntity>
     where TEntity : class
 {
+    protected readonly bool _excludeFromMigrations = excludeFromMigrations;
+
     public void Configure(EntityTypeBuilder<TEntity> builder)
     {
         ExcludeFromMigrations(builder);
@@ -20,6 +22,6 @@ public abstract class ExcludeFromMigrationsEntityTypeConfigurationBase<TEntity>(
     {
         builder
             .Metadata
-            .SetIsTableExcludedFromMigrations(excludeFromMigrations);
+            .SetIsTableExcludedFromMigrations(_excludeFromMigrations);
     }
 }

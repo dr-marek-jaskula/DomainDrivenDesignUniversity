@@ -7,9 +7,11 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public sealed class OpenApiOptionsSetup(IApiVersionDescriptionProvider provider) : IConfigureOptions<SwaggerGenOptions>
 {
+    private readonly IApiVersionDescriptionProvider _provider = provider;
+
     public void Configure(SwaggerGenOptions options)
     {
-        foreach (var description in provider.ApiVersionDescriptions)
+        foreach (var description in _provider.ApiVersionDescriptions)
         {
             options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
         }

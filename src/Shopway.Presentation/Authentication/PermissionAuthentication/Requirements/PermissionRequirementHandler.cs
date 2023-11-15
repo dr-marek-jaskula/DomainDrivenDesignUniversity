@@ -5,9 +5,11 @@ namespace Shopway.Presentation.Authentication.PermissionAuthentication.Requireme
 
 public sealed class PermissionRequirementHandler(IServiceScopeFactory serviceScopeFactory) : AuthorizationHandler<PermissionRequirement>
 {
+    private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
+
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        using IServiceScope scope = serviceScopeFactory.CreateScope();
+        using IServiceScope scope = _serviceScopeFactory.CreateScope();
 
         var permissionService = scope.ServiceProvider
             .GetRequiredService<IPermissionService>();
