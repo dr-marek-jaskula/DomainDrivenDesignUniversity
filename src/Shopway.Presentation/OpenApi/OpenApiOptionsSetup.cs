@@ -5,14 +5,9 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public sealed class OpenApiOptionsSetup : IConfigureOptions<SwaggerGenOptions>
+public sealed class OpenApiOptionsSetup(IApiVersionDescriptionProvider provider) : IConfigureOptions<SwaggerGenOptions>
 {
-    private readonly IApiVersionDescriptionProvider _provider;
-
-    public OpenApiOptionsSetup(IApiVersionDescriptionProvider provider)
-    {
-        _provider = provider;
-    }
+    private readonly IApiVersionDescriptionProvider _provider = provider;
 
     public void Configure(SwaggerGenOptions options)
     {

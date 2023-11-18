@@ -5,9 +5,10 @@ using Shopway.Application.Abstractions.CQRS.Batch;
 
 namespace Shopway.Infrastructure.Builders.Batch;
 
-public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : IBatchResponseBuilder<TBatchRequest, TResponseKey> 
-    where TBatchRequest : class, IBatchRequest
-    where TResponseKey : struct, IUniqueKey
+internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> 
+    : IBatchResponseBuilder<TBatchRequest, TResponseKey> 
+        where TBatchRequest : class, IBatchRequest
+        where TResponseKey : struct, IUniqueKey
 {
     /// <summary>
     /// Required delegate. Used to map the requests to response keys. 
@@ -19,12 +20,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : 
     /// <summary>
     /// (ResponseKey, ResponseEntryBuilder) dictionary to store builder for all requests and allow to deal with duplicates in the easy way
     /// </summary>
-    private readonly IDictionary<TResponseKey, BatchResponseEntryBuilder> _responseEntryBuilders;
-
-    public BatchResponseBuilder()
-    {
-        _responseEntryBuilders = new Dictionary<TResponseKey, BatchResponseEntryBuilder>();
-    }
+    private readonly Dictionary<TResponseKey, BatchResponseEntryBuilder> _responseEntryBuilders = [];
 
     public IReadOnlyList<TBatchRequest> ValidRequests => Filter(builder => builder.IsValid).AsReadOnly();
     public IReadOnlyList<TBatchRequest> ValidRequestsToInsert => Filter(builder => builder.IsValidAndToInsert).AsReadOnly();
@@ -35,7 +31,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : 
     /// </summary>
     /// <param name="predicate">Predicate used to filter builders</param>
     /// <returns>A list of requests from filtered builders</returns>
-    private IList<TBatchRequest> Filter(Func<BatchResponseEntryBuilder, bool> predicate)
+    private List<TBatchRequest> Filter(Func<BatchResponseEntryBuilder, bool> predicate)
     {
         return _responseEntryBuilders
             .Values
@@ -62,7 +58,7 @@ public sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> : 
     /// The builder output.
     /// </summary>
     /// <returns>List of all responseEntries</returns>
-    public IList<BatchResponseEntry> BuildResponseEntries()
+    public List<BatchResponseEntry> BuildResponseEntries()
     {
         return _responseEntryBuilders
             .Values

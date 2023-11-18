@@ -4,15 +4,10 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Abstractions;
 
-public class CommandTransactionPipelineBase<TCommandResponse>
+public class CommandTransactionPipelineBase<TCommandResponse>(IUnitOfWork<ShopwayDbContext> unitOfWork)
     where TCommandResponse : IResult
 {
-    protected readonly IUnitOfWork<ShopwayDbContext> UnitOfWork;
-
-    public CommandTransactionPipelineBase(IUnitOfWork<ShopwayDbContext> unitOfWork)
-    {
-        UnitOfWork = unitOfWork;
-    }
+    protected readonly IUnitOfWork<ShopwayDbContext> UnitOfWork = unitOfWork;
 
     protected async Task<TCommandResponse> BeginTransactionAsync(RequestHandlerDelegate<TCommandResponse> next, CancellationToken cancellationToken)
     {

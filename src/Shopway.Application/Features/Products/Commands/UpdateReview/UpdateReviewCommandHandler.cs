@@ -10,16 +10,11 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Commands.UpdateReview;
 
-internal sealed class UpdateReviewCommandHandler : ICommandHandler<UpdateReviewCommand, UpdateReviewResponse>
+internal sealed class UpdateReviewCommandHandler(IProductRepository productRepository, IValidator validator) 
+    : ICommandHandler<UpdateReviewCommand, UpdateReviewResponse>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IValidator _validator;
-
-    public UpdateReviewCommandHandler(IProductRepository productRepository, IValidator validator)
-    {
-        _productRepository = productRepository;
-        _validator = validator;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IValidator _validator = validator;
 
     //It is not preferred to make partial updates, but for tutorial purpose it is done here
     public async Task<IResult<UpdateReviewResponse>> Handle(UpdateReviewCommand command, CancellationToken cancellationToken)

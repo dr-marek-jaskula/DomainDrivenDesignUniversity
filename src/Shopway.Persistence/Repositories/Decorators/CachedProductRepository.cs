@@ -12,18 +12,11 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-public sealed class CachedProductRepository : IProductRepository
+public sealed class CachedProductRepository(IProductRepository decorated, IFusionCache fusionCache, ShopwayDbContext context) : IProductRepository
 {
-    private readonly IProductRepository _decorated;
-    private readonly IFusionCache _fusionCache;
-    private readonly ShopwayDbContext _context;
-
-    public CachedProductRepository(IProductRepository decorated, IFusionCache fusionCache, ShopwayDbContext context)
-    {
-        _decorated = decorated;
-        _fusionCache = fusionCache;
-        _context = context;
-    }
+    private readonly IProductRepository _decorated = decorated;
+    private readonly IFusionCache _fusionCache = fusionCache;
+    private readonly ShopwayDbContext _context = context;
 
     public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
     {
@@ -52,7 +45,8 @@ public sealed class CachedProductRepository : IProductRepository
     public void Remove(ProductId id)
     {
         _decorated.Remove(id);
-        //_fusionCache.Remove(id); //Not required because cache update is done in UnitOfWork. Can be used in specific cases
+        //This would not be required, but to demonstrate the "ExecuteDelete" technique, it needs to be done here, since ChangeTracker is not updated when using "ExecuteDelete"
+        _fusionCache.Remove(id); 
     }
 
     public void Update(Product product)

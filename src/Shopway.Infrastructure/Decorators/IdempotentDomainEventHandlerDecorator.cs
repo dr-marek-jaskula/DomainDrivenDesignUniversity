@@ -4,17 +4,12 @@ using Shopway.Application.Abstractions;
 
 namespace Shopway.Infrastructure.Decoratos;
 
-public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent> : IDomainEventHandler<TDomainEvent>
-    where TDomainEvent : IDomainEvent
+public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent>(IDomainEventHandler<TDomainEvent> decorated, IOutboxRepository outboxRepository)
+    : IDomainEventHandler<TDomainEvent>
+        where TDomainEvent : IDomainEvent
 {
-    private readonly IDomainEventHandler<TDomainEvent> _decorated;
-    private readonly IOutboxRepository _outboxRepository;
-
-    public IdempotentDomainEventHandlerDecorator(IDomainEventHandler<TDomainEvent> decorated, IOutboxRepository outboxRepository)
-    {
-        _decorated = decorated;
-        _outboxRepository = outboxRepository;
-    }
+    private readonly IDomainEventHandler<TDomainEvent> _decorated = decorated;
+    private readonly IOutboxRepository _outboxRepository = outboxRepository;
 
     public async Task Handle(TDomainEvent domainEvent, CancellationToken cancellationToken)
     {

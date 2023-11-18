@@ -1,16 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using static Shopway.Presentation.Authentication.ApiKeyAuthentication.ApiKeyConstants;
+using static Shopway.Presentation.Authentication.ApiKeyAuthentication.Constants.ApiKey;
 
 namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
-public sealed class ApiKeyService : IApiKeyService
+public sealed class ApiKeyService(IConfiguration configuration) : IApiKeyService
 {
-    private readonly IConfiguration _configuration;
-
-    public ApiKeyService(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    private readonly IConfiguration _configuration = configuration;
 
     public bool IsProvidedApiKeyEqualToRequiredApiKey(RequiredApiKey requiredApiKey, string? apiKeyFromHeader)
     {

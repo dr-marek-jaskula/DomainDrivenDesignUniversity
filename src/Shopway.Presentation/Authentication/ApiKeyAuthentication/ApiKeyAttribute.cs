@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using static Shopway.Presentation.Authentication.ApiKeyAuthentication.ApiKeyConstants;
+using static Shopway.Presentation.Authentication.ApiKeyAuthentication.Constants.ApiKey;
 
 namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
@@ -11,22 +11,16 @@ public sealed class ApiKeyAttribute : TypeFilterAttribute
 {
     public ApiKeyAttribute(RequiredApiKey requiredApiKey) : base(typeof(ApiKeyFilter))
     {
-        Arguments = new object[] { requiredApiKey };
+        Arguments = [ requiredApiKey ];
     }
 
     /// <summary>
     /// Api key filter, used to handle the api key authorization
     /// </summary>
-    private sealed class ApiKeyFilter : IAuthorizationFilter
+    private sealed class ApiKeyFilter(RequiredApiKey requiredApiKey, IApiKeyService apiKeyService) : IAuthorizationFilter
     {
-        private readonly IApiKeyService _apiKeyService;
-        private readonly RequiredApiKey _requiredApiKey;
-
-        public ApiKeyFilter(RequiredApiKey requiredApiKey, IApiKeyService apiKeyService)
-        {
-            _requiredApiKey = requiredApiKey;
-            _apiKeyService = apiKeyService;
-        }
+        private readonly IApiKeyService _apiKeyService = apiKeyService;
+        private readonly RequiredApiKey _requiredApiKey = requiredApiKey;
 
         /// <summary>
         /// Compare the "X-Api-Key" header value with the required one

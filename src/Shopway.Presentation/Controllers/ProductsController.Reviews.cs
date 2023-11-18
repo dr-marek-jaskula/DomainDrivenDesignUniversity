@@ -15,8 +15,8 @@ partial class ProductsController
 
     [HttpPost($"{{productId}}/{Reviews}")]
     [HasPermission(Permission.CRUD_Review)]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddReviewResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<AddReviewResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddReview
     (
         [FromRoute] ProductId productId,
@@ -36,11 +36,10 @@ partial class ProductsController
         return Ok(result.Value);
     }
 
-
     [HttpPatch($"{{productId}}/{Reviews}/{{reviewId}}")]
     [HasPermission(Permission.CRUD_Review)]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateReviewResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<UpdateReviewResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateReview
     (
         [FromRoute] ProductId productId,
@@ -63,8 +62,8 @@ partial class ProductsController
 
     [HttpDelete($"{{productId}}/{Reviews}/{{reviewId}}")]
     [HasPermission(Permission.CRUD_Review)]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveReviewResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<RemoveReviewResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveReview([FromRoute] RemoveReviewCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);

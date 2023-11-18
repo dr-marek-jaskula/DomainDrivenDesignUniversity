@@ -11,16 +11,11 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Users.Queries.GetUserByUsername;
 
-internal sealed class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuery, UserResponse>
+internal sealed class GetUserByUsernameQueryHandler(IUserRepository userRepository, IValidator validator)
+    : IQueryHandler<GetUserByUsernameQuery, UserResponse>
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IValidator _validator;
-
-    public GetUserByUsernameQueryHandler(IUserRepository userRepository, IValidator validator)
-    {
-        _userRepository = userRepository;
-        _validator = validator;
-    }
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IValidator _validator = validator;
 
     public async Task<IResult<UserResponse>> Handle(GetUserByUsernameQuery query, CancellationToken cancellationToken)
     {

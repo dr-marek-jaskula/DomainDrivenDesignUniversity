@@ -3,11 +3,11 @@ using System.Reflection;
 using Shopway.Domain.Errors;
 using System.Linq.Expressions;
 using Shopway.Domain.Utilities;
+using System.Collections.Frozen;
 using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Framework;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Pipelines;
-using System.Collections.ObjectModel;
 using Shopway.Application.Abstractions;
 using static Shopway.Domain.Utilities.ReflectionUtilities;
 
@@ -20,11 +20,11 @@ public static partial class PersistenceCache
     /// This cache is provided due to the performance optimizations. We do not want to use reflection calls for each request.
     /// </summary>
     /// <example>Key: typeof(ProductId), Value: CheckCacheAndDatabase<Product, ProductId> method</example>
-    public static readonly ReadOnlyDictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> ValidationCache;
+    public static readonly FrozenDictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> ValidationCache;
 
-    private static ReadOnlyDictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> CreateValidationCache()
+    private static FrozenDictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> CreateValidationCache()
     {
-        Dictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> validationCache = new();
+        Dictionary<Type, Func<ShopwayDbContext, IFusionCache, IEntityId, CancellationToken, Task<Error>>> validationCache = [];
         var entityIdTypes = GetEntityIdTypes();
 
         foreach (var entityIdType in entityIdTypes)
@@ -44,7 +44,7 @@ public static partial class PersistenceCache
             validationCache.Add(entityIdType, compiledFunc);
         }
 
-        return validationCache.AsReadOnly();
+        return validationCache.ToFrozenDictionary();
     }
 
     /// <summary>

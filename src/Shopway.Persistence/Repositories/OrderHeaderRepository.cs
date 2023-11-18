@@ -9,12 +9,8 @@ using Shopway.Persistence.Specifications.OrderHeaders;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OrderHeaderRepository : RepositoryBase, IOrderHeaderRepository
+public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : RepositoryBase(dbContext), IOrderHeaderRepository
 {
-    public OrderHeaderRepository(ShopwayDbContext dbContext) : base(dbContext)
-    {
-    }
-
     public async Task<OrderHeader> GetByIdAsync(OrderHeaderId id, CancellationToken cancellationToken)
     {
         var specification = OrderHeaderSpecification.ById.WithOrderLines.AndProducts.Create(id);

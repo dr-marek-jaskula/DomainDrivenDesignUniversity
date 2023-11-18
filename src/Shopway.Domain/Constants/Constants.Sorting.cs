@@ -25,11 +25,11 @@ public static partial class Constants
                  nameof(Shopway.Domain.Entities.Product.Revision)
             );
 
-            public readonly static IList<SortByEntry> CommonProductSortProperties = AsList
-            (
+            public readonly static IList<SortByEntry> CommonProductSortProperties =
+            [
                 new SortByEntry() { PropertyName = nameof(Shopway.Domain.Entities.Product.ProductName), SortDirection = SortDirection.Ascending, SortPriority = 1 },
                 new SortByEntry() { PropertyName = nameof(Shopway.Domain.Entities.Product.Revision), SortDirection = SortDirection.Ascending, SortPriority = 2 }
-            );
+            ];
         }
     }
 }

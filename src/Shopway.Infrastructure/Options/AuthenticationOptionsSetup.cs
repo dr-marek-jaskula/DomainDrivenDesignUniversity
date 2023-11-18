@@ -1,17 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 namespace Shopway.Infrastructure.Options;
 
-public sealed class AuthenticationOptionsSetup : IConfigureOptions<AuthenticationOptions>
+internal sealed class AuthenticationOptionsSetup(IConfiguration configuration) : IConfigureOptions<AuthenticationOptions>
 {
     private const string _configurationSectionName = "AuthenticationOptions";
-    private readonly IConfiguration _configuration;
-
-    public AuthenticationOptionsSetup(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    private readonly IConfiguration _configuration = configuration;
 
     public void Configure(AuthenticationOptions options)
     {

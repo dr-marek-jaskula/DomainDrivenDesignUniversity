@@ -1,16 +1,16 @@
 ﻿using Shopway.Domain.Utilities;
-using System.Collections.ObjectModel;
+using System.Collections.Frozen;
 using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.Cache;
 
 public static partial class ApplicationCache
 {
-    public static readonly ReadOnlyDictionary<Type, IReadOnlyCollection<string>> AllowedFilterPropertiesCache;
+    public static readonly FrozenDictionary<Type, IReadOnlyCollection<string>> AllowedFilterPropertiesCache;
 
-    private static ReadOnlyDictionary<Type, IReadOnlyCollection<string>> CreateAllowedFilterPropertiesCache()
+    private static FrozenDictionary<Type, IReadOnlyCollection<string>> CreateAllowedFilterPropertiesCache()
     {
-        Dictionary<Type, IReadOnlyCollection<string>> allowedFilterPropertiesCache = new();
+        Dictionary<Type, IReadOnlyCollection<string>> allowedFilterPropertiesCache = [];
 
         var dynamicFilterTypes = Application.AssemblyReference.Assembly
             .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicFilter)))
@@ -23,6 +23,6 @@ public static partial class ApplicationCache
             allowedFilterPropertiesCache.TryAdd(type, typeAllowedFilterProperties!);
         }
 
-        return allowedFilterPropertiesCache.AsReadOnly();
+        return allowedFilterPropertiesCache.ToFrozenDictionary();
     }
 }

@@ -6,14 +6,10 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Commands.RemoveReview;
 
-internal sealed class RemoveReviewCommandHandler : ICommandHandler<RemoveReviewCommand, RemoveReviewResponse>
+internal sealed class RemoveReviewCommandHandler(IProductRepository productRepository) 
+    : ICommandHandler<RemoveReviewCommand, RemoveReviewResponse>
 {
-    private readonly IProductRepository _productRepository;
-
-    public RemoveReviewCommandHandler(IProductRepository productRepository)
-    {
-        _productRepository = productRepository;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
 
     public async Task<IResult<RemoveReviewResponse>> Handle(RemoveReviewCommand command, CancellationToken cancellationToken)
     {

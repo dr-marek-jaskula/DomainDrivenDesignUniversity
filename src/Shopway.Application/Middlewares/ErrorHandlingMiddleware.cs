@@ -1,25 +1,20 @@
 ﻿using Shopway.Domain.Errors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Shopway.Application.Exceptions;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
 using static Shopway.Application.Constants.Constants.ProblemDetails;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Shopway.Application.Middlewares;
 
 /// <summary>
 /// Middleware that provides exception handling. Each request needs to be processed by the following try-catch block
 /// </summary>
-public sealed class ErrorHandlingMiddleware : IMiddleware
+public sealed class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : IMiddleware
 {
     private const string ProblemDetailsContentType = "application/problem+json";
-    private readonly ILogger<ErrorHandlingMiddleware> _logger;
-
-    public ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<ErrorHandlingMiddleware> _logger = logger;
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {

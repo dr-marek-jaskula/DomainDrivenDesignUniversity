@@ -13,8 +13,8 @@ partial class OrderHeadersController
     public const string Products = nameof(Products);
 
     [HttpPost($"{{orderHeaderId}}/{Products}/{{productId}}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddOrderLineResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<AddOrderLineResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
@@ -36,8 +36,8 @@ partial class OrderHeadersController
     }
 
     [HttpDelete($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveOrderLineResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<RemoveOrderLineResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
@@ -58,8 +58,8 @@ partial class OrderHeadersController
     }
 
     [HttpPut($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateOrderLineResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<UpdateOrderLineResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,

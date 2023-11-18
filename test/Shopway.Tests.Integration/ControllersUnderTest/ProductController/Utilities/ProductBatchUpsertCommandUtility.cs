@@ -27,10 +27,10 @@ public static class ProductBatchUpsertCommandUtility
     {
         if (ProductKey is not null && Price is not null && UomCode is not null) 
         { 
-            return new BatchUpsertProductCommand(AsList(new ProductBatchUpsertRequest((ProductKey)ProductKey, (decimal)Price, UomCode)));
+            return new BatchUpsertProductCommand([ new ProductBatchUpsertRequest((ProductKey)ProductKey, (decimal)Price, UomCode) ]);
         }
 
-        return new BatchUpsertProductCommand(AsList(Request));
+        return new BatchUpsertProductCommand([ Request ]);
     }
 
     public static ProductBatchUpsertRequest CreateProductBatchUpsertRequest

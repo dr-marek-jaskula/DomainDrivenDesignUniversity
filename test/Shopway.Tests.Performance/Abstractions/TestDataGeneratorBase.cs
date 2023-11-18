@@ -5,17 +5,12 @@ using static Shopway.Domain.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Performance.Abstractions;
 
-public abstract class TestDataGeneratorBase
+public abstract class TestDataGeneratorBase(IUnitOfWork<ShopwayDbContext> unitOfWork)
 {
-    protected readonly IUnitOfWork<ShopwayDbContext> _unitOfWork;
+    protected readonly IUnitOfWork<ShopwayDbContext> _unitOfWork = unitOfWork;
     protected const string AUTO_PREFIX = "auto";
     protected const int Length = 22;
     protected readonly Random _random = new();
-
-    public TestDataGeneratorBase(IUnitOfWork<ShopwayDbContext> unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
 
     /// <summary>
     /// Generates test string with 'auto' prefix

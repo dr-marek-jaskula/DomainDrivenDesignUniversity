@@ -30,9 +30,9 @@ public sealed class SymSpellFuzzySearchTests
     {
         public StringToFuzzySearchTestData()
         {
-            Add(AsList("wolf", "deer", "snake", "bear", "grizzly"), "grizzly", "grimzli");
-            Add(AsList("beautiful", "flower", "near", "the", "river"), "flower", "flomer");
-            Add(AsList("super", "very", "fast", "dignity", "majestic", "dusk"), "dignity", "diggnyty");
+            Add(["wolf", "deer", "snake", "bear", "grizzly"], "grizzly", "grimzli");
+            Add(["beautiful", "flower", "near", "the", "river"], "flower", "flomer");
+            Add(["super", "very", "fast", "dignity", "majestic", "dusk"], "dignity", "diggnyty");
         }
     }
 

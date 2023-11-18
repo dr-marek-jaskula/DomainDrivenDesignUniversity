@@ -1,25 +1,19 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Text;
 using System.Security.Claims;
-using System.Text;
+using Shopway.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Shopway.Application.Abstractions;
-using Shopway.Domain.Entities;
 using Shopway.Infrastructure.Options;
+using System.IdentityModel.Tokens.Jwt;
 using Shopway.Infrastructure.Policies;
+using Shopway.Application.Abstractions;
 
 namespace Shopway.Infrastructure.Providers;
 
-internal sealed class JwtProvider : IJwtProvider
+internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeProvider timeProvider) : IJwtProvider
 {
-    private readonly AuthenticationOptions _options;
-    private readonly IDateTimeProvider _dateTimeProvider;
-
-    public JwtProvider(IOptions<AuthenticationOptions> options, IDateTimeProvider dateTimeProvider)
-    {
-        _options = options.Value;
-        _dateTimeProvider = dateTimeProvider;
-    }
+    private readonly AuthenticationOptions _options = options.Value;
+    private readonly TimeProvider _timeProvider = timeProvider;
 
     public string GenerateJwt(User user)
     {
@@ -39,7 +33,7 @@ internal sealed class JwtProvider : IJwtProvider
 
         var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
-        var expires = _dateTimeProvider.UtcNow.AddDays(_options.DaysToExpire);
+        var expires = _timeProvider.GetUtcNow().AddDays(_options.DaysToExpire);
 
         var token = new JwtSecurityToken
         (

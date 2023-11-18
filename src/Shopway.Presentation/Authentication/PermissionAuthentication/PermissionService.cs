@@ -7,14 +7,9 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Presentation.Authentication.PermissionAuthentication;
 
-public sealed class PermissionService : IPermissionService
+public sealed class PermissionService(IPermissionRepository permissionRepository) : IPermissionService
 {
-    private readonly IPermissionRepository _permissionRepository;
-
-    public PermissionService(IPermissionRepository permissionRepository)
-    {
-        _permissionRepository = permissionRepository;
-    }
+    private readonly IPermissionRepository _permissionRepository = permissionRepository;
 
     public Result<UserId> GetUserId(AuthorizationHandlerContext context)
     {

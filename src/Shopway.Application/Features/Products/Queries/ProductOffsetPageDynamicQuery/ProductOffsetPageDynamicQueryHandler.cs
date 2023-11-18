@@ -9,14 +9,10 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Queries.DynamicOffsetProductQuery;
 
-internal sealed class ProductOffsetPageDynamicQueryHandler : IOffsetPageQueryHandler<ProductOffsetPageDynamicQuery, ProductResponse, ProductDynamicFilter, ProductDynamicSortBy, OffsetPage>
+internal sealed class ProductOffsetPageDynamicQueryHandler(IProductRepository productRepository)
+    : IOffsetPageQueryHandler<ProductOffsetPageDynamicQuery, ProductResponse, ProductDynamicFilter, ProductDynamicSortBy, OffsetPage>
 {
-    private readonly IProductRepository _productRepository;
-
-    public ProductOffsetPageDynamicQueryHandler(IProductRepository productRepository)
-    {
-        _productRepository = productRepository;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
 
     public async Task<IResult<OffsetPageResponse<ProductResponse>>> Handle(ProductOffsetPageDynamicQuery pageQuery, CancellationToken cancellationToken)
     {

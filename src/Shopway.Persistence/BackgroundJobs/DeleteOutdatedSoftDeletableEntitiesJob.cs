@@ -5,23 +5,21 @@ using Shopway.Domain.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using Shopway.Application.Abstractions;
 
 namespace Shopway.Persistence.BackgroundJobs;
 
 [DisallowConcurrentExecution]
-public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
+public sealed class DeleteOutdatedSoftDeletableEntitiesJob
+(
+    ShopwayDbContext dbContext, 
+    ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger, 
+    TimeProvider timeProvider
+) 
+    : IJob
 {
-    private readonly ShopwayDbContext _dbContext;
-    private readonly ILogger<DeleteOutdatedSoftDeletableEntitiesJob> _logger;
-    private readonly IDateTimeProvider _dateTimeProvider;
-
-    public DeleteOutdatedSoftDeletableEntitiesJob(ShopwayDbContext dbContext, ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger, IDateTimeProvider dateTimeProvider)
-    {
-        _dbContext = dbContext;
-        _logger = logger;
-        _dateTimeProvider = dateTimeProvider;
-    }
+    private readonly ShopwayDbContext _dbContext = dbContext;
+    private readonly ILogger<DeleteOutdatedSoftDeletableEntitiesJob> _logger = logger;
+    private readonly TimeProvider _timeProvider = timeProvider;
 
     public async Task Execute(IJobExecutionContext context)
     {
@@ -43,7 +41,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
             {
                 _dbContext,
                 _logger,
-                _dateTimeProvider,
+                _timeProvider,
                 context.CancellationToken
             })!;
         }
@@ -60,7 +58,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
     (
         ShopwayDbContext context,
         ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger,
-        IDateTimeProvider dateTimeProvider,
+        TimeProvider timeProvider,
         CancellationToken cancellationToken
     )
         where TEntity : class, IEntity, ISoftDeletable
@@ -68,7 +66,7 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob : IJob
         var entitiesToDelete = await context
             .Set<TEntity>()
             .Where(x => x.SoftDeleted)
-            .Where(x => x.SoftDeletedOn < dateTimeProvider.UtcNow.AddYears(-1))
+            .Where(x => x.SoftDeletedOn < timeProvider.GetUtcNow().AddYears(-1))
             .ToListAsync(cancellationToken);
 
         logger.LogDeletingOutdatedSoftDeletedEntities(entitiesToDelete.Count, typeof(TEntity).Name);
@@ -82,7 +80,7 @@ public static partial class LoggerMessageDefinitionsUtilities
     [LoggerMessage
     (
         EventId = 7,
-        EventName = $"{nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
+        EventName = $"Start {nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
         Level = LogLevel.Warning,
         Message = "{jobName} starts",
         SkipEnabledCheck = true
@@ -92,7 +90,7 @@ public static partial class LoggerMessageDefinitionsUtilities
     [LoggerMessage
     (
         EventId = 8,
-        EventName = $"{nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
+        EventName = $"End {nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
         Level = LogLevel.Warning,
         Message = "{jobName} job ends",
         SkipEnabledCheck = true
@@ -102,7 +100,7 @@ public static partial class LoggerMessageDefinitionsUtilities
     [LoggerMessage
     (
         EventId = 9,
-        EventName = $"{nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
+        EventName = $"Use {nameof(DeleteOutdatedSoftDeletableEntitiesJob)}",
         Level = LogLevel.Warning,
         Message = "Deletes '{Count}' entities of type '{EntityType}'.",
         SkipEnabledCheck = true

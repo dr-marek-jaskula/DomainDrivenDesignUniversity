@@ -14,18 +14,13 @@ using static Shopway.Persistence.Utilities.QueryableUtilities;
 
 namespace Shopway.Persistence.Pipelines;
 
-public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
-    where TResponse : class, IResult
+public sealed class ReferenceValidationPipeline<TRequest, TResponse>(ShopwayDbContext context, IFusionCache fusionCache)
+    : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
+        where TResponse : class, IResult
 {
-    private readonly ShopwayDbContext _context;
-    private readonly IFusionCache _fusionCache;
-
-    public ReferenceValidationPipeline(ShopwayDbContext context, IFusionCache fusionCache)
-    {
-        _context = context;
-        _fusionCache = fusionCache;
-    }
+    private readonly ShopwayDbContext _context = context;
+    private readonly IFusionCache _fusionCache = fusionCache;
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
@@ -41,7 +36,7 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse> : IPipeline
             .Distinct()
             .ToArray();
 
-        if (errors.Any())
+        if (errors.Length is not 0)
         {
             return errors.CreateValidationResult<TResponse>();
         }

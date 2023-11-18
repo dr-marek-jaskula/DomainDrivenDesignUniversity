@@ -1,16 +1,16 @@
 ﻿using Shopway.Domain.Utilities;
-using System.Collections.ObjectModel;
+using System.Collections.Frozen;
 using Shopway.Domain.Abstractions.Common;
 
 namespace Shopway.Application.Cache;
 
 public static partial class ApplicationCache
 {
-    public static readonly ReadOnlyDictionary<Type, IReadOnlyCollection<string>> AllowedSortPropertiesCache;
+    public static readonly FrozenDictionary<Type, IReadOnlyCollection<string>> AllowedSortPropertiesCache;
 
-    private static ReadOnlyDictionary<Type, IReadOnlyCollection<string>> CreateAllowedSortPropertiesCache()
+    private static FrozenDictionary<Type, IReadOnlyCollection<string>> CreateAllowedSortPropertiesCache()
     {
-        Dictionary<Type, IReadOnlyCollection<string>> allowedSortPropertiesCache = new();
+        Dictionary<Type, IReadOnlyCollection<string>> allowedSortPropertiesCache = [];
 
         var dynamicSortByTypes = Application.AssemblyReference.Assembly
             .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicSortBy)))
@@ -23,6 +23,6 @@ public static partial class ApplicationCache
             allowedSortPropertiesCache.TryAdd(type, typeAllowedSortByProperties!);
         }
 
-        return allowedSortPropertiesCache.AsReadOnly();
+        return allowedSortPropertiesCache.ToFrozenDictionary();
     }
 }

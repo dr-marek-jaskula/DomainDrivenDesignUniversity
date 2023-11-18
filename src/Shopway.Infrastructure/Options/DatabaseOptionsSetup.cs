@@ -1,23 +1,17 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Shopway.Infrastructure.Options;
 
-public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
+internal sealed class DatabaseOptionsSetup(IConfiguration configuration, IWebHostEnvironment environment) : IConfigureOptions<DatabaseOptions>
 {
     private const string _configurationSectionName = "DatabaseOptions";
     private const string _defaultConnection = "DefaultConnection";
     private const string _testConnection = "TestConnection";
-    private readonly IConfiguration _configuration;
-    private readonly IWebHostEnvironment _environment;
-
-    public DatabaseOptionsSetup(IConfiguration configuration, IWebHostEnvironment environment)
-    {
-        _configuration = configuration;
-        _environment = environment;
-    }
+    private readonly IConfiguration _configuration = configuration;
+    private readonly IWebHostEnvironment _environment = environment;
 
     public void Configure(DatabaseOptions options)
     {

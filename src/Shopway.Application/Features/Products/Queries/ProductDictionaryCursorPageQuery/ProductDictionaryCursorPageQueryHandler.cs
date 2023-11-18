@@ -9,14 +9,10 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductsCursorDictionary;
 
-internal sealed class ProductDictionaryCursorPageQueryHandler : ICursorPageQueryHandler<ProductDictionaryCursorPageQuery, DictionaryResponseEntry, ProductDictionaryStaticFilter, ProductDynamicSortBy, CursorPage>
+internal sealed class ProductDictionaryCursorPageQueryHandler(IProductRepository productRepository)
+    : ICursorPageQueryHandler<ProductDictionaryCursorPageQuery, DictionaryResponseEntry, ProductDictionaryStaticFilter, ProductDynamicSortBy, CursorPage>
 {
-    private readonly IProductRepository _productRepository;
-
-    public ProductDictionaryCursorPageQueryHandler(IProductRepository productRepository)
-    {
-        _productRepository = productRepository;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
 
     public async Task<IResult<CursorPageResponse<DictionaryResponseEntry>>> Handle(ProductDictionaryCursorPageQuery pageQuery, CancellationToken cancellationToken)
     {

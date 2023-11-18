@@ -15,12 +15,8 @@ using static Shopway.Domain.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class ProductRepository : RepositoryBase, IProductRepository
+public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBase(dbContext), IProductRepository
 {
-    public ProductRepository(ShopwayDbContext dbContext) : base(dbContext)
-    {
-    }
-
     public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.Names.Create();

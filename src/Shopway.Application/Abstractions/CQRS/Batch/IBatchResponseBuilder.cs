@@ -38,7 +38,7 @@ public interface IBatchResponseBuilder<TBatchRequest, TResponseKey>
     /// Build response entries: key, status and errors if there are some
     /// </summary>
     /// <returns></returns>
-    IList<BatchResponseEntry> BuildResponseEntries();
+    List<BatchResponseEntry> BuildResponseEntries();
 
     /// <summary>
     /// Validate requests that are supposed to insert an entity

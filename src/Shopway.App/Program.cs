@@ -53,6 +53,7 @@ catch (Exception exception)
 }
 finally
 {
+    Log.Information("Ending the web host");
     Log.CloseAndFlush();
 }
 

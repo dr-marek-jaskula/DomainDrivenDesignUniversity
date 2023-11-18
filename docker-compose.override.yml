@@ -13,13 +13,23 @@ services:
     ports:
       - "1434:1433" #external port was modified to 1434, because I have installed SQL Server locally, so the port 1433 is already used
     volumes:
-      - ddduniversity_data:/var/opt/mssql
+      - ddduniversity_volume:/var/opt/mssql
+
+  portainer:
+    container_name: portainer
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_volume:/data
 
   shopway.app:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings__DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ConnectionStrings__TestConnection=Server=ddduniversitydb;Database=DDDUniversityTest;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
+      - "ASPNETCORE_HTTP_PORTS=80;8080"
     restart: unless-stopped
     networks:
       - db_net

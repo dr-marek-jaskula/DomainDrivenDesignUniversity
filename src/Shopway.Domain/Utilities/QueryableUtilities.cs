@@ -57,7 +57,7 @@ public static class QueryableUtilities
     )
     {
         var parameter = Expression.Parameter(typeof(TResponse));
-        var filterEntryExpressions = EmptyList<Expression>();
+        List<Expression> filterEntryExpressions = [];
 
         foreach (var filterEntry in filterEntries)
         {
@@ -84,7 +84,7 @@ public static class QueryableUtilities
                     continue;
                 }
 
-                var method = StringType.GetMethod(predicate.Operation, new[] { StringType });
+                var method = StringType.GetMethod(predicate.Operation, [ StringType ]);
                 var newMethodCallExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(predicate.Value));
 
                 filterEntryExpression = filterEntryExpression is null

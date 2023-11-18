@@ -4,13 +4,8 @@ using Shopway.Presentation.Authentication.PermissionAuthentication.Requirements;
 
 namespace Shopway.Presentation.Authentication.PermissionAuthentication;
 
-public sealed class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
+public sealed class PermissionAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options) : DefaultAuthorizationPolicyProvider(options)
 {
-    public PermissionAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options)
-        : base(options)
-    {
-    }
-
     /// <summary>
     /// Automatically registers the policies using PermissionRequirement when asked for the permission policy.
     /// </summary>

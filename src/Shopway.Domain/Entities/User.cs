@@ -1,16 +1,16 @@
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.EntityIds;
 using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Abstractions;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Enumerations;
-using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 
 public sealed class User : AggregateRoot<UserId>, IAuditable
 {
-    private readonly List<Role> _roles = new();
-    private readonly List<OrderHeader> _orderHeaders = new();
+    private readonly List<Role> _roles = [];
+    private readonly List<OrderHeader> _orderHeaders = [];
 
     private User(UserId id, Username username, Email email)
         : base(id)

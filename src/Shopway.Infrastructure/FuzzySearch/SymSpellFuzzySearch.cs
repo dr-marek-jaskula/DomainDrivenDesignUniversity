@@ -9,15 +9,10 @@ namespace Shopway.Infrastructure.FuzzySearch;
 //Verbosity.Top: suggestion with the highest term frequency of the suggestions of smallest edit distance found.
 //Verbosity.Closest: All suggestions of smallest edit distance found, suggestions ordered by term frequency.
 //All: All suggestions within maxEditDistance, suggestions ordered by edit distance, then by term frequency (slower, no early termination).
-public sealed class SymSpellFuzzySearch : IFuzzySearch
+internal sealed class SymSpellFuzzySearch(SymSpell fuzzySearchEngine) : IFuzzySearch
 {
-    private readonly SymSpell _fuzzySearchEngine;
+    private readonly SymSpell _fuzzySearchEngine = fuzzySearchEngine;
     private const int DefaultMaxTermDistance = 2;
-
-    internal SymSpellFuzzySearch(SymSpell fuzzySearchEngine)
-    {
-        _fuzzySearchEngine = fuzzySearchEngine;
-    }
 
     /// <summary>
     /// Returns the closest term to the input, based on the predefined directory (biggest frequency, lowest distance)

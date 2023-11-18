@@ -7,15 +7,10 @@ namespace Shopway.Application.Middlewares;
 /// <summary>
 /// Examines if the request takes at least 'RequestDurationLogLevel' seconds. If so, then log a warning.
 /// </summary>
-public sealed class RequestTimeMiddleware : IMiddleware
+public sealed class RequestTimeMiddleware(ILogger<RequestTimeMiddleware> logger) : IMiddleware
 {
-    private readonly ILogger<RequestTimeMiddleware> _logger;
     private const int RequestDurationLogLevel = 4;
-
-    public RequestTimeMiddleware(ILogger<RequestTimeMiddleware> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<RequestTimeMiddleware> _logger = logger;
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {

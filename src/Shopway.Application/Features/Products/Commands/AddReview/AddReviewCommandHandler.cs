@@ -13,18 +13,12 @@ using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Commands.AddReview;
 
-internal sealed class AddReviewCommandHandler : ICommandHandler<AddReviewCommand, AddReviewResponse>
+internal sealed class AddReviewCommandHandler(IProductRepository productRepository, IValidator validator, IUserContextService userContext) 
+    : ICommandHandler<AddReviewCommand, AddReviewResponse>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IValidator _validator;
-    private readonly IUserContextService _userContext;
-
-    public AddReviewCommandHandler(IProductRepository productRepository, IValidator validator, IUserContextService userContext)
-    {
-        _productRepository = productRepository;
-        _validator = validator;
-        _userContext = userContext;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IValidator _validator = validator;
+    private readonly IUserContextService _userContext = userContext;
 
     public async Task<IResult<AddReviewResponse>> Handle(AddReviewCommand command, CancellationToken cancellationToken)
     {

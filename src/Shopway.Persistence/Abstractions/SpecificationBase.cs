@@ -40,7 +40,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
 
     //Filters
     internal IFilter<TEntity>? Filter { get; private set; } = null;
-    internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = new();
+    internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = [];
 
     //SortBy
     internal ISortBy<TEntity>? SortBy { get; private set; } = null;
@@ -48,7 +48,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
 
     //Includes
-    internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = new();
+    internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
     internal Func<IQueryable<TEntity>, IQueryable<TEntity>>? IncludeAction { get; private set; } = null; 
 
     internal SpecificationBase<TEntity, TEntityId> AddTag(string queryTag)

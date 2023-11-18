@@ -12,16 +12,11 @@ using Shopway.Application.Features.Orders.Commands.AddOrderLine;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 
-internal sealed class AddOrderLineCommandHandler : ICommandHandler<AddOrderLineCommand, AddOrderLineResponse>
+internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IValidator validator) 
+    : ICommandHandler<AddOrderLineCommand, AddOrderLineResponse>
 {
-    private readonly IOrderHeaderRepository _orderHeaderRepository;
-    private readonly IValidator _validator;
-
-    public AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IValidator validator)
-    {
-        _orderHeaderRepository = orderRepository;
-        _validator = validator;
-    }
+    private readonly IOrderHeaderRepository _orderHeaderRepository = orderRepository;
+    private readonly IValidator _validator = validator;
 
     public async Task<IResult<AddOrderLineResponse>> Handle(AddOrderLineCommand command, CancellationToken cancellationToken)
     {
