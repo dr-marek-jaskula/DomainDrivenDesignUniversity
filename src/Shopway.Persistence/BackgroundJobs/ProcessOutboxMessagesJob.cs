@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using Shopway.Infrastructure.Policies;
-using Shopway.Application.Abstractions;
 using Shopway.Infrastructure.Utilities;
 
 namespace Shopway.Persistence.BackgroundJobs;
@@ -18,7 +17,7 @@ public sealed class ProcessOutboxMessagesJob
     ShopwayDbContext dbContext,
     IPublisher publisher,
     ILogger<ProcessOutboxMessagesJob> logger,
-    IDateTimeProvider dateTimeProvider,
+    TimeProvider timeProvider,
     IOutboxRepository outboxRepository
 )
     : IJob
@@ -27,7 +26,7 @@ public sealed class ProcessOutboxMessagesJob
     private readonly ShopwayDbContext _dbContext = dbContext;
     private readonly IPublisher _publisher = publisher;
     private readonly ILogger<ProcessOutboxMessagesJob> _logger = logger;
-    private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
+    private readonly TimeProvider _timeProvider = timeProvider;
     private readonly IOutboxRepository _outboxRepository = outboxRepository;
 
     public async Task Execute(IJobExecutionContext context)
@@ -53,7 +52,7 @@ public sealed class ProcessOutboxMessagesJob
             var result = await PollyPipelines.AsyncRetryPipeline.ExecuteAndReturnResult(async token => 
                 await _publisher.Publish(domainEvent, token), context.CancellationToken);
 
-            message.UpdatePostProcessProperties(_dateTimeProvider.UtcNow, result.Error.MessageOrNullIfErrorNone());
+            message.UpdatePostProcessProperties(_timeProvider.GetUtcNow(), result.Error.MessageOrNullIfErrorNone());
         }
 
         await _dbContext.SaveChangesAsync();

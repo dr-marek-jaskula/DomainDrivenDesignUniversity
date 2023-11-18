@@ -4,7 +4,6 @@ using Polly.Timeout;
 using Polly.RateLimit;
 using System.Net.Sockets;
 using Polly.CircuitBreaker;
-using System.Collections.Immutable;
 using System.Collections.Frozen;
 
 namespace Shopway.Infrastructure.Policies;

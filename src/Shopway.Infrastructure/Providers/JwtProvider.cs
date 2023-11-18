@@ -7,14 +7,13 @@ using Shopway.Infrastructure.Options;
 using System.IdentityModel.Tokens.Jwt;
 using Shopway.Infrastructure.Policies;
 using Shopway.Application.Abstractions;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace Shopway.Infrastructure.Providers;
 
-internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, IDateTimeProvider dateTimeProvider) : IJwtProvider
+internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeProvider timeProvider) : IJwtProvider
 {
     private readonly AuthenticationOptions _options = options.Value;
-    private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
+    private readonly TimeProvider _timeProvider = timeProvider;
 
     public string GenerateJwt(User user)
     {
@@ -34,7 +33,7 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, IDate
 
         var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
-        var expires = _dateTimeProvider.UtcNow.AddDays(_options.DaysToExpire);
+        var expires = _timeProvider.GetUtcNow().AddDays(_options.DaysToExpire);
 
         var token = new JwtSecurityToken
         (

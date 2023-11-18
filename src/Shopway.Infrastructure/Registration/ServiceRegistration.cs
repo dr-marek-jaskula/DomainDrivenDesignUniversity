@@ -27,10 +27,6 @@ public static class ServiceRegistration
 
         services.AddScoped(typeof(IBatchResponseBuilder<,>), typeof(BatchResponseBuilder<,>));
 
-        //Providers
-
-        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
-
         //Scan for the rest
 
         services.Scan(selector => selector
