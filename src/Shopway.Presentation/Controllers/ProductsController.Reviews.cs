@@ -36,7 +36,6 @@ partial class ProductsController
         return Ok(result.Value);
     }
 
-
     [HttpPatch($"{{productId}}/{Reviews}/{{reviewId}}")]
     [HasPermission(Permission.CRUD_Review)]
     [ProducesResponseType<UpdateReviewResponse>(StatusCodes.Status200OK)]
