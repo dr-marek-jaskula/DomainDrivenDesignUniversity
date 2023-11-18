@@ -8,8 +8,8 @@ namespace Shopway.Presentation.Controllers;
 public partial class ProductsController
 {
     [HttpPost("batch/upsert")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BatchUpsertProductResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<BatchUpsertProductResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ProductsBatchUpsert([FromBody] BatchUpsertProductCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);

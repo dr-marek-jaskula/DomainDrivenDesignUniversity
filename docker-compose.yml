@@ -4,6 +4,9 @@ services:
   ddduniversitydb:
     image: mcr.microsoft.com/mssql/server:2022-latest
 
+  portainer:
+    image: portainer/portainer-ce
+
   shopway.app:
     image: ${DOCKER_REGISTRY-}shopwayapp
     build:
@@ -14,4 +17,5 @@ networks:
   db_net:
 
 volumes:
-  ddduniversity_data:
+  ddduniversity_volume:
+  portainer_volume:  

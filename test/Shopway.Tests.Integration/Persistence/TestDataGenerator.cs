@@ -10,13 +10,8 @@ namespace Shopway.Tests.Integration.Persistence;
 /// <summary>
 /// Contains methods to add entities to the database and utility methods for test data
 /// </summary>
-public sealed class TestDataGenerator : TestDataGeneratorBase
+public sealed class TestDataGenerator(IUnitOfWork<ShopwayDbContext> unitOfWork) : TestDataGeneratorBase(unitOfWork)
 {
-    public TestDataGenerator(IUnitOfWork<ShopwayDbContext> unitOfWork) 
-        : base(unitOfWork)
-    {
-    }
-
     public async Task<Product> AddProductAsync
     (
         ProductName? productName = null,

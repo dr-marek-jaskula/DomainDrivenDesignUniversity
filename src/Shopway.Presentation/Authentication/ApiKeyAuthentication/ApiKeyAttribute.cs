@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using static Shopway.Presentation.Authentication.ApiKeyAuthentication.ApiKeyConstants;
+using static Shopway.Presentation.Authentication.ApiKeyAuthentication.Constants.ApiKey;
 
 namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
@@ -11,7 +11,7 @@ public sealed class ApiKeyAttribute : TypeFilterAttribute
 {
     public ApiKeyAttribute(RequiredApiKey requiredApiKey) : base(typeof(ApiKeyFilter))
     {
-        Arguments = new object[] { requiredApiKey };
+        Arguments = [ requiredApiKey ];
     }
 
     /// <summary>

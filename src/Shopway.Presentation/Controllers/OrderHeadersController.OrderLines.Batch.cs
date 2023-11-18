@@ -1,16 +1,16 @@
 ﻿using Shopway.Domain.EntityIds;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using static Shopway.Application.Features.BatchEntryStatus;
 using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
+using static Shopway.Application.Features.BatchEntryStatus;
 
 namespace Shopway.Presentation.Controllers;
 
 partial class OrderHeadersController
 {
     [HttpPost("batch/upsert/{orderHeaderId}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BatchUpsertOrderLineResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<BatchUpsertOrderLineResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> OrderLinesBatchUpsert
     (
         [FromRoute] OrderHeaderId orderHeaderId,

@@ -5,6 +5,7 @@ using Polly.RateLimit;
 using System.Net.Sockets;
 using Polly.CircuitBreaker;
 using System.Collections.Immutable;
+using System.Collections.Frozen;
 
 namespace Shopway.Infrastructure.Policies;
 
@@ -16,22 +17,22 @@ public static class PollyPipelines
     private const int _migrationMaxRetries = 5;
     private static readonly Random _random = new();
 
-    private static ImmutableArray<Type> networkExceptions = new[]
+    private static FrozenSet<Type> networkExceptions = new[]
     {
         typeof(SocketException),
         typeof(HttpRequestException),
-    }.ToImmutableArray();
+    }.ToFrozenSet();
 
-    private static ImmutableArray<Type> strategyExceptions = new[]
+    private static FrozenSet<Type> strategyExceptions = new[]
     {
         typeof(TimeoutRejectedException),
         typeof(BrokenCircuitException),
         typeof(RateLimitRejectedException),
-    }.ToImmutableArray();
+    }.ToFrozenSet();
 
-    private static ImmutableArray<Type> retryableExceptions = networkExceptions
+    private static FrozenSet<Type> retryableExceptions = networkExceptions
         .Union(strategyExceptions)
-        .ToImmutableArray();
+        .ToFrozenSet();
 
     //Before Polly 8.0 approach
     public static readonly AsyncRetryPolicy AsyncRetryPolicy_Obsolete = Policy
@@ -75,7 +76,7 @@ public static class PollyPipelines
             MaxRetryAttempts = _migrationMaxRetries,
             DelayGenerator = args =>
             {
-                var delay = TimeSpan.FromMicroseconds(args.AttemptNumber * 50 + _random.Next(0, 20));
+                var delay = TimeSpan.FromMicroseconds(args.AttemptNumber * 500 + _random.Next(0, 200));
                 return new ValueTask<TimeSpan?>(delay);
             },
             ShouldHandle = args => args.Outcome switch

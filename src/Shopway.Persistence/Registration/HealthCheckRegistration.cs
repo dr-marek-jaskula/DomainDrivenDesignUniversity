@@ -39,6 +39,12 @@ public static class HealthCheckRegistration
                 name: "DbContext readiness",
                 customTestQuery: GetProduct,
                 tags: new[] { Readiness }
+            )
+            .AddCheck<AppHealthCheck>
+            (
+                failureStatus: Unhealthy,
+                name: "Application status",
+                tags: new[] { Basic, Critical }
             );
 
         services
@@ -123,5 +129,13 @@ public static class HealthCheckRegistration
         return context
             .Response
             .WriteAsync(json);
+    }
+}
+
+public class AppHealthCheck : IHealthCheck
+{
+    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(HealthCheckResult.Healthy("An application is running."));
     }
 }

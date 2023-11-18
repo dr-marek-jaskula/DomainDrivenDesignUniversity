@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using static Shopway.Presentation.Authentication.ApiKeyAuthentication.ApiKeyConstants;
+using static Shopway.Presentation.Authentication.ApiKeyAuthentication.Constants.ApiKey;
 
 namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 

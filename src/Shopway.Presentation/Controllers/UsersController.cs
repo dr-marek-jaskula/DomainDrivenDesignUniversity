@@ -12,8 +12,8 @@ namespace Shopway.Presentation.Controllers;
 public sealed class UsersController(ISender sender) : ApiController(sender)
 {
     [HttpPost("[action]")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LogUserCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
@@ -28,7 +28,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
 
     [HttpPost("[action]")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
@@ -42,8 +42,8 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpGet("{username}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<UserResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetUserByUsername([FromRoute] string username, CancellationToken cancellationToken)
     {
         var query = new GetUserByUsernameQuery(username);

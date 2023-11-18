@@ -97,6 +97,8 @@ Note: Alternative naming convention: switch T2 with T3:
 
 ### Run Containerized Application with Containerized Database :whale:
 
+Note: Portainer is used to investigate containers if required. 
+
 1. Select **docker-compose** as startup project.
 2. Run the application
 

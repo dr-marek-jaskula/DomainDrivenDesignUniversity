@@ -16,8 +16,8 @@ namespace Shopway.Presentation.Controllers;
 public sealed partial class OrderHeadersController(ISender sender) : ApiController(sender)
 {
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderHeaderResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<OrderHeaderResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetOrderHeaderById([FromRoute] OrderHeaderId id, CancellationToken cancellationToken)
     {
         var query = new GetOrderHeaderByIdQuery(id);
@@ -33,8 +33,8 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateOrderHeaderResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<CreateOrderHeaderResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateOrderHeader
     (
         [FromBody] CreateOrderHeaderCommand command, 
@@ -53,7 +53,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SoftDeleteOrderHeader
     (
         [FromRoute] OrderHeaderId id, 
@@ -73,8 +73,8 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     }
 
     [HttpPatch("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ChangeOrderHeaderStatusResponse))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType<ChangeOrderHeaderStatusResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ChangeOrderHeaderStatus
     (
         [FromRoute] OrderHeaderId id,
