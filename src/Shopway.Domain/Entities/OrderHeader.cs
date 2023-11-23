@@ -1,14 +1,14 @@
-﻿using Shopway.Domain.Results;
-using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Enums;
+using Shopway.Domain.Results;
 using Shopway.Domain.BaseTypes;
-using Shopway.Domain.DomainEvents;
-using Shopway.Domain.Enums;
 using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
 using Shopway.Domain.Utilities;
-using static Shopway.Domain.Errors.Domain.DomainErrors.Status;
+using Shopway.Domain.ValueObjects;
+using Shopway.Domain.DomainEvents;
+using Shopway.Domain.Abstractions;
 using static Shopway.Domain.Enums.OrderStatus;
 using static Shopway.Domain.Enums.PaymentStatus;
+using static Shopway.Domain.Errors.Domain.DomainErrors.Status;
 
 namespace Shopway.Domain.Entities;
 

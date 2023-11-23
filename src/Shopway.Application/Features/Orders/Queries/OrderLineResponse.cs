@@ -7,9 +7,7 @@ public sealed record OrderLineResponse
     Ulid Id,
     decimal Amount,
     decimal LineDiscount,
-    string ProductName,
-    string Revision,
-    decimal ProductPrice,
-    decimal OrderLineCost
+    decimal OrderLineCost,
+    ProductSummaryResponse ProductSummary
 )
     : IResponse;

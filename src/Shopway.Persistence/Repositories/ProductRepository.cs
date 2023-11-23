@@ -69,6 +69,14 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
             .FirstAsync(cancellationToken);
     }
 
+    public async Task<IList<Product>> GetByIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
+    {
+        var specification = ProductSpecification.ById.Create(ids);
+
+        return await UseSpecification(specification)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Product> GetByIdWithReviewAsync(ProductId id, ReviewId reviewId, CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.ById.WithReview.Create(id, reviewId);

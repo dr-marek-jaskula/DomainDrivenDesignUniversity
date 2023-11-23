@@ -2,7 +2,9 @@
 using Shopway.Domain.Entities;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.EntityKeys;
+using Shopway.Domain.ValueObjects;
 using Shopway.Application.Features;
+using Shopway.Application.Features.Orders.Queries;
 using Shopway.Application.Features.Products.Queries;
 using Shopway.Application.Features.Products.Commands.CreateProduct;
 using Shopway.Application.Features.Products.Commands.RemoveProduct;
@@ -59,6 +61,30 @@ public static class ProductMapping
             product.Price.Value,
             product.UomCode.Value,
             product.Reviews.ToResponses()
+        );
+    }
+
+    public static ProductSummary ToSummary(this Product product)
+    {
+        return ProductSummary.Create
+        (
+            product.Id,
+            product.ProductName.Value,
+            product.Revision.Value,
+            product.Price.Value,
+            product.UomCode.Value
+        ).Value;
+    }
+
+    public static ProductSummaryResponse ToSummaryResponse(this ProductSummary productSummary)
+    {
+        return new ProductSummaryResponse
+        (
+            productSummary.ProductId.Value,
+            productSummary.ProductName.Value,
+            productSummary.Revision.Value,
+            productSummary.Price.Value,
+            productSummary.UomCode.Value
         );
     }
 

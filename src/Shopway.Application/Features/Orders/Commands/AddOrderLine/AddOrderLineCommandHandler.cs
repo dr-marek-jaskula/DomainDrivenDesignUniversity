@@ -12,10 +12,11 @@ using Shopway.Application.Features.Orders.Commands.AddOrderLine;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 
-internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IValidator validator) 
+internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IProductRepository productRepository, IValidator validator) 
     : ICommandHandler<AddOrderLineCommand, AddOrderLineResponse>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderRepository;
+    private readonly IProductRepository _productRepository = productRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult<AddOrderLineResponse>> Handle(AddOrderLineCommand command, CancellationToken cancellationToken)
@@ -37,7 +38,10 @@ internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRep
         OrderHeader orderHeader = await _orderHeaderRepository
             .GetByIdAsync(command.OrderHeaderId, cancellationToken);
 
-        OrderLine createdOrderLine = CreateOrderLine(command.ProductId, command.OrderHeaderId, amountResult.Value, discountResult.Value);
+        Product product = await _productRepository
+            .GetByIdAsync(command.ProductId, cancellationToken);
+
+        OrderLine createdOrderLine = CreateOrderLine(product, command.OrderHeaderId, amountResult.Value, discountResult.Value);
 
         orderHeader.AddOrderLine(createdOrderLine);
 
@@ -46,12 +50,12 @@ internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRep
             .ToResult();
     }
 
-    private static OrderLine CreateOrderLine(ProductId productId, OrderHeaderId orderHeaderId, Amount amount, Discount lineDiscount)
+    private static OrderLine CreateOrderLine(Product product, OrderHeaderId orderHeaderId, Amount amount, Discount lineDiscount)
     {
         return OrderLine.Create
         (
             OrderLineId.New(),
-            productId,
+            product.ToSummary(),
             orderHeaderId,
             amount,
             lineDiscount

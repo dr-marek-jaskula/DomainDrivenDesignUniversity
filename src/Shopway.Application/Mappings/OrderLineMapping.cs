@@ -19,10 +19,8 @@ public static class OrderLineMapping
             orderLine.Id.Value,
             orderLine.Amount.Value,
             orderLine.LineDiscount.Value,
-            orderLine.Product.ProductName.Value,
-            orderLine.Product.Revision.Value,
-            orderLine.Product.Price.Value,
-            orderLine.CalculateLineCost()
+            orderLine.CalculateLineCost(),
+            orderLine.ProductSummary.ToSummaryResponse()
         );
     }
     
@@ -66,6 +64,6 @@ public static class OrderLineMapping
 
     public static OrderLineKey ToOrderLineKey(this OrderLine orderLine)
     {
-        return OrderLineKey.Create(orderLine.ProductId);
+        return OrderLineKey.Create(orderLine.ProductSummary.ProductId);
     }
 }

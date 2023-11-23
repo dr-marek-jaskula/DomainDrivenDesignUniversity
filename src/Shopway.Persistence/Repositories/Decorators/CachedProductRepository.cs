@@ -31,6 +31,11 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
         return _context.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(product);
     }
 
+    public Task<IList<Product>> GetByIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
+    {
+        return _decorated.GetByIdsAsync(ids, cancellationToken);
+    }
+
     public Task<Product> GetByIdWithIncludesAsync(ProductId id, CancellationToken cancellationToken, params Expression<Func<Product, object>>[] includes)
     {
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);

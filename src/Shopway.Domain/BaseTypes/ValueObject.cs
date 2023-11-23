@@ -84,4 +84,9 @@ public abstract class ValueObject : IEquatable<ValueObject>
         return GetAtomicValues()
             .SequenceEqual(other.GetAtomicValues());
     }
+
+    public override string ToString()
+    {
+        return string.Join(", ", GetAtomicValues());
+    }
 }

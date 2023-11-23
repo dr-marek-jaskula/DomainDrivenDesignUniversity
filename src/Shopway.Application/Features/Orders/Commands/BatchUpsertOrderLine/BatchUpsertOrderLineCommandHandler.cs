@@ -36,7 +36,11 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
         }
 
         var productIdsFromCommand = command.GetRequestsProductIds();
-        var invalidProductIds = await _productRepository.VerifyIdsAsync(productIdsFromCommand, cancellationToken);
+        var products = await _productRepository.GetByIdsAsync(productIdsFromCommand, cancellationToken);
+
+        var invalidProductIds = productIdsFromCommand
+            .Except(products.Select(product => product.Id))
+            .ToList();
 
         if (invalidProductIds.NotNullOrEmpty())
         {
@@ -45,7 +49,7 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
 
         var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
 
-        var dictionaryOfOrderLinesToUpdate = GetDictionaryOfOrderLinesToUpdate(productIdsFromCommand, orderHeader);
+        var dictionaryOfOrderLinesToUpdate = GetDictionaryOfOrderLinesToUpdate(products, orderHeader);
 
         //Required step: set RequestToProductKeyMapping method for the injected builder
         _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToOrderLineKey);
@@ -58,7 +62,7 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
             return Result.BatchFailure(responseEntries.ToBatchInsertResponse());
         }
 
-        InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader);
+        InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader, products);
         UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);
 
         return responseEntries
@@ -66,22 +70,22 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
             .ToResult();
     }
 
-    private static IDictionary<OrderLineKey, OrderLine> GetDictionaryOfOrderLinesToUpdate(IList<ProductId> productIds, OrderHeader orderHeader)
+    private static Dictionary<OrderLineKey, OrderLine> GetDictionaryOfOrderLinesToUpdate(IList<Product> products, OrderHeader orderHeader)
     {
         return orderHeader
             .OrderLines
-            .Where(orderLine => productIds.Contains(orderLine.ProductId))
+            .Where(orderLine => products.Select(x => x.ToSummary()).Contains(orderLine.ProductSummary))
             .ToDictionary(orderLine => orderLine.ToOrderLineKey());
     }
 
-    private static void InsertOrderLines(IReadOnlyList<BatchUpsertOrderLineRequest> validRequestsToInsert, OrderHeader orderHeader)
+    private static void InsertOrderLines(IReadOnlyList<BatchUpsertOrderLineRequest> validRequestsToInsert, OrderHeader orderHeader, IList<Product> products)
     {
         foreach (var request in validRequestsToInsert)
         {
             var orderLineToInsert = OrderLine.Create
             (
                 OrderLineId.New(),
-                request.ProductId,
+                products.First(product => product.Id == request.ProductId).ToSummary(),
                 orderHeader.Id,
                 Amount.Create(request.Amount).Value,
                 Discount.Create(request.Discount ?? 0).Value
