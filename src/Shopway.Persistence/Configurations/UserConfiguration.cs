@@ -46,8 +46,8 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .WithMany(r => r.Users)
             .UsingEntity<RoleUser>();
 
-        builder.HasMany(u => u.OrderHeaders)
-            .WithOne(o => o.User)
+        builder.HasMany<OrderHeader>()
+            .WithOne()
             .HasForeignKey(u => u.UserId);
 
         builder.HasOne(u => u.Customer)

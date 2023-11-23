@@ -23,10 +23,6 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasConversion<PaymentIdConverter, PaymentIdComparer>()
             .HasColumnType(ColumnType.Char(UlidCharLenght));
 
-        builder.Property(p => p.OrderHeaderId)
-            .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
-            .HasColumnType(ColumnType.Char(UlidCharLenght));
-
         builder.Property(p => p.Status)
             .HasConversion<PaymentStatusConverter>()
             .HasColumnType(ColumnType.VarChar(LongestOf<PaymentStatus>()))

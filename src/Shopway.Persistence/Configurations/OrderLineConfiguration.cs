@@ -9,7 +9,6 @@ using static Shopway.Persistence.Constants.Constants;
 using static Shopway.Persistence.Constants.Constants.Number;
 using static Shopway.Persistence.Utilities.ConfigurationUtilities;
 
-
 namespace Shopway.Persistence.Configurations;
 
 internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguration<OrderLine>
@@ -24,9 +23,29 @@ internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguratio
             .HasConversion<OrderLineIdConverter, OrderLineIdComparer>()
             .HasColumnType(ColumnType.Char(UlidCharLenght));
 
-        builder.Property(o => o.ProductId)
-            .HasConversion<ProductIdConverter, ProductIdComparer>()
-            .HasColumnType(ColumnType.Char(UlidCharLenght));
+        builder.OwnsOne(o => o.ProductSummary, options =>
+        {
+            options.ToJson(nameof(ProductSummary));
+
+            options.Property(p => p.ProductId)
+                .HasConversion<ProductIdConverter, ProductIdComparer>();
+
+            options.Property(x => x.ProductName)
+                .HasConversion<ProductNameConverter, ProductNameComparer>()
+                .IsRequired(true);
+
+            options.Property(p => p.Revision)
+                .HasConversion<RevisionConverter, RevisionComparer>()
+                .IsRequired(true);
+
+            options.Property(p => p.Price)
+                .HasConversion<PriceConverter, PriceComparer>()
+                .IsRequired(true);
+
+            options.Property(p => p.UomCode)
+                .HasConversion<UomCodeConverter, UomCodeComparer>()
+                .IsRequired(true);
+        });
 
         builder.Property(o => o.OrderHeaderId)
             .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
@@ -44,9 +63,5 @@ internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguratio
             .HasColumnName(nameof(Discount))
             .HasPrecision(DiscountPrecision, DecimalScale)
             .IsRequired(true);
-
-        builder.HasOne(o => o.Product)
-            .WithMany()
-            .HasForeignKey(p => p.ProductId);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopway.Persistence.Framework;
 
@@ -11,9 +12,11 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    partial class ShopwayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231119211157_OrderLineWithProductSummary")]
+    partial class OrderLineWithProductSummary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,6 +187,10 @@ namespace Shopway.Persistence.Migrations
 
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
+
+                    b.Property<string>("OrderHeaderId")
+                        .IsRequired()
+                        .HasColumnType("Char(26)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -625,18 +632,20 @@ namespace Shopway.Persistence.Migrations
             modelBuilder.Entity("Shopway.Domain.Entities.OrderHeader", b =>
                 {
                     b.HasOne("Shopway.Domain.Entities.Payment", "Payment")
-                        .WithOne()
+                        .WithOne("OrderHeader")
                         .HasForeignKey("Shopway.Domain.Entities.OrderHeader", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shopway.Domain.Entities.User", null)
-                        .WithMany()
+                    b.HasOne("Shopway.Domain.Entities.User", "User")
+                        .WithMany("OrderHeaders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Payment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Shopway.Domain.Entities.OrderLine", b =>
@@ -744,9 +753,20 @@ namespace Shopway.Persistence.Migrations
                     b.Navigation("OrderLines");
                 });
 
+            modelBuilder.Entity("Shopway.Domain.Entities.Payment", b =>
+                {
+                    b.Navigation("OrderHeader")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Shopway.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("Shopway.Domain.Entities.User", b =>
+                {
+                    b.Navigation("OrderHeaders");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Domain.BaseTypes;
+﻿using Shopway.Domain.BaseTypes;
 using Shopway.Domain.EntityIds;
 using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Abstractions;
 
 namespace Shopway.Domain.Entities;
 
@@ -10,14 +10,14 @@ public sealed class OrderLine : Entity<OrderLineId>, IAuditable
     private OrderLine
     (
         OrderLineId id,
-        ProductId productId,
+        ProductSummary productSummary,
         OrderHeaderId orderHeaderId,
         Amount amount,
         Discount lineDiscount
     )
         : base(id)
     {
-        ProductId = productId;
+        ProductSummary = productSummary;
         OrderHeaderId = orderHeaderId;
         Amount = amount;
         LineDiscount = lineDiscount;
@@ -34,14 +34,13 @@ public sealed class OrderLine : Entity<OrderLineId>, IAuditable
     public DateTimeOffset? UpdatedOn { get; set; }
     public string CreatedBy { get; set; }
     public string? UpdatedBy { get; set; }
-    public Product Product { get; private set; }
-    public ProductId ProductId { get; private set; }
+    public ProductSummary ProductSummary { get; private set; }
     public OrderHeaderId OrderHeaderId { get; private set; }
 
     public static OrderLine Create
     (
         OrderLineId id,
-        ProductId productId,
+        ProductSummary productSummary,
         OrderHeaderId orderHeaderId,
         Amount amount,
         Discount lineDiscount
@@ -50,7 +49,7 @@ public sealed class OrderLine : Entity<OrderLineId>, IAuditable
         return new OrderLine
         (
             id,
-            productId,
+            productSummary,
             orderHeaderId,
             amount,
             lineDiscount
@@ -59,7 +58,7 @@ public sealed class OrderLine : Entity<OrderLineId>, IAuditable
 
     public decimal CalculateLineCost()
     {
-        return Math.Round(Product.Price.Value * Amount.Value * (1 - LineDiscount.Value), 2);
+        return Math.Round(ProductSummary.Price.Value * Amount.Value * (1 - LineDiscount.Value), 2);
     }
 
     public void UpdateAmount(Amount amount)

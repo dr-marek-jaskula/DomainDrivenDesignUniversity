@@ -30,6 +30,10 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
             .HasConversion<PaymentIdConverter, PaymentIdComparer>()
             .HasColumnType(ColumnType.Char(UlidCharLenght));
 
+        builder.Property(o => o.UserId)
+            .HasConversion<UserIdConverter, UserIdComparer>()
+            .HasColumnType(ColumnType.Char(UlidCharLenght));
+
         builder.Property(p => p.Status)
             .HasConversion<OrderStatusConverter>()
             .HasColumnType(ColumnType.VarChar(LongestOf<OrderStatus>()))
@@ -46,7 +50,7 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
             .ConfigureSoftDeletableEntity();
 
         builder.HasOne(p => p.Payment)
-            .WithOne(p => p.OrderHeader)
+            .WithOne()
             .HasForeignKey<OrderHeader>(o => o.PaymentId);
 
         builder.HasMany(o => o.OrderLines)

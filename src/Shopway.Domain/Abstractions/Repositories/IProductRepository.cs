@@ -27,6 +27,8 @@ public interface IProductRepository
 
     Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken);
 
+    Task<IList<Product>> GetByIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken);
+
     Task<Product> GetByIdWithReviewAsync(ProductId id, ReviewId reviewId, CancellationToken cancellationToken);
 
     Task<Product> GetByIdWithReviewAsync(ProductId id, Title title, CancellationToken cancellationToken);
