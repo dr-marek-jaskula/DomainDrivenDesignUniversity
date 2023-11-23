@@ -27,7 +27,7 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISof
     {
         UserId = userId;
         TotalDiscount = discount;
-        Payment = Payment.Create(this);
+        Payment = Payment.Create();
         Status = New;
     }
 
@@ -44,7 +44,6 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISof
     public string? UpdatedBy { get; set; }
     public Payment Payment { get; private set; }
     public PaymentId PaymentId { get; private set; }
-    public User User { get; private set; }
     public UserId UserId { get; private set; }
     public IReadOnlyCollection<OrderLine> OrderLines => _orderLines.AsReadOnly();
 
