@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.ValueObjects;
+﻿using Shopway.Domain.Utilities;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Errors.Domain;
 
@@ -8,6 +9,6 @@ public static partial class DomainErrors
     {
         public static readonly Error Invalid = Error.New(
             $"{nameof(UomCode)}.{nameof(Invalid)}",
-            $"{nameof(UomCode)} name must be: {string.Join(',', UomCode.AllowedUomCodes)}.");
+            $"{nameof(UomCode)} name must be: {UomCode.AllowedUomCodes.Join(',')}.");
     }
 }

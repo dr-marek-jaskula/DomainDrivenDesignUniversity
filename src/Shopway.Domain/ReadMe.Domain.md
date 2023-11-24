@@ -60,3 +60,9 @@ overriding the '<', '>', '>=', '<=' operator should be done both in the interfac
 "A Domain Event captures the memory of something interesting which affects the domain" — Martin Fowler
 
 Domain event should not leave the bounded context. Therefore, we can use the domain specific language - for instance we can use strongly typed ids.
+
+## Referencing Aggregates
+
+Entities in the aggregates (also aggregate root) should not contain the direct references to the other aggregates, but they can contain ids of them.
+Therefore, one aggregate will not be queried as a part of other aggregate. For instance, **OrderHeader** contains property **public UserId UserId** but not 
+a reference **public User User**.
