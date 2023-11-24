@@ -1,9 +1,8 @@
 ﻿using Scrutor;
-using Shopway.Domain.Entities;
+using Shopway.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Shopway.Application.Abstractions;
 using Shopway.Infrastructure.Services;
-using Shopway.Infrastructure.Providers;
 using Shopway.Infrastructure.Validators;
 using Shopway.Infrastructure.Builders.Batch;
 using Shopway.Application.Abstractions.CQRS.Batch;

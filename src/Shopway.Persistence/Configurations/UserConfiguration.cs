@@ -1,7 +1,8 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.ValueObjects;
+﻿using Shopway.Domain.Users;
+using Shopway.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Utilities;
+using Shopway.Domain.Users.ValueObjects;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Errors;
-using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.BaseTypes;
 
 namespace Shopway.Application.Abstractions;
 

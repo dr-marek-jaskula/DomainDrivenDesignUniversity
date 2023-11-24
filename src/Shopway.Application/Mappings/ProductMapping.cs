@@ -1,9 +1,8 @@
 ﻿using System.Linq.Expressions;
-using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
+using Shopway.Domain.Products;
 using Shopway.Domain.EntityKeys;
-using Shopway.Domain.ValueObjects;
 using Shopway.Application.Features;
+using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Application.Features.Orders.Queries;
 using Shopway.Application.Features.Products.Queries;
 using Shopway.Application.Features.Products.Commands.CreateProduct;

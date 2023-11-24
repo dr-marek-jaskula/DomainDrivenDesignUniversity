@@ -1,8 +1,8 @@
-﻿using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Utilities;
-using Shopway.Domain.Abstractions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Persistence.Abstractions;
 

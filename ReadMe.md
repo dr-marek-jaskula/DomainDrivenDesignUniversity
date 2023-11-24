@@ -2,7 +2,10 @@
 
 This project presents the domain driven design concepts.
 
-I have decided to organize the domain project using folders for respective types. For smaller project (without many entities) it is the preferred approach. Moreover, this structure is easier to follow when studying Domain Driven Design. Nevertheless, for larger projects, the preferred approach is to organize the domain by aggregates, so one folder should contain all files connected to respective aggregate, more or less like vertical slices in the application layer.
+The Domain and Application projects are structured using vertical slices/streaming architecture/by aggregates.
+Nevertheless, for Infrastructure, Persistence, Presentation projects I have decided to create folder structure for respective types.
+From my perspective it is a preferred approach, since in these projects there are not so many aggregate-related structures,
+so organizing them in streaming architecture would result in less readable and less maintainable solution.
 
 ## Give a Star! :star:
 

@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
-using static Shopway.Domain.Utilities.RandomUtilities;
+using static Shopway.Domain.Common.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Integration.Abstractions;
 

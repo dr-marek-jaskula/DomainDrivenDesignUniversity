@@ -1,5 +1,4 @@
-﻿using Shopway.Domain.Results;
-using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Common.Results;
 using Shopway.Application.Abstractions;
 
 namespace Shopway.Application.Utilities;

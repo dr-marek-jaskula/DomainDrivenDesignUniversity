@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Converters.EntityIds;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

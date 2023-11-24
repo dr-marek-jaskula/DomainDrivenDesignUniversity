@@ -1,5 +1,4 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Products;
 using Shopway.Domain.EntityKeys;
 using Shopway.Persistence.Abstractions;
 using static Shopway.Persistence.Constants.Constants.Specification.Product;

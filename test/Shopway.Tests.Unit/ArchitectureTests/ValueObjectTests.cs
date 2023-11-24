@@ -1,5 +1,5 @@
 ﻿using NetArchTest.Rules;
-using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Common.BaseTypes;
 using Shopway.Tests.Unit.ArchitectureTests.Utilities;
 using static Shopway.Tests.Unit.Constants.Constants;
 

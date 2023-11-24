@@ -1,5 +1,5 @@
-﻿using System.Security.Claims;
-using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Users;
+using System.Security.Claims;
 
 namespace Shopway.Application.Abstractions;
 

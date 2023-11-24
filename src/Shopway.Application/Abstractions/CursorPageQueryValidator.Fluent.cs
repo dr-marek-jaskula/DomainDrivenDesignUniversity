@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Shopway.Application.Features;
-using Shopway.Domain.Abstractions.Common;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using static Shopway.Application.Utilities.FluentValidationUtilities;
 
 namespace Shopway.Application.Abstractions;

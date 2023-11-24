@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using Shopway.Domain.Entities;
+using Shopway.Domain.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
 using Shopway.Persistence.Framework;

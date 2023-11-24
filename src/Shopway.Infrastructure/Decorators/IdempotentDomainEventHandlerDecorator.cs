@@ -1,6 +1,6 @@
 ﻿using Shopway.Persistence.Outbox;
-using Shopway.Domain.Abstractions;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Infrastructure.Decoratos;
 

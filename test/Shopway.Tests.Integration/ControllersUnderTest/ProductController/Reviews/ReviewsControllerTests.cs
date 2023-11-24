@@ -1,15 +1,15 @@
 ﻿using RestSharp;
-using Shopway.Domain.EntityIds;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Presentation.Controllers;
 using Shopway.Tests.Integration.Persistence;
 using Shopway.Tests.Integration.Abstractions;
 using Shopway.Application.Features.Products.Commands.AddReview;
-using Review  = Shopway.Domain.Entities.Review;
+using Review = Shopway.Domain.Products.Review;
 using static System.Threading.CancellationToken;
 using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.Constants.Constants.CollectionName;
 using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
+using Shopway.Domain.Products;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Products.ValueObjects;
 
 namespace Shopway.Application.Features.Products.Commands.UpdateReview;
 

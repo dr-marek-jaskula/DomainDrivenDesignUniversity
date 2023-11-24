@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using Shopway.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
 using Shopway.Application.Abstractions;
 using Shopway.Persistence.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.Results;
 
 namespace Shopway.Persistence.Pipelines;
 

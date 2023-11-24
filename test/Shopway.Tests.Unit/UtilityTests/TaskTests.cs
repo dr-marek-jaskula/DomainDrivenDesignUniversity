@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Utilities;
+﻿using Shopway.Domain.Common.Utilities;
 using System.Diagnostics;
 using static Shopway.Tests.Unit.Constants.Constants;
 

@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
-using Shopway.Domain.Abstractions;
+using Shopway.Persistence.Outbox;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Abstractions;
-using Shopway.Persistence.Outbox;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Persistence.Repositories;
 

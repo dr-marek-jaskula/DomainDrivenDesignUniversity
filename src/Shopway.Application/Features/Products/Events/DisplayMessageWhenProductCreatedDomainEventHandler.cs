@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.DomainEvents;
+﻿using Shopway.Domain.Products.Events;
 using Shopway.Application.Abstractions;
 
 namespace Shopway.Application.Features.Products.Events;

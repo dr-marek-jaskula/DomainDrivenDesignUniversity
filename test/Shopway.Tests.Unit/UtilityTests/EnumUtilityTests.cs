@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Enums;
-using static Shopway.Tests.Unit.Constants.Constants;
-using static Shopway.Domain.Utilities.EnumUtilities;
+﻿using static Shopway.Tests.Unit.Constants.Constants;
+using static Shopway.Domain.Common.Utilities.EnumUtilities;
+using Shopway.Domain.Users.Enumerations;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 

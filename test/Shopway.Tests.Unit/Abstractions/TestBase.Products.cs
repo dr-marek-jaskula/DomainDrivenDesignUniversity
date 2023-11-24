@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
+﻿using Shopway.Domain.Products;
+using Shopway.Domain.Products.ValueObjects;
+using Shopway.Domain.Users.ValueObjects;
 
 namespace Shopway.Tests.Unit.Abstractions;
 

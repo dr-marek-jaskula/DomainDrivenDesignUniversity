@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using Shopway.Domain.Common;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
 
 namespace Shopway.Application.Features.Products.Queries.FuzzySearchProductByName;
 

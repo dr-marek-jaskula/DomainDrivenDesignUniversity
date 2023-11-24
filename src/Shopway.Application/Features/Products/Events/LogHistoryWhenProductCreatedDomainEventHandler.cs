@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.EntityIds;
-using Shopway.Domain.DomainEvents;
+﻿using Shopway.Domain.Products;
 using Microsoft.Extensions.Logging;
+using Shopway.Domain.Products.Events;
 using Shopway.Application.Abstractions;
 
 namespace Shopway.Application.Features.Products.Events;

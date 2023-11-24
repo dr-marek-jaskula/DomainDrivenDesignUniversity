@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Enums;
+using Shopway.Domain.Products;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Domain.EntityIds;
 using Microsoft.AspNetCore.Http;
 using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Application.Features.Products.Commands.RemoveReview;

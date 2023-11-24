@@ -1,8 +1,9 @@
 ﻿using Shopway.Domain.EntityKeys;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
-using static Shopway.Domain.Utilities.ListUtilities;
+using static Shopway.Domain.Common.Utilities.ListUtilities;
 using static Shopway.Tests.Integration.Constants.Constants.ProductBatchUpsert;
 using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
+using Shopway.Domain.Common.Utilities;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 

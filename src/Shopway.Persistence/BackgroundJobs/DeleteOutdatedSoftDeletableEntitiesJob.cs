@@ -1,10 +1,10 @@
 ﻿using Quartz;
 using System.Reflection;
-using Shopway.Domain.Utilities;
-using Shopway.Domain.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Persistence.BackgroundJobs;
 

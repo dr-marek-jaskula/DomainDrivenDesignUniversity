@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using Shopway.Domain.Utilities;
 using Shopway.Infrastructure.Options;
+using Shopway.Domain.Common.Utilities;
 
 namespace Shopway.Infrastructure.Validators;
 

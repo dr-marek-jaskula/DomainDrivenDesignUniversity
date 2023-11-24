@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serializers;
-using Shopway.Domain.Utilities;
+using Shopway.Domain.Common.Utilities;
 
 namespace Shopway.Tests.Integration.Utilities;
 

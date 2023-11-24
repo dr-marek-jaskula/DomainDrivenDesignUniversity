@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
-using Shopway.Domain.BaseTypes;
 using Shopway.Persistence.Utilities;
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.Common.BaseTypes;
 using Shopway.Persistence.Abstractions;
-using Shopway.Domain.Abstractions.Common;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Persistence.Specifications.Common;
 

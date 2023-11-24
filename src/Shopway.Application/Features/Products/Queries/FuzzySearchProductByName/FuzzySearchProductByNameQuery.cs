@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Common;
+﻿using Shopway.Domain.Common.DataProcessing;
 using Shopway.Application.Abstractions.CQRS;
 
 namespace Shopway.Application.Features.Products.Queries.FuzzySearchProductByName;

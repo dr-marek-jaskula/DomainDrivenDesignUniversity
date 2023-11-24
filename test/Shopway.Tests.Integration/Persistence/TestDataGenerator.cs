@@ -1,6 +1,5 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
+﻿using Shopway.Domain.Products;
+using Shopway.Domain.Products.ValueObjects;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Tests.Integration.Abstractions;

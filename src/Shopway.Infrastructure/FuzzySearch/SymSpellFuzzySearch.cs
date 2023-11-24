@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Results;
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.Common.Results;
 using Microsoft.IdentityModel.Tokens;
+using Shopway.Application.Abstractions;
 using static SymSpell;
 
 namespace Shopway.Infrastructure.FuzzySearch;

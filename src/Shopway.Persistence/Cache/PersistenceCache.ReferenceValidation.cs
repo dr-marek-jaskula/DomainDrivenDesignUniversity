@@ -2,14 +2,15 @@
 using System.Reflection;
 using Shopway.Domain.Errors;
 using System.Linq.Expressions;
-using Shopway.Domain.Utilities;
 using System.Collections.Frozen;
-using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Framework;
+using Shopway.Domain.Common.Results;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Pipelines;
+using Shopway.Domain.Common.Utilities;
 using Shopway.Application.Abstractions;
-using static Shopway.Domain.Utilities.ReflectionUtilities;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
+using static Shopway.Domain.Common.Utilities.ReflectionUtilities;
 
 namespace Shopway.Persistence.Cache;
 

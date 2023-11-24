@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Results;
+﻿using Shopway.Domain.Common.Results;
+using Shopway.Domain.Errors;
 using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.Common;

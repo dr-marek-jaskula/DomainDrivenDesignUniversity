@@ -1,8 +1,8 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Products;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
+using Shopway.Domain.Common.Results;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Products.Commands.RemoveReview;
 
@@ -26,4 +26,3 @@ internal sealed class RemoveReviewCommandHandler(IProductRepository productRepos
             .ToResult();
     }
 }
-

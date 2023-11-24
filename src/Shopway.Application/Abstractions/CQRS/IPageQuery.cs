@@ -1,5 +1,4 @@
-﻿using Shopway.Application.Features;
-using Shopway.Domain.Abstractions.Common;
+﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Application.Abstractions.CQRS;
 
