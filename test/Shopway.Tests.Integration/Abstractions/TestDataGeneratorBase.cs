@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Entities;
+using Shopway.Domain.Products;
+using Shopway.Domain.Users;
 using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Tests.Integration.Utilities;
-using static Shopway.Domain.Utilities.RandomUtilities;
+using static Shopway.Domain.Common.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Integration.Abstractions;
 

@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Abstractions;
+﻿using Shopway.Application.Abstractions;
 
 namespace Shopway.Infrastructure.FuzzySearch;
 

@@ -1,13 +1,11 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Results;
-using Shopway.Domain.Entities;
-using Shopway.Domain.Abstractions;
-using Shopway.Domain.ValueObjects;
+﻿using Shopway.Domain.Users;
+using Shopway.Domain.Errors;
 using Microsoft.AspNetCore.Identity;
+using Shopway.Domain.Common.Results;
 using Shopway.Application.Utilities;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Users.ValueObjects;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Application.Features.Users.Commands.LogUser;
 

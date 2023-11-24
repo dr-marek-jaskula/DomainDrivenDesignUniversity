@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Products;
 using Shopway.Application.Features.Products.Queries;
 using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Application.Features.Products.Commands.RemoveReview;

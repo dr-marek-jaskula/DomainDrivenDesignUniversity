@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Users;
 using Shopway.Application.Features.Users.Queries;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 

@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.ValueObjects;
+﻿using Shopway.Domain.Products.ValueObjects;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 

@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using Shopway.Domain.EntityIds;
+using Shopway.Domain.Users;
 using Shopway.Application.Abstractions;
 using static Shopway.Tests.Integration.Container.Constants.Constants;
 

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.Common.Results;
 
 namespace Shopway.Application.Abstractions.CQRS;
 

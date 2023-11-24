@@ -1,9 +1,8 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
-using Shopway.Persistence.Framework;
+﻿using Shopway.Persistence.Framework;
 using Shopway.Persistence.Abstractions;
 using Shopway.Tests.Performance.Abstractions;
+using Shopway.Domain.Products;
+using Shopway.Domain.Products.ValueObjects;
 
 namespace Shopway.Tests.Performance.Persistence;
 

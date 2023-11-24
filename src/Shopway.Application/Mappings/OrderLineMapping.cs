@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityKeys;
+﻿using Shopway.Domain.Orders;
+using Shopway.Domain.Entities;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Orders.Queries;
 using Shopway.Application.Features.Orders.Commands.AddOrderLine;

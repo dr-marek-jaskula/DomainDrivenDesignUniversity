@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Orders;
+using Shopway.Domain.Products;
 using Shopway.Application.Abstractions.CQRS;
 using static Shopway.Application.Features.Orders.Commands.AddOrderLine.AddOrderLineCommand;
 

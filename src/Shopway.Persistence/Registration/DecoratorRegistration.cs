@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Abstractions.Repositories;
+﻿using Shopway.Domain.Orders;
+using Shopway.Domain.Products;
 using Shopway.Persistence.Repositories.Decorators;
 
 namespace Microsoft.Extensions.DependencyInjection;

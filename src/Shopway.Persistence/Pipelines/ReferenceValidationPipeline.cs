@@ -1,16 +1,17 @@
 ﻿using MediatR;
 using Shopway.Domain.Errors;
-using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Utilities;
 using System.Linq.Dynamic.Core;
-using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Application.Utilities;
+using Shopway.Domain.Common.Results;
 using ZiggyCreatures.Caching.Fusion;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 using static Shopway.Persistence.Cache.PersistenceCache;
-using static Shopway.Domain.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
+using static Shopway.Domain.Common.Utilities.ReflectionUtilities;
 
 namespace Shopway.Persistence.Pipelines;
 

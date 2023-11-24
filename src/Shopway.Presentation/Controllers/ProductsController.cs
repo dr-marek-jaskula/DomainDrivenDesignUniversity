@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using Shopway.Domain.Common;
+using Shopway.Domain.Products;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Domain.EntityIds;
 using Microsoft.AspNetCore.Http;
 using Shopway.Domain.EntityKeys;
 using Shopway.Application.Features;
 using Shopway.Presentation.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Application.Features.Products.Queries;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication;
 using Shopway.Application.Features.Products.Queries.GetProductById;

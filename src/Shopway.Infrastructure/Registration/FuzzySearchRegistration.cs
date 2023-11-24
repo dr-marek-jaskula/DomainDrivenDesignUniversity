@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Abstractions;
-using Shopway.Infrastructure.FuzzySearch;
+﻿using Shopway.Infrastructure.FuzzySearch;
+using Shopway.Application.Abstractions;
 
-using Microsoft.Extensions.DependencyInjection;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class FuzzySearchRegistration
 {

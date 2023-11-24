@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Products;
 using Shopway.Domain.EntityKeys;
-using Shopway.Domain.ValueObjects;
+using Shopway.Domain.Products.ValueObjects;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 

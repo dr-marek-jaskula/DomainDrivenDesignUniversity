@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Abstractions;
-using Shopway.Domain.Abstractions.Common;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Application.Features.Users.Queries;
 

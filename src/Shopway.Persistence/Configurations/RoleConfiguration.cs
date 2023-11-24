@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Enumerations;
-using Microsoft.EntityFrameworkCore;
-using static Shopway.Persistence.Constants.Constants;
+﻿using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.Users.Enumerations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static Shopway.Persistence.Constants.Constants;
 
 namespace Shopway.Persistence.Configurations;
 

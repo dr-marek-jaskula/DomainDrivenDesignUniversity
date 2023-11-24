@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Orders;
+using Shopway.Domain.Entities;
 using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Persistence.Specifications.OrderHeaders;

@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Orders;
 using Shopway.Application.Abstractions.CQRS;
 using static Shopway.Application.Features.Orders.Commands.UpdateOrderLine.UpdateOrderLineCommand;
 

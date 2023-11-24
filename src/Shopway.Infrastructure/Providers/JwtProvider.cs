@@ -1,6 +1,6 @@
 ﻿using System.Text;
+using Shopway.Domain.Users;
 using System.Security.Claims;
-using Shopway.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shopway.Infrastructure.Options;

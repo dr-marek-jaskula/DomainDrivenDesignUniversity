@@ -1,8 +1,8 @@
 ﻿using NBomber.CSharp;
-using Shopway.Domain.EntityIds;
 using Shopway.Tests.Performance.Scenarios;
 using Shopway.Tests.Performance.Abstractions;
 using static Shopway.Tests.Performance.Constants.Constants.PerformanceSkipReason;
+using Shopway.Domain.Products;
 
 namespace Shopway.Tests.Performance.ControllersUnderTest.ProductController;
 

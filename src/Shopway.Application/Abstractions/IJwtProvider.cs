@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Users;
 
 namespace Shopway.Application.Abstractions;
 

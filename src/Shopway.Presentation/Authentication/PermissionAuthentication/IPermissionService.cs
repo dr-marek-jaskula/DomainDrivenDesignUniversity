@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Results;
-using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Users;
+using Shopway.Domain.Common.Results;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Shopway.Presentation.Authentication.PermissionAuthentication;

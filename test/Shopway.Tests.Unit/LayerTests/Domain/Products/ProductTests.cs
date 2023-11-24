@@ -1,9 +1,8 @@
 ﻿using Shopway.Tests.Unit.Abstractions;
-using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
-using Shopway.Domain.DomainEvents;
 using static Shopway.Tests.Unit.Constants.Constants;
+using Shopway.Domain.Products;
+using Shopway.Domain.Products.ValueObjects;
+using Shopway.Domain.Products.Events;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.Products;
 

@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Utilities;
-using System.Collections.Frozen;
-using Shopway.Domain.Abstractions.Common;
+﻿using System.Collections.Frozen;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Application.Cache;
 
@@ -12,7 +12,7 @@ public static partial class ApplicationCache
     {
         Dictionary<Type, IReadOnlyCollection<string>> allowedSortPropertiesCache = [];
 
-        var dynamicSortByTypes = Application.AssemblyReference.Assembly
+        var dynamicSortByTypes = Domain.AssemblyReference.Assembly
             .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IDynamicSortBy)))
             .Where(type => type.IsInterface is false);
 

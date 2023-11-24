@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Asp.Versioning;
+using Shopway.Domain.Orders;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Domain.EntityIds;
 using Microsoft.AspNetCore.Http;
 using Shopway.Presentation.Abstractions;
 using Shopway.Application.Features.Orders.Queries;

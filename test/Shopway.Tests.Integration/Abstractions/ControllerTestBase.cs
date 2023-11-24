@@ -1,9 +1,6 @@
 ﻿using RestSharp;
 using System.Data;
-using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
 using RestSharp.Authenticators;
-using Shopway.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Presentation.Controllers;
 using Shopway.Tests.Integration.Utilities;
@@ -16,6 +13,8 @@ using static RestSharp.Method;
 using static Shopway.Persistence.Constants.Constants;
 using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
+using Shopway.Domain.Users;
+using Shopway.Domain.Users.Enumerations;
 
 namespace Shopway.Tests.Integration.Abstractions;
 

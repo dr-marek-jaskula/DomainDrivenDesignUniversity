@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Features.Products.Queries;
-using Shopway.Domain.Entities;
+using Shopway.Domain.Products;
 
 namespace Shopway.Tests.Unit.LayerTests.Application.ProductHandlers.Utilities;
 

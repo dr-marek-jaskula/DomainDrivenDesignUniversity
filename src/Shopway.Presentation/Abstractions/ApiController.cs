@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Shopway.Domain.Abstractions;
-using IResult = Shopway.Domain.Abstractions.IResult;
+using IResult = Shopway.Domain.Common.Results.IResult;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
 using static Shopway.Application.Constants.Constants.ProblemDetails;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Results.Abstractions;
 
 namespace Shopway.Presentation.Abstractions;
 

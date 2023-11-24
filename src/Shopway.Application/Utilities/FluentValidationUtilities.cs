@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Shopway.Domain.Utilities;
-using Shopway.Domain.Abstractions.Common;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using static Shopway.Application.Cache.ApplicationCache;
 using static Shopway.Application.Constants.Constants.Sort;
-using static Shopway.Domain.Utilities.SortByEntryUtilities;
 using static Shopway.Application.Constants.Constants.Filter;
-using static Shopway.Domain.Utilities.FilterByEntryUtilities;
+using static Shopway.Domain.Common.Utilities.SortByEntryUtilities;
+using static Shopway.Domain.Common.Utilities.FilterByEntryUtilities;
 
 namespace Shopway.Application.Utilities;
 
@@ -31,14 +31,14 @@ public static class FluentValidationUtilities
 
         if (dynamicFilter.FilterProperties!.ContainsInvalidFilterProperty(allowedFilterPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
         {
-            context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid property names: {invalidProperties.Join(", ")}. Allowed property names: {allowedFilterPropertiesCache!.Join(", ")}. {FilterProperties} are case sensitive.");
+            context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedFilterPropertiesCache!)}. {FilterProperties} are case sensitive.");
         }
 
         AllowedFilterOperationsCache.TryGetValue(filterType, out var allowedFilterOperations);
 
         if (dynamicFilter.FilterProperties.ContainsOnlyOperationsFrom(allowedFilterOperations!, out IReadOnlyCollection<string> invalidOperations))
         {
-            context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid operations: {invalidOperations.Join(", ")}. Allowed operations: {allowedFilterOperations!.Join(", ")}.");
+            context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid operations: {string.Join(", ", invalidOperations)}. Allowed operations: {string.Join(", ", allowedFilterOperations!)}.");
         }
     }
 
@@ -62,7 +62,7 @@ public static class FluentValidationUtilities
 
         if (dynamicSortBy.SortProperties.ContainsInvalidSortProperty(allowedSortByPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
         {
-            context.AddFailure(SortProperties, $"{SortProperties} contains invalid property names: {invalidProperties.Join(", ")}. Allowed property names: {allowedSortByPropertiesCache!.Join(", ")}. {SortProperties} are case sensitive.");
+            context.AddFailure(SortProperties, $"{SortProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedSortByPropertiesCache!)}. {SortProperties} are case sensitive.");
         }
 
         if (dynamicSortBy.SortProperties.ContainsSortPriorityDuplicate())

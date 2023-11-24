@@ -1,9 +1,7 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Abstractions;
-using Shopway.Domain.Abstractions.Repositories;
 
 namespace Shopway.Persistence.Repositories;
 

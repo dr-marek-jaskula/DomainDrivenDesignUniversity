@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Abstractions;
-using Shopway.Persistence.Abstractions;
+﻿using Shopway.Persistence.Abstractions;
+using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Persistence.Utilities;
 

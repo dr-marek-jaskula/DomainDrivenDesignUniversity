@@ -1,10 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using Shopway.Domain.Orders;
+using System.Linq.Expressions;
 using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
 using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Abstractions;
-using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Persistence.Specifications.OrderHeaders;
 
 namespace Shopway.Persistence.Repositories;

@@ -1,11 +1,11 @@
-﻿using Shopway.Domain.Common;
-using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Products;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
-using Shopway.Application.Sorting.Products;
-using Shopway.Application.Filering.Products;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Domain.Products.DataProcessing.Sorting;
+using Shopway.Domain.Products.DataProcessing.Filtering;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductsOffsetDictionary;
 

@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Enums;
+﻿using Shopway.Domain.Users.Enumerations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Shopway.Persistence.Converters.Enums;

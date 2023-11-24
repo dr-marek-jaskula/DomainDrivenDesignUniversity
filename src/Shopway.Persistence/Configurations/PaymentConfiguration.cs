@@ -1,12 +1,12 @@
-﻿using Shopway.Domain.Enums;
-using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Utilities;
+using Shopway.Domain.Orders.Enumerations;
 using Shopway.Persistence.Converters.Enums;
 using Shopway.Persistence.Converters.EntityIds;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Shopway.Domain.Utilities.EnumUtilities;
 using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Domain.Common.Utilities.EnumUtilities;
 using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;

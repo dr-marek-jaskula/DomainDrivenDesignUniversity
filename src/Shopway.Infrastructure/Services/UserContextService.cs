@@ -1,7 +1,7 @@
-﻿using System.Security.Claims;
-using Shopway.Domain.Utilities;
-using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Users;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Shopway.Domain.Common.Utilities;
 using Shopway.Infrastructure.Policies;
 using Shopway.Application.Abstractions;
 
@@ -23,7 +23,7 @@ public sealed class UserContextService(IHttpContextAccessor httpContextAccessor)
 
     public UserId? UserId => User is null 
         ? null 
-        : Shopway.Domain.EntityIds.UserId.Create(Ulid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
+        : Shopway.Domain.Users.UserId.Create(Ulid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
 
     public string? Username => User?.FindFirstValue(_userNameProperty);
 
@@ -33,7 +33,7 @@ public sealed class UserContextService(IHttpContextAccessor httpContextAccessor)
         {
             if (User?.FindFirstValue(ClaimPolicies.CustomerId) is string stringCustomerId && stringCustomerId.NotNullOrEmptyOrWhiteSpace())
             {
-                return Domain.EntityIds.CustomerId.Create(Ulid.Parse(stringCustomerId));
+                return Domain.Users.CustomerId.Create(Ulid.Parse(stringCustomerId));
             }
 
             return null;

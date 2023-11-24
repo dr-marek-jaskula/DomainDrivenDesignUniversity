@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Features;
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Application.Abstractions.CQRS.Batch;
 

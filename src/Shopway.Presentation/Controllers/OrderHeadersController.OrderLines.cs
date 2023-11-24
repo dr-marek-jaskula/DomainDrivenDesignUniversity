@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.EntityIds;
+﻿using Shopway.Domain.Orders;
+using Shopway.Domain.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Shopway.Application.Features.Orders.Commands.AddOrderLine;

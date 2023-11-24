@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Enums;
 using Shopway.Application.Abstractions;
-using Shopway.Domain.Abstractions.Common;
+using Shopway.Domain.Orders.Enumerations;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Application.Features.Orders.Queries;
 

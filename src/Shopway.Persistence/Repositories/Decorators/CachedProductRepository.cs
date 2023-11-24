@@ -1,14 +1,12 @@
-﻿using Shopway.Domain.Entities;
-using System.Linq.Expressions;
-using Shopway.Domain.EntityIds;
+﻿using System.Linq.Expressions;
+using Shopway.Domain.Products;
 using Shopway.Domain.EntityKeys;
-using Shopway.Domain.ValueObjects;
 using Shopway.Persistence.Framework;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Application.Utilities;
 using Shopway.Persistence.Utilities;
-using Shopway.Domain.Abstractions.Common;
-using Shopway.Domain.Abstractions.Repositories;
+using Shopway.Domain.Products.ValueObjects;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 

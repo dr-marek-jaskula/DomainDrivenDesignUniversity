@@ -1,4 +1,4 @@
-﻿using static Shopway.Domain.Utilities.RandomUtilities;
+﻿using static Shopway.Domain.Common.Utilities.RandomUtilities;
 
 namespace Shopway.Tests.Unit.Abstractions;
 

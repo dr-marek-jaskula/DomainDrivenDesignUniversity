@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Shopway.Domain.Abstractions;
 using Shopway.Persistence.Framework;
+using Shopway.Domain.Common.Results;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Abstractions;
 using Shopway.Application.Abstractions.CQRS;

@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Persistence.Utilities;
 

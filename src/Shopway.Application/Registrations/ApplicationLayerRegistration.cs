@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Shopway.Application.Cache;
+﻿using Shopway.Application.Cache;
+using Microsoft.AspNetCore.Builder;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

@@ -1,6 +1,6 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Application.Abstractions;
-using Shopway.Domain.Abstractions;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 using static Shopway.Tests.Unit.Constants.Constants;
 using static Shopway.Tests.Unit.Constants.Constants.NamingConvention;
 

@@ -1,7 +1,6 @@
-﻿using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.Utilities;
-using Shopway.Domain.Abstractions;
+﻿using Shopway.Domain.Users;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.UtilityTests;

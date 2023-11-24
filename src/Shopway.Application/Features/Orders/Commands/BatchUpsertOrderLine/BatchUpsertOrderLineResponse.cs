@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.EntityKeys;
+﻿using Shopway.Domain.Orders;
 using Shopway.Application.Abstractions.CQRS.Batch;
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;

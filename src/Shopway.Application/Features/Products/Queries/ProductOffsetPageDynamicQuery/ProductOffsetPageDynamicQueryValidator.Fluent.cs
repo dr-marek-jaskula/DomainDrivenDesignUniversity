@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Common;
-using Shopway.Application.Sorting.Products;
-using Shopway.Application.Filering.Products;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Products.DataProcessing.Sorting;
+using Shopway.Domain.Products.DataProcessing.Filtering;
 
 namespace Shopway.Application.Features.Products.Queries.DynamicOffsetProductQuery;
 

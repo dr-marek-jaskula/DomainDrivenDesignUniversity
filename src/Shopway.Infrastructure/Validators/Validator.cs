@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Results;
-using Shopway.Domain.BaseTypes;
+using Shopway.Domain.Common.Results;
 using Microsoft.IdentityModel.Tokens;
+using Shopway.Domain.Common.BaseTypes;
 using Shopway.Application.Abstractions;
 
 namespace Shopway.Infrastructure.Validators;

@@ -1,13 +1,12 @@
-﻿using Shopway.Domain.Results;
+﻿using Shopway.Domain.Orders;
+using Shopway.Domain.Products;
 using Shopway.Domain.Entities;
-using Shopway.Domain.EntityIds;
-using Shopway.Domain.ValueObjects;
-using Shopway.Domain.Abstractions;
 using Shopway.Application.Mappings;
+using Shopway.Domain.Common.Results;
 using Shopway.Application.Utilities;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Abstractions.Repositories;
 using Shopway.Application.Features.Orders.Commands.AddOrderLine;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;

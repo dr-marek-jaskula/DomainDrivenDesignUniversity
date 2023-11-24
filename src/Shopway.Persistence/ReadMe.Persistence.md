@@ -36,6 +36,72 @@ IMemory cache is faster, but the Redis cache can be reused between multiple inst
 
 If we do not want to use decorator pattern for cache, we can create a CacheService or a CachePipeline
 
+NOTE: When dealing with aggregates, it is common that to remove a entity from the aggregate root, we also want to clear the cache.
+The approach with using the UpdateCache in UnitOfWork like this:
+```csharp
+    private void UpdateCache()
+    {
+        IEnumerable<EntityEntry<IAggregateRoot>> entries =
+            _dbContext
+                .ChangeTracker
+                .Entries<IAggregateRoot>()
+                .Where(entity => entity.State is Added or Deleted);
+
+        foreach (var entityEntry in entries)
+        {
+            var entityId = entityEntry.Entity.GetEntityIdFromEntity();
+
+            if (entityEntry.State is Added)
+            {
+                _fusionCache.Set(entityId.ToCacheKey(), entityEntry.Entity);
+                _fusionCache.Set(entityId.ToCacheReferenceCheckKey(), default(object));
+            }
+
+            if (entityEntry.State is Deleted)
+            {
+                _fusionCache.Remove(entityId);
+            }
+        }
+    }
+```
+
+will not resolve this particular issue, because when the entity is removed from the aggregate, for instance in this manner:
+```csharp
+public bool RemoveReview(Review review)
+{
+    return _reviews.Remove(review);
+}
+```
+
+and the ChangeTracker will not set Review entry state to **Deleted**, so the cache will not be cleared. 
+
+To handle this problem we can either clean cache directly in the application handler or use domain events, which is more resilient solution.
+Therefore, we need to add
+```csharp
+public bool RemoveReview(Review review)
+{
+    RaiseDomainEvent(ReviewRemovedDomainEvent.New(review.Id, Id));
+    return _reviews.Remove(review);
+}
+```
+
+and the DomainEventHandler
+```csharp
+internal sealed class ClearCacheWhenReviewRemovedDomainEventHandler(IFusionCache fusionCache) : IDomainEventHandler<ReviewRemovedDomainEvent>
+{
+    private readonly IFusionCache _fusionCache = fusionCache;
+
+    public Task Handle(ReviewRemovedDomainEvent domainEvent, CancellationToken cancellationToken)
+    {
+        _fusionCache.Remove(domainEvent.ReviewId);
+        return Task.CompletedTask;
+    }
+}
+```
+
+Then, the cache will be cleared by the background job, just after some delay. Nevertheless, approach with UnitOfWork will solve all cases which 
+for aggregate roots.
+
 ## Spin the Docker Container with Redis
 
 Create and run the docker container from the redis images in the detached mode
