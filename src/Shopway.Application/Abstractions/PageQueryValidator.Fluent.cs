@@ -17,7 +17,7 @@ public abstract class PageQueryValidator<TPageQuery, TPageResponse, TPage> : Abs
         {
             if (AllowedPageSizes.NotContains(pageSize))
             {
-                context.AddFailure(PageSize, $"{PageSize} must be in: [{string.Join(", ", AllowedPageSizes)}]");
+                context.AddFailure(PageSize, $"{PageSize} must be in: [{AllowedPageSizes.Join(',')}]");
             }
         });
     }

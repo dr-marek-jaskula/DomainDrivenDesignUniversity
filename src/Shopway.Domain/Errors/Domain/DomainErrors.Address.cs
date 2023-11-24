@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.ValueObjects;
+﻿using Shopway.Domain.Utilities;
+using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Errors.Domain;
 
@@ -12,7 +13,7 @@ public static partial class DomainErrors
 
         public static readonly Error UnsupportedCountry = Error.New(
             $"{nameof(Address)}.{nameof(UnsupportedCountry)}",
-            $"Country name must be: {string.Join(',', Address.AvailableCountries)}.");
+            $"Country name must be: {Address.AvailableCountries.Join(',')}.");
 
         public static readonly Error EmptyCity = Error.New(
             $"{nameof(Address)}.{nameof(EmptyCity)}",

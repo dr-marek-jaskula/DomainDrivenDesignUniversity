@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Abstractions;
 using Shopway.Domain.Entities;
+using Shopway.Domain.Utilities;
 using Shopway.Domain.ValueObjects;
 
 namespace Shopway.Domain.Errors;
@@ -73,7 +74,7 @@ public sealed partial class Error
     /// <returns>InvalidReference error</returns>
     public static Error InvalidReferences(IList<Ulid> references, string entity)
     {
-        return New($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid references [{string.Join(", ", references)}] for entity '{entity}'.");
+        return New($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid references [{references.Join(", ")}] for entity '{entity}'.");
     }
 
     /// <summary>

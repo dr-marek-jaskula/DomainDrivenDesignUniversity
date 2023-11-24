@@ -1,15 +1,15 @@
-﻿using Shopway.Domain.Results;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Results;
 using Shopway.Domain.BaseTypes;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Utilities;
-using static Shopway.Domain.Errors.Domain.DomainErrors;
 using static Shopway.Domain.Utilities.ListUtilities;
+using static Shopway.Domain.Errors.Domain.DomainErrors;
 
 namespace Shopway.Domain.ValueObjects;
 
 public sealed class UomCode : ValueObject
 {
-    public readonly static string[] AllowedUomCodes = new string[2] { "pcs", "kg" };
+    public readonly static string[] AllowedUomCodes = [ "pcs", "kg" ];
 
     public new string Value { get; }
 

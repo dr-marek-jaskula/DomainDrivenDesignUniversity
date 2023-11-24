@@ -1,4 +1,6 @@
-﻿namespace Shopway.Domain.BaseTypes;
+﻿using Shopway.Domain.Utilities;
+
+namespace Shopway.Domain.BaseTypes;
 
 /// <summary>
 /// Each ValueObject should contain at least two public, static methods: "Create" and "Validate".
@@ -69,9 +71,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
     public override int GetHashCode()
     {
         return GetAtomicValues()
-            .Aggregate(
-                default(int),
-                (hashcode, value) => HashCode.Combine(hashcode, value.GetHashCode()));
+            .Aggregate(default(int), (hashcode, value) => HashCode.Combine(hashcode, value.GetHashCode()));
     }
 
     /// <summary>
@@ -87,6 +87,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
 
     public override string ToString()
     {
-        return string.Join(", ", GetAtomicValues());
+        return GetAtomicValues()
+            .Join(", ");
     }
 }
