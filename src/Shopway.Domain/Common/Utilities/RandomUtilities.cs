@@ -1,5 +1,5 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using static System.Convert;
 using static System.Text.RegularExpressions.RegexOptions;
@@ -10,7 +10,8 @@ public static class RandomUtilities
 {
     //To exclude more characters, adjust this regex
     private const string _base64NonAlpaNumbericCharactersPattern = "(?:[/+=0-9]+)";
-    private static readonly Regex _base64NonAlphaNumbericCharacterRegex = new(_base64NonAlpaNumbericCharactersPattern, Compiled | CultureInvariant | Singleline);
+    private static readonly Regex _base64NonAlphaNumbericCharacterRegex = 
+        new(_base64NonAlpaNumbericCharactersPattern, Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
     public static string GenerateString(int length)
     {

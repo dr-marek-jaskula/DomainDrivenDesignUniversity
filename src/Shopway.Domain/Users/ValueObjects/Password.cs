@@ -4,13 +4,14 @@ using System.Text.RegularExpressions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
+using static System.Text.RegularExpressions.RegexOptions;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
 public sealed class Password : ValueObject
 {
-    private static readonly Regex _regex = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{0,}$", RegexOptions.Compiled);
+    private static readonly Regex _regex = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{0,}$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
     public const int MaxLength = 30;
     public const int MinLength = 9;

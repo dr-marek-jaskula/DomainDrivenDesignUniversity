@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
+using static System.Text.RegularExpressions.RegexOptions;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
@@ -12,7 +13,7 @@ public sealed class Email : ValueObject
 {
     public const int MaxLength = 40;
 
-    private static readonly Regex _regex = new(@"^([a-zA-Z])([a-zA-Z0-9]+)\.?([a-zA-Z0-9]+)@([a-z]+)\.[a-z]{2,3}$", RegexOptions.Compiled);
+    private static readonly Regex _regex = new(@"^([a-zA-Z])([a-zA-Z0-9]+)\.?([a-zA-Z0-9]+)@([a-z]+)\.[a-z]{2,3}$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
     public new string Value { get; }
 

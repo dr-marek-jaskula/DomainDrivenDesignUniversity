@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
+using static System.Text.RegularExpressions.RegexOptions;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
@@ -15,7 +16,7 @@ public sealed class Address : ValueObject
     public const int MinFlatNumber = 1;
     public const int MinBuildingNumber = 1;
     public static readonly string[] AvailableCountries = ["Poland", "Germany", "England", "Russia"];
-    private static readonly Regex _zipCodeRegex = new(@"^\d{5}?$", RegexOptions.Compiled);
+    private static readonly Regex _zipCodeRegex = new(@"^\d{5}?$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
     public string City { get; }
     public string Country { get; }

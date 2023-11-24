@@ -4,13 +4,14 @@ using System.Text.RegularExpressions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
+using static System.Text.RegularExpressions.RegexOptions;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
 public sealed class PhoneNumber : ValueObject
 {
-    private static readonly Regex _regex = new(@"^([1-9])[0-9]{8}$", RegexOptions.Compiled);
+    private static readonly Regex _regex = new(@"^([1-9])[0-9]{8}$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
     public new string Value { get; }
 
     private PhoneNumber(string value)

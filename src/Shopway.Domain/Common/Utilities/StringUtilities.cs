@@ -1,13 +1,20 @@
-﻿using Shopway.Domain.Common.Utilities;
+﻿using System.Buffers;
+using Shopway.Domain.Common.Utilities;
 
 namespace Shopway.Domain.Common.Utilities;
 
 public static class StringUtilities
 {
-    private static readonly char[] _illegalCharacter =
-        { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
-          '\'', '"', '[', ']', ';', ':', '\\', '|', '/', '.', ',', '>', '<', '?', '-', '_', '+', '+', '~', '`' };
-    private static readonly char[] _toTrimCharacter = { ' ', '\n', '\t' };
+    public static readonly char[] IllegalCharacters =
+        ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+          '\'', '"', '[', ']', ';', ':', '\\', '|', '/', '.', ',', '>', '<', '?', '-', '_', '+', '+', '~', '`'];
+    public static readonly char[] ToTrimCharacters = [' ', '\n', '\t'];
+    public static readonly char[] Digits = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ];
+
+    //SearchValues are highly efficient .NET 8 way to perform searches.
+    private static readonly SearchValues<char> _illeagalCharacterSearchValues = SearchValues.Create(IllegalCharacters);
+    private static readonly SearchValues<char> _toTrimCharacterSearchValues = SearchValues.Create(ToTrimCharacters);
+    private static readonly SearchValues<char> _digitsSearchValues = SearchValues.Create(Digits);
 
     public static bool IsNullOrEmptyOrWhiteSpace(this string? input)
     {
@@ -21,25 +28,40 @@ public static class StringUtilities
 
     public static bool ContainsIllegalCharacter(this string input)
     {
-        return input.Any(character => _illegalCharacter.Contains(character));
+        return input.AsSpan().IndexOfAny(_illeagalCharacterSearchValues) is not -1;
     }
 
     public static bool ContainsToTrimCharacter(this string input)
     {
-        return input.Any(character => _toTrimCharacter.Contains(character));
+        return input.AsSpan().IndexOfAny(_toTrimCharacterSearchValues) is not -1;
     }
 
     public static bool ContainsDigit(this string input)
     {
-        foreach (char character in input)
+        return input.AsSpan().IndexOfAny(_digitsSearchValues) is not -1;
+    }
+
+    public static bool Contains(this string input, params string[] strings)
+    {
+        foreach (string @string in strings)
         {
-            if (char.IsDigit(character))
+            if (input.Contains(@string) is false)
             {
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
+    }
+
+    public static bool NotContains(this string input, string value)
+    {
+        return input.Contains(value) is false;
+    }
+
+    public static bool NotContains(this string input, params string[] strings)
+    {
+        return input.Contains(strings) is false;
     }
 
     public static TEnum? ParseToNullableEnum<TEnum>(this string? input)
@@ -81,11 +103,6 @@ public static class StringUtilities
         return string.Equals(input, compareTo, StringComparison.OrdinalIgnoreCase);
     }
 
-    public static bool NotContains(this string input, string value)
-    {
-        return input.Contains(value) is false;
-    }
-
     public static string RemoveAll(this string input, params string[] removeStrings)
     {
         removeStrings = removeStrings
@@ -99,18 +116,5 @@ public static class StringUtilities
         }
 
         return input;
-    }
-
-    public static bool Contains(this string input, params string[] strings)
-    {
-        foreach (string @string in strings)
-        {
-            if (input.Contains(@string) is false)
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
