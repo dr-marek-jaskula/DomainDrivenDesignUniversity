@@ -15,7 +15,7 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : Reposito
         var specification = OrderHeaderSpecification.ById.WithOrderLines.AndProducts.Create(id);
 
         return await UseSpecification(specification)
-            .FirstAsync(x => x.Id == id, cancellationToken);
+            .FirstAsync(cancellationToken);
     }
 
     public async Task<OrderHeader> GetByIdWithOrderLineAsync(OrderHeaderId id, OrderLineId orderLineId, CancellationToken cancellationToken)

@@ -1,16 +1,16 @@
-﻿using System.Linq.Expressions;
+﻿using Shopway.Domain.Products;
+using System.Linq.Expressions;
 using Shopway.Domain.EntityKeys;
 using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.Common.Utilities;
 using Shopway.Persistence.Abstractions;
+using Shopway.Domain.Products.ValueObjects;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Specifications.Common;
-using static Shopway.Domain.Common.Utilities.StringUtilities;
-using Shopway.Domain.Products;
-using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Products.ValueObjects;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using static Shopway.Domain.Common.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
