@@ -50,7 +50,7 @@ public sealed partial class Error
     /// <summary>
     /// Create an Error based on the unique key
     /// </summary>
-    /// <param name="key">unique key key of the entity that is already in the database</param>
+    /// <param name="key">unique key of the entity that is already in the database</param>
     /// <returns>AlreadyExists error</returns>
     public static Error AlreadyExists<TUniqueKey>(TUniqueKey key)
         where TUniqueKey : IUniqueKey
@@ -64,16 +64,16 @@ public sealed partial class Error
     /// <returns>InvalidReference error</returns>
     public static Error InvalidReference(Ulid reference, string entity)
     {
-        return New($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid reference '{reference}' for entity '{entity}'.");
+        return New($"{entity}.{nameof(InvalidReference)}", $"Invalid reference '{reference}' for entity '{entity}'.");
     }
 
     /// <summary>
-    /// Create an Error describing that the provided reference is invalid
+    /// Create an Error describing that the provided references are invalid
     /// </summary>
-    /// <returns>InvalidReference error</returns>
+    /// <returns>InvalidReferences error</returns>
     public static Error InvalidReferences(IList<Ulid> references, string entity)
     {
-        return New($"{nameof(Error)}.{nameof(InvalidReference)}", $"Invalid references [{string.Join(", ", references)}] for entity '{entity}'.");
+        return New($"{entity}.{nameof(InvalidReferences)}", $"Invalid references [{string.Join(", ", references)}] for entity '{entity}'.");
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public sealed partial class Error
     /// <returns>NullOrEmpty error</returns>
     public static Error NullOrEmpty(string collectionName)
     {
-        return New($"{nameof(Error)}.{nameof(NullOrEmpty)}", $"{collectionName} is null or empty.");
+        return New($"{collectionName}.{nameof(NullOrEmpty)}", $"{collectionName} is null or empty.");
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public sealed partial class Error
     /// <returns>InvalidBatchCommand error</returns>
     public static Error InvalidBatchCommand(string batchCommand)
     {
-        return New($"{nameof(Error)}.{nameof(InvalidBatchCommand)}", $"{batchCommand} is invalid.");
+        return New($"{batchCommand}.{nameof(InvalidBatchCommand)}", $"{batchCommand} is invalid.");
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public sealed partial class Error
     public static Error DuplicatedRequest<TBusinessKey>(TBusinessKey key)
         where TBusinessKey : IUniqueKey
     {
-        return New($"{nameof(Error)}.{nameof(DuplicatedRequest)}", $"Duplicated request for key '{key}'.");
+        return New($"{nameof(DuplicatedRequest)}", $"Duplicated request for key '{key}'.");
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public sealed partial class Error
     /// <returns>Exception error</returns>
     public static Error Exception(string exceptionMessage)
     {
-        return New($"{nameof(Error)}.{nameof(Exception)}", exceptionMessage);
+        return New($"{nameof(Exception)}", exceptionMessage);
     }
 
     /// <summary>
@@ -121,6 +121,6 @@ public sealed partial class Error
     /// <returns>ParseFailure error</returns>
     public static Error ParseFailure<ParseType>(string valueParsedName)
     {
-        return New($"{nameof(Error)}.{nameof(ParseFailure)}", $"Parsing '{valueParsedName}' to type '{nameof(ParseType)}' failed.");
+        return New($"{nameof(ParseFailure)}", $"Parsing '{valueParsedName}' to type '{nameof(ParseType)}' failed.");
     }
 }

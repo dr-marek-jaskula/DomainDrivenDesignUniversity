@@ -13,12 +13,12 @@ public sealed partial class Error : IEquatable<Error>
     /// <summary>
     /// The null value error instance
     /// </summary>
-    public static readonly Error NullValue = new($"{nameof(Error)}.{nameof(NullValue)}", "The result value is null.");
+    public static readonly Error NullValue = new($"{nameof(NullValue)}", "The result value is null.");
 
     /// <summary>
     /// The condition not satisfied error instance
     /// </summary>
-    public static readonly Error ConditionNotSatisfied = new($"{nameof(Error)}.{nameof(ConditionNotSatisfied)}", "The specified condition was not satisfied.");
+    public static readonly Error ConditionNotSatisfied = new($"{nameof(ConditionNotSatisfied)}", "The specified condition was not satisfied.");
 
     /// <summary>
     /// The validation error instance
