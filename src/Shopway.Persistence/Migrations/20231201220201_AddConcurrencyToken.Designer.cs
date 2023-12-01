@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopway.Persistence.Framework;
 
@@ -11,9 +12,11 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    partial class ShopwayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231201220201_AddConcurrencyToken")]
+    partial class AddConcurrencyToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
