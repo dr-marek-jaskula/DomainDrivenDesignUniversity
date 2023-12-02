@@ -27,5 +27,10 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
 
         builder.Property(x => x.Error)
             .HasColumnType(ColumnType.VarChar(8000));
+
+        builder
+            .HasIndex(x => x.ProcessedOn)
+            .HasDatabaseName($"IX_{nameof(OutboxMessage)}_{nameof(OutboxMessage.ProcessedOn)}")
+            .HasFilter("[ProcessedOn] IS NULL");
     }
 }

@@ -34,7 +34,7 @@ public sealed class ProcessOutboxMessagesJob
         var messages = await _outboxRepository
             .GetOutboxMessagesAsync(context.CancellationToken);
 
-        if (messages.Any() is false)
+        if (messages.Length is 0)
         {
             return;
         }
