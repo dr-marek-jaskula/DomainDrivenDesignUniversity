@@ -12,13 +12,13 @@ public sealed class OutboxRepository(ShopwayDbContext dbContext) : RepositoryBas
 {
     private const int AmountOfProcessedMessages = 20;
 
-    public async Task<IList<OutboxMessage>> GetOutboxMessagesAsync(CancellationToken cancellationToken)
+    public async Task<OutboxMessage[]> GetOutboxMessagesAsync(CancellationToken cancellationToken)
     {
         return await _dbContext
             .Set<OutboxMessage>()
             .Where(m => m.ProcessedOn == null)
             .Take(AmountOfProcessedMessages)
-            .ToListAsync(cancellationToken);
+            .ToArrayAsync(cancellationToken);
     }
 
     public async Task<bool> IsConsumerAlreadyProcessed(IDomainEvent domainEvent, string consumer, CancellationToken cancellationToken)

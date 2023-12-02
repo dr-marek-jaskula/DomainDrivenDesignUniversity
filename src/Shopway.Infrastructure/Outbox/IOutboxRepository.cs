@@ -4,7 +4,7 @@ namespace Shopway.Persistence.Outbox;
 
 public interface IOutboxRepository
 {
-    Task<IList<OutboxMessage>> GetOutboxMessagesAsync(CancellationToken cancellationToken);
+    Task<OutboxMessage[]> GetOutboxMessagesAsync(CancellationToken cancellationToken);
 
     Task<bool> IsConsumerAlreadyProcessed(IDomainEvent domainEvent, string consumer, CancellationToken cancellationToken);
 
