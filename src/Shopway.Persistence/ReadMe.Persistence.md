@@ -45,17 +45,11 @@ The approach with using the UpdateCache in UnitOfWork like this:
             _dbContext
                 .ChangeTracker
                 .Entries<IAggregateRoot>()
-                .Where(entity => entity.State is Added or Deleted);
+                .Where(entity => entity.State is Deleted);
 
         foreach (var entityEntry in entries)
         {
             var entityId = entityEntry.Entity.GetEntityIdFromEntity();
-
-            if (entityEntry.State is Added)
-            {
-                _fusionCache.Set(entityId.ToCacheKey(), entityEntry.Entity);
-                _fusionCache.Set(entityId.ToCacheReferenceCheckKey(), default(object));
-            }
 
             if (entityEntry.State is Deleted)
             {
@@ -101,6 +95,12 @@ internal sealed class ClearCacheWhenReviewRemovedDomainEventHandler(IFusionCache
 
 Then, the cache will be cleared by the background job, just after some delay. Nevertheless, approach with UnitOfWork will solve all cases which 
 for aggregate roots.
+
+NOTE: Since I use a MemoryCache in this approach, I do not need to remove from the cache the entities which were modified, because the modification will
+be set if happens. 
+
+NOTE: Even if the SaveChanges fail and the transaction is rollback, we potentially only removed entity from the cache, which will not have any impact other
+than one more round trip to database.
 
 ## Spin the Docker Container with Redis
 

@@ -7,14 +7,9 @@ namespace Shopway.Tests.Unit.ArchitectureTests.Utilities.CustomRules;
 
 public sealed class HavePrivateParameterlessConstructor : ICustomRule
 {
-    private readonly Func<TypeDefinition, bool> _test;
-
-    public HavePrivateParameterlessConstructor()
-    {
-        _test = typeDefinition => typeDefinition
+    private readonly Func<TypeDefinition, bool> _test = typeDefinition => typeDefinition
             .GetConstructors()
             .Any(c => c.IsPrivate && c.HasParameters is false);
-    }
 
     public bool MeetsRule(TypeDefinition type)
     {

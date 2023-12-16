@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopway.Persistence.Framework;
 
@@ -11,9 +12,11 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    partial class ShopwayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231215133759_Remove_Permissions_Roles")]
+    partial class Remove_Permissions_Roles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,28 +326,6 @@ namespace Shopway.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permission", "Master");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = (byte)1,
-                            Name = "Review_Read"
-                        },
-                        new
-                        {
-                            Id = (byte)2,
-                            Name = "Review_Add"
-                        },
-                        new
-                        {
-                            Id = (byte)3,
-                            Name = "Review_Update"
-                        },
-                        new
-                        {
-                            Id = (byte)4,
-                            Name = "Review_Remove"
-                        });
                 });
 
             modelBuilder.Entity("Shopway.Domain.Users.Enumerations.Role", b =>
@@ -362,28 +343,6 @@ namespace Shopway.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role", "Master");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = (byte)1,
-                            Name = "Customer"
-                        },
-                        new
-                        {
-                            Id = (byte)2,
-                            Name = "Employee"
-                        },
-                        new
-                        {
-                            Id = (byte)3,
-                            Name = "Manager"
-                        },
-                        new
-                        {
-                            Id = (byte)4,
-                            Name = "Administrator"
-                        });
                 });
 
             modelBuilder.Entity("Shopway.Domain.Users.Enumerations.RolePermission", b =>
@@ -399,63 +358,6 @@ namespace Shopway.Persistence.Migrations
                     b.HasIndex("PermissionId");
 
                     b.ToTable("RolePermission", "Master");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = (byte)4,
-                            PermissionId = (byte)1
-                        },
-                        new
-                        {
-                            RoleId = (byte)4,
-                            PermissionId = (byte)2
-                        },
-                        new
-                        {
-                            RoleId = (byte)4,
-                            PermissionId = (byte)3
-                        },
-                        new
-                        {
-                            RoleId = (byte)4,
-                            PermissionId = (byte)4
-                        },
-                        new
-                        {
-                            RoleId = (byte)3,
-                            PermissionId = (byte)1
-                        },
-                        new
-                        {
-                            RoleId = (byte)3,
-                            PermissionId = (byte)2
-                        },
-                        new
-                        {
-                            RoleId = (byte)3,
-                            PermissionId = (byte)3
-                        },
-                        new
-                        {
-                            RoleId = (byte)2,
-                            PermissionId = (byte)1
-                        },
-                        new
-                        {
-                            RoleId = (byte)1,
-                            PermissionId = (byte)1
-                        },
-                        new
-                        {
-                            RoleId = (byte)1,
-                            PermissionId = (byte)2
-                        },
-                        new
-                        {
-                            RoleId = (byte)1,
-                            PermissionId = (byte)3
-                        });
                 });
 
             modelBuilder.Entity("Shopway.Domain.Users.RoleUser", b =>

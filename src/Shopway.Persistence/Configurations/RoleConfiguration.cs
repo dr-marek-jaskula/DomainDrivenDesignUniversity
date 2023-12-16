@@ -2,6 +2,7 @@
 using Shopway.Domain.Users.Enumerations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Shopway.Persistence.Constants.Constants;
+using static Shopway.Domain.Common.Utilities.EnumUtilities;
 
 namespace Shopway.Persistence.Configurations;
 
@@ -25,6 +26,17 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
 
         builder.HasMany(r => r.Users)
             .WithMany(u => u.Roles);
+
+        var rolesFromEnumeration = Role.GetNames();
+        var rolesFromEnum = GetNamesOf<Domain.Enums.Role>();
+
+        bool areEnumRolesEquivalentToEnumerationRoles =
+            rolesFromEnumeration.SetEquals(rolesFromEnum);
+
+        if (areEnumRolesEquivalentToEnumerationRoles is false)
+        {
+            throw new Exception($"{nameof(Role)} enum values are not equivalent to {nameof(Role)} enumeration values");
+        }
 
         //Insert static data
         builder.HasData(Role.List);

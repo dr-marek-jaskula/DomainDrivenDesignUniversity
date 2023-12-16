@@ -1,8 +1,8 @@
-﻿using Shopway.Tests.Unit.Abstractions;
-using static Shopway.Tests.Unit.Constants.Constants;
-using Shopway.Domain.Products;
-using Shopway.Domain.Products.ValueObjects;
+﻿using Shopway.Domain.Products;
 using Shopway.Domain.Products.Events;
+using Shopway.Tests.Unit.Abstractions;
+using Shopway.Domain.Products.ValueObjects;
+using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.Products;
 
@@ -81,7 +81,7 @@ public sealed class ProductTests : TestBase
     public void UpdatePrice_ShouldUpdateProductPrice_WhenValidPrice()
     {
         //Arrange
-        var product = CreateProduct();
+        var product = ProductFactory.CreateProduct();
         var newPrice = Price.Create(100).Value;
 
         //Act
@@ -95,7 +95,7 @@ public sealed class ProductTests : TestBase
     public void UpdateUomCode_ShouldUpdateProductUomCode_WhenValidUomCode()
     {
         //Arrange
-        var product = CreateProduct();
+        var product = ProductFactory.CreateProduct();
         var newUomCode = UomCode.Create(UomCode.AllowedUomCodes.Last()).Value;
 
         //Act
@@ -109,8 +109,8 @@ public sealed class ProductTests : TestBase
     public void AddReview_ShouldAddReview_WhenWhenValidReview()
     {
         //Arrange
-        var product = CreateProduct();
-        var review = CreateReview();
+        var product = ProductFactory.CreateProduct();
+        var review = ProductFactory.CreateReview();
 
         //Act
         product.AddReview(review);
@@ -123,8 +123,8 @@ public sealed class ProductTests : TestBase
     public void AnyReview_ShouldReturnTrue_WhenReviewWithGivenTitleExists()
     {
         //Arrange
-        var product = CreateProduct();
-        var review = CreateReview();
+        var product = ProductFactory.CreateProduct();
+        var review = ProductFactory.CreateReview();
 
         //Act
         product.AddReview(review);

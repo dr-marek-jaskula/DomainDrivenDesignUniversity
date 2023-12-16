@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Application.Features.Products.Commands.RemoveReview;
 using Shopway.Application.Features.Products.Commands.UpdateReview;
-using Shopway.Presentation.Authentication.PermissionAuthentication;
+using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -14,7 +14,7 @@ partial class ProductsController
     public const string Reviews = nameof(Reviews);
 
     [HttpPost($"{{productId}}/{Reviews}")]
-    [HasPermission(Permission.CRUD_Review)]
+    [RequiredPermissions(Permission.Review_Add)]
     [ProducesResponseType<AddReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddReview
@@ -37,7 +37,7 @@ partial class ProductsController
     }
 
     [HttpPatch($"{{productId}}/{Reviews}/{{reviewId}}")]
-    [HasPermission(Permission.CRUD_Review)]
+    [RequiredPermissions(Permission.Review_Update)]
     [ProducesResponseType<UpdateReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateReview
@@ -61,7 +61,8 @@ partial class ProductsController
     }
 
     [HttpDelete($"{{productId}}/{Reviews}/{{reviewId}}")]
-    [HasPermission(Permission.CRUD_Review)]
+    [RequiredPermissions(Permission.Review_Remove)]
+    [RequiredRoles(Role.Administrator)]
     [ProducesResponseType<RemoveReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveReview([FromRoute] RemoveReviewCommand command, CancellationToken cancellationToken)

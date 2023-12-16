@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Integration.Container.Persistance;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication;
-using Shopway.Presentation.Authentication.PermissionAuthentication;
+using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 namespace Shopway.Tests.Integration;
 
@@ -56,8 +56,8 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
             services.AddScoped<IApiKeyService, TestApiKeyService>();
 
             //Mock jwt authentication
-            services.RemoveAll(typeof(IPermissionService));
-            services.AddScoped<IPermissionService, TestPermissionService>();
+            services.RemoveAll(typeof(IUserAuthorizationService));
+            services.AddScoped<IUserAuthorizationService, TestUserAuthorizationService>();
 
             //Mock user context
             services.RemoveAll(typeof(IUserContextService));

@@ -1,11 +1,12 @@
 ﻿using Shopway.Domain.Users;
 using Shopway.Domain.Common.Results;
 using Microsoft.AspNetCore.Authorization;
-using Shopway.Presentation.Authentication.PermissionAuthentication;
+using Shopway.Domain.Enums;
+using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 namespace Shopway.Tests.Integration.Container.Persistance;
 
-public sealed class TestPermissionService : IPermissionService
+public sealed class TestUserAuthorizationService : IUserAuthorizationService
 {
     private static readonly Ulid _testUserUlid = Ulid.Parse("01AN4Z07BY79KA1307SR9X4MV3");
 
@@ -14,7 +15,12 @@ public sealed class TestPermissionService : IPermissionService
         return UserId.Create(_testUserUlid);
     }
 
-    public Task<bool> HasPermissionAsync(UserId userId, string permission)
+    public Task<bool> HasPermissionsAsync(UserId userId, params Permission[] permissions)
+    {
+        return Task.FromResult(true);
+    }
+
+    public Task<bool> HasRolesAsync(UserId userId, params Role[] roles)
     {
         return Task.FromResult(true);
     }

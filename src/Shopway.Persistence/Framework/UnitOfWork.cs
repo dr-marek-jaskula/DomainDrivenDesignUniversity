@@ -93,17 +93,11 @@ public sealed class UnitOfWork<TContext>
             _dbContext
                 .ChangeTracker
                 .Entries<IAggregateRoot>()
-                .Where(entity => entity.State is Added or Deleted);
+                .Where(entity => entity.State is Deleted);
 
         foreach (var entityEntry in entries)
         {
             var entityId = entityEntry.Entity.GetEntityIdFromEntity();
-
-            if (entityEntry.State is Added)
-            {
-                _fusionCache.Set(entityId.ToCacheKey(), entityEntry.Entity);
-                _fusionCache.Set(entityId.ToCacheReferenceCheckKey(), default(object));
-            }
 
             if (entityEntry.State is Deleted)
             {
