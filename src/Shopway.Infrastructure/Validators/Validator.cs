@@ -78,4 +78,20 @@ public sealed class Validator : IValidator
 
         return ValidationResult<TResponse>.WithErrors(_errors.ToArray());
     }
+
+    /// <summary>
+    /// Builds the failure validation result with errors
+    /// </summary>
+    /// <typeparam name="TResponse">Type of response</typeparam>
+    /// <returns>ValidationResult with errors</returns>
+    /// <exception cref="InvalidOperationException">If validator error list is null or empty, throw exception</exception>
+    public ValidationResult Failure()
+    {
+        if (IsValid)
+        {
+            throw new InvalidOperationException("Validation was successful, but Failure was called");
+        }
+
+        return ValidationResult.WithErrors(_errors.ToArray());
+    }
 }

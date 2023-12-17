@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 
-namespace Shopway.Application.Features.Users.Queries;
+namespace Shopway.Application.Features.Users.Queries.GetUserByUsername;
 
 public sealed record UserResponse
 (

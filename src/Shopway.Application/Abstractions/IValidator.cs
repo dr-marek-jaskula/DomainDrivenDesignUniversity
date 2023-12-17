@@ -16,4 +16,5 @@ public interface IValidator
         where TValueObject : ValueObject;
     ValidationResult<TResponse> Failure<TResponse>()
             where TResponse : IResponse;
+    ValidationResult Failure();
 }
