@@ -14,20 +14,20 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
 
         builder.HasKey(x => new { x.RoleId, x.PermissionId });
 
-        //Insert static data
+        ////Insert static data
         builder.HasData
         (
-            Create(Role.Administrator, Permission.Read),
-            Create(Role.Administrator, Permission.Create),
-            Create(Role.Administrator, Permission.Update),
-            Create(Role.Administrator, Permission.Delete),
-            Create(Role.Manager, Permission.Read),
-            Create(Role.Manager, Permission.Create),
-            Create(Role.Manager, Permission.Update),
-            Create(Role.Employee, Permission.Read),
-            Create(Role.Employee, Permission.Create),
-            Create(Role.Customer, Permission.Read),
-            Create(Role.Customer, Permission.CRUD_Review)
+            Create(Role.Administrator, Permission.Review_Read),
+            Create(Role.Administrator, Permission.Review_Add),
+            Create(Role.Administrator, Permission.Review_Update),
+            Create(Role.Administrator, Permission.Review_Remove),
+            Create(Role.Manager, Permission.Review_Read),
+            Create(Role.Manager, Permission.Review_Add),
+            Create(Role.Manager, Permission.Review_Update),
+            Create(Role.Employee, Permission.Review_Read),
+            Create(Role.Customer, Permission.Review_Read),
+            Create(Role.Customer, Permission.Review_Add),
+            Create(Role.Customer, Permission.Review_Update)
         );
     }
 

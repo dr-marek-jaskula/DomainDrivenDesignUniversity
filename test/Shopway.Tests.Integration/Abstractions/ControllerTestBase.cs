@@ -15,6 +15,7 @@ using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.Enumerations;
+using System.Reflection;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
@@ -143,14 +144,12 @@ public abstract class ControllerTestsBase : IDisposable
             .Where(user => (string)(object)user.Username == TestUser.Username)
             .FirstAsync();
 
+        var roles = typeof(User)
+            .GetField("_roles", BindingFlags.NonPublic | BindingFlags.Instance)!
+            .GetValue(user) as List<Role>;
+
         //Give all roles to the test user
-        foreach (var role in Role.Ids)
-        {
-            await databaseFixture.Context.Database.ExecuteSqlAsync(@$"
-            INSERT INTO {SchemaName.Master}.{TableName.RoleUser} (RoleId, {nameof(UserId)})
-            VALUES ({role}, '{user.Id.Value}');     
-            ");
-        }
+        roles!.AddRange(Role.List);
 
         await databaseFixture.Context.SaveChangesAsync();
     }

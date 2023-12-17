@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Shopway.Presentation.Authentication.PermissionAuthentication;
-using Shopway.Presentation.Authentication.PermissionAuthentication.Requirements;
+using Shopway.Presentation.Authentication.ApiKeyAuthentication.Handlers;
+using Shopway.Presentation.Authentication.RolePermissionAuthentication.Handlers;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -23,8 +23,9 @@ public static class AuthenticationRegistration
 
         services.AddAuthorization();
 
-        services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
-        services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
+        services.AddScoped<IAuthorizationHandler, RoleRequirementHandler>();
+        services.AddScoped<IAuthorizationHandler, ApiKeyRequirementHandler>();
 
         return services;
     }

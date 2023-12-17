@@ -31,7 +31,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Product</returns>
     [HttpGet("{id}")]
-    [ApiKey(RequiredApiKey.PRODUCT_GET)]
+    [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetProductById([FromRoute] ProductId id, CancellationToken cancellationToken)
@@ -55,7 +55,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Product</returns>
     [HttpGet("key")]
-    [ApiKey(RequiredApiKey.PRODUCT_GET)]
+    [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetProductByKey([FromBody] ProductKey key, CancellationToken cancellationToken)
@@ -80,7 +80,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Product</returns>
     [HttpPost("fuzzy-search/{productName}")]
-    [ApiKey(RequiredApiKey.PRODUCT_GET)]
+    [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> FuzzySearchProductByName
@@ -165,7 +165,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPost]
-    [ApiKey(RequiredApiKey.PRODUCT_CREATE)]
+    [RequiredApiKey(RequiredApiKey.PRODUCT_CREATE)]
     [ProducesResponseType<CreateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
@@ -181,7 +181,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPut("{id}")]
-    [ApiKey(RequiredApiKey.PRODUCT_UPDATE)]
+    [RequiredApiKey(RequiredApiKey.PRODUCT_UPDATE)]
     [ProducesResponseType<UpdateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProduct
@@ -204,7 +204,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpDelete("{id}")]
-    [ApiKey(RequiredApiKey.PRODUCT_REMOVE)]
+    [RequiredApiKey(RequiredApiKey.PRODUCT_REMOVE)]
     [ProducesResponseType<RemoveProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveProduct([FromRoute] ProductId id, CancellationToken cancellationToken)

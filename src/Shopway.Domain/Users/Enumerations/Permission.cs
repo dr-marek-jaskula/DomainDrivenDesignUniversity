@@ -1,18 +1,24 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.Utilities;
 
 namespace Shopway.Domain.Users.Enumerations
 {
     public sealed class Permission : Enumeration<Permission>
     {
-        public static readonly Permission Read = new(1, nameof(Read));
-        public static readonly Permission Create = new(2, nameof(Create));
-        public static readonly Permission Update = new(3, nameof(Update));
-        public static readonly Permission Delete = new(4, nameof(Delete));
-        public static readonly Permission CRUD_Review = new(5, nameof(CRUD_Review));
+        private const char floor = '_';
+
+        public static readonly Permission Review_Read = new(1, nameof(Review_Read));
+        public static readonly Permission Review_Add = new(2, nameof(Review_Add));
+        public static readonly Permission Review_Update = new(3, nameof(Review_Update));
+        public static readonly Permission Review_Remove = new(4, nameof(Review_Remove));
 
         public Permission(int id, string name)
-        : base(id, name)
+            : base(id, name)
         {
+            if (name.NotContains(floor))
+            {
+                throw new ArgumentException($"Permission must contain {floor}.");
+            }
         }
 
         // Empty constructor in this case is required by EF Core
@@ -26,10 +32,9 @@ namespace Shopway.Domain.Enums
 {
     public enum Permission
     {
-        Read = 1,
-        Create = 2,
-        Update = 3,
-        Delete = 4,
-        CRUD_Review = 5
+        Review_Read = 1,
+        Review_Add = 2,
+        Review_Update = 3,
+        Review_Remove = 4
     }
 }

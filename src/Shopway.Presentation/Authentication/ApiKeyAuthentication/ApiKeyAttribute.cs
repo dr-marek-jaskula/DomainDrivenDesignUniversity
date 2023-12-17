@@ -1,49 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using static Shopway.Presentation.Authentication.ApiKeyAuthentication.Constants.ApiKey;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
-/// <summary>
-/// Use to verify the api key in header "X-Api-Key"
-/// </summary>
-public sealed class ApiKeyAttribute : TypeFilterAttribute
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true)]
+public sealed class RequiredApiKeyAttribute(RequiredApiKey requiredApiKey)
+    : Attribute, IAuthorizationRequirement, IAuthorizationRequirementData
 {
-    public ApiKeyAttribute(RequiredApiKey requiredApiKey) : base(typeof(ApiKeyFilter))
+    public RequiredApiKey RequiredApiKey { get; } = requiredApiKey;
+
+    public IEnumerable<IAuthorizationRequirement> GetRequirements()
     {
-        Arguments = [ requiredApiKey ];
-    }
-
-    /// <summary>
-    /// Api key filter, used to handle the api key authorization
-    /// </summary>
-    private sealed class ApiKeyFilter(RequiredApiKey requiredApiKey, IApiKeyService apiKeyService) : IAuthorizationFilter
-    {
-        private readonly IApiKeyService _apiKeyService = apiKeyService;
-        private readonly RequiredApiKey _requiredApiKey = requiredApiKey;
-
-        /// <summary>
-        /// Compare the "X-Api-Key" header value with the required one
-        /// </summary>
-        public void OnAuthorization(AuthorizationFilterContext context)
-        {
-            bool isApiKeyHeaderPresentInTheRequest = context
-                .HttpContext
-                .Request
-                .Headers
-                .TryGetValue(ApiKeyHeader, out var apiKeyFromHeader);
-
-            if (isApiKeyHeaderPresentInTheRequest is false)
-            {
-                context.Result = new UnauthorizedObjectResult($"Api Key not found");
-                return;
-            }
-
-            if (_apiKeyService.IsProvidedApiKeyEqualToRequiredApiKey(_requiredApiKey, apiKeyFromHeader) is false)
-            {
-                context.Result = new UnauthorizedObjectResult("Invalid Api Key");
-                return;
-            }
-        }
+        yield return this;
     }
 }

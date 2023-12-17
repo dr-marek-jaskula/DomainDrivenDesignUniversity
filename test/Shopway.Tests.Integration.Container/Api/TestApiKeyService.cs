@@ -1,6 +1,6 @@
 ﻿using Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
-namespace Shopway.Tests.Integration.Container.Persistance;
+namespace Shopway.Tests.Integration.Container.Api;
 
 public sealed class TestApiKeyService : IApiKeyService
 {
