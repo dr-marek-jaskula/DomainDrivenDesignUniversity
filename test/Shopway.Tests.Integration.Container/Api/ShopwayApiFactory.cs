@@ -9,9 +9,10 @@ using Shopway.Persistence.Framework;
 using Shopway.Infrastructure.Options;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Shopway.Application.Abstractions;
+using Microsoft.AspNetCore.Authorization;
+using Shopway.Tests.Integration.Container.Api;
 using Shopway.Tests.Integration.Configurations;
 using Microsoft.Extensions.DependencyInjection;
-using Shopway.Tests.Integration.Container.Persistance;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
@@ -62,6 +63,12 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
             //Mock user context
             services.RemoveAll(typeof(IUserContextService));
             services.AddScoped<IUserContextService, TestUserContextService>();
+
+            //Add AuthorizationHandlers that will succeed all requirements
+            services.RemoveAll<IAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, TestPermissionRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, TestRoleRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, TestApiKeyRequirementHandler>();
 
             //Re-register database context to use the connection to the database in the container
             services.Configure<DatabaseOptions>(options =>

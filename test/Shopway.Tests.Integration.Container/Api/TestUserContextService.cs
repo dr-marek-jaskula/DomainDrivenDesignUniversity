@@ -1,14 +1,14 @@
 ﻿using System.Security.Claims;
+using Shopway.Domain.Users;
 using Shopway.Application.Abstractions;
 using static Shopway.Tests.Integration.Container.Constants.Constants;
-using Shopway.Domain.Users;
 
-namespace Shopway.Tests.Integration.Persistence;
+namespace Shopway.Tests.Integration.Container.Api;
 
 /// <summary>
 /// Test context service, used to set the "CreatedBy" field to the user name
 /// </summary>
-public sealed class TestContextService : IUserContextService
+public sealed class TestUserContextService : IUserContextService
 {
     public ClaimsPrincipal? User => null;
 

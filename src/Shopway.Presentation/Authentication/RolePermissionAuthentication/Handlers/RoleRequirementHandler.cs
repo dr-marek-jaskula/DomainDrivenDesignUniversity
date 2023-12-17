@@ -27,6 +27,7 @@ public sealed class RoleRequirementHandler(IServiceScopeFactory serviceScopeFact
         if (userHasRole)
         {
             context.Succeed(requirement);
+            return;
         }
 
         context.Fail(new AuthorizationFailureReason(this, "Missing required roles."));

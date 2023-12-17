@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Shopway.Domain.Enums;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
-namespace Shopway.Tests.Integration.Container.Persistance;
+namespace Shopway.Tests.Integration.Container.Api;
 
 public sealed class TestUserAuthorizationService : IUserAuthorizationService
 {

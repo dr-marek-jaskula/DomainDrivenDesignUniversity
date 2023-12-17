@@ -27,6 +27,7 @@ public sealed class PermissionRequirementHandler(IServiceScopeFactory serviceSco
         if (userHasPermission)
         {
             context.Succeed(requirement);
+            return;
         }
 
         context.Fail(new AuthorizationFailureReason(this, "Missing required permissions."));

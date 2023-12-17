@@ -2,6 +2,7 @@
 using Shopway.Persistence.Framework;
 using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Repositories;
+using Shopway.Tests.Integration.Container.Api;
 
 namespace Shopway.Tests.Integration.Persistence;
 
@@ -13,10 +14,10 @@ public sealed class DatabaseFixture : IDisposable
     public DatabaseFixture(string connectionString)
     {
         var factory = new ShopwayDbContextFactory();
-        _context = factory.CreateDbContext(new[] { connectionString });
+        _context = factory.CreateDbContext([ connectionString ]);
         _context.Database.Migrate();
 
-        var testContext = new TestContextService();
+        var testContext = new TestUserContextService();
         var outboxRepository = new OutboxRepository(_context);
         var fusionCache = new FusionCache(new FusionCacheOptions());
         var unitOfWork = new UnitOfWork<ShopwayDbContext>(_context, testContext, outboxRepository, fusionCache);
