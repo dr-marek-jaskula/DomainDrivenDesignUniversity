@@ -1,6 +1,9 @@
 ﻿using Shopway.Domain.Users;
-using Shopway.Application.Features.Users.Queries;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
+using Shopway.Domain.Users.Enumerations;
+using Shopway.Application.Features.Users.Queries.GetRolePermissions;
+using Shopway.Application.Features.Users.Queries.GetUserRoles;
+using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 
 namespace Shopway.Application.Mappings;
 
@@ -20,5 +23,15 @@ public static class UserMapping
             user.Email.Value,
             user.CustomerId?.Value
         );
+    }
+
+    public static RolesResponse ToResponse(this IReadOnlyCollection<Role> roles)
+    {
+        return new RolesResponse(roles.Select(role => role.Name).ToList());
+    }
+
+    public static RolePermissionsResponse ToResponse(this Role role)
+    {
+        return new RolePermissionsResponse(role.Permissions.Select(x => x.Name).ToList());
     }
 }

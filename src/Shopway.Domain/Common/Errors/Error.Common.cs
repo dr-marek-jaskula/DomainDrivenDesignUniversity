@@ -48,6 +48,17 @@ public sealed partial class Error
     }
 
     /// <summary>
+    /// Create an NotFound Error based on the entity type name and the unique value
+    /// </summary>
+    /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
+    /// <param name="uniqueValue">unique value of the entity that was not found</param>
+    /// <returns>NotFound error</returns>
+    public static Error NotFound(string subjectToFind, string uniqueValue, string additionalMessage)
+    {
+        return New($"{subjectToFind}.{nameof(NotFound)}", $"{subjectToFind} for '{uniqueValue}' was not found. {additionalMessage}");
+    }
+
+    /// <summary>
     /// Create an Error based on the unique key
     /// </summary>
     /// <param name="key">unique key of the entity that is already in the database</param>
@@ -56,6 +67,16 @@ public sealed partial class Error
         where TUniqueKey : IUniqueKey
     {
         return New($"{typeof(TUniqueKey).Name}.{nameof(AlreadyExists)}", $"{typeof(TUniqueKey).Name} '{key}' already exists.");
+    }
+
+    /// <summary>
+    /// Create an Error based on the unique key
+    /// </summary>
+    /// <param name="key">unique key of the entity that is already in the database</param>
+    /// <returns>AlreadyExists error</returns>
+    public static Error AlreadyExists(string subject, string key)
+    {
+        return New($"{subject}.{nameof(AlreadyExists)}", $"{subject} '{key}' already exists.");
     }
 
     /// <summary>
@@ -86,12 +107,21 @@ public sealed partial class Error
     }
 
     /// <summary>
-    /// Create an Error describing that the collection is null or empty
+    /// Create an Error describing that the batch command is invalid
     /// </summary>
     /// <returns>InvalidBatchCommand error</returns>
     public static Error InvalidBatchCommand(string batchCommand)
     {
         return New($"{batchCommand}.{nameof(InvalidBatchCommand)}", $"{batchCommand} is invalid.");
+    }
+
+    /// <summary>
+    /// Create an Error describing that the invalid operation was invoked
+    /// </summary>
+    /// <returns>InvalidOperation error</returns>
+    public static Error InvalidOperation(string message)
+    {
+        return New($"{nameof(InvalidOperation)}", message);
     }
 
     /// <summary>
