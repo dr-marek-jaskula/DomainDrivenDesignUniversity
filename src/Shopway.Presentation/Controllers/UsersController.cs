@@ -77,7 +77,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         return Ok(result.Value);
     }
 
-    [HttpGet("role/{role}/permissions")]
+    [HttpGet("roles/{role}/permissions")]
     [RequiredRoles(Domain.Enums.Role.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -94,7 +94,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         return Ok(result.Value);
     }
 
-    [HttpPost("role/{role}/permissions/{permission}")]
+    [HttpPost("roles/{role}/permissions/{permission}")]
     [RequiredRoles(Domain.Enums.Role.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -111,7 +111,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         return Ok();
     }
 
-    [HttpDelete("role/{role}/permissions/{permission}")]
+    [HttpDelete("roles/{role}/permissions/{permission}")]
     [RequiredRoles(Domain.Enums.Role.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]

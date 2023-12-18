@@ -56,7 +56,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle5\",\r\n  \"Description\": \"Added review description\"\r\n}",
+									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle27\",\r\n  \"Description\": \"Added review description\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -233,7 +233,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Pencil\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
+							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"PencilToSummary43\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -675,7 +675,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"price\": 21\r\n}",
+							"raw": "{\r\n  \"price\": 62\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -859,7 +859,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"requests\": [\r\n    {\r\n        \"ProductId\": \"01H6CKF72P2W196D0HKGSM2NWG\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.4\r\n    },\r\n    {\r\n        \"ProductId\": \"01H6CKF72QQG8XPKMS2VFTR1AS\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.3\r\n    }\r\n  ]\r\n}",
+									"raw": "{\r\n  \"requests\": [\r\n    {\r\n        \"ProductId\": \"01H6EC1ADR3Z6FXPK75YEX1NTH\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.4\r\n    },\r\n    {\r\n        \"ProductId\": \"01H6EC1AENZK4AE1AATW0D1VKS\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.3\r\n    }\r\n  ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1177,6 +1177,117 @@
 							"path": [
 								"users",
 								"{{username}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserRolesByUsername.Valid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{username}}/roles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{username}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRolePermissions.Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/roles/Employee/permissions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"roles",
+								"Employee",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddPermissionToRole.Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/roles/Employee/permissions/Review_Update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"roles",
+								"Employee",
+								"permissions",
+								"Review_Update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemovePermissionFromRole.Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/roles/Employee/permissions/Review_Update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"roles",
+								"Employee",
+								"permissions",
+								"Review_Update"
 							]
 						}
 					},
