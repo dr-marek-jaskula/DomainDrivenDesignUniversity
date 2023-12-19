@@ -11,7 +11,7 @@ namespace Shopway.Domain.Users.ValueObjects;
 
 public sealed class Password : ValueObject
 {
-    private static readonly Regex _regex = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{0,}$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
+    private static readonly Regex _regex = new(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{0,}$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
     public const int MaxLength = 30;
     public const int MinLength = 9;
