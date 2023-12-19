@@ -20,6 +20,6 @@ public static partial class DomainErrors
 
         public static readonly Error Invalid = Error.New(
             $"{nameof(Password)}.{nameof(Invalid)}",
-            $"{nameof(Password)} needs to contain at least one digit, one small letter and one capital letter.");
+            $"{nameof(Password)} needs to contain at least one digit, one small letter, one capital letter and one special character.");
     }
 }
