@@ -1,22 +1,18 @@
 ﻿using Shopway.Domain.Products;
 using Shopway.Persistence.Utilities;
-using Shopway.Persistence.Abstractions;
 using static Shopway.Persistence.Constants.Constants.Specification.Product;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal abstract partial class ProductSpecification
+internal static partial class ProductSpecification
 {
-    internal partial class Names : SpecificationWithMappingBase<Product, ProductId, string>
+    internal static partial class Names
     {
-        private Names() : base()
+        internal static SpecificationWithMapping<Product, ProductId, string> Create()
         {
-        }
-
-        internal static SpecificationWithMappingBase<Product, ProductId, string> Create()
-        {
-            return new Names()
+            return SpecificationWithMapping<Product, ProductId, string>.New()
                 .AddMapping(x => x.ProductName.Value)
+                .ApplyDistinct()
                 .AddTag(QueryProductNames)
                 .AsMappingSpecification<Product, ProductId, string>();
         }

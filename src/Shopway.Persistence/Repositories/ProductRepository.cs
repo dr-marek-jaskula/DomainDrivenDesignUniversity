@@ -21,7 +21,6 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
         var specification = ProductSpecification.Names.Create();
 
         return await UseSpecification(specification)
-            .Distinct()
             .ToListAsync(cancellationToken);
     }
 
@@ -51,10 +50,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
 
     public async Task<IList<ProductId>> VerifyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
     {
-        var specification = ProductSpecification.ById.Create(ids);
+        var specification = ProductSpecification.ById.Create(ids, product => product.Id);
 
         var existing = await UseSpecification(specification)
-            .Select(product => product.Id)
             .ToListAsync(cancellationToken);
 
         return ids.Except(existing).ToList();
@@ -124,7 +122,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
         params Expression<Func<Product, object>>[] includes
     )
     {
-        var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create
+        var specification = CommonSpecification.WithMapping.Create<Product, ProductId, TResponse>
         (
             filter,
             null,
@@ -150,7 +148,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         Expression<Func<Product, bool>> cursorFilter = product => product.Id >= ProductId.Create(page.Cursor);
 
-        var specification = CommonSpecification.WithMapping<Product, ProductId, TResponse>.Create
+        var specification = CommonSpecification.WithMapping.Create<Product, ProductId, TResponse>
         (
             filter,
             cursorFilter,

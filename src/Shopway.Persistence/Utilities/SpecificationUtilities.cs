@@ -1,6 +1,6 @@
-﻿using Shopway.Persistence.Abstractions;
-using Shopway.Domain.Common.BaseTypes;
+﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Persistence.Specifications;
 
 namespace Shopway.Persistence.Utilities;
 
@@ -14,10 +14,10 @@ internal static class SpecificationUtilities
     /// <typeparam name="TResponse">Response type</typeparam>
     /// <param name="specification">Input specification</param>
     /// <returns>SpecificationWithMappingBase</returns>
-    internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> AsMappingSpecification<TEntity, TEntityId, TResponse>(this SpecificationBase<TEntity, TEntityId> specification)
+    internal static SpecificationWithMapping<TEntity, TEntityId, TResponse> AsMappingSpecification<TEntity, TEntityId, TResponse>(this Specification<TEntity, TEntityId> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
-        return (SpecificationWithMappingBase<TEntity, TEntityId, TResponse>)specification;
+        return (SpecificationWithMapping<TEntity, TEntityId, TResponse>)specification;
     }
 }

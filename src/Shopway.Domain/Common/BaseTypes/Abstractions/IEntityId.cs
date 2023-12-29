@@ -1,5 +1,4 @@
-﻿using Shopway.Domain.Common;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Shopway.Domain.Common.BaseTypes.Abstractions;
 

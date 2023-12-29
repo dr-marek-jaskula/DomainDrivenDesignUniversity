@@ -18,7 +18,7 @@ public static class ErrorUtilities
             .GetGenericTypeDefinition()
             .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
             .GetMethod(nameof(ValidationResult.WithErrors))!
-            .Invoke(null, new object?[] { errors })!;
+            .Invoke(null, [ errors ])!;
 
         return (TResult)validationResult;
     }
@@ -44,7 +44,7 @@ public static class ErrorUtilities
             throw new ArgumentNullException($"{nameof(errors)} must not be null");
         }
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return ValidationResult<TValueObject>.WithErrors(errors.ToArray());
         }

@@ -3,6 +3,7 @@ using Shopway.Persistence.Framework;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Persistence.Specifications;
 
 namespace Shopway.Persistence.Abstractions;
 
@@ -18,7 +19,7 @@ public abstract class RepositoryBase(ShopwayDbContext dbContext)
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    private protected IQueryable<TEntity> UseSpecification<TEntity, TEntityId>(SpecificationBase<TEntity, TEntityId> specification)
+    private protected IQueryable<TEntity> UseSpecification<TEntity, TEntityId>(Specification<TEntity, TEntityId> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
@@ -104,16 +105,23 @@ public abstract class RepositoryBase(ShopwayDbContext dbContext)
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    private protected IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TResponse>(SpecificationWithMappingBase<TEntity, TEntityId, TResponse> specification)
+    private protected IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TResponse>(SpecificationWithMapping<TEntity, TEntityId, TResponse> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
         if (specification.Mapping is null)
         {
-            throw new ArgumentNullException($"{nameof(SpecificationWithMappingBase<TEntity, TEntityId, TResponse>)} must contain Select statement");
+            throw new ArgumentNullException($"{nameof(SpecificationWithMapping<TEntity, TEntityId, TResponse>)} must contain Select statement");
         }
 
-        return UseSpecification((SpecificationBase<TEntity, TEntityId>)specification)
+        var queryable = UseSpecification((Specification<TEntity, TEntityId>)specification)
             .Select(specification.Mapping);
+
+        if (specification.UseDistinct)
+        {
+            queryable = queryable.Distinct();
+        }
+
+        return queryable;
     }
 }

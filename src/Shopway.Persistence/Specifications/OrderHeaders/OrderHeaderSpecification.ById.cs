@@ -1,22 +1,19 @@
 ﻿using Shopway.Domain.Orders;
 using Shopway.Domain.Entities;
-using Shopway.Persistence.Abstractions;
 
 namespace Shopway.Persistence.Specifications.OrderHeaders;
 
-internal abstract partial class OrderHeaderSpecification 
+internal static partial class OrderHeaderSpecification 
 {
-    internal sealed partial class ById : SpecificationBase<OrderHeader, OrderHeaderId>
+    internal static partial class ById
     {
-        public sealed class WithOrderLines: SpecificationBase<OrderHeader, OrderHeaderId>
+        public static partial class WithOrderLines
         {
-            public sealed class AndProducts : SpecificationBase<OrderHeader, OrderHeaderId>
+            public static partial class AndProducts
             {
-                private AndProducts() { }
-
-                internal static SpecificationBase<OrderHeader, OrderHeaderId> Create(OrderHeaderId orderHeaderId, bool includePayment = true)
+                internal static Specification<OrderHeader, OrderHeaderId> Create(OrderHeaderId orderHeaderId, bool includePayment = true)
                 {
-                    var specification = new AndProducts()
+                    var specification = Specification<OrderHeader, OrderHeaderId>.New()
                         .AddIncludes(orderHeader => orderHeader.OrderLines)
                         .AddFilters(product => product.Id == orderHeaderId);
 
