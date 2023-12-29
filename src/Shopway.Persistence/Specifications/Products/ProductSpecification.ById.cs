@@ -1,38 +1,43 @@
 ﻿using System.Linq.Expressions;
 using Shopway.Domain.Products;
-using Shopway.Persistence.Abstractions;
+using Shopway.Persistence.Utilities;
 using Shopway.Domain.Products.ValueObjects;
 using static Shopway.Persistence.Constants.Constants.Specification.Product;
 
 namespace Shopway.Persistence.Specifications.Products;
 
-internal abstract partial class ProductSpecification
+internal static partial class ProductSpecification
 {
-    internal sealed partial class ById : SpecificationBase<Product, ProductId>
+    internal static partial class ById
     {
-        private ById() { }
-
-        internal static SpecificationBase<Product, ProductId> Create(ProductId productId)
+        internal static Specification<Product, ProductId> Create(ProductId productId)
         {
-            return new ById()
+            return Specification<Product, ProductId>.New()
                 .AddFilters(product => product.Id == productId)
                 .AddTag(QueryProductById);
         }
 
-        internal static SpecificationBase<Product, ProductId> Create(IList<ProductId> productIds)
+        internal static SpecificationWithMapping<Product, ProductId, ProductId> Create<TResponse>(IList<ProductId> productIds, Expression<Func<Product, TResponse>> mapping)
         {
-            return new ById()
+            return SpecificationWithMapping<Product, ProductId, TResponse>.New()
+                .AddMapping(mapping)
+                .AddFilters(product => productIds.Contains(product.Id))
+                .AddTag(QueryProductByIds)
+                .AsMappingSpecification<Product, ProductId, ProductId>();
+        }
+
+        internal static Specification<Product, ProductId> Create(IList<ProductId> productIds)
+        {
+            return Specification<Product, ProductId>.New()
                 .AddFilters(product => productIds.Contains(product.Id))
                 .AddTag(QueryProductByIds);
         }
 
-        public sealed class WithIncludes : SpecificationBase<Product, ProductId>
+        public static class WithIncludes
         {
-            private WithIncludes() { }
-
-            internal static SpecificationBase<Product, ProductId> Create(ProductId productId, params Expression<Func<Product, object>>[] includes)
+            internal static Specification<Product, ProductId> Create(ProductId productId, params Expression<Func<Product, object>>[] includes)
             {
-                return new WithIncludes()
+                return Specification<Product, ProductId>.New()
                     .AddFilters(product => product.Id == productId)
                     .AddIncludes(includes)
                     .UseSplitQuery()
@@ -40,34 +45,30 @@ internal abstract partial class ProductSpecification
             }
         }
 
-        public sealed class WithReviews : SpecificationBase<Product, ProductId>
+        public static class WithReviews
         {
-            private WithReviews() { }
-
-            internal static SpecificationBase<Product, ProductId> Create(ProductId productId)
+            internal static Specification<Product, ProductId> Create(ProductId productId)
             {
-                return new WithReviews()
+                return Specification<Product, ProductId>.New()
                     .AddFilters(product => product.Id == productId)
                     .AddIncludes(product => product.Reviews)
                     .AddTag(QueryProductByIdWithReviews);
             }
         }
 
-        public sealed class WithReview : SpecificationBase<Product, ProductId>
+        public static class WithReview
         {
-            private WithReview() { }
-
-            internal static SpecificationBase<Product, ProductId> Create(ProductId productId, ReviewId reviewId)
+            internal static Specification<Product, ProductId> Create(ProductId productId, ReviewId reviewId)
             {
-                return new WithReview()
+                return Specification<Product, ProductId>.New()
                     .AddFilters(product => product.Id == productId)
                     .AddIncludes(product => product.Reviews.Where(review => review.Id == reviewId))
                     .AddTag(QueryProductByIdWithReviewById);
             }
 
-            internal static SpecificationBase<Product, ProductId> Create(ProductId productId, Title title)
+            internal static Specification<Product, ProductId> Create(ProductId productId, Title title)
             {
-                return new WithReview()
+                return Specification<Product, ProductId>.New()
                     .AddFilters(product => product.Id == productId)
                     .AddIncludes(product => product.Reviews.Where(review => review.Title == title))
                     .AddTag(QueryProductByIdWithReviewByTitle);

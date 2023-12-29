@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 
-namespace Shopway.Domain.Common;
+namespace Shopway.Domain.Common.BaseTypes;
 
 /// <summary>
 /// Converter used to allow conversion between ulid in string format and specified entity id

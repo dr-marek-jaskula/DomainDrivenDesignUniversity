@@ -5,29 +5,37 @@ using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 
-namespace Shopway.Persistence.Abstractions;
+namespace Shopway.Persistence.Specifications;
 
-internal abstract class SpecificationWithMappingBase<TEntity, TEntityId, TResponse> : SpecificationBase<TEntity, TEntityId>
+internal sealed class SpecificationWithMapping<TEntity, TEntityId, TResponse> : Specification<TEntity, TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
     internal Expression<Func<TEntity, TResponse>>? Mapping { get; private set; } = null;
+    internal bool UseDistinct { get; private set; }
 
-    internal SpecificationWithMappingBase<TEntity, TEntityId, TResponse> AddMapping(Expression<Func<TEntity, TResponse>>? mapping)
+    public new static SpecificationWithMapping<TEntity, TEntityId, TResponse> New()
+    {
+        return new SpecificationWithMapping<TEntity, TEntityId, TResponse>();
+    }
+
+    internal SpecificationWithMapping<TEntity, TEntityId, TResponse> AddMapping(Expression<Func<TEntity, TResponse>>? mapping)
     {
         Mapping = mapping;
         return this;
     }
+
+    internal SpecificationWithMapping<TEntity, TEntityId, TResponse> ApplyDistinct()
+    {
+        UseDistinct = true;
+        return this;
+    }
 }
 
-internal abstract class SpecificationBase<TEntity, TEntityId>
+internal class Specification<TEntity, TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
-    protected SpecificationBase()
-    {
-    }
-
     //Tag
     internal string? QueryTag { get; private set; }
 
@@ -49,51 +57,56 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
 
     //Includes
     internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
-    internal Func<IQueryable<TEntity>, IQueryable<TEntity>>? IncludeAction { get; private set; } = null; 
+    internal Func<IQueryable<TEntity>, IQueryable<TEntity>>? IncludeAction { get; private set; } = null;
 
-    internal SpecificationBase<TEntity, TEntityId> AddTag(string queryTag)
+    public static Specification<TEntity, TEntityId> New()
+    {
+        return new Specification<TEntity, TEntityId>();
+    }
+
+    internal Specification<TEntity, TEntityId> AddTag(string queryTag)
     {
         QueryTag = queryTag;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> IgnoreGlobalFilters()
+    internal Specification<TEntity, TEntityId> IgnoreGlobalFilters()
     {
         UseGlobalFilters = false;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> UseSplitQuery()
+    internal Specification<TEntity, TEntityId> UseSplitQuery()
     {
         AsSplitQuery = true;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> UseNoTracking()
+    internal Specification<TEntity, TEntityId> UseNoTracking()
     {
         AsNoTracking = true;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> UseTracking()
+    internal Specification<TEntity, TEntityId> UseTracking()
     {
         AsTracking = true;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> UseNoTrackingWithIdentityResolution()
+    internal Specification<TEntity, TEntityId> UseNoTrackingWithIdentityResolution()
     {
         AsNoTrackingWithIdentityResolution = true;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddFilter(IFilter<TEntity>? filter)
+    internal Specification<TEntity, TEntityId> AddFilter(IFilter<TEntity>? filter)
     {
         Filter = filter;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddFilter(Expression<Func<TEntity, bool>>? filterExpression)
+    internal Specification<TEntity, TEntityId> AddFilter(Expression<Func<TEntity, bool>>? filterExpression)
     {
         if (filterExpression is not null)
         {
@@ -102,7 +115,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddFilters(params Expression<Func<TEntity, bool>>[] filterExpressions)
+    internal Specification<TEntity, TEntityId> AddFilters(params Expression<Func<TEntity, bool>>[] filterExpressions)
     {
         foreach (var filterExpression in filterExpressions)
         {
@@ -112,19 +125,19 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddSortBy(ISortBy<TEntity>? sortBy)
+    internal Specification<TEntity, TEntityId> AddSortBy(ISortBy<TEntity>? sortBy)
     {
         SortBy = sortBy;
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> OrderBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
+    internal Specification<TEntity, TEntityId> OrderBy(Expression<Func<TEntity, object>> sortByExpression, SortDirection sortDirection)
     {
         SortByExpression = (sortByExpression, sortDirection);
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> ThenBy(Expression<Func<TEntity, object>> thenByExpression, SortDirection sortDirection)
+    internal Specification<TEntity, TEntityId> ThenBy(Expression<Func<TEntity, object>> thenByExpression, SortDirection sortDirection)
     {
         if (SortByExpression is null)
         {
@@ -140,7 +153,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
         return this;
     }
 
-    internal SpecificationBase<TEntity, TEntityId> AddIncludes(params Expression<Func<TEntity, object>>[] includeExpressions)
+    internal Specification<TEntity, TEntityId> AddIncludes(params Expression<Func<TEntity, object>>[] includeExpressions)
     {
         foreach (var includeExpression in includeExpressions)
         {
@@ -157,7 +170,7 @@ internal abstract class SpecificationBase<TEntity, TEntityId>
     /// Example usage: .AddIncludeAction(orderHeader => orderHeader.Include(o => o.OrderLines).ThenInclude(od => od.Product)) 
     /// </remarks>
     /// <param name="includeAction"></param>
-    internal SpecificationBase<TEntity, TEntityId> AddIncludesWithThenIncludesAction(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
+    internal Specification<TEntity, TEntityId> AddIncludesWithThenIncludesAction(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
     {
         var includeActionBody = includeAction.ToString();
 

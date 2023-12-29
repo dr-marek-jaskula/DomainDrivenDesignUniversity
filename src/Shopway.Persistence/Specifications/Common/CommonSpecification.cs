@@ -1,19 +1,16 @@
 ﻿using System.Linq.Expressions;
 using Shopway.Persistence.Utilities;
 using Shopway.Domain.Common.BaseTypes;
-using Shopway.Persistence.Abstractions;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Persistence.Specifications.Common;
 
-internal abstract partial class CommonSpecification
+internal static partial class CommonSpecification
 {
-    internal sealed partial class WithMapping<TEntity, TEntityId, TResponse> : SpecificationWithMappingBase<TEntity, TEntityId, TResponse>
-        where TEntityId : struct, IEntityId<TEntityId>
-        where TEntity : Entity<TEntityId>
+    internal static partial class WithMapping
     {
-        internal static SpecificationWithMappingBase<TEntity, TEntityId, TResponse> Create
+        internal static SpecificationWithMapping<TEntity, TEntityId, TResponse> Create<TEntity, TEntityId, TResponse>
         (
             IFilter<TEntity>? filter = null,
             Expression<Func<TEntity, bool>>? customFilter = null,
@@ -21,8 +18,10 @@ internal abstract partial class CommonSpecification
             Expression<Func<TEntity, TResponse>>? mapping = null,
             params Expression<Func<TEntity, object>>[] includes
         )
+            where TEntityId : struct, IEntityId<TEntityId>
+            where TEntity : Entity<TEntityId>
         {
-            return new WithMapping<TEntity, TEntityId, TResponse>()
+            return SpecificationWithMapping<TEntity, TEntityId, TResponse>.New()
                 .AddMapping(mapping)
                 .AddIncludes(includes)
                 .AddFilter(filter)
