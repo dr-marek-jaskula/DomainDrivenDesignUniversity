@@ -5,6 +5,7 @@ using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Shopway.Persistence.Utilities;
 
@@ -50,17 +51,17 @@ public static class QueryableUtilities
     public static async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
     (
         this IQueryable<TResponse> queryable,
-        int take,
+        ICursorPage page,
         CancellationToken cancellationToken
     )
         where TResponse : class, IHasCursor
     {
         var responsesWithCursor = await queryable
-            .Take(take + AdditionalRecordForCursor)
+            .Take(page.PageSize + AdditionalRecordForCursor)
             .ToListAsync(cancellationToken);
 
         var cursor = Ulid.Empty;
-        if (responsesWithCursor.Count > take)
+        if (responsesWithCursor.Count > page.PageSize)
         {
             cursor = responsesWithCursor.Last().Id;
             responsesWithCursor = responsesWithCursor.SkipLast(1).ToList();

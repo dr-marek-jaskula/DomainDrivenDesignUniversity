@@ -186,7 +186,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         return await _dbContext
             .Set<Product>()
             .UseSpecification(specification)
-            .PageAsync(page.PageSize, cancellationToken);
+            .PageAsync(page, cancellationToken);
     }
 
     public void Create(Product product)
