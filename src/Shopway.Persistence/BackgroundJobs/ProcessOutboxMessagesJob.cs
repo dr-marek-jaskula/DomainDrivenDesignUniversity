@@ -4,9 +4,7 @@ using Newtonsoft.Json;
 using Shopway.Persistence.Outbox;
 using Microsoft.Extensions.Logging;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Utilities;
 using Shopway.Infrastructure.Policies;
-using Shopway.Infrastructure.Utilities;
 
 namespace Shopway.Persistence.BackgroundJobs;
 

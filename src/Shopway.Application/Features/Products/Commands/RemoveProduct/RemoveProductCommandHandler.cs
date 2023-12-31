@@ -2,9 +2,8 @@
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Application.Abstractions.CQRS;
-using static Shopway.Domain.Common.Utilities.ResultUtilities;
+using static Shopway.Domain.Common.Results.ResultUtilities;
 
 namespace Shopway.Application.Features.Products.Commands.RemoveProduct;
 

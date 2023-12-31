@@ -14,7 +14,7 @@ internal sealed class SpecificationWithMapping<TEntity, TEntityId, TResponse> : 
     internal Expression<Func<TEntity, TResponse>>? Mapping { get; private set; } = null;
     internal bool UseDistinct { get; private set; }
 
-    public new static SpecificationWithMapping<TEntity, TEntityId, TResponse> New()
+    internal new static SpecificationWithMapping<TEntity, TEntityId, TResponse> New()
     {
         return new SpecificationWithMapping<TEntity, TEntityId, TResponse>();
     }
@@ -59,7 +59,7 @@ internal class Specification<TEntity, TEntityId>
     internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
     internal Func<IQueryable<TEntity>, IQueryable<TEntity>>? IncludeAction { get; private set; } = null;
 
-    public static Specification<TEntity, TEntityId> New()
+    internal static Specification<TEntity, TEntityId> New()
     {
         return new Specification<TEntity, TEntityId>();
     }

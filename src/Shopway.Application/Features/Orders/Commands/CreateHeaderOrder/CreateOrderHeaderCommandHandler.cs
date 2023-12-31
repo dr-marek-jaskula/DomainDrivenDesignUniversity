@@ -3,7 +3,6 @@ using Shopway.Domain.Entities;
 using Shopway.Application.Mappings;
 using Shopway.Domain.Common.Results;
 using Shopway.Application.Utilities;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Application.Abstractions.CQRS;

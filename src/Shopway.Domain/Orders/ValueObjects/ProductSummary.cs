@@ -1,10 +1,10 @@
 ﻿using Shopway.Domain.Errors;
 using Shopway.Domain.Products;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Products.ValueObjects;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
+using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Domain.Orders.ValueObjects;
 

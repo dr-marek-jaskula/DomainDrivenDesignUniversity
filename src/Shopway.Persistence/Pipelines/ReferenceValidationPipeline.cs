@@ -12,6 +12,7 @@ using Shopway.Domain.Common.BaseTypes.Abstractions;
 using static Shopway.Persistence.Cache.PersistenceCache;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
 using static Shopway.Domain.Common.Utilities.ReflectionUtilities;
+using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Persistence.Pipelines;
 

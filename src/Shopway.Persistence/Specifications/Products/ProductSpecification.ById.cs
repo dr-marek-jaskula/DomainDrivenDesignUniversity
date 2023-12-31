@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Shopway.Domain.Products;
-using Shopway.Persistence.Utilities;
 using Shopway.Domain.Products.ValueObjects;
 using static Shopway.Persistence.Constants.Constants.Specification.Product;
 

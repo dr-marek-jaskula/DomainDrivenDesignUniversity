@@ -1,5 +1,4 @@
-﻿using NetArchTest.Rules;
-using Shopway.Persistence.Abstractions;
+﻿using Shopway.Domain.Common.Utilities;
 using static Shopway.Tests.Unit.Constants.Constants;
 using static Shopway.Tests.Unit.Constants.Constants.NamingConvention;
 
@@ -15,15 +14,13 @@ public partial class NamingConventionsTests
         var assembly = Shopway.Persistence.AssemblyReference.Assembly;
 
         //Act
-        var result = Types
-            .InAssembly(assembly)
-            .That()
-            .Inherit(typeof(RepositoryBase))
-            .Should()
-            .HaveNameEndingWith(Repository)
-            .GetResult();
+        var repositories = assembly
+            .GetTypes()
+            .Where(x => x.GetInterfaces().Any(x => x.Name.EndsWith(Repository)));
 
         //Assert
-        result.IsSuccessful.Should().BeTrue();
+        repositories
+            .Should()
+            .OnlyContain(x => x.Name.EndsWith(Repository));
     }
 }

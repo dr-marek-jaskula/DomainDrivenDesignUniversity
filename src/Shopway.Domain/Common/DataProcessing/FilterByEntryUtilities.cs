@@ -1,6 +1,4 @@
-﻿using Shopway.Domain.Common.DataProcessing;
-
-namespace Shopway.Domain.Common.Utilities;
+﻿namespace Shopway.Domain.Common.DataProcessing;
 
 public static class FilterByEntryUtilities
 {

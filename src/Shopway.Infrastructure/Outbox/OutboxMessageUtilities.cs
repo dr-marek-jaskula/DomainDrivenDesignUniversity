@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Shopway.Persistence.Outbox;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 
-namespace Shopway.Persistence.Utilities;
+namespace Shopway.Persistence.Outbox;
 
 public static class OutboxMessageUtilities
 {
