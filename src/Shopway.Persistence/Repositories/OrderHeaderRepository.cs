@@ -3,18 +3,22 @@ using System.Linq.Expressions;
 using Shopway.Domain.Entities;
 using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Specifications.OrderHeaders;
+using Shopway.Persistence.Specifications;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : RepositoryBase(dbContext), IOrderHeaderRepository
+public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHeaderRepository
 {
+    private readonly ShopwayDbContext _dbContext = dbContext;
+
     public async Task<OrderHeader> GetByIdAsync(OrderHeaderId id, CancellationToken cancellationToken)
     {
         var specification = OrderHeaderSpecification.ById.WithOrderLines.AndProducts.Create(id);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<OrderHeader>()
+            .UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -33,7 +37,7 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : Reposito
             .AsSplitQuery()
             .AsQueryable();
 
-        if (includes.Any())
+        if (includes.Length != 0)
         {
             foreach (var include in includes)
             {

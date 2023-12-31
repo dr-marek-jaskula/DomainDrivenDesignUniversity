@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Shopway.Persistence.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.DataProcessing.Abstractions;

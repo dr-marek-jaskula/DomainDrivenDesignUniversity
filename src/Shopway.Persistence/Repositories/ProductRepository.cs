@@ -5,7 +5,7 @@ using Shopway.Persistence.Utilities;
 using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Persistence.Abstractions;
+using Shopway.Persistence.Specifications;
 using Shopway.Domain.Products.ValueObjects;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Specifications.Common;
@@ -14,13 +14,17 @@ using static Shopway.Domain.Common.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBase(dbContext), IProductRepository
+public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepository
 {
+    private readonly ShopwayDbContext _dbContext = dbContext;
+
     public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.Names.Create();
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .ToListAsync(cancellationToken);
     }
 
@@ -28,7 +32,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ByKey.Create(productKey);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -36,7 +42,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ByKey.Create(productKey);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .AnyAsync(cancellationToken);
     }
 
@@ -44,7 +52,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ById.Create(id);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .AnyAsync(cancellationToken);
     }
 
@@ -52,7 +62,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ById.Create(ids, product => product.Id);
 
-        var existing = await UseSpecification(specification)
+        var existing = await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .ToListAsync(cancellationToken);
 
         return ids.Except(existing).ToList();
@@ -62,7 +74,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ById.WithReviews.Create(id);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -70,7 +84,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ById.Create(ids);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .ToListAsync(cancellationToken);
     }
 
@@ -78,7 +94,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ById.WithReview.Create(id, reviewId);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -86,7 +104,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ById.WithReview.Create(id, title);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -94,7 +114,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
     {
         var specification = ProductSpecification.ById.WithIncludes.Create(id, includes);
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .FirstAsync(cancellationToken);
     }
 
@@ -103,7 +125,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
         var specification = ProductSpecification.ByNamesAndRevisions.Create(productNames, productRevisions);
 
         //We query too many products: all combinations of ProductName and Revision. Therefore, we will need to filter them
-        var productsToFilter = await UseSpecification(specification)
+        var productsToFilter = await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .ToListAsync(cancellationToken);
 
         return productsToFilter
@@ -131,7 +155,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
             includes: includes
         );
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .PageAsync(page, cancellationToken);
     }
 
@@ -157,7 +183,9 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : RepositoryBa
             includes: includes
         );
 
-        return await UseSpecification(specification)
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
             .PageAsync(page.PageSize, cancellationToken);
     }
 

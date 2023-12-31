@@ -1,6 +1,4 @@
-﻿using Shopway.Domain.Common.Results;
-
-namespace Shopway.Domain.Common.Utilities;
+﻿namespace Shopway.Domain.Common.Results;
 
 public static class ResultUtilities
 {

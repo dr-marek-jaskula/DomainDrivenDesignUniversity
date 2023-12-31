@@ -51,7 +51,7 @@ public sealed class ProductTests : TestBase
     }
 
     [Fact]
-    public void CreateProduct_ShouldRiseProductCreatedDomainEvent_WhenValidValueObjects()
+    public void CreateProduct_ShouldRaiseProductCreatedDomainEvent_WhenValidValueObjects()
     {
         //Arrange
         var productId = ProductId.New();

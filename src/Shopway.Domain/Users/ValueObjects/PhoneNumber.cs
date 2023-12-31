@@ -6,6 +6,7 @@ using Shopway.Domain.Common.BaseTypes;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
 using static System.Text.RegularExpressions.RegexOptions;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
+using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Domain.Users.ValueObjects;
 

@@ -1,14 +1,14 @@
 ﻿using Shopway.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Abstractions;
-using System.Linq;
 using Shopway.Domain.Enums;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class AuthorizationRepository(ShopwayDbContext dbContext) : RepositoryBase(dbContext), IAuthorizationRepository
+public sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAuthorizationRepository
 {
+    private readonly ShopwayDbContext _dbContext = dbContext;
+
     public async Task<HashSet<string>> GetPermissionsAsync(UserId userId)
     {
         var permissions = await _dbContext

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Filters;
-using Shopway.Presentation.Utilities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.FileProviders;
+using Shopway.Presentation.OpenApi;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

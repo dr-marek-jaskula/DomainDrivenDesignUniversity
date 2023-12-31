@@ -3,13 +3,13 @@ using Shopway.Persistence.Outbox;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Abstractions;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OutboxRepository(ShopwayDbContext dbContext) : RepositoryBase(dbContext), IOutboxRepository
+public sealed class OutboxRepository(ShopwayDbContext dbContext) : IOutboxRepository
 {
+    private readonly ShopwayDbContext _dbContext = dbContext;
     private const int AmountOfProcessedMessages = 20;
 
     public async Task<OutboxMessage[]> GetOutboxMessagesAsync(CancellationToken cancellationToken)

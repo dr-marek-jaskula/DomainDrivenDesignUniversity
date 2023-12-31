@@ -8,11 +8,11 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext context) : IOrderHeaderRepository
+public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) : IOrderHeaderRepository
 {
     private readonly IOrderHeaderRepository _decorated = decorated;
     private readonly IFusionCache _fusionCache = fusionCache;
-    private readonly ShopwayDbContext _context = context;
+    private readonly ShopwayDbContext _dbContext = dbContext;
 
     public async Task<OrderHeader> GetByIdAsync(OrderHeaderId id, CancellationToken cancellationToken)
     {
@@ -24,7 +24,7 @@ public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated
             cancellationToken
         );
 
-        return _context.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(order);
+        return _dbContext.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(order);
     }
 
     public Task<OrderHeader> GetByIdWithIncludesAsync(OrderHeaderId id, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes)

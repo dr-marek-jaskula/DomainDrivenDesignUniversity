@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 
-namespace Shopway.Domain.Common.Utilities;
+namespace Shopway.Domain.Common.BaseTypes;
 
 public static class IEntityIdUtilities
 {

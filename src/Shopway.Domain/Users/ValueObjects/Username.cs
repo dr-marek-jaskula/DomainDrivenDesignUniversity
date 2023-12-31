@@ -4,6 +4,7 @@ using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using static Shopway.Domain.Errors.Domain.DomainErrors;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
+using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Domain.Users.ValueObjects;
 

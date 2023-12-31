@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Exceptions;
 using Shopway.Application.Exceptions;
 using Shopway.Infrastructure.Policies;
-using Shopway.Infrastructure.Utilities;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

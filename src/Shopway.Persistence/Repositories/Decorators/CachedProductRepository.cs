@@ -10,11 +10,11 @@ using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-public sealed class CachedProductRepository(IProductRepository decorated, IFusionCache fusionCache, ShopwayDbContext context) : IProductRepository
+public sealed class CachedProductRepository(IProductRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) : IProductRepository
 {
     private readonly IProductRepository _decorated = decorated;
     private readonly IFusionCache _fusionCache = fusionCache;
-    private readonly ShopwayDbContext _context = context;
+    private readonly ShopwayDbContext _dbContext = dbContext;
 
     public async Task<Product> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
     {
@@ -26,7 +26,7 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
             cancellationToken
         );
 
-        return _context.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(product);
+        return _dbContext.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(product);
     }
 
     public Task<IList<Product>> GetByIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)

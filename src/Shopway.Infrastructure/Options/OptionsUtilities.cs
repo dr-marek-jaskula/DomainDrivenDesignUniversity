@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Shopway.Infrastructure.Options;
 
 public static class OptionsUtilities
 {

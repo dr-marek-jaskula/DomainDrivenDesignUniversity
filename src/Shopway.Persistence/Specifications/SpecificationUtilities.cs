@@ -1,15 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Framework;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Persistence.Specifications;
+using Shopway.Domain.Common.Utilities;
 
-namespace Shopway.Persistence.Abstractions;
+namespace Shopway.Persistence.Specifications;
 
-public abstract class RepositoryBase(ShopwayDbContext dbContext)
+internal static class SpecificationUtilities
 {
-    private protected readonly ShopwayDbContext _dbContext = dbContext;
+    /// <summary>
+    /// Cast specification to mapping specification
+    /// </summary>
+    /// <typeparam name="TEntity">Entity type</typeparam>
+    /// <typeparam name="TEntityId">EntityId type</typeparam>
+    /// <typeparam name="TResponse">Response type</typeparam>
+    /// <param name="specification">Input specification</param>
+    /// <returns>SpecificationWithMappingBase</returns>
+    internal static SpecificationWithMapping<TEntity, TEntityId, TResponse> AsMappingSpecification<TEntity, TEntityId, TResponse>(this Specification<TEntity, TEntityId> specification)
+        where TEntityId : struct, IEntityId<TEntityId>
+        where TEntity : Entity<TEntityId>
+    {
+        return (SpecificationWithMapping<TEntity, TEntityId, TResponse>)specification;
+    }
 
     /// <summary>
     /// Apply a specification and return a queryable
@@ -19,12 +30,10 @@ public abstract class RepositoryBase(ShopwayDbContext dbContext)
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    private protected IQueryable<TEntity> UseSpecification<TEntity, TEntityId>(Specification<TEntity, TEntityId> specification)
+    internal static IQueryable<TEntity> UseSpecification<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
-        IQueryable<TEntity> queryable = _dbContext.Set<TEntity>();
-
         if (specification.IncludeAction is not null)
         {
             queryable = specification.IncludeAction(queryable);
@@ -105,7 +114,7 @@ public abstract class RepositoryBase(ShopwayDbContext dbContext)
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    private protected IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TResponse>(SpecificationWithMapping<TEntity, TEntityId, TResponse> specification)
+    internal static IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TResponse>(this IQueryable<TEntity> queryable, SpecificationWithMapping<TEntity, TEntityId, TResponse> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
@@ -114,14 +123,15 @@ public abstract class RepositoryBase(ShopwayDbContext dbContext)
             throw new ArgumentNullException($"{nameof(SpecificationWithMapping<TEntity, TEntityId, TResponse>)} must contain Select statement");
         }
 
-        var queryable = UseSpecification((Specification<TEntity, TEntityId>)specification)
+        var queryableWithMapping = queryable
+            .UseSpecification((Specification<TEntity, TEntityId>)specification)
             .Select(specification.Mapping);
 
         if (specification.UseDistinct)
         {
-            queryable = queryable.Distinct();
+            queryableWithMapping = queryableWithMapping.Distinct();
         }
 
-        return queryable;
+        return queryableWithMapping;
     }
 }

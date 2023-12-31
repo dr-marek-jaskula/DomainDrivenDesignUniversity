@@ -11,6 +11,7 @@ using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 using static Shopway.Application.Mappings.OrderLineMapping;
 using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
+using Shopway.Domain.Common.BaseTypes;
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 

@@ -5,7 +5,8 @@ using static Shopway.Application.Cache.ApplicationCache;
 using static Shopway.Application.Constants.Constants.Sort;
 using static Shopway.Application.Constants.Constants.Filter;
 using static Shopway.Domain.Common.Utilities.SortByEntryUtilities;
-using static Shopway.Domain.Common.Utilities.FilterByEntryUtilities;
+using static Shopway.Domain.Common.DataProcessing.FilterByEntryUtilities;
+using Shopway.Domain.Common.DataProcessing;
 
 namespace Shopway.Application.Utilities;
 

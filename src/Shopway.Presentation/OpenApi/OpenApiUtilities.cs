@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Shopway.Presentation.Utilities;
+namespace Shopway.Presentation.OpenApi;
 
 public static class OpenApiUtilities
 {

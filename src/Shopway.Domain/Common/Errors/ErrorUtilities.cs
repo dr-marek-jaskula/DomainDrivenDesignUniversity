@@ -2,7 +2,7 @@
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Errors;
 
-namespace Shopway.Domain.Common.Utilities;
+namespace Shopway.Domain.Common.Errors;
 
 public static class ErrorUtilities
 {
@@ -18,7 +18,7 @@ public static class ErrorUtilities
             .GetGenericTypeDefinition()
             .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
             .GetMethod(nameof(ValidationResult.WithErrors))!
-            .Invoke(null, [ errors ])!;
+            .Invoke(null, [errors])!;
 
         return (TResult)validationResult;
     }
