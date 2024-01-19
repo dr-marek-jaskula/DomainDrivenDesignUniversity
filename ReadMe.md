@@ -17,11 +17,11 @@ The Solution in designed using the Clean Architecture in the following form.
 
 ![VeryCleanArchitecture-removebg](https://github.com/dr-marek-jaskula/DomainDrivenDesignUniversity/assets/76631630/dcb809f9-f0cf-40f5-bba2-a46dfa16831a)
 
-I prefer to present it like this instead of using other Clean Architecture images, beacuse in my opionion this is more readable. The runner layer is required so that the Presentation, Infrastructure and Persistence layers can be truly separated.
+I prefer to present it like this instead of using other Clean Architecture images, because in my opinion this is more readable. The runner layer is required so that the Presentation, Infrastructure and Persistence layers can be truly separated.
 
 ### .App :car:
 
-This layer should register dependencies and run the program. In terms of presentech architecture schema it is a runner.
+This layer should register dependencies and run the program. In terms of presented architecture schema it is a runner.
 
 ### .Presentation :door: 
 
