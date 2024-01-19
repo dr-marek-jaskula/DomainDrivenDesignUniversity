@@ -6,36 +6,7 @@ namespace Shopway.Domain.Common.Utilities;
 public static class StringUtilities
 {
     public static readonly char[] IllegalCharacters =
-        ['!',
-            '@',
-            '#',
-            '$',
-            '%',
-            '^',
-            '&',
-            '*',
-            '(',
-            ')',
-            '\'',
-            '"',
-            '[',
-            ']',
-            ';',
-            ':',
-            '\\',
-            '|',
-            '/',
-            '.',
-            ',',
-            '>',
-            '<',
-            '?',
-            '-',
-            '_',
-            '+',
-            '+',
-            '~',
-            '`'];
+        ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '\'', '"', '[', ']', ';', ':', '\\', '|', '/', '.', ',', '>', '<', '?', '-', '_', '+', '+', '~', '`'];
     public static readonly char[] ToTrimCharacters = [' ', '\n', '\t'];
     public static readonly char[] Digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
