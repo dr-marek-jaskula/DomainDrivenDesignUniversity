@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using static Shopway.Persistence.Constants.Constants.Connection;
 
 namespace Shopway.Persistence.Framework;

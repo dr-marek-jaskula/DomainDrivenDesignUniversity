@@ -1,8 +1,8 @@
-﻿using Shopway.Persistence.Cache;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Builder;
-using Shopway.Persistence.Framework;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Shopway.Persistence.Cache;
+using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Registration;
 

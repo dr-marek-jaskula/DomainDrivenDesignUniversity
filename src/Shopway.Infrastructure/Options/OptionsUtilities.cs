@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Shopway.Infrastructure.Options;
 

@@ -37,7 +37,7 @@ public sealed class TaskTests
     {
         //Act
         var stopwatch = Stopwatch.StartNew();
-        
+
         var result = await new List<Task<int>>()
         {
             GetInt(1),

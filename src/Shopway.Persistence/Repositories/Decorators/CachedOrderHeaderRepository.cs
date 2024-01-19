@@ -1,9 +1,9 @@
-﻿using Shopway.Domain.Orders;
+﻿using Shopway.Application.Utilities;
 using Shopway.Domain.Entities;
-using System.Linq.Expressions;
+using Shopway.Domain.Orders;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
-using Shopway.Application.Utilities;
+using System.Linq.Expressions;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;

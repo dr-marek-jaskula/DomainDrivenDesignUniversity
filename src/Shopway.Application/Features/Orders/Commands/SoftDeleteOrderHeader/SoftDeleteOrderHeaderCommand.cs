@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Orders;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Orders;
 
 namespace Shopway.Application.Features.Orders.Commands.SoftDeleteOrderHeader;
 

@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using static Shopway.Presentation.Authentication.ApiKeyAuthentication.Constants.ApiKey;
 
 namespace Shopway.Presentation.Authentication.ApiKeyAuthentication.Handlers;

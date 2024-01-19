@@ -1,12 +1,12 @@
-﻿using System.Text;
-using Shopway.Domain.Users;
-using System.Security.Claims;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Shopway.Infrastructure.Options;
-using System.IdentityModel.Tokens.Jwt;
-using Shopway.Infrastructure.Policies;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Users;
+using Shopway.Infrastructure.Options;
+using Shopway.Infrastructure.Policies;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Shopway.Infrastructure.Providers;
 

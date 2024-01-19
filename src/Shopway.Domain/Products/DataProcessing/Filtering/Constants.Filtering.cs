@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
+using static Shopway.Domain.Common.Utilities.CollectionUtilities;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Common.Utilities.CollectionUtilities;
 
 namespace Shopway.Domain.Constants;
 

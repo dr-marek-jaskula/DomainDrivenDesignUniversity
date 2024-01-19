@@ -1,10 +1,10 @@
-﻿using Shopway.Domain.Orders;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Common.Results;
-using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Orders;
 
 namespace Shopway.Application.Features.Orders.Commands.SoftDeleteOrderHeader;
 
-internal sealed class SoftDeleteOrderHeaderCommandHandler(IOrderHeaderRepository orderRepository) 
+internal sealed class SoftDeleteOrderHeaderCommandHandler(IOrderHeaderRepository orderRepository)
     : ICommandHandler<SoftDeleteOrderHeaderCommand>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderRepository;

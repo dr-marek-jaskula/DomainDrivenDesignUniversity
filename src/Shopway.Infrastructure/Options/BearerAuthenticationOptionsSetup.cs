@@ -1,7 +1,7 @@
-﻿using System.Text;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 namespace Shopway.Infrastructure.Options;
 
@@ -17,6 +17,6 @@ internal sealed class BearerAuthenticationOptionsSetup(IOptions<AuthenticationOp
 
         //ClockSkew determines additional time for token to live
         //By default it is set to 5min. In almost every scenario it should be overwritten to value from 5s - 30s.
-        options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(_authenticationOptions.ClockSkew); 
+        options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(_authenticationOptions.ClockSkew);
     }
 }

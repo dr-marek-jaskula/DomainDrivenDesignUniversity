@@ -1,8 +1,8 @@
-﻿using Shopway.Domain.Products;
-using Shopway.Domain.EntityKeys;
-using static Shopway.Application.Mappings.ProductMapping;
+﻿using Shopway.Domain.EntityKeys;
+using Shopway.Domain.Products;
 using static Shopway.Application.Features.BatchEntryStatus;
 using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
+using static Shopway.Application.Mappings.ProductMapping;
 
 namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 

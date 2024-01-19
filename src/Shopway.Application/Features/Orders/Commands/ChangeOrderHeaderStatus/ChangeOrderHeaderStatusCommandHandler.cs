@@ -1,12 +1,12 @@
-﻿using Shopway.Domain.Orders;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
-using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Orders;
 
 namespace Shopway.Application.Features.Orders.Commands.ChangeOrderHeaderStatus;
 
-internal sealed class ChangeOrderHeaderStatusCommandHandler(IOrderHeaderRepository orderHeaderRepository) 
+internal sealed class ChangeOrderHeaderStatusCommandHandler(IOrderHeaderRepository orderHeaderRepository)
     : ICommandHandler<ChangeOrderHeaderStatusCommand, ChangeOrderHeaderStatusResponse>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderHeaderRepository;

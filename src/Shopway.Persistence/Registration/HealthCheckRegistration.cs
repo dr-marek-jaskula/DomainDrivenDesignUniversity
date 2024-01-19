@@ -1,12 +1,12 @@
-﻿using System.Text.Json;
-using Shopway.Domain.Products;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Builder;
-using Shopway.Persistence.Framework;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Infrastructure.Options;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Shopway.Domain.Products;
+using Shopway.Infrastructure.Options;
+using Shopway.Persistence.Framework;
+using System.Text.Json;
 using static Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus;
 
 namespace Microsoft.Extensions.DependencyInjection;

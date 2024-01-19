@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Products.Events;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Domain.Products.Events;
 
 namespace Shopway.Application.Features.Products.Events;
 

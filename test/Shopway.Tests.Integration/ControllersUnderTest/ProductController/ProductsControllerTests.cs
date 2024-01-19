@@ -11,7 +11,7 @@ public sealed partial class ProductsControllerTests : ControllerTestsBase, IAsyn
     private RestClient? _restClient;
     private readonly DatabaseFixture _fixture;
 
-    public ProductsControllerTests(DatabaseFixture databaseFixture, DependencyInjectionContainerTestFixture containerTestFixture) 
+    public ProductsControllerTests(DatabaseFixture databaseFixture, DependencyInjectionContainerTestFixture containerTestFixture)
         : base(containerTestFixture)
     {
         _fixture = databaseFixture;

@@ -1,16 +1,16 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Products;
-using Shopway.Domain.EntityKeys;
+﻿using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Mappings;
-using ZiggyCreatures.Caching.Fusion;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.EntityKeys;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
-using Shopway.Application.Abstractions.CQRS.Batch;
+using ZiggyCreatures.Caching.Fusion;
+using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 using static Shopway.Application.Mappings.ProductMapping;
 using static Shopway.Application.Utilities.CacheUtilities;
-using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
 
 namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 
@@ -61,13 +61,13 @@ public sealed partial class BatchUpsertProductCommandHandler
     {
         var productNames = command.ProductNames();
         var productRevisions = command.ProductRevisions();
-        
+
         return await _productRepository.GetProductsDictionaryByNameAndRevision
         (
-            productNames, 
-            productRevisions, 
-            command.Requests.Select(x => x.ProductKey).ToList(), 
-            ProductMapping.ToProductKey, 
+            productNames,
+            productRevisions,
+            command.Requests.Select(x => x.ProductKey).ToList(),
+            ProductMapping.ToProductKey,
             cancellationToken
         );
     }

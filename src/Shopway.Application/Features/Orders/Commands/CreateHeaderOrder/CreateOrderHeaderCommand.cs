@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Users;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Users;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 

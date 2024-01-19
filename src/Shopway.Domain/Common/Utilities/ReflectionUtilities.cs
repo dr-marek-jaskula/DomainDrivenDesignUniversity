@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Shopway.Domain.Common.BaseTypes.Abstractions;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Utilities;
+using System.Reflection;
 
 namespace Shopway.Domain.Common.Utilities;
 

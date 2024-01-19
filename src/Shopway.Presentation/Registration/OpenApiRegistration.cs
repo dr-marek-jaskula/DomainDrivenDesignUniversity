@@ -1,10 +1,10 @@
 ﻿using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
+using Shopway.Presentation.OpenApi;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.Extensions.FileProviders;
-using Shopway.Presentation.OpenApi;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

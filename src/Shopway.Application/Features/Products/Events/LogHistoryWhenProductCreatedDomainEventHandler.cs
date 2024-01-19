@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Products;
-using Microsoft.Extensions.Logging;
-using Shopway.Domain.Products.Events;
+﻿using Microsoft.Extensions.Logging;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Products;
+using Shopway.Domain.Products.Events;
 
 namespace Shopway.Application.Features.Products.Events;
 

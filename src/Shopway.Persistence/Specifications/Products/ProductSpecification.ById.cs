@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Shopway.Domain.Products;
+﻿using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
+using System.Linq.Expressions;
 using static Shopway.Persistence.Constants.Constants.Specification.Product;
 
 namespace Shopway.Persistence.Specifications.Products;

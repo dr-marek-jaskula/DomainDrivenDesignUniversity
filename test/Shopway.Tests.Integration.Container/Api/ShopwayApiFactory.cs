@@ -1,21 +1,21 @@
-﻿using Quartz;
-using Shopway.App.wwwroot;
-using Testcontainers.MsSql;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.TestHost;
-using Shopway.Persistence.Framework;
-using Shopway.Infrastructure.Options;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Shopway.Application.Abstractions;
-using Microsoft.AspNetCore.Authorization;
-using Shopway.Tests.Integration.Container.Api;
-using Shopway.Tests.Integration.Configurations;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Quartz;
+using Shopway.App.wwwroot;
+using Shopway.Application.Abstractions;
+using Shopway.Infrastructure.Options;
+using Shopway.Persistence.Framework;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
+using Shopway.Tests.Integration.Configurations;
+using Shopway.Tests.Integration.Container.Api;
+using Testcontainers.MsSql;
 
 namespace Shopway.Tests.Integration;
 
@@ -28,7 +28,7 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
 
     public ShopwayApiFactory()
     {
-    } 
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {

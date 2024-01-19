@@ -1,17 +1,17 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Products;
-using Shopway.Domain.EntityKeys;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
-using Shopway.Application.Abstractions;
-using Shopway.Domain.Users.ValueObjects;
+using Shopway.Domain.EntityKeys;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
-using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Users.ValueObjects;
 
 namespace Shopway.Application.Features.Products.Commands.AddReview;
 
-internal sealed class AddReviewCommandHandler(IProductRepository productRepository, IValidator validator, IUserContextService userContext) 
+internal sealed class AddReviewCommandHandler(IProductRepository productRepository, IValidator validator, IUserContextService userContext)
     : ICommandHandler<AddReviewCommand, AddReviewResponse>
 {
     private readonly IProductRepository _productRepository = productRepository;

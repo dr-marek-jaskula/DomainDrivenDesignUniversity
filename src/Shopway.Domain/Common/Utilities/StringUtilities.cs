@@ -1,15 +1,43 @@
-﻿using System.Buffers;
-using Shopway.Domain.Common.Utilities;
+﻿using Shopway.Domain.Common.Utilities;
+using System.Buffers;
 
 namespace Shopway.Domain.Common.Utilities;
 
 public static class StringUtilities
 {
     public static readonly char[] IllegalCharacters =
-        ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
-          '\'', '"', '[', ']', ';', ':', '\\', '|', '/', '.', ',', '>', '<', '?', '-', '_', '+', '+', '~', '`'];
+        ['!',
+            '@',
+            '#',
+            '$',
+            '%',
+            '^',
+            '&',
+            '*',
+            '(',
+            ')',
+            '\'',
+            '"',
+            '[',
+            ']',
+            ';',
+            ':',
+            '\\',
+            '|',
+            '/',
+            '.',
+            ',',
+            '>',
+            '<',
+            '?',
+            '-',
+            '_',
+            '+',
+            '+',
+            '~',
+            '`'];
     public static readonly char[] ToTrimCharacters = [' ', '\n', '\t'];
-    public static readonly char[] Digits = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ];
+    public static readonly char[] Digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
     //SearchValues are highly efficient .NET 8 way to perform searches.
     private static readonly SearchValues<char> _illeagalCharacterSearchValues = SearchValues.Create(IllegalCharacters);

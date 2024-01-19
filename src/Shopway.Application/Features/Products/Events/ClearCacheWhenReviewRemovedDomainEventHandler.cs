@@ -1,7 +1,7 @@
-﻿using Shopway.Application.Utilities;
-using ZiggyCreatures.Caching.Fusion;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Utilities;
 using Shopway.Domain.Products.Events;
-using Shopway.Application.Abstractions;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Application.Features.Products.Events;
 

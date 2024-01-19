@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Products;
-using Shopway.Domain.EntityKeys;
+﻿using Shopway.Domain.EntityKeys;
+using Shopway.Domain.Products;
 using static Shopway.Persistence.Constants.Constants.Specification.Product;
 
 namespace Shopway.Persistence.Specifications.Products;

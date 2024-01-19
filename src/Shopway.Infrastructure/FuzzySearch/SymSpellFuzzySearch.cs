@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Common.Results;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Errors;
 using static SymSpell;
 
 namespace Shopway.Infrastructure.FuzzySearch;
@@ -29,7 +29,7 @@ internal sealed class SymSpellFuzzySearch(SymSpell fuzzySearchEngine) : IFuzzySe
         }
 
         var suggestions = _fuzzySearchEngine.Lookup(stringToApproximate, Verbosity.Top, maxEditDistance);
-        
+
         if (suggestions.IsNullOrEmpty())
         {
             var error = Error.New(nameof(SymSpellFuzzySearch), $"There is no suggestion for '{stringToApproximate}' in maximal distance: '{maxEditDistance}'.");

@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Orders;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Orders;
 using static Shopway.Application.Features.Orders.Commands.UpdateOrderLine.UpdateOrderLineCommand;
 
 namespace Shopway.Application.Features.Orders.Commands.UpdateOrderLine;

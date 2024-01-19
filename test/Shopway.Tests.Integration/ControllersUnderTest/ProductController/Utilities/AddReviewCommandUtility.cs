@@ -10,7 +10,7 @@ public static class AddReviewCommandUtility
         return new AddReviewCommand.AddReviewRequestBody
         (
             stars ?? Stars,
-            title ?? Title, 
+            title ?? Title,
             description ?? Description
         );
     }

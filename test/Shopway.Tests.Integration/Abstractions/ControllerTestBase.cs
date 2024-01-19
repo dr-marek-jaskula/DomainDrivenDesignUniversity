@@ -1,21 +1,20 @@
-﻿using RestSharp;
-using System.Data;
-using RestSharp.Authenticators;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Presentation.Controllers;
-using Shopway.Tests.Integration.Utilities;
-using Shopway.Tests.Integration.Persistence;
-using Shopway.Tests.Integration.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using RestSharp;
+using RestSharp.Authenticators;
 using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
-using static RestSharp.Method;
-using static Shopway.Persistence.Constants.Constants;
-using static Shopway.Tests.Integration.Constants.Constants;
-using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.Enumerations;
+using Shopway.Presentation.Controllers;
+using Shopway.Tests.Integration.Configurations;
+using Shopway.Tests.Integration.Persistence;
+using Shopway.Tests.Integration.Utilities;
+using System.Data;
 using System.Reflection;
+using static RestSharp.Method;
+using static Shopway.Tests.Integration.Constants.Constants;
+using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
 
 namespace Shopway.Tests.Integration.Abstractions;
 
@@ -72,8 +71,8 @@ public abstract class ControllerTestsBase : IDisposable
     /// <param name="endpointUri">Endpoint</param>
     /// <returns></returns>
 	protected static RestRequest GetRequest(string endpointUri)
-	{
-		return new RestRequest(endpointUri, Get);
+    {
+        return new RestRequest(endpointUri, Get);
     }
 
     /// <summary>

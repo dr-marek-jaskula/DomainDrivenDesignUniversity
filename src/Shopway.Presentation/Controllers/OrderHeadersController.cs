@@ -1,14 +1,14 @@
-﻿using MediatR;
-using Asp.Versioning;
-using Shopway.Domain.Orders;
-using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Http;
-using Shopway.Presentation.Abstractions;
-using Shopway.Application.Features.Orders.Queries;
-using Shopway.Application.Features.Orders.Queries.GetOrderById;
+using Microsoft.AspNetCore.Mvc;
+using Shopway.Application.Features.Orders.Commands.ChangeOrderHeaderStatus;
 using Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 using Shopway.Application.Features.Orders.Commands.SoftDeleteOrderHeader;
-using Shopway.Application.Features.Orders.Commands.ChangeOrderHeaderStatus;
+using Shopway.Application.Features.Orders.Queries;
+using Shopway.Application.Features.Orders.Queries.GetOrderById;
+using Shopway.Domain.Orders;
+using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -37,7 +37,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateOrderHeader
     (
-        [FromBody] CreateOrderHeaderCommand command, 
+        [FromBody] CreateOrderHeaderCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -56,7 +56,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SoftDeleteOrderHeader
     (
-        [FromRoute] OrderHeaderId id, 
+        [FromRoute] OrderHeaderId id,
         CancellationToken cancellationToken
     )
     {
@@ -78,7 +78,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     public async Task<IActionResult> ChangeOrderHeaderStatus
     (
         [FromRoute] OrderHeaderId id,
-        [FromBody] ChangeOrderHeaderStatusCommand.ChangeOrderHeaderStatusRequestBody body, 
+        [FromBody] ChangeOrderHeaderStatusCommand.ChangeOrderHeaderStatusRequestBody body,
         CancellationToken cancellationToken
     )
     {

@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Framework;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Shopway.Infrastructure.Options;
 using Shopway.Persistence.Abstractions;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Shopway.Persistence.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

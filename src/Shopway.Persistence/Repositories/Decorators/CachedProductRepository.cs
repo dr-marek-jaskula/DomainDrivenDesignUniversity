@@ -1,12 +1,12 @@
-﻿using System.Linq.Expressions;
-using Shopway.Domain.Products;
-using Shopway.Domain.EntityKeys;
-using Shopway.Persistence.Framework;
-using ZiggyCreatures.Caching.Fusion;
-using Shopway.Application.Utilities;
-using Shopway.Persistence.Utilities;
-using Shopway.Domain.Products.ValueObjects;
+﻿using Shopway.Application.Utilities;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.EntityKeys;
+using Shopway.Domain.Products;
+using Shopway.Domain.Products.ValueObjects;
+using Shopway.Persistence.Framework;
+using Shopway.Persistence.Utilities;
+using System.Linq.Expressions;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -49,7 +49,7 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
     {
         _decorated.Remove(id);
         //This would not be required, but to demonstrate the "ExecuteDelete" technique, it needs to be done here, since ChangeTracker is not updated when using "ExecuteDelete"
-        _fusionCache.Remove(id); 
+        _fusionCache.Remove(id);
     }
 
     public void Update(Product product)

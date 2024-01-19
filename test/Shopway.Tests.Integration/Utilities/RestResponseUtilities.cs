@@ -1,5 +1,5 @@
-﻿using RestSharp;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RestSharp;
 using Shopway.Tests.Integration.ControllersUnderTest;
 
 namespace Shopway.Tests.Integration.Utilities;

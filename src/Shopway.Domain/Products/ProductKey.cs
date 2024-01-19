@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Products;
-using Shopway.Domain.Common.BaseTypes.Abstractions;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Products;
 
 namespace Shopway.Domain.EntityKeys;
 

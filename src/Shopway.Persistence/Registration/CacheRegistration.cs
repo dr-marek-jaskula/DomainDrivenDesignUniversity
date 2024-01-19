@@ -25,13 +25,13 @@ public static class CacheRegistration
                 //options.DistributedCacheHardTimeout = TimeSpan.FromSeconds(2);
             })
             .WithSerializer(new FusionCacheNewtonsoftJsonSerializer());
-            //.WithDistributedCache(new RedisCache(new RedisCacheOptions()
-            //{
-            //    Configuration = cacheOptions.ConnectionString!
-            //}));
+        //.WithDistributedCache(new RedisCache(new RedisCacheOptions()
+        //{
+        //    Configuration = cacheOptions.ConnectionString!
+        //}));
 
         //for adding Backplane we should install: "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" and then add 
-            //.WithBackplane(new RedisBackplane(new RedisBackplaneOptions() { Configuration = "CONNECTION STRING" });
+        //.WithBackplane(new RedisBackplane(new RedisBackplaneOptions() { Configuration = "CONNECTION STRING" });
 
         return services;
     }

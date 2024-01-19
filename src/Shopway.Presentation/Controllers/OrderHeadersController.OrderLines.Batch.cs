@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Orders;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
+using Shopway.Domain.Orders;
 using static Shopway.Application.Features.BatchEntryStatus;
 
 namespace Shopway.Presentation.Controllers;
@@ -14,7 +14,7 @@ partial class OrderHeadersController
     public async Task<IActionResult> OrderLinesBatchUpsert
     (
         [FromRoute] OrderHeaderId orderHeaderId,
-        [FromBody] BatchUpsertOrderLineCommand command, 
+        [FromBody] BatchUpsertOrderLineCommand command,
         CancellationToken cancellationToken
     )
     {

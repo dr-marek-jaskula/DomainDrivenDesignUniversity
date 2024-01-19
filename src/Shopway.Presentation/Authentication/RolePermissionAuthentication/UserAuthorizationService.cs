@@ -1,9 +1,9 @@
-﻿using Shopway.Domain.Users;
-using Shopway.Domain.Errors;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Authorization;
 using Shopway.Domain.Common.Results;
-using Microsoft.AspNetCore.Authorization;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Users;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
+using System.Security.Claims;
 
 namespace Shopway.Presentation.Authentication.Services;
 

@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using Shopway.Domain.Products;
-using static System.Net.HttpStatusCode;
 using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.AddReviewCommandUtility;
+using static System.Net.HttpStatusCode;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 

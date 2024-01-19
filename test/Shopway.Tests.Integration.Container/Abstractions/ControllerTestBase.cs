@@ -1,8 +1,8 @@
-﻿using RestSharp;
-using Shopway.Tests.Integration.Utilities;
-using Shopway.Tests.Integration.Persistence;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using RestSharp;
 using Shopway.Tests.Integration.Configurations;
+using Shopway.Tests.Integration.Persistence;
+using Shopway.Tests.Integration.Utilities;
 using static RestSharp.Method;
 using static Shopway.Tests.Integration.Container.Constants.Constants.Header;
 using static Shopway.Tests.Integration.Container.Constants.Constants.IntegrationTest;
@@ -44,8 +44,8 @@ public abstract class ControllerTestsBase
     /// <param name="endpointUri">Endpoint</param>
     /// <returns></returns>
     protected static RestRequest GetRequest(string endpointUri)
-	{
-		return new RestRequest(endpointUri, Get);
+    {
+        return new RestRequest(endpointUri, Get);
     }
 
     /// <summary>

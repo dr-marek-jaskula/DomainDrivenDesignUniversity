@@ -34,7 +34,7 @@ public static class ServiceProviderFactory
         return serviceCollection.BuildServiceProvider();
     }
 
-    private static TOptions GetTestOptions<TOptions>(this IConfiguration configuration, string sectionName) 
+    private static TOptions GetTestOptions<TOptions>(this IConfiguration configuration, string sectionName)
         where TOptions : new()
     {
         var configurationValue = new TOptions();

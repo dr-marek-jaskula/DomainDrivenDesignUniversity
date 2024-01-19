@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Products.Events;
-using Shopway.Domain.Common.BaseTypes;
-using Shopway.Domain.Products.ValueObjects;
+﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Products.Events;
+using Shopway.Domain.Products.ValueObjects;
 
 namespace Shopway.Domain.Products;
 

@@ -11,7 +11,7 @@ public static partial class DomainErrors
         /// Create an Error describing that a password or an email are invalid
         /// </summary>
         public static readonly Error InvalidPasswordOrEmail = Error.New(
-            $"{nameof(User)}.{nameof(InvalidPasswordOrEmail)}", 
+            $"{nameof(User)}.{nameof(InvalidPasswordOrEmail)}",
             $"Invalid {nameof(Password)} or {nameof(Email)}.");
     }
 }

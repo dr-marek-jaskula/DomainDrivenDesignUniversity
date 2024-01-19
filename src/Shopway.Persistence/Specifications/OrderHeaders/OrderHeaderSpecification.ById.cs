@@ -1,9 +1,9 @@
-﻿using Shopway.Domain.Orders;
-using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Entities;
+using Shopway.Domain.Orders;
 
 namespace Shopway.Persistence.Specifications.OrderHeaders;
 
-internal static partial class OrderHeaderSpecification 
+internal static partial class OrderHeaderSpecification
 {
     internal static partial class ById
     {

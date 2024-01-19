@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Enums;
+﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Enums;
 using Shopway.Domain.Orders;
-using Shopway.Application.Abstractions.CQRS;
 
 namespace Shopway.Application.Features.Orders.Commands.ChangeOrderHeaderStatus;
 

@@ -1,14 +1,14 @@
-﻿using Shopway.Domain.Users;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Converters;
-using Shopway.Domain.Users.ValueObjects;
-using Shopway.Domain.Users.Enumerations;
-using Shopway.Persistence.Converters.Enums;
-using Shopway.Persistence.Converters.EntityIds;
-using Shopway.Persistence.Converters.ValueObjects;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Shopway.Persistence.Constants.Constants;
+using Shopway.Domain.Users;
+using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.ValueObjects;
+using Shopway.Persistence.Converters;
+using Shopway.Persistence.Converters.EntityIds;
+using Shopway.Persistence.Converters.Enums;
+using Shopway.Persistence.Converters.ValueObjects;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
+using static Shopway.Persistence.Constants.Constants;
 using static Shopway.Persistence.Constants.Constants.Number;
 using static Shopway.Persistence.Utilities.ConfigurationUtilities;
 
@@ -67,7 +67,7 @@ internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration
             .HasColumnName(nameof(PhoneNumber))
             .IsRequired(true)
             .HasMaxLength(PhoneNumberMaxLenght);
-            
+
         builder.OwnsOne(
             p => p.Address,
             addressNavigationBuilder =>

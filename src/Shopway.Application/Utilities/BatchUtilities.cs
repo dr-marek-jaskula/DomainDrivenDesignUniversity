@@ -1,5 +1,5 @@
-﻿using Shopway.Application.Features;
-using Shopway.Application.Abstractions.CQRS.Batch;
+﻿using Shopway.Application.Abstractions.CQRS.Batch;
+using Shopway.Application.Features;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using static Shopway.Application.Features.BatchEntryStatus;
 
@@ -14,19 +14,19 @@ public static class BatchUtilities
     }
 
     public static IList<BatchResponseEntry> InsertedEntries<TResponseKey>(this BatchResponseBase<TResponseKey> response)
-        where TResponseKey: struct, IUniqueKey
+        where TResponseKey : struct, IUniqueKey
     {
         return Filter(response, entry => entry.Status is Inserted);
     }
 
     public static bool IsInserted<TResponseKey>(this BatchEntryStatus status)
-        where TResponseKey: struct, IUniqueKey
+        where TResponseKey : struct, IUniqueKey
     {
         return status is Inserted;
     }
 
     public static bool IsInserted<TResponseKey>(this BatchResponseEntry entry)
-        where TResponseKey: struct, IUniqueKey
+        where TResponseKey : struct, IUniqueKey
     {
         return entry.Status.IsInserted<TResponseKey>();
     }
@@ -69,10 +69,10 @@ public static class BatchUtilities
 
     private static IList<BatchResponseEntry> Filter<TResponseKey>
     (
-        BatchResponseBase<TResponseKey> response, 
+        BatchResponseBase<TResponseKey> response,
         Func<BatchResponseEntry, bool> predicate
     )
-        where TResponseKey: struct, IUniqueKey
+        where TResponseKey : struct, IUniqueKey
     {
         return response
             .Entries

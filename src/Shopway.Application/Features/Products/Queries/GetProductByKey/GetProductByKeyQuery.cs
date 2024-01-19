@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.EntityKeys;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.EntityKeys;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductByKey;
 

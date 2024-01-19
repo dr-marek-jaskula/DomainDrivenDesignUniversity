@@ -1,5 +1,5 @@
-﻿using Shopway.Infrastructure.FuzzySearch;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Infrastructure.FuzzySearch;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

@@ -1,13 +1,13 @@
-﻿using Shopway.Domain.Products;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
-using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Products;
 using static Shopway.Domain.Common.Results.ResultUtilities;
 
 namespace Shopway.Application.Features.Products.Commands.RemoveProduct;
 
-internal sealed class RemoveProductCommandHandler(IProductRepository productRepository) 
+internal sealed class RemoveProductCommandHandler(IProductRepository productRepository)
     : ICommandHandler<RemoveProductCommand, RemoveProductResponse>
 {
     private readonly IProductRepository _productRepository = productRepository;

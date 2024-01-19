@@ -1,7 +1,7 @@
-﻿using Scrutor;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Scrutor;
 
 namespace Shopway.Presentation.Registration;
 

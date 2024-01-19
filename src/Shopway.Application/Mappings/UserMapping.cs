@@ -1,9 +1,9 @@
-﻿using Shopway.Domain.Users;
-using Shopway.Application.Features.Users.Commands.RegisterUser;
-using Shopway.Domain.Users.Enumerations;
+﻿using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Application.Features.Users.Queries.GetRolePermissions;
-using Shopway.Application.Features.Users.Queries.GetUserRoles;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
+using Shopway.Application.Features.Users.Queries.GetUserRoles;
+using Shopway.Domain.Users;
+using Shopway.Domain.Users.Enumerations;
 
 namespace Shopway.Application.Mappings;
 

@@ -1,13 +1,13 @@
-﻿using Shopway.Domain.Users;
-using Shopway.Domain.Common.Results;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Common.Results;
 using Shopway.Domain.Errors;
+using Shopway.Domain.Users;
+using Shopway.Domain.Users.Enumerations;
 
 namespace Shopway.Application.Features.Users.Commands.AddPermissionToRole;
 
-internal sealed class AddPermissionToRoleCommandHandler(IUserRepository userRepository, IValidator validator) 
+internal sealed class AddPermissionToRoleCommandHandler(IUserRepository userRepository, IValidator validator)
     : ICommandHandler<AddPermissionToRoleCommand>
 {
     private readonly IUserRepository _userRepository = userRepository;

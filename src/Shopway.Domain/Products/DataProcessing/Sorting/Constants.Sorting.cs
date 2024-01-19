@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Common.Enums;
-using Shopway.Domain.Common.DataProcessing;
+﻿using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.Enums;
 using static Shopway.Domain.Common.Utilities.CollectionUtilities;
 
 namespace Shopway.Domain.Constants;

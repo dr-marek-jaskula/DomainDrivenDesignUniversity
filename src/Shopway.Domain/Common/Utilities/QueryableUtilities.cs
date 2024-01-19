@@ -1,9 +1,9 @@
-﻿using System.Linq.Expressions;
-using System.Linq.Dynamic.Core;
+﻿using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Common.DataProcessing;
-using Shopway.Domain.Common.DataProcessing.Abstractions;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using static Shopway.Domain.Constants.Constants.Type;
 
 namespace Shopway.Domain.Common.Utilities;

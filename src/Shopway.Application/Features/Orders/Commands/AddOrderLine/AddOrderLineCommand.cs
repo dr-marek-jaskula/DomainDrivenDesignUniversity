@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Orders;
+﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Orders;
 using Shopway.Domain.Products;
-using Shopway.Application.Abstractions.CQRS;
 using static Shopway.Application.Features.Orders.Commands.AddOrderLine.AddOrderLineCommand;
 
 namespace Shopway.Application.Features.Orders.Commands.AddOrderLine;

@@ -1,21 +1,21 @@
-﻿using Shopway.Domain.Users;
-using Microsoft.AspNetCore.Identity;
-using Shopway.Domain.Common.Results;
-using Shopway.Application.Utilities;
+﻿using Microsoft.AspNetCore.Identity;
 using Shopway.Application.Abstractions;
-using Shopway.Domain.Users.ValueObjects;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Utilities;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Users;
+using Shopway.Domain.Users.ValueObjects;
 using static Shopway.Domain.Users.Errors.DomainErrors.PasswordOrEmailError;
 
 namespace Shopway.Application.Features.Users.Commands.LogUser;
 
 internal sealed class LogUserCommandHandler
 (
-    IUserRepository userRepository, 
-    IJwtProvider jwtProvider, 
-    IValidator validator, 
+    IUserRepository userRepository,
+    IJwtProvider jwtProvider,
+    IValidator validator,
     IPasswordHasher<User> passwordHasher
-) 
+)
     : ICommandHandler<LogUserCommand, LogUserResponse>
 {
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;

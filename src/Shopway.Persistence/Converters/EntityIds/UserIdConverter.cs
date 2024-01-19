@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Users;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Shopway.Domain.Users;
 
 namespace Shopway.Persistence.Converters.EntityIds;
 

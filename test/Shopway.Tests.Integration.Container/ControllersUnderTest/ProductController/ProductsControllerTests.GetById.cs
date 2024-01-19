@@ -1,11 +1,11 @@
 ﻿using RestSharp;
-using Shopway.Domain.Errors;
-using Shopway.Tests.Integration.Utilities;
 using Shopway.Application.Features.Products.Queries;
-using Shopway.Tests.Integration.Container.Utilities;
-using Shopway.Tests.Integration.Container.ControllersUnderTest.ProductController.Utilities;
-using static System.Net.HttpStatusCode;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Products;
+using Shopway.Tests.Integration.Container.ControllersUnderTest.ProductController.Utilities;
+using Shopway.Tests.Integration.Container.Utilities;
+using Shopway.Tests.Integration.Utilities;
+using static System.Net.HttpStatusCode;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 

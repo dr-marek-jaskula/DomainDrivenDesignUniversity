@@ -1,8 +1,8 @@
-﻿using System.Globalization;
-using System.ComponentModel;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using Shopway.Domain.Common.BaseTypes.Abstractions;
+using System.Globalization;
 
 namespace Shopway.Domain.Common.BaseTypes;
 

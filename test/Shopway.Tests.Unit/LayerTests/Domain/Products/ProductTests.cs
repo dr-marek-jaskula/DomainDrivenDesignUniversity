@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Products;
 using Shopway.Domain.Products.Events;
-using Shopway.Tests.Unit.Abstractions;
 using Shopway.Domain.Products.ValueObjects;
+using Shopway.Tests.Unit.Abstractions;
 using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.Products;

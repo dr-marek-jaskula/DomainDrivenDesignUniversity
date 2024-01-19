@@ -1,18 +1,18 @@
 ﻿using MediatR;
-using Shopway.Domain.Errors;
-using System.Linq.Dynamic.Core;
-using Shopway.Persistence.Framework;
 using Microsoft.EntityFrameworkCore;
 using Shopway.Application.Utilities;
-using Shopway.Domain.Common.Results;
-using ZiggyCreatures.Caching.Fusion;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.Errors;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Errors;
+using Shopway.Persistence.Framework;
+using System.Linq.Dynamic.Core;
+using ZiggyCreatures.Caching.Fusion;
+using static Shopway.Domain.Common.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Cache.PersistenceCache;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
-using static Shopway.Domain.Common.Utilities.ReflectionUtilities;
-using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Persistence.Pipelines;
 
@@ -53,9 +53,9 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse>(ShopwayDbCo
 
     public static async Task<Error> CheckCacheAndDatabase<TEntity, TEntityId>
     (
-        ShopwayDbContext context, 
-        IFusionCache cache, 
-        TEntityId entityId, 
+        ShopwayDbContext context,
+        IFusionCache cache,
+        TEntityId entityId,
         CancellationToken cancellationToken
     )
         where TEntity : Entity<TEntityId>

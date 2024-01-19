@@ -1,5 +1,4 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
-using Shopway.Domain.Users;
 
 namespace Shopway.Domain.Users.Events;
 
