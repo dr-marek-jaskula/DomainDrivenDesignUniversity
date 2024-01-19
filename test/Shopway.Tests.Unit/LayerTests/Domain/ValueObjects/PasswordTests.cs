@@ -1,8 +1,8 @@
 ﻿using Shopway.Domain.Errors;
-using Shopway.Tests.Unit.Abstractions;
 using Shopway.Domain.Users.ValueObjects;
+using Shopway.Tests.Unit.Abstractions;
+using static Shopway.Domain.Users.Errors.DomainErrors;
 using static Shopway.Tests.Unit.Constants.Constants;
-using static Shopway.Domain.Errors.Domain.DomainErrors;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
 

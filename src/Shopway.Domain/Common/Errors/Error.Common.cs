@@ -1,16 +1,9 @@
-﻿using Shopway.Domain.Users;
-using Shopway.Domain.Users.ValueObjects;
-using Shopway.Domain.Common.BaseTypes.Abstractions;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Domain.Errors;
 
 public sealed partial class Error
 {
-    /// <summary>
-    /// Create an Error describing that a password or an email are invalid
-    /// </summary>
-    public static readonly Error InvalidPasswordOrEmail = New($"{nameof(User)}.{nameof(InvalidPasswordOrEmail)}", $"Invalid {nameof(Password)} or {nameof(Email)}.");
-
     /// <summary>
     /// Create an Error based on the entity type name and the id that was not found
     /// </summary>

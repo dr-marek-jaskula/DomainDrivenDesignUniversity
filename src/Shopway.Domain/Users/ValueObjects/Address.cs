@@ -1,12 +1,12 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Common.Results;
-using System.Text.RegularExpressions;
-using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Common.BaseTypes;
-using static Shopway.Domain.Errors.Domain.DomainErrors;
-using static System.Text.RegularExpressions.RegexOptions;
-using static Shopway.Domain.Common.Utilities.ListUtilities;
+﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.Errors;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Errors;
+using System.Text.RegularExpressions;
+using static Shopway.Domain.Common.Utilities.ListUtilities;
+using static Shopway.Domain.Users.Errors.DomainErrors;
+using static System.Text.RegularExpressions.RegexOptions;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
