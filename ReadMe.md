@@ -13,7 +13,7 @@ If you like or are using this project to learn about Domain Driven Design, pleas
 
 ## Solution structure :mag:
 
-The Solution in designed using the Clean Architecture in the following form. 
+The solution in designed using the Clean Architecture in the following form. 
 
 ![VeryCleanArchitecture-removebg](https://github.com/dr-marek-jaskula/DomainDrivenDesignUniversity/assets/76631630/dcb809f9-f0cf-40f5-bba2-a46dfa16831a)
 
