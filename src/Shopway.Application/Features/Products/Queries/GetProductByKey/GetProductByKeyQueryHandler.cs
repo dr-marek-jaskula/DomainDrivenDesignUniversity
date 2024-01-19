@@ -1,11 +1,11 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Products;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
-using Shopway.Application.Abstractions;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
-using Shopway.Application.Abstractions.CQRS;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductByKey;
 

@@ -1,6 +1,6 @@
-﻿using System.Collections.Frozen;
+﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Common.DataProcessing.Abstractions;
+using System.Collections.Frozen;
 
 namespace Shopway.Application.Cache;
 

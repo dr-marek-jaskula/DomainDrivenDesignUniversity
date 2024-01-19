@@ -1,11 +1,11 @@
-﻿using Scrutor;
-using Shopway.Domain.Users;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Scrutor;
 using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS.Batch;
+using Shopway.Domain.Users;
+using Shopway.Infrastructure.Builders.Batch;
 using Shopway.Infrastructure.Services;
 using Shopway.Infrastructure.Validators;
-using Shopway.Infrastructure.Builders.Batch;
-using Shopway.Application.Abstractions.CQRS.Batch;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

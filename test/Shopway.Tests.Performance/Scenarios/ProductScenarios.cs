@@ -1,5 +1,5 @@
-﻿using NBomber.CSharp;
-using NBomber.Contracts;
+﻿using NBomber.Contracts;
+using NBomber.CSharp;
 using NBomber.Http.CSharp;
 using static Shopway.Tests.Performance.Constants.Constants.Http;
 

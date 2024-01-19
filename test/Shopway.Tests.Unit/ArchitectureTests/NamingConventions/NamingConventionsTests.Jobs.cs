@@ -1,5 +1,5 @@
-﻿using Quartz;
-using NetArchTest.Rules;
+﻿using NetArchTest.Rules;
+using Quartz;
 using static Shopway.Tests.Unit.Constants.Constants;
 using static Shopway.Tests.Unit.Constants.Constants.NamingConvention;
 

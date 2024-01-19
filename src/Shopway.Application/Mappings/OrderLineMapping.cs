@@ -1,11 +1,11 @@
-﻿using Shopway.Domain.Orders;
-using Shopway.Domain.Entities;
-using Shopway.Application.Features;
-using Shopway.Application.Features.Orders.Queries;
+﻿using Shopway.Application.Features;
 using Shopway.Application.Features.Orders.Commands.AddOrderLine;
+using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 using Shopway.Application.Features.Orders.Commands.RemoveOrderLine;
 using Shopway.Application.Features.Orders.Commands.UpdateOrderLine;
-using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
+using Shopway.Application.Features.Orders.Queries;
+using Shopway.Domain.Entities;
+using Shopway.Domain.Orders;
 using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 
 namespace Shopway.Application.Mappings;
@@ -23,7 +23,7 @@ public static class OrderLineMapping
             orderLine.ProductSummary.ToSummaryResponse()
         );
     }
-    
+
     public static IReadOnlyCollection<OrderLineResponse> ToResponses(this IReadOnlyCollection<OrderLine> orderLines)
     {
         return orderLines

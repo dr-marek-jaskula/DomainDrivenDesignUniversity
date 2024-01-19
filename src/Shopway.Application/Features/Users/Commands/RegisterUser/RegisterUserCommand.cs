@@ -9,5 +9,5 @@ public sealed record RegisterUserCommand
     string Password,
     string ConfirmPassword
 
-) 
+)
     : ICommand<RegisterUserResponse>;

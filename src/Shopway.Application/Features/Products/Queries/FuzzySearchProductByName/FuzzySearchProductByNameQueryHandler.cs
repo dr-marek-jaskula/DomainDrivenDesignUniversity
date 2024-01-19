@@ -1,20 +1,20 @@
-﻿using Shopway.Domain.Products;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
-using ZiggyCreatures.Caching.Fusion;
-using Shopway.Domain.Common.Results;
-using Shopway.Application.Abstractions;
 using Shopway.Domain.Common.DataProcessing;
-using Shopway.Application.Abstractions.CQRS;
-using Shopway.Domain.Products.DataProcessing.Sorting;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Products;
 using Shopway.Domain.Products.DataProcessing.Filtering;
+using Shopway.Domain.Products.DataProcessing.Sorting;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Application.Features.Products.Queries.FuzzySearchProductByName;
 
 internal sealed class FuzzySearchProductByNameQueryHandler
 (
-    IProductRepository productRepository, 
-    IFusionCache fusionCache, 
+    IProductRepository productRepository,
+    IFusionCache fusionCache,
     IFuzzySearchFactory fuzzySearchFactory
 )
     : IOffsetPageQueryHandler<FuzzySearchProductByNameQuery, ProductResponse, OffsetPage>

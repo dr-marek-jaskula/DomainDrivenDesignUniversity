@@ -1,20 +1,20 @@
-﻿using Quartz;
-using System.Reflection;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Framework;
-using Shopway.Domain.Common.Utilities;
+using Quartz;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Persistence.Framework;
+using System.Reflection;
 
 namespace Shopway.Persistence.BackgroundJobs;
 
 [DisallowConcurrentExecution]
 public sealed class DeleteOutdatedSoftDeletableEntitiesJob
 (
-    ShopwayDbContext dbContext, 
-    ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger, 
+    ShopwayDbContext dbContext,
+    ILogger<DeleteOutdatedSoftDeletableEntitiesJob> logger,
     TimeProvider timeProvider
-) 
+)
     : IJob
 {
     private readonly ShopwayDbContext _dbContext = dbContext;

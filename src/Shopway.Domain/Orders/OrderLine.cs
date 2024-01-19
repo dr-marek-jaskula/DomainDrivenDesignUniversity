@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Orders;
-using Shopway.Domain.Common.BaseTypes;
-using Shopway.Domain.Orders.ValueObjects;
+﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Orders;
+using Shopway.Domain.Orders.ValueObjects;
 
 namespace Shopway.Domain.Entities;
 

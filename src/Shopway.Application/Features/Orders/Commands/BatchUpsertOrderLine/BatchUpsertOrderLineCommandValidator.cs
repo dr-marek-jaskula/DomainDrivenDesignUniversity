@@ -1,8 +1,8 @@
-﻿using Shopway.Domain.Orders;
-using Shopway.Domain.Entities;
-using Shopway.Domain.Orders.ValueObjects;
-using Shopway.Application.Abstractions.CQRS.Batch;
+﻿using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
+using Shopway.Domain.Entities;
+using Shopway.Domain.Orders;
+using Shopway.Domain.Orders.ValueObjects;
 using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
@@ -20,7 +20,7 @@ internal static class BatchUpsertOrderLineCommandValidator
     (
         this BatchUpsertOrderLineCommand command,
         IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder,
-        IDictionary<OrderLineKey, OrderLine>  orderLinesToUpdateWithKeys
+        IDictionary<OrderLineKey, OrderLine> orderLinesToUpdateWithKeys
     )
     {
         var updateRequests = command.GetUpdateRequests(orderLinesToUpdateWithKeys);

@@ -1,7 +1,7 @@
-﻿using Shopway.Domain.Errors;
-using static Shopway.Tests.Unit.Constants.Constants;
+﻿using Shopway.Domain.Common.Results;
+using Shopway.Domain.Errors;
 using static Shopway.Domain.Common.Results.ResultUtilities;
-using Shopway.Domain.Common.Results;
+using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 

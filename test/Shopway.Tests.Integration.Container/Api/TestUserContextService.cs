@@ -1,6 +1,6 @@
-﻿using System.Security.Claims;
+﻿using Shopway.Application.Abstractions;
 using Shopway.Domain.Users;
-using Shopway.Application.Abstractions;
+using System.Security.Claims;
 using static Shopway.Tests.Integration.Container.Constants.Constants;
 
 namespace Shopway.Tests.Integration.Container.Api;

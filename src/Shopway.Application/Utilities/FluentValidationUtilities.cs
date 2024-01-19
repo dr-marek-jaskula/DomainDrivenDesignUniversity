@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Common.DataProcessing.Abstractions;
-using static Shopway.Application.Cache.ApplicationCache;
-using static Shopway.Application.Constants.Constants.Sort;
-using static Shopway.Application.Constants.Constants.Filter;
-using static Shopway.Domain.Common.Utilities.SortByEntryUtilities;
-using static Shopway.Domain.Common.DataProcessing.FilterByEntryUtilities;
 using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Utilities;
+using static Shopway.Application.Cache.ApplicationCache;
+using static Shopway.Application.Constants.Constants.Filter;
+using static Shopway.Application.Constants.Constants.Sort;
+using static Shopway.Domain.Common.DataProcessing.FilterByEntryUtilities;
+using static Shopway.Domain.Common.Utilities.SortByEntryUtilities;
 
 namespace Shopway.Application.Utilities;
 
@@ -19,7 +19,7 @@ public static class FluentValidationUtilities
         {
             return;
         }
-        
+
         if (dynamicFilter.FilterProperties.IsNullOrEmpty())
         {
             context.AddFailure(FilterProperties, $"{FilterProperties} cannot be null or empty.");

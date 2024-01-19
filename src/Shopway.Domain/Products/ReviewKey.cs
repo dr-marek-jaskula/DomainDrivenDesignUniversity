@@ -28,7 +28,7 @@ public readonly record struct ReviewKey : IUniqueKey
 
     public override string ToString()
     {
-        return $"Review {{ Title: {Title} }}" ;
+        return $"Review {{ Title: {Title} }}";
     }
 }
 

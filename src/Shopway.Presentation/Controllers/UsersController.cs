@@ -1,15 +1,15 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Shopway.Presentation.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
 using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
+using Shopway.Application.Features.Users.Commands.RemovePermissionFromRole;
+using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
-using Shopway.Application.Features.Users.Queries.GetRolePermissions;
+using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
-using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
-using Shopway.Application.Features.Users.Commands.RemovePermissionFromRole;
 
 namespace Shopway.Presentation.Controllers;
 

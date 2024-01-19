@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Common.Enums;
+﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Domain.Products.DataProcessing.Sorting;
 

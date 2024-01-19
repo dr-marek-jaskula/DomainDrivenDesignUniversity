@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Shopway.Domain.Common.Exceptions;
+﻿using Shopway.Domain.Common.Exceptions;
+using System.Reflection;
 
 namespace Shopway.Domain.Common.BaseTypes;
 

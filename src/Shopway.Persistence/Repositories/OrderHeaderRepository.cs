@@ -1,10 +1,10 @@
-﻿using Shopway.Domain.Orders;
-using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Entities;
+using Shopway.Domain.Orders;
 using Shopway.Persistence.Framework;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Specifications.OrderHeaders;
 using Shopway.Persistence.Specifications;
+using Shopway.Persistence.Specifications.OrderHeaders;
+using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
 

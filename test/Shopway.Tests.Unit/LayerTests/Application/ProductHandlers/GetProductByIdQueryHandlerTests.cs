@@ -1,9 +1,9 @@
+using Shopway.Application.Features.Products.Queries.GetProductById;
 using Shopway.Domain.Products;
 using Shopway.Tests.Unit.Abstractions;
-using Shopway.Application.Features.Products.Queries.GetProductById;
 using Shopway.Tests.Unit.LayerTests.Application.ProductHandlers.Utilities;
-using static System.Threading.CancellationToken;
 using static Shopway.Tests.Unit.Constants.Constants;
+using static System.Threading.CancellationToken;
 
 namespace Shopway.Tests.Unit.LayerTests.Application.ProductHandlers;
 
@@ -23,7 +23,7 @@ public sealed class GetProductByIdQueryHandlerTests : TestBase
 
     [Fact]
     public async Task GetById_ShouldReturnProduct_WhenProductExists()
-	{
+    {
         //Arrange
         var expected = ProductFactory.CreateProduct();
 

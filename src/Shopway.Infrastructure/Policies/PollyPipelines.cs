@@ -1,10 +1,10 @@
 ﻿using Polly;
+using Polly.CircuitBreaker;
+using Polly.RateLimit;
 using Polly.Retry;
 using Polly.Timeout;
-using Polly.RateLimit;
-using System.Net.Sockets;
-using Polly.CircuitBreaker;
 using System.Collections.Frozen;
+using System.Net.Sockets;
 
 namespace Shopway.Infrastructure.Policies;
 
@@ -38,7 +38,7 @@ public static class PollyPipelines
         .Handle<Exception>()
         .WaitAndRetryAsync
         (
-            _maxRetries, 
+            _maxRetries,
             attempt => TimeSpan.FromMilliseconds(attempt * 50 + _random.Next(0, 20))
         );
 
@@ -46,7 +46,7 @@ public static class PollyPipelines
         .Handle<Exception>()
         .WaitAndRetry
         (
-            _migrationMaxRetries, 
+            _migrationMaxRetries,
             attempt => TimeSpan.FromMilliseconds(attempt * 50 + _random.Next(0, 20))
         );
 

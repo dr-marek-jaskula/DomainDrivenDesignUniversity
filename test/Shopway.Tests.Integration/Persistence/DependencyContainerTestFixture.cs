@@ -7,13 +7,13 @@ namespace Shopway.Tests.Integration.Persistence;
 /// </summary>
 public sealed class DependencyInjectionContainerTestFixture
 {
-	/// <summary>
-	/// Test ServiceProvider
-	/// </summary>
+    /// <summary>
+    /// Test ServiceProvider
+    /// </summary>
     public ServiceProvider ServiceProvider { get; set; }
 
-	public DependencyInjectionContainerTestFixture()
-	{
-		ServiceProvider = ServiceProviderFactory.ServiceProvider;
-	}
+    public DependencyInjectionContainerTestFixture()
+    {
+        ServiceProvider = ServiceProviderFactory.ServiceProvider;
+    }
 }

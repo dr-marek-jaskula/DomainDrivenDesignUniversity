@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using static Shopway.Tests.Integration.Constants.Constants;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using static Shopway.Tests.Integration.Constants.Constants;
 
 namespace Shopway.Tests.Integration.Utilities;
 

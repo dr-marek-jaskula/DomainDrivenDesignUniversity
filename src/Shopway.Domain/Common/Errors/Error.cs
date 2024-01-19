@@ -99,7 +99,7 @@ public sealed partial class Error : IEquatable<Error>
             return false;
         }
 
-        return Code == other.Code 
+        return Code == other.Code
             && Message == other.Message;
     }
 

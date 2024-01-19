@@ -1,8 +1,8 @@
-using Shopway.Domain.Users.Events;
 using Shopway.Domain.Common.BaseTypes;
-using Shopway.Domain.Users.Enumerations;
-using Shopway.Domain.Users.ValueObjects;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.Events;
+using Shopway.Domain.Users.ValueObjects;
 
 namespace Shopway.Domain.Users;
 

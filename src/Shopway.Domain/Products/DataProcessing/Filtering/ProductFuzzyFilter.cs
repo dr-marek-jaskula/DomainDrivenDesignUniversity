@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using Shopway.Domain.Common.DataProcessing.Abstractions;
+﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
+using System.Linq.Expressions;
 
 namespace Shopway.Domain.Products.DataProcessing.Filtering;
 

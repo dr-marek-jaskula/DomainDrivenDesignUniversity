@@ -1,5 +1,5 @@
-﻿using Quartz;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Quartz;
 using Shopway.Persistence.BackgroundJobs;
 
 namespace Shopway.Persistence.Options;

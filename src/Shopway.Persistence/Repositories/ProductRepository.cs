@@ -1,15 +1,15 @@
-﻿using Shopway.Domain.Products;
-using System.Linq.Expressions;
-using Shopway.Domain.EntityKeys;
-using Shopway.Persistence.Utilities;
-using Shopway.Persistence.Framework;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Common.Utilities;
-using Shopway.Persistence.Specifications;
-using Shopway.Domain.Products.ValueObjects;
-using Shopway.Persistence.Specifications.Products;
-using Shopway.Persistence.Specifications.Common;
+﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.EntityKeys;
+using Shopway.Domain.Products;
+using Shopway.Domain.Products.ValueObjects;
+using Shopway.Persistence.Framework;
+using Shopway.Persistence.Specifications;
+using Shopway.Persistence.Specifications.Common;
+using Shopway.Persistence.Specifications.Products;
+using Shopway.Persistence.Utilities;
+using System.Linq.Expressions;
 using static Shopway.Domain.Common.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
@@ -151,7 +151,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
             filter,
             null,
             sort,
-            mapping: mapping, 
+            mapping: mapping,
             includes: includes
         );
 
@@ -179,7 +179,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
             filter,
             cursorFilter,
             sort,
-            mapping: mapping, 
+            mapping: mapping,
             includes: includes
         );
 

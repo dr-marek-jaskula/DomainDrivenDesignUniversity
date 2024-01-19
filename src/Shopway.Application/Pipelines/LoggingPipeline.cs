@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Shopway.Domain.Errors;
 using Microsoft.Extensions.Logging;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Results.Abstractions;
+using Shopway.Domain.Errors;
 
 namespace Shopway.Application.Pipelines;
 
@@ -20,7 +20,7 @@ public sealed class LoggingPipeline<TRequest, TResponse>(ILogger<LoggingPipeline
     )
     {
         _logger.LogStartingRequest(typeof(TRequest).Name, DateTime.UtcNow);
-        
+
         var result = await next();
 
         if (result.IsSuccess)

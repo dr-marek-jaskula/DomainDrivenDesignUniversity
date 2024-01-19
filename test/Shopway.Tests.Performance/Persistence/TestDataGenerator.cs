@@ -1,8 +1,8 @@
-﻿using Shopway.Persistence.Framework;
-using Shopway.Persistence.Abstractions;
-using Shopway.Tests.Performance.Abstractions;
-using Shopway.Domain.Products;
+﻿using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
+using Shopway.Persistence.Abstractions;
+using Shopway.Persistence.Framework;
+using Shopway.Tests.Performance.Abstractions;
 
 namespace Shopway.Tests.Performance.Persistence;
 

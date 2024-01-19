@@ -1,9 +1,9 @@
-﻿using Shopway.Domain.Users;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Shopway.Domain.Common.Utilities;
-using Shopway.Infrastructure.Policies;
+﻿using Microsoft.AspNetCore.Http;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Users;
+using Shopway.Infrastructure.Policies;
+using System.Security.Claims;
 
 namespace Shopway.Infrastructure.Services;
 
@@ -21,8 +21,8 @@ public sealed class UserContextService(IHttpContextAccessor httpContextAccessor)
 
     public ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
 
-    public UserId? UserId => User is null 
-        ? null 
+    public UserId? UserId => User is null
+        ? null
         : Shopway.Domain.Users.UserId.Create(Ulid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
 
     public string? Username => User?.FindFirstValue(_userNameProperty);

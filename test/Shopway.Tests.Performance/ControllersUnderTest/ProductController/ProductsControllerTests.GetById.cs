@@ -1,8 +1,8 @@
 ﻿using NBomber.CSharp;
-using Shopway.Tests.Performance.Scenarios;
-using Shopway.Tests.Performance.Abstractions;
-using static Shopway.Tests.Performance.Constants.Constants.PerformanceSkipReason;
 using Shopway.Domain.Products;
+using Shopway.Tests.Performance.Abstractions;
+using Shopway.Tests.Performance.Scenarios;
+using static Shopway.Tests.Performance.Constants.Constants.PerformanceSkipReason;
 
 namespace Shopway.Tests.Performance.ControllersUnderTest.ProductController;
 
@@ -23,7 +23,7 @@ public partial class ProductsControllerTests : ControllerTestsBase
         var stats = NBomberRunner
             .RegisterScenarios(scenario)
             .Run();
-        
+
         DisplayStatistics(stats);
     }
 }

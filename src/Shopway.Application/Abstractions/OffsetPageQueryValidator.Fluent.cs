@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using Shopway.Application.Features;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Features;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using static Shopway.Application.Utilities.FluentValidationUtilities;
 
@@ -26,7 +26,7 @@ internal abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TFilter,
     where TPage : IOffsetPage
     where TPageQuery : IOffsetPageQuery<TResponse, TFilter, TSortBy, TPage>
 {
-    protected OffsetPageQueryValidator() 
+    protected OffsetPageQueryValidator()
         : base()
     {
         RuleFor(query => query.SortBy).Custom(ValidateSortBy!);

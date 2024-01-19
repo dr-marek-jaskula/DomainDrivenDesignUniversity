@@ -1,5 +1,5 @@
-﻿using RestSharp;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RestSharp;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Tests.Integration.Container.Constants.Constants.Header;
 
@@ -19,7 +19,7 @@ public static class RestRequestUtilities
     /// <returns></returns>
     public static RestRequest AddQueryParameters<TValue>(this RestRequest request, string name, IList<TValue> values, Func<TValue, string> toString)
     {
-        if (values.IsNullOrEmpty()) 
+        if (values.IsNullOrEmpty())
         {
             return request;
         }
@@ -50,8 +50,8 @@ public static class RestRequestUtilities
     /// <param name="restRequest"></param>
     /// <param name="body"></param>
     /// <returns></returns>
-    public static RestRequest AddJson(this RestRequest restRequest, object body) 
-    { 
+    public static RestRequest AddJson(this RestRequest restRequest, object body)
+    {
         string serialized = JsonConvert.SerializeObject(body);
 
         return restRequest

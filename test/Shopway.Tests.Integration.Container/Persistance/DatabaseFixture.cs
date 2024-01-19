@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Repositories;
 using Shopway.Tests.Integration.Container.Api;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Tests.Integration.Persistence;
 
@@ -14,7 +14,7 @@ public sealed class DatabaseFixture : IDisposable
     public DatabaseFixture(string connectionString)
     {
         var factory = new ShopwayDbContextFactory();
-        _context = factory.CreateDbContext([ connectionString ]);
+        _context = factory.CreateDbContext([connectionString]);
         _context.Database.Migrate();
 
         var testContext = new TestUserContextService();

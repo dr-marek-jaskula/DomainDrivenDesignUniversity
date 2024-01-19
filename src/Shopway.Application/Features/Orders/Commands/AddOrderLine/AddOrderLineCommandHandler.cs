@@ -1,17 +1,17 @@
-﻿using Shopway.Domain.Orders;
-using Shopway.Domain.Products;
-using Shopway.Domain.Entities;
-using Shopway.Application.Mappings;
-using Shopway.Domain.Common.Results;
-using Shopway.Application.Utilities;
-using Shopway.Application.Abstractions;
-using Shopway.Domain.Orders.ValueObjects;
+﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features.Orders.Commands.AddOrderLine;
+using Shopway.Application.Mappings;
+using Shopway.Application.Utilities;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Entities;
+using Shopway.Domain.Orders;
+using Shopway.Domain.Orders.ValueObjects;
+using Shopway.Domain.Products;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 
-internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IProductRepository productRepository, IValidator validator) 
+internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IProductRepository productRepository, IValidator validator)
     : ICommandHandler<AddOrderLineCommand, AddOrderLineResponse>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderRepository;

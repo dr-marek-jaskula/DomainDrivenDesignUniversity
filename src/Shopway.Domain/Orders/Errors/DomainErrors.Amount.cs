@@ -1,6 +1,7 @@
-﻿using Shopway.Domain.Orders.ValueObjects;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Orders.ValueObjects;
 
-namespace Shopway.Domain.Errors.Domain;
+namespace Shopway.Domain.Orders.Errors;
 
 public static partial class DomainErrors
 {

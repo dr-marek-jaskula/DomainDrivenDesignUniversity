@@ -1,12 +1,12 @@
 ﻿using RestSharp;
 using Shopway.Domain.EntityKeys;
-using Shopway.Tests.Integration.Utilities;
 using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
-using static System.Net.HttpStatusCode;
-using static Shopway.Tests.Integration.Constants.Constants;
+using Shopway.Tests.Integration.Utilities;
 using static Shopway.Application.Features.BatchEntryStatus;
-using static Shopway.Domain.Errors.Domain.DomainErrors.ProductNameError;
+using static Shopway.Domain.Products.Errors.DomainErrors.ProductNameError;
+using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.ProductBatchUpsertCommandUtility;
+using static System.Net.HttpStatusCode;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 

@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
+﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using System.Text.Json;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -24,8 +24,8 @@ public sealed class OpenApiDefaultValues : IOperationFilter
 
         foreach (var responseType in context.ApiDescription.SupportedResponseTypes)
         {
-            var responseKey = responseType.IsDefaultResponse 
-                ? @Default 
+            var responseKey = responseType.IsDefaultResponse
+                ? @Default
                 : responseType.StatusCode.ToString();
 
             var response = operation.Responses[responseKey];

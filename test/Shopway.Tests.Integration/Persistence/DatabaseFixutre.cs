@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Persistence.Framework;
-using ZiggyCreatures.Caching.Fusion;
 using Shopway.Persistence.Repositories;
+using ZiggyCreatures.Caching.Fusion;
 using static Shopway.Persistence.Constants.Constants.Connection;
 
 namespace Shopway.Tests.Integration.Persistence;
@@ -14,7 +14,7 @@ public sealed class DatabaseFixture : IDisposable, IAsyncLifetime
     public DatabaseFixture()
     {
         var factory = new ShopwayDbContextFactory();
-        _context = factory.CreateDbContext([ TestConnection ]);
+        _context = factory.CreateDbContext([TestConnection]);
 
         var pendingMigrations = _context.Database.GetPendingMigrations();
 

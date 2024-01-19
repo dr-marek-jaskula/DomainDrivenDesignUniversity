@@ -1,7 +1,7 @@
-﻿using System.Linq.Expressions;
+﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.Products.ValueObjects;
-using Shopway.Domain.Common.DataProcessing.Abstractions;
+using System.Linq.Expressions;
 
 namespace Shopway.Domain.Products;
 

@@ -1,6 +1,6 @@
-﻿using ZiggyCreatures.Caching.Fusion;
-using Shopway.Domain.Common.BaseTypes;
+﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Application.Utilities;
 

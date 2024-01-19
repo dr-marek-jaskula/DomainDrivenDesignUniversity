@@ -1,6 +1,6 @@
-﻿using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Common.DataProcessing;
+﻿using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
 using static Shopway.Domain.Common.Utilities.QueryableUtilities;
 using static Shopway.Domain.Constants.Constants.Filtering.Product;

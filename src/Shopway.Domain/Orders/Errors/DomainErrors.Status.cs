@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Enums;
+using Shopway.Domain.Errors;
 
-namespace Shopway.Domain.Errors.Domain;
+namespace Shopway.Domain.Orders.Errors;
 
 public static partial class DomainErrors
 {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using Shopway.Application.Features;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Features;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using static Shopway.Application.Utilities.FluentValidationUtilities;
 
@@ -16,7 +16,7 @@ internal abstract class CursorPageQueryValidator<TPageQuery, TResponse, TFilter,
     where TPage : ICursorPage
     where TPageQuery : ICursorPageQuery<TResponse, TFilter, TSortBy, TPage>
 {
-    protected CursorPageQueryValidator() 
+    protected CursorPageQueryValidator()
         : base()
     {
         RuleFor(query => query.SortBy).Custom(ValidateSortBy!);

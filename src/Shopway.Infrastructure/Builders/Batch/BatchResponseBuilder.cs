@@ -1,12 +1,12 @@
-﻿using Shopway.Domain.Errors;
+﻿using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Features;
-using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Errors;
 
 namespace Shopway.Infrastructure.Builders.Batch;
 
-internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey> 
-    : IBatchResponseBuilder<TBatchRequest, TResponseKey> 
+internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
+    : IBatchResponseBuilder<TBatchRequest, TResponseKey>
         where TBatchRequest : class, IBatchRequest
         where TResponseKey : struct, IUniqueKey
 {

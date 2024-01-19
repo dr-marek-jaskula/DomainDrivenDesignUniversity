@@ -1,8 +1,8 @@
-﻿using Shopway.Domain.Products;
-using Shopway.Application.Features.Products.Queries;
-using Shopway.Application.Features.Products.Commands.AddReview;
+﻿using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Application.Features.Products.Commands.RemoveReview;
 using Shopway.Application.Features.Products.Commands.UpdateReview;
+using Shopway.Application.Features.Products.Queries;
+using Shopway.Domain.Products;
 
 namespace Shopway.Application.Mappings;
 

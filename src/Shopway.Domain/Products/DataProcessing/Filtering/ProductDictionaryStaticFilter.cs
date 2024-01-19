@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Common.DataProcessing.Abstractions;
+﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Utilities;
 
 namespace Shopway.Domain.Products.DataProcessing.Filtering;
 

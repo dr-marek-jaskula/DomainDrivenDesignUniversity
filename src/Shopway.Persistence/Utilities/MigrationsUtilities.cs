@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Exceptions;
 using Shopway.Application.Exceptions;
 using Shopway.Infrastructure.Policies;
+using Shopway.Persistence.Exceptions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

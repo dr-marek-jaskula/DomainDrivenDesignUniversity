@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Enums;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Shopway.Domain.Enums;
 
 namespace Shopway.Persistence.Converters.Enums;
 

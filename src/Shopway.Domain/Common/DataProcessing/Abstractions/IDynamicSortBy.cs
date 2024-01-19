@@ -1,5 +1,4 @@
 ﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Domain.Common.DataProcessing;
 
 namespace Shopway.Domain.Common.DataProcessing.Abstractions;
 

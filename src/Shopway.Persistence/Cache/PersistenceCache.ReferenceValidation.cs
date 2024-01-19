@@ -1,15 +1,15 @@
 ﻿using MediatR;
-using System.Reflection;
-using Shopway.Domain.Errors;
-using System.Linq.Expressions;
-using System.Collections.Frozen;
-using Shopway.Persistence.Framework;
-using Shopway.Domain.Common.Results;
-using ZiggyCreatures.Caching.Fusion;
-using Shopway.Persistence.Pipelines;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Errors;
+using Shopway.Persistence.Framework;
+using Shopway.Persistence.Pipelines;
+using System.Collections.Frozen;
+using System.Linq.Expressions;
+using System.Reflection;
+using ZiggyCreatures.Caching.Fusion;
 using static Shopway.Domain.Common.Utilities.ReflectionUtilities;
 
 namespace Shopway.Persistence.Cache;
@@ -35,8 +35,8 @@ public static partial class PersistenceCache
             MethodInfo checkCacheAndDatabasedMethod = typeof(ReferenceValidationPipeline<IRequest<IResult<IResponse>>, IResult<IResponse>>)
                 .GetSingleGenericMethod
                 (
-                    nameof(ReferenceValidationPipeline<IRequest<IResult<IResponse>>, IResult<IResponse>>.CheckCacheAndDatabase), 
-                    entityType, 
+                    nameof(ReferenceValidationPipeline<IRequest<IResult<IResponse>>, IResult<IResponse>>.CheckCacheAndDatabase),
+                    entityType,
                     entityIdType
                 );
 
@@ -80,7 +80,7 @@ public static partial class PersistenceCache
             param3,
             param4
         );
-        
+
         return lambda.Compile();
     }
 }

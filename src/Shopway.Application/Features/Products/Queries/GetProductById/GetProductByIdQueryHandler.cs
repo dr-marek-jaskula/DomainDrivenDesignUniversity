@@ -1,12 +1,12 @@
-﻿using Shopway.Domain.Products;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
-using Shopway.Domain.Common.Results;
 using Shopway.Application.Utilities;
-using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Products;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductById;
 
-internal sealed class GetProductByIdQueryHandler(IProductRepository productRepository) 
+internal sealed class GetProductByIdQueryHandler(IProductRepository productRepository)
     : IQueryHandler<GetProductByIdQuery, ProductResponse>
 {
     private readonly IProductRepository _productRepository = productRepository;

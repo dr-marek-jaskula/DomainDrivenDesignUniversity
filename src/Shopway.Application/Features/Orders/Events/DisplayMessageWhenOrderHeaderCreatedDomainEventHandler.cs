@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.DomainEvents;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Domain.DomainEvents;
 
 namespace Shopway.Application.Features.Orders.Events;
 

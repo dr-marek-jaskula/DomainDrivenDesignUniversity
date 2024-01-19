@@ -1,7 +1,7 @@
 using Serilog;
+using Shopway.Infrastructure.Registration;
 using Shopway.Persistence.Registration;
 using Shopway.Presentation.Registration;
-using Shopway.Infrastructure.Registration;
 using static Microsoft.Extensions.DependencyInjection.LoggerUtilities;
 
 Log.Logger = CreateSerilogLogger();

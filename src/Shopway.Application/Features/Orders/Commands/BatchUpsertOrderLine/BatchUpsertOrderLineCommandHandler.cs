@@ -1,26 +1,26 @@
-﻿using Shopway.Domain.Errors;
-using Shopway.Domain.Orders;
-using Shopway.Domain.Entities;
-using Shopway.Domain.Products;
-using Shopway.Application.Mappings;
-using Shopway.Domain.Common.Results;
-using Shopway.Application.Utilities;
-using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Orders.ValueObjects;
-using Shopway.Application.Abstractions.CQRS.Batch;
+﻿using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
-using static Shopway.Application.Mappings.OrderLineMapping;
-using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
+using Shopway.Application.Mappings;
+using Shopway.Application.Utilities;
 using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Entities;
+using Shopway.Domain.Errors;
+using Shopway.Domain.Orders;
+using Shopway.Domain.Orders.ValueObjects;
+using Shopway.Domain.Products;
+using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
+using static Shopway.Application.Mappings.OrderLineMapping;
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
 internal sealed partial class BatchUpsertOrderLineCommandHandler
 (
-    IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder, 
-    IOrderHeaderRepository orderHeaderRepository, 
+    IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder,
+    IOrderHeaderRepository orderHeaderRepository,
     IProductRepository productRepository
-) 
+)
     : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
 {
     private readonly IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _responseBuilder = responseBuilder;

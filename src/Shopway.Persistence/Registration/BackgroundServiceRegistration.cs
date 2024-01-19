@@ -1,6 +1,6 @@
 ﻿using Quartz;
-using Shopway.Persistence.Options;
 using Shopway.Persistence.BackgroundJobs;
+using Shopway.Persistence.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

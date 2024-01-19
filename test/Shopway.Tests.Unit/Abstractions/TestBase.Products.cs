@@ -7,7 +7,7 @@ namespace Shopway.Tests.Unit.Abstractions;
 public abstract partial class TestBase
 {
     public static class ProductFactory
-    { 
+    {
         /// <summary>
         /// Create a product
         /// </summary>

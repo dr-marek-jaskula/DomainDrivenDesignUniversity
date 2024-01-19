@@ -1,10 +1,10 @@
-﻿using Shopway.Domain.Products;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Persistence.Utilities;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shopway.Persistence.Utilities;
 using static Shopway.Persistence.Constants.Constants;
 using static Shopway.Persistence.Constants.Constants.Number;
 

@@ -1,12 +1,12 @@
-﻿using Shopway.Domain.Users;
+﻿using Microsoft.AspNetCore.Identity;
+using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
-using Microsoft.AspNetCore.Identity;
 using Shopway.Domain.Common.Results;
-using Shopway.Application.Abstractions;
+using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
-using Shopway.Application.Abstractions.CQRS;
-using static Shopway.Domain.Errors.Domain.DomainErrors;
+using static Shopway.Domain.Users.Errors.DomainErrors;
 
 namespace Shopway.Application.Features.Users.Commands.RegisterUser;
 

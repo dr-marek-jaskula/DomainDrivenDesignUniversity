@@ -1,15 +1,15 @@
-﻿using RestSharp;
-using Microsoft.EntityFrameworkCore;
-using Shopway.Presentation.Controllers;
-using Shopway.Tests.Integration.Persistence;
-using Shopway.Tests.Integration.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using RestSharp;
 using Shopway.Application.Features.Products.Commands.AddReview;
-using Review = Shopway.Domain.Products.Review;
-using static System.Threading.CancellationToken;
+using Shopway.Domain.Products;
+using Shopway.Presentation.Controllers;
+using Shopway.Tests.Integration.Abstractions;
+using Shopway.Tests.Integration.Persistence;
 using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.Constants.Constants.CollectionName;
 using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
-using Shopway.Domain.Products;
+using static System.Threading.CancellationToken;
+using Review = Shopway.Domain.Products.Review;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 
@@ -20,7 +20,7 @@ public sealed partial class ReviewsControllerTests : ControllerTestsBase, IAsync
     private RestClient? _restClient;
     private readonly DatabaseFixture _fixture;
 
-    public ReviewsControllerTests(DatabaseFixture databaseFixture, DependencyInjectionContainerTestFixture containerTestFixture) 
+    public ReviewsControllerTests(DatabaseFixture databaseFixture, DependencyInjectionContainerTestFixture containerTestFixture)
         : base(containerTestFixture)
     {
         _fixture = databaseFixture;

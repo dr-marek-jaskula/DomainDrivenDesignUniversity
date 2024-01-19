@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using IResult = Shopway.Domain.Common.Results.IResult;
-using static Shopway.Application.Utilities.ProblemDetailsUtilities;
-using static Shopway.Application.Constants.Constants.ProblemDetails;
+using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Results.Abstractions;
+using static Shopway.Application.Constants.Constants.ProblemDetails;
+using static Shopway.Application.Utilities.ProblemDetailsUtilities;
+using IResult = Shopway.Domain.Common.Results.IResult;
 
 namespace Shopway.Presentation.Abstractions;
 
@@ -26,7 +26,7 @@ public abstract class ApiController(ISender sender) : ControllerBase
             (
                 CreateProblemDetails
                 (
-                    ValidationError, 
+                    ValidationError,
                     StatusCodes.Status400BadRequest,
                     result.Error,
                     validationResult.ValidationErrors

@@ -1,10 +1,10 @@
-﻿using Shopway.Domain.Errors;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Shopway.Application.Exceptions;
-using static Shopway.Application.Utilities.ProblemDetailsUtilities;
+using Shopway.Domain.Errors;
 using static Shopway.Application.Constants.Constants.ProblemDetails;
+using static Shopway.Application.Utilities.ProblemDetailsUtilities;
 
 namespace Shopway.Application.Middlewares;
 
