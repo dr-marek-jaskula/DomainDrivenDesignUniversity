@@ -4,6 +4,12 @@ namespace Shopway.Domain.Common.Utilities;
 
 public static class TaskUtilities
 {
+    public static async Task<TDestination> Select<TSource, TDestination>(this Task<TSource> task, Func<TSource, TDestination> mapping)
+    {
+        var result = await task.ConfigureAwait(false);
+        return mapping(result);
+    }
+
     public static TaskAwaiter<(T1, T2)> GetAwaiter<T1, T2>(this (Task<T1>, Task<T2>) tuple)
     {
         return Combine(tuple.Item1, tuple.Item2).GetAwaiter();
