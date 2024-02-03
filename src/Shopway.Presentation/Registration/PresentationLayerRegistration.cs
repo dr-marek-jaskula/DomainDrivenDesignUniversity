@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Scrutor;
 
-namespace Shopway.Presentation.Registration;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class PresentationLayerRegistration
 {

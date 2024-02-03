@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Shopway.Infrastructure.Registration;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 public static class InfrastructureLayerRegistration
 {

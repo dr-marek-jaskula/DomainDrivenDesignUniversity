@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shopway.Persistence.Cache;
 using Shopway.Persistence.Framework;
 
-namespace Shopway.Persistence.Registration;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class PersistenceLayerRegistration
 {
