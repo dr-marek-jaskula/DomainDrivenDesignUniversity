@@ -15,9 +15,4 @@ public abstract class Entity<TEntityId> : IEntity
     }
 
     public TEntityId Id { get; private init; }
-
-    public override int GetHashCode()
-    {
-        return Id.GetHashCode() * 41;
-    }
 }
