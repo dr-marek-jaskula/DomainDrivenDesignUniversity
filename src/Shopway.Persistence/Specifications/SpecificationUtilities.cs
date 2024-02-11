@@ -34,74 +34,10 @@ internal static class SpecificationUtilities
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
-        if (specification.IncludeAction is not null)
-        {
-            queryable = specification.IncludeAction(queryable);
-        }
-
-        foreach (var includeExpression in specification.IncludeExpressions)
-        {
-            queryable = queryable.Include(includeExpression);
-        }
-
-        if (specification.FilterExpressions.NotNullOrEmpty())
-        {
-            foreach (var filter in specification.FilterExpressions)
-            {
-                queryable = queryable.Where(filter);
-            }
-        }
-
-        if (specification.Filter is not null)
-        {
-            queryable = specification.Filter.Apply(queryable);
-        }
-
-        if (specification.SortBy is not null)
-        {
-            queryable = specification.SortBy.Apply(queryable);
-        }
-
-        if (specification.SortByExpression is not null and var sort)
-        {
-            queryable = queryable.OrderBy(sort.Value.SortBy, sort.Value.SortDirection);
-
-            if (specification.ThenByExpression is not null and var then)
-            {
-                queryable = ((IOrderedQueryable<TEntity>)queryable).ThenBy(then.Value.SortBy, then.Value.SortDirection);
-            }
-        }
-
-        if (specification.QueryTag is not null)
-        {
-            queryable = queryable.TagWith(specification.QueryTag);
-        }
-
-        if (specification.AsSplitQuery)
-        {
-            queryable = queryable.AsSplitQuery();
-        }
-
-        if (specification.AsNoTracking)
-        {
-            queryable = queryable.AsNoTracking();
-        }
-
-        if (specification.AsTracking)
-        {
-            queryable = queryable.AsTracking();
-        }
-
-        if (specification.AsNoTrackingWithIdentityResolution)
-        {
-            queryable = queryable.AsNoTrackingWithIdentityResolution();
-        }
-
-        if (specification.UseGlobalFilters is false)
-        {
-            queryable = queryable.IgnoreQueryFilters();
-        }
-
+        queryable = queryable.ApplyIncludes(specification);
+        queryable = queryable.ApplyFilters(specification);
+        queryable = queryable.ApplySorting(specification);
+        queryable = queryable.ApplyQueryOptions(specification);
         return queryable;
     }
 
@@ -133,5 +69,99 @@ internal static class SpecificationUtilities
         }
 
         return queryableWithMapping;
+    }
+
+    private static IQueryable<TEntity> ApplyIncludes<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+        if (specification.IncludeAction is not null)
+        {
+            queryable = specification.IncludeAction(queryable);
+        }
+
+        foreach (var includeExpression in specification.IncludeExpressions)
+        {
+            queryable = queryable.Include(includeExpression);
+        }
+
+        return queryable;
+    }
+
+    private static IQueryable<TEntity> ApplyFilters<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+
+        foreach (var filter in specification.FilterExpressions)
+        {
+            queryable = queryable.Where(filter);
+        }
+
+        if (specification.Filter is not null)
+        {
+            queryable = specification.Filter.Apply(queryable);
+        }
+
+        return queryable;
+    }
+
+    private static IQueryable<TEntity> ApplySorting<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+        if (specification.SortBy is not null)
+        {
+            queryable = specification.SortBy.Apply(queryable);
+        }
+
+        if (specification.SortByExpression is not null and var sort)
+        {
+            queryable = queryable.OrderBy(sort.Value.SortBy, sort.Value.SortDirection);
+
+            if (specification.ThenByExpression is not null and var then)
+            {
+                queryable = ((IOrderedQueryable<TEntity>)queryable).ThenBy(then.Value.SortBy, then.Value.SortDirection);
+            }
+        }
+
+        return queryable;
+    }
+
+    private static IQueryable<TEntity> ApplyQueryOptions<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+        if (specification.QueryTag is not null)
+        {
+            queryable = queryable.TagWith(specification.QueryTag);
+        }
+
+        if (specification.AsSplitQuery)
+        {
+            queryable = queryable.AsSplitQuery();
+        }
+
+        if (specification.AsNoTracking)
+        {
+            queryable = queryable.AsNoTracking();
+        }
+
+        if (specification.AsTracking)
+        {
+            queryable = queryable.AsTracking();
+        }
+
+        if (specification.AsNoTrackingWithIdentityResolution)
+        {
+            queryable = queryable.AsNoTrackingWithIdentityResolution();
+        }
+
+        if (specification.UseGlobalFilters is false)
+        {
+            queryable = queryable.IgnoreQueryFilters();
+        }
+
+        return queryable;
     }
 }

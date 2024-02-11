@@ -7,25 +7,25 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications;
 
-internal sealed class SpecificationWithMapping<TEntity, TEntityId, TResponse> : Specification<TEntity, TEntityId>
+internal sealed class SpecificationWithMapping<TEntity, TEntityId, TOutput> : Specification<TEntity, TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
-    internal Expression<Func<TEntity, TResponse>>? Mapping { get; private set; } = null;
+    internal Expression<Func<TEntity, TOutput>>? Mapping { get; private set; } = null;
     internal bool UseDistinct { get; private set; }
 
-    internal new static SpecificationWithMapping<TEntity, TEntityId, TResponse> New()
+    internal new static SpecificationWithMapping<TEntity, TEntityId, TOutput> New()
     {
-        return new SpecificationWithMapping<TEntity, TEntityId, TResponse>();
+        return new SpecificationWithMapping<TEntity, TEntityId, TOutput>();
     }
 
-    internal SpecificationWithMapping<TEntity, TEntityId, TResponse> AddMapping(Expression<Func<TEntity, TResponse>>? mapping)
+    internal SpecificationWithMapping<TEntity, TEntityId, TOutput> AddMapping(Expression<Func<TEntity, TOutput>>? mapping)
     {
         Mapping = mapping;
         return this;
     }
 
-    internal SpecificationWithMapping<TEntity, TEntityId, TResponse> ApplyDistinct()
+    internal SpecificationWithMapping<TEntity, TEntityId, TOutput> ApplyDistinct()
     {
         UseDistinct = true;
         return this;
