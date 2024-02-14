@@ -1,16 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Exceptions;
 using Shopway.Domain.Common.Utilities;
 using System.Data;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Reflection;
+using static Shopway.Domain.Constants.Constants.Type;
 
 namespace Shopway.Persistence.Utilities;
 
 public static class QueryableUtilities
 {
     private const int AdditionalRecordForCursor = 1;
+
+    private static readonly MethodInfo _likeMethodInfo = typeof(DbFunctionsExtensions)
+        .GetMethod(nameof(DbFunctionsExtensions.Like), [typeof(DbFunctions), StringType, StringType])
+        ?? throw new ArgumentNullException(nameof(DbFunctionsExtensions.Like), "The EF.Functions.Like not found");
+
+    private static readonly MemberExpression _functions = Expression.Property(null, typeof(EF).GetProperty(nameof(EF.Functions))
+        ?? throw new ArgumentNullException(nameof(EF.Functions), "The EF.Functions not found"));
 
     /// <summary>
     /// Get page items and total count
@@ -28,7 +40,7 @@ public static class QueryableUtilities
     {
         if (page is null)
         {
-            throw new ArgumentNullException($"Page is null");
+            throw new ArgumentNullException(nameof(page), "Page is null");
         }
 
         var totalCount = await queryable.CountAsync(cancellationToken);
@@ -125,5 +137,59 @@ public static class QueryableUtilities
         return await queryable
            .Where($"{IEntityId.Id} == \"{entityId.Value}\"")
            .AnyAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Filters <paramref name="queryable"/> by applying an 'SQL LIKE' operation. Works for string properties and ValueObject with Value. 
+    /// </summary>
+    public static IQueryable<TEntity> Like<TEntity, TEntityId>(this IQueryable<TEntity> queryable, IList<LikeEntry<TEntity>> likeEntries)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+        if (likeEntries.Count is 0)
+        {
+            return queryable;
+        }
+
+        Expression? expression = null;
+        var parameter = Expression.Parameter(typeof(TEntity));
+
+        foreach (var likeEntry in likeEntries)
+        {
+            if (likeEntry.LikeTerm.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new InvalidLikePatternException($"search pattern is null or empty for {likeEntry.Property}.");
+            }
+
+            var propertyName = likeEntry.Property.GetPropertyName();
+            var memberExpression = parameter.ToMemberExpression(propertyName);
+            var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(StringType);
+
+            var lambdaExpression = Expression.Lambda<Func<TEntity, string>>(convertedPropertyToFilterOn!, parameter);
+
+            if (lambdaExpression is null)
+            {
+                throw new InvalidExpressionException();
+            }
+
+            var searchTermAsExpression = ((Expression<Func<string>>)(() => likeEntry.LikeTerm)).Body;
+
+            var likeExpression = Expression.Call
+            (
+                null,
+                _likeMethodInfo,
+                _functions,
+                lambdaExpression.Body,
+                searchTermAsExpression
+            );
+
+            expression = expression is null 
+                ? likeExpression 
+                : Expression.OrElse(expression, likeExpression);
+        }
+
+        return expression is null
+            ? queryable
+            : queryable.Where(Expression.Lambda<Func<TEntity, bool>>(expression, parameter));
     }
 }

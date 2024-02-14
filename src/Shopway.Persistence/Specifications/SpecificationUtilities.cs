@@ -2,6 +2,7 @@
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Utilities;
+using Shopway.Persistence.Utilities;
 
 namespace Shopway.Persistence.Specifications;
 
@@ -12,14 +13,14 @@ internal static class SpecificationUtilities
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
     /// <typeparam name="TEntityId">EntityId type</typeparam>
-    /// <typeparam name="TResponse">Response type</typeparam>
+    /// <typeparam name="TOutput">Output type</typeparam>
     /// <param name="specification">Input specification</param>
     /// <returns>SpecificationWithMappingBase</returns>
-    internal static SpecificationWithMapping<TEntity, TEntityId, TResponse> AsMappingSpecification<TEntity, TEntityId, TResponse>(this Specification<TEntity, TEntityId> specification)
+    internal static SpecificationWithMapping<TEntity, TEntityId, TOutput> AsMappingSpecification<TEntity, TEntityId, TOutput>(this Specification<TEntity, TEntityId> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
-        return (SpecificationWithMapping<TEntity, TEntityId, TResponse>)specification;
+        return (SpecificationWithMapping<TEntity, TEntityId, TOutput>)specification;
     }
 
     /// <summary>
@@ -34,11 +35,12 @@ internal static class SpecificationUtilities
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
-        queryable = queryable.ApplyIncludes(specification);
-        queryable = queryable.ApplyFilters(specification);
-        queryable = queryable.ApplySorting(specification);
-        queryable = queryable.ApplyQueryOptions(specification);
-        return queryable;
+        return queryable
+            .ApplyIncludes(specification)
+            .ApplyFilters(specification)
+            .ApplyLikes(specification)
+            .ApplySorting(specification)
+            .ApplyQueryOptions(specification);
     }
 
     /// <summary>
@@ -46,17 +48,17 @@ internal static class SpecificationUtilities
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
     /// <typeparam name="TEntityId">EntityId type</typeparam>
-    /// <typeparam name="TResponse">Response type</typeparam>
+    /// <typeparam name="Output">Output type</typeparam>
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    internal static IQueryable<TResponse> UseSpecification<TEntity, TEntityId, TResponse>(this IQueryable<TEntity> queryable, SpecificationWithMapping<TEntity, TEntityId, TResponse> specification)
+    internal static IQueryable<Output> UseSpecification<TEntity, TEntityId, Output>(this IQueryable<TEntity> queryable, SpecificationWithMapping<TEntity, TEntityId, Output> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
         if (specification.Mapping is null)
         {
-            throw new ArgumentNullException($"{nameof(SpecificationWithMapping<TEntity, TEntityId, TResponse>)} must contain Select statement");
+            throw new ArgumentNullException($"{nameof(SpecificationWithMapping<TEntity, TEntityId, Output>)} must contain Select statement");
         }
 
         var queryableWithMapping = queryable
@@ -85,6 +87,11 @@ internal static class SpecificationUtilities
             queryable = queryable.Include(includeExpression);
         }
 
+        foreach (var includeString in specification.IncludeStrings)
+        {
+            queryable = queryable.Include(includeString);
+        }
+
         return queryable;
     }
 
@@ -104,6 +111,13 @@ internal static class SpecificationUtilities
         }
 
         return queryable;
+    }
+
+    private static IQueryable<TEntity> ApplyLikes<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+        return queryable.Like<TEntity, TEntityId>(specification.LikeEntries);
     }
 
     private static IQueryable<TEntity> ApplySorting<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)

@@ -102,6 +102,28 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
         return Ok(result.Value);
     }
 
+    [HttpPost("name/{productNamePattern}")]
+    [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> QueryProductsByNameLike
+    (
+        [FromRoute] string productNamePattern,
+        [FromBody] OffsetPage page,
+        CancellationToken cancellationToken
+    )
+    {
+        var query = new GetProductByNameLikePageQuery(page, productNamePattern);
+
+        var result = await Sender.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return Ok(result.Value);
+    }
+
     [HttpPost("query/dictionary/offset")]
     [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -116,7 +138,6 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
 
         return Ok(result.Value);
     }
-
 
     [HttpPost("query/dictionary/cursor")]
     [ProducesResponseType<CursorPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]

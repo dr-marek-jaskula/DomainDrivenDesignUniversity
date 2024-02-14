@@ -432,6 +432,40 @@
 					"response": []
 				},
 				{
+					"name": "GetProduct.ByNameLike.Valid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key_product_get}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/name/%x",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"name",
+								"%x"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "FuzzySearchProduct.ByName.Valid",
 					"request": {
 						"method": "POST",

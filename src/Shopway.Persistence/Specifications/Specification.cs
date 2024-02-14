@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
@@ -50,12 +51,16 @@ internal class Specification<TEntity, TEntityId>
     internal IFilter<TEntity>? Filter { get; private set; } = null;
     internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = [];
 
+    //Like
+    internal List<LikeEntry<TEntity>> LikeEntries { get; } = [];
+
     //SortBy
     internal ISortBy<TEntity>? SortBy { get; private set; } = null;
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
 
     //Includes
+    internal List<string> IncludeStrings { get; } = [];
     internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
     internal Func<IQueryable<TEntity>, IQueryable<TEntity>>? IncludeAction { get; private set; } = null;
 
@@ -125,6 +130,31 @@ internal class Specification<TEntity, TEntityId>
         return this;
     }
 
+    internal Specification<TEntity, TEntityId> AddLikes(params LikeEntry<TEntity>[] likeEntries)
+    {
+        foreach (var likeEntry in likeEntries)
+        {
+            LikeEntries.Add(likeEntry);
+        }
+
+        return this;
+    }
+
+    internal Specification<TEntity, TEntityId> AddLikes(IList<LikeEntry<TEntity>>? likeEntries)
+    {
+        if (likeEntries is null)
+        {
+            return this;
+        }
+
+        foreach (var likeEntry in likeEntries)
+        {
+            LikeEntries.Add(likeEntry);
+        }
+
+        return this;
+    }
+
     internal Specification<TEntity, TEntityId> AddSortBy(ISortBy<TEntity>? sortBy)
     {
         SortBy = sortBy;
@@ -158,6 +188,16 @@ internal class Specification<TEntity, TEntityId>
         foreach (var includeExpression in includeExpressions)
         {
             IncludeExpressions.Add(includeExpression);
+        }
+
+        return this;
+    }
+
+    internal Specification<TEntity, TEntityId> AddIncludes(params string[] includeStrings)
+    {
+        foreach (var includeString in includeStrings)
+        {
+            IncludeStrings.Add(includeString);
         }
 
         return this;

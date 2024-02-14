@@ -1,7 +1,10 @@
-﻿using Shopway.Domain.Common.DataProcessing;
+﻿using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
+using System.Data;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using static Shopway.Domain.Constants.Constants.Type;
@@ -50,13 +53,15 @@ public static class QueryableUtilities
     /// This method generates expressions that will be use to filter entities by their ValueObjects with single inner value. 
     /// For primitive types use simplified version of this method
     /// </summary>
-    public static IQueryable<TResponse> Where<TResponse>
+    public static IQueryable<TEntity> Where<TEntity, TEntityId>
     (
-        this IQueryable<TResponse> queryable,
+        this IQueryable<TEntity> queryable,
         IList<FilterByEntry> filterEntries
     )
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
     {
-        var parameter = Expression.Parameter(typeof(TResponse));
+        var parameter = Expression.Parameter(typeof(TEntity));
         List<Expression> filterEntryExpressions = [];
 
         foreach (var filterEntry in filterEntries)
@@ -104,7 +109,7 @@ public static class QueryableUtilities
                     : Expression.AndAlso(expression!, filterEntryExpression);
         }
 
-        Expression<Func<TResponse, bool>> lambdaExpression = Expression.Lambda<Func<TResponse, bool>>(expression!, parameter);
+        Expression<Func<TEntity, bool>> lambdaExpression = Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
 
         return queryable
             .Where(lambdaExpression);

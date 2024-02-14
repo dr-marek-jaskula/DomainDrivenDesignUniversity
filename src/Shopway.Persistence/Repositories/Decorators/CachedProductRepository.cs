@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Utilities;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.Products;
@@ -98,20 +99,39 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
         return _decorated.VerifyIdsAsync(ids, cancellationToken);
     }
 
-    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>(IOffsetPage page, CancellationToken cancellationToken, IFilter<Product>? filter = null, ISortBy<Product>? sort = null, Expression<Func<Product, TResponse>>? mapping = null, params Expression<Func<Product, object>>[] includes)
+    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    (
+        IOffsetPage page, 
+        CancellationToken cancellationToken, 
+        IFilter<Product>? filter = null,
+        IList<LikeEntry<Product>>? likes = null,
+        ISortBy<Product>? sort = null, 
+        Expression<Func<Product, TResponse>>? mapping = null, 
+        params Expression<Func<Product, object>>[] includes
+    )
     {
         return await _decorated.PageAsync
         (
             page,
             cancellationToken,
             filter: filter,
+            likes: likes,
             sort: sort,
             mapping: mapping,
             includes: includes
         );
     }
 
-    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>(ICursorPage page, CancellationToken cancellationToken, IFilter<Product>? filter = null, ISortBy<Product>? sort = null, Expression<Func<Product, TResponse>>? mapping = null, params Expression<Func<Product, object>>[] includes)
+    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    (
+        ICursorPage page, 
+        CancellationToken cancellationToken, 
+        IFilter<Product>? filter = null,
+        IList<LikeEntry<Product>>? likes = null,
+        ISortBy<Product>? sort = null, 
+        Expression<Func<Product, TResponse>>? mapping = null, 
+        params Expression<Func<Product, object>>[] includes
+    )
         where TResponse : class, IHasCursor
     {
         return await _decorated.PageAsync
@@ -119,6 +139,7 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
             page,
             cancellationToken,
             filter: filter,
+            likes: likes,
             sort: sort,
             mapping: mapping,
             includes: includes

@@ -47,8 +47,8 @@ public static class ExpressionUtilities
     {
         var parameter = Expression.Parameter(typeof(TType));
 
-        var left = ReplaceParameter(leftExpression, parameter);
-        var right = ReplaceParameter(rightExpression, parameter);
+        var left = leftExpression.ReplaceParameter(parameter);
+        var right = rightExpression.ReplaceParameter(parameter);
 
         return Expression.Lambda<Func<TType, bool>>(Expression.Or(left, right), parameter);
     }
@@ -69,28 +69,34 @@ public static class ExpressionUtilities
     {
         var parameter = Expression.Parameter(typeof(TType));
 
-        var left = ReplaceParameter(leftExpression, parameter);
-        var right = ReplaceParameter(rightExpression, parameter);
+        var left = leftExpression.ReplaceParameter(parameter);
+        var right = rightExpression.ReplaceParameter(parameter);
 
         return Expression.Lambda<Func<TType, bool>>(Expression.And(left, right), parameter);
     }
 
-    private static Expression ReplaceParameter<TType>(Expression<TType> expression, ParameterExpression parameter)
+    private static Expression ReplaceParameter<TType>(this Expression<TType> expression, ParameterExpression parameter)
     {
         var visitor = new ReplaceExpressionVisitor(expression.Parameters[0], parameter);
         return visitor.Visit(expression.Body);
     }
 
-    private sealed class ReplaceExpressionVisitor : ExpressionVisitor
+    public static Expression ReplaceParameter(this Expression expression, ParameterExpression oldParameter, Expression newExpression)
     {
-        private readonly Expression _oldValue;
-        private readonly Expression _newValue;
+        var visitor = new ReplaceParameterExpressionVisitor(oldParameter, newExpression);
+        return visitor.Visit(expression);
+    }
 
-        public ReplaceExpressionVisitor(Expression oldValue, Expression newValue)
-        {
-            _oldValue = oldValue;
-            _newValue = newValue;
-        }
+    public static string GetPropertyName<TEntity>(this Expression<Func<TEntity, string>> expression)
+    {
+        var visitor = new ValueObjectVisitor();
+        return visitor.GetPropertyName(expression);
+    }
+
+    private sealed class ReplaceExpressionVisitor(Expression oldValue, Expression newValue) : ExpressionVisitor
+    {
+        private readonly Expression _oldValue = oldValue;
+        private readonly Expression _newValue = newValue;
 
         public override Expression Visit(Expression? node)
         {
@@ -102,6 +108,46 @@ public static class ExpressionUtilities
             return node == _oldValue
                 ? _newValue
                 : base.Visit(node);
+        }
+    }
+
+    private sealed class ReplaceParameterExpressionVisitor(ParameterExpression oldParameter, Expression newExpression) : ExpressionVisitor
+    {
+        private readonly Expression _newExpression = newExpression;
+        private readonly ParameterExpression _oldParameter = oldParameter;
+
+        internal static Expression Replace(Expression expression, ParameterExpression oldParameter, Expression newExpression)
+        {
+            return new ReplaceParameterExpressionVisitor(oldParameter, newExpression)
+                .Visit(expression);
+        }
+
+        protected override Expression VisitParameter(ParameterExpression parameter)
+        {
+            return parameter == _oldParameter 
+                ? _newExpression 
+                : parameter;
+        }
+    }
+
+    public class ValueObjectVisitor : ExpressionVisitor
+    {
+        private string _propertyName = string.Empty;
+
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            if (node.Member.Name is not Value)
+            {
+                _propertyName = node.Member.Name;
+            }
+
+            return base.VisitMember(node);
+        }
+
+        public string GetPropertyName<TEntity>(Expression<Func<TEntity, string>> propertyExpression)
+        {
+            Visit(propertyExpression);
+            return _propertyName;
         }
     }
 }
