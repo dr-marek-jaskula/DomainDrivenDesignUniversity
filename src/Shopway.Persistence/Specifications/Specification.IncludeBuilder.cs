@@ -18,7 +18,6 @@ internal partial class Specification<TEntity, TEntityId>
     }
 
     internal interface IThenIncludeBuilder<TProperty> : IIncludeBuilder
-        where TProperty : class, IEntity
     {
         IThenIncludeBuilder<TNextProperty> ThenInclude<TNextProperty>(Expression<Func<TProperty, TNextProperty>> thenIncludeExpression)
             where TNextProperty : class, IEntity;
@@ -64,7 +63,7 @@ internal partial class Specification<TEntity, TEntityId>
         {
             var includeEntry = new IncludeEntry<TEntity>(includeExpression, typeof(TEntity), typeof(TProperty), null, IncludeType.Include);
             IncludeEntries.Add(includeEntry);
-            return new ThenIncludeBuilder<TProperty>(_includeBuilderOrchestrator, this);
+            return new ThenIncludeBuilder<TProperty>(_includeBuilderOrchestrator, this, false);
         }
 
         public IThenIncludeBuilder<TProperty> Include<TProperty>(Expression<Func<TEntity, IEnumerable<TProperty>>> includeExpression)
@@ -72,15 +71,16 @@ internal partial class Specification<TEntity, TEntityId>
         {
             var includeEntry = new IncludeEntry<TEntity>(includeExpression, typeof(TEntity), typeof(IEnumerable<TProperty>), null, IncludeType.Include);
             IncludeEntries.Add(includeEntry);
-            return new ThenIncludeBuilder<TProperty>(_includeBuilderOrchestrator, this);
+            return new ThenIncludeBuilder<TProperty>(_includeBuilderOrchestrator, this, true);
         }
     }
 
-    internal class ThenIncludeBuilder<TProperty>(IncludeBuilderOrchestrator includeBuilderOrchestrator, IncludeBuilder includeBuilder) : IThenIncludeBuilder<TProperty>
+    internal class ThenIncludeBuilder<TProperty>(IncludeBuilderOrchestrator includeBuilderOrchestrator, IncludeBuilder includeBuilder, bool previousWasCollection) : IThenIncludeBuilder<TProperty>
         where TProperty : class, IEntity
     {
         private readonly IncludeBuilderOrchestrator _includeBuilderOrchestrator = includeBuilderOrchestrator;
         private readonly IncludeBuilder _includeBuilder = includeBuilder;
+        private readonly bool _previousWasCollection = previousWasCollection;
 
         public IThenIncludeBuilder<TNewProperty> Include<TNewProperty>(Expression<Func<TEntity, TNewProperty>> includeExpression)
             where TNewProperty : class, IEntity
@@ -97,17 +97,27 @@ internal partial class Specification<TEntity, TEntityId>
         public IThenIncludeBuilder<TNextProperty> ThenInclude<TNextProperty>(Expression<Func<TProperty, TNextProperty>> thenIncludeExpression)
             where TNextProperty : class, IEntity
         {
-            var includeEntry = new IncludeEntry<TEntity>(thenIncludeExpression, typeof(TEntity), typeof(TNextProperty), typeof(TProperty), IncludeType.ThenInclude);
+            Type fullPreviousType = _previousWasCollection 
+                ? typeof(IEnumerable<TProperty>)
+                : typeof(TProperty);
+
+            var includeEntry = new IncludeEntry<TEntity>(thenIncludeExpression, typeof(TEntity), typeof(TNextProperty), fullPreviousType, IncludeType.ThenInclude);
+
             _includeBuilder.IncludeEntries.Add(includeEntry);
-            return new ThenIncludeBuilder<TNextProperty>(_includeBuilderOrchestrator, _includeBuilder);
+            return new ThenIncludeBuilder<TNextProperty>(_includeBuilderOrchestrator, _includeBuilder, false);
         }
 
         public IThenIncludeBuilder<TNextProperty> ThenInclude<TNextProperty>(Expression<Func<TProperty, IEnumerable<TNextProperty>>> thenIncludeExpression)
             where TNextProperty : class, IEntity
         {
-            var includeEntry = new IncludeEntry<TEntity>(thenIncludeExpression, typeof(TEntity), typeof(IEnumerable<TNextProperty>), typeof(TProperty), IncludeType.ThenInclude);
+            Type fullPreviousType = _previousWasCollection 
+                ? typeof(IEnumerable<TProperty>)
+                : typeof(TProperty);
+
+            var includeEntry = new IncludeEntry<TEntity>(thenIncludeExpression, typeof(TEntity), typeof(IEnumerable<TNextProperty>), fullPreviousType, IncludeType.ThenInclude);
+
             _includeBuilder.IncludeEntries.Add(includeEntry);
-            return new ThenIncludeBuilder<TNextProperty>(_includeBuilderOrchestrator, _includeBuilder);
+            return new ThenIncludeBuilder<TNextProperty>(_includeBuilderOrchestrator, _includeBuilder, true);
         }
     }
 }
