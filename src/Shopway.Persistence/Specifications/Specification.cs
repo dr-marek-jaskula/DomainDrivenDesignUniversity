@@ -156,6 +156,12 @@ internal partial class Specification<TEntity, TEntityId>
         return this;
     }
 
+    internal Specification<TEntity, TEntityId> AddLike(Expression<Func<TEntity, string>> property, string likeTerm)
+    {
+        LikeEntries.Add(new LikeEntry<TEntity>(property, likeTerm));
+        return this;
+    }
+
     internal Specification<TEntity, TEntityId> AddSortBy(ISortBy<TEntity>? sortBy)
     {
         SortBy = sortBy;
