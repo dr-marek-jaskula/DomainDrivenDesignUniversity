@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.DataProcessing;
@@ -23,6 +24,33 @@ public static class QueryableUtilities
 
     private static readonly MemberExpression _functions = Expression.Property(null, typeof(EF).GetProperty(nameof(EF.Functions))
         ?? throw new ArgumentNullException(nameof(EF.Functions), "The EF.Functions not found"));
+
+    private static readonly MethodInfo _includeMethodInfo = typeof(EntityFrameworkQueryableExtensions)
+        .GetTypeInfo().GetDeclaredMethods(nameof(EntityFrameworkQueryableExtensions.Include))
+        .Single(mi => mi.GetGenericArguments().Length is 2
+            && mi.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IQueryable<>)
+            && mi.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
+
+    private static readonly MethodInfo _thenIncludeAfterReferenceMethodInfo
+        = typeof(EntityFrameworkQueryableExtensions)
+            .GetTypeInfo().GetDeclaredMethods(nameof(EntityFrameworkQueryableExtensions.ThenInclude))
+            .Single(methodInfo => methodInfo.GetGenericArguments().Length is 3
+                && methodInfo.GetParameters()[0].ParameterType.GenericTypeArguments[1].IsGenericParameter
+                && methodInfo.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IIncludableQueryable<,>)
+                && methodInfo.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
+
+    private static readonly MethodInfo _thenIncludeAfterEnumerableMethodInfo
+        = typeof(EntityFrameworkQueryableExtensions)
+            .GetTypeInfo().GetDeclaredMethods(nameof(EntityFrameworkQueryableExtensions.ThenInclude))
+            .Where(methodInfo => methodInfo.GetGenericArguments().Length is 3)
+            .Single(methodInfo =>
+            {
+                var typeInfo = methodInfo.GetParameters()[0].ParameterType.GenericTypeArguments[1];
+                return typeInfo.IsGenericType
+                        && typeInfo.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                        && methodInfo.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IIncludableQueryable<,>)
+                        && methodInfo.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>);
+            });
 
     /// <summary>
     /// Get page items and total count
@@ -191,5 +219,46 @@ public static class QueryableUtilities
         return expression is null
             ? queryable
             : queryable.Where(Expression.Lambda<Func<TEntity, bool>>(expression, parameter));
+    }
+
+    public static IQueryable<TEntity> AddInclude<TEntity, TEntityId>(this IQueryable<TEntity> query, IncludeEntry<TEntity> includeEntry)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+        var newQueryable = _includeMethodInfo
+            .MakeGenericMethod(includeEntry.EntityType, includeEntry.PropertyType)
+            .Invoke(null, [ query, includeEntry.Property ]);
+
+        if (newQueryable is null)
+        {
+            throw new ArgumentNullException(nameof(newQueryable));
+        }
+
+        return (IQueryable<TEntity>)newQueryable;
+    }
+
+    public static IQueryable<TEntity> AddThenInclude<TEntity, TEntityId>(this IQueryable<TEntity> queryable, IncludeEntry<TEntity> includeEntry)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+        if (includeEntry.PreviousPropertyType is null)
+        {
+            throw new ArgumentNullException(nameof(includeEntry.PreviousPropertyType));
+        }
+
+        var thenIncludeMethodInfo = includeEntry.PreviousPropertyType.IsGenericEnumerable(out var previousPropertyType)
+            ? _thenIncludeAfterEnumerableMethodInfo
+            : _thenIncludeAfterReferenceMethodInfo;
+
+         var newQueryable = thenIncludeMethodInfo
+            .MakeGenericMethod(includeEntry.EntityType, previousPropertyType, includeEntry.PropertyType)
+            .Invoke(null, [ queryable, includeEntry.Property ]);
+
+        if (newQueryable is null)
+        {
+            throw new ArgumentNullException(nameof(newQueryable));
+        }
+
+        return (IQueryable<TEntity>)newQueryable;
     }
 }

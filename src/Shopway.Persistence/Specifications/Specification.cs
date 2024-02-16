@@ -33,7 +33,7 @@ internal sealed class SpecificationWithMapping<TEntity, TEntityId, TOutput> : Sp
     }
 }
 
-internal class Specification<TEntity, TEntityId>
+internal partial class Specification<TEntity, TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
@@ -63,6 +63,7 @@ internal class Specification<TEntity, TEntityId>
     internal List<string> IncludeStrings { get; } = [];
     internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
     internal Func<IQueryable<TEntity>, IQueryable<TEntity>>? IncludeAction { get; private set; } = null;
+    internal List<IncludeEntry<TEntity>> IncludeEntries { get; private set; } = [];
 
     internal static Specification<TEntity, TEntityId> New()
     {
@@ -204,19 +205,20 @@ internal class Specification<TEntity, TEntityId>
     }
 
     /// <summary>
+    /// Faster but less elegant solution
     /// Use only when there is a need for ThenInclude for collection and then further include.
     /// </summary>
     /// <remarks>
-    /// Example usage: .AddIncludeAction(orderHeader => orderHeader.Include(o => o.OrderLines).ThenInclude(od => od.Product)) 
+    /// Example usage: .AddIncludeUsingAction(orderHeader => orderHeader.Include(o => o.OrderLines).ThenInclude(od => od.Product)) 
     /// </remarks>
     /// <param name="includeAction"></param>
-    internal Specification<TEntity, TEntityId> AddIncludesWithThenIncludesAction(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
+    internal Specification<TEntity, TEntityId> AddIncludeUsingAction(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
     {
         var includeActionBody = includeAction.ToString();
 
         if (includeActionBody.NotContains("ThenInclude"))
         {
-            throw new InvalidOperationException($"Input of {AddIncludesWithThenIncludesAction} must contain 'ThenInclude' call. Use {nameof(AddIncludes)} if 'ThenInclude' is not required.");
+            throw new InvalidOperationException($"Input must contain 'ThenInclude' call. Use builder approach to avoid such issues.");
         }
 
         if (ContainsMethodCallDifferentFromIncludeOrThenInclude(includeActionBody))
@@ -225,6 +227,17 @@ internal class Specification<TEntity, TEntityId>
         }
 
         IncludeAction = includeAction.Compile();
+        return this;
+    }
+
+    /// <summary>
+    /// A bit slower but elegant solution. All Includes and ThenIncludes can be done using this approach
+    /// </summary>
+    internal Specification<TEntity, TEntityId> AddIncludes(Action<IIncludeBuilder> buildIncludes)
+    {
+        var orchestrator = new IncludeBuilderOrchestrator();
+        buildIncludes(orchestrator);
+        IncludeEntries.AddRange(orchestrator.GetIncludeEntries());
         return this;
     }
 

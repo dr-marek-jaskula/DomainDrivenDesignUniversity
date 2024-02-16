@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Persistence.Utilities;
 
@@ -75,6 +76,16 @@ internal static class SpecificationUtilities
         foreach (var includeString in specification.IncludeStrings)
         {
             queryable = queryable.Include(includeString);
+        }
+
+        foreach (var includeEntry in specification.IncludeEntries)
+        {
+            queryable = includeEntry.IncludeType switch
+            {
+                IncludeType.Include => queryable.AddInclude<TEntity, TEntityId>(includeEntry),
+                IncludeType.ThenInclude => queryable.AddThenInclude<TEntity, TEntityId>(includeEntry),
+                _ => throw new NotSupportedException()
+            };
         }
 
         return queryable;
