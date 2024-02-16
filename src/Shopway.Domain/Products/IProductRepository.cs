@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
+﻿using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.Products.ValueObjects;
 using System.Linq.Expressions;
@@ -40,6 +41,7 @@ public interface IProductRepository
         IOffsetPage page,
         CancellationToken cancellationToken,
         IFilter<Product>? filter = null,
+        IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
@@ -50,6 +52,7 @@ public interface IProductRepository
         ICursorPage page,
         CancellationToken cancellationToken,
         IFilter<Product>? filter = null,
+        IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes

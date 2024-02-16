@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.EntityKeys;
@@ -141,6 +142,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         IOffsetPage page,
         CancellationToken cancellationToken,
         IFilter<Product>? filter = null,
+        IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
@@ -150,6 +152,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         (
             filter,
             null,
+            likes,
             sort,
             mapping: mapping,
             includes: includes
@@ -166,6 +169,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         ICursorPage page,
         CancellationToken cancellationToken,
         IFilter<Product>? filter = null,
+        IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
         params Expression<Func<Product, object>>[] includes
@@ -178,6 +182,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         (
             filter,
             cursorFilter,
+            null,
             sort,
             mapping: mapping,
             includes: includes

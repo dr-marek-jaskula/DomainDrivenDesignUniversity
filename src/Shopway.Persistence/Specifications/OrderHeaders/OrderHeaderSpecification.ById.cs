@@ -14,7 +14,8 @@ internal static partial class OrderHeaderSpecification
                 internal static Specification<OrderHeader, OrderHeaderId> Create(OrderHeaderId orderHeaderId, bool includePayment = true)
                 {
                     var specification = Specification<OrderHeader, OrderHeaderId>.New()
-                        .AddIncludes(orderHeader => orderHeader.OrderLines)
+                        .AddIncludes(builder => builder
+                            .Include(orderHeader => orderHeader.OrderLines))
                         .AddFilters(product => product.Id == orderHeaderId);
 
                     if (includePayment)

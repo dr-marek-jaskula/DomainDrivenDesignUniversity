@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using System.Linq.Expressions;
 
@@ -13,6 +14,7 @@ internal static partial class CommonSpecification
         (
             IFilter<TEntity>? filter = null,
             Expression<Func<TEntity, bool>>? customFilter = null,
+            IList<LikeEntry<TEntity>>? likes = null,
             ISortBy<TEntity>? sortBy = null,
             Expression<Func<TEntity, TResponse>>? mapping = null,
             params Expression<Func<TEntity, object>>[] includes
@@ -25,9 +27,10 @@ internal static partial class CommonSpecification
                 .AddIncludes(includes)
                 .AddFilter(filter)
                 .AddFilter(customFilter)
+                .AddLikes(likes)
                 .AddSortBy(sortBy)
                 .AddTag($"Common {typeof(TEntity).Name} query")
-                .AsMappingSpecification<TEntity, TEntityId, TResponse>();
+                .AsMappingSpecification<TResponse>();
         }
     }
 }

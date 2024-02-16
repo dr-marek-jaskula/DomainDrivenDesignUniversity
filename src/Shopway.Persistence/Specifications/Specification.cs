@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
@@ -32,7 +33,7 @@ internal sealed class SpecificationWithMapping<TEntity, TEntityId, TOutput> : Sp
     }
 }
 
-internal class Specification<TEntity, TEntityId>
+internal partial class Specification<TEntity, TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
@@ -50,14 +51,19 @@ internal class Specification<TEntity, TEntityId>
     internal IFilter<TEntity>? Filter { get; private set; } = null;
     internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = [];
 
+    //Like
+    internal List<LikeEntry<TEntity>> LikeEntries { get; } = [];
+
     //SortBy
     internal ISortBy<TEntity>? SortBy { get; private set; } = null;
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? SortByExpression { get; private set; }
     internal (Expression<Func<TEntity, object>> SortBy, SortDirection SortDirection)? ThenByExpression { get; private set; }
 
     //Includes
+    internal List<string> IncludeStrings { get; } = [];
     internal List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
     internal Func<IQueryable<TEntity>, IQueryable<TEntity>>? IncludeAction { get; private set; } = null;
+    internal List<IncludeEntry<TEntity>> IncludeEntries { get; private set; } = [];
 
     internal static Specification<TEntity, TEntityId> New()
     {
@@ -125,6 +131,37 @@ internal class Specification<TEntity, TEntityId>
         return this;
     }
 
+    internal Specification<TEntity, TEntityId> AddLikes(params LikeEntry<TEntity>[] likeEntries)
+    {
+        foreach (var likeEntry in likeEntries)
+        {
+            LikeEntries.Add(likeEntry);
+        }
+
+        return this;
+    }
+
+    internal Specification<TEntity, TEntityId> AddLikes(IList<LikeEntry<TEntity>>? likeEntries)
+    {
+        if (likeEntries is null)
+        {
+            return this;
+        }
+
+        foreach (var likeEntry in likeEntries)
+        {
+            LikeEntries.Add(likeEntry);
+        }
+
+        return this;
+    }
+
+    internal Specification<TEntity, TEntityId> AddLike(Expression<Func<TEntity, string>> property, string likeTerm)
+    {
+        LikeEntries.Add(new LikeEntry<TEntity>(property, likeTerm));
+        return this;
+    }
+
     internal Specification<TEntity, TEntityId> AddSortBy(ISortBy<TEntity>? sortBy)
     {
         SortBy = sortBy;
@@ -163,20 +200,31 @@ internal class Specification<TEntity, TEntityId>
         return this;
     }
 
+    internal Specification<TEntity, TEntityId> AddIncludes(params string[] includeStrings)
+    {
+        foreach (var includeString in includeStrings)
+        {
+            IncludeStrings.Add(includeString);
+        }
+
+        return this;
+    }
+
     /// <summary>
+    /// Faster but less elegant solution
     /// Use only when there is a need for ThenInclude for collection and then further include.
     /// </summary>
     /// <remarks>
-    /// Example usage: .AddIncludeAction(orderHeader => orderHeader.Include(o => o.OrderLines).ThenInclude(od => od.Product)) 
+    /// Example usage: .AddIncludeUsingAction(orderHeader => orderHeader.Include(o => o.OrderLines).ThenInclude(od => od.Product)) 
     /// </remarks>
     /// <param name="includeAction"></param>
-    internal Specification<TEntity, TEntityId> AddIncludesWithThenIncludesAction(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
+    internal Specification<TEntity, TEntityId> AddIncludeUsingAction(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
     {
         var includeActionBody = includeAction.ToString();
 
         if (includeActionBody.NotContains("ThenInclude"))
         {
-            throw new InvalidOperationException($"Input of {AddIncludesWithThenIncludesAction} must contain 'ThenInclude' call. Use {nameof(AddIncludes)} if 'ThenInclude' is not required.");
+            throw new InvalidOperationException($"Input must contain 'ThenInclude' call. Use builder approach to avoid such issues.");
         }
 
         if (ContainsMethodCallDifferentFromIncludeOrThenInclude(includeActionBody))
@@ -186,6 +234,28 @@ internal class Specification<TEntity, TEntityId>
 
         IncludeAction = includeAction.Compile();
         return this;
+    }
+
+    /// <summary>
+    /// A bit slower but elegant solution. All Includes and ThenIncludes can be done using this approach
+    /// </summary>
+    internal Specification<TEntity, TEntityId> AddIncludes(Action<IIncludeBuilder> buildIncludes)
+    {
+        var orchestrator = new IncludeBuilderOrchestrator();
+        buildIncludes(orchestrator);
+        IncludeEntries.AddRange(orchestrator.GetIncludeEntries());
+        return this;
+    }
+
+    /// <summary>
+    /// Cast specification to mapping specification
+    /// </summary>
+    /// <typeparam name="TOutput">Output type</typeparam>
+    /// <param name="specification">Input specification</param>
+    /// <returns>SpecificationWithMappingBase</returns>
+    internal SpecificationWithMapping<TEntity, TEntityId, TOutput> AsMappingSpecification<TOutput>()
+    {
+        return (SpecificationWithMapping<TEntity, TEntityId, TOutput>)this;
     }
 
     private static bool ContainsMethodCallDifferentFromIncludeOrThenInclude(string includeActionBody)

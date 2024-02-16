@@ -22,7 +22,7 @@ internal static partial class ProductSpecification
                 .AddMapping(mapping)
                 .AddFilters(product => productIds.Contains(product.Id))
                 .AddTag(QueryProductByIds)
-                .AsMappingSpecification<Product, ProductId, ProductId>();
+                .AsMappingSpecification<ProductId>();
         }
 
         internal static Specification<Product, ProductId> Create(IList<ProductId> productIds)
