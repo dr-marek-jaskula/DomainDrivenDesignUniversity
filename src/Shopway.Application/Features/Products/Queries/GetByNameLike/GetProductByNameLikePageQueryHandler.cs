@@ -16,8 +16,7 @@ internal sealed class GetProductByNameLikePageQueryHandler(IProductRepository pr
 
     public async Task<IResult<OffsetPageResponse<ProductResponse>>> Handle(GetProductByNameLikePageQuery pageQuery, CancellationToken cancellationToken)
     {
-        //var likes = AsList(new LikeEntry<Product>(product => product.ProductName.Value, pageQuery.ProductNameLikePattern));
-        var likes = AsList(new LikeEntry<Product>(product => product.CreatedBy, pageQuery.ProductNameLikePattern));
+        var likes = AsList(new LikeEntry<Product>(product => product.ProductName.Value, pageQuery.ProductNameLikePattern));
 
         var page = await _productRepository
             .PageAsync(pageQuery.Page, cancellationToken, likes: likes, sort: CommonProductSortBy.Instance, mapping: ProductMapping.ProductResponse);
