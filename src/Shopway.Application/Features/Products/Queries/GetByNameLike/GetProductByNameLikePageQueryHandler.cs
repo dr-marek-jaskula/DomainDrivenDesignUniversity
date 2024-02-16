@@ -20,7 +20,7 @@ internal sealed class GetProductByNameLikePageQueryHandler(IProductRepository pr
         var likes = AsList(new LikeEntry<Product>(product => product.CreatedBy, pageQuery.ProductNameLikePattern));
 
         var page = await _productRepository
-            .PageAsync(pageQuery.Page, cancellationToken, likes: likes, sort: ProductSortBy.Common, mapping: ProductMapping.ProductResponse);
+            .PageAsync(pageQuery.Page, cancellationToken, likes: likes, sort: CommonProductSortBy.Instance, mapping: ProductMapping.ProductResponse);
 
         return page
             .ToPageResponse(pageQuery.Page)

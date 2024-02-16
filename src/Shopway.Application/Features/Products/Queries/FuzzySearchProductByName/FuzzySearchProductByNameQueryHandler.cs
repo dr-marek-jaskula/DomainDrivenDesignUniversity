@@ -39,7 +39,7 @@ internal sealed class FuzzySearchProductByNameQueryHandler
         };
 
         var page = await _productRepository
-            .PageAsync(query.Page, cancellationToken, filter: productByNameFilter, sort: ProductSortBy.Common, mapping: ProductMapping.ProductResponse);
+            .PageAsync(query.Page, cancellationToken, filter: productByNameFilter, sort: CommonProductSortBy.Instance, mapping: ProductMapping.ProductResponse);
 
         return page
             .ToPageResponse(query.Page)

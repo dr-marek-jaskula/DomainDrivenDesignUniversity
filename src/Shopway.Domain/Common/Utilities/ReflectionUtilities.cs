@@ -77,4 +77,18 @@ public static class ReflectionUtilities
             .GetTypes()
             .Where(type => type.GetInterfaces().Any(typeInterfaceMatch));
     }
+
+    public static bool IsGenericEnumerable(this Type type, out Type propertyType)
+    {
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+        {
+            propertyType = type.GenericTypeArguments[0];
+
+            return true;
+        }
+
+        propertyType = type;
+
+        return false;
+    }
 }
