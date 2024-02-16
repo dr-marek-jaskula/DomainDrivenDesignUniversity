@@ -30,7 +30,7 @@ internal static partial class CommonSpecification
                 .AddLikes(likes)
                 .AddSortBy(sortBy)
                 .AddTag($"Common {typeof(TEntity).Name} query")
-                .AsMappingSpecification<TEntity, TEntityId, TResponse>();
+                .AsMappingSpecification<TResponse>();
         }
     }
 }

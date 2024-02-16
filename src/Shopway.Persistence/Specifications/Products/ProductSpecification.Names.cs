@@ -13,7 +13,7 @@ internal static partial class ProductSpecification
                 .AddMapping(x => x.ProductName.Value)
                 .ApplyDistinct()
                 .AddTag(QueryProductNames)
-                .AsMappingSpecification<Product, ProductId, string>();
+                .AsMappingSpecification<string>();
         }
     }
 }

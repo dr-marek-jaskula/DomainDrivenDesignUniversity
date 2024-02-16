@@ -9,21 +9,6 @@ namespace Shopway.Persistence.Specifications;
 internal static class SpecificationUtilities
 {
     /// <summary>
-    /// Cast specification to mapping specification
-    /// </summary>
-    /// <typeparam name="TEntity">Entity type</typeparam>
-    /// <typeparam name="TEntityId">EntityId type</typeparam>
-    /// <typeparam name="TOutput">Output type</typeparam>
-    /// <param name="specification">Input specification</param>
-    /// <returns>SpecificationWithMappingBase</returns>
-    internal static SpecificationWithMapping<TEntity, TEntityId, TOutput> AsMappingSpecification<TEntity, TEntityId, TOutput>(this Specification<TEntity, TEntityId> specification)
-        where TEntityId : struct, IEntityId<TEntityId>
-        where TEntity : Entity<TEntityId>
-    {
-        return (SpecificationWithMapping<TEntity, TEntityId, TOutput>)specification;
-    }
-
-    /// <summary>
     /// Apply a specification and return a queryable
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>

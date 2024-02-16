@@ -228,6 +228,17 @@ internal class Specification<TEntity, TEntityId>
         return this;
     }
 
+    /// <summary>
+    /// Cast specification to mapping specification
+    /// </summary>
+    /// <typeparam name="TOutput">Output type</typeparam>
+    /// <param name="specification">Input specification</param>
+    /// <returns>SpecificationWithMappingBase</returns>
+    internal SpecificationWithMapping<TEntity, TEntityId, TOutput> AsMappingSpecification<TOutput>()
+    {
+        return (SpecificationWithMapping<TEntity, TEntityId, TOutput>)this;
+    }
+
     private static bool ContainsMethodCallDifferentFromIncludeOrThenInclude(string includeActionBody)
     {
         return includeActionBody
