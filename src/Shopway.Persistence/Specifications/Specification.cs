@@ -4,6 +4,7 @@ using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
+using System.Collections.Frozen;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Specifications;
@@ -33,7 +34,7 @@ internal sealed class SpecificationWithMapping<TEntity, TEntityId, TOutput> : Sp
     }
 }
 
-internal partial class Specification<TEntity, TEntityId>
+internal class Specification<TEntity, TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
@@ -210,15 +211,8 @@ internal partial class Specification<TEntity, TEntityId>
         return this;
     }
 
-    /// <summary>
-    /// Faster but less elegant solution
-    /// Use only when there is a need for ThenInclude for collection and then further include.
-    /// </summary>
-    /// <remarks>
-    /// Example usage: .AddIncludeUsingAction(orderHeader => orderHeader.Include(o => o.OrderLines).ThenInclude(od => od.Product)) 
-    /// </remarks>
-    /// <param name="includeAction"></param>
-    internal Specification<TEntity, TEntityId> AddIncludeUsingAction(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
+    [Obsolete("This is not a preferred way to add includes. Use AddIncludes with action on IIncludeBuilder overload")]
+    internal Specification<TEntity, TEntityId> AddIncludeByQueryable(Expression<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includeAction)
     {
         var includeActionBody = includeAction.ToString();
 
@@ -237,13 +231,29 @@ internal partial class Specification<TEntity, TEntityId>
     }
 
     /// <summary>
-    /// A bit slower but elegant solution. All Includes and ThenIncludes can be done using this approach
+    /// Preferred way to for includes. IncludeEntries from IncludeBuilderOrchestrator can be cached in static field for performance improvements
     /// </summary>
-    internal Specification<TEntity, TEntityId> AddIncludes(Action<IIncludeBuilder> buildIncludes)
+    internal Specification<TEntity, TEntityId> AddIncludes(Action<IIncludeBuilder<TEntity>>? buildIncludes)
     {
-        var orchestrator = new IncludeBuilderOrchestrator();
-        buildIncludes(orchestrator);
-        IncludeEntries.AddRange(orchestrator.GetIncludeEntries());
+        if (buildIncludes is null)
+        {
+            return this;
+        }
+
+        var includeEntries = IncludeBuilderOrchestrator<TEntity>.GetIncludeEntries(buildIncludes);
+        IncludeEntries.AddRange(includeEntries);
+        return this;
+    }
+
+    internal Specification<TEntity, TEntityId> AddIncludes(params IncludeEntry<TEntity>[] includeEntries)
+    {
+        IncludeEntries.AddRange(includeEntries);
+        return this;
+    }
+
+    internal Specification<TEntity, TEntityId> AddIncludes(FrozenSet<IncludeEntry<TEntity>> includeEntries)
+    {
+        IncludeEntries.AddRange(includeEntries);
         return this;
     }
 

@@ -106,8 +106,8 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
         IFilter<Product>? filter = null,
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null, 
-        Expression<Func<Product, TResponse>>? mapping = null, 
-        params Expression<Func<Product, object>>[] includes
+        Expression<Func<Product, TResponse>>? mapping = null,
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
     {
         return await _decorated.PageAsync
@@ -118,7 +118,7 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
             likes: likes,
             sort: sort,
             mapping: mapping,
-            includes: includes
+            buildIncludes: buildIncludes
         );
     }
 
@@ -129,8 +129,8 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
         IFilter<Product>? filter = null,
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null, 
-        Expression<Func<Product, TResponse>>? mapping = null, 
-        params Expression<Func<Product, object>>[] includes
+        Expression<Func<Product, TResponse>>? mapping = null,
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor
     {
@@ -142,7 +142,7 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
             likes: likes,
             sort: sort,
             mapping: mapping,
-            includes: includes
+            buildIncludes: buildIncludes
         );
     }
 }
