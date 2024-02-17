@@ -44,7 +44,7 @@ public interface IProductRepository
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
-        params Expression<Func<Product, object>>[] includes
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
     );
 
     Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
@@ -55,7 +55,7 @@ public interface IProductRepository
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
-        params Expression<Func<Product, object>>[] includes
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor;
 

@@ -17,14 +17,15 @@ internal static partial class CommonSpecification
             IList<LikeEntry<TEntity>>? likes = null,
             ISortBy<TEntity>? sortBy = null,
             Expression<Func<TEntity, TResponse>>? mapping = null,
-            params Expression<Func<TEntity, object>>[] includes
+            Action<IIncludeBuilder<TEntity>>? buildIncludes = null
         )
             where TEntityId : struct, IEntityId<TEntityId>
             where TEntity : Entity<TEntityId>
         {
+
             return SpecificationWithMapping<TEntity, TEntityId, TResponse>.New()
                 .AddMapping(mapping)
-                .AddIncludes(includes)
+                .AddIncludes(buildIncludes)
                 .AddFilter(filter)
                 .AddFilter(customFilter)
                 .AddLikes(likes)

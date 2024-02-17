@@ -145,7 +145,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
-        params Expression<Func<Product, object>>[] includes
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
     {
         var specification = CommonSpecification.WithMapping.Create<Product, ProductId, TResponse>
@@ -155,7 +155,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
             likes,
             sort,
             mapping: mapping,
-            includes: includes
+            buildIncludes: buildIncludes
         );
 
         return await _dbContext
@@ -172,7 +172,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         Expression<Func<Product, TResponse>>? mapping = null,
-        params Expression<Func<Product, object>>[] includes
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor
     {
@@ -185,7 +185,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
             null,
             sort,
             mapping: mapping,
-            includes: includes
+            buildIncludes: buildIncludes
         );
 
         return await _dbContext
