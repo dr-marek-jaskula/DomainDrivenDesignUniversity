@@ -147,4 +147,4 @@ Currently there are two workflows setup for this repository:
 1. Continuous Integration
 	- This workflow setups and builds the application. Then, it runs unit tests and publishes test reports.
 2. Conventional Pull Request Validation
-	- This workflow validates if the pull request name matches the conventional commit rules. If validation succeeds, it adds a meaningful label to the pull request.
+	- This workflow validates if the pull request name matches the conventional commit rules. If validation succeeds, it adds a meaningful label to the pull request and assign author to the pull request.
