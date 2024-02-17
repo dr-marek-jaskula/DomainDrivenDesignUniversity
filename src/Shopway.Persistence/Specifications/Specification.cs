@@ -230,9 +230,6 @@ internal class Specification<TEntity, TEntityId>
         return this;
     }
 
-    /// <summary>
-    /// Preferred way to for includes. IncludeEntries from IncludeBuilderOrchestrator can be cached in static field for performance improvements
-    /// </summary>
     internal Specification<TEntity, TEntityId> AddIncludes(Action<IIncludeBuilder<TEntity>>? buildIncludes)
     {
         if (buildIncludes is null)
