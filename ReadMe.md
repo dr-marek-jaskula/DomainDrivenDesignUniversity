@@ -15,7 +15,7 @@ If you like or are using this project to learn about Domain Driven Design, pleas
 
 The solution in designed using the Clean Architecture in the following form. 
 
-![VeryCleanArchitecture-removebg](https://github.com/dr-marek-jaskula/DomainDrivenDesignUniversity/assets/76631630/dcb809f9-f0cf-40f5-bba2-a46dfa16831a)
+![cleanest-architecture](https://github.com/dr-marek-jaskula/DomainDrivenDesignUniversity/assets/76631630/f9349600-309c-49ad-a1fb-c4503fbf1e84)
 
 I prefer to present it like this instead of using other Clean Architecture images, because in my opinion this is more readable. The runner layer is required so that the Presentation, Infrastructure and Persistence layers can be truly separated.
 
