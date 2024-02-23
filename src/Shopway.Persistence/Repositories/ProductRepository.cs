@@ -144,7 +144,8 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         IFilter<Product>? filter = null,
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
-        Expression<Func<Product, TResponse>>? mapping = null,
+        IMapping<Product, TResponse>? mapping = null,
+        Expression<Func<Product, TResponse>>? mappingExpression = null,
         Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
     {
@@ -154,7 +155,8 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
             null,
             likes,
             sort,
-            mapping: mapping,
+            mapping,
+            mappingExpression,
             buildIncludes: buildIncludes
         );
 
@@ -171,7 +173,8 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         IFilter<Product>? filter = null,
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
-        Expression<Func<Product, TResponse>>? mapping = null,
+        IMapping<Product, TResponse>? mapping = null,
+        Expression<Func<Product, TResponse>>? mappingExpression = null,
         Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor
@@ -182,9 +185,10 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         (
             filter,
             cursorFilter,
-            null,
+            likes,
             sort,
-            mapping: mapping,
+            mapping,
+            mappingExpression,
             buildIncludes: buildIncludes
         );
 

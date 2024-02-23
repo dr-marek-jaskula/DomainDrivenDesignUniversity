@@ -43,7 +43,8 @@ public interface IProductRepository
         IFilter<Product>? filter = null,
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
-        Expression<Func<Product, TResponse>>? mapping = null,
+        IMapping<Product, TResponse>? mapping = null,
+        Expression<Func<Product, TResponse>>? mappingExpression = null,
         Action<IIncludeBuilder<Product>>? buildIncludes = null
     );
 
@@ -54,7 +55,8 @@ public interface IProductRepository
         IFilter<Product>? filter = null,
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
-        Expression<Func<Product, TResponse>>? mapping = null,
+        IMapping<Product, TResponse>? mapping = null,
+        Expression<Func<Product, TResponse>>? mappingExpression = null,
         Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor;

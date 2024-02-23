@@ -12,6 +12,17 @@ public static class PageUtilities
         return new OffsetPageResponse<TResponse>(response.Responses, response.TotalCount, page.PageSize, page.PageNumber);
     }
 
+    public static OffsetPageResponse<DataTransferObjectResponse> ToPageResponse(this (IList<DataTransferObject> Responses, int TotalCount) response, OffsetPage page)
+    {
+        return new OffsetPageResponse<DataTransferObjectResponse>
+        (
+            response.Responses.Select(dto => DataTransferObjectResponse.From(dto)).ToList(), 
+            response.TotalCount, 
+            page.PageSize, 
+            page.PageNumber
+        );
+    }
+
     public static CursorPageResponse<TResponse> ToPageResponse<TResponse>(this (IList<TResponse> Responses, Ulid NextCursor) response, CursorPage page)
         where TResponse : class, IResponse
     {

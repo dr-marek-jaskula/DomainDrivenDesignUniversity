@@ -17,7 +17,7 @@ internal sealed class ProductDictionaryCursorPageQueryHandler(IProductRepository
     public async Task<IResult<CursorPageResponse<DictionaryResponseEntry>>> Handle(ProductDictionaryCursorPageQuery pageQuery, CancellationToken cancellationToken)
     {
         var page = await _productRepository
-            .PageAsync(pageQuery.Page, cancellationToken, filter: pageQuery.Filter, sort: pageQuery.SortBy, mapping: ProductMapping.DictionaryResponseEntry);
+            .PageAsync(pageQuery.Page, cancellationToken, filter: pageQuery.Filter, sort: pageQuery.SortBy, mappingExpression: ProductMapping.DictionaryResponseEntry);
 
         return page
             .ToPageResponse(pageQuery.Page)

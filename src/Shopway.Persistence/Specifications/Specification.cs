@@ -13,7 +13,8 @@ internal sealed class SpecificationWithMapping<TEntity, TEntityId, TOutput> : Sp
     where TEntityId : struct, IEntityId<TEntityId>
     where TEntity : Entity<TEntityId>
 {
-    internal Expression<Func<TEntity, TOutput>>? Mapping { get; private set; } = null;
+    internal Expression<Func<TEntity, TOutput>>? MappingExpression { get; private set; } = null;
+    internal IMapping<TEntity, TOutput>? Mapping { get; private set; } = null;
     internal bool UseDistinct { get; private set; }
 
     internal new static SpecificationWithMapping<TEntity, TEntityId, TOutput> New()
@@ -22,6 +23,12 @@ internal sealed class SpecificationWithMapping<TEntity, TEntityId, TOutput> : Sp
     }
 
     internal SpecificationWithMapping<TEntity, TEntityId, TOutput> AddMapping(Expression<Func<TEntity, TOutput>>? mapping)
+    {
+        MappingExpression = mapping;
+        return this;
+    }
+
+    internal SpecificationWithMapping<TEntity, TEntityId, TOutput> AddMapping(IMapping<TEntity, TOutput>? mapping)
     {
         Mapping = mapping;
         return this;
