@@ -24,7 +24,7 @@ public class DataTransferObject : IDictionary<string, string>
 
         foreach (var property in properties)
         {
-            var value = typeof(TType).GetProperty(property).GetValue(entity).ToString()!;
+            var value = typeof(TType).GetProperty(property)!.GetValue(entity)!.ToString()!;
             dictionaryResponse.Add(property, value);
         }
 

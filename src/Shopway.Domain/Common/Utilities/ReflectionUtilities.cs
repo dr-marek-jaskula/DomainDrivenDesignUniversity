@@ -91,4 +91,23 @@ public static class ReflectionUtilities
 
         return false;
     }
+
+    //Without caching the delegate the use of these two methods is much slower
+    public static string GetPropertyAsString<TType>(this TType type, string propertyName)
+    {
+        var getMethod = typeof(TType).GetProperty(propertyName)!.GetGetMethod()!;
+
+        Func<TType, object> getter = (Func<TType, object>)Delegate
+            .CreateDelegate(typeof(Func<TType, object>), null, typeof(TType).GetProperty(propertyName)!.GetGetMethod()!);
+
+        return getter(type).ToString()!;
+    }
+
+    public static TPropertyType GetProperty<TType, TPropertyType>(this TType type, string propertyName)
+    {
+        Func<TType, TPropertyType> getter = (Func<TType, TPropertyType>)Delegate
+            .CreateDelegate(typeof(Func<TType, TPropertyType>), null, typeof(TType).GetProperty(propertyName)!.GetGetMethod()!);
+
+        return getter(type);
+    }
 }
