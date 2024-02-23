@@ -6,6 +6,15 @@ namespace Shopway.Domain.Products.DataProcessing.Mapping;
 
 public sealed record ProductStaticMapping : IMapping<Product, DataTransferObject>
 {
+    public static readonly ProductStaticMapping Instance = new()
+    {
+        Id = true,
+        ProductName = true,
+        Revision = true,
+        Price = true,
+        UomCode = true,
+    };
+
     public bool? Id { get; init; }
     public bool? ProductName { get; init; }
     public bool? Revision { get; init; }
@@ -21,7 +30,7 @@ public sealed record ProductStaticMapping : IMapping<Product, DataTransferObject
     public IQueryable<DataTransferObject> Apply(IQueryable<Product> queryable)
     {
         return queryable
-            .Select(product => DataTransferObject.Create()
+            .Select(product => new DataTransferObject()
                 .AddIf(IncludeId, nameof(product.Id), $"{product.Id}")
                 .AddIf(IncludeUomCode, nameof(product.UomCode), $"{product.UomCode}")
                 .AddIf(IncludePrice, nameof(product.Price), $"{product.Price}")

@@ -8,18 +8,13 @@ public class DataTransferObject : IDictionary<string, string>
 {
     protected readonly Dictionary<string, string> _dictionary = [];
 
-    protected DataTransferObject()
+    public DataTransferObject()
     {
     }
 
     protected DataTransferObject(DataTransferObject dataTransferObject)
     {
         _dictionary = dataTransferObject._dictionary;
-    }
-
-    public static DataTransferObject Create()
-    {
-        return new DataTransferObject();
     }
 
     public static DataTransferObject Create<TType>(TType entity, IList<string> properties)

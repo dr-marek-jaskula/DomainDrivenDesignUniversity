@@ -76,6 +76,12 @@ public static class FluentValidationUtilities
     public static void ValidateMapping<TMapping, TPageQuery>(TMapping mapping, ValidationContext<TPageQuery> context)
         where TMapping : IMapping
     {
+        if (mapping is null)
+        {
+            context.AddFailure(nameof(Constants.Constants.Mapping), $"Mapping must be provided.");
+            return;
+        }
+
         if (mapping is not IDynamicMapping dynamicMapping)
         {
             return;

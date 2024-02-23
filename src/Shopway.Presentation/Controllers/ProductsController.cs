@@ -7,12 +7,14 @@ using Shopway.Application.Features.Products.Commands.RemoveProduct;
 using Shopway.Application.Features.Products.Commands.UpdateProduct;
 using Shopway.Application.Features.Products.Queries;
 using Shopway.Application.Features.Products.Queries.DynamicOffsetProductQuery;
+using Shopway.Application.Features.Products.Queries.DynamicOffsetProductWithMappingQuery;
 using Shopway.Application.Features.Products.Queries.FuzzySearchProductByName;
 using Shopway.Application.Features.Products.Queries.GetProductById;
 using Shopway.Application.Features.Products.Queries.GetProductByKey;
 using Shopway.Application.Features.Products.Queries.GetProductsCursorDictionary;
 using Shopway.Application.Features.Products.Queries.GetProductsOffsetDictionary;
 using Shopway.Application.Features.Products.Queries.QueryOffsetPageProduct;
+using Shopway.Application.Features.Products.Queries.QueryOffsetPageProductWithMapping;
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.Products;
@@ -170,6 +172,21 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
         return Ok(result.Value);
     }
 
+    [HttpPost("query/static/with-mapping")]
+    [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StaticQueryProductsWithMapping([FromBody] ProductOffsetPageWithMappingQuery query, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return Ok(result.Value);
+    }
+
     [HttpPost("query/dynamic")]
     [ProducesResponseType<OffsetPageResponse<ProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -186,7 +203,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPost("query/dynamic/with-mapping")]
-    [ProducesResponseType<OffsetPageResponse<ProductResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DynamicQueryProductsWithMapping([FromBody] ProductOffsetPageDynamicWithMappingQuery query, CancellationToken cancellationToken)
     {
