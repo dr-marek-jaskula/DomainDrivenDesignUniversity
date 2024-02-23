@@ -12,7 +12,7 @@ public static class SortByEntryUtilities
             .ToList()
             .AsReadOnly();
 
-        return invalidProperties.Any();
+        return invalidProperties.Count is not 0;
     }
 
     public static bool ContainsSortPriorityDuplicate(this IList<SortByEntry> sortProperties)

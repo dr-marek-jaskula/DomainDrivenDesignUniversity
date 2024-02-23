@@ -11,7 +11,7 @@ public static class FilterByEntryUtilities
             .ToList()
             .AsReadOnly();
 
-        return invalidProperties.Any();
+        return invalidProperties.Count is not 0;
     }
 
     public static bool ContainsOnlyOperationsFrom(this IList<FilterByEntry> filterProperties, IReadOnlyCollection<string> allowedOperations, out IReadOnlyCollection<string> invalidOperations)
@@ -23,6 +23,6 @@ public static class FilterByEntryUtilities
             .ToList()
             .AsReadOnly();
 
-        return invalidOperations.Any();
+        return invalidOperations.Count is not 0;
     }
 }

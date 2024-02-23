@@ -4,12 +4,13 @@ using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.DataProcessing.Filtering;
+using Shopway.Domain.Products.DataProcessing.Mapping;
 using Shopway.Domain.Products.DataProcessing.Sorting;
 
 namespace Shopway.Application.Features.Products.Queries.DynamicOffsetProductQuery;
 
 internal sealed class ProductOffsetPageDynamicWithMappingQueryHandler(IProductRepository productRepository)
-    : IOffsetPageQueryHandler<ProductOffsetPageDynamicWithMappingQuery, DataTransferObjectResponse, ProductDynamicFilter, ProductDynamicSortBy, OffsetPage>
+    : IOffsetPageQueryHandler<ProductOffsetPageDynamicWithMappingQuery, DataTransferObjectResponse, ProductDynamicFilter, ProductDynamicSortBy, ProductDynamicMapping, OffsetPage>
 {
     private readonly IProductRepository _productRepository = productRepository;
 

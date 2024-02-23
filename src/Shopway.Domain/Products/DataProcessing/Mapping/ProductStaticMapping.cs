@@ -26,7 +26,6 @@ public sealed record ProductStaticMapping : IMapping<Product, DataTransferObject
                 .AddIf(IncludeUomCode, nameof(product.UomCode), $"{product.UomCode}")
                 .AddIf(IncludePrice, nameof(product.Price), $"{product.Price}")
                 .AddIf(IncludeRevision, nameof(product.Revision), $"{product.Revision}")
-                .AddIf(IncludeProductName, nameof(product.ProductName), $"{product.ProductName}")
-            );
+                .AddIf(IncludeProductName, nameof(product.ProductName), $"{product.ProductName}"));
     }
 }

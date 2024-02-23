@@ -9,6 +9,24 @@ namespace Shopway.Application.Abstractions.CQRS;
 /// <typeparam name="TResponse">The page query response type</typeparam>
 /// <typeparam name="TFilter">The provided filter type</typeparam>
 /// <typeparam name="TSortBy">The provided order type</typeparam>
+/// <typeparam name="TMapping">The provided mapping type</typeparam>
+/// <typeparam name="TPage">The provided cursor page type</typeparam>
+public interface ICursorPageQuery<TResponse, TFilter, TSortBy, TMapping, TPage> : ICursorPageQuery<TResponse, TFilter, TSortBy, TPage>
+    where TResponse : IResponse
+    where TFilter : IFilter
+    where TSortBy : ISortBy
+    where TMapping : IMapping
+    where TPage : ICursorPage
+{
+    TMapping? Mapping { get; }
+}
+
+/// <summary>
+/// Represents the cursor page query interface
+/// </summary>
+/// <typeparam name="TResponse">The page query response type</typeparam>
+/// <typeparam name="TFilter">The provided filter type</typeparam>
+/// <typeparam name="TSortBy">The provided order type</typeparam>
 /// <typeparam name="TPage">The provided cursor page type</typeparam>
 public interface ICursorPageQuery<TResponse, TFilter, TSortBy, TPage> : ICursorPageQuery<TResponse, TPage>
     where TResponse : IResponse

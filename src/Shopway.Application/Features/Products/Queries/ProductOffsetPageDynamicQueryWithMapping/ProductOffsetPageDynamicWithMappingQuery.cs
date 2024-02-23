@@ -6,7 +6,7 @@ using Shopway.Domain.Products.DataProcessing.Sorting;
 
 namespace Shopway.Application.Features.Products.Queries.DynamicOffsetProductQuery;
 
-public sealed record ProductOffsetPageDynamicWithMappingQuery(OffsetPage Page) : IOffsetPageQuery<DataTransferObjectResponse, ProductDynamicFilter, ProductDynamicSortBy, OffsetPage>
+public sealed record ProductOffsetPageDynamicWithMappingQuery(OffsetPage Page) : IOffsetPageQuery<DataTransferObjectResponse, ProductDynamicFilter, ProductDynamicSortBy, ProductDynamicMapping, OffsetPage>
 {
     public ProductDynamicFilter? Filter { get; init; }
     public ProductDynamicSortBy? SortBy { get; init; }
