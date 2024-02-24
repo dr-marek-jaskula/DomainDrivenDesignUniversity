@@ -1,6 +1,4 @@
-﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Products;
+﻿using Shopway.Domain.Common.Utilities;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -10,18 +8,8 @@ namespace Shopway.Domain.Common.DataProcessing;
 
 public class DataTransferObject : IDictionary<string, object>
 {
-    //private static readonly MethodInfo _selectMethodInfo = typeof(Enumerable)
-    //    .GetTypeInfo().GetDeclaredMethods(nameof(Enumerable.Select))
-    //    .Single(mi => mi.GetGenericArguments().Length is 2
-    //        && mi.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>)
-    //        && mi.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
-
-    private static readonly MethodInfo _createMethod = typeof(DataTransferObject)
-        .GetSingleGenericMethod
-        (
-            nameof(Create),
-            typeof(Product)
-        );
+    private static readonly MethodInfo _appendMethodInfo = typeof(DataTransferObject)
+        .GetMethod(nameof(Append))!;
 
     protected readonly Dictionary<string, object> _dictionary = [];
 
@@ -34,88 +22,74 @@ public class DataTransferObject : IDictionary<string, object>
         _dictionary = dataTransferObject._dictionary;
     }
 
-    public static DataTransferObject Create<TEntity>(TEntity entity, IList<MappingEntry> mappingEntries)
-        where TEntity : class, IEntity
+    public static Expression<Func<TEntity, DataTransferObject>> CreateExpression<TEntity>(IList<MappingEntry> mappingEntries)
     {
-        var dto = new DataTransferObject();
+        var entity = Expression.Parameter(typeof(TEntity), typeof(TEntity).Name);
+        NewExpression newDtoExpression = Expression.New(typeof(DataTransferObject));
+        Expression? firstCallExpression = newDtoExpression;
 
         foreach (var mappingEntry in mappingEntries)
         {
-            if (mappingEntry.PropertyName is not null)
-            {
-                var property = entity.GetProperty(mappingEntry.PropertyName);
-                dto.Add(mappingEntry.PropertyName, $"{property}");
-                continue;
-            }
-
-            if (mappingEntry.From is null)
-            {
-                throw new ArgumentNullException(nameof(mappingEntry.From));
-            }
-
-            var nestedEntityOrCollectionOfEntities = entity.GetProperty(mappingEntry.From);
-
-            if (nestedEntityOrCollectionOfEntities.GetType().IsGeneric(out var nestedEntityType))
-            {
-                object nestedDto = CreateNestedDataTransferObject<TEntity>(mappingEntry, nestedEntityOrCollectionOfEntities, nestedEntityType);
-                dto.Add(mappingEntry.From!, nestedDto);
-                continue;
-            }
-
-            dto.Add(mappingEntry.From!, nestedEntityOrCollectionOfEntities);
+            firstCallExpression = ChainAppendExpression(entity, firstCallExpression, mappingEntry);
         }
 
-        return dto;
+        var lambdaExpression = Expression.Lambda<Func<TEntity, DataTransferObject>>(firstCallExpression!, entity);
+
+        return lambdaExpression;
     }
 
-    private static object CreateNestedDataTransferObject<TEntity>(MappingEntry mappingEntry, object nestedEntityOrCollectionOfEntities, Type nestedEntityType) 
-        where TEntity : class, IEntity
+    private static MethodCallExpression ChainAppendExpression(ParameterExpression parameter, Expression expression, MappingEntry mappingEntry)
     {
-        var constantMappingProperties = Expression.Constant(mappingEntry.Properties);
+        if (mappingEntry.PropertyName is not null)
+        {
+            var propertyNameExpression = Expression.Constant(mappingEntry.PropertyName);
+            var propertyExpression = Expression.PropertyOrField(parameter, mappingEntry.PropertyName!);
+            var propertyExpressionToString = Expression.Call(propertyExpression, nameof(ToString), null);
+            return Expression.Call(expression, _appendMethodInfo, propertyNameExpression, propertyExpressionToString);
+        }
 
-        var nestedSelectorParameter = Expression.Parameter(nestedEntityType, nestedEntityType.Name);
-        //use constant instead of : var mappingEntriesForNestedSelectorParameter = Expression.Parameter(typeof(IList<MappingEntry>), "MappingEntries");
+        if (mappingEntry.From is null)
+        {
+            throw new ArgumentNullException(nameof(mappingEntry.From));
+        }
 
-        var createMethodInfo = typeof(DataTransferObject)
-            .GetSingleGenericMethod(nameof(Create), nestedEntityType);
-
-        //For example: Create<Review>(Review Review, IList<MappingEntry> MappingEntries)
-        var createDataTransferObjectCall = Expression.Call
-        (
-            null,
-            createMethodInfo,
-            nestedSelectorParameter,
-            constantMappingProperties
-        );
-
-        //For example: Product
-        var entityParameter = Expression.Parameter(typeof(TEntity), typeof(TEntity).Name);
         //For example: Product.Reviews
-        var entityNestedMember = entityParameter.ToMemberExpression(mappingEntry.From!);
+        var entityNestedMember = parameter.ToMemberExpression(mappingEntry.From);
+        var entityNestedPropertyNameExpression = Expression.Constant(mappingEntry.From);
+        var memberAsPropertyInfo = ((PropertyInfo)entityNestedMember.Member).PropertyType;
 
-        //For example: Review => Create(Review, MappingEntries)
-        LambdaExpression lambdaExpression = Expression.Lambda(createDataTransferObjectCall, false, nestedSelectorParameter);
+        if (memberAsPropertyInfo.IsGeneric(out var nestedEntityType))
+        {
+            if (mappingEntry.Properties is null)
+            {
+                throw new ArgumentNullException(nameof(mappingEntry.Properties));
+            }
 
-        var selectMethodInfo = typeof(Enumerable)
-            .GetTypeInfo().GetDeclaredMethods(nameof(Enumerable.Select))
-            .First()
-            .MakeGenericMethod(nestedEntityType, typeof(DataTransferObject));
+            var nestedSelectorParameter = Expression.Parameter(nestedEntityType, nestedEntityType.Name);
+            NewExpression newDtoExpression = Expression.New(typeof(DataTransferObject));
+            Expression? firstCallExpression = newDtoExpression;
 
-        //Product.Reviews.Select(Review => Create(Review, MappingEntries))
-        var selectorCall = Expression.Call
-        (
-            null,
-            selectMethodInfo,
-            entityNestedMember,
-            lambdaExpression
-        );
+            foreach (var property in mappingEntry.Properties)
+            {
+                firstCallExpression = ChainAppendExpression(nestedSelectorParameter, firstCallExpression, property);
+            }
 
-        //return selectorCall;
+            //For example: Review => new DataTransferObject()
+            LambdaExpression lambdaExpression = Expression.Lambda(firstCallExpression, false, nestedSelectorParameter);
 
-        var asFunc = lambdaExpression.Compile();
+            //Get select method
+            var selectMethodInfo = typeof(Enumerable)
+                .GetTypeInfo().GetDeclaredMethods(nameof(Enumerable.Select))
+                .First()
+                .MakeGenericMethod(nestedEntityType, typeof(DataTransferObject));
 
-        var result = selectorCall.Method.Invoke(null, [nestedEntityOrCollectionOfEntities, asFunc])!;
-        return result;
+            //Product.Reviews.Select(Review => new DataTransferObject().Append.Append...)
+            var selectorCall = Expression.Call(null, selectMethodInfo, entityNestedMember, lambdaExpression);
+
+            return Expression.Call(expression, _appendMethodInfo, entityNestedPropertyNameExpression, selectorCall);
+        }
+
+        throw new NotImplementedException();
     }
 
     public object this[string key] { get => _dictionary[key]; set => _dictionary[key] = value; }
@@ -145,6 +119,12 @@ public class DataTransferObject : IDictionary<string, object>
             Add(key, value);
         }
 
+        return this;
+    }
+
+    public DataTransferObject Append(string key, object value)
+    {
+        Add(key, value);
         return this;
     }
 

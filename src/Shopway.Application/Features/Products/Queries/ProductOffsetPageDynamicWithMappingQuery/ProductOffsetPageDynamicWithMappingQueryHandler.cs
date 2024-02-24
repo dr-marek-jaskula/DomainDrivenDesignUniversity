@@ -17,9 +17,7 @@ internal sealed class ProductOffsetPageDynamicWithMappingQueryHandler(IProductRe
     public async Task<IResult<OffsetPageResponse<DataTransferObjectResponse>>> Handle(ProductOffsetPageDynamicWithMappingQuery pageQuery, CancellationToken cancellationToken)
     {
         var page = await _productRepository
-            .PageAsync(pageQuery.Page, cancellationToken, filter: pageQuery.Filter, sort: pageQuery.SortBy, mapping: pageQuery.Mapping, 
-                buildIncludes: x => x.Include(y => y.Reviews)
-            );
+            .PageAsync(pageQuery.Page, cancellationToken, filter: pageQuery.Filter, sort: pageQuery.SortBy, mapping: pageQuery.Mapping);
 
         return page
             .ToPageResponse(pageQuery.Page)

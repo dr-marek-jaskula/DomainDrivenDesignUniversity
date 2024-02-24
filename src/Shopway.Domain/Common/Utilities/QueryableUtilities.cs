@@ -7,7 +7,6 @@ using Shopway.Domain.Common.Utilities;
 using System.Data;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
-using System.Reflection;
 using static Shopway.Domain.Constants.Constants.Type;
 
 namespace Shopway.Domain.Common.Utilities;
@@ -230,7 +229,9 @@ public static class QueryableUtilities
     )
         where TInput : class, IEntity
     {
+        var lambdaExpression = DataTransferObject.CreateExpression<TInput>(mappingEntries);
+
         return queryable
-            .Select(input => DataTransferObject.Create(input, mappingEntries));
+            .Select(lambdaExpression);
     }
 }
