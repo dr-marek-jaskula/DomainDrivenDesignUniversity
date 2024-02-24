@@ -172,6 +172,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
         return Ok(result.Value);
     }
 
+    //These with-mapping suffixes are only for tutorial purpose
     [HttpPost("query/static/with-mapping")]
     [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
