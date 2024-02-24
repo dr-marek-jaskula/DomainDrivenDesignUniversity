@@ -31,6 +31,12 @@ public sealed record ProductStaticMapping : IMapping<Product, DataTransferObject
 
     public IQueryable<DataTransferObject> Apply(IQueryable<Product> queryable)
     {
+        //WARNING! this static query will result in querying ALL fields from the database and then map to ones we require.
+        //This is caused by the behavior of EF Core - if the property is present in the select statement it will be queried.
+        //To solve this problem we could also create collection of MappingEntries from all given values and then use queryable.Map(mappingEnties)
+        //Then, only the required field would be queried. I left this solution for demonstration purposes.
+        //If someone decides that performance reasons are nos crucial for him and the following syntax looks good, then You can stick with this
+        //My personal option would be to use queryable.Map(mappingEntries) approach, for !performance! and !maintenance! reasons.
         return queryable
             .Select(product => new DataTransferObject()
                 .AddIf(IncludeId, nameof(product.Id), $"{product.Id}")
