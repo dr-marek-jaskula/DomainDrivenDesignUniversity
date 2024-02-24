@@ -173,7 +173,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPost("query/static/with-mapping")]
-    [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<OffsetPageResponse<FlatDataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> StaticQueryProductsWithMapping([FromBody] ProductOffsetPageWithMappingQuery query, CancellationToken cancellationToken)
     {
@@ -203,7 +203,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPost("query/dynamic/with-mapping")]
-    [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<OffsetPageResponse<FlatDataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DynamicQueryProductsWithMapping([FromBody] ProductOffsetPageDynamicWithMappingQuery query, CancellationToken cancellationToken)
     {

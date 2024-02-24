@@ -87,7 +87,7 @@ public static class FluentValidationUtilities
             return;
         }
 
-        if (dynamicMapping.Properties.IsNullOrEmpty())
+        if (dynamicMapping.MappingEntries.IsNullOrEmpty())
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} cannot be null or empty.");
             return;
@@ -97,7 +97,7 @@ public static class FluentValidationUtilities
 
         AllowedMappingPropertiesCache.TryGetValue(mappingType, out var allowedMappingPropertiesCache);
 
-        if (dynamicMapping.Properties.ContainsInvalidMappingProperty(allowedMappingPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
+        if (dynamicMapping.MappingEntries.ContainsInvalidMappingProperty(allowedMappingPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedMappingPropertiesCache!)}. {MappingProperties} are case sensitive.");
         }

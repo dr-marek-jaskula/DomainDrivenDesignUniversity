@@ -7,6 +7,7 @@ using Shopway.Domain.Common.Utilities;
 using System.Data;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Reflection;
 using static Shopway.Domain.Constants.Constants.Type;
 
 namespace Shopway.Domain.Common.Utilities;
@@ -169,6 +170,7 @@ public static class QueryableUtilities
     )
     {
         var sortedProperties = sortProperties
+            .SetSortPriorities()
             .Distinct()
             .OrderBy(x => x.SortPriority);
 
@@ -219,5 +221,16 @@ public static class QueryableUtilities
             SortDirection.Descending => queryable.ThenBy($"{propertyName} DESC"),
             _ => queryable
         };
+    }
+
+    public static IQueryable<DataTransferObject> Map<TInput>
+    (
+        this IQueryable<TInput> queryable,
+        IList<MappingEntry> mappingEntries
+    )
+        where TInput : class, IEntity
+    {
+        return queryable
+            .Select(input => DataTransferObject.Create(input, mappingEntries));
     }
 }

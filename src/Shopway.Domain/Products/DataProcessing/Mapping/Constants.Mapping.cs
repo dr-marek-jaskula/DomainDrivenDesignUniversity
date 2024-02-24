@@ -13,7 +13,12 @@ public static partial class Constants
                  nameof(Products.Product.ProductName),
                  nameof(Products.Product.Revision),
                  nameof(Products.Product.Price),
-                 nameof(Products.Product.UomCode)
+                 nameof(Products.Product.UomCode),
+                 nameof(Products.Product.Reviews),
+                 nameof(Products.Review.Description),
+                 nameof(Products.Review.Stars),
+                 nameof(Products.Review.Title),
+                 nameof(Products.Review.Username)
             );
         }
     }

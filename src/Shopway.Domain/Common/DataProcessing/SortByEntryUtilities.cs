@@ -18,6 +18,23 @@ public static class SortByEntryUtilities
     public static bool ContainsSortPriorityDuplicate(this IList<SortByEntry> sortProperties)
     {
         return sortProperties
+            .SetSortPriorities()
+            .ToList()
             .ContainsDuplicates(x => x.SortPriority);
+    }
+
+    public static IList<SortByEntry> SetSortPriorities(this IEnumerable<SortByEntry> sortProperties)
+    {
+        return sortProperties
+            .Select((property, index) =>
+            {
+                if (property.ParsedFromString)
+                {
+                    property.SortPriority = index;
+                }
+
+                return property;
+            })
+            .ToList();
     }
 }
