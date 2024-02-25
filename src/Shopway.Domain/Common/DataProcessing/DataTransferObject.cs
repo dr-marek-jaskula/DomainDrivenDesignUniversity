@@ -8,6 +8,7 @@ namespace Shopway.Domain.Common.DataProcessing;
 
 public class DataTransferObject : IDictionary<string, object>
 {
+    //Static Method infos
     private static readonly MethodInfo _appendMethodInfo = typeof(DataTransferObject)
         .GetMethod(nameof(Append))!;
 
@@ -15,6 +16,12 @@ public class DataTransferObject : IDictionary<string, object>
         .GetTypeInfo()
         .GetDeclaredMethods(nameof(Enumerable.Select))
         .First();
+
+    private static readonly MethodInfo _createStringUsintInterpolationMethodInfo = typeof(DataTransferObject)
+        .GetMethod(nameof(ToStringUsingInterpolation))!;
+
+    //Static Expressions
+    private static readonly NewExpression _newDtoExpression = Expression.New(typeof(DataTransferObject));
 
     protected readonly Dictionary<string, object> _dictionary = [];
 
@@ -30,24 +37,21 @@ public class DataTransferObject : IDictionary<string, object>
     public static Expression<Func<TEntity, DataTransferObject>> CreateExpression<TEntity>(IList<MappingEntry> mappingEntries)
     {
         var entity = Expression.Parameter(typeof(TEntity), typeof(TEntity).Name);
-        NewExpression newDtoExpression = Expression.New(typeof(DataTransferObject));
-        Expression? firstCallExpression = newDtoExpression;
+        Expression resultExpression = _newDtoExpression;
 
         foreach (var mappingEntry in mappingEntries)
         {
-            firstCallExpression = ChainAppendExpression(entity, firstCallExpression, mappingEntry);
+            resultExpression = ChainAppendExpression(entity, resultExpression, mappingEntry);
         }
 
-        var lambdaExpression = Expression.Lambda<Func<TEntity, DataTransferObject>>(firstCallExpression!, entity);
-
-        return lambdaExpression;
+        return Expression.Lambda<Func<TEntity, DataTransferObject>>(resultExpression!, entity);
     }
 
-    private static MethodCallExpression ChainAppendExpression(ParameterExpression parameter, Expression expression, MappingEntry mappingEntry)
+    private static MethodCallExpression ChainAppendExpression(Expression parameter, Expression resultExpression, MappingEntry mappingEntry)
     {
         if (mappingEntry.PropertyName is not null)
         {
-            return ChainProperty(parameter, expression, mappingEntry);
+            return ChainProperty(parameter, resultExpression, mappingEntry);
         }
 
         if (mappingEntry.From is null || mappingEntry.Properties is null)
@@ -56,65 +60,75 @@ public class DataTransferObject : IDictionary<string, object>
         }
 
         //For example: Product.Reviews or OrderHeader.Payment
-        var entityNestedMember = parameter.ToMemberExpression(mappingEntry.From);
-        var entityNestedPropertyNameExpression = Expression.Constant(mappingEntry.From);
-        var nestedMemberType = ((PropertyInfo)entityNestedMember.Member).PropertyType;
+        var nestedProperty = Expression.Property(parameter, mappingEntry.From);
+        var nestedPropertyNameExpression = Expression.Constant(mappingEntry.From);
+        var nestedPropertyType = ((PropertyInfo)nestedProperty.Member).PropertyType;
 
-        if (nestedMemberType.IsGeneric(out var nestedEntityType))
+        if (nestedPropertyType.IsGeneric(out var notCollectionPropertyType))
         {
-            return ChainAppendForCollectionProperty(expression, mappingEntry, entityNestedMember, entityNestedPropertyNameExpression, nestedEntityType);
+            return ChainAppendForCollectionProperty(resultExpression, mappingEntry, nestedProperty, nestedPropertyNameExpression, notCollectionPropertyType);
         }
 
-        return ChainAppendForReferenceProperty(expression, mappingEntry, nestedMemberType);
+        return ChainAppendForReferenceProperty(resultExpression, mappingEntry, nestedPropertyNameExpression, nestedProperty);
     }
 
-    private static MethodCallExpression ChainAppendForReferenceProperty(Expression expression, MappingEntry mappingEntry, Type nestedMemberType)
+    private static MethodCallExpression ChainAppendForReferenceProperty
+    (
+        Expression resultExpression,
+        MappingEntry mappingEntry,
+        ConstantExpression nestedPropertyNameExpression,
+        Expression nestedProperty
+    )
     {
-        var nestedSelectorParameter = Expression.Parameter(nestedMemberType, nestedMemberType.Name);
+        Expression resultOfNestedExpression = _newDtoExpression;
 
         foreach (var property in mappingEntry.Properties!)
         {
-            expression = ChainAppendExpression(nestedSelectorParameter, expression, property);
+            resultOfNestedExpression = ChainAppendExpression(nestedProperty, resultOfNestedExpression, property);
         }
 
-        return (MethodCallExpression)expression;
+        return Expression.Call(resultExpression, _appendMethodInfo, nestedPropertyNameExpression, resultOfNestedExpression);
     }
 
     private static MethodCallExpression ChainAppendForCollectionProperty
     (
-        Expression expression, 
-        MappingEntry mappingEntry, 
-        MemberExpression entityNestedMember, 
-        ConstantExpression entityNestedPropertyNameExpression, 
-        Type nestedEntityType
+        Expression resultExpression,
+        MappingEntry mappingEntry,
+        MemberExpression nestedProperty,
+        ConstantExpression nestedPropertyNameExpression,
+        Type nestedPropertyType
     )
     {
-        var nestedSelectorParameter = Expression.Parameter(nestedEntityType, nestedEntityType.Name);
-        NewExpression newDtoExpression = Expression.New(typeof(DataTransferObject));
-        Expression? firstCallExpression = newDtoExpression;
+        var nestedSelectorParameter = Expression.Parameter(nestedPropertyType, nestedPropertyType.Name);
+        Expression? firstCallExpression = _newDtoExpression;
 
         foreach (var property in mappingEntry.Properties!)
         {
             firstCallExpression = ChainAppendExpression(nestedSelectorParameter, firstCallExpression, property);
         }
 
-        //For example: Review => new DataTransferObject()
         LambdaExpression lambdaExpression = Expression.Lambda(firstCallExpression, false, nestedSelectorParameter);
 
-        var selectMethodInfo = _selectMethodInfo
-            .MakeGenericMethod(nestedEntityType, typeof(DataTransferObject));
+        var genericSelectMethodInfo = _selectMethodInfo
+            .MakeGenericMethod(nestedPropertyType, typeof(DataTransferObject));
 
         //Product.Reviews.Select(Review => new DataTransferObject().Append.Append...)
-        var selectorCall = Expression.Call(null, selectMethodInfo, entityNestedMember, lambdaExpression);
-        return Expression.Call(expression, _appendMethodInfo, entityNestedPropertyNameExpression, selectorCall);
+        var selectorCall = Expression.Call(null, genericSelectMethodInfo, nestedProperty, lambdaExpression);
+        return Expression.Call(resultExpression, _appendMethodInfo, nestedPropertyNameExpression, selectorCall);
     }
 
-    private static MethodCallExpression ChainProperty(ParameterExpression parameter, Expression expression, MappingEntry mappingEntry)
+    private static MethodCallExpression ChainProperty(Expression parameter, Expression resultExpression, MappingEntry mappingEntry)
     {
         var propertyNameExpression = Expression.Constant(mappingEntry.PropertyName);
         var propertyExpression = Expression.PropertyOrField(parameter, mappingEntry.PropertyName!);
-        var propertyExpressionToString = Expression.Call(propertyExpression, nameof(ToString), null);
-        return Expression.Call(expression, _appendMethodInfo, propertyNameExpression, propertyExpressionToString);
+        var type = ((PropertyInfo)propertyExpression.Member).PropertyType;
+
+        //To avoid "Nullable object must have a value." we distinguish the string call
+        MethodCallExpression propertyExpressionToString = type.IsValueType
+            ? Expression.Call(propertyExpression, nameof(ToString), null)
+            : Expression.Call(typeof(DataTransferObject), nameof(ToStringUsingInterpolation), [type], propertyExpression);
+
+        return Expression.Call(resultExpression, _appendMethodInfo, propertyNameExpression, propertyExpressionToString);
     }
 
     public object this[string key] { get => _dictionary[key]; set => _dictionary[key] = value; }
@@ -139,7 +153,7 @@ public class DataTransferObject : IDictionary<string, object>
 
     public DataTransferObject AddIf(bool? condition, string key, object value)
     {
-        if (condition is true)
+        if (condition is true && CanAdd(value))
         {
             Add(key, value);
         }
@@ -149,7 +163,11 @@ public class DataTransferObject : IDictionary<string, object>
 
     public DataTransferObject Append(string key, object value)
     {
-        Add(key, value);
+        if (CanAdd(value))
+        {
+            Add(key, value);
+        }
+
         return this;
     }
 
@@ -201,5 +219,31 @@ public class DataTransferObject : IDictionary<string, object>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return _dictionary.GetEnumerator();
+    }
+
+    private static bool CanAdd(object value)
+    {
+        if (value is null)
+        {
+            return false;
+        }
+
+        if (value is string @string && @string == string.Empty)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// This approach is equivalent to:
+    /// var handler = new DefaultInterpolatedStringHandler();
+    /// handler.AppendFormatted(value);
+    /// return handler.ToStringAndClear();
+    /// </summary>
+    public static string ToStringUsingInterpolation<T>(T value)
+    {
+        return $"{value}";
     }
 }
