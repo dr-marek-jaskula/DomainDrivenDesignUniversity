@@ -60,9 +60,9 @@ public class ReflectionUtilitiesBenchmarks
         return _getterProductName(_product).ToString()!;
     }
 
-    [Benchmark]
-    public string GetPropertyAsString_DelegateNotCached()
-    {
-        return _product.GetPropertyAsString(nameof(ProductName));
-    }
+    //[Benchmark]
+    //public string GetPropertyAsString_DelegateNotCached()
+    //{
+    //    return _product.GetPropertyAsString(nameof(ProductName));
+    //}
 }
