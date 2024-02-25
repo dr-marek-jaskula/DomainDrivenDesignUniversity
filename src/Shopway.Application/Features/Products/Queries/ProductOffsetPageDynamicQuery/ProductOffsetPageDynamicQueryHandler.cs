@@ -17,7 +17,7 @@ internal sealed class ProductOffsetPageDynamicQueryHandler(IProductRepository pr
     public async Task<IResult<OffsetPageResponse<ProductResponse>>> Handle(ProductOffsetPageDynamicQuery pageQuery, CancellationToken cancellationToken)
     {
         var page = await _productRepository
-            .PageAsync(pageQuery.Page, cancellationToken, filter: pageQuery.Filter, sort: pageQuery.SortBy, mapping: ProductMapping.ProductResponse);
+            .PageAsync(pageQuery.Page, cancellationToken, filter: pageQuery.Filter, sort: pageQuery.SortBy, mappingExpression: ProductMapping.ProductResponse);
 
         return page
             .ToPageResponse(pageQuery.Page)

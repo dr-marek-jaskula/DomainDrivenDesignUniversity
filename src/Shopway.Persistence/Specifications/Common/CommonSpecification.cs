@@ -16,7 +16,8 @@ internal static partial class CommonSpecification
             Expression<Func<TEntity, bool>>? customFilter = null,
             IList<LikeEntry<TEntity>>? likes = null,
             ISortBy<TEntity>? sortBy = null,
-            Expression<Func<TEntity, TResponse>>? mapping = null,
+            IMapping<TEntity, TResponse>? mapping = null,
+            Expression<Func<TEntity, TResponse>>? mappingExpression = null,
             Action<IIncludeBuilder<TEntity>>? buildIncludes = null
         )
             where TEntityId : struct, IEntityId<TEntityId>
@@ -25,6 +26,7 @@ internal static partial class CommonSpecification
 
             return SpecificationWithMapping<TEntity, TEntityId, TResponse>.New()
                 .AddMapping(mapping)
+                .AddMapping(mappingExpression)
                 .AddIncludes(buildIncludes)
                 .AddFilter(filter)
                 .AddFilter(customFilter)

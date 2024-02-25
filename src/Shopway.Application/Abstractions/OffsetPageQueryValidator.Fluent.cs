@@ -33,3 +33,18 @@ internal abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TFilter,
         RuleFor(query => query.Filter).Custom(ValidateFilter!);
     }
 }
+
+internal abstract class OffsetPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TMapping, TPage> : OffsetPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TPage>
+    where TResponse : IResponse
+    where TFilter : IFilter
+    where TSortBy : ISortBy
+    where TMapping : IMapping
+    where TPage : IOffsetPage
+    where TPageQuery : IOffsetPageQuery<TResponse, TFilter, TSortBy, TMapping, TPage>
+{
+    protected OffsetPageQueryValidator()
+        : base()
+    {
+        RuleFor(query => query.Mapping).Custom(ValidateMapping!);
+    }
+}

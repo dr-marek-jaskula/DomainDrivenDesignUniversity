@@ -169,6 +169,7 @@ public static class QueryableUtilities
     )
     {
         var sortedProperties = sortProperties
+            .SetSortPriorities()
             .Distinct()
             .OrderBy(x => x.SortPriority);
 
@@ -219,5 +220,18 @@ public static class QueryableUtilities
             SortDirection.Descending => queryable.ThenBy($"{propertyName} DESC"),
             _ => queryable
         };
+    }
+
+    public static IQueryable<DataTransferObject> Map<TInput>
+    (
+        this IQueryable<TInput> queryable,
+        IList<MappingEntry> mappingEntries
+    )
+        where TInput : class, IEntity
+    {
+        var lambdaExpression = DataTransferObject.CreateExpression<TInput>(mappingEntries);
+
+        return queryable
+            .Select(lambdaExpression);
     }
 }

@@ -4,6 +4,18 @@ namespace Shopway.Domain.Common.Utilities;
 
 public static class DictionaryUtilities
 {
+    public static Dictionary<TKey, TValue> AddIf<TKey, TValue>(this Dictionary<TKey, TValue> source, bool condition, TKey key, TValue value)
+        where TKey: notnull 
+    {
+        if (condition is false)
+        {
+            return source;
+        }
+
+        source.Add(key, value);
+        return source;
+    }
+
     public static TValue GetOrAddNew<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key)
         where TValue : new()
     {

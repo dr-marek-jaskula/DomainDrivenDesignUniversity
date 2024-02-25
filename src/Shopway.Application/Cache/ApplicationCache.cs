@@ -10,5 +10,6 @@ public static partial class ApplicationCache
         AllowedSortPropertiesCache = CreateAllowedSortPropertiesCache();
         AllowedFilterPropertiesCache = CreateAllowedFilterPropertiesCache();
         AllowedFilterOperationsCache = CreateAllowedFilterOperationsCache();
+        AllowedMappingPropertiesCache = CreateAllowedMappingPropertiesCache();
     }
 }

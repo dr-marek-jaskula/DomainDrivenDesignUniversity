@@ -34,29 +34,53 @@ internal static class SpecificationUtilities
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
     /// <typeparam name="TEntityId">EntityId type</typeparam>
-    /// <typeparam name="Output">Output type</typeparam>
+    /// <typeparam name="TOutput">Output type</typeparam>
     /// <param name="queryable">_dbContext.Set<TEntity>()</param>
     /// <param name="specification">Input specification</param>
     /// <returns>Queryable</returns>
-    internal static IQueryable<Output> UseSpecification<TEntity, TEntityId, Output>(this IQueryable<TEntity> queryable, SpecificationWithMapping<TEntity, TEntityId, Output> specification)
+    internal static IQueryable<TOutput> UseSpecification<TEntity, TEntityId, TOutput>(this IQueryable<TEntity> queryable, SpecificationWithMapping<TEntity, TEntityId, TOutput> specification)
         where TEntityId : struct, IEntityId<TEntityId>
         where TEntity : Entity<TEntityId>
     {
-        if (specification.Mapping is null)
+        return queryable
+            .UseSpecification((Specification<TEntity, TEntityId>)specification)
+            .ApplyMapping(specification)
+            .ApplyDistinct(specification);
+    }
+
+    private static IQueryable<TOutput> ApplyMapping<TEntity, TEntityId, TOutput>(this IQueryable<TEntity> queryable, SpecificationWithMapping<TEntity, TEntityId, TOutput> specification)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
+        if (specification.MappingExpression is not null && specification.Mapping is not null)
         {
-            throw new ArgumentNullException($"{nameof(SpecificationWithMapping<TEntity, TEntityId, Output>)} must contain Select statement");
+            throw new InvalidOperationException($"{nameof(SpecificationWithMapping<TEntity, TEntityId, TOutput>)} must contain single Mapping.");
         }
 
-        var queryableWithMapping = queryable
-            .UseSpecification((Specification<TEntity, TEntityId>)specification)
-            .Select(specification.Mapping);
+        if (specification.MappingExpression is not null)
+        {
+            return queryable
+                .Select(specification.MappingExpression);
+        }
 
+        if (specification.Mapping is not null)
+        {
+            return specification.Mapping.Apply(queryable);
+        }
+
+        throw new ArgumentNullException($"{nameof(SpecificationWithMapping<TEntity, TEntityId, TOutput>)} must contain Mapping.");
+    }
+
+    private static IQueryable<TOutput> ApplyDistinct<TEntity, TEntityId, TOutput>(this IQueryable<TOutput> queryable, SpecificationWithMapping<TEntity, TEntityId, TOutput> specification)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+    {
         if (specification.UseDistinct)
         {
-            queryableWithMapping = queryableWithMapping.Distinct();
+            return queryable.Distinct();
         }
 
-        return queryableWithMapping;
+        return queryable;
     }
 
     private static IQueryable<TEntity> ApplyIncludes<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)

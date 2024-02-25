@@ -5,6 +5,7 @@ using Shopway.Domain.Common.Utilities;
 using static Shopway.Application.Cache.ApplicationCache;
 using static Shopway.Application.Constants.Constants.Filter;
 using static Shopway.Application.Constants.Constants.Sort;
+using static Shopway.Application.Constants.Constants.Mapping;
 using static Shopway.Domain.Common.DataProcessing.FilterByEntryUtilities;
 using static Shopway.Domain.Common.Utilities.SortByEntryUtilities;
 
@@ -53,7 +54,7 @@ public static class FluentValidationUtilities
 
         if (dynamicSortBy.SortProperties.IsNullOrEmpty())
         {
-            context.AddFailure(FilterProperties, $"{SortProperties} cannot be null or empty.");
+            context.AddFailure(SortProperties, $"{SortProperties} cannot be null or empty.");
             return;
         }
 
@@ -69,6 +70,36 @@ public static class FluentValidationUtilities
         if (dynamicSortBy.SortProperties.ContainsSortPriorityDuplicate())
         {
             context.AddFailure(SortProperties, $"{SortProperties} contains priority duplicates.");
+        }
+    }
+
+    public static void ValidateMapping<TMapping, TPageQuery>(TMapping mapping, ValidationContext<TPageQuery> context)
+        where TMapping : IMapping
+    {
+        if (mapping is null)
+        {
+            context.AddFailure(nameof(Constants.Constants.Mapping), $"Mapping must be provided.");
+            return;
+        }
+
+        if (mapping is not IDynamicMapping dynamicMapping)
+        {
+            return;
+        }
+
+        if (dynamicMapping.MappingEntries.IsNullOrEmpty())
+        {
+            context.AddFailure(MappingProperties, $"{MappingProperties} cannot be null or empty.");
+            return;
+        }
+
+        var mappingType = mapping.GetType();
+
+        AllowedMappingPropertiesCache.TryGetValue(mappingType, out var allowedMappingPropertiesCache);
+
+        if (dynamicMapping.MappingEntries.ContainsInvalidMappingProperty(allowedMappingPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
+        {
+            context.AddFailure(MappingProperties, $"{MappingProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedMappingPropertiesCache!)}. {MappingProperties} are case sensitive.");
         }
     }
 }
