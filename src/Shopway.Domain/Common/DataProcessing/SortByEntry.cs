@@ -8,7 +8,7 @@ public sealed record SortByEntry
     public required string PropertyName { get; init; }
     public SortDirection SortDirection { get; init; } = SortDirection.Ascending;
     public int SortPriority { get; set; }
-    public bool ParsedFromString { get; set; } = false;
+    public bool ParsedFromString { get; init; } = false;
 
     public static explicit operator SortByEntry(string value)
     {

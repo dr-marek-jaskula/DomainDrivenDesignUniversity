@@ -1,10 +1,19 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using static Shopway.Domain.Common.BaseTypes.ValueObject;
 
 namespace Shopway.Domain.Common.Utilities;
 
 public static class ExpressionUtilities
 {
+    public static bool IsGeneric(this MemberExpression memberExpression, out Type propertyType)
+    {
+        var memberPropertyType = ((PropertyInfo)memberExpression.Member).PropertyType;
+        var result = memberPropertyType.IsGeneric(out Type genericPropertyTypeOrPropertyType);
+        propertyType = genericPropertyTypeOrPropertyType;
+        return result;
+    }
+
     public static MemberExpression ToMemberExpression(this ParameterExpression parameter, string propertyName)
     {
         return Expression.Property(parameter, propertyName);
