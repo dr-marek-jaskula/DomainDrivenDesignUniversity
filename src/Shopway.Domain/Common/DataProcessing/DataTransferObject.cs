@@ -17,9 +17,6 @@ public class DataTransferObject : IDictionary<string, object>
         .GetDeclaredMethods(nameof(Enumerable.Select))
         .First();
 
-    private static readonly MethodInfo _createStringUsintInterpolationMethodInfo = typeof(DataTransferObject)
-        .GetMethod(nameof(ToStringUsingInterpolation))!;
-
     //Static Expressions
     private static readonly NewExpression _newDtoExpression = Expression.New(typeof(DataTransferObject));
 
