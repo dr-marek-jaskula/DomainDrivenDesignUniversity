@@ -72,6 +72,25 @@ public class DataTransferObject : IDictionary<string, object>
         return ChainAppendForReferenceProperty(resultExpression, mappingEntry, nestedProperty);
     }
 
+    private static MethodCallExpression ChainAppendForProperty
+    (
+        Expression resultExpression,
+        MappingEntry mappingEntry,
+        Expression parameter
+    )
+    {
+        var propertyNameExpression = Expression.Constant(mappingEntry.PropertyName);
+        var propertyExpression = Expression.PropertyOrField(parameter, mappingEntry.PropertyName!);
+        var propertyType = ((PropertyInfo)propertyExpression.Member).PropertyType;
+
+        //To avoid "Nullable object must have a value." we distinguish the string call
+        MethodCallExpression propertyExpressionToString = propertyType.IsValueType
+            ? Expression.Call(propertyExpression, nameof(ToString), null)
+            : Expression.Call(typeof(DataTransferObject), nameof(ToStringUsingInterpolation), [propertyType], propertyExpression);
+
+        return Expression.Call(resultExpression, _appendMethodInfo, propertyNameExpression, propertyExpressionToString);
+    }
+
     private static MethodCallExpression ChainAppendForReferenceProperty
     (
         Expression resultExpression,
@@ -113,25 +132,6 @@ public class DataTransferObject : IDictionary<string, object>
         //Product.Reviews.Select(Review => new DataTransferObject().Append.Append...)
         var selectCallExpression = Expression.Call(null, genericSelectMethodInfo, nestedProperty, lambdaExpression);
         return Expression.Call(resultExpression, _appendMethodInfo, Expression.Constant(mappingEntry.From), selectCallExpression);
-    }
-
-    private static MethodCallExpression ChainAppendForProperty
-    (
-        Expression resultExpression, 
-        MappingEntry mappingEntry,
-        Expression parameter
-    )
-    {
-        var propertyNameExpression = Expression.Constant(mappingEntry.PropertyName);
-        var propertyExpression = Expression.PropertyOrField(parameter, mappingEntry.PropertyName!);
-        var propertyType = ((PropertyInfo)propertyExpression.Member).PropertyType;
-
-        //To avoid "Nullable object must have a value." we distinguish the string call
-        MethodCallExpression propertyExpressionToString = propertyType.IsValueType
-            ? Expression.Call(propertyExpression, nameof(ToString), null)
-            : Expression.Call(typeof(DataTransferObject), nameof(ToStringUsingInterpolation), [propertyType], propertyExpression);
-
-        return Expression.Call(resultExpression, _appendMethodInfo, propertyNameExpression, propertyExpressionToString);
     }
 
     public object this[string key] { get => _dictionary[key]; set => _dictionary[key] = value; }
