@@ -4,8 +4,8 @@ This project presents the domain driven design concepts.
 
 Domain and Application projects are structured using vertical slices/screaming architecture/by aggregates.
 Nevertheless, for Infrastructure, Persistence, Presentation projects, I have decided to create a folder structure based on respective types.
-From my perspective it is a preferred approach, because these projects do not have as many aggregate-related structures.
-Thus organizing them in screaming architecture would result in less readable and less maintainable solution.
+From my perspective it is a preferred approach, because these projects do not have many aggregate-related structures.
+Thus, organizing them in screaming architecture would result in less readable and less maintainable solution.
 
 ## Give a Star! :star:
 
