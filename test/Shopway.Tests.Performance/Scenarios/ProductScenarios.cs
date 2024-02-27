@@ -9,14 +9,14 @@ public static class ProductScenarios
 {
     public static ScenarioProps CreateGetScenario(string scenarioName, string url, string apiKey)
     {
+        using HttpClient client = new();
+
         return Scenario.Create(scenarioName, async context =>
         {
             var request = Http.CreateRequest(GET, url)
                     .WithHeader(ApiKey, apiKey);
 
-            var response = await Http.Send(Client, request);
-
-            return response;
+            return await Http.Send(client, request);
         });
     }
 }

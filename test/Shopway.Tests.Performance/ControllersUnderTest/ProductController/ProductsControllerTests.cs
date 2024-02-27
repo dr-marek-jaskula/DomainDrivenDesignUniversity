@@ -14,6 +14,7 @@ public sealed partial class ProductsControllerTests
     private readonly ITestOutputHelper _outputHelper;
     private const string ControllerUri = "products";
     private const string GetApiKey = "d3f72374-ef67-42cb-b25b-fbfee58b1054";
+    private const string ReportsDirectory = $"Reprots_{nameof(ProductsControllerTests)}";
 
     public ProductsControllerTests(ITestOutputHelper outputHelper)
     {
