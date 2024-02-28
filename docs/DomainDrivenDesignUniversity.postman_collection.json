@@ -642,6 +642,35 @@
 					"response": []
 				},
 				{
+					"name": "QueryProducts.Dynamic.ByName.WithMapping.Valid ForDeepTests",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"firstproduct\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Price\",\r\n         \"Revision\",\r\n        {\r\n            \"From\" : \"Reviews\",\r\n            \"Properties\": [\r\n                \"Title\",\r\n                \"Description\",\r\n                {\r\n                    \"From\" : \"TestEntity3\",\r\n                    \"Properties\":[\r\n                        \"Property1\",\r\n                        \"Property2\"\r\n                    ]\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"From\" : \"TestEntity1\",\r\n            \"Properties\": [\r\n                \"Property1\",\r\n                \"Property2\",\r\n                \"Property3\",\r\n                {\r\n                    \"From\" : \"TestEntity2\",\r\n                    \"Properties\": [\r\n                        \"Property1\",\r\n                        \"Property2\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/query/dynamic/with-mapping",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"query",
+								"dynamic",
+								"with-mapping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "QueryProducts.Dynamic.ByName.Invalid",
 					"request": {
 						"method": "POST",

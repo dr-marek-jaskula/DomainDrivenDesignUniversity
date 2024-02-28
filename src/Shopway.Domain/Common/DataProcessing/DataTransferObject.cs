@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Shopway.Domain.Common.DataProcessing;
 
-public class DataTransferObject : IDictionary<string, object>
+public class DataTransferObject : IDictionary<string, object?>
 {
     //Static method infos
     private static readonly MethodInfo _appendMethodInfo = typeof(DataTransferObject)
@@ -20,7 +20,7 @@ public class DataTransferObject : IDictionary<string, object>
     //Static expressions
     private static readonly NewExpression _newDtoExpression = Expression.New(typeof(DataTransferObject));
 
-    protected readonly Dictionary<string, object> _dictionary = [];
+    protected readonly Dictionary<string, object?> _dictionary = [];
 
     public DataTransferObject()
     {
@@ -134,44 +134,57 @@ public class DataTransferObject : IDictionary<string, object>
         return Expression.Call(resultExpression, _appendMethodInfo, Expression.Constant(mappingEntry.From), selectCallExpression);
     }
 
-    public object this[string key] { get => _dictionary[key]; set => _dictionary[key] = value; }
+    public object? this[string key] { get => _dictionary[key]; set => _dictionary[key] = value; }
 
     public ICollection<string> Keys => _dictionary.Keys;
 
-    public ICollection<object> Values => _dictionary.Values;
+    public ICollection<object?> Values => _dictionary.Values;
 
     public int Count => _dictionary.Count;
 
     public bool IsReadOnly => false;
 
-    public void Add(string key, object value)
+    public void Add(string key, object? value)
     {
         _dictionary.Add(key, value);
     }
 
-    public void Add(KeyValuePair<string, object> item)
+    public void Add(KeyValuePair<string, object?> item)
     {
         _dictionary[item.Key] = item.Value;
     }
 
-    public DataTransferObject AddIf(bool? condition, string key, object value)
+    public DataTransferObject AddIf(bool? condition, string key, object? value)
     {
-        if (condition is true && CanAdd(value))
+        if (condition is true)
         {
-            Add(key, value);
+            Append(key, value);
         }
 
         return this;
     }
 
-    public DataTransferObject Append(string key, object value)
+    public DataTransferObject Append(string key, object? value)
     {
-        if (CanAdd(value))
+        if (value.IsNullOrEmptyString())
         {
-            Add(key, value);
+            return this;
         }
 
+        if (value is DataTransferObject dto && dto.ShouldBeSetToNull())
+        {
+            Add(key, null);
+            return this;
+        }
+
+        Add(key, value);
         return this;
+    }
+
+    private bool ShouldBeSetToNull()
+    {
+        return _dictionary.Count is 0
+            || _dictionary.All(x => x.Value is null);
     }
 
     public void Clear()
@@ -179,7 +192,7 @@ public class DataTransferObject : IDictionary<string, object>
         _dictionary.Clear();
     }
 
-    public bool Contains(KeyValuePair<string, object> item)
+    public bool Contains(KeyValuePair<string, object?> item)
     {
         return _dictionary.Contains(item);
     }
@@ -189,12 +202,12 @@ public class DataTransferObject : IDictionary<string, object>
         return _dictionary.ContainsKey(key);
     }
 
-    public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
+    public void CopyTo(KeyValuePair<string, object?>[] array, int arrayIndex)
     {
-        throw new NotImplementedException();
+        ((IDictionary<string, object?>)_dictionary).CopyTo(array, arrayIndex);
     }
 
-    public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+    public IEnumerator<KeyValuePair<string, object?>> GetEnumerator()
     {
         return _dictionary.GetEnumerator();
     }
@@ -204,7 +217,7 @@ public class DataTransferObject : IDictionary<string, object>
         return _dictionary.Remove(key);
     }
 
-    public bool Remove(KeyValuePair<string, object> item)
+    public bool Remove(KeyValuePair<string, object?> item)
     {
         if (_dictionary.Contains(item))
         {
@@ -214,7 +227,7 @@ public class DataTransferObject : IDictionary<string, object>
         return false;
     }
 
-    public bool TryGetValue(string key, [MaybeNullWhen(false)] out object value)
+    public bool TryGetValue(string key, [MaybeNullWhen(false)] out object? value)
     {
         return _dictionary.TryGetValue(key, out value);
     }
@@ -222,21 +235,6 @@ public class DataTransferObject : IDictionary<string, object>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return _dictionary.GetEnumerator();
-    }
-
-    private static bool CanAdd(object value)
-    {
-        if (value is null)
-        {
-            return false;
-        }
-
-        if (value is string @string && @string == string.Empty)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     /// <summary>
