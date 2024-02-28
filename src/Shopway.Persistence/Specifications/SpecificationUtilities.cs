@@ -119,7 +119,6 @@ internal static class SpecificationUtilities
         where TEntity : Entity<TEntityId>
         where TEntityId : struct, IEntityId<TEntityId>
     {
-
         foreach (var filter in specification.FilterExpressions)
         {
             queryable = queryable.Where(filter);
