@@ -170,9 +170,8 @@ public static class QueryableUtilities
     /// <summary>
     /// Filters <paramref name="queryable"/> by applying an 'SQL LIKE' operation. Works for string properties and ValueObject with Value. 
     /// </summary>
-    public static IQueryable<TEntity> Like<TEntity, TEntityId>(this IQueryable<TEntity> queryable, IList<LikeEntry<TEntity>> likeEntries)
-        where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId<TEntityId>
+    public static IQueryable<TEntity> Like<TEntity>(this IQueryable<TEntity> queryable, IList<LikeEntry<TEntity>> likeEntries)
+        where TEntity : class, IEntity
     {
         if (likeEntries.Count is 0)
         {

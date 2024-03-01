@@ -136,7 +136,7 @@ internal static class SpecificationUtilities
         where TEntity : Entity<TEntityId>
         where TEntityId : struct, IEntityId<TEntityId>
     {
-        return queryable.Like<TEntity, TEntityId>(specification.LikeEntries);
+        return queryable.Like(specification.LikeEntries);
     }
 
     private static IQueryable<TEntity> ApplySorting<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)
