@@ -22,6 +22,6 @@ public sealed record ProductDynamicFilter : IDynamicFilter<Product>
         }
 
         return queryable
-            .Where<Product, ProductId>(FilterProperties);
+            .Where(FilterProperties);
     }
 }
