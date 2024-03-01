@@ -113,5 +113,10 @@ public static class FluentValidationUtilities
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedMappingPropertiesCache!)}. {MappingProperties} are case sensitive.");
         }
+
+        if (dynamicMapping.MappingEntries.ContainsNullMappingProperty())
+        {
+            context.AddFailure(MappingProperties, $"{MappingProperties} contains object with null PropertyName and null From");
+        }
     }
 }
