@@ -55,7 +55,7 @@ internal class Specification<TEntity, TEntityId>
     internal bool AsNoTrackingWithIdentityResolution { get; private set; }
     internal bool UseGlobalFilters { get; private set; } = true;
 
-    //Filters
+    //Filters (with support for Like operation)
     internal IFilter<TEntity>? Filter { get; private set; } = null;
     internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = [];
 
