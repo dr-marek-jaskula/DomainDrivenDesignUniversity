@@ -55,12 +55,13 @@ internal class Specification<TEntity, TEntityId>
     internal bool AsNoTrackingWithIdentityResolution { get; private set; }
     internal bool UseGlobalFilters { get; private set; } = true;
 
-    //Filters
+    //Filters (with support for Like operation)
     internal IFilter<TEntity>? Filter { get; private set; } = null;
     internal List<Expression<Func<TEntity, bool>>> FilterExpressions { get; } = [];
 
     //Like
     internal List<LikeEntry<TEntity>> LikeEntries { get; } = [];
+    internal static readonly ILikeProvider<TEntity> LikeProvider = new LikeProvider<TEntity>();
 
     //SortBy
     internal ISortBy<TEntity>? SortBy { get; private set; } = null;

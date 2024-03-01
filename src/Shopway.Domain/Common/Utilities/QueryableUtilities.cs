@@ -49,17 +49,26 @@ public static class QueryableUtilities
             : queryable;
     }
 
+    public static IQueryable<TEntity> Where<TEntity>
+    (
+        this IQueryable<TEntity> queryable,
+        IList<FilterByEntry> filterEntries,
+        ILikeProvider<TEntity>? likeProvider = null
+    )
+        where TEntity : class, IEntity
+    {
+        var expression = filterEntries.CreateFilterExpression(likeProvider);
+
+        return queryable
+            .Where(expression);
+    }
+
     /// <summary>
     /// This method generates expressions that will be use to filter entities by their ValueObjects with single inner value. 
     /// For primitive types use simplified version of this method
     /// </summary>
-    public static IQueryable<TEntity> Where<TEntity, TEntityId>
-    (
-        this IQueryable<TEntity> queryable,
-        IList<FilterByEntry> filterEntries
-    )
-        where TEntity : Entity<TEntityId>
-        where TEntityId : struct, IEntityId<TEntityId>
+    public static Expression<Func<TEntity, bool>> CreateFilterExpression<TEntity>(this IList<FilterByEntry> filterEntries, ILikeProvider<TEntity>? likeProvider = null)
+        where TEntity : class, IEntity
     {
         var parameter = Expression.Parameter(typeof(TEntity));
         List<Expression> filterEntryExpressions = [];
@@ -89,6 +98,22 @@ public static class QueryableUtilities
                     continue;
                 }
 
+                if (predicate.Operation == "Like")
+                {
+                    if (likeProvider is null)
+                    {
+                        throw new ArgumentNullException(nameof(likeProvider), "When Like operation is required, than like provider must not be null");
+                    }
+
+                    var newLike = likeProvider.CreateLikeExpression(parameter, predicate.PropertyName, $"{predicate.Value}");
+
+                    filterEntryExpression = filterEntryExpression is null
+                        ? newLike
+                        : Expression.OrElse(filterEntryExpression, newLike);
+
+                    continue;
+                }
+
                 var method = StringType.GetMethod(predicate.Operation, [StringType]);
                 var newMethodCallExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(predicate.Value));
 
@@ -109,10 +134,7 @@ public static class QueryableUtilities
                     : Expression.AndAlso(expression!, filterEntryExpression);
         }
 
-        Expression<Func<TEntity, bool>> lambdaExpression = Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
-
-        return queryable
-            .Where(lambdaExpression);
+        return Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
     }
 
     public static IQueryable<TEntity> Page<TEntity>

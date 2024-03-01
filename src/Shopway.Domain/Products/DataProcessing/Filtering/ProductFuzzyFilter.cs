@@ -7,7 +7,7 @@ public sealed record ProductFuzzyFilter : IFilter<Product>
 {
     public required Expression<Func<Product, bool>> FuzzyFilter { get; set; }
 
-    public IQueryable<Product> Apply(IQueryable<Product> queryable)
+    public IQueryable<Product> Apply(IQueryable<Product> queryable, ILikeProvider<Product>? createLikeProvider = null)
     {
         return queryable
             .Where(FuzzyFilter);

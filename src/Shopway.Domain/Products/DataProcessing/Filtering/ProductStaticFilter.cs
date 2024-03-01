@@ -15,7 +15,7 @@ public sealed record ProductStaticFilter : IFilter<Product>
     private bool ByPrice => Price.HasValue;
     private bool ByUomCode => UomCode.NotNullOrEmptyOrWhiteSpace();
 
-    public IQueryable<Product> Apply(IQueryable<Product> queryable)
+    public IQueryable<Product> Apply(IQueryable<Product> queryable, ILikeProvider<Product>? createLikeProvider = null)
     {
         return queryable
             .Filter(ByProductName, product => ((string)(object)product.ProductName).Contains(ProductName!))

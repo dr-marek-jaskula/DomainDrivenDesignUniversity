@@ -11,6 +11,8 @@ public static partial class Constants
     {
         public static class Product
         {
+            private const string Like = nameof(Like);
+
             public readonly static IReadOnlyCollection<string> AllowedProductFilterProperties = AsReadOnlyCollection
             (
                  nameof(Products.Product.ProductName),
@@ -22,6 +24,7 @@ public static partial class Constants
             public readonly static IReadOnlyCollection<string> AllowedProductFilterOperations = AsList
             (
                  nameof(string.Contains),
+                 Like,
                  nameof(string.StartsWith),
                  nameof(string.EndsWith)
             )
