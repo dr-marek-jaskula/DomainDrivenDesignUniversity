@@ -58,6 +58,12 @@ public static class FluentValidationUtilities
             return;
         }
 
+        if (dynamicSortBy.SortProperties.ContainsDuplicates(x => x.PropertyName))
+        {
+            context.AddFailure(SortProperties, $"{SortProperties} contains PropertyName duplicates.");
+            return;
+        }
+
         var sortByType = sortBy.GetType();
 
         AllowedSortPropertiesCache.TryGetValue(sortByType, out var allowedSortByPropertiesCache);
@@ -90,6 +96,12 @@ public static class FluentValidationUtilities
         if (dynamicMapping.MappingEntries.IsNullOrEmpty())
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} cannot be null or empty.");
+            return;
+        }
+
+        if (dynamicMapping.MappingEntries.ContainsDuplicates(x => x.PropertyName))
+        {
+            context.AddFailure(MappingProperties, $"{MappingProperties} contains PropertyName duplicates.");
             return;
         }
 
