@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using Shopway.Persistence.Cache;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Registration;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -19,8 +18,7 @@ public static class PersistenceLayerRegistration
             .RegisterRepositories()
             .RegisterDecorators()
             .RegisterHealthChecks()
-            .RegisterMediator()
-            .RegisterServices();
+            .RegisterMediator();
 
         return services;
     }

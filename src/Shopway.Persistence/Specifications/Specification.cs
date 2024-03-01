@@ -61,6 +61,7 @@ internal class Specification<TEntity, TEntityId>
 
     //Like
     internal List<LikeEntry<TEntity>> LikeEntries { get; } = [];
+    internal static ILikeProvider<TEntity> LikeProvider = new LikeProvider<TEntity>();
 
     //SortBy
     internal ISortBy<TEntity>? SortBy { get; private set; } = null;

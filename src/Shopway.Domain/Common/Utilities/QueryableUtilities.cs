@@ -52,11 +52,12 @@ public static class QueryableUtilities
     public static IQueryable<TEntity> Where<TEntity>
     (
         this IQueryable<TEntity> queryable,
-        IList<FilterByEntry> filterEntries
+        IList<FilterByEntry> filterEntries,
+        ILikeProvider<TEntity>? likeProvider = null
     )
         where TEntity : class, IEntity
     {
-        var expression = filterEntries.CreateFilterExpression<TEntity>();
+        var expression = filterEntries.CreateFilterExpression(likeProvider);
 
         return queryable
             .Where(expression);
@@ -66,7 +67,7 @@ public static class QueryableUtilities
     /// This method generates expressions that will be use to filter entities by their ValueObjects with single inner value. 
     /// For primitive types use simplified version of this method
     /// </summary>
-    public static Expression<Func<TEntity, bool>> CreateFilterExpression<TEntity>(this IList<FilterByEntry> filterEntries)
+    public static Expression<Func<TEntity, bool>> CreateFilterExpression<TEntity>(this IList<FilterByEntry> filterEntries, ILikeProvider<TEntity>? likeProvider = null)
         where TEntity : class, IEntity
     {
         var parameter = Expression.Parameter(typeof(TEntity));
@@ -93,6 +94,22 @@ public static class QueryableUtilities
                     filterEntryExpression = filterEntryExpression is null
                         ? newBinary
                         : Expression.MakeBinary(ExpressionType.OrElse, filterEntryExpression, newBinary);
+
+                    continue;
+                }
+
+                if (predicate.Operation == "Like")
+                {
+                    if (likeProvider is null)
+                    {
+                        throw new ArgumentNullException(nameof(likeProvider), "When Like operation is required, than like provider must not be null");
+                    }
+
+                    var newLike = likeProvider.CreateLikeExpression(parameter, predicate.PropertyName, $"{predicate.Value}");
+
+                    filterEntryExpression = filterEntryExpression is null
+                        ? newLike
+                        : Expression.OrElse(filterEntryExpression, newLike);
 
                     continue;
                 }

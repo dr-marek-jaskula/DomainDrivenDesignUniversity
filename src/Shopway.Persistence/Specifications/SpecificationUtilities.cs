@@ -2,6 +2,7 @@
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Persistence.Utilities;
 
@@ -126,7 +127,7 @@ internal static class SpecificationUtilities
 
         if (specification.Filter is not null)
         {
-            queryable = specification.Filter.Apply(queryable);
+            queryable = specification.Filter.Apply(queryable, Specification<TEntity, TEntityId>.LikeProvider);
         }
 
         return queryable;
@@ -136,7 +137,7 @@ internal static class SpecificationUtilities
         where TEntity : Entity<TEntityId>
         where TEntityId : struct, IEntityId<TEntityId>
     {
-        return queryable.Like(specification.LikeEntries);
+        return Specification<TEntity, TEntityId>.LikeProvider.Apply(queryable, specification.LikeEntries);
     }
 
     private static IQueryable<TEntity> ApplySorting<TEntity, TEntityId>(this IQueryable<TEntity> queryable, Specification<TEntity, TEntityId> specification)

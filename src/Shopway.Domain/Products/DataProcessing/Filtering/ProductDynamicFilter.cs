@@ -14,7 +14,7 @@ public sealed record ProductDynamicFilter : IDynamicFilter<Product>
 
     public required IList<FilterByEntry> FilterProperties { get; init; }
 
-    public IQueryable<Product> Apply(IQueryable<Product> queryable)
+    public IQueryable<Product> Apply(IQueryable<Product> queryable, ILikeProvider<Product>? likeProvider = null)
     {
         if (FilterProperties.IsNullOrEmpty())
         {
@@ -22,6 +22,6 @@ public sealed record ProductDynamicFilter : IDynamicFilter<Product>
         }
 
         return queryable
-            .Where(FilterProperties);
+            .Where(FilterProperties.CreateFilterExpression(likeProvider));
     }
 }

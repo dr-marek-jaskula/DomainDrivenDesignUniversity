@@ -8,7 +8,7 @@ public sealed record ProductDictionaryStaticFilter : IFilter<Product>
     public string? LikeQuery { get; init; }
     private bool ByLikeQuery => LikeQuery.NotNullOrEmptyOrWhiteSpace();
 
-    public IQueryable<Product> Apply(IQueryable<Product> queryable)
+    public IQueryable<Product> Apply(IQueryable<Product> queryable, ILikeProvider<Product>? createLikeProvider = null)
     {
         return queryable
             .Filter(ByLikeQuery, product => ((string)(object)product.ProductName).Contains(LikeQuery!)
