@@ -58,6 +58,12 @@ public static class FluentValidationUtilities
             return;
         }
 
+        if (dynamicSortBy.SortProperties.ContainsDuplicates(x => x.PropertyName))
+        {
+            context.AddFailure(SortProperties, $"{SortProperties} contains PropertyName duplicates.");
+            return;
+        }
+
         var sortByType = sortBy.GetType();
 
         AllowedSortPropertiesCache.TryGetValue(sortByType, out var allowedSortByPropertiesCache);
@@ -93,6 +99,12 @@ public static class FluentValidationUtilities
             return;
         }
 
+        if (dynamicMapping.MappingEntries.ContainsDuplicates(x => x.PropertyName))
+        {
+            context.AddFailure(MappingProperties, $"{MappingProperties} contains PropertyName duplicates.");
+            return;
+        }
+
         var mappingType = mapping.GetType();
 
         AllowedMappingPropertiesCache.TryGetValue(mappingType, out var allowedMappingPropertiesCache);
@@ -100,6 +112,11 @@ public static class FluentValidationUtilities
         if (dynamicMapping.MappingEntries.ContainsInvalidMappingProperty(allowedMappingPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedMappingPropertiesCache!)}. {MappingProperties} are case sensitive.");
+        }
+
+        if (dynamicMapping.MappingEntries.ContainsNullMappingProperty())
+        {
+            context.AddFailure(MappingProperties, $"{MappingProperties} contains object with null PropertyName and null From");
         }
     }
 }

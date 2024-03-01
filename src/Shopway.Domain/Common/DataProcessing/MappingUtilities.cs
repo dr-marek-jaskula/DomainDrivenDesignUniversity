@@ -14,4 +14,10 @@ public static class MappingUtilities
 
         return invalidProperties.Count is not 0;
     }
+
+    public static bool ContainsNullMappingProperty(this IList<MappingEntry> mappingEntries)
+    {
+        return mappingEntries
+            .Any(x => x.PropertyName is null && x.From is null);
+    }
 }
