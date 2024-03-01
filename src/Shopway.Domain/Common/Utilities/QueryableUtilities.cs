@@ -49,15 +49,24 @@ public static class QueryableUtilities
             : queryable;
     }
 
-    /// <summary>
-    /// This method generates expressions that will be use to filter entities by their ValueObjects with single inner value. 
-    /// For primitive types use simplified version of this method
-    /// </summary>
     public static IQueryable<TEntity> Where<TEntity>
     (
         this IQueryable<TEntity> queryable,
         IList<FilterByEntry> filterEntries
     )
+        where TEntity : class, IEntity
+    {
+        var expression = filterEntries.CreateFilterExpression<TEntity>();
+
+        return queryable
+            .Where(expression);
+    }
+
+    /// <summary>
+    /// This method generates expressions that will be use to filter entities by their ValueObjects with single inner value. 
+    /// For primitive types use simplified version of this method
+    /// </summary>
+    public static Expression<Func<TEntity, bool>> CreateFilterExpression<TEntity>(this IList<FilterByEntry> filterEntries)
         where TEntity : class, IEntity
     {
         var parameter = Expression.Parameter(typeof(TEntity));
@@ -108,10 +117,7 @@ public static class QueryableUtilities
                     : Expression.AndAlso(expression!, filterEntryExpression);
         }
 
-        Expression<Func<TEntity, bool>> lambdaExpression = Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
-
-        return queryable
-            .Where(lambdaExpression);
+        return Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
     }
 
     public static IQueryable<TEntity> Page<TEntity>
