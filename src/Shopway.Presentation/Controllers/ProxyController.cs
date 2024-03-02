@@ -23,7 +23,14 @@ public sealed class ProxyController(ISender sender, IMediatorProxyService generi
         CancellationToken cancellationToken
     )
     {
-        object concretePageQuery = _genericMappingService.Map(query);
+        var queryResult = _genericMappingService.Map(query);
+
+        if (queryResult!.IsFailure)
+        {
+            return HandleFailure(queryResult);
+        }
+
+        object concretePageQuery = queryResult.Value;
 
         var result = await Sender.Send(concretePageQuery, cancellationToken) as IResult<object>;
 
