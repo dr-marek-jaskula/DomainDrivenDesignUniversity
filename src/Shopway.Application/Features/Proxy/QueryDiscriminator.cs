@@ -1,5 +1,5 @@
 ﻿using Shopway.Domain.Common.Disciminators;
 
-namespace Shopway.Infrastructure.Services.Proxy;
+namespace Shopway.Application.Features.Proxy;
 
 public sealed record class QueryDiscriminator(string Entity) : Discriminator;

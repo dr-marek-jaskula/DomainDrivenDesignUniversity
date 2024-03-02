@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Common.Disciminators;
 
-namespace Shopway.Infrastructure.Services.Proxy;
+namespace Shopway.Application.Features.Proxy;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public sealed class QueryStrategyAttribute(string entity) : DiscriminatorAttribute<QueryDiscriminator>
