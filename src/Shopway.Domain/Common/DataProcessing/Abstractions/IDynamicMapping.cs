@@ -8,8 +8,7 @@ public interface IDynamicMapping : IMapping
     static abstract IReadOnlyCollection<string> AllowedProperties { get; }
 }
 
-public interface IDynamicMapping<TEntity, TOutput> : IMapping<TEntity, TOutput>, IDynamicMapping
+public interface IDynamicMapping<TEntity> : IMapping<TEntity, DataTransferObject>, IDynamicMapping
     where TEntity : class, IEntity
-    where TOutput : IDictionary<string, object>
 {
 }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Scrutor;
 using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Domain.Users;
 using Shopway.Infrastructure.Builders.Batch;
 using Shopway.Infrastructure.Services;
+using Shopway.Infrastructure.Services.Proxy;
 using Shopway.Infrastructure.Validators;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,7 @@ public static class ServiceRegistration
 
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserContextService, UserContextService>();
+        services.AddSingleton<IMediatorProxyService, MediatorProxyService>();
 
         //Validators
 
