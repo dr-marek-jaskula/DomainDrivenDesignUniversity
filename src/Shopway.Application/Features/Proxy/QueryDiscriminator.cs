@@ -2,4 +2,4 @@
 
 namespace Shopway.Application.Features.Proxy;
 
-public sealed record class QueryDiscriminator(string Entity) : Discriminator;
+public sealed record class QueryDiscriminator(string Entity, Type PageType) : Discriminator;

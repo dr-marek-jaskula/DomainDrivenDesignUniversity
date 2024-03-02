@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Features.Products.Queries.DynamicOffsetProductWithMappingQuery;
+using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.DataProcessing.Filtering;
 using Shopway.Domain.Products.DataProcessing.Mapping;
@@ -8,7 +9,7 @@ namespace Shopway.Application.Features.Proxy;
 
 public partial class MediatorProxyService
 {
-    [QueryStrategy("Product")]
+    [QueryStrategy("Product", typeof(OffsetPage))]
     private static ProductOffsetPageDynamicWithMappingQuery QueryProducts(ProxyQuery proxyQuery)
     {
         var page = proxyQuery.Page.ToOffsetPage();

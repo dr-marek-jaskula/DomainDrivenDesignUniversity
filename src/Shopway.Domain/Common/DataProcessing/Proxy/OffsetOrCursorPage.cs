@@ -8,6 +8,16 @@ public sealed class OffsetOrCursorPage : IPage
     public int? PageNumber { get; init; }
     public Ulid? Cursor { get; init; }
 
+    public Type GetPageType()
+    {
+        if (Cursor is null)
+        {
+            return typeof(OffsetPage);
+        }
+
+        return typeof(CursorPage);
+    }
+
     public OffsetPage ToOffsetPage()
     {
         return new OffsetPage()

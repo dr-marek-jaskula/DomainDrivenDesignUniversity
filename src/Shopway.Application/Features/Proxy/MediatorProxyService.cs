@@ -28,17 +28,23 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
 
     public Result<IQuery<PageResponse<DataTransferObjectResponse>>> Map(ProxyQuery genericPageQuery)
     {
-        var strategyKey = new QueryDiscriminator(genericPageQuery.Entity);
-
         _validator
             .If(PageIsNotOffsetOrCursorPage(genericPageQuery.Page), Error.InvalidOperation("Cursor or PageNumber must be provided."))
-            .If(PageIsBothOffsetAndCursorPage(genericPageQuery.Page), Error.InvalidOperation("Both Cursor and PageNumber cannot be provided."))
-            .If(_strategyCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{genericPageQuery.Entity}' is not supported. Supported entities: [{string.Join(", ", _strategyCache.Keys.Select(x => x.Entity))}]"));
+            .If(PageIsBothOffsetAndCursorPage(genericPageQuery.Page), Error.InvalidOperation("Both Cursor and PageNumber cannot be provided."));
 
         if (_validator.IsInvalid)
         {
-            return ValidationResult<IQuery<PageResponse<DataTransferObjectResponse>>>
-                .WithErrors(_validator.Failure().ValidationErrors);
+            return Failure();
+        }
+
+        var strategyKey = new QueryDiscriminator(genericPageQuery.Entity, genericPageQuery.Page.GetPageType());
+
+        _validator
+            .If(_strategyCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{genericPageQuery.Entity}' with page type '{genericPageQuery.Page.GetPageType().Name}' is not supported. Supported strategies: [{string.Join(", ", _strategyCache.Keys.Select(x => (x.Entity, x.PageType.Name)))}]"));
+
+        if (_validator.IsInvalid)
+        {
+            return Failure();
         }
 
         return Result.Success(@delegate!(genericPageQuery));
@@ -52,5 +58,11 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
     private static bool PageIsBothOffsetAndCursorPage(OffsetOrCursorPage offsetOrCursorPage)
     {
         return offsetOrCursorPage.Cursor is not null && offsetOrCursorPage.PageNumber is not null;
+    }
+
+    private ValidationResult<IQuery<PageResponse<DataTransferObjectResponse>>> Failure()
+    {
+        return ValidationResult<IQuery<PageResponse<DataTransferObjectResponse>>>
+                        .WithErrors(_validator.Failure().ValidationErrors);
     }
 }
