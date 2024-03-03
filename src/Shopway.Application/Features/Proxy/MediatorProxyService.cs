@@ -29,8 +29,8 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
     public Result<IQuery<PageResponse<DataTransferObjectResponse>>> Map(ProxyQuery genericPageQuery)
     {
         _validator
-            .If(PageIsNotOffsetOrCursorPage(genericPageQuery.Page), Error.InvalidOperation("Cursor or PageNumber must be provided."))
-            .If(PageIsBothOffsetAndCursorPage(genericPageQuery.Page), Error.InvalidOperation("Both Cursor and PageNumber cannot be provided."));
+            .If(PageIsNotOffsetOrCursorPage(genericPageQuery.Page), Error.InvalidArgument("Cursor or PageNumber must be provided."))
+            .If(PageIsBothOffsetAndCursorPage(genericPageQuery.Page), Error.InvalidArgument("Both Cursor and PageNumber cannot be provided."));
 
         if (_validator.IsInvalid)
         {
@@ -63,6 +63,6 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
     private ValidationResult<IQuery<PageResponse<DataTransferObjectResponse>>> Failure()
     {
         return ValidationResult<IQuery<PageResponse<DataTransferObjectResponse>>>
-                        .WithErrors(_validator.Failure().ValidationErrors);
+            .WithErrors(_validator.Failure().ValidationErrors);
     }
 }

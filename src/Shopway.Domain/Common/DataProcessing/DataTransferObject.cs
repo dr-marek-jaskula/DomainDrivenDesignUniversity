@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Common.Utilities;
+﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Utilities;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -6,7 +7,7 @@ using System.Reflection;
 
 namespace Shopway.Domain.Common.DataProcessing;
 
-public class DataTransferObject : IDictionary<string, object?>
+public class DataTransferObject : IDictionary<string, object?>, IHasCursor
 {
     //Static method infos
     private static readonly MethodInfo _appendMethodInfo = typeof(DataTransferObject)
@@ -21,6 +22,10 @@ public class DataTransferObject : IDictionary<string, object?>
     private static readonly NewExpression _newDtoExpression = Expression.New(typeof(DataTransferObject));
 
     protected readonly Dictionary<string, object?> _dictionary = [];
+
+    public Dictionary<string, object?> Dictionary => _dictionary;
+
+    public Ulid Id => Ulid.Parse((string)Dictionary[nameof(Id)]!);
 
     public DataTransferObject()
     {
@@ -41,7 +46,7 @@ public class DataTransferObject : IDictionary<string, object?>
             resultExpression = ChainAppendExpression(resultExpression, mappingEntry, entity);
         }
 
-        return Expression.Lambda<Func<TEntity, DataTransferObject>>(resultExpression!, entity);
+        return Expression.Lambda<Func<TEntity, DataTransferObject>> (resultExpression!, entity);
     }
 
     private static MethodCallExpression ChainAppendExpression
@@ -129,7 +134,7 @@ public class DataTransferObject : IDictionary<string, object?>
         var genericSelectMethodInfo = _selectMethodInfo
             .MakeGenericMethod(nestedPropertyType, typeof(DataTransferObject));
 
-        //Product.Reviews.Select(Review => new DataTransferObject().Append.Append...)
+        //Product.Reviews.Select(Review => new DataTransferObject().Append.Append...) or Product.Reviews.Select(Review => new DataTransferObjectWithMapping().Append.Append...)
         var selectCallExpression = Expression.Call(null, genericSelectMethodInfo, nestedProperty, lambdaExpression);
         return Expression.Call(resultExpression, _appendMethodInfo, Expression.Constant(mappingEntry.From), selectCallExpression);
     }

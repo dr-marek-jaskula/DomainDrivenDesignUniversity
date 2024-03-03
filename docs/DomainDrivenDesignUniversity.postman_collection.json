@@ -452,14 +452,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/products/name/%x",
+							"raw": "{{base_url}}/products/name/%a",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"products",
 								"name",
-								"%x"
+								"%a"
 							]
 						}
 					},
@@ -591,7 +591,35 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"firstpr\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName : -1\",\r\n        \"Revision : 1\",\r\n        {\r\n            \"PropertyName\" : \"Revision\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 2\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"firstpr\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName : -1\",\r\n        {\r\n            \"PropertyName\" : \"Revision\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 2\r\n        }\r\n      ]\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/query/dynamic",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"query",
+								"dynamic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "QueryProducts.Dynamic.ByName.WithLike.Valid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Like\",\r\n            \"Value\" : \"p____l\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName : -1\",\r\n        \"Revision : 1\",\r\n        {\r\n            \"PropertyName\" : \"Revision\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 2\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1480,6 +1508,105 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "ProxyQuery - Product Dynamic With Mapping Offset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "api-version",
+						"value": "2.0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Entity\": \"Product\",\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"firstpr\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName\",\r\n        \"Price:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Price\",\r\n         \"Revision\",\r\n        {\r\n            \"From\" : \"Reviews\",\r\n            \"Properties\": [\r\n                \"Title\",\r\n                \"Description\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/proxy/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"proxy",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProxyQuery - Product Dynamic With Mapping Cursor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "api-version",
+						"value": "2.0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Entity\": \"Product\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"firstpr\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName\",\r\n        \"Price:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Price\",\r\n         \"Revision\",\r\n        {\r\n            \"From\" : \"Reviews\",\r\n            \"Properties\": [\r\n                \"Title\",\r\n                \"Description\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/proxy/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"proxy",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProxyQuery - Product Dynamic With Mapping Cursor2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "api-version",
+						"value": "2.0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Entity\": \"Product\",\r\n  \"Page\" : {\r\n    \"PageSize\": 5,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Like\",\r\n            \"Value\" : \"%Product%\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName\",\r\n        \"Price:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Revision\"\r\n      ]\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/proxy/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"proxy",
+						"query"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [

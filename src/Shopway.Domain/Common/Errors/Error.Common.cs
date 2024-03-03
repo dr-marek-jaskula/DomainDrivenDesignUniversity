@@ -118,6 +118,15 @@ public sealed partial class Error
     }
 
     /// <summary>
+    /// Create an Error describing that the invalid argument was provided
+    /// </summary>
+    /// <returns>InvalidOperation error</returns>
+    public static Error InvalidArgument(string message)
+    {
+        return New($"{nameof(InvalidArgument)}", message);
+    }
+
+    /// <summary>
     /// Create an Error describing that the request is duplicated (same key)
     /// </summary>
     /// <returns>DuplicatedRequest error</returns>

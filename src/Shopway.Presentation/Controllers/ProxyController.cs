@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
+using Shopway.Application.Features.Proxy;
 using Shopway.Domain.Common.Results;
 using Shopway.Presentation.Abstractions;
 
