@@ -14,6 +14,6 @@ public sealed record ProductDynamicMapping : IDynamicMapping<Product>
     public IQueryable<DataTransferObject> Apply(IQueryable<Product> queryable)
     {
         return queryable
-            .Map<Product, DataTransferObject>(MappingEntries);
+            .Map(MappingEntries);
     }
 }

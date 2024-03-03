@@ -244,7 +244,7 @@ public static class QueryableUtilities
         };
     }
 
-    public static IQueryable<DataTransferObject> Map<TInput, TOutput>
+    public static IQueryable<DataTransferObject> Map<TInput>
     (
         this IQueryable<TInput> queryable,
         IList<MappingEntry> mappingEntries
