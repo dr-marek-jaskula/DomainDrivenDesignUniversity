@@ -26,28 +26,28 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
             .CreateFor<QueryStrategyAttribute>(strategies);
     }
 
-    public Result<IQuery<PageResponse<DataTransferObjectResponse>>> Map(ProxyQuery genericPageQuery)
+    public Result<IQuery<PageResponse<DataTransferObjectResponse>>> Map(ProxyQuery proxyQuery)
     {
         _validator
-            .If(PageIsNotOffsetOrCursorPage(genericPageQuery.Page), Error.InvalidArgument("Cursor or PageNumber must be provided."))
-            .If(PageIsBothOffsetAndCursorPage(genericPageQuery.Page), Error.InvalidArgument("Both Cursor and PageNumber cannot be provided."));
+            .If(PageIsNotOffsetOrCursorPage(proxyQuery.Page), Error.InvalidArgument("Cursor or PageNumber must be provided."))
+            .If(PageIsBothOffsetAndCursorPage(proxyQuery.Page), Error.InvalidArgument("Both Cursor and PageNumber cannot be provided."));
 
         if (_validator.IsInvalid)
         {
             return Failure();
         }
 
-        var strategyKey = new QueryDiscriminator(genericPageQuery.Entity, genericPageQuery.Page.GetPageType());
+        var strategyKey = new QueryDiscriminator(proxyQuery.Entity, proxyQuery.Page.GetPageType());
 
         _validator
-            .If(_strategyCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{genericPageQuery.Entity}' with page type '{genericPageQuery.Page.GetPageType().Name}' is not supported. Supported strategies: [{string.Join(", ", _strategyCache.Keys.Select(x => (x.Entity, x.PageType.Name)))}]"));
+            .If(_strategyCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{proxyQuery.Entity}' with page type '{proxyQuery.Page.GetPageType().Name}' is not supported. Supported strategies: [{string.Join(", ", _strategyCache.Keys.Select(x => (x.Entity, x.PageType.Name)))}]"));
 
         if (_validator.IsInvalid)
         {
             return Failure();
         }
 
-        return Result.Success(@delegate!(genericPageQuery));
+        return Result.Success(@delegate!(proxyQuery));
     }
 
     private static bool PageIsNotOffsetOrCursorPage(OffsetOrCursorPage offsetOrCursorPage)
