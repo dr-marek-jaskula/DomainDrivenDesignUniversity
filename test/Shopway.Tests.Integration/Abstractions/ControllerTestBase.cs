@@ -43,7 +43,13 @@ public abstract class ControllerTestsBase : IDisposable
 
         ShopwayApiUrl = integrationTestsUrlOptions.ShopwayApiUrl!;
         _controllerUri = GetType().Name[..^ControllerTests.Length];
-        _userClient = new($"{ShopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}");
+
+        var restClientOptions = new RestClientOptions(new Uri($"{ShopwayApiUrl}{nameof(UsersController)[..^Controller.Length]}"))
+        {
+            RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+        };
+
+        _userClient = new(restClientOptions);
     }
 
     /// <summary>
@@ -59,7 +65,8 @@ public abstract class ControllerTestsBase : IDisposable
 
         var restClientOptions = new RestClientOptions(new Uri($"{ShopwayApiUrl}{controllerUrl}"))
         {
-            Authenticator = new JwtAuthenticator(token)
+            Authenticator = new JwtAuthenticator(token),
+            RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
         };
 
         return new RestClient(restClientOptions);
