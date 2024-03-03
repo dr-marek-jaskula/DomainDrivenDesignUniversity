@@ -14,7 +14,7 @@ public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
     private ValidationResult(TValue? value)
         : base(value, Error.None)
     {
-        ValidationErrors = Array.Empty<Error>();
+        ValidationErrors = [];
     }
 
     public Error[] ValidationErrors { get; }
@@ -24,7 +24,7 @@ public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
     /// </summary>
     /// <param name="validationErrors">Validation errors</param>
     /// <returns>Failure ValidationResult</returns>
-    public static ValidationResult<TValue> WithErrors(Error[] validationErrors)
+    public static ValidationResult<TValue> WithErrors(params Error[] validationErrors)
     {
         return new(validationErrors);
     }

@@ -1,0 +1,56 @@
+﻿using Shopway.Application.Features.Products.Queries.DynamicOffsetProductWithMappingQuery;
+using Shopway.Application.Features.Products.Queries.ProductCursorPageDynamicWithMappingQuery;
+using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Products;
+using Shopway.Domain.Products.DataProcessing.Filtering;
+using Shopway.Domain.Products.DataProcessing.Mapping;
+using Shopway.Domain.Products.DataProcessing.Sorting;
+
+namespace Shopway.Application.Features.Proxy;
+
+public partial class MediatorProxyService
+{
+    [QueryStrategy(nameof(Product), typeof(OffsetPage))]
+    private static ProductOffsetPageDynamicWithMappingQuery QueryProductsUsingOffsetPage(ProxyQuery proxyQuery)
+    {
+        var page = proxyQuery.Page.ToOffsetPage();
+        var filter = proxyQuery.Filter?.To<ProductDynamicFilter, Product>();
+        var sortBy = proxyQuery.SortBy?.To<ProductDynamicSortBy, Product>();
+        var mapping = proxyQuery.Mapping?.To<ProductDynamicMapping, Product>();
+
+        return new ProductOffsetPageDynamicWithMappingQuery(page)
+        {
+            Filter = filter,
+            SortBy = sortBy,
+            Mapping = mapping,
+        };
+    }
+
+    [QueryStrategy(nameof(Product), typeof(CursorPage))]
+    private static ProductCursorPageDynamicWithMappingQuery QueryProductsUsingCursorPage(ProxyQuery proxyQuery)
+    {
+        var page = proxyQuery.Page.ToCursorPage();
+        var filter = proxyQuery.Filter?.To<ProductDynamicFilter, Product>();
+        var sortBy = proxyQuery.SortBy?.To<ProductDynamicSortBy, Product>();
+        var mapping = proxyQuery.Mapping?.To<ProductDynamicMapping, Product>();
+
+        bool noMappingForCursor = mapping!
+            .MappingEntries
+            .Any(x => x.PropertyName is nameof(Product.Id)) is false;
+
+        if (noMappingForCursor)
+        {
+            mapping.MappingEntries.Insert(0, new MappingEntry()
+            {
+                PropertyName = nameof(Product.Id)
+            });
+        }
+
+        return new ProductCursorPageDynamicWithMappingQuery(page)
+        {
+            Filter = filter,
+            SortBy = sortBy,
+            Mapping = mapping,
+        };
+    }
+}

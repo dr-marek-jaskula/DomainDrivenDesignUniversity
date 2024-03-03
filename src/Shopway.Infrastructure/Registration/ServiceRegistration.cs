@@ -14,7 +14,6 @@ public static class ServiceRegistration
     internal static IServiceCollection RegisterServices(this IServiceCollection services)
     {
         //Services
-
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserContextService, UserContextService>();
 

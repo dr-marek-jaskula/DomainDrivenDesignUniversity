@@ -5,11 +5,11 @@ using static Shopway.Domain.Constants.Constants.Mapping.Product;
 
 namespace Shopway.Domain.Products.DataProcessing.Mapping;
 
-public sealed record ProductDynamicMapping : IDynamicMapping<Product, DataTransferObject>
+public sealed record ProductDynamicMapping : IDynamicMapping<Product>
 {
     public static IReadOnlyCollection<string> AllowedProperties { get; } = AllowedProductMappingProperties;
 
-    public required IList<MappingEntry> MappingEntries { get; init; }
+    public IList<MappingEntry> MappingEntries { get; init; } = [];
 
     public IQueryable<DataTransferObject> Apply(IQueryable<Product> queryable)
     {

@@ -10,6 +10,7 @@ public static partial class Constants
         {
             public readonly static IReadOnlyCollection<string> AllowedProductMappingProperties = AsReadOnlyCollection
             (
+                 nameof(Products.Product.Id),
                  nameof(Products.Product.ProductName),
                  nameof(Products.Product.Revision),
                  nameof(Products.Product.Price),
