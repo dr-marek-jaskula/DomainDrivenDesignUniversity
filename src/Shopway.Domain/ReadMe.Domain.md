@@ -67,11 +67,11 @@ Entities in the aggregates (also aggregate root) should not contain the direct r
 Therefore, one aggregate will not be queried as a part of other aggregate. For instance, **OrderHeader** contains property **public UserId UserId** but not 
 a reference **public User User**.
 
-## Data Processing (Filter & SoryBy)
+## Data Processing (Filter, SortBy, Mapping)
 
-Filtering and sorting is done by objects that implements ```IFilter<TEntity>``` and ```ISortBy<TEntity>``` interfaces. The apply method 
-invoked in UseSpecification method that is located in the BaseRepository. The dynamic filtering and sorting can be obtained by objects 
-that implements ```IDynamicFilter<TEntity>``` and ```IDynamicSortBy<TEntity>```. To set the filtering/sorting in the specification we use 
+Filtering, sorting and mapping are done by objects that implements ```IFilter<TEntity>```, ```ISortBy<TEntity>```, ``` IMapping<TEntity, TOutput>``` interfaces. The apply method 
+invoked in UseSpecification method that is located in the BaseRepository. The dynamic filtering, sorting and mapping can be obtained by objects 
+that implements ```IDynamicFilter<TEntity>```, ```IDynamicSortBy<TEntity>```, ```IDynamicMapping<TEntity>```. To set the filtering,sorting and mapping in the specification we use 
 
 ```csharp
 specification
@@ -79,9 +79,12 @@ specification
 
 specification
     .AddSortBy(sortBy);
+
+specification
+    .AddMapping(mapping);
 ```
 
-We can also determine filtering and sorting in the specification without these objects, using 
+We can also determine filtering, sorting and mapping in the specification without these objects, using 
 ```
 specification
     .AddFilters(product => product.Id == productId);
@@ -89,6 +92,9 @@ specification
 specification
     .OrderBy(x => x.ProductName, SortDirection.Ascending)
     .ThenBy(x => x.Price, SortDirection.Descending);
+
+specification
+    .AddMapping(x => x.ProductName.Value)
 ```
 
 ## Dynamic or Static Filter
@@ -186,13 +192,93 @@ public sealed record ProductStaticSortBy : ISortBy<Product>
 }
 ```
 
-## Customize Dynamic or Static Filtering/Sorting
+## Dynamic or Static Mapping
 
-We can add any custom conditions (filters/sort statements) into "Apply" method for additional filtering/sorting.
+For static mapping or by using just an expression or by using predefined mapping (see .Application/Mappings/ProductMapping) we can use any 
+return any predefined type or use ```DataTransferObject``` (see below). However, for dynamic mapping we ```must``` use the ```DataTransferObject``` that is a dictionary with additional
+features. The most important capability of ```DataTransferObject``` is the possibility to build an expression dynamically and in such a way
+that only the required properties are included, so no additional data will be queried from the database (in this case I am referring Entity Framework Core).
 
-We can also combine dynamic and static filtering/sorting.
+Static option for customizable mapping with DataTransferObject:
 
-Moreover, we can combine dynamic/static filtering/sorting with manual approach.
+```csharp
+public sealed record ProductStaticMapping : IMapping<Product, DataTransferObject>
+{
+    public static readonly ProductStaticMapping Instance = new()
+    {
+        Id = true,
+        ProductName = true,
+        Revision = true,
+        Price = true,
+        UomCode = true,
+    };
+
+    public bool? Id { get; init; }
+    public bool? ProductName { get; init; }
+    public bool? Revision { get; init; }
+    public bool? Price { get; init; }
+    public bool? UomCode { get; init; }
+    public ReviewStaticMapping Reviews { get; init; } = new();
+
+    private bool IncludeId => Id is true;
+    private bool IncludeProductName => ProductName is true;
+    private bool IncludeRevision => Revision is true;
+    private bool IncludePrice => Price is true;
+    private bool IncludeUomCode => UomCode is true;
+    private bool IncludeReviews => Reviews.AnySelected();
+
+    public IQueryable<DataTransferObject> Apply(IQueryable<Product> queryable)
+    {
+        //WARNING! this static query will result in querying ALL fields from the database and then map to ones we require.
+        //This is caused by the behavior of EF Core - if the property is present in the select statement it will be queried.
+        //To solve this problem we could also create collection of MappingEntries from all given values and then use queryable.Map(mappingEnties)
+        //Then, only the required field would be queried. I left this solution for demonstration purposes.
+        //If someone decides that performance reasons are nos crucial for him and the following syntax looks good, then You can stick with this
+        //My personal option would be to use queryable.Map(mappingEntries) approach, for !performance! and !maintenance! reasons.
+        return queryable
+            .Select(product => new DataTransferObject()
+                .AddIf(IncludeId, nameof(product.Id), $"{product.Id}")
+                .AddIf(IncludeUomCode, nameof(product.UomCode), $"{product.UomCode}")
+                .AddIf(IncludePrice, nameof(product.Price), $"{product.Price}")
+                .AddIf(IncludeRevision, nameof(product.Revision), $"{product.Revision}")
+                .AddIf(IncludeProductName, nameof(product.ProductName), $"{product.ProductName}")
+                .AddIf(IncludeReviews, nameof(product.Reviews), product.Reviews.Select(review => new DataTransferObject()
+                    .AddIf(Reviews!.IncludeUsername, nameof(review.Username), $"{review.Username}")
+                    .AddIf(Reviews!.IncludeStars, nameof(review.Stars), $"{review.Stars}")
+                    .AddIf(Reviews!.IncludeTitle, nameof(review.Title), $"{review.Title}")
+                    .AddIf(Reviews!.IncludeDescription, nameof(review.Description), $"{review.Description}"))));
+    }
+
+    public sealed class ReviewStaticMapping
+    {
+        public bool? Username { get; init; }
+        public bool? Stars { get; init; }
+        public bool? Title { get; init; }
+        public bool? Description { get; init; }
+
+        public bool IncludeUsername => Username is true;
+        public bool IncludeStars => Stars is true;
+        public bool IncludeTitle => Title is true;
+        public bool IncludeDescription => Description is true;
+
+        public bool AnySelected()
+        {
+            return IncludeUsername
+                || IncludeStars
+                || IncludeTitle
+                || IncludeDescription;
+        }
+    }
+}
+```
+
+## Customize Dynamic or Static Filtering/Sorting/Mapping
+
+We can make any customization for filters/sort/mapping in "Apply" method.
+
+We can also combine dynamic and static filtering/sorting/mapping.
+
+Moreover, we can combine dynamic/static filtering/sorting/mapping with manual approach.
 
 Example of manual approach:
 ```

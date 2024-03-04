@@ -145,3 +145,19 @@ are sure that the log level will not exceed the one in the current log, then we 
 
 Logging is a crucial feature for almost any application. Nevertheless, most of developers do not pay enough attention on the massive performance impact that logs can have.
 Gaining even small boosts in this field can significantly improve the overall application performance. Thus, in this project we aim to reach the most efficient way of logging.
+
+## Proxy Service and Fully Dynamic Endpoint
+
+I introduced a ```MediatorProxyService``` that is responsible for converting the proxy request to the concrete query that will be used by sander to find the respective handler.
+This solution is fully open-closed, thus the only think we would need to add new functionality is just to add a new method and decorate it with ```QueryStrategy``` attribute.
+This could be done in on class, but for the sake of readability, it is better to split it into multiple files, but still keep in one class (the use of partial class is 
+justified). 
+
+Endpoint ```/proxy/query``` (see **ProxyController**) uses ```MediatorProxySerive```, so there is a single endpoint that can query paginated data in multiple ways:
+- we can use any supported entity
+- we can use ```OffsetPage``` or ```CursorPage```
+- we can use any dynamic filtering (also LIKE statement is supported)
+- we can use any dynamic sorting
+- we can use any dynamic mapping
+
+Flexibility of this solution was the main idea behind its implementation. Nevertheless, the performance is also impressive despite some boxing that can occur (DataTansferObject value type is ```object```).
