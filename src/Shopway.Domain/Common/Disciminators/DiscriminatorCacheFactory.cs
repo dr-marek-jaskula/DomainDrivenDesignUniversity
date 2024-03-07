@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Frozen;
 using System.Reflection;
 
 namespace Shopway.Domain.Common.Disciminators;
@@ -11,7 +11,7 @@ public sealed class DiscriminatorCacheFactory<DiscriminatorType, DelegateType>
     {
     }
 
-    public static ReadOnlyDictionary<DiscriminatorType, DelegateType> CreateFor<AttributeType>(IEnumerable<DelegateType> dictionaryValues)
+    public static FrozenDictionary<DiscriminatorType, DelegateType> CreateFor<AttributeType>(IEnumerable<DelegateType> dictionaryValues)
         where AttributeType : DiscriminatorAttribute<DiscriminatorType>
     {
         Dictionary<DiscriminatorType, DelegateType> cache = [];
@@ -21,7 +21,7 @@ public sealed class DiscriminatorCacheFactory<DiscriminatorType, DelegateType>
             AddToCache<AttributeType>(cache, @delegate);
         }
 
-        return cache.AsReadOnly();
+        return cache.ToFrozenDictionary();
     }
 
     private static void AddToCache<AttributeType>(Dictionary<DiscriminatorType, DelegateType> cache, DelegateType @delegate)
