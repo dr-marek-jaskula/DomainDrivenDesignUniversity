@@ -4,14 +4,14 @@ using Shopway.Domain.Common.DataProcessing.Proxy;
 using Shopway.Domain.Common.Disciminators;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Errors;
-using System.Collections.ObjectModel;
+using System.Collections.Frozen;
 using System.Reflection;
 
 namespace Shopway.Application.Features.Proxy;
 
 public partial class MediatorProxyService(IValidator validator) : IMediatorProxyService
 {
-    private static readonly ReadOnlyDictionary<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyCache;
+    private static readonly FrozenDictionary<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyCache;
     
     private readonly IValidator _validator = validator;
 
