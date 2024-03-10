@@ -49,6 +49,7 @@ public sealed class OutboxRepository(ShopwayDbContext dbContext) : IOutboxReposi
         var outboxMessages = _dbContext
             .ChangeTracker
             .Entries<IAggregateRoot>()
+            .Where(entry => entry.Entity.DomainEvents.Count > 0)
             .Select(x => x.Entity)
             .SelectMany(aggregateRoot =>
             {
