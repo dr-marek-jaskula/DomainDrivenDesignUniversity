@@ -28,7 +28,7 @@ public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent>
             return;
         }
 
-        _logger.LogDomainEventHandlingByConsumer(nameof(TDomainEvent), consumer);
+        _logger.LogDomainEventHandlingByConsumer(typeof(TDomainEvent).Name, consumer);
         await _decorated.Handle(domainEvent, cancellationToken);
 
         await _outboxRepository
