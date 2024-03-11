@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Proxy;
-using Shopway.Domain.Common.Results;
 using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
@@ -18,7 +17,7 @@ public sealed class ProxyController(ISender sender, IMediatorProxyService generi
     [HttpPost("query")]
     [ProducesResponseType<PageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> QueryProductsCursorDictionary
+    public async Task<IResult> QueryProductsCursorDictionary
     (
         [FromBody] ProxyQuery query,
         CancellationToken cancellationToken
@@ -33,13 +32,13 @@ public sealed class ProxyController(ISender sender, IMediatorProxyService generi
 
         object concretePageQuery = queryResult.Value;
 
-        var result = await Sender.Send(concretePageQuery, cancellationToken) as IResult<object>;
+        var result = await Sender.Send(concretePageQuery, cancellationToken) as Shopway.Domain.Common.Results.IResult<object>;
 
         if (result!.IsFailure)
         {
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 }

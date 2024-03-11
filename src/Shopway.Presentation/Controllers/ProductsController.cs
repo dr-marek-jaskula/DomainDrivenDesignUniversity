@@ -36,7 +36,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetProductById([FromRoute] ProductId id, CancellationToken cancellationToken)
+    public async Task<IResult> GetProductById([FromRoute] ProductId id, CancellationToken cancellationToken)
     {
         var query = new GetProductByIdQuery(id);
 
@@ -47,7 +47,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetProductByKey([FromBody] ProductKey key, CancellationToken cancellationToken)
+    public async Task<IResult> GetProductByKey([FromBody] ProductKey key, CancellationToken cancellationToken)
     {
         var query = new GetProductByKeyQuery(key);
 
@@ -71,7 +71,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> FuzzySearchProductByName
+    public async Task<IResult> FuzzySearchProductByName
     (
         [FromRoute] string productName,
         [FromBody] OffsetPage page,
@@ -101,13 +101,13 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("name/{productNamePattern}")]
     [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> QueryProductsByNameLike
+    public async Task<IResult> QueryProductsByNameLike
     (
         [FromRoute] string productNamePattern,
         [FromBody] OffsetPage page,
@@ -123,13 +123,13 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("query/dictionary/offset")]
     [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> QueryProductsOffsetDictionary([FromBody] ProductDictionaryOffsetPageQuery query, CancellationToken cancellationToken)
+    public async Task<IResult> QueryProductsOffsetDictionary([FromBody] ProductDictionaryOffsetPageQuery query, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -138,13 +138,13 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("query/dictionary/cursor")]
     [ProducesResponseType<CursorPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> QueryProductsCursorDictionary([FromBody] ProductDictionaryCursorPageQuery query, CancellationToken cancellationToken)
+    public async Task<IResult> QueryProductsCursorDictionary([FromBody] ProductDictionaryCursorPageQuery query, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -153,14 +153,14 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     //These static or dynamic suffixes are only for tutorial purpose
     [HttpPost("query/static")]
     [ProducesResponseType<OffsetPageResponse<ProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> StaticQueryProducts([FromBody] ProductOffsetPageQuery query, CancellationToken cancellationToken)
+    public async Task<IResult> StaticQueryProducts([FromBody] ProductOffsetPageQuery query, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -169,14 +169,14 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     //These with-mapping suffixes are only for tutorial purpose
     [HttpPost("query/static/with-mapping")]
     [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> StaticQueryProductsWithMapping([FromBody] ProductOffsetPageWithMappingQuery query, CancellationToken cancellationToken)
+    public async Task<IResult> StaticQueryProductsWithMapping([FromBody] ProductOffsetPageWithMappingQuery query, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -185,13 +185,13 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("query/dynamic")]
     [ProducesResponseType<OffsetPageResponse<ProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DynamicQueryProducts([FromBody] ProductOffsetPageDynamicQuery query, CancellationToken cancellationToken)
+    public async Task<IResult> DynamicQueryProducts([FromBody] ProductOffsetPageDynamicQuery query, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -200,13 +200,13 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("query/dynamic/with-mapping")]
     [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DynamicQueryProductsWithMapping([FromBody] ProductOffsetPageDynamicWithMappingQuery query, CancellationToken cancellationToken)
+    public async Task<IResult> DynamicQueryProductsWithMapping([FromBody] ProductOffsetPageDynamicWithMappingQuery query, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -215,14 +215,14 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost]
     [RequiredApiKey(RequiredApiKey.PRODUCT_CREATE)]
     [ProducesResponseType<CreateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
+    public async Task<IResult> CreateProduct([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
 
@@ -238,7 +238,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_UPDATE)]
     [ProducesResponseType<UpdateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateProduct
+    public async Task<IResult> UpdateProduct
     (
         [FromRoute] ProductId id,
         [FromBody] UpdateProductCommand.UpdateRequestBody body,
@@ -254,14 +254,14 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpDelete("{id}")]
     [RequiredApiKey(RequiredApiKey.PRODUCT_REMOVE)]
     [ProducesResponseType<RemoveProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RemoveProduct([FromRoute] ProductId id, CancellationToken cancellationToken)
+    public async Task<IResult> RemoveProduct([FromRoute] ProductId id, CancellationToken cancellationToken)
     {
         var command = new RemoveProductCommand(id);
 
@@ -272,6 +272,6 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 }
