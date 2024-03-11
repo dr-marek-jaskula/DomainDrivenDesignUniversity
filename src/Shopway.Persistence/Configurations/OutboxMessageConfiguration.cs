@@ -34,10 +34,11 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
         builder.Property(p => p.ExecutionStatus)
             .HasConversion<ExecutionStatusConverter>()
             .HasColumnType(ColumnType.VarChar(LongestOf<ExecutionStatus>()))
+            .HasDefaultValue(ExecutionStatus.InProgress)
             .IsRequired(true);
 
         builder
-            .HasIndex(x => x.ProcessedOn)
+            .HasIndex(x => x.ExecutionStatus)
             .HasDatabaseName($"IX_{nameof(OutboxMessage)}_{nameof(OutboxMessage.ExecutionStatus)}")
             .HasFilter("[ExecutionStatus] IS 'InProgress'");
     }

@@ -2,7 +2,7 @@
 
 public enum ExecutionStatus
 {
-    InProgress,
-    Failure,
-    Success
+    InProgress = 0,
+    Failure = 1,
+    Success = 2
 }
