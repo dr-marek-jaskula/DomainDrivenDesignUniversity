@@ -72,12 +72,12 @@ public sealed class OutboxRepository(ShopwayDbContext dbContext, TimeProvider ti
     {
         return new OutboxMessage
         {
-            Id = Ulid.NewUlid(),
+            Id = domainEvent.Id,
             Type = domainEvent.GetType().Name,
             Content = domainEvent.Serialize(TypeNameHandling.All),
             OccurredOn = DateTimeOffset.UtcNow,
             ExecutionStatus = InProgress,
-            NextProcessAttempt = _timeProvider.GetUtcNow()
+            NextProcessAttempt = _timeProvider.GetUtcNow().AddMinutes(OutboxMessage.InitialDelayInMinutes)
         };
     }
 }

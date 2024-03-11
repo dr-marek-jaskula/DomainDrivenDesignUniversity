@@ -4,8 +4,8 @@ namespace Shopway.Persistence.Outbox;
 
 public sealed class OutboxMessage
 {
-    private const int MaxAttemptCount = 4;
-    private static readonly int[] RetryDelaysInMinutes = [ 1, 5, 15, 60];
+    public const int InitialDelayInMinutes = 0;
+    private static readonly int[] RetryDelaysInMinutes = [InitialDelayInMinutes, 1, 5, 15, 60];
 
     public required Ulid Id { get; set; }
 
@@ -27,7 +27,9 @@ public sealed class OutboxMessage
 
     public void UpdatePostProcessProperties(DateTimeOffset? utcNow, string? error)
     {
-        if (IsFailure())
+        AttemptCount++;
+
+        if (IsFailure(error))
         {
             UpdateWhenFailure(utcNow, error);
             return;
@@ -39,12 +41,13 @@ public sealed class OutboxMessage
             return;
         }
 
-        UpdateWhenInProgress();
+        UpdateWhenInProgress(error);
     }
 
-    private bool IsFailure()
+    private bool IsFailure(string? error)
     {
-        return AttemptCount >= MaxAttemptCount;
+        return error is not null 
+            && AttemptCount >= RetryDelaysInMinutes.Length;
     }
 
     private static bool IsSuccess(string? error)
@@ -68,14 +71,14 @@ public sealed class OutboxMessage
         Error = null;
     }
 
-    private void UpdateWhenInProgress()
+    private void UpdateWhenInProgress(string? error)
     {
         if (NextProcessAttempt is null)
         {
             throw new ArgumentException(nameof(NextProcessAttempt));
         }
 
-        AttemptCount++;
-        NextProcessAttempt = NextProcessAttempt.Value.AddMinutes(RetryDelaysInMinutes[AttemptCount - 1]);
+        Error = error;
+        NextProcessAttempt = NextProcessAttempt.Value.AddMinutes(RetryDelaysInMinutes[AttemptCount]);
     }
 }

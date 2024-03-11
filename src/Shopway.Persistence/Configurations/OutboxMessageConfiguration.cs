@@ -40,6 +40,6 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
         builder
             .HasIndex(x => x.ExecutionStatus)
             .HasDatabaseName($"IX_{nameof(OutboxMessage)}_{nameof(OutboxMessage.ExecutionStatus)}")
-            .HasFilter("[ExecutionStatus] IS 'InProgress'");
+            .HasFilter("[ExecutionStatus] = 'InProgress'");
     }
 }
