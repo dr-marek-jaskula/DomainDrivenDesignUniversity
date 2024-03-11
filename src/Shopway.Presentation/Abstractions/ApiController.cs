@@ -16,13 +16,13 @@ public abstract class ApiController(ISender sender) : ControllerBase
 {
     protected readonly ISender Sender = sender;
 
-    protected IActionResult HandleFailure(IResult result)
+    protected static Microsoft.AspNetCore.Http.IResult HandleFailure(IResult result)
     {
         return result switch
         {
             { IsSuccess: true } => throw new InvalidOperationException("Result was successful"),
 
-            IValidationResult validationResult => BadRequest
+            IValidationResult validationResult => TypedResults.Problem
             (
                 CreateProblemDetails
                 (
@@ -33,7 +33,7 @@ public abstract class ApiController(ISender sender) : ControllerBase
                 )
             ),
 
-            _ => BadRequest
+            _ => TypedResults.Problem
             (
                 CreateProblemDetails
                 (
@@ -45,13 +45,13 @@ public abstract class ApiController(ISender sender) : ControllerBase
         };
     }
 
-    protected IActionResult CreatedAtActionResult<T>(IResult<T> result, string? actionName)
+    protected static Microsoft.AspNetCore.Http.IResult CreatedAtActionResult<T>(IResult<T> result, string? routeName)
     {
-        return CreatedAtAction
+        return TypedResults.CreatedAtRoute
         (
-            actionName,
-            new { id = result.Value },
-            result.Value
+            result.Value,
+            routeName,
+            new { id = result.Value }
         );
     }
 }

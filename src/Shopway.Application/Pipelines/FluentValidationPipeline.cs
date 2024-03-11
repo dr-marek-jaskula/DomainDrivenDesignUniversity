@@ -20,7 +20,7 @@ public sealed class FluentValidationPipeline<TRequest, TResponse>(IEnumerable<IV
         CancellationToken cancellationToken
     )
     {
-        if (_validators.Any() is false)
+        if (_validators.IsEmpty())
         {
             return await next();
         }

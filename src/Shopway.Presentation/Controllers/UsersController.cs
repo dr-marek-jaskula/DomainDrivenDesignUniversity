@@ -18,7 +18,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [HttpPost("[action]")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Login([FromBody] LogUserCommand command, CancellationToken cancellationToken)
+    public async Task<IResult> Login([FromBody] LogUserCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
 
@@ -27,13 +27,13 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("[action]")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
+    public async Task<IResult> Register([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
 
@@ -42,13 +42,13 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpGet("{username}")]
     [ProducesResponseType<UserResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUserByUsername([FromRoute] string username, CancellationToken cancellationToken)
+    public async Task<IResult> GetUserByUsername([FromRoute] string username, CancellationToken cancellationToken)
     {
         var query = new GetUserByUsernameQuery(username);
         var result = await Sender.Send(query, cancellationToken);
@@ -58,13 +58,13 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpGet("{username}/roles")]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUserRolesByUsername([FromRoute] string username, CancellationToken cancellationToken)
+    public async Task<IResult> GetUserRolesByUsername([FromRoute] string username, CancellationToken cancellationToken)
     {
         var query = new GetUserRolesByUsernameQuery(username);
         var result = await Sender.Send(query, cancellationToken);
@@ -74,14 +74,14 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpGet("roles/{role}/permissions")]
     [RequiredRoles(Domain.Enums.Role.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetRolePermissions([FromRoute] string role, CancellationToken cancellationToken)
+    public async Task<IResult> GetRolePermissions([FromRoute] string role, CancellationToken cancellationToken)
     {
         var query = new GetRolePermissionsQuery(role);
         var result = await Sender.Send(query, cancellationToken);
@@ -91,14 +91,14 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("roles/{role}/permissions/{permission}")]
     [RequiredRoles(Domain.Enums.Role.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddPermissionToRole([FromRoute] string role, [FromRoute] string permission, CancellationToken cancellationToken)
+    public async Task<IResult> AddPermissionToRole([FromRoute] string role, [FromRoute] string permission, CancellationToken cancellationToken)
     {
         var command = new AddPermissionToRoleCommand(role, permission);
         var result = await Sender.Send(command, cancellationToken);
@@ -108,14 +108,14 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             return HandleFailure(result);
         }
 
-        return Ok();
+        return TypedResults.Ok();
     }
 
     [HttpDelete("roles/{role}/permissions/{permission}")]
     [RequiredRoles(Domain.Enums.Role.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RemovePermissionFromRole([FromRoute] string role, [FromRoute] string permission, CancellationToken cancellationToken)
+    public async Task<IResult> RemovePermissionFromRole([FromRoute] string role, [FromRoute] string permission, CancellationToken cancellationToken)
     {
         var command = new RemovePermissionFromRoleCommand(role, permission);
         var result = await Sender.Send(command, cancellationToken);
@@ -125,6 +125,6 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             return HandleFailure(result);
         }
 
-        return Ok();
+        return TypedResults.Ok();
     }
 }

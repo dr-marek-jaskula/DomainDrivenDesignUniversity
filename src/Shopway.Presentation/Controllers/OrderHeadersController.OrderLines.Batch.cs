@@ -11,7 +11,7 @@ partial class OrderHeadersController
     [HttpPost("batch/upsert/{orderHeaderId}")]
     [ProducesResponseType<BatchUpsertOrderLineResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> OrderLinesBatchUpsert
+    public async Task<IResult> OrderLinesBatchUpsert
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromBody] BatchUpsertOrderLineCommand command,
@@ -27,9 +27,9 @@ partial class OrderHeadersController
 
         if (result.IsSuccess && result.Value.Entries.Any(entry => entry.Status is Error))
         {
-            return BadRequest(result.Value);
+            return TypedResults.BadRequest(result.Value);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 }

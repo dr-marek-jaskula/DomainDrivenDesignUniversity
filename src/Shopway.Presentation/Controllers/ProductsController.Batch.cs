@@ -10,7 +10,7 @@ public partial class ProductsController
     [HttpPost("batch/upsert")]
     [ProducesResponseType<BatchUpsertProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ProductsBatchUpsert([FromBody] BatchUpsertProductCommand command, CancellationToken cancellationToken)
+    public async Task<IResult> ProductsBatchUpsert([FromBody] BatchUpsertProductCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
 
@@ -21,9 +21,9 @@ public partial class ProductsController
 
         if (result.IsSuccess && result.Value.Entries.Any(entry => entry.Status is Error))
         {
-            return BadRequest(result.Value);
+            return TypedResults.BadRequest(result.Value);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 }

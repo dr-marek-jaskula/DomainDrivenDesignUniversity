@@ -16,7 +16,7 @@ partial class OrderHeadersController
     [HttpPost($"{{orderHeaderId}}/{Products}/{{productId}}")]
     [ProducesResponseType<AddOrderLineResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddOrderLine
+    public async Task<IResult> AddOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] ProductId productId,
@@ -33,13 +33,13 @@ partial class OrderHeadersController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpDelete($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
     [ProducesResponseType<RemoveOrderLineResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RemoveOrderLine
+    public async Task<IResult> RemoveOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] OrderLineId orderLineId,
@@ -55,13 +55,13 @@ partial class OrderHeadersController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPut($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
     [ProducesResponseType<UpdateOrderLineResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateOrderLine
+    public async Task<IResult> UpdateOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] OrderLineId orderLineId,
@@ -78,6 +78,6 @@ partial class OrderHeadersController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 }

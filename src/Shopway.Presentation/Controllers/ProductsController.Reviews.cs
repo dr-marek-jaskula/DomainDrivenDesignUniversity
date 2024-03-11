@@ -17,7 +17,7 @@ partial class ProductsController
     [RequiredPermissions(Permission.Review_Add)]
     [ProducesResponseType<AddReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddReview
+    public async Task<IResult> AddReview
     (
         [FromRoute] ProductId productId,
         [FromBody] AddReviewCommand.AddReviewRequestBody body,
@@ -33,14 +33,14 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPatch($"{{productId}}/{Reviews}/{{reviewId}}")]
     [RequiredPermissions(Permission.Review_Update)]
     [ProducesResponseType<UpdateReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateReview
+    public async Task<IResult> UpdateReview
     (
         [FromRoute] ProductId productId,
         [FromRoute] ReviewId reviewId,
@@ -57,7 +57,7 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpDelete($"{{productId}}/{Reviews}/{{reviewId}}")]
@@ -65,7 +65,7 @@ partial class ProductsController
     [RequiredRoles(Role.Administrator)]
     [ProducesResponseType<RemoveReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RemoveReview([FromRoute] RemoveReviewCommand command, CancellationToken cancellationToken)
+    public async Task<IResult> RemoveReview([FromRoute] RemoveReviewCommand command, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(command, cancellationToken);
 
@@ -74,6 +74,6 @@ partial class ProductsController
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 }

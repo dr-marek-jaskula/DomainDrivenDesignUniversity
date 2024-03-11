@@ -18,7 +18,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [HttpGet("{id}")]
     [ProducesResponseType<OrderHeaderResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetOrderHeaderById([FromRoute] OrderHeaderId id, CancellationToken cancellationToken)
+    public async Task<IResult> GetOrderHeaderById([FromRoute] OrderHeaderId id, CancellationToken cancellationToken)
     {
         var query = new GetOrderHeaderByIdQuery(id);
 
@@ -29,13 +29,13 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost]
     [ProducesResponseType<CreateOrderHeaderResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateOrderHeader
+    public async Task<IResult> CreateOrderHeader
     (
         [FromBody] CreateOrderHeaderCommand command,
         CancellationToken cancellationToken
@@ -54,7 +54,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SoftDeleteOrderHeader
+    public async Task<IResult> SoftDeleteOrderHeader
     (
         [FromRoute] OrderHeaderId id,
         CancellationToken cancellationToken
@@ -69,13 +69,13 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
             return HandleFailure(result);
         }
 
-        return Ok();
+        return TypedResults.Ok();
     }
 
     [HttpPatch("{id}")]
     [ProducesResponseType<ChangeOrderHeaderStatusResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ChangeOrderHeaderStatus
+    public async Task<IResult> ChangeOrderHeaderStatus
     (
         [FromRoute] OrderHeaderId id,
         [FromBody] ChangeOrderHeaderStatusCommand.ChangeOrderHeaderStatusRequestBody body,
@@ -91,7 +91,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
             return HandleFailure(result);
         }
 
-        return Ok(result.Value);
+        return TypedResults.Ok(result.Value);
     }
 }
 
