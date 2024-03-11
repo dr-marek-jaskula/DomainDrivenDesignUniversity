@@ -83,6 +83,11 @@ public static class IEnumerableUtilities
         return false;
     }
 
+    public static bool IsEmpty(this IEnumerable source)
+    {
+        return source.Any() is false;
+    }
+
     public static async Task<List<TSource>> ToListAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
     {
         var list = new List<TSource>();
