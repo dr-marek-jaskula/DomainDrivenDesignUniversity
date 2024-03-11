@@ -4,19 +4,22 @@ using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Outbox;
 using Shopway.Persistence.Utilities;
+using static Shopway.Infrastructure.Outbox.ExecutionStatus;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OutboxRepository(ShopwayDbContext dbContext) : IOutboxRepository
+public sealed class OutboxRepository(ShopwayDbContext dbContext, TimeProvider timeProvider) : IOutboxRepository
 {
     private readonly ShopwayDbContext _dbContext = dbContext;
+    private readonly TimeProvider _timeProvider = timeProvider;
     private const int AmountOfProcessedMessages = 20;
 
     public async Task<OutboxMessage[]> GetOutboxMessagesAsync(CancellationToken cancellationToken)
     {
         return await _dbContext
             .Set<OutboxMessage>()
-            .Where(m => m.ProcessedOn == null)
+            .Where(m => m.ExecutionStatus == InProgress)
+            .Where(m => m.NextProcessAttempt <= _timeProvider.GetUtcNow())
             .Take(AmountOfProcessedMessages)
             .ToArrayAsync(cancellationToken);
     }
@@ -65,14 +68,16 @@ public sealed class OutboxRepository(ShopwayDbContext dbContext) : IOutboxReposi
             .AddRange(outboxMessages);
     }
 
-    private static OutboxMessage ToOutboxMessage(IDomainEvent domainEvent)
+    private OutboxMessage ToOutboxMessage(IDomainEvent domainEvent)
     {
         return new OutboxMessage
         {
             Id = Ulid.NewUlid(),
             Type = domainEvent.GetType().Name,
             Content = domainEvent.Serialize(TypeNameHandling.All),
-            OccurredOn = DateTimeOffset.UtcNow
+            OccurredOn = DateTimeOffset.UtcNow,
+            ExecutionStatus = InProgress,
+            NextProcessAttempt = _timeProvider.GetUtcNow()
         };
     }
 }
