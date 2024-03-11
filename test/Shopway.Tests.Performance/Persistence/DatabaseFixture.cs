@@ -10,15 +10,17 @@ public sealed class DatabaseFixture : IDisposable
 {
     private readonly ShopwayDbContext _context;
     private readonly TestDataGenerator _testDataGenerator;
+    private readonly TimeProvider _timeProvider;
 
     public DatabaseFixture()
     {
         var factory = new ShopwayDbContextFactory();
-        _context = factory.CreateDbContext(new[] { TestConnection });
+        _context = factory.CreateDbContext([TestConnection]);
         _context.Database.Migrate();
+        _timeProvider = TimeProvider.System;
 
         var testContext = new TestContextService();
-        var outboxRepository = new OutboxRepository(_context);
+        var outboxRepository = new OutboxRepository(_context, _timeProvider);
         var fusionCache = new FusionCache(new FusionCacheOptions());
         var unitOfWork = new UnitOfWork<ShopwayDbContext>(_context, testContext, outboxRepository, fusionCache);
         _testDataGenerator = new TestDataGenerator(unitOfWork);

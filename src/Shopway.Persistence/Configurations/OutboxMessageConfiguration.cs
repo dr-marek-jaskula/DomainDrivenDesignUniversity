@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shopway.Infrastructure.Outbox;
 using Shopway.Persistence.Converters;
+using Shopway.Persistence.Converters.Enums;
 using Shopway.Persistence.Outbox;
+using static Shopway.Domain.Common.Utilities.EnumUtilities;
 using static Shopway.Persistence.Constants.Constants;
 using static Shopway.Persistence.Constants.Constants.Number;
 
@@ -28,9 +31,15 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
         builder.Property(x => x.Error)
             .HasColumnType(ColumnType.VarChar(8000));
 
+        builder.Property(p => p.ExecutionStatus)
+            .HasConversion<ExecutionStatusConverter>()
+            .HasColumnType(ColumnType.VarChar(LongestOf<ExecutionStatus>()))
+            .HasDefaultValue(ExecutionStatus.InProgress)
+            .IsRequired(true);
+
         builder
-            .HasIndex(x => x.ProcessedOn)
-            .HasDatabaseName($"IX_{nameof(OutboxMessage)}_{nameof(OutboxMessage.ProcessedOn)}")
-            .HasFilter("[ProcessedOn] IS NULL");
+            .HasIndex(x => x.ExecutionStatus)
+            .HasDatabaseName($"IX_{nameof(OutboxMessage)}_{nameof(OutboxMessage.ExecutionStatus)}")
+            .HasFilter("[ExecutionStatus] = 'InProgress'");
     }
 }
