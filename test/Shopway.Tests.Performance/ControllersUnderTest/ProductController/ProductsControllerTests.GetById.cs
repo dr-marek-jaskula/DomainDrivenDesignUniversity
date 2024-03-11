@@ -3,7 +3,7 @@ using NBomber.CSharp;
 using Shopway.Domain.Products;
 using Shopway.Tests.Performance.Abstractions;
 using Shopway.Tests.Performance.Scenarios;
-using static Shopway.Tests.Performance.Constants.Constants.PerformanceSkipReason;
+using Shopway.Tests.Performance.Utilities;
 
 namespace Shopway.Tests.Performance.ControllersUnderTest.ProductController;
 
@@ -11,7 +11,7 @@ public partial class ProductsControllerTests : ControllerTestsBase
 {
     private const string GetProductByIdScenario = nameof(GetProductByIdScenario);
 
-    [Fact(Skip = SkipReason)]
+    [SkipForLocalEnvFact]
     public void GetById_ShouldHandleAtLeast100RequestPerSecond()
     {
         var productId = ProductId.New();
