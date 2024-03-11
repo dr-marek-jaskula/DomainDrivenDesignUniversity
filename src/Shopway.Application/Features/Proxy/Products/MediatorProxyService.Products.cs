@@ -34,13 +34,13 @@ public partial class MediatorProxyService
         var sortBy = proxyQuery.SortBy?.To<ProductDynamicSortBy, Product>();
         var mapping = proxyQuery.Mapping?.To<ProductDynamicMapping, Product>();
 
-        bool noMappingForCursor = mapping!
+        bool noMappingForCursorWhenMappingIsNotNull = mapping is not null && mapping
             .MappingEntries
             .Any(x => x.PropertyName is nameof(Product.Id)) is false;
 
-        if (noMappingForCursor)
+        if (noMappingForCursorWhenMappingIsNotNull)
         {
-            mapping.MappingEntries.Insert(0, new MappingEntry()
+            mapping!.MappingEntries.Insert(0, new MappingEntry()
             {
                 PropertyName = nameof(Product.Id)
             });
