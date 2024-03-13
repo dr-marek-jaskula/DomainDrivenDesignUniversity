@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Orders.Commands.AddOrderLine;
 using Shopway.Application.Features.Orders.Commands.RemoveOrderLine;
@@ -16,7 +17,7 @@ partial class OrderHeadersController
     [HttpPost($"{{orderHeaderId}}/{Products}/{{productId}}")]
     [ProducesResponseType<AddOrderLineResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> AddOrderLine
+    public async Task<Results<Ok<AddOrderLineResponse>, ProblemHttpResult>> AddOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] ProductId productId,
@@ -39,7 +40,7 @@ partial class OrderHeadersController
     [HttpDelete($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
     [ProducesResponseType<RemoveOrderLineResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> RemoveOrderLine
+    public async Task<Results<Ok<RemoveOrderLineResponse>, ProblemHttpResult>> RemoveOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] OrderLineId orderLineId,
@@ -61,7 +62,7 @@ partial class OrderHeadersController
     [HttpPut($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
     [ProducesResponseType<UpdateOrderLineResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> UpdateOrderLine
+    public async Task<Results<Ok<UpdateOrderLineResponse>, ProblemHttpResult>> UpdateOrderLine
     (
         [FromRoute] OrderHeaderId orderHeaderId,
         [FromRoute] OrderLineId orderLineId,

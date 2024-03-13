@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Application.Features.Products.Commands.RemoveReview;
@@ -17,7 +18,7 @@ partial class ProductsController
     [RequiredPermissions(Permission.Review_Add)]
     [ProducesResponseType<AddReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> AddReview
+    public async Task<Results<Ok<AddReviewResponse>, ProblemHttpResult>> AddReview
     (
         [FromRoute] ProductId productId,
         [FromBody] AddReviewCommand.AddReviewRequestBody body,
@@ -40,7 +41,7 @@ partial class ProductsController
     [RequiredPermissions(Permission.Review_Update)]
     [ProducesResponseType<UpdateReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> UpdateReview
+    public async Task<Results<Ok<UpdateReviewResponse>, ProblemHttpResult>> UpdateReview
     (
         [FromRoute] ProductId productId,
         [FromRoute] ReviewId reviewId,
@@ -65,7 +66,11 @@ partial class ProductsController
     [RequiredRoles(Role.Administrator)]
     [ProducesResponseType<RemoveReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> RemoveReview([FromRoute] RemoveReviewCommand command, CancellationToken cancellationToken)
+    public async Task<Results<Ok<RemoveReviewResponse>, ProblemHttpResult>> RemoveReview
+    (
+        [FromRoute] RemoveReviewCommand command, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(command, cancellationToken);
 

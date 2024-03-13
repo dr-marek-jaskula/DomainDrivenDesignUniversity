@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Orders.Commands.ChangeOrderHeaderStatus;
 using Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
@@ -18,7 +19,11 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [HttpGet("{id}")]
     [ProducesResponseType<OrderHeaderResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> GetOrderHeaderById([FromRoute] OrderHeaderId id, CancellationToken cancellationToken)
+    public async Task<Results<Ok<OrderHeaderResponse>, ProblemHttpResult>> GetOrderHeaderById
+    (
+        [FromRoute] OrderHeaderId id, 
+        CancellationToken cancellationToken
+    )
     {
         var query = new GetOrderHeaderByIdQuery(id);
 
@@ -35,7 +40,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [HttpPost]
     [ProducesResponseType<CreateOrderHeaderResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> CreateOrderHeader
+    public async Task<Results<CreatedAtRoute<CreateOrderHeaderResponse>, ProblemHttpResult>> CreateOrderHeader
     (
         [FromBody] CreateOrderHeaderCommand command,
         CancellationToken cancellationToken
@@ -54,7 +59,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> SoftDeleteOrderHeader
+    public async Task<Results<Ok, ProblemHttpResult>> SoftDeleteOrderHeader
     (
         [FromRoute] OrderHeaderId id,
         CancellationToken cancellationToken
@@ -75,7 +80,7 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [HttpPatch("{id}")]
     [ProducesResponseType<ChangeOrderHeaderStatusResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> ChangeOrderHeaderStatus
+    public async Task<Results<Ok<ChangeOrderHeaderStatusResponse>, ProblemHttpResult>> ChangeOrderHeaderStatus
     (
         [FromRoute] OrderHeaderId id,
         [FromBody] ChangeOrderHeaderStatusCommand.ChangeOrderHeaderStatusRequestBody body,

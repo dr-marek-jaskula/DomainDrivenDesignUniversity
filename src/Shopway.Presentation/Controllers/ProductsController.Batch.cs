@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 using static Shopway.Application.Features.BatchEntryStatus;
@@ -10,7 +11,11 @@ public partial class ProductsController
     [HttpPost("batch/upsert")]
     [ProducesResponseType<BatchUpsertProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> ProductsBatchUpsert([FromBody] BatchUpsertProductCommand command, CancellationToken cancellationToken)
+    public async Task<Results<Ok<BatchUpsertProductResponse>, ProblemHttpResult, BadRequest<BatchUpsertProductResponse>>> ProductsBatchUpsert
+    (
+        [FromBody] BatchUpsertProductCommand command, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(command, cancellationToken);
 
