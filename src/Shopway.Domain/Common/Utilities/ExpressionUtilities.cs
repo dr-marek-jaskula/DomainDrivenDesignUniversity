@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Reflection;
 using static Shopway.Domain.Common.BaseTypes.ValueObject;
 
@@ -26,7 +27,22 @@ public static class ExpressionUtilities
 
     public static UnaryExpression ToConvertedExpression(this Type innerType, object value)
     {
-        return Expression.Convert(Expression.Constant(value), innerType);
+        if (innerType.IsEnum is false)
+        {
+            return Expression.Convert(Expression.Constant(value), innerType);
+        }
+
+        if (value.GetType() == typeof(string))
+        {
+            if (Enum.TryParse(innerType, (string)value, true, out var result) is false)
+            {
+                throw new InvalidEnumArgumentException($"Cannot parse {value} to {innerType.Name}. Available values: {Enum.GetNames(innerType).Join(',')}");
+            }
+
+            return Expression.Convert(Expression.Constant(result), innerType);
+        }
+
+        return Expression.Convert(Expression.Convert(Expression.Constant(value), typeof(int)), innerType);
     }
 
     /// <summary>
