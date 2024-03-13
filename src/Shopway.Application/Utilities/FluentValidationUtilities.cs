@@ -117,7 +117,7 @@ public static class FluentValidationUtilities
             return;
         }
 
-        if (dynamicMapping.MappingEntries.ContainsDuplicates(x => x.PropertyName))
+        if (dynamicMapping.MappingEntries.ContainsDuplicates(x => x.PropertyName is not null ? x.PropertyName : x.From))
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} contains PropertyName duplicates.");
             return;
