@@ -82,16 +82,9 @@ public static class QueryableUtilities
             {
                 var memberExpression = parameter.ToMemberExpression(predicate.PropertyName);
 
-                Type innerTypeForValueObjectOrCurrentTypeForPrimitive;
-
-                if (memberExpression.Type.IsValueObject())
-                {
-                    innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.GetValueObjectInnerType();
-                }
-                else
-                {
-                    innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.Type;
-                }
+                Type innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.Type.IsValueObject() 
+                    ? memberExpression.GetValueObjectInnerType() 
+                    : memberExpression.Type;
 
                 var convertedValueForFiltering = innerTypeForValueObjectOrCurrentTypeForPrimitive.ToConvertedExpression(predicate.Value);
                 var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerTypeForValueObjectOrCurrentTypeForPrimitive);
