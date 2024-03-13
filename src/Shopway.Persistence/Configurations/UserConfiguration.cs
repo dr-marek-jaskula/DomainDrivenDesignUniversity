@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shopway.Domain.Entities;
+using Shopway.Domain.Orders;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
 using Shopway.Persistence.Converters.EntityIds;

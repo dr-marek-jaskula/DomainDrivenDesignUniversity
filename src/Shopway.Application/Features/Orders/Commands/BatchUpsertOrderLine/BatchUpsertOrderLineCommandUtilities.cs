@@ -1,6 +1,5 @@
 ﻿using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 using Shopway.Application.Mappings;
-using Shopway.Domain.Entities;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Products;
 using static Shopway.Application.Features.BatchEntryStatus;

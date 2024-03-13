@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Utilities;
-using Shopway.Domain.Entities;
+using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Orders;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
@@ -8,7 +9,8 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) : IOrderHeaderRepository
+public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) 
+    : IOrderHeaderRepository
 {
     private readonly IOrderHeaderRepository _decorated = decorated;
     private readonly IFusionCache _fusionCache = fusionCache;
@@ -51,5 +53,56 @@ public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated
     public async Task<OrderHeader> GetByIdWithOrderLineAsync(OrderHeaderId id, OrderLineId orderLineId, CancellationToken cancellationToken)
     {
         return await _decorated.GetByIdWithOrderLineAsync(id, orderLineId, cancellationToken);
+    }
+
+    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    (
+        IOffsetPage page,
+        CancellationToken cancellationToken,
+        IFilter<OrderHeader>? filter = null,
+        IList<LikeEntry<OrderHeader>>? likes = null,
+        ISortBy<OrderHeader>? sort = null,
+        IMapping<OrderHeader, TResponse>? mapping = null,
+        Expression<Func<OrderHeader, TResponse>>? mappingExpression = null,
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    )
+    {
+        return await _decorated.PageAsync
+        (
+            page,
+            cancellationToken,
+            filter: filter,
+            likes: likes,
+            sort: sort,
+            mapping: mapping,
+            mappingExpression: mappingExpression,
+            buildIncludes: buildIncludes
+        );
+    }
+
+    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    (
+        ICursorPage page,
+        CancellationToken cancellationToken,
+        IFilter<OrderHeader>? filter = null,
+        IList<LikeEntry<OrderHeader>>? likes = null,
+        ISortBy<OrderHeader>? sort = null,
+        IMapping<OrderHeader, TResponse>? mapping = null,
+        Expression<Func<OrderHeader, TResponse>>? mappingExpression = null,
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    )
+        where TResponse : class, IHasCursor
+    {
+        return await _decorated.PageAsync
+        (
+            page,
+            cancellationToken,
+            filter: filter,
+            likes: likes,
+            sort: sort,
+            mapping: mapping,
+            mappingExpression: mappingExpression,
+            buildIncludes: buildIncludes
+        );
     }
 }

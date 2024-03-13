@@ -46,7 +46,7 @@ public static class ConfigurationUtilities
     }
 
     public static EntityTypeBuilder<TEntity> ConfigureSoftDeletableEntity<TEntity>(this EntityTypeBuilder<TEntity> builder)
-    where TEntity : class, IEntity, ISoftDeletable
+        where TEntity : class, IEntity, ISoftDeletable
     {
         builder.Property(o => o.SoftDeleted)
             .HasColumnType(ColumnType.Bit)

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shopway.Domain.Entities;
+using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.Enumerations;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.Enums;

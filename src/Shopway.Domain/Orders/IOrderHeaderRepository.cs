@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Entities;
+﻿using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using System.Linq.Expressions;
 
 namespace Shopway.Domain.Orders;
@@ -16,4 +17,29 @@ public interface IOrderHeaderRepository
     void Update(OrderHeader order);
 
     void Remove(OrderHeader order);
+
+    Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    (
+        IOffsetPage page,
+        CancellationToken cancellationToken,
+        IFilter<OrderHeader>? filter = null,
+        IList<LikeEntry<OrderHeader>>? likes = null,
+        ISortBy<OrderHeader>? sort = null,
+        IMapping<OrderHeader, TResponse>? mapping = null,
+        Expression<Func<OrderHeader, TResponse>>? mappingExpression = null,
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    );
+
+    Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    (
+        ICursorPage page,
+        CancellationToken cancellationToken,
+        IFilter<OrderHeader>? filter = null,
+        IList<LikeEntry<OrderHeader>>? likes = null,
+        ISortBy<OrderHeader>? sort = null,
+        IMapping<OrderHeader, TResponse>? mapping = null,
+        Expression<Func<OrderHeader, TResponse>>? mappingExpression = null,
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    )
+        where TResponse : class, IHasCursor;
 }
