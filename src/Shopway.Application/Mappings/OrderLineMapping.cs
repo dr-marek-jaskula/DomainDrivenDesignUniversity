@@ -4,7 +4,6 @@ using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 using Shopway.Application.Features.Orders.Commands.RemoveOrderLine;
 using Shopway.Application.Features.Orders.Commands.UpdateOrderLine;
 using Shopway.Application.Features.Orders.Queries;
-using Shopway.Domain.Entities;
 using Shopway.Domain.Orders;
 using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
 

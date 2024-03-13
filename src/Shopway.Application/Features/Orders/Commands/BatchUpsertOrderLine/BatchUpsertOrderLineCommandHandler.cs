@@ -5,7 +5,6 @@ using Shopway.Application.Utilities;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Entities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.ValueObjects;

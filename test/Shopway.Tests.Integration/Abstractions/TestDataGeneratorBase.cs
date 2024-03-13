@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Domain.Entities;
+using Shopway.Domain.Orders;
 using Shopway.Domain.Products;
 using Shopway.Domain.Users;
 using Shopway.Persistence.Abstractions;

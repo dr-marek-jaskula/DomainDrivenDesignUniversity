@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Entities;
+using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Orders;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
+using Shopway.Persistence.Specifications.Common;
 using Shopway.Persistence.Specifications.OrderHeaders;
+using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
@@ -68,5 +71,66 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
         _dbContext
             .Set<OrderHeader>()
             .Remove(order);
+    }
+
+    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    (
+        IOffsetPage page,
+        CancellationToken cancellationToken,
+        IFilter<OrderHeader>? filter = null,
+        IList<LikeEntry<OrderHeader>>? likes = null,
+        ISortBy<OrderHeader>? sort = null,
+        IMapping<OrderHeader, TResponse>? mapping = null,
+        Expression<Func<OrderHeader, TResponse>>? mappingExpression = null,
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    )
+    {
+        var specification = CommonSpecification.WithMapping.Create<OrderHeader, OrderHeaderId, TResponse>
+        (
+            filter,
+            null,
+            likes,
+            sort,
+            mapping,
+            mappingExpression,
+            buildIncludes: buildIncludes
+        );
+
+        return await _dbContext
+            .Set<OrderHeader>()
+            .UseSpecification(specification)
+            .PageAsync(page, cancellationToken);
+    }
+
+    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    (
+        ICursorPage page,
+        CancellationToken cancellationToken,
+        IFilter<OrderHeader>? filter = null,
+        IList<LikeEntry<OrderHeader>>? likes = null,
+        ISortBy<OrderHeader>? sort = null,
+        IMapping<OrderHeader, TResponse>? mapping = null,
+        Expression<Func<OrderHeader, TResponse>>? mappingExpression = null,
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    )
+        where TResponse : class, IHasCursor
+    {
+        Expression<Func<OrderHeader, bool>> cursorFilter = product => product.Id >= OrderHeaderId.Create(page.Cursor);
+
+        var specification = CommonSpecification.WithMapping.Create<OrderHeader, OrderHeaderId, TResponse>
+        (
+            filter,
+            cursorFilter,
+            likes,
+            sort,
+            mapping,
+            mappingExpression,
+            buildIncludes: buildIncludes
+        );
+
+        return await _dbContext
+            .Set<OrderHeader>()
+            .UseSpecification(specification)
+            .PageAsync(page, cancellationToken);
     }
 }

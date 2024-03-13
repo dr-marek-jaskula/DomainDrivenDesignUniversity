@@ -1,10 +1,9 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Domain.EntityIds;
 using Shopway.Domain.Orders.Enumerations;
 using static Shopway.Domain.Orders.Enumerations.PaymentStatus;
 
-namespace Shopway.Domain.Entities;
+namespace Shopway.Domain.Orders;
 
 public sealed class Payment : Entity<PaymentId>, IAuditable
 {

@@ -4,7 +4,6 @@ using Shopway.Application.Features.Orders.Commands.AddOrderLine;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Entities;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Products;

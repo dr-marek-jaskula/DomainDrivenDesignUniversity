@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Orders\Queries\OrderHeaderCursorPageDynamicWithMappingQuery\" />
     <Folder Include="Features\Users\Events\" />
   </ItemGroup>
 

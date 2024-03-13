@@ -2,16 +2,14 @@
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.DomainEvents;
-using Shopway.Domain.EntityIds;
 using Shopway.Domain.Enums;
-using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Users;
 using static Shopway.Domain.Enums.OrderStatus;
 using static Shopway.Domain.Orders.Enumerations.PaymentStatus;
 using static Shopway.Domain.Orders.Errors.DomainErrors.Status;
 
-namespace Shopway.Domain.Entities;
+namespace Shopway.Domain.Orders;
 
 public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISoftDeletable
 {
