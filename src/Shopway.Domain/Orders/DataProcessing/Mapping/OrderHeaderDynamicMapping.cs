@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
-using Shopway.Domain.Common.DataProcessing;
+﻿using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Constants.Constants.Mapping.OrderHeader;
 

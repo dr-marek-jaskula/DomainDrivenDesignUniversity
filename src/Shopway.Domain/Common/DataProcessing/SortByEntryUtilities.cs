@@ -23,6 +23,12 @@ public static class SortByEntryUtilities
             .ContainsDuplicates(x => x.SortPriority);
     }
 
+    public static bool ContainsNullSortByProperty(this IList<SortByEntry> sortProperties)
+    {
+        return sortProperties
+            .Any(x => x is null);
+    }
+
     public static IList<SortByEntry> SetSortPriorities(this IEnumerable<SortByEntry> sortProperties)
     {
         return sortProperties
