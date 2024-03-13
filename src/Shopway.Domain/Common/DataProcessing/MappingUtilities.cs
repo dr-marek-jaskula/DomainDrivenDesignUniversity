@@ -18,6 +18,6 @@ public static class MappingUtilities
     public static bool ContainsNullMappingProperty(this IList<MappingEntry> mappingEntries)
     {
         return mappingEntries
-            .Any(x => x.PropertyName is null && x.From is null);
+            .Any(x => x is null || x.PropertyName is null && x.From is null);
     }
 }

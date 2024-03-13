@@ -4,8 +4,8 @@ using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Application.Cache.ApplicationCache;
 using static Shopway.Application.Constants.Constants.Filter;
-using static Shopway.Application.Constants.Constants.Sort;
 using static Shopway.Application.Constants.Constants.Mapping;
+using static Shopway.Application.Constants.Constants.Sort;
 using static Shopway.Domain.Common.DataProcessing.FilterByEntryUtilities;
 using static Shopway.Domain.Common.Utilities.SortByEntryUtilities;
 
@@ -24,6 +24,12 @@ public static class FluentValidationUtilities
         if (dynamicFilter.FilterProperties.IsNullOrEmpty())
         {
             context.AddFailure(FilterProperties, $"{FilterProperties} cannot be null or empty.");
+            return;
+        }
+
+        if (dynamicFilter.FilterProperties.ContainsNullFilterProperty())
+        {
+            context.AddFailure(FilterProperties, $"{FilterProperties} contains null or null predicate");
             return;
         }
 
@@ -55,6 +61,12 @@ public static class FluentValidationUtilities
         if (dynamicSortBy.SortProperties.IsNullOrEmpty())
         {
             context.AddFailure(SortProperties, $"{SortProperties} cannot be null or empty.");
+            return;
+        }
+
+        if (dynamicSortBy.SortProperties.ContainsNullSortByProperty())
+        {
+            context.AddFailure(SortProperties, $"{SortProperties} contains null");
             return;
         }
 
@@ -99,6 +111,12 @@ public static class FluentValidationUtilities
             return;
         }
 
+        if (dynamicMapping.MappingEntries.ContainsNullMappingProperty())
+        {
+            context.AddFailure(MappingProperties, $"Top level {MappingProperties} contains null or object with null PropertyName and null From");
+            return;
+        }
+
         if (dynamicMapping.MappingEntries.ContainsDuplicates(x => x.PropertyName))
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} contains PropertyName duplicates.");
@@ -112,11 +130,6 @@ public static class FluentValidationUtilities
         if (dynamicMapping.MappingEntries.ContainsInvalidMappingProperty(allowedMappingPropertiesCache!, out IReadOnlyCollection<string> invalidProperties))
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedMappingPropertiesCache!)}. {MappingProperties} are case sensitive.");
-        }
-
-        if (dynamicMapping.MappingEntries.ContainsNullMappingProperty())
-        {
-            context.AddFailure(MappingProperties, $"{MappingProperties} contains object with null PropertyName and null From");
         }
     }
 }

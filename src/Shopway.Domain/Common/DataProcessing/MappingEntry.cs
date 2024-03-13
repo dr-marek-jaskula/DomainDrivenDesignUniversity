@@ -33,6 +33,12 @@ public sealed class MappingEntry
             {
                 foreach (var property in Properties)
                 {
+                    if (property is null)
+                    {
+                        names.Add("NULL");
+                        continue;
+                    }
+
                     names.AddRange(property.GetAllPropertyNames());
                 }
             }

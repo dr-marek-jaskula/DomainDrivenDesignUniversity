@@ -25,4 +25,10 @@ public static class FilterByEntryUtilities
 
         return invalidOperations.Count is not 0;
     }
+
+    public static bool ContainsNullFilterProperty(this IList<FilterByEntry> filterProperties)
+    {
+        return filterProperties
+            .Any(x => x is null || x.Predicates.Any(y => y is null));
+    }
 }
