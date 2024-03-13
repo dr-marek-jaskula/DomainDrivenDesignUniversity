@@ -82,7 +82,7 @@ public static class QueryableUtilities
             {
                 var memberExpression = parameter.ToMemberExpression(predicate.PropertyName);
 
-                Type innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.Type.IsValueObject() 
+                var innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.Type.IsValueObject() 
                     ? memberExpression.GetValueObjectInnerType() 
                     : memberExpression.Type;
 
