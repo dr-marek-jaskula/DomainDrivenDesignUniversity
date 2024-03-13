@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Results.Abstractions;
@@ -16,7 +17,7 @@ public abstract class ApiController(ISender sender) : ControllerBase
 {
     protected readonly ISender Sender = sender;
 
-    protected static Microsoft.AspNetCore.Http.IResult HandleFailure(IResult result)
+    protected static ProblemHttpResult HandleFailure(IResult result)
     {
         return result switch
         {
@@ -45,7 +46,7 @@ public abstract class ApiController(ISender sender) : ControllerBase
         };
     }
 
-    protected static Microsoft.AspNetCore.Http.IResult CreatedAtActionResult<T>(IResult<T> result, string? routeName)
+    protected static CreatedAtRoute<T> CreatedAtActionResult<T>(IResult<T> result, string? routeName)
     {
         return TypedResults.CreatedAtRoute
         (

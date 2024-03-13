@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
@@ -17,7 +18,7 @@ public sealed class ProxyController(ISender sender, IMediatorProxyService generi
     [HttpPost("query")]
     [ProducesResponseType<PageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> QueryProductsCursorDictionary
+    public async Task<Results<Ok<object>, ProblemHttpResult>> QueryProductsCursorDictionary
     (
         [FromBody] ProxyQuery query,
         CancellationToken cancellationToken

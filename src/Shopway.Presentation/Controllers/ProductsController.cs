@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Products.Commands.CreateProduct;
@@ -36,7 +37,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> GetProductById([FromRoute] ProductId id, CancellationToken cancellationToken)
+    public async Task<Results<Ok<ProductResponse>, ProblemHttpResult>> GetProductById
+    (
+        [FromRoute] ProductId id, 
+        CancellationToken cancellationToken
+    )
     {
         var query = new GetProductByIdQuery(id);
 
@@ -60,7 +65,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> GetProductByKey([FromBody] ProductKey key, CancellationToken cancellationToken)
+    public async Task<Results<Ok<ProductResponse>, ProblemHttpResult>> GetProductByKey
+    (
+        [FromBody] ProductKey key, 
+        CancellationToken cancellationToken
+    )
     {
         var query = new GetProductByKeyQuery(key);
 
@@ -85,7 +94,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> FuzzySearchProductByName
+    public async Task<Results<Ok<OffsetPageResponse<ProductResponse>>, ProblemHttpResult>> FuzzySearchProductByName
     (
         [FromRoute] string productName,
         [FromBody] OffsetPage page,
@@ -107,7 +116,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [HttpPost("name/{productNamePattern}")]
     [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> QueryProductsByNameLike
+    public async Task<Results<Ok<OffsetPageResponse<ProductResponse>>, ProblemHttpResult>> QueryProductsByNameLike
     (
         [FromRoute] string productNamePattern,
         [FromBody] OffsetPage page,
@@ -129,7 +138,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [HttpPost("query/dictionary/offset")]
     [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> QueryProductsOffsetDictionary([FromBody] ProductDictionaryOffsetPageQuery query, CancellationToken cancellationToken)
+    public async Task<Results<Ok<OffsetPageResponse<DictionaryResponseEntry>>, ProblemHttpResult>> QueryProductsOffsetDictionary
+    (
+        [FromBody] ProductDictionaryOffsetPageQuery query, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -144,7 +157,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [HttpPost("query/dictionary/cursor")]
     [ProducesResponseType<CursorPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> QueryProductsCursorDictionary([FromBody] ProductDictionaryCursorPageQuery query, CancellationToken cancellationToken)
+    public async Task<Results<Ok<CursorPageResponse<DictionaryResponseEntry>>, ProblemHttpResult>> QueryProductsCursorDictionary
+    (
+        [FromBody] ProductDictionaryCursorPageQuery query, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -160,7 +177,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [HttpPost("query/static")]
     [ProducesResponseType<OffsetPageResponse<ProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> StaticQueryProducts([FromBody] ProductOffsetPageQuery query, CancellationToken cancellationToken)
+    public async Task<Results<Ok<OffsetPageResponse<ProductResponse>>, ProblemHttpResult>> StaticQueryProducts
+    (
+        [FromBody] ProductOffsetPageQuery query, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -176,7 +197,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [HttpPost("query/static/with-mapping")]
     [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> StaticQueryProductsWithMapping([FromBody] ProductOffsetPageWithMappingQuery query, CancellationToken cancellationToken)
+    public async Task<Results<Ok<OffsetPageResponse<DataTransferObjectResponse>>, ProblemHttpResult>> StaticQueryProductsWithMapping
+    (
+        [FromBody] ProductOffsetPageWithMappingQuery query, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -191,7 +216,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [HttpPost("query/dynamic")]
     [ProducesResponseType<OffsetPageResponse<ProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> DynamicQueryProducts([FromBody] ProductOffsetPageDynamicQuery query, CancellationToken cancellationToken)
+    public async Task<Results<Ok<OffsetPageResponse<ProductResponse>>, ProblemHttpResult>> DynamicQueryProducts
+    (
+        [FromBody] ProductOffsetPageDynamicQuery query, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -206,7 +235,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [HttpPost("query/dynamic/with-mapping")]
     [ProducesResponseType<OffsetPageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> DynamicQueryProductsWithMapping([FromBody] ProductOffsetPageDynamicWithMappingQuery query, CancellationToken cancellationToken)
+    public async Task<Results<Ok<OffsetPageResponse<DataTransferObjectResponse>>, ProblemHttpResult>> DynamicQueryProductsWithMapping
+    (
+        [FromBody] ProductOffsetPageDynamicWithMappingQuery query, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(query, cancellationToken);
 
@@ -222,7 +255,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_CREATE)]
     [ProducesResponseType<CreateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> CreateProduct([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
+    public async Task<Results<CreatedAtRoute<CreateProductResponse>, ProblemHttpResult>> CreateProduct
+    (
+        [FromBody] CreateProductCommand command, 
+        CancellationToken cancellationToken
+    )
     {
         var result = await Sender.Send(command, cancellationToken);
 
@@ -238,7 +275,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_UPDATE)]
     [ProducesResponseType<UpdateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> UpdateProduct
+    public async Task<Results<Ok<UpdateProductResponse>, ProblemHttpResult>> UpdateProduct
     (
         [FromRoute] ProductId id,
         [FromBody] UpdateProductCommand.UpdateRequestBody body,
@@ -261,7 +298,11 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_REMOVE)]
     [ProducesResponseType<RemoveProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> RemoveProduct([FromRoute] ProductId id, CancellationToken cancellationToken)
+    public async Task<Results<Ok<RemoveProductResponse>, ProblemHttpResult>> RemoveProduct
+    (
+        [FromRoute] ProductId id, 
+        CancellationToken cancellationToken
+    )
     {
         var command = new RemoveProductCommand(id);
 
