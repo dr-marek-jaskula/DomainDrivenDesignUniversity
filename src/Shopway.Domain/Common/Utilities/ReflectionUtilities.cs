@@ -39,6 +39,11 @@ public static class ReflectionUtilities
         return GetEntityTypeFromEntityIdType(entityId.GetType());
     }
 
+    public static bool IsValueObject(this Type type)
+    {
+        return type.BaseType == typeof(ValueObject);
+    }
+
     public static MethodInfo GetSingleGenericMethod(this Type baseType, string methodName, params Type[] genericType)
     {
         var methodFormBaseType = baseType

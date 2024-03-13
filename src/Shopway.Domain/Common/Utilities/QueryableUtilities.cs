@@ -81,9 +81,20 @@ public static class QueryableUtilities
             foreach (var predicate in filterEntry.Predicates)
             {
                 var memberExpression = parameter.ToMemberExpression(predicate.PropertyName);
-                var innerType = memberExpression.GetValueObjectInnerType();
-                var convertedValueForFiltering = innerType.ToConvertedExpression(predicate.Value);
-                var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerType);
+
+                Type innerTypeForValueObjectOrCurrentTypeForPrimitive;
+
+                if (memberExpression.Type.IsValueObject())
+                {
+                    innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.GetValueObjectInnerType();
+                }
+                else
+                {
+                    innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.Type;
+                }
+
+                var convertedValueForFiltering = innerTypeForValueObjectOrCurrentTypeForPrimitive.ToConvertedExpression(predicate.Value);
+                var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerTypeForValueObjectOrCurrentTypeForPrimitive);
 
                 var isBinaryOperation = Enum.TryParse(predicate.Operation, out ExpressionType expressionType);
 
