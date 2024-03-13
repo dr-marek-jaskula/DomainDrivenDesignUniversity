@@ -82,12 +82,21 @@ public static class QueryableUtilities
             {
                 var memberExpression = parameter.ToMemberExpression(predicate.PropertyName);
 
-                var innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.Type.IsValueObject() 
-                    ? memberExpression.GetValueObjectInnerType() 
-                    : memberExpression.Type;
+                Type innerTypeForValueObjectOrCurrentTypeForPrimitive;
+                Expression convertedPropertyToFilterOn;
+
+                if (memberExpression.Type.IsValueObject())
+                {
+                    innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.GetValueObjectInnerType();
+                    convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerTypeForValueObjectOrCurrentTypeForPrimitive);
+                }
+                else
+                {
+                    innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.Type;
+                    convertedPropertyToFilterOn = memberExpression;
+                }
 
                 var convertedValueForFiltering = innerTypeForValueObjectOrCurrentTypeForPrimitive.ToConvertedExpression(predicate.Value);
-                var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerTypeForValueObjectOrCurrentTypeForPrimitive);
 
                 var isBinaryOperation = Enum.TryParse(predicate.Operation, out ExpressionType expressionType);
 
