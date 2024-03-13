@@ -36,7 +36,7 @@ public static class ExpressionUtilities
         {
             if (Enum.TryParse(innerType, (string)value, true, out var result) is false)
             {
-                throw new InvalidEnumArgumentException($"Cannot parse {value} to {innerType.Name}. Available values: {Enum.GetNames(innerType).Join(',')}");
+                throw new InvalidEnumArgumentException($"Cannot parse {value} to {innerType.Name}. Available values: {Enum.GetNames(innerType).Join(", ")}");
             }
 
             return Expression.Convert(Expression.Constant(result), innerType);
