@@ -34,4 +34,9 @@ public sealed record SortByEntry
             ParsedFromString = true
         };
     }
+
+    public override string ToString()
+    {
+        return $"Property: {PropertyName}, SortDirection: {SortDirection}, SortPriority: {SortPriority}, ParsedFromString: {ParsedFromString}";
+    }
 }

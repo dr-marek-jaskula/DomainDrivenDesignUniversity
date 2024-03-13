@@ -1,4 +1,6 @@
-﻿namespace Shopway.Domain.Common.DataProcessing;
+﻿using Shopway.Domain.Common.Utilities;
+
+namespace Shopway.Domain.Common.DataProcessing;
 
 public sealed class MappingEntry
 {
@@ -37,5 +39,15 @@ public sealed class MappingEntry
         }
 
         return names;
+    }
+
+    public override string ToString()
+    {
+        if (PropertyName is not null)
+        {
+            return $"{PropertyName}";
+        }
+
+        return $"From '{From}': {string.Join(',', Properties!.Select(x => $"{x}"))}";
     }
 }

@@ -18,5 +18,10 @@ public sealed record FilterByEntry
         public required string PropertyName { get; init; }
         public required string Operation { get; init; }
         public required object Value { get; init; }
+
+        public override string ToString()
+        {
+            return $"Property: {PropertyName}, Operation: {Operation}, Value: {Value}";
+        }
     }
 }
