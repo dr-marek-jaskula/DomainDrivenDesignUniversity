@@ -15,9 +15,21 @@ public static class ExpressionUtilities
         return result;
     }
 
-    public static MemberExpression ToMemberExpression(this ParameterExpression parameter, string propertyName)
+    /// <summary>
+    /// Return a property for a parameter. Support for nested navigation like "Payment.Status"
+    /// </summary>
+    public static MemberExpression ToMemberExpression(this ParameterExpression parameter, string propertyNameOrPropertyNavigation)
     {
-        return Expression.Property(parameter, propertyName);
+        var propertyNavigations = propertyNameOrPropertyNavigation.Split('.');
+
+        var memberExpression = Expression.Property(parameter, propertyNavigations[0]);
+
+        foreach (var propertyNavigator in propertyNavigations.Skip(1))
+        {
+            memberExpression = Expression.Property(memberExpression, propertyNavigator);
+        }
+
+        return memberExpression;
     }
 
     public static Type GetValueObjectInnerType(this MemberExpression expression)
