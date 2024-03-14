@@ -21,9 +21,8 @@ public static partial class Constants
                  nameof(Orders.OrderHeader.Status),
                  nameof(Orders.OrderHeader.TotalDiscount),
                  nameof(Orders.OrderHeader.OrderLines),
-                 nameof(Orders.OrderLine.Amount),
-                 nameof(Orders.OrderLine.LineDiscount),
-                 nameof(Orders.OrderLine.ProductSummary)
+                 $"{nameof(Orders.OrderHeader.Payment)}.{nameof(Orders.OrderHeader.Payment.Status)}",
+                 $"{nameof(Orders.OrderHeader.Payment)}.{nameof(Orders.OrderHeader.Payment.CreatedBy)}"
             );
 
             public readonly static IReadOnlyCollection<string> AllowedOrderHeaderFilterOperations = AsList
