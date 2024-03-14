@@ -5,10 +5,27 @@
 /// </summary>
 public sealed record FilterByEntry
 {
+    public FilterByEntry(IList<Predicate> predicates, string propertyName, string operation, object Value)
+    {
+        if (predicates is not null)
+        {
+            Predicates = predicates;
+            return;
+        }
+
+        Predicates = [ new Predicate
+        {
+            PropertyName = propertyName,
+            Operation = operation,
+            Value = Value
+        }];
+    }
+
     /// <summary>
     /// List of predicates determines expression that is logic OR of all predicates
     /// </summary>
-    public required IList<Predicate> Predicates { get; init; }
+    public IList<Predicate> Predicates { get; init; } = [];
+
 
     /// <summary>
     /// Each predicate determines one expression
