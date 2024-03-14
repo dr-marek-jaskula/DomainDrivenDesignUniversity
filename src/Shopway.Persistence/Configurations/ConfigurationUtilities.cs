@@ -18,19 +18,19 @@ public static class ConfigurationUtilities
     public static EntityTypeBuilder<TEntity> ConfigureAuditableEntity<TEntity>(this EntityTypeBuilder<TEntity> builder, bool useUpdatedOnAsConcurrencyToken = true)
         where TEntity : class, IEntity, IAuditable
     {
-        builder.Property(o => o.CreatedBy)
+        builder.Property(entity => entity.CreatedBy)
             .HasColumnType(ColumnType.VarChar(30));
 
-        builder.Property(o => o.CreatedOn)
+        builder.Property(entity => entity.CreatedOn)
             .HasColumnType(ColumnType.DateTimeOffset(2));
 
-        builder.Property(o => o.UpdatedBy)
+        builder.Property(entity => entity.UpdatedBy)
             .HasColumnType(ColumnType.VarChar(30))
             .IsRequired(false);
 
         if (useUpdatedOnAsConcurrencyToken)
         {
-            builder.Property(o => o.UpdatedOn)
+            builder.Property(entity => entity.UpdatedOn)
                 .HasColumnType(ColumnType.DateTimeOffset(7))
                 .IsConcurrencyToken(true)
                 .IsRequired(false);
@@ -38,23 +38,28 @@ public static class ConfigurationUtilities
             return builder;
         }
 
-        builder.Property(o => o.UpdatedOn)
+        builder.Property(entity => entity.UpdatedOn)
             .HasColumnType(ColumnType.DateTimeOffset(2))
             .IsRequired(false);
 
         return builder;
     }
 
-    public static EntityTypeBuilder<TEntity> ConfigureSoftDeletableEntity<TEntity>(this EntityTypeBuilder<TEntity> builder)
+    public static EntityTypeBuilder<TEntity> ConfigureSoftDeletableEntity<TEntity>(this EntityTypeBuilder<TEntity> builder, bool addQueryFilterOnSoftDeleted = true)
         where TEntity : class, IEntity, ISoftDeletable
     {
-        builder.Property(o => o.SoftDeleted)
+        builder.Property(entity => entity.SoftDeleted)
             .HasColumnType(ColumnType.Bit)
             .HasDefaultValue(false);
 
-        builder.Property(o => o.SoftDeletedOn)
+        builder.Property(entity => entity.SoftDeletedOn)
             .HasColumnType(ColumnType.DateTimeOffset(2))
             .IsRequired(false);
+
+        if (addQueryFilterOnSoftDeleted)
+        {
+            builder.HasQueryFilter(entity => !entity.SoftDeleted);
+        }
 
         return builder;
     }
