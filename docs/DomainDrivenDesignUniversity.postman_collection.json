@@ -1607,6 +1607,105 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "ProxyQuery - Product Dynamic With Mapping Cursor3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "api-version",
+						"value": "2.0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Entity\": \"Product\",\r\n  \"Page\" : {\r\n    \"PageSize\": 5,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Like\",\r\n            \"Value\" : \"%Product%\"\r\n        },\r\n        {\r\n            \"PropertyName\" : \"CreatedBy\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"Unkn\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"CreatedOn\",\r\n        \"Price:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Revision\",\r\n         \"CreatedBy\",\r\n         \"CreatedOn\"\r\n      ]\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/proxy/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"proxy",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProxyQuery - OrderHeader Dynamic With Mapping Offset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "api-version",
+						"value": "2.0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Status\",\r\n            \"Operation\": \"Equal\",\r\n            \"Value\" : \"New\" //Enum should be here!!!!!!!!!!!!!!\r\n        }\r\n        // ,{\r\n        //     \"PropertyName\" : \"TotalDiscount\",\r\n        //     \"Operation\": \"LessThan\",\r\n        //     \"Value\" : 0.5\r\n        // }\r\n        ]\r\n      }\r\n    //   ,{\r\n    //     \"predicates\": [\r\n    //     {\r\n    //         \"PropertyName\" : \"CreatedBy\",\r\n    //         \"Operation\": \"Contains\",\r\n    //         \"Value\" : \"Unk\"\r\n    //     }\r\n    //     ]\r\n    //   }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         \"TotalDiscount\"\r\n        ,{\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\"\r\n                // ,{\r\n                //     \"From\" : \"ProductSummary\",\r\n                //     \"Properties\": [ \r\n                //         \"ProductName\",\r\n                //         \"Revision\"\r\n                //     ]\r\n                // } //THIS NOT WORKS AS WELL\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/proxy/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"proxy",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProxyQuery - OrderHeader Dynamic With Mapping Cursor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "api-version",
+						"value": "2.0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Status\",\r\n            \"Operation\": \"Equal\",\r\n            \"Value\" : \"New\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Payment.Status\",\r\n            \"Operation\": \"Equal\",\r\n            \"Value\" : \"NotReceived\"\r\n        }]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Payment.CreatedBy\",\r\n            \"Operation\": \"Like\",\r\n            \"Value\" : \"%known\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/proxy/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"proxy",
+						"query"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
