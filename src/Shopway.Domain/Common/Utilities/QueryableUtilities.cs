@@ -87,7 +87,7 @@ public static class QueryableUtilities
     public static Expression<Func<TEntity, bool>> CreateFilterExpression<TEntity>(this IList<FilterByEntry> filterEntries, ILikeProvider<TEntity>? likeProvider = null)
         where TEntity : class, IEntity
     {
-        var parameter = Expression.Parameter(typeof(TEntity));
+        var parameter = Expression.Parameter(typeof(TEntity), typeof(TEntity).Name);
         List<Expression> filterEntryExpressions = [];
 
         foreach (var filterEntry in filterEntries)
