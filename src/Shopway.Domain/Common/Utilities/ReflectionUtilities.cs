@@ -98,6 +98,11 @@ public static class ReflectionUtilities
         return false;
     }
 
+    public static bool IsEnumerableType(this Type type)
+    {
+        return type.GetInterface("IEnumerable") is not null;
+    }
+
     public static bool IsGeneric(this Type type, out Type propertyType)
     {
         if (type.IsGenericType)
@@ -112,9 +117,14 @@ public static class ReflectionUtilities
         return false;
     }
 
-    public static object GetProperty<TType>(this TType type, string propertyName)
+    public static bool HasProperty(this Type type, string propertyName)
     {
-        return typeof(TType).GetProperty(propertyName)!.GetValue(type)!;
+        return type.GetProperty(propertyName) is not null;
+    }
+
+    public static object? GetProperty<TType>(this TType type, string propertyName)
+    {
+        return typeof(TType).GetProperty(propertyName)?.GetValue(type);
     }
 
     //Without caching the delegate the use of these two methods is much slower
