@@ -1,6 +1,5 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.Utilities;
 using System.Reflection;
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
@@ -185,7 +186,7 @@ public static class QueryableUtilities
         foreach (var likeEntry in likeEntries)
         {
             var propertyName = likeEntry.Property.GetPropertyName();
-            var likeExpression = CreateLikeExpression<TEntity>(parameter, propertyName, likeEntry.LikeTerm);
+            var likeExpression = CreateLikeExpression(parameter, propertyName, likeEntry.LikeTerm);
 
             expression = expression is null 
                 ? likeExpression 
@@ -200,25 +201,23 @@ public static class QueryableUtilities
     /// <summary>
     /// Filters <paramref name="queryable"/> by applying an 'SQL LIKE' operation. Works for string properties and ValueObject with Value. 
     /// </summary>
-    public static Expression CreateLikeExpression<TEntity>(ParameterExpression parameter, string propertyName, string likeTerm)
-        where TEntity : class, IEntity
+    public static Expression CreateLikeExpression(ParameterExpression parameter, Expression property, string likeTerm)
     {
         if (likeTerm.IsNullOrEmptyOrWhiteSpace())
         {
-            throw new InvalidLikePatternException($"search pattern is null or empty for {propertyName}.");
+            throw new InvalidLikePatternException($"Search pattern is null or empty for {property}.");
         }
 
-        var memberExpression = parameter.ToMemberExpression(propertyName);
-        var convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(StringType);
+        Expression convertedPropertyToFilterOn = property.Type == StringType
+            ? property
+            : property.ConvertToObjectAndThenToGivenType(StringType);
 
-        var lambdaExpression = Expression.Lambda<Func<TEntity, string>>(convertedPropertyToFilterOn!, parameter);
+        var lambdaExpression = Expression.Lambda(convertedPropertyToFilterOn!, parameter);
 
         if (lambdaExpression is null)
         {
             throw new InvalidExpressionException();
         }
-
-        var searchTermAsExpression = ((Expression<Func<string>>)(() => likeTerm)).Body;
 
         return Expression.Call
         (
@@ -226,8 +225,17 @@ public static class QueryableUtilities
             _likeMethodInfo,
             _functions,
             lambdaExpression.Body,
-            searchTermAsExpression
+            Expression.Constant(likeTerm)
         );
+    }
+
+    /// <summary>
+    /// Filters <paramref name="queryable"/> by applying an 'SQL LIKE' operation. Works for string properties and ValueObject with Value. 
+    /// </summary>
+    public static Expression CreateLikeExpression(ParameterExpression parameter, string property, string likeTerm)
+    {
+        var memberExpression = parameter.ToMemberExpression(property);
+        return CreateLikeExpression(parameter, memberExpression, likeTerm);
     }
 
     public static IQueryable<TEntity> AddInclude<TEntity, TEntityId>(this IQueryable<TEntity> query, IncludeEntry<TEntity> includeEntry)

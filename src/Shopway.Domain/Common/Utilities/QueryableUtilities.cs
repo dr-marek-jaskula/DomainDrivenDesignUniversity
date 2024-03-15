@@ -3,15 +3,35 @@ using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
+using System.Collections.Frozen;
 using System.Data;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Reflection;
+using static Shopway.Domain.Common.DataProcessing.FilterByEntry;
+using static Shopway.Domain.Common.Utilities.ExpressionUtilities;
 using static Shopway.Domain.Constants.Constants.Type;
 
 namespace Shopway.Domain.Common.Utilities;
 
 public static class QueryableUtilities
 {
+    private static readonly FrozenDictionary<string, MethodInfo> _availableCollectionMethods = new Dictionary<string, MethodInfo>()
+    {
+        {
+            nameof(Enumerable.Any), typeof(Enumerable)
+                .GetTypeInfo()
+                .GetDeclaredMethods(nameof(Enumerable.Any))
+                .First(x => x.GetParameters().Length is 2)
+        },
+        {
+            nameof(Enumerable.All), typeof(Enumerable)
+                .GetTypeInfo()
+                .GetDeclaredMethods(nameof(Enumerable.All))
+                .First(x => x.GetParameters().Length is 2)
+        }
+    }.ToFrozenDictionary();
+
     public static IOrderedQueryable<TEntity> OrderBy<TEntity>
     (
         this IQueryable<TEntity> queryable,
@@ -69,76 +89,18 @@ public static class QueryableUtilities
     public static Expression<Func<TEntity, bool>> CreateFilterExpression<TEntity>(this IList<FilterByEntry> filterEntries, ILikeProvider<TEntity>? likeProvider = null)
         where TEntity : class, IEntity
     {
-        var parameter = Expression.Parameter(typeof(TEntity));
+        var parameter = Expression.Parameter(typeof(TEntity), typeof(TEntity).Name);
         List<Expression> filterEntryExpressions = [];
 
         foreach (var filterEntry in filterEntries)
         {
-            //We create expression that is logic OR of all provided predicates
-            Expression? filterEntryExpression = null;
-
-            foreach (var predicate in filterEntry.Predicates)
-            {
-                var memberExpression = parameter.ToMemberExpression(predicate.PropertyName);
-
-                Type innerTypeForValueObjectOrCurrentTypeForPrimitive;
-                Expression convertedPropertyToFilterOn;
-
-                if (memberExpression.Type.IsValueObject())
-                {
-                    innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.GetValueObjectInnerType();
-                    convertedPropertyToFilterOn = memberExpression.ConvertInnerValueToInnerTypeAndObject(innerTypeForValueObjectOrCurrentTypeForPrimitive);
-                }
-                else
-                {
-                    innerTypeForValueObjectOrCurrentTypeForPrimitive = memberExpression.Type;
-                    convertedPropertyToFilterOn = memberExpression;
-                }
-
-                var convertedValueForFiltering = innerTypeForValueObjectOrCurrentTypeForPrimitive.ToConvertedExpression(predicate.Value);
-
-                var isBinaryOperation = Enum.TryParse(predicate.Operation, out ExpressionType expressionType);
-
-                if (isBinaryOperation)
-                {
-                    var newBinary = Expression.MakeBinary(expressionType, convertedPropertyToFilterOn, convertedValueForFiltering);
-
-                    filterEntryExpression = filterEntryExpression is null
-                        ? newBinary
-                        : Expression.MakeBinary(ExpressionType.OrElse, filterEntryExpression, newBinary);
-
-                    continue;
-                }
-
-                if (predicate.Operation == "Like")
-                {
-                    if (likeProvider is null)
-                    {
-                        throw new ArgumentNullException(nameof(likeProvider), "When Like operation is required, than like provider must not be null");
-                    }
-
-                    var newLike = likeProvider.CreateLikeExpression(parameter, predicate.PropertyName, $"{predicate.Value}");
-
-                    filterEntryExpression = filterEntryExpression is null
-                        ? newLike
-                        : Expression.OrElse(filterEntryExpression, newLike);
-
-                    continue;
-                }
-
-                var method = StringType.GetMethod(predicate.Operation, [StringType]);
-                var newMethodCallExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(predicate.Value));
-
-                filterEntryExpression = filterEntryExpression is null
-                    ? newMethodCallExpression
-                    : Expression.OrElse(filterEntryExpression, newMethodCallExpression);
-            }
-
+            var filterEntryExpression = CreateFilterEntryExpression(likeProvider, parameter, filterEntry);
             filterEntryExpressions.Add(filterEntryExpression!);
         }
 
         //We create expression that is logic AND of all provided Filter Entries
         Expression? expression = null;
+
         foreach (var filterEntryExpression in filterEntryExpressions)
         {
             expression = expression is null
@@ -147,6 +109,90 @@ public static class QueryableUtilities
         }
 
         return Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
+    }
+
+    private static Expression? CreateFilterEntryExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, FilterByEntry filterEntry) 
+        where TEntity : class, IEntity
+    {
+        //We create expression that is logic OR of all provided predicates
+        Expression? filterEntryExpression = null;
+
+        foreach (var predicate in filterEntry.Predicates)
+        {
+            int operationSeperatorIndex = predicate.Operation.IndexOf('.');
+            var propertyOperation = predicate.Operation[(operationSeperatorIndex + 1)..];
+
+            bool notCollectionOperation = operationSeperatorIndex is -1;
+
+            if (notCollectionOperation)
+            {
+                var convertedMember = parameter
+                    .ToMemberExpression(predicate.PropertyName)
+                    .ToConvertedMember();
+
+                var predicateExpression = CreatePredicateExpression(likeProvider, parameter, predicate, convertedMember, propertyOperation);
+
+                filterEntryExpression = filterEntryExpression is null
+                    ? predicateExpression
+                    : Expression.OrElse(filterEntryExpression, predicateExpression);
+
+                continue;
+            }
+
+            int collectionPropertySeparatorIndex = predicate.PropertyName.LastIndexOf('.');
+            var entityCollectionProperty = predicate.PropertyName[..collectionPropertySeparatorIndex];
+            var collectionItemProperty = predicate.PropertyName[(collectionPropertySeparatorIndex + 1)..];
+
+            var member = parameter.ToMemberExpression(entityCollectionProperty);
+            var colletionItemType = member.Type.GenericTypeArguments[0];
+
+            var collectionOperation = predicate.Operation[..operationSeperatorIndex];
+
+            var methodInfoForCollectionFilter = _availableCollectionMethods[collectionOperation]
+                .MakeGenericMethod(colletionItemType);
+
+            var collectionParameter = Expression.Parameter(colletionItemType, colletionItemType.Name);
+
+            var collcetionConvertedMember = collectionParameter
+                .ToMemberExpression(collectionItemProperty)
+                .ToConvertedMember();
+
+            var collectionPredicateExpression = CreatePredicateExpression(likeProvider, collectionParameter, predicate, collcetionConvertedMember, propertyOperation);
+
+            var lambdaExpression = Expression.Lambda(collectionPredicateExpression, collectionParameter);
+            var entityPredicateExpression = Expression.Call(null, methodInfoForCollectionFilter, member, lambdaExpression);
+
+            filterEntryExpression = filterEntryExpression is null
+                ? entityPredicateExpression
+                : Expression.OrElse(filterEntryExpression, entityPredicateExpression);
+        }
+
+        return filterEntryExpression;
+    }
+
+    private static Expression CreatePredicateExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, Predicate predicate, ConvertedMember convertedMember, string propertyOperation) 
+        where TEntity : class, IEntity
+    {
+        var isBinaryOperation = Enum.TryParse(propertyOperation, out ExpressionType expressionType);
+
+        if (isBinaryOperation)
+        {
+            var convertedValueForFiltering = convertedMember.InnerTypeForValueObjectOrCurrentTypeForPrimitive.ToConvertedExpression(predicate.Value);
+            return Expression.MakeBinary(expressionType, convertedMember.ConvertedPropertyToFilterOn, convertedValueForFiltering);
+        }
+
+        if (propertyOperation is "Like")
+        {
+            if (likeProvider is null)
+            {
+                throw new ArgumentNullException(nameof(likeProvider), "When Like operation is required, than like provider must not be null");
+            }
+
+            return likeProvider.CreateLikeExpression(parameter, convertedMember.ConvertedPropertyToFilterOn, $"{predicate.Value}");
+        }
+
+        var method = StringType.GetMethod(propertyOperation, [StringType]);
+        return Expression.Call(convertedMember.ConvertedPropertyToFilterOn, method!, Expression.Constant($"{predicate.Value}"));
     }
 
     public static IQueryable<TEntity> Page<TEntity>
