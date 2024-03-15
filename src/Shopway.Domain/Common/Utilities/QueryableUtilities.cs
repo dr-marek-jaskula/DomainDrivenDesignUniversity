@@ -3,7 +3,6 @@ using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Orders.ValueObjects;
 using System.Collections.Frozen;
 using System.Data;
 using System.Linq.Dynamic.Core;
@@ -91,28 +90,23 @@ public static class QueryableUtilities
         where TEntity : class, IEntity
     {
         var parameter = Expression.Parameter(typeof(TEntity), typeof(TEntity).Name);
-        List<Expression> filterEntryExpressions = [];
-
-        foreach (var filterEntry in filterEntries)
-        {
-            var filterEntryExpression = CreateFilterEntryExpression(likeProvider, parameter, filterEntry);
-            filterEntryExpressions.Add(filterEntryExpression!);
-        }
 
         //We create expression that is logic AND of all provided Filter Entries
         Expression? expression = null;
 
-        foreach (var filterEntryExpression in filterEntryExpressions)
+        foreach (var filterEntry in filterEntries)
         {
+            var filterEntryExpression = CreateFilterEntryExpression(likeProvider, parameter, filterEntry);
+
             expression = expression is null
-                    ? filterEntryExpression
-                    : Expression.AndAlso(expression!, filterEntryExpression);
+                ? filterEntryExpression
+                : Expression.AndAlso(expression!, filterEntryExpression);
         }
 
         return Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
     }
 
-    private static Expression? CreateFilterEntryExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, FilterByEntry filterEntry) 
+    private static Expression CreateFilterEntryExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, FilterByEntry filterEntry) 
         where TEntity : class, IEntity
     {
         //We create expression that is logic OR of all provided predicates
@@ -169,7 +163,7 @@ public static class QueryableUtilities
                 : Expression.OrElse(filterEntryExpression, entityPredicateExpression);
         }
 
-        return filterEntryExpression;
+        return filterEntryExpression!;
     }
 
     private static Expression CreatePredicateExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, Predicate predicate, ConvertedMember convertedMember, string propertyOperation) 
