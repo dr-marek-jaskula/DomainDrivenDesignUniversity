@@ -26,12 +26,9 @@ public static class ExpressionUtilities
 
         foreach (var propertyNavigator in propertyNavigations.Skip(1))
         {
-            if (stopOnCollectionEncounter)
+            if (stopOnCollectionEncounter && memberExpression.Type.IsEnumerableType())
             {
-                if (memberExpression.Type.IsEnumerableType())
-                {
-                    break;
-                }
+                break;
             }
 
             memberExpression = Expression.Property(memberExpression, propertyNavigator);
