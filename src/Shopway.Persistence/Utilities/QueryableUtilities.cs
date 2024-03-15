@@ -219,15 +219,13 @@ public static class QueryableUtilities
             throw new InvalidExpressionException();
         }
 
-        var searchTermAsExpression = ((Expression<Func<string>>)(() => likeTerm)).Body;
-
         return Expression.Call
         (
             null,
             _likeMethodInfo,
             _functions,
             lambdaExpression.Body,
-            searchTermAsExpression
+            Expression.Constant(likeTerm)
         );
     }
 

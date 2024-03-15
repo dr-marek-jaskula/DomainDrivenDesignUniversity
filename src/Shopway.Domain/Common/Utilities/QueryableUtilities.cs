@@ -149,7 +149,7 @@ public static class QueryableUtilities
                 methodInfoForCollectionFilter = _availableCollectionMethods[collectionOperation]
                     .MakeGenericMethod(colletionItemType);
 
-                collectionParameter = Expression.Parameter(colletionItemType);
+                collectionParameter = Expression.Parameter(colletionItemType, colletionItemType.Name);
 
                 var convertedMember = collectionParameter
                     .ToMemberExpression(collectionItemProperty)
