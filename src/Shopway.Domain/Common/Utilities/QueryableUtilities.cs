@@ -127,9 +127,6 @@ public static class QueryableUtilities
             MemberExpression member = null;
             MethodInfo methodInfoForCollectionFilter = null;
 
-            bool isBinaryOperation;
-            ExpressionType expressionType;
-
             int operationSeperatorIndex = predicate.Operation.IndexOf('.');
             var propertyOperation = predicate.Operation[(operationSeperatorIndex + 1)..];
 
@@ -157,9 +154,6 @@ public static class QueryableUtilities
 
                 innerTypeForValueObjectOrCurrentTypeForPrimitive = convertedMember.InnerTypeForValueObjectOrCurrentTypeForPrimitive;
                 convertedPropertyToFilterOn = convertedMember.ConvertedPropertyToFilterOn;
-
-                isBinaryOperation = Enum.TryParse(propertyOperation, out ExpressionType expressionTypeCollection);
-                expressionType = expressionTypeCollection;
             }
             else
             {
@@ -169,10 +163,9 @@ public static class QueryableUtilities
 
                 innerTypeForValueObjectOrCurrentTypeForPrimitive = convertedMember.InnerTypeForValueObjectOrCurrentTypeForPrimitive;
                 convertedPropertyToFilterOn = convertedMember.ConvertedPropertyToFilterOn;
-
-                isBinaryOperation = Enum.TryParse(predicate.Operation, out ExpressionType expressionTypeReference);
-                expressionType = expressionTypeReference;
             }
+
+            var isBinaryOperation = Enum.TryParse(propertyOperation, out ExpressionType expressionType);
 
             if (isBinaryOperation)
             {
@@ -180,7 +173,7 @@ public static class QueryableUtilities
                 predicateExpression = Expression.MakeBinary(expressionType, convertedPropertyToFilterOn, convertedValueForFiltering);
             }
 
-            if (predicate.Operation.Contains("Like"))
+            if (propertyOperation is "Like")
             {
                 if (likeProvider is null)
                 {
