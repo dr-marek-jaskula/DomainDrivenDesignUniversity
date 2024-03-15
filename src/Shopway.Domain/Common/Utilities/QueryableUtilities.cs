@@ -92,16 +92,13 @@ public static class QueryableUtilities
 
         foreach (var filterEntry in filterEntries)
         {
-            //We create expression that is logic OR of all provided predicates
-            Expression? filterEntryExpression = null;
-
-            filterEntryExpression = CreateFilterEntryExpression(likeProvider, parameter, filterEntry, filterEntryExpression);
-
+            var filterEntryExpression = CreateFilterEntryExpression(likeProvider, parameter, filterEntry);
             filterEntryExpressions.Add(filterEntryExpression!);
         }
 
         //We create expression that is logic AND of all provided Filter Entries
         Expression? expression = null;
+
         foreach (var filterEntryExpression in filterEntryExpressions)
         {
             expression = expression is null
@@ -112,8 +109,12 @@ public static class QueryableUtilities
         return Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
     }
 
-    private static Expression? CreateFilterEntryExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, FilterByEntry filterEntry, Expression? filterEntryExpression) where TEntity : class, IEntity
+    private static Expression? CreateFilterEntryExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, FilterByEntry filterEntry) 
+        where TEntity : class, IEntity
     {
+        //We create expression that is logic OR of all provided predicates
+        Expression? filterEntryExpression = null;
+
         foreach (var predicate in filterEntry.Predicates)
         {
             //We create expression for current predicate
