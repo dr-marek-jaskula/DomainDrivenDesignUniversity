@@ -34,7 +34,8 @@ public static partial class Constants
                  Like,
                  nameof(string.StartsWith),
                  nameof(string.EndsWith),
-                 "Any.Like"
+                 $"Any.{Like}",
+                 $"Any.{nameof(string.Contains)}"
             )
                 .Concat(GetNamesOf<ExpressionType>())
                 .Concat(GetNamesOf<ExpressionType>().Select(x => $"Any.{x}"))

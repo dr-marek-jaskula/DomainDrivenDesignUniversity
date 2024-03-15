@@ -130,6 +130,9 @@ public static class QueryableUtilities
             bool isBinaryOperation;
             ExpressionType expressionType;
 
+            int operationSeperatorIndex = predicate.Operation.IndexOf('.');
+            var propertyOperation = predicate.Operation[(operationSeperatorIndex + 1)..];
+
             var isFilterOnColletionElements = predicate.Operation.ContainsAny(_availableCollectionMethods.Keys);
 
             if (isFilterOnColletionElements)
@@ -141,9 +144,7 @@ public static class QueryableUtilities
                 member = parameter.ToMemberExpression(entityCollectionProperty);
                 var colletionItemType = member.Type.GenericTypeArguments[0];
 
-                int operationSeperatorIndex = predicate.Operation.IndexOf('.');
                 var collectionOperation = predicate.Operation[..operationSeperatorIndex];
-                var propertyOperation = predicate.Operation[(operationSeperatorIndex + 1)..];
 
                 methodInfoForCollectionFilter = _availableCollectionMethods[collectionOperation]
                     .MakeGenericMethod(colletionItemType);
@@ -195,8 +196,8 @@ public static class QueryableUtilities
 
             if (predicateExpression is null)
             {
-                var method = StringType.GetMethod(predicate.Operation, [StringType]);
-                predicateExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant(predicate.Value));
+                var method = StringType.GetMethod(propertyOperation, [StringType]);
+                predicateExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant($"{predicate.Value}"));
             }
 
             if (isFilterOnColletionElements)
