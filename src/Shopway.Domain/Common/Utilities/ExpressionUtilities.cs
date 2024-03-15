@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq.Expressions;
 using System.Reflection;
 using static Shopway.Domain.Common.BaseTypes.ValueObject;
@@ -30,6 +31,18 @@ public static class ExpressionUtilities
         }
 
         return memberExpression;
+    }
+
+    public static (Type, Expression) GetConvertedMemberWithTypeIfMemberIsValueObject(this MemberExpression member)
+    {
+        if (member.Type.IsValueObject())
+        {
+            var innerTypeForValueObjectOrCurrentTypeForPrimitive = member.GetValueObjectInnerType();
+            var convertedPropertyToFilterOn = member.ConvertInnerValueToInnerTypeAndObject(innerTypeForValueObjectOrCurrentTypeForPrimitive);
+            return (innerTypeForValueObjectOrCurrentTypeForPrimitive, convertedPropertyToFilterOn);
+        }
+
+        return (member.Type, member);
     }
 
     public static Type GetValueObjectInnerType(this MemberExpression expression)

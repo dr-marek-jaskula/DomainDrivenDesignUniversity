@@ -1,6 +1,7 @@
 ﻿using Shopway.Domain.Common.Exceptions;
 using Shopway.Domain.Common.Utilities;
 using System.Buffers;
+using System.Collections.Immutable;
 
 namespace Shopway.Domain.Common.Utilities;
 
@@ -52,6 +53,32 @@ public static class StringUtilities
         }
 
         return true;
+    }
+
+    public static bool ContainsAny(this string input, params string[] strings)
+    {
+        foreach (string @string in strings)
+        {
+            if (input.Contains(@string))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool ContainsAny(this string input, ImmutableArray<string> strings)
+    {
+        foreach (string @string in strings)
+        {
+            if (input.Contains(@string))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static bool NotContains(this string input, string value)
