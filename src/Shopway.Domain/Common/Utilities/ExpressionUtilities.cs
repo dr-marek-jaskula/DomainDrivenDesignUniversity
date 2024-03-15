@@ -18,7 +18,7 @@ public static class ExpressionUtilities
     /// <summary>
     /// Return a property for a parameter. Support for nested navigation like "Payment.Status"
     /// </summary>
-    public static MemberExpression ToMemberExpression(this ParameterExpression parameter, string propertyNameOrPropertyNavigation)
+    public static MemberExpression ToMemberExpression(this ParameterExpression parameter, string propertyNameOrPropertyNavigation, bool stopOnCollectionEncounter = false)
     {
         var propertyNavigations = propertyNameOrPropertyNavigation.Split('.');
 
@@ -26,6 +26,14 @@ public static class ExpressionUtilities
 
         foreach (var propertyNavigator in propertyNavigations.Skip(1))
         {
+            if (stopOnCollectionEncounter)
+            {
+                if (memberExpression.Type.IsEnumerableType())
+                {
+                    break;
+                }
+            }
+
             memberExpression = Expression.Property(memberExpression, propertyNavigator);
         }
 

@@ -25,7 +25,10 @@ public static partial class Constants
                  $"{nameof(Orders.OrderHeader.Payment)}.{nameof(Orders.OrderHeader.Payment.CreatedBy)}",
                  $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderHeader.OrderLines.Count)}",
                  $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.Amount)}",
-                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.CreatedBy)}"
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.CreatedBy)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.ProductSummary)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.ProductSummary)}.{nameof(Orders.OrderLine.ProductSummary.ProductName)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.ProductSummary)}.{nameof(Orders.OrderLine.ProductSummary.Price)}"
             );
 
             public readonly static IReadOnlyCollection<string> AllowedOrderHeaderFilterOperations = AsList

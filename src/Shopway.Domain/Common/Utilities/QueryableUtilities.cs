@@ -3,6 +3,7 @@ using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Orders.ValueObjects;
 using System.Collections.Frozen;
 using System.Data;
 using System.Linq.Dynamic.Core;
@@ -139,11 +140,12 @@ public static class QueryableUtilities
                 continue;
             }
 
-            int collectionPropertySeparatorIndex = predicate.PropertyName.LastIndexOf('.');
-            var entityCollectionProperty = predicate.PropertyName[..collectionPropertySeparatorIndex];
-            var collectionItemProperty = predicate.PropertyName[(collectionPropertySeparatorIndex + 1)..];
+            var member = parameter.ToMemberExpression(predicate.PropertyName, true);
+            var memberName = member.Member.Name;
+            var memberNameEndIndex = predicate.PropertyName.IndexOf(memberName) + memberName.Length;
 
-            var member = parameter.ToMemberExpression(entityCollectionProperty);
+            var collectionItemProperty = predicate.PropertyName[(memberNameEndIndex + 1)..];
+
             var colletionItemType = member.Type.GenericTypeArguments[0];
 
             var collectionOperation = predicate.Operation[..operationSeperatorIndex];
