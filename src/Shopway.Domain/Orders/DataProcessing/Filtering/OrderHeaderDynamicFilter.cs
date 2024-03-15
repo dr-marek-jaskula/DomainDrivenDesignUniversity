@@ -21,10 +21,6 @@ public sealed record OrderHeaderDynamicFilter : IDynamicFilter<OrderHeader>
             return queryable;
         }
 
-        //return queryable
-        //    .Where(x => x.OrderLines.Count > 1) //one
-        //    .Where(x => x.OrderLines.Any(y => (int)(object)y.Amount > 9)); //two
-
         return queryable
             .Where(FilterProperties.CreateFilterExpression(likeProvider));
     }

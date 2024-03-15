@@ -24,7 +24,8 @@ public static partial class Constants
                  $"{nameof(Orders.OrderHeader.Payment)}.{nameof(Orders.OrderHeader.Payment.Status)}",
                  $"{nameof(Orders.OrderHeader.Payment)}.{nameof(Orders.OrderHeader.Payment.CreatedBy)}",
                  $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderHeader.OrderLines.Count)}",
-                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.Amount)}"
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.Amount)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(Orders.OrderLine.CreatedBy)}"
             );
 
             public readonly static IReadOnlyCollection<string> AllowedOrderHeaderFilterOperations = AsList
@@ -34,7 +35,8 @@ public static partial class Constants
                  nameof(string.StartsWith),
                  nameof(string.EndsWith),
                  "Any.GreaterThan",
-                 "All.GreaterThan"
+                 "All.GreaterThan",
+                 "Any.Like"
             )
                 .Concat(GetNamesOf<ExpressionType>())
                 .ToList()
