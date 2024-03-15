@@ -205,7 +205,7 @@ public static class QueryableUtilities
     {
         if (likeTerm.IsNullOrEmptyOrWhiteSpace())
         {
-            throw new InvalidLikePatternException($"search pattern is null or empty for {property}.");
+            throw new InvalidLikePatternException($"Search pattern is null or empty for {property}.");
         }
 
         Expression convertedPropertyToFilterOn = property.Type == StringType
