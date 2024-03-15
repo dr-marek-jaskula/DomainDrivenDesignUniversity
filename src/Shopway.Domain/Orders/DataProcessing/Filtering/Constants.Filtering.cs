@@ -34,11 +34,11 @@ public static partial class Constants
                  Like,
                  nameof(string.StartsWith),
                  nameof(string.EndsWith),
-                 "Any.GreaterThan",
-                 "All.GreaterThan",
                  "Any.Like"
             )
                 .Concat(GetNamesOf<ExpressionType>())
+                .Concat(GetNamesOf<ExpressionType>().Select(x => $"Any.{x}"))
+                .Concat(GetNamesOf<ExpressionType>().Select(x => $"All.{x}"))
                 .ToList()
                 .AsReadOnly();
         }

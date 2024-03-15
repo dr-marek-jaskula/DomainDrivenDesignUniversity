@@ -38,7 +38,7 @@ public static class ExpressionUtilities
         if (member.Type.IsValueObject())
         {
             var innerTypeForValueObjectOrCurrentTypeForPrimitive = member.GetValueObjectInnerType();
-            var convertedPropertyToFilterOn = member.ConvertInnerValueToInnerTypeAndObject(innerTypeForValueObjectOrCurrentTypeForPrimitive);
+            var convertedPropertyToFilterOn = member.ConvertToObjectAndThenToGivenType(innerTypeForValueObjectOrCurrentTypeForPrimitive);
             return (innerTypeForValueObjectOrCurrentTypeForPrimitive, convertedPropertyToFilterOn);
         }
 
@@ -74,11 +74,11 @@ public static class ExpressionUtilities
     /// Convert to ((innerType)(object)property), what is required for value converter approach
     /// </summary>
     /// <param name="property"></param>
-    /// <param name="innerType"></param>
+    /// <param name="providedType"></param>
     /// <returns></returns>
-    public static Expression ConvertInnerValueToInnerTypeAndObject(this MemberExpression property, Type innerType)
+    public static Expression ConvertToObjectAndThenToGivenType(this Expression property, Type providedType)
     {
-        return Expression.Convert(Expression.Convert(property, typeof(object)), innerType);
+        return Expression.Convert(Expression.Convert(property, typeof(object)), providedType);
     }
 
     public static Expression<Func<TType, bool>> Or<TType>(params Expression<Func<TType, bool>>[] expressions)

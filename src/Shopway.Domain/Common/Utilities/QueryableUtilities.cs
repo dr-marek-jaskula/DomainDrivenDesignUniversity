@@ -179,14 +179,18 @@ public static class QueryableUtilities
                 predicateExpression = Expression.MakeBinary(expressionType, convertedPropertyToFilterOn, convertedValueForFiltering);
             }
 
-            if (predicate.Operation == "Like")
+            if (predicate.Operation.Contains("Like"))
             {
                 if (likeProvider is null)
                 {
                     throw new ArgumentNullException(nameof(likeProvider), "When Like operation is required, than like provider must not be null");
                 }
 
-                predicateExpression = likeProvider.CreateLikeExpression(parameter, predicate.PropertyName, $"{predicate.Value}");
+                var likeParameter = isFilterOnColletionElements
+                    ? collectionParameter
+                    : parameter;
+
+                predicateExpression = likeProvider.CreateLikeExpression(likeParameter!, convertedPropertyToFilterOn, $"{predicate.Value}");
             }
 
             if (predicateExpression is null)

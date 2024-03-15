@@ -14,8 +14,13 @@ public sealed class LikeProvider<TEntity> : ILikeProvider<TEntity>
         return queryable.Like(likeEntries);
     }
 
+    public Expression CreateLikeExpression(ParameterExpression parameter, Expression property, string likeTerm)
+    {
+        return QueryableUtilities.CreateLikeExpression(parameter, property, likeTerm);
+    }
+
     public Expression CreateLikeExpression(ParameterExpression parameter, string property, string likeTerm)
     {
-        return QueryableUtilities.CreateLikeExpression<TEntity>(parameter, property, likeTerm);
+        return QueryableUtilities.CreateLikeExpression(parameter, property, likeTerm);
     }
 }
