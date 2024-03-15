@@ -8,6 +8,8 @@ using System.Data;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection;
+using static Shopway.Domain.Common.DataProcessing.FilterByEntry;
+using static Shopway.Domain.Common.Utilities.ExpressionUtilities;
 using static Shopway.Domain.Constants.Constants.Type;
 
 namespace Shopway.Domain.Common.Utilities;
@@ -117,94 +119,80 @@ public static class QueryableUtilities
 
         foreach (var predicate in filterEntry.Predicates)
         {
-            //We create expression for current predicate
-            Expression? predicateExpression = null;
-
-            Type innerTypeForValueObjectOrCurrentTypeForPrimitive;
-            Expression convertedPropertyToFilterOn;
-
-            ParameterExpression collectionParameter = null;
-            MemberExpression member = null;
-            MethodInfo methodInfoForCollectionFilter = null;
-
             int operationSeperatorIndex = predicate.Operation.IndexOf('.');
             var propertyOperation = predicate.Operation[(operationSeperatorIndex + 1)..];
 
-            var isFilterOnColletionElements = predicate.Operation.ContainsAny(_availableCollectionMethods.Keys);
+            bool notCollectionOperation = operationSeperatorIndex is -1;
 
-            if (isFilterOnColletionElements)
-            {
-                int collectionPropertySeparatorIndex = predicate.PropertyName.LastIndexOf('.');
-                var entityCollectionProperty = predicate.PropertyName[..collectionPropertySeparatorIndex];
-                var collectionItemProperty = predicate.PropertyName[(collectionPropertySeparatorIndex + 1)..];
-
-                member = parameter.ToMemberExpression(entityCollectionProperty);
-                var colletionItemType = member.Type.GenericTypeArguments[0];
-
-                var collectionOperation = predicate.Operation[..operationSeperatorIndex];
-
-                methodInfoForCollectionFilter = _availableCollectionMethods[collectionOperation]
-                    .MakeGenericMethod(colletionItemType);
-
-                collectionParameter = Expression.Parameter(colletionItemType, colletionItemType.Name);
-
-                var convertedMember = collectionParameter
-                    .ToMemberExpression(collectionItemProperty)
-                    .GetConvertedMemberWithTypeIfMemberIsValueObject();
-
-                innerTypeForValueObjectOrCurrentTypeForPrimitive = convertedMember.InnerTypeForValueObjectOrCurrentTypeForPrimitive;
-                convertedPropertyToFilterOn = convertedMember.ConvertedPropertyToFilterOn;
-            }
-            else
+            if (notCollectionOperation)
             {
                 var convertedMember = parameter
                     .ToMemberExpression(predicate.PropertyName)
-                    .GetConvertedMemberWithTypeIfMemberIsValueObject();
+                    .ToConvertedMember();
 
-                innerTypeForValueObjectOrCurrentTypeForPrimitive = convertedMember.InnerTypeForValueObjectOrCurrentTypeForPrimitive;
-                convertedPropertyToFilterOn = convertedMember.ConvertedPropertyToFilterOn;
+                var predicateExpression = CreatePredicateExpression(likeProvider, parameter, predicate, convertedMember, propertyOperation);
+
+                filterEntryExpression = filterEntryExpression is null
+                    ? predicateExpression
+                    : Expression.OrElse(filterEntryExpression, predicateExpression);
+
+                continue;
             }
 
-            var isBinaryOperation = Enum.TryParse(propertyOperation, out ExpressionType expressionType);
+            int collectionPropertySeparatorIndex = predicate.PropertyName.LastIndexOf('.');
+            var entityCollectionProperty = predicate.PropertyName[..collectionPropertySeparatorIndex];
+            var collectionItemProperty = predicate.PropertyName[(collectionPropertySeparatorIndex + 1)..];
 
-            if (isBinaryOperation)
-            {
-                var convertedValueForFiltering = innerTypeForValueObjectOrCurrentTypeForPrimitive.ToConvertedExpression(predicate.Value);
-                predicateExpression = Expression.MakeBinary(expressionType, convertedPropertyToFilterOn, convertedValueForFiltering);
-            }
+            var member = parameter.ToMemberExpression(entityCollectionProperty);
+            var colletionItemType = member.Type.GenericTypeArguments[0];
 
-            if (propertyOperation is "Like")
-            {
-                if (likeProvider is null)
-                {
-                    throw new ArgumentNullException(nameof(likeProvider), "When Like operation is required, than like provider must not be null");
-                }
+            var collectionOperation = predicate.Operation[..operationSeperatorIndex];
 
-                var likeParameter = isFilterOnColletionElements
-                    ? collectionParameter
-                    : parameter;
+            var methodInfoForCollectionFilter = _availableCollectionMethods[collectionOperation]
+                .MakeGenericMethod(colletionItemType);
 
-                predicateExpression = likeProvider.CreateLikeExpression(likeParameter!, convertedPropertyToFilterOn, $"{predicate.Value}");
-            }
+            var collectionParameter = Expression.Parameter(colletionItemType, colletionItemType.Name);
 
-            if (predicateExpression is null)
-            {
-                var method = StringType.GetMethod(propertyOperation, [StringType]);
-                predicateExpression = Expression.Call(convertedPropertyToFilterOn, method!, Expression.Constant($"{predicate.Value}"));
-            }
+            var collcetionConvertedMember = collectionParameter
+                .ToMemberExpression(collectionItemProperty)
+                .ToConvertedMember();
 
-            if (isFilterOnColletionElements)
-            {
-                var lambdaExpression = Expression.Lambda(predicateExpression, collectionParameter!);
-                predicateExpression = Expression.Call(null, methodInfoForCollectionFilter!, member!, lambdaExpression);
-            }
+            var collectionPredicateExpression = CreatePredicateExpression(likeProvider, collectionParameter, predicate, collcetionConvertedMember, propertyOperation);
+
+            var lambdaExpression = Expression.Lambda(collectionPredicateExpression, collectionParameter);
+            var entityPredicateExpression = Expression.Call(null, methodInfoForCollectionFilter, member, lambdaExpression);
 
             filterEntryExpression = filterEntryExpression is null
-                ? predicateExpression
-                : Expression.OrElse(filterEntryExpression, predicateExpression);
+                ? entityPredicateExpression
+                : Expression.OrElse(filterEntryExpression, entityPredicateExpression);
         }
 
         return filterEntryExpression;
+    }
+
+    private static Expression CreatePredicateExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, Predicate predicate, ConvertedMember convertedMember, string propertyOperation) 
+        where TEntity : class, IEntity
+    {
+        var isBinaryOperation = Enum.TryParse(propertyOperation, out ExpressionType expressionType);
+
+        if (isBinaryOperation)
+        {
+            var convertedValueForFiltering = convertedMember.InnerTypeForValueObjectOrCurrentTypeForPrimitive.ToConvertedExpression(predicate.Value);
+            return Expression.MakeBinary(expressionType, convertedMember.ConvertedPropertyToFilterOn, convertedValueForFiltering);
+        }
+
+        if (propertyOperation is "Like")
+        {
+            if (likeProvider is null)
+            {
+                throw new ArgumentNullException(nameof(likeProvider), "When Like operation is required, than like provider must not be null");
+            }
+
+            return likeProvider.CreateLikeExpression(parameter, convertedMember.ConvertedPropertyToFilterOn, $"{predicate.Value}");
+        }
+
+        var method = StringType.GetMethod(propertyOperation, [StringType]);
+        return Expression.Call(convertedMember.ConvertedPropertyToFilterOn, method!, Expression.Constant($"{predicate.Value}"));
     }
 
     public static IQueryable<TEntity> Page<TEntity>
