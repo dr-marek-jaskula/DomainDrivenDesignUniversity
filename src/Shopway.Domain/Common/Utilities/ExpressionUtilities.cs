@@ -33,7 +33,7 @@ public static class ExpressionUtilities
         return memberExpression;
     }
 
-    public static (Type, Expression) GetConvertedMemberWithTypeIfMemberIsValueObject(this MemberExpression member)
+    public static (Type InnerTypeForValueObjectOrCurrentTypeForPrimitive, Expression ConvertedPropertyToFilterOn) GetConvertedMemberWithTypeIfMemberIsValueObject(this MemberExpression member)
     {
         if (member.Type.IsValueObject())
         {
