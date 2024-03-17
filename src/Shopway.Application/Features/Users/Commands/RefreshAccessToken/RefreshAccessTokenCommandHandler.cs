@@ -1,0 +1,65 @@
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Utilities;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Users;
+using Shopway.Domain.Users.ValueObjects;
+using static Shopway.Domain.Users.Errors.DomainErrors.PasswordOrEmailError;
+
+namespace Shopway.Application.Features.Users.Commands.RefreshAccessToken;
+
+internal sealed class RefreshAccessTokenCommandHandler
+(
+    IUserRepository userRepository,
+    IJwtProvider jwtProvider,
+    IValidator validator
+)
+    : ICommandHandler<RefreshAccessTokenCommand, AccessTokenResponse>
+{
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IJwtProvider _jwtProvider = jwtProvider;
+    private readonly IValidator _validator = validator;
+
+    public async Task<IResult<AccessTokenResponse>> Handle(RefreshAccessTokenCommand command, CancellationToken cancellationToken)
+    {
+        ValidationResult<RefreshToken> refreshToken = RefreshToken.Create(command.RefreshToken);
+        var emailClaim = _jwtProvider.GetClaimFromExpiredToken(command.AccessToken, nameof(Email));
+        var email = Email.Create(emailClaim.Value?.Value!);
+
+        _validator
+            .Validate(refreshToken)
+            .Validate(email);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<AccessTokenResponse>();
+        }
+
+        User? user = await _userRepository
+            .GetByEmailAsync(email.Value, cancellationToken);
+
+        _validator
+            .If(user is null, thenError: InvalidPasswordOrEmail);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<AccessTokenResponse>();
+        }
+
+        var accessTokenResult = _jwtProvider.GenerateJwt(user!);
+        var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
+
+        _validator
+            .Validate(refreshTokenResult);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<AccessTokenResponse>();
+        }
+
+        user!.RefreshToken = refreshTokenResult.Value;
+
+        return accessTokenResult
+            .ToResult();
+    }
+}

@@ -1,5 +1,4 @@
-﻿using Shopway.Application.Features.Users.Commands.LogUser;
-using Shopway.Application.Features.Users.Commands.RegisterUser;
+﻿using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
@@ -13,11 +12,6 @@ public static class UserMapping
     public static RegisterUserResponse ToCreateResponse(this User userToCreate)
     {
         return new RegisterUserResponse(userToCreate.Id.Value);
-    }
-
-    public static LogUserResponse ToLogResponse(this AccessTokenResult accessTokenResult)
-    {
-        return new LogUserResponse(accessTokenResult.AccessToken, accessTokenResult.ExpiresInMinutes, accessTokenResult.RefreshToken, accessTokenResult.TokenType);
     }
 
     public static UserResponse ToResponse(this User user)

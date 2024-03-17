@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Shopway.Application.Features.Users.Commands;
 using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
 using Shopway.Application.Features.Users.Commands.LogUser;
+using Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Application.Features.Users.Commands.RemovePermissionFromRole;
 using Shopway.Application.Features.Users.Queries.GetRolePermissions;
@@ -17,9 +19,28 @@ namespace Shopway.Presentation.Controllers;
 public sealed class UsersController(ISender sender) : ApiController(sender)
 {
     [HttpPost("[action]")]
-    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok<LogUserResponse>, ProblemHttpResult>> Login
+    public async Task<Results<Ok<RegisterUserResponse>, ProblemHttpResult>> Register
+    (
+        [FromBody] RegisterUserCommand command,
+        CancellationToken cancellationToken
+    )
+    {
+        var result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return TypedResults.Ok(result.Value);
+    }
+
+    [HttpPost("[action]")]
+    [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> Login
     (
         [FromBody] LogUserCommand command, 
         CancellationToken cancellationToken
@@ -36,11 +57,11 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("[action]")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok<RegisterUserResponse>, ProblemHttpResult>> Register
+    public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> Refresh
     (
-        [FromBody] RegisterUserCommand command, 
+        [FromBody] RefreshAccessTokenCommand command, 
         CancellationToken cancellationToken
     )
     {

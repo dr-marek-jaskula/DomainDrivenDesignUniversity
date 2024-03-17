@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Users;
@@ -17,14 +16,14 @@ internal sealed class LogUserCommandHandler
     IValidator validator,
     IPasswordHasher<User> passwordHasher
 )
-    : ICommandHandler<LogUserCommand, LogUserResponse>
+    : ICommandHandler<LogUserCommand, AccessTokenResponse>
 {
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IJwtProvider _jwtProvider = jwtProvider;
     private readonly IValidator _validator = validator;
 
-    public async Task<IResult<LogUserResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
+    public async Task<IResult<AccessTokenResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
     {
         ValidationResult<Email> emailResult = Email.Create(command.Email);
         ValidationResult<Password> passwordResult = Password.Create(command.Password);
@@ -35,7 +34,7 @@ internal sealed class LogUserCommandHandler
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<LogUserResponse>();
+            return _validator.Failure<AccessTokenResponse>();
         }
 
         User? user = await _userRepository
@@ -46,7 +45,7 @@ internal sealed class LogUserCommandHandler
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<LogUserResponse>();
+            return _validator.Failure<AccessTokenResponse>();
         }
 
         var result = _passwordHasher
@@ -57,7 +56,7 @@ internal sealed class LogUserCommandHandler
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<LogUserResponse>();
+            return _validator.Failure<AccessTokenResponse>();
         }
 
         var accessTokenResult = _jwtProvider.GenerateJwt(user);
@@ -69,13 +68,12 @@ internal sealed class LogUserCommandHandler
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<LogUserResponse>();
+            return _validator.Failure<AccessTokenResponse>();
         }
 
         user.RefreshToken = refreshTokenResult.Value;
 
         return accessTokenResult
-            .ToLogResponse()
             .ToResult();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions;
-using Shopway.Application.Features.Users.Commands.LogUser;
+using Shopway.Application.Features.Users.Commands;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Errors;
@@ -21,7 +21,7 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
     private readonly AuthenticationOptions _options = options.Value;
     private readonly TimeProvider _timeProvider = timeProvider;
 
-    public AccessTokenResult GenerateJwt(User user)
+    public AccessTokenResponse GenerateJwt(User user)
     {
         var claims = new Claim[]
         {
@@ -55,10 +55,10 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
 
         var refreshToken = RandomUtilities.GenerateString(RefreshToken.Length);
 
-        return new AccessTokenResult(accessToken, _options.AccessTokenExpirationInMinutes, refreshToken);
+        return new AccessTokenResponse(accessToken, _options.AccessTokenExpirationInMinutes, refreshToken);
     }
 
-    public Result<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token)
+    public Result<Claim?> GetClaimFromExpiredToken(string token, string claimInvariantName)
     {
         var tokenValidationParameters = new TokenValidationParameters
         {
@@ -66,17 +66,19 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
-            ValidateLifetime = false
+            ValidateLifetime = false,
+            ValidAudiences = [_options.Audience ],
+            ValidIssuers = [ _options.Issuer ]
         };
 
-        var claimsPrincipal = new JwtSecurityTokenHandler()
-            .ValidateToken(token, tokenValidationParameters, out var securityToken);
+        ClaimsPrincipal claimsPrincipal = new JwtSecurityTokenHandler()
+            .ValidateToken(token, tokenValidationParameters, out SecurityToken? securityToken);
 
         if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, InvariantCultureIgnoreCase))
         {
-            return Result.Failure<ClaimsPrincipal>(Error.InvalidArgument("Invalid token"));
+            return Result.Failure<Claim?>(Error.InvalidArgument("Invalid token"));
         }
 
-        return claimsPrincipal;
+        return jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.ToLower() == claimInvariantName.ToLower());
     }
 }
