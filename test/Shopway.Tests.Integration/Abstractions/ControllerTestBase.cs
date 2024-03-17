@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
 using RestSharp.Authenticators;
+using Shopway.Application.Features.Users.Commands;
 using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Domain.Users;
@@ -173,9 +174,9 @@ public abstract class ControllerTestsBase : IDisposable
 
         var logResponse = await _userClient.PostAsync(loginRequest);
 
-        var token = logResponse.Deserialize<LogUserResponse>();
+        var token = logResponse.Deserialize<AccessTokenResponse>();
 
-        return token!.Token;
+        return token!.AccessToken;
     }
 
     public virtual void Dispose()
