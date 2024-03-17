@@ -71,7 +71,7 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
             ValidIssuers = [ _options.Issuer ]
         };
 
-        ClaimsPrincipal claimsPrincipal = new JwtSecurityTokenHandler()
+        new JwtSecurityTokenHandler()
             .ValidateToken(token, tokenValidationParameters, out SecurityToken? securityToken);
 
         if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, InvariantCultureIgnoreCase))
