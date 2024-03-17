@@ -1,8 +1,9 @@
-﻿using Shopway.Domain.Users;
+﻿using Shopway.Application.Features.Users.Commands.LogUser;
+using Shopway.Domain.Users;
 
 namespace Shopway.Application.Abstractions;
 
 public interface IJwtProvider
 {
-    string GenerateJwt(User user);
+    AccessTokenResult GenerateJwt(User user);
 }

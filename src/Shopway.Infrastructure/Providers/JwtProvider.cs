@@ -1,12 +1,17 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions;
+using Shopway.Application.Features.Users.Commands.LogUser;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Utilities;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
 using Shopway.Infrastructure.Options;
 using Shopway.Infrastructure.Policies;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static System.StringComparison;
 
 namespace Shopway.Infrastructure.Providers;
 
@@ -15,7 +20,7 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
     private readonly AuthenticationOptions _options = options.Value;
     private readonly TimeProvider _timeProvider = timeProvider;
 
-    public string GenerateJwt(User user)
+    public AccessTokenResult GenerateJwt(User user)
     {
         var claims = new Claim[]
         {
@@ -33,7 +38,7 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
 
         var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
-        var expires = _timeProvider.GetUtcNow().AddDays(_options.DaysToExpire);
+        var expires = _timeProvider.GetUtcNow().AddMinutes(_options.AccessTokenExpirationInMinutes);
 
         var token = new JwtSecurityToken
         (
@@ -44,7 +49,33 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
             signingCredentials: signingCredentials
         );
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        return tokenHandler.WriteToken(token);
+        var accessToken = new JwtSecurityTokenHandler()
+            .WriteToken(token);
+
+        var refreshToken = RandomUtilities.GenerateString(32);
+
+        return new AccessTokenResult(accessToken, _options.AccessTokenExpirationInMinutes, refreshToken);
+    }
+
+    public Result<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token)
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
+            ValidateLifetime = false
+        };
+
+        var claimsPrincipal = new JwtSecurityTokenHandler()
+            .ValidateToken(token, tokenValidationParameters, out var securityToken);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, InvariantCultureIgnoreCase))
+        {
+            return Result.Failure<ClaimsPrincipal>(Error.InvalidArgument("Invalid token"));
+        }
+
+        return claimsPrincipal;
     }
 }

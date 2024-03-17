@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Users;
@@ -59,9 +60,22 @@ internal sealed class LogUserCommandHandler
             return _validator.Failure<LogUserResponse>();
         }
 
-        string token = _jwtProvider.GenerateJwt(user!);
+        var accessTokenResult = _jwtProvider.GenerateJwt(user);
 
-        return new LogUserResponse(token)
+        var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
+
+        _validator
+            .Validate(refreshTokenResult);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<LogUserResponse>();
+        }
+
+        user.RefreshToken = refreshTokenResult.Value;
+
+        return accessTokenResult
+            .ToLogResponse()
             .ToResult();
     }
 }
