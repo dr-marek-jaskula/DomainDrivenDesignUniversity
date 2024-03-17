@@ -8,5 +8,6 @@ namespace Shopway.Application.Abstractions;
 public interface IJwtProvider
 {
     AccessTokenResponse GenerateJwt(User user);
-    Result<Claim?> GetClaimFromExpiredToken(string token, string claimInvariantName);
+    Result<Claim?> GetClaimFromToken(string token, string claimInvariantName);
+    Result<bool> HasRefreshTokenExpired(string token);
 }

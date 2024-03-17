@@ -2,6 +2,7 @@
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
 using static Shopway.Domain.Users.Errors.DomainErrors.PasswordOrEmailError;
@@ -22,13 +23,26 @@ internal sealed class RefreshAccessTokenCommandHandler
 
     public async Task<IResult<AccessTokenResponse>> Handle(RefreshAccessTokenCommand command, CancellationToken cancellationToken)
     {
+        var emailClaim = _jwtProvider.GetClaimFromToken(command.AccessToken, nameof(Email));
         ValidationResult<RefreshToken> refreshToken = RefreshToken.Create(command.RefreshToken);
-        var emailClaim = _jwtProvider.GetClaimFromExpiredToken(command.AccessToken, nameof(Email));
-        var email = Email.Create(emailClaim.Value?.Value!);
+        var hasRefreshTokenExpired = _jwtProvider.HasRefreshTokenExpired(command.AccessToken);
 
         _validator
             .Validate(refreshToken)
-            .Validate(email);
+            .If(emailClaim.IsFailure, emailClaim.Error)
+            .If(hasRefreshTokenExpired.IsFailure, hasRefreshTokenExpired.Error);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<AccessTokenResponse>();
+        }
+
+        var email = Email.Create(emailClaim.Value!.Value!);
+
+        _validator
+            .Validate(email)
+            .If(emailClaim.IsFailure, emailClaim.Error)
+            .If(hasRefreshTokenExpired.Value, Error.InvalidArgument("Refresh Token has expired"));
 
         if (_validator.IsInvalid)
         {
