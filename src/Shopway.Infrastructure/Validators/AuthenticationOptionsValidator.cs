@@ -10,9 +10,14 @@ public sealed class AuthenticationOptionsValidator : IValidateOptions<Authentica
     {
         var validationResult = string.Empty;
 
-        if (options.DaysToExpire <= 0)
+        if (options.AccessTokenExpirationInMinutes <= 0)
         {
-            validationResult += $"Invalid {nameof(options.DaysToExpire)}. ";
+            validationResult += $"Invalid {nameof(options.AccessTokenExpirationInMinutes)}. ";
+        }
+
+        if (options.RefreshTokenInDays <= 0)
+        {
+            validationResult += $"Invalid {nameof(options.RefreshTokenInDays)}. ";
         }
 
         if (options.SecretKey.Length < 5)

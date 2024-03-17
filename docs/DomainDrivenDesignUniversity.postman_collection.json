@@ -23,7 +23,8 @@
 										"exec": [
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								},
 								{
@@ -37,7 +38,8 @@
 											"    pm.collectionVariables.set(\"validReviewUlid\", response.id);\r",
 											"}"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -56,7 +58,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle271\",\r\n  \"Description\": \"Added review description\"\r\n}",
+									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle295\",\r\n  \"Description\": \"Added review description\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -218,7 +220,8 @@
 									"    pm.collectionVariables.set(\"validProductUlid\", response.id);\r",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -233,7 +236,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"PencilToSummary43\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
+							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Product24\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -534,7 +537,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"ProductName\" : \"pencil\"\r\n  },\r\n  \"SortBy\" : {\r\n      \"ProductName\": \"Ascending\",\r\n      \"ThenRevision\": \"Descending\"\r\n  },\r\n  \"Mapping\" : {\r\n    \"Id\": true,\r\n    \"ProductName\" : true,\r\n    \"UomCode\": true,\r\n    \"Revision\": false,\r\n    \"Reviews\": {\r\n        \"Username\" : true,\r\n        \"Title\" : true,\r\n        \"Stars\" : true\r\n    }\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"Filter\" : {\r\n    \"ProductName\" : \"firstproduct\"\r\n  },\r\n  \"SortBy\" : {\r\n      \"ProductName\": \"Ascending\",\r\n      \"ThenRevision\": \"Descending\"\r\n  },\r\n  \"Mapping\" : {\r\n    \"Id\": true,\r\n    \"ProductName\" : true,\r\n    \"UomCode\": true,\r\n    \"Revision\": false,\r\n    \"Reviews\": {\r\n        \"Username\" : true,\r\n        \"Title\" : true,\r\n        \"Stars\" : true\r\n    }\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -619,7 +622,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Like\",\r\n            \"Value\" : \"p____l\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName : -1\",\r\n        \"Revision : 1\",\r\n        {\r\n            \"PropertyName\" : \"Revision\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 2\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Like\",\r\n            \"Value\" : \"p____l\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName : -1\",\r\n        {\r\n            \"PropertyName\" : \"Revision\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 2\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -647,7 +650,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"firstpr\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName\",\r\n        \"Price:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Price\",\r\n         \"Revision\",\r\n        {\r\n            \"From\" : \"Reviews\",\r\n            \"Properties\": [\r\n                \"Title\",\r\n                \"Description\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"firstpr\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName\",\r\n        \"Price:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Price\",\r\n         \"Revision\",\r\n         \"Id\",\r\n        {\r\n            \"From\" : \"Reviews\",\r\n            \"Properties\": [\r\n                \"Title\",\r\n                \"Description\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1281,10 +1284,12 @@
 									"\r",
 									"if (pm.response.to.have.status(200))\r",
 									"{\r",
-									"    pm.globals.set(\"access_token\", response.token);\r",
+									"    pm.globals.set(\"access_token\", response.accessToken);\r",
+									"    pm.globals.set(\"refresh_token\", response.refreshToken);\r",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -1308,6 +1313,51 @@
 							"path": [
 								"users",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if (pm.response.to.have.status(200))\r",
+									"{\r",
+									"    pm.globals.set(\"access_token\", response.accessToken);\r",
+									"    pm.globals.set(\"refresh_token\", response.refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"AccessToken\": \"{{access_token}}\",\r\n  \"RefreshToken\": \"{{refresh_token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"refresh"
 							]
 						}
 					},

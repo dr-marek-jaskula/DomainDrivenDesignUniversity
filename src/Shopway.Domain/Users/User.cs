@@ -31,6 +31,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     public PasswordHash PasswordHash { get; set; }
     public CustomerId? CustomerId { get; set; }
     public Customer? Customer { get; set; }
+    public RefreshToken RefreshToken { get; set; }
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     public static User Create(UserId id, Username username, Email email)

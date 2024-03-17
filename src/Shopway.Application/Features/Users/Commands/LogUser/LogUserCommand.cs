@@ -7,4 +7,4 @@ public sealed record LogUserCommand
     string Email,
     string Password
 )
-    : ICommand<LogUserResponse>;
+    : ICommand<AccessTokenResponse>;
