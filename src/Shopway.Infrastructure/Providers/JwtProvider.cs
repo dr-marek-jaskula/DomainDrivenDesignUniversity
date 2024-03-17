@@ -47,7 +47,8 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
             audience: _options.Audience,
             claims: claims,
             expires: expires.DateTime,
-            signingCredentials: signingCredentials
+            signingCredentials: signingCredentials,
+            notBefore: _timeProvider.GetLocalNow().DateTime
         );
 
         var accessToken = new JwtSecurityTokenHandler()
@@ -58,7 +59,31 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
         return new AccessTokenResponse(accessToken, _options.AccessTokenExpirationInMinutes, refreshToken);
     }
 
-    public Result<Claim?> GetClaimFromExpiredToken(string token, string claimInvariantName)
+    public Result<Claim?> GetClaimFromToken(string token, string claimInvariantName)
+    {
+        SecurityToken securityToken = GetSecurityToken(token);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, InvariantCultureIgnoreCase))
+        {
+            return Result.Failure<Claim?>(Error.InvalidArgument("Invalid token"));
+        }
+
+        return jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.Equals(claimInvariantName, InvariantCultureIgnoreCase));
+    }
+
+    public Result<bool> HasRefreshTokenExpired(string token)
+    {
+        SecurityToken securityToken = GetSecurityToken(token);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, InvariantCultureIgnoreCase))
+        {
+            return Result.Failure<bool>(Error.InvalidArgument("Invalid token"));
+        }
+
+        return securityToken.ValidFrom.AddDays(_options.RefreshTokenInDays) < _timeProvider.GetUtcNow();
+    }
+
+    private SecurityToken GetSecurityToken(string token)
     {
         var tokenValidationParameters = new TokenValidationParameters
         {
@@ -67,18 +92,13 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
             ValidateLifetime = false,
-            ValidAudiences = [_options.Audience ],
-            ValidIssuers = [ _options.Issuer ]
+            ValidAudiences = [_options.Audience],
+            ValidIssuers = [_options.Issuer]
         };
 
         new JwtSecurityTokenHandler()
             .ValidateToken(token, tokenValidationParameters, out SecurityToken? securityToken);
 
-        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, InvariantCultureIgnoreCase))
-        {
-            return Result.Failure<Claim?>(Error.InvalidArgument("Invalid token"));
-        }
-
-        return jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.ToLower() == claimInvariantName.ToLower());
+        return securityToken;
     }
 }
