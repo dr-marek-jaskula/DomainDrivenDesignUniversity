@@ -39,7 +39,7 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
 
         var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
-        var expires = _timeProvider.GetUtcNow().AddMinutes(_options.AccessTokenExpirationInMinutes);
+        var expires = _timeProvider.GetLocalNow().AddMinutes(_options.AccessTokenExpirationInMinutes);
 
         var token = new JwtSecurityToken
         (

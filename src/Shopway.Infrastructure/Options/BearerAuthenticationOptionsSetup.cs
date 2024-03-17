@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Shopway.Infrastructure.Options;
 
-internal sealed class BearerAuthenticationOptionsSetup(IOptions<AuthenticationOptions> authenticationOptions) : IPostConfigureOptions<JwtBearerOptions>
+internal sealed class BearerAuthenticationOptionsSetup(IOptions<AuthenticationOptions> authenticationOptions) 
+    : IPostConfigureOptions<JwtBearerOptions>
 {
     private readonly AuthenticationOptions _authenticationOptions = authenticationOptions.Value;
 
