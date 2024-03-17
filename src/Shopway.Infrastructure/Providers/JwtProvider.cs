@@ -6,6 +6,7 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
+using Shopway.Domain.Users.ValueObjects;
 using Shopway.Infrastructure.Options;
 using Shopway.Infrastructure.Policies;
 using System.IdentityModel.Tokens.Jwt;
@@ -52,7 +53,7 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
         var accessToken = new JwtSecurityTokenHandler()
             .WriteToken(token);
 
-        var refreshToken = RandomUtilities.GenerateString(32);
+        var refreshToken = RandomUtilities.GenerateString(RefreshToken.Length);
 
         return new AccessTokenResult(accessToken, _options.AccessTokenExpirationInMinutes, refreshToken);
     }

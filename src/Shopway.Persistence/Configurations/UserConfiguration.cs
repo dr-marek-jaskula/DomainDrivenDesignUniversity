@@ -43,6 +43,12 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .HasColumnType(ColumnType.NChar(PasswordHash.BytesLong))
             .IsRequired(true);
 
+        builder.Property(u => u.RefreshToken)
+            .HasConversion<RefreshTokenConverter, RefreshTokenComparer>()
+            .HasColumnName(nameof(RefreshToken))
+            .HasColumnType(ColumnType.VarChar(RefreshToken.Length))
+            .IsRequired(false);
+
         builder.HasMany(u => u.Roles)
             .WithMany(r => r.Users)
             .UsingEntity<RoleUser>();
