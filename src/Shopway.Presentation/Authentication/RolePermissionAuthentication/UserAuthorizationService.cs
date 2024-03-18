@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
@@ -27,10 +28,10 @@ public sealed class UserAuthorizationService(IAuthorizationRepository authorizat
         return UserId.Create(userUlid);
     }
 
-    public async Task<bool> HasPermissionsAsync(UserId userId, params Domain.Enums.Permission[] permissions)
+    public async Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params Domain.Enums.Permission[] permissions)
     {
         return await _authorizationRepository
-            .HasPermissionsAsync(userId, permissions);
+            .HasPermissionsAsync(userId, permissions, logicalOperation);
     }
 
     public async Task<bool> HasRolesAsync(UserId userId, params Domain.Enums.Role[] roles)

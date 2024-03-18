@@ -15,7 +15,7 @@ partial class ProductsController
     public const string Reviews = nameof(Reviews);
 
     [HttpPost($"{{productId}}/{Reviews}")]
-    [RequiredPermissions(Permission.Review_Add)]
+    [RequiredPermissions(Domain.Common.Enums.LogicalOperation.Or, Permission.Review_Add, Permission.INVALID_PERMISSION)] //For demo purposes
     [ProducesResponseType<AddReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<AddReviewResponse>, ProblemHttpResult>> AddReview

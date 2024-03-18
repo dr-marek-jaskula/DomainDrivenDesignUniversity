@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Enums;
 
 namespace Shopway.Presentation.Authentication.RolePermissionAuthentication;
@@ -8,6 +9,13 @@ public sealed class RequiredPermissionsAttribute(params Permission[] permissions
     : AuthorizeAttribute, IAuthorizationRequirement, IAuthorizationRequirementData
 {
     public Permission[] Permissions { get; } = permissions;
+    public LogicalOperation LogicalOperation { get; } = LogicalOperation.And;
+
+    public RequiredPermissionsAttribute(LogicalOperation logicalOperation, params Permission[] permissions)
+        : this(permissions)
+    {
+        LogicalOperation = logicalOperation;
+    }
 
     public IEnumerable<IAuthorizationRequirement> GetRequirements()
     {
