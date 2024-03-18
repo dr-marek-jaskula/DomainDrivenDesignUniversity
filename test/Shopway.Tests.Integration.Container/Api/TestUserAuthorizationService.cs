@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Enums;
 using Shopway.Domain.Users;
@@ -15,7 +16,7 @@ public sealed class TestUserAuthorizationService : IUserAuthorizationService
         return UserId.Create(_testUserUlid);
     }
 
-    public Task<bool> HasPermissionsAsync(UserId userId, params Permission[] permissions)
+    public Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params Permission[] permissions)
     {
         return Task.FromResult(true);
     }

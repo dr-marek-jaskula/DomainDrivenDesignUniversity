@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Enums;
 using Shopway.Domain.Users;
 using Shopway.Persistence.Framework;
@@ -25,14 +26,14 @@ public sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAutho
             .ToHashSet();
     }
 
-    public async Task<bool> HasPermissionsAsync(UserId userId, Permission[] requiredPermissions)
+    public async Task<bool> HasPermissionsAsync(UserId userId, Permission[] requiredPermissions, LogicalOperation logicalOperation = LogicalOperation.And)
     {
         var distinctRequiredPermissions = requiredPermissions
             .Select(x => $"{x}")
             .Distinct()
             .ToArray();
 
-        var userPermissionsCount = await _dbContext
+        var userPermissionsQueryable = _dbContext
             .Set<User>()
             .Include(x => x.Roles)
                 .ThenInclude(x => x.Permissions)
@@ -41,10 +42,22 @@ public sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAutho
             .SelectMany(role => role.Permissions)
             .Select(permission => permission.Name)
             .Where(permissionName => distinctRequiredPermissions.Contains(permissionName))
-            .Distinct()
-            .CountAsync();
+            .Distinct();
 
-        return userPermissionsCount == distinctRequiredPermissions.Length;
+        if (logicalOperation is LogicalOperation.And)
+        {
+            var userPermissions = await userPermissionsQueryable
+                .CountAsync();
+                
+            return userPermissions == distinctRequiredPermissions.Length;
+        }
+
+        if (logicalOperation is LogicalOperation.Or)
+        {
+            return await userPermissionsQueryable.AnyAsync();
+        }
+
+        return false;
     }
 
     public async Task<bool> HasRolesAsync(UserId userId, Role[] requiredRoles)

@@ -22,7 +22,7 @@ public sealed class PermissionRequirementHandler(IServiceScopeFactory serviceSco
         }
 
         var userHasPermission = await authorizationService
-            .HasPermissionsAsync(userIdResult.Value, requirement.Permissions);
+            .HasPermissionsAsync(userIdResult.Value, requirement.LogicalOperation, requirement.Permissions);
 
         if (userHasPermission)
         {
