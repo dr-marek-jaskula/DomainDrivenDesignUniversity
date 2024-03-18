@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Users;
 using System.Security.Claims;
