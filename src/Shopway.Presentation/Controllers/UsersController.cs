@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,14 @@ using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Application.Features.Users.Commands.RemovePermissionFromRole;
+using Shopway.Application.Features.Users.Commands.Revoke;
 using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
+using Shopway.Domain.Users;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
+using System.Security.Claims;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -73,6 +77,29 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         }
 
         return TypedResults.Ok(result.Value);
+    }
+
+    [HttpPost("[action]")]
+    [Authorize]
+    [ProducesResponseType<Ok>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok, ProblemHttpResult>> Revoke(CancellationToken cancellationToken)
+    {
+        var parseResult = Ulid.TryParse(User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier)?.Value, out var userId);
+
+        if (parseResult is false)
+        {
+            return TypedResults.Problem("UserId was not parsed properly");
+        }
+
+        var result = await Sender.Send(new RevokeRefreshTokenCommand(UserId.Create(userId)), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return TypedResults.Ok();
     }
 
     [HttpGet("{username}")]
