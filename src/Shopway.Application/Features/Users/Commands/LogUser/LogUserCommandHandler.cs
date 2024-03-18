@@ -12,7 +12,7 @@ namespace Shopway.Application.Features.Users.Commands.LogUser;
 internal sealed class LogUserCommandHandler
 (
     IUserRepository userRepository,
-    ISecurityTokenService jwtProvider,
+    ISecurityTokenService securityTokenService,
     IValidator validator,
     IPasswordHasher<User> passwordHasher
 )
@@ -20,7 +20,7 @@ internal sealed class LogUserCommandHandler
 {
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly ISecurityTokenService _jwtProvider = jwtProvider;
+    private readonly ISecurityTokenService _securityTokenService = securityTokenService;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult<AccessTokenResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
@@ -59,7 +59,7 @@ internal sealed class LogUserCommandHandler
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var accessTokenResult = _jwtProvider.GenerateJwt(user);
+        var accessTokenResult = _securityTokenService.GenerateJwt(user);
 
         var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
 

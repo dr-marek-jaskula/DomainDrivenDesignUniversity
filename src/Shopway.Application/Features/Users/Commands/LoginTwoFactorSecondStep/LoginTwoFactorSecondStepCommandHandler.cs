@@ -2,7 +2,6 @@
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Utilities;
-using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
@@ -13,14 +12,14 @@ namespace Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
 internal sealed class LoginTwoFactorSecondStepCommandHandler
 (
     IUserRepository userRepository,
-    ISecurityTokenService jwtProvider,
+    ISecurityTokenService securityTokenService,
     IValidator validator,
     IPasswordHasher<User> passwordHasher
 )
     : ICommandHandler<LoginTwoFactorSecondStepCommand, AccessTokenResponse>
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly ISecurityTokenService _jwtProvider = jwtProvider;
+    private readonly ISecurityTokenService _securityTokenService = securityTokenService;
     private readonly IValidator _validator = validator;
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
 
@@ -54,14 +53,14 @@ internal sealed class LoginTwoFactorSecondStepCommandHandler
 
         _validator
             .If(result is not PasswordVerificationResult.Success, thenError: Error.InvalidArgument("Invalid TwoFactorToken"))
-            .If(_jwtProvider.HasTwoFactorTokenExpired(user!.TwoFactorTokenCreatedOn), thenError: Error.InvalidArgument("TwoFactorToken has expired"));
+            .If(_securityTokenService.HasTwoFactorTokenExpired(user!.TwoFactorTokenCreatedOn), thenError: Error.InvalidArgument("TwoFactorToken has expired"));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var accessTokenResult = _jwtProvider.GenerateJwt(user!);
+        var accessTokenResult = _securityTokenService.GenerateJwt(user!);
 
         var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
 
