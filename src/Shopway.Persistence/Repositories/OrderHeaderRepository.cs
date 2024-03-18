@@ -2,6 +2,7 @@
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Orders;
+using Shopway.Domain.Users;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
 using Shopway.Persistence.Specifications.Common;
@@ -14,6 +15,16 @@ namespace Shopway.Persistence.Repositories;
 public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHeaderRepository
 {
     private readonly ShopwayDbContext _dbContext = dbContext;
+
+    public async Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken)
+    {
+        var specification = OrderHeaderSpecification.ById.AndUserId.Create(id, userId);
+
+        return await _dbContext
+            .Set<OrderHeader>()
+            .UseSpecification(specification)
+            .AnyAsync(cancellationToken);
+    }
 
     public async Task<OrderHeader> GetByIdAsync(OrderHeaderId id, CancellationToken cancellationToken)
     {

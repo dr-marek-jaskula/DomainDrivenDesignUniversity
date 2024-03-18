@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Users;
 using System.Linq.Expressions;
 
 namespace Shopway.Domain.Orders;
@@ -42,4 +43,5 @@ public interface IOrderHeaderRepository
         Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor;
+    Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken);
 }

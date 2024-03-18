@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication.Handlers;
+using Shopway.Presentation.Authentication.OrderHeaders.OrderHeaderCreatedByUser;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication.Handlers;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -21,8 +22,12 @@ public static class AuthenticationRegistration
             })
             .AddJwtBearer();
 
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy(OrderHeaderCreatedByUserRequirement.PolicyName, policy => policy.Requirements.Add(new OrderHeaderCreatedByUserRequirement()));
+        });
 
+        services.AddScoped<IAuthorizationHandler, OrderHeaderCreatedByUserRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, RoleRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, ApiKeyRequirementHandler>();

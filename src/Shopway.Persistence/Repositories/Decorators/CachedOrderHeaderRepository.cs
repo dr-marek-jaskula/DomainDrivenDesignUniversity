@@ -2,6 +2,7 @@
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Orders;
+using Shopway.Domain.Users;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
@@ -104,5 +105,10 @@ public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated
             mappingExpression: mappingExpression,
             buildIncludes: buildIncludes
         );
+    }
+
+    public async Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken)
+    {
+        return await _decorated.IsOrderHeaderCreatedByUser(id, userId, cancellationToken);
     }
 }

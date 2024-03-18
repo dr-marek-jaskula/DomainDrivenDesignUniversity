@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +11,15 @@ using Shopway.Application.Features.Orders.Queries;
 using Shopway.Application.Features.Orders.Queries.GetOrderById;
 using Shopway.Domain.Orders;
 using Shopway.Presentation.Abstractions;
+using Shopway.Presentation.Authentication.OrderHeaders.OrderHeaderCreatedByUser;
 
 namespace Shopway.Presentation.Controllers;
 
 [ApiVersion("0.1", Deprecated = true)]
-public sealed partial class OrderHeadersController(ISender sender) : ApiController(sender)
+public sealed partial class OrderHeadersController(ISender sender, IAuthorizationService _authorizationService) : ApiController(sender)
 {
+    private readonly IAuthorizationService _authorizationService = _authorizationService;
+
     [HttpGet("{id}")]
     [ProducesResponseType<OrderHeaderResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -59,12 +63,19 @@ public sealed partial class OrderHeadersController(ISender sender) : ApiControll
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok, ProblemHttpResult>> SoftDeleteOrderHeader
+    public async Task<Results<Ok, ProblemHttpResult, ForbidHttpResult>> SoftDeleteOrderHeader
     (
         [FromRoute] OrderHeaderId id,
         CancellationToken cancellationToken
     )
     {
+        var authorizationResult = await _authorizationService.AuthorizeAsync(User, id, OrderHeaderCreatedByUserRequirement.PolicyName);
+
+        if (authorizationResult.Succeeded is false)
+        {
+            return TypedResults.Forbid();
+        }
+
         var command = new SoftDeleteOrderHeaderCommand(id);
 
         var result = await Sender.Send(command, cancellationToken);
