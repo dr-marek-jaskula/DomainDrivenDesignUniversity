@@ -29,7 +29,7 @@ public sealed class MimeKitEmailSender(ILogger<MimeKitEmailSender> logger, IOpti
             message.Body = new TextPart() { Text = body };
 
             var response = await client.SendAsync(message, cancellationToken);
-            _logger.LogEmailSent(toAddress, fromAddress, subject);
+            _logger.LogEmailSent(toAddress, fromAddress, subject, response);
         }
         catch (Exception exception)
         {
@@ -63,10 +63,10 @@ public static partial class LoggerMessageDefinitionsUtilities
         EventId = 2,
         EventName = $"{nameof(MimeKitEmailSender)}",
         Level = LogLevel.Information,
-        Message = "Email from {from} to {to} with subject {subject} sent",
+        Message = "Email from {from} to {to} with subject {subject} sent. Server response {serverResponse}",
         SkipEnabledCheck = false
     )]
-    public static partial void LogEmailSent(this ILogger logger, string to, string from, string subject);
+    public static partial void LogEmailSent(this ILogger logger, string to, string from, string subject, string serverResponse);
 }
 
 public static partial class LoggerMessageDefinitionsUtilities
