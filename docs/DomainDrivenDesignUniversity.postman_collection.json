@@ -1329,7 +1329,7 @@
 					"response": []
 				},
 				{
-					"name": "Login Two Factor / First Phase",
+					"name": "Login Two Factor / First Step",
 					"event": [
 						{
 							"listen": "test",
@@ -1355,7 +1355,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/login/two-factor/first-phase",
+							"raw": "{{base_url}}/users/login/two-factor/first-step",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1363,14 +1363,14 @@
 								"users",
 								"login",
 								"two-factor",
-								"first-phase"
+								"first-step"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Login Two Factor / Second Phase",
+					"name": "Login Two Factor / Second Step",
 					"event": [
 						{
 							"listen": "test",
@@ -1394,7 +1394,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"TwoFactorToken\": \"FpWwe-NVdVg\"\r\n}",
+							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"TwoFactorToken\": \"BRzky-Yqffmb\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1402,7 +1402,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/login/two-factor/second-phase",
+							"raw": "{{base_url}}/users/login/two-factor/second-step",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1410,7 +1410,7 @@
 								"users",
 								"login",
 								"two-factor",
-								"second-phase"
+								"second-step"
 							]
 						}
 					},
