@@ -12,13 +12,13 @@ namespace Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 internal sealed class RefreshAccessTokenCommandHandler
 (
     IUserRepository userRepository,
-    IJwtProvider jwtProvider,
+    ISecurityTokenService jwtProvider,
     IValidator validator
 )
     : ICommandHandler<RefreshAccessTokenCommand, AccessTokenResponse>
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly IJwtProvider _jwtProvider = jwtProvider;
+    private readonly ISecurityTokenService _jwtProvider = jwtProvider;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult<AccessTokenResponse>> Handle(RefreshAccessTokenCommand command, CancellationToken cancellationToken)

@@ -13,14 +13,14 @@ namespace Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
 internal sealed class LoginTwoFactorSecondStepCommandHandler
 (
     IUserRepository userRepository,
-    IJwtProvider jwtProvider,
+    ISecurityTokenService jwtProvider,
     IValidator validator,
     IPasswordHasher<User> passwordHasher
 )
     : ICommandHandler<LoginTwoFactorSecondStepCommand, AccessTokenResponse>
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly IJwtProvider _jwtProvider = jwtProvider;
+    private readonly ISecurityTokenService _jwtProvider = jwtProvider;
     private readonly IValidator _validator = validator;
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
 

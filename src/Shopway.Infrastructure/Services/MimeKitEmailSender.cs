@@ -53,7 +53,7 @@ public static partial class LoggerMessageDefinitionsUtilities
         Message = "Attempting to send email from {from} to {to} with subject {subject}",
         SkipEnabledCheck = false
     )]
-    public static partial void LogSendingEmail(this ILogger logger, string from, string to, string subject);
+    public static partial void LogSendingEmail(this ILogger logger, string to, string from, string subject);
 }
 
 public static partial class LoggerMessageDefinitionsUtilities
@@ -66,7 +66,7 @@ public static partial class LoggerMessageDefinitionsUtilities
         Message = "Email from {from} to {to} with subject {subject} sent",
         SkipEnabledCheck = false
     )]
-    public static partial void LogEmailSent(this ILogger logger, string from, string to, string subject);
+    public static partial void LogEmailSent(this ILogger logger, string to, string from, string subject);
 }
 
 public static partial class LoggerMessageDefinitionsUtilities
@@ -79,5 +79,5 @@ public static partial class LoggerMessageDefinitionsUtilities
         Message = "Email from {from} to {to} with subject {subject} failed to sent. Reason: {exceptionMessage}",
         SkipEnabledCheck = false
     )]
-    public static partial void LogEmailNotSent(this ILogger logger, string from, string to, string subject, string exceptionMessage);
+    public static partial void LogEmailNotSent(this ILogger logger, string to, string from, string subject, string exceptionMessage);
 }

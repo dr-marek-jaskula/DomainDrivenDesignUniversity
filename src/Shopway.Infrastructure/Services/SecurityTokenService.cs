@@ -14,9 +14,9 @@ using System.Security.Claims;
 using System.Text;
 using static System.StringComparison;
 
-namespace Shopway.Infrastructure.Providers;
+namespace Shopway.Infrastructure.Services;
 
-internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeProvider timeProvider) : IJwtProvider
+internal sealed class SecurityTokenService(IOptions<AuthenticationOptions> options, TimeProvider timeProvider) : ISecurityTokenService
 {
     private readonly AuthenticationOptions _options = options.Value;
     private readonly TimeProvider _timeProvider = timeProvider;

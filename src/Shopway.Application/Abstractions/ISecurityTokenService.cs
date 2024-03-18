@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace Shopway.Application.Abstractions;
 
-public interface IJwtProvider
+public interface ISecurityTokenService
 {
     AccessTokenResponse GenerateJwt(User user);
     Result<Claim?> GetClaimFromToken(string token, string claimInvariantName);
