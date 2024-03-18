@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Users.Commands;
 using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
-using Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstPhase;
-using Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondPhase;
+using Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstStep;
+using Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
 using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
@@ -62,12 +62,12 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         return TypedResults.Ok(result.Value);
     }
 
-    [HttpPost("login/two-factor/first-phase")]
+    [HttpPost("login/two-factor/first-step")]
     [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok, ProblemHttpResult>> LoginTwoFactorFirstPhase
+    public async Task<Results<Ok, ProblemHttpResult>> LoginTwoFactorFirstStep
     (
-        [FromBody] LoginTwoFactorFirstPhaseCommand command, 
+        [FromBody] LoginTwoFactorFirstStepCommand command, 
         CancellationToken cancellationToken
     )
     {
@@ -81,12 +81,12 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         return TypedResults.Ok();
     }
 
-    [HttpPost("login/two-factor/second-phase")]
+    [HttpPost("login/two-factor/second-step")]
     [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> LoginTwoFactorSecondPhase
+    public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> LoginTwoFactorSecondStep
     (
-        [FromBody] LoginTwoFactorSecondPhaseCommand command, 
+        [FromBody] LoginTwoFactorSecondStepCommand command, 
         CancellationToken cancellationToken
     )
     {

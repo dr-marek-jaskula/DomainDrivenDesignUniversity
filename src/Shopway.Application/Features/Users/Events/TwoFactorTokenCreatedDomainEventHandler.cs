@@ -36,6 +36,7 @@ internal sealed class TwoFactorTokenCreatedDomainEventHandler
         if (result is not PasswordVerificationResult.Success)
         {
             _logger.LogTwoFactorTokenDoesNotMatchCurrentHash(domainEvent.UserId);
+            return;
         }
 
         await _sendEmail.SendEmailAsync
@@ -56,7 +57,7 @@ public static partial class LoggerMessageDefinitionsUtilities
     (
         EventId = 1,
         EventName = $"{nameof(TwoFactorTokenCreatedDomainEventHandler)}",
-        Level = LogLevel.Information,
+        Level = LogLevel.Warning,
         Message = "User with id {userId} was not found or its TwoFactorToken was null",
         SkipEnabledCheck = false
     )]
@@ -66,8 +67,8 @@ public static partial class LoggerMessageDefinitionsUtilities
     (
         EventId = 2,
         EventName = $"{nameof(TwoFactorTokenCreatedDomainEventHandler)}_HashMatch",
-        Level = LogLevel.Information,
-        Message = "User with id {userId} has hash that differs processed TwoFactorToken",
+        Level = LogLevel.Warning,
+        Message = "User with id {userId} has TwoFactorTokenHash that differs processed TwoFactorToken",
         SkipEnabledCheck = false
     )]
     public static partial void LogTwoFactorTokenDoesNotMatchCurrentHash(this ILogger logger, UserId userId);

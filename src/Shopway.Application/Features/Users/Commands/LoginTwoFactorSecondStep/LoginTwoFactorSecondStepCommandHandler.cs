@@ -8,23 +8,23 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
 
-namespace Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondPhase;
+namespace Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
 
-internal sealed class LoginTwoFactorSecondPhaseCommandHandler
+internal sealed class LoginTwoFactorSecondStepCommandHandler
 (
     IUserRepository userRepository,
     IJwtProvider jwtProvider,
     IValidator validator,
     IPasswordHasher<User> passwordHasher
 )
-    : ICommandHandler<LoginTwoFactorSecondPhaseCommand, AccessTokenResponse>
+    : ICommandHandler<LoginTwoFactorSecondStepCommand, AccessTokenResponse>
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IJwtProvider _jwtProvider = jwtProvider;
     private readonly IValidator _validator = validator;
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
 
-    public async Task<IResult<AccessTokenResponse>> Handle(LoginTwoFactorSecondPhaseCommand command, CancellationToken cancellationToken)
+    public async Task<IResult<AccessTokenResponse>> Handle(LoginTwoFactorSecondStepCommand command, CancellationToken cancellationToken)
     {
         ValidationResult<TwoFactorTokenHash> twoFactorTokenResult = TwoFactorTokenHash.Create(command.TwoFactorToken);
         ValidationResult<Email> emailResult = Email.Create(command.Email);
@@ -42,7 +42,7 @@ internal sealed class LoginTwoFactorSecondPhaseCommandHandler
             .GetByEmailAsync(emailResult.Value, cancellationToken);
 
         _validator
-            .If(user is null, thenError: Error.NotFound<User>(emailResult.Value.Value));
+            .If(user?.TwoFactorTokenHash is null, thenError: Error.InvalidArgument("User not found or token is null"));
 
         if (_validator.IsInvalid)
         {

@@ -6,6 +6,9 @@ services:
 
   portainer:
     image: portainer/portainer-ce
+    
+  papercut:
+    image: jijiechen/papercut
 
   shopway.app:
     image: ${DOCKER_REGISTRY-}shopwayapp
@@ -19,3 +22,4 @@ networks:
 volumes:
   ddduniversity_volume:
   portainer_volume:  
+  papercut_volume:  

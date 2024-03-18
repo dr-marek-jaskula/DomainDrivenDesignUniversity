@@ -9,21 +9,21 @@ using static Shopway.Domain.Users.Errors.DomainErrors.PasswordOrEmailError;
 using static Shopway.Domain.Common.Utilities.RandomUtilities;
 using static Shopway.Domain.Users.ValueObjects.TwoFactorTokenHash;
 
-namespace Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstPhase;
+namespace Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstStep;
 
-internal sealed class LoginTwoFactorFirstPhaseCommandHandler
+internal sealed class LoginTwoFactorFirstStepCommandHandler
 (
     IUserRepository userRepository,
     IValidator validator,
     IPasswordHasher<User> passwordHasher
 )
-    : ICommandHandler<LoginTwoFactorFirstPhaseCommand>
+    : ICommandHandler<LoginTwoFactorFirstStepCommand>
 {
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IValidator _validator = validator;
 
-    public async Task<IResult> Handle(LoginTwoFactorFirstPhaseCommand command, CancellationToken cancellationToken)
+    public async Task<IResult> Handle(LoginTwoFactorFirstStepCommand command, CancellationToken cancellationToken)
     {
         ValidationResult<Email> emailResult = Email.Create(command.Email);
         ValidationResult<Password> passwordResult = Password.Create(command.Password);

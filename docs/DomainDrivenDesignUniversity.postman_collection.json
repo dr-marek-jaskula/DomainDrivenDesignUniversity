@@ -1329,6 +1329,94 @@
 					"response": []
 				},
 				{
+					"name": "Login Two Factor / First Phase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"Password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/login/two-factor/first-phase",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"login",
+								"two-factor",
+								"first-phase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Two Factor / Second Phase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if (pm.response.to.have.status(200))\r",
+									"{\r",
+									"    pm.globals.set(\"access_token\", response.accessToken);\r",
+									"    pm.globals.set(\"refresh_token\", response.refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"TwoFactorToken\": \"FpWwe-NVdVg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/login/two-factor/second-phase",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"login",
+								"two-factor",
+								"second-phase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Refresh",
 					"event": [
 						{

@@ -22,6 +22,20 @@ Note: Remember to set the ClockSkew to 5s (or max 30s)
 options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(_authenticationOptions.ClockSkew); 
 ```
 
+## TwoFactorAuthorization
+
+At first use the ```/users/login/two-factor/first-phase``` endpoint to trigger the email sender. Get the code and use the second endpoint 
+```/users/login/two-factor/second-phase```. TwoFactorToken is not stored in database - its hash is stored, both with date of its creation. 
+
+If the invalid token is sent, then the token hash in the database is set to null. 
+
+Papercut email service is used to demonstrate the two step verification. To get the email with code, use docker compose or run
+```
+docker run --name=papercut -p 25:25 -p 37408:37408 jijiechen/papercut:latest -d
+```
+
+Single step authorization is still valid, to show possible options.
+
 ## Enum to string conversion
 
 Due to the 
