@@ -80,7 +80,17 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
             return Result.Failure<bool>(Error.InvalidArgument("Invalid token"));
         }
 
-        return securityToken.ValidFrom.AddDays(_options.RefreshTokenInDays) < _timeProvider.GetUtcNow();
+        return securityToken.ValidFrom.AddDays(_options.RefreshTokenExpirationInDays) < _timeProvider.GetUtcNow();
+    }
+
+    public bool HasTwoFactorTokenExpired(DateTimeOffset? twoFactorTokenCreatedOn)
+    {
+        if (twoFactorTokenCreatedOn is null)
+        {
+            return true;
+        }
+
+        return ((DateTimeOffset)twoFactorTokenCreatedOn).AddSeconds(_options.TwoFactorTokenExpirationInSeconds) < _timeProvider.GetUtcNow();
     }
 
     private SecurityToken GetSecurityToken(string token)

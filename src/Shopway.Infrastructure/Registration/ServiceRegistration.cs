@@ -16,6 +16,7 @@ public static class ServiceRegistration
         //Services
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserContextService, UserContextService>();
+        services.AddScoped<ISendEmail, MimeKitEmailSender>();
 
         //Validators
 

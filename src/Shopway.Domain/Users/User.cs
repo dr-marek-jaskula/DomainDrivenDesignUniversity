@@ -32,6 +32,8 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     public CustomerId? CustomerId { get; set; }
     public Customer? Customer { get; set; }
     public RefreshToken? RefreshToken { get; set; }
+    public TwoFactorTokenHash? TwoFactorTokenHash { get; private set; }
+    public DateTimeOffset? TwoFactorTokenCreatedOn { get; private set; }
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     public static User Create(UserId id, Username username, Email email)
@@ -44,5 +46,18 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     public void SetHashedPassword(PasswordHash passwordHash)
     {
         PasswordHash = passwordHash;
+    }
+
+    public void SetTwoFactorToken(TwoFactorTokenHash twoFactorToken, string twoFactorTokenAsString)
+    {
+        TwoFactorTokenHash = twoFactorToken;
+        TwoFactorTokenCreatedOn = DateTimeOffset.UtcNow;
+        RaiseDomainEvent(TwoFactorTokenCreatedDomainEvent.New(Id, twoFactorTokenAsString));
+    }
+
+    public void ClearTwoFactorToken()
+    {
+        TwoFactorTokenHash = null;
+        TwoFactorTokenCreatedOn = null;
     }
 }

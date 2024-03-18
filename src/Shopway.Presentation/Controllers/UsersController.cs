@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Users.Commands;
 using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
+using Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstPhase;
+using Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondPhase;
 using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
@@ -47,6 +49,44 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> Login
     (
         [FromBody] LogUserCommand command, 
+        CancellationToken cancellationToken
+    )
+    {
+        var result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return TypedResults.Ok(result.Value);
+    }
+
+    [HttpPost("login/two-factor/first-phase")]
+    [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok, ProblemHttpResult>> LoginTwoFactorFirstPhase
+    (
+        [FromBody] LoginTwoFactorFirstPhaseCommand command, 
+        CancellationToken cancellationToken
+    )
+    {
+        var result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return TypedResults.Ok();
+    }
+
+    [HttpPost("login/two-factor/second-phase")]
+    [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> LoginTwoFactorSecondPhase
+    (
+        [FromBody] LoginTwoFactorSecondPhaseCommand command, 
         CancellationToken cancellationToken
     )
     {

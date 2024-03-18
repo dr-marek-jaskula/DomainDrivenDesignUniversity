@@ -10,4 +10,5 @@ public interface IJwtProvider
     AccessTokenResponse GenerateJwt(User user);
     Result<Claim?> GetClaimFromToken(string token, string claimInvariantName);
     Result<bool> HasRefreshTokenExpired(string token);
+    bool HasTwoFactorTokenExpired(DateTimeOffset? twoFactorTokenCreatedOn);
 }
