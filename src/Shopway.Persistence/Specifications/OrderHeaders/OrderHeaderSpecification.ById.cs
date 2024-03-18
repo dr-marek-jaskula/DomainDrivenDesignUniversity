@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Orders;
+using Shopway.Domain.Users;
 using System.Collections.Frozen;
 
 namespace Shopway.Persistence.Specifications.OrderHeaders;
@@ -24,7 +25,7 @@ internal static partial class OrderHeaderSpecification
                         //Use the commented code as baseline. Use cached IncludeEntries when performance improvements are required
                         //.AddIncludes(builder => builder
                         //    .Include(orderHeader => orderHeader.OrderLines))
-                        .AddFilters(product => product.Id == orderHeaderId);
+                        .AddFilters(orderHeader => orderHeader.Id == orderHeaderId);
 
                     if (includePayment)
                     {
@@ -33,6 +34,17 @@ internal static partial class OrderHeaderSpecification
 
                     return specification;
                 }
+            }
+        }
+
+        public static partial class AndUserId
+        {
+            internal static Specification<OrderHeader, OrderHeaderId> Create(OrderHeaderId orderHeaderId, UserId userId)
+            {
+                var specification = Specification<OrderHeader, OrderHeaderId>.New()
+                    .AddFilters(orderHeader => orderHeader.Id == orderHeaderId, orderHeader => orderHeader.UserId == userId);
+
+                return specification;
             }
         }
     }

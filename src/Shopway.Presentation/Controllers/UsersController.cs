@@ -85,14 +85,14 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> Revoke(CancellationToken cancellationToken)
     {
-        var parseResult = Ulid.TryParse(User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier)?.Value, out var userId);
+        var parseResult = Ulid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userIdAsUlid);
 
         if (parseResult is false)
         {
             return TypedResults.Problem("UserId was not parsed properly");
         }
 
-        var result = await Sender.Send(new RevokeRefreshTokenCommand(UserId.Create(userId)), cancellationToken);
+        var result = await Sender.Send(new RevokeRefreshTokenCommand(UserId.Create(userIdAsUlid)), cancellationToken);
 
         if (result.IsFailure)
         {

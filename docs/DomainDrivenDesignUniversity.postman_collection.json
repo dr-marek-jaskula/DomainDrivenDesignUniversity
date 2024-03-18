@@ -1204,6 +1204,16 @@
 				{
 					"name": "SoftDeleteOrderHeader.ById.Valid",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -1358,6 +1368,52 @@
 							"path": [
 								"users",
 								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if (pm.response.to.have.status(200))\r",
+									"{\r",
+									"    pm.globals.set(\"access_token\", response.accessToken);\r",
+									"    pm.globals.set(\"refresh_token\", response.refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/revoke",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"revoke"
 							]
 						}
 					},
