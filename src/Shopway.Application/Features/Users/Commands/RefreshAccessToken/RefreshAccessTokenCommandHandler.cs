@@ -12,20 +12,20 @@ namespace Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 internal sealed class RefreshAccessTokenCommandHandler
 (
     IUserRepository userRepository,
-    IJwtProvider jwtProvider,
+    ISecurityTokenService securityTokenService,
     IValidator validator
 )
     : ICommandHandler<RefreshAccessTokenCommand, AccessTokenResponse>
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly IJwtProvider _jwtProvider = jwtProvider;
+    private readonly ISecurityTokenService _securityTokenService = securityTokenService;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult<AccessTokenResponse>> Handle(RefreshAccessTokenCommand command, CancellationToken cancellationToken)
     {
-        var emailClaim = _jwtProvider.GetClaimFromToken(command.AccessToken, nameof(Email));
+        var emailClaim = _securityTokenService.GetClaimFromToken(command.AccessToken, nameof(Email));
         ValidationResult<RefreshToken> refreshToken = RefreshToken.Create(command.RefreshToken);
-        var hasRefreshTokenExpired = _jwtProvider.HasRefreshTokenExpired(command.AccessToken);
+        var hasRefreshTokenExpired = _securityTokenService.HasRefreshTokenExpired(command.AccessToken);
 
         _validator
             .Validate(refreshToken)
@@ -60,7 +60,7 @@ internal sealed class RefreshAccessTokenCommandHandler
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var accessTokenResult = _jwtProvider.GenerateJwt(user!);
+        var accessTokenResult = _securityTokenService.GenerateJwt(user!);
         var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
 
         _validator

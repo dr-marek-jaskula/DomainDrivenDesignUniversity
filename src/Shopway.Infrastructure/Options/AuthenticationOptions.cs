@@ -13,6 +13,7 @@ public sealed class AuthenticationOptions
     public string Audience { get; set; } = string.Empty;
     public string SecretKey { get; set; } = string.Empty;
     public int AccessTokenExpirationInMinutes { get; set; }
-    public int RefreshTokenInDays { get; set; }
+    public int RefreshTokenExpirationInDays { get; set; }
+    public int TwoFactorTokenExpirationInSeconds { get; set; }
     public int ClockSkew { get; set; }
 }

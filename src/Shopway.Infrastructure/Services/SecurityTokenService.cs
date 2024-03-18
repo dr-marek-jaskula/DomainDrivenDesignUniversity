@@ -14,9 +14,9 @@ using System.Security.Claims;
 using System.Text;
 using static System.StringComparison;
 
-namespace Shopway.Infrastructure.Providers;
+namespace Shopway.Infrastructure.Services;
 
-internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeProvider timeProvider) : IJwtProvider
+internal sealed class SecurityTokenService(IOptions<AuthenticationOptions> options, TimeProvider timeProvider) : ISecurityTokenService
 {
     private readonly AuthenticationOptions _options = options.Value;
     private readonly TimeProvider _timeProvider = timeProvider;
@@ -80,7 +80,17 @@ internal sealed class JwtProvider(IOptions<AuthenticationOptions> options, TimeP
             return Result.Failure<bool>(Error.InvalidArgument("Invalid token"));
         }
 
-        return securityToken.ValidFrom.AddDays(_options.RefreshTokenInDays) < _timeProvider.GetUtcNow();
+        return securityToken.ValidFrom.AddDays(_options.RefreshTokenExpirationInDays) < _timeProvider.GetUtcNow();
+    }
+
+    public bool HasTwoFactorTokenExpired(DateTimeOffset? twoFactorTokenCreatedOn)
+    {
+        if (twoFactorTokenCreatedOn is null)
+        {
+            return true;
+        }
+
+        return ((DateTimeOffset)twoFactorTokenCreatedOn).AddSeconds(_options.TwoFactorTokenExpirationInSeconds) < _timeProvider.GetUtcNow();
     }
 
     private SecurityToken GetSecurityToken(string token)

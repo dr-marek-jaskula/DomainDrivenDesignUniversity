@@ -25,11 +25,11 @@ public sealed class RefreshToken : ValueObject
         return errors.CreateValidationResult(() => new RefreshToken(refreshToken));
     }
 
-    public static IList<Error> Validate(string username)
+    public static IList<Error> Validate(string refreshToken)
     {
         return EmptyList<Error>()
-            .If(username.IsNullOrEmptyOrWhiteSpace(), RefreshTokenError.Empty)
-            .If(username.Length != Length, RefreshTokenError.InvalidLength);
+            .If(refreshToken.IsNullOrEmptyOrWhiteSpace(), RefreshTokenError.Empty)
+            .If(refreshToken.Length != Length, RefreshTokenError.InvalidLength);
     }
 
     public override IEnumerable<object> GetAtomicValues()

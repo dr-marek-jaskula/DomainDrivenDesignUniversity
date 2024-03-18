@@ -17,10 +17,6 @@
     <ProjectReference Include="..\Shopway.Domain\Shopway.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Users\Events\" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<InternalsVisibleTo Include="Shopway.Tests.Unit" />
 	</ItemGroup>

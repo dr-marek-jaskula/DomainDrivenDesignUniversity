@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopway.Persistence.Framework;
 
@@ -11,9 +12,11 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    partial class ShopwayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240318111425_AddTwoFactAuth")]
+    partial class AddTwoFactAuth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -503,12 +506,12 @@ namespace Shopway.Persistence.Migrations
                         .HasColumnType("VarChar(32)")
                         .HasColumnName("RefreshToken");
 
+                    b.Property<string>("TwoFactorToken")
+                        .HasColumnType("VarChar(32)")
+                        .HasColumnName("TwoFactorToken");
+
                     b.Property<DateTimeOffset?>("TwoFactorTokenCreatedOn")
                         .HasColumnType("DateTimeOffset(2)");
-
-                    b.Property<string>("TwoFactorTokenHash")
-                        .HasColumnType("NChar(514)")
-                        .HasColumnName("TwoFactorTokenHash");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("VarChar(30)");

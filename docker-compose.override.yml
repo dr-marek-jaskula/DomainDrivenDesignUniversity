@@ -24,9 +24,23 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_volume:/data
 
+  papercut:
+    container_name: papercut
+    restart: unless-stopped
+    networks:
+      - db_net
+    ports:
+      - "25:25"
+      - "37408:37408"
+    volumes:
+      - papercut_volume:/Papercut
+
   shopway.app:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - "MailSenderOptions__Host=papercut"
+      - "MailSenderOptions__Port=25"
+      - "MailSenderOptions__UseSSL=false"
       - "ConnectionStrings__DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ConnectionStrings__TestConnection=Server=ddduniversitydb;Database=DDDUniversityTest;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ASPNETCORE_HTTP_PORTS=80;8080"

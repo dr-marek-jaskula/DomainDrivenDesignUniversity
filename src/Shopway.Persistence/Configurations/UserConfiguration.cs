@@ -49,6 +49,16 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .HasColumnType(ColumnType.VarChar(RefreshToken.Length))
             .IsRequired(false);
 
+        builder.Property(u => u.TwoFactorTokenHash)
+            .HasConversion<TwoFactorTokenHashConverter, TwoFactorTokenHashComparer>()
+            .HasColumnName(nameof(TwoFactorTokenHash))
+            .HasColumnType(ColumnType.NChar(TwoFactorTokenHash.BytesLong))
+            .IsRequired(false);
+
+        builder.Property(entity => entity.TwoFactorTokenCreatedOn)
+            .HasColumnType(ColumnType.DateTimeOffset(2))
+            .IsRequired(false);
+
         builder.HasMany(u => u.Roles)
             .WithMany(r => r.Users)
             .UsingEntity<RoleUser>();

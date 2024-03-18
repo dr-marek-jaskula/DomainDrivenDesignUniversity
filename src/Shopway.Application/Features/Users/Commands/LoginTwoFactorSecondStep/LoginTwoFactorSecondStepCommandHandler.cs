@@ -3,34 +3,34 @@ using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
-using static Shopway.Domain.Users.Errors.DomainErrors.PasswordOrEmailError;
 
-namespace Shopway.Application.Features.Users.Commands.LogUser;
+namespace Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
 
-internal sealed class LogUserCommandHandler
+internal sealed class LoginTwoFactorSecondStepCommandHandler
 (
     IUserRepository userRepository,
     ISecurityTokenService securityTokenService,
     IValidator validator,
     IPasswordHasher<User> passwordHasher
 )
-    : ICommandHandler<LogUserCommand, AccessTokenResponse>
+    : ICommandHandler<LoginTwoFactorSecondStepCommand, AccessTokenResponse>
 {
-    private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ISecurityTokenService _securityTokenService = securityTokenService;
     private readonly IValidator _validator = validator;
+    private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
 
-    public async Task<IResult<AccessTokenResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
+    public async Task<IResult<AccessTokenResponse>> Handle(LoginTwoFactorSecondStepCommand command, CancellationToken cancellationToken)
     {
+        ValidationResult<TwoFactorTokenHash> twoFactorTokenResult = TwoFactorTokenHash.Create(command.TwoFactorToken);
         ValidationResult<Email> emailResult = Email.Create(command.Email);
-        ValidationResult<Password> passwordResult = Password.Create(command.Password);
 
         _validator
-            .Validate(emailResult)
-            .Validate(passwordResult);
+            .Validate(twoFactorTokenResult)
+            .Validate(emailResult);
 
         if (_validator.IsInvalid)
         {
@@ -41,7 +41,7 @@ internal sealed class LogUserCommandHandler
             .GetByEmailAsync(emailResult.Value, cancellationToken);
 
         _validator
-            .If(user is null, thenError: InvalidPasswordOrEmail);
+            .If(user?.TwoFactorTokenHash is null, thenError: Error.InvalidArgument("User not found or token is null"));
 
         if (_validator.IsInvalid)
         {
@@ -49,17 +49,18 @@ internal sealed class LogUserCommandHandler
         }
 
         var result = _passwordHasher
-            .VerifyHashedPassword(user!, user!.PasswordHash.Value, passwordResult.Value.Value);
+            .VerifyHashedPassword(user!, user!.TwoFactorTokenHash!.Value, command.TwoFactorToken);
 
         _validator
-            .If(result is PasswordVerificationResult.Failed, thenError: InvalidPasswordOrEmail);
+            .If(result is not PasswordVerificationResult.Success, thenError: Error.InvalidArgument("Invalid TwoFactorToken"))
+            .If(_securityTokenService.HasTwoFactorTokenExpired(user!.TwoFactorTokenCreatedOn), thenError: Error.InvalidArgument("TwoFactorToken has expired"));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var accessTokenResult = _securityTokenService.GenerateJwt(user);
+        var accessTokenResult = _securityTokenService.GenerateJwt(user!);
 
         var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
 
@@ -71,7 +72,8 @@ internal sealed class LogUserCommandHandler
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        user.RefreshToken = refreshTokenResult.Value;
+        user!.RefreshToken = refreshTokenResult.Value;
+        user!.ClearTwoFactorToken();
 
         return accessTokenResult
             .ToResult();

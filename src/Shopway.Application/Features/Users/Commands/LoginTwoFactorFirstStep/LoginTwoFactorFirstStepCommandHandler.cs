@@ -1,29 +1,29 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
 using static Shopway.Domain.Users.Errors.DomainErrors.PasswordOrEmailError;
+using static Shopway.Domain.Common.Utilities.RandomUtilities;
+using static Shopway.Domain.Users.ValueObjects.TwoFactorTokenHash;
 
-namespace Shopway.Application.Features.Users.Commands.LogUser;
+namespace Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstStep;
 
-internal sealed class LogUserCommandHandler
+internal sealed class LoginTwoFactorFirstStepCommandHandler
 (
     IUserRepository userRepository,
-    ISecurityTokenService securityTokenService,
     IValidator validator,
     IPasswordHasher<User> passwordHasher
 )
-    : ICommandHandler<LogUserCommand, AccessTokenResponse>
+    : ICommandHandler<LoginTwoFactorFirstStepCommand>
 {
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly ISecurityTokenService _securityTokenService = securityTokenService;
     private readonly IValidator _validator = validator;
 
-    public async Task<IResult<AccessTokenResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
+    public async Task<IResult> Handle(LoginTwoFactorFirstStepCommand command, CancellationToken cancellationToken)
     {
         ValidationResult<Email> emailResult = Email.Create(command.Email);
         ValidationResult<Password> passwordResult = Password.Create(command.Password);
@@ -34,7 +34,7 @@ internal sealed class LogUserCommandHandler
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<AccessTokenResponse>();
+            return _validator.Failure();
         }
 
         User? user = await _userRepository
@@ -45,7 +45,7 @@ internal sealed class LogUserCommandHandler
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<AccessTokenResponse>();
+            return _validator.Failure();
         }
 
         var result = _passwordHasher
@@ -56,24 +56,23 @@ internal sealed class LogUserCommandHandler
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<AccessTokenResponse>();
+            return _validator.Failure();
         }
 
-        var accessTokenResult = _securityTokenService.GenerateJwt(user);
-
-        var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
+        var twoFactorTokenAsString = $"{GenerateString(NotHashedTokenFirstPartLength)}{NotHashedTokenSeparator}{GenerateString(NotHashedTokenSecondPartLength)}";
+        var twoFactorTokenHash = _passwordHasher.HashPassword(user, twoFactorTokenAsString);
+        var twoFactorToken = TwoFactorTokenHash.Create(twoFactorTokenHash);
 
         _validator
-            .Validate(refreshTokenResult);
+            .Validate(twoFactorToken);
 
         if (_validator.IsInvalid)
         {
-            return _validator.Failure<AccessTokenResponse>();
+            return _validator.Failure();
         }
 
-        user.RefreshToken = refreshTokenResult.Value;
+        user.SetTwoFactorToken(twoFactorToken.Value, twoFactorTokenAsString);
 
-        return accessTokenResult
-            .ToResult();
+        return Result.Success();
     }
 }
