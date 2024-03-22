@@ -4,7 +4,7 @@ public sealed class SkipForLocalEnvFact : FactAttribute
 {
     public SkipForLocalEnvFact()
     {
-        var environment = Environment.GetEnvironmentVariable("PERFORMANCE_ENVIRONMENT");
+        var environment = Environment.GetEnvironmentVariable("ENVIRONMENT_NAME");
 
         if (environment is null || environment.ToLower() is "local")
         {
