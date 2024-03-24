@@ -29,7 +29,8 @@ public static class PresentationLayerRegistration
     {
         app
             .ConfigureOpenApi(environment.IsDevelopment())
-            .UseAuthorization();
+            .UseAuthorization()
+            .UseCorsPolicy();
 
         return app;
     }
