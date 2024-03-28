@@ -12,17 +12,20 @@ internal sealed class ConfigureTwoFactorToptLoginCommandHandler
 (
     IUserRepository userRepository,
     IValidator validator,
-    IToptService toptService
+    IToptService toptService,
+    IUserContextService userContextService
 )
     : ICommandHandler<ConfigureTwoFactorToptLoginCommand, TwoFactorToptResponse>
 {
     private readonly IToptService _toptService = toptService;
+    private readonly IUserContextService _userContextService = userContextService;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult<TwoFactorToptResponse>> Handle(ConfigureTwoFactorToptLoginCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<Username> usernameResult = Username.Create(command.Username);
+        var username = _userContextService.Username ?? string.Empty;
+        ValidationResult<Username> usernameResult = Username.Create(username);
 
         _validator
             .Validate(usernameResult);

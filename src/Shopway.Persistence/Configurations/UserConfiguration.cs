@@ -58,7 +58,7 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
         builder.Property(u => u.TwoFactorToptSecret)
             .HasConversion<TwoFactorToptSecretConverter, TwoFactorToptSecretComparer>()
             .HasColumnName(nameof(TwoFactorToptSecret))
-            .HasColumnType(ColumnType.VarChar(TwoFactorToptSecret.BytesLong))
+            .HasColumnType(ColumnType.Char(TwoFactorToptSecret.BytesLong))
             .IsRequired(false);
 
         builder.Property(entity => entity.TwoFactorTokenCreatedOn)

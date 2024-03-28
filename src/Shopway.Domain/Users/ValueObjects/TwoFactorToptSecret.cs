@@ -11,7 +11,7 @@ namespace Shopway.Domain.Users.ValueObjects;
 
 public sealed class TwoFactorToptSecret : ValueObject
 {
-    public const int BytesLong = 160;
+    public const int BytesLong = 32;
 
     private TwoFactorToptSecret(string value)
     {

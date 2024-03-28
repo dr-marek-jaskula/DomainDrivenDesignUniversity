@@ -31,12 +31,10 @@ internal sealed class LoginTwoFactorToptCommandHandler
     {
         ValidationResult<Email> emailResult = Email.Create(command.Email);
         ValidationResult<Password> passwordResult = Password.Create(command.Password);
-        ValidationResult<TwoFactorToptSecret> codeResult = TwoFactorToptSecret.Create(command.Code);
 
         _validator
             .Validate(emailResult)
-            .Validate(passwordResult)
-            .Validate(codeResult);
+            .Validate(passwordResult);
 
         if (_validator.IsInvalid)
         {
@@ -67,7 +65,7 @@ internal sealed class LoginTwoFactorToptCommandHandler
         }
 
         _validator
-            .If(_toptService.VerifyCode(user.TwoFactorToptSecret!.Value, codeResult.Value.Value) is false, thenError: Error.New("TwoFactorCode", $"TwoFactorCode is is invalid"));
+            .If(_toptService.VerifyCode(user.TwoFactorToptSecret!.Value, command.Code) is false, thenError: Error.New("TwoFactorCode", $"TwoFactorCode is is invalid"));
 
         if (_validator.IsInvalid)
         {

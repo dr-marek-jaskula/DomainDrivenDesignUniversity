@@ -103,28 +103,25 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("configure/two-factor/topt")]
+    [Authorize]
     [ProducesResponseType<TwoFactorToptResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok, ProblemHttpResult>> ConfigureTwoFactorTopt
-    (
-        [FromBody] ConfigureTwoFactorToptLoginCommand command,
-        CancellationToken cancellationToken
-    )
+    public async Task<Results<Ok<TwoFactorToptResponse>, ProblemHttpResult>> ConfigureTwoFactorTopt(CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(new ConfigureTwoFactorToptLoginCommand(), cancellationToken);
 
         if (result.IsFailure)
         {
             return HandleFailure(result);
         }
 
-        return TypedResults.Ok();
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("login/two-factor/topt")]
     [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok, ProblemHttpResult>> LoginTwoFactorTopt
+    public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> LoginTwoFactorTopt
     (
         [FromBody] LoginTwoFactorToptCommand command,
         CancellationToken cancellationToken
@@ -137,7 +134,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             return HandleFailure(result);
         }
 
-        return TypedResults.Ok();
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPost("[action]")]
