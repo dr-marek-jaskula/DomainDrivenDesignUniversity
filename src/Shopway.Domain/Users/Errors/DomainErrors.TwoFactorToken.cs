@@ -12,7 +12,7 @@ public static partial class DomainErrors
             $"{nameof(TwoFactorTokenHash)} is empty.");
 
         public static readonly Error BytesLong = Error.New(
-            $"{nameof(PasswordHash)}.{nameof(BytesLong)}",
-            $"{nameof(PasswordHash)} needs to be less than {PasswordHash.BytesLong} bytes long.");
+            $"{nameof(TwoFactorTokenHash)}.{nameof(BytesLong)}",
+            $"{nameof(TwoFactorTokenHash)} needs to be less than {TwoFactorTokenHash.BytesLong} bytes long.");
     }
 }

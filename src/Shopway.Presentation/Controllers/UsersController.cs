@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Users.Commands;
 using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
+using Shopway.Application.Features.Users.Commands.ConfigureTwoFactorToptLogin;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstStep;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
+using Shopway.Application.Features.Users.Commands.LoginTwoFactorTopt;
 using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
@@ -87,6 +89,41 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> LoginTwoFactorSecondStep
     (
         [FromBody] LoginTwoFactorSecondStepCommand command, 
+        CancellationToken cancellationToken
+    )
+    {
+        var result = await Sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return TypedResults.Ok(result.Value);
+    }
+
+    [HttpPost("configure/two-factor/topt")]
+    [Authorize]
+    [ProducesResponseType<TwoFactorToptResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<TwoFactorToptResponse>, ProblemHttpResult>> ConfigureTwoFactorTopt(CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new ConfigureTwoFactorToptLoginCommand(), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return HandleFailure(result);
+        }
+
+        return TypedResults.Ok(result.Value);
+    }
+
+    [HttpPost("login/two-factor/topt")]
+    [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> LoginTwoFactorTopt
+    (
+        [FromBody] LoginTwoFactorToptCommand command,
         CancellationToken cancellationToken
     )
     {

@@ -11,5 +11,5 @@ public sealed class TwoFactorTokenHashConverter : ValueConverter<TwoFactorTokenH
 
 public sealed class TwoFactorTokenHashComparer : ValueComparer<TwoFactorTokenHash>
 {
-    public TwoFactorTokenHashComparer() : base((twoFactorToken1, twoFactorToken2) => twoFactorToken1!.Value == twoFactorToken2!.Value, passwordHash => passwordHash.GetHashCode()) { }
+    public TwoFactorTokenHashComparer() : base((twoFactorToken1, twoFactorToken2) => twoFactorToken1!.Value == twoFactorToken2!.Value, twoFactorToken => twoFactorToken.GetHashCode()) { }
 }
