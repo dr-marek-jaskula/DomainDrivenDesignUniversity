@@ -1417,6 +1417,95 @@
 					"response": []
 				},
 				{
+					"name": "ConfigureToptSecret",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/configure/two-factor/topt",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"configure",
+								"two-factor",
+								"topt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Two Factor / Topt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if (pm.response.to.have.status(200))\r",
+									"{\r",
+									"    pm.globals.set(\"access_token\", response.accessToken);\r",
+									"    pm.globals.set(\"refresh_token\", response.refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"Password\": \"{{password}}\",\r\n  \"Code\": \"999632\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/login/two-factor/topt",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"login",
+								"two-factor",
+								"topt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Refresh",
 					"event": [
 						{
