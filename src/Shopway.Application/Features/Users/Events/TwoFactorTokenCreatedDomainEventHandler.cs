@@ -11,14 +11,14 @@ internal sealed class TwoFactorTokenCreatedDomainEventHandler
     IPasswordHasher<User> passwordHasher,
     IUserRepository userRepository,
     ILogger<TwoFactorTokenCreatedDomainEventHandler> logger,
-    ISendEmail sendEmail
+    IEmailSender sendEmail
 )
     : IDomainEventHandler<TwoFactorTokenCreatedDomainEvent>
 {
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ILogger<TwoFactorTokenCreatedDomainEventHandler> _logger = logger;
-    private readonly ISendEmail _sendEmail = sendEmail;
+    private readonly IEmailSender _sendEmail = sendEmail;
 
     public async Task Handle(TwoFactorTokenCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
     {

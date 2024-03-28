@@ -34,7 +34,7 @@ public sealed class TwoFactorTokenHash : ValueObject
     {
         return EmptyList<Error>()
             .If(twoFactorTokenHash.IsNullOrEmptyOrWhiteSpace(), TwoFactorTokenError.Empty)
-            .If(Encoding.ASCII.GetByteCount(twoFactorTokenHash) > BytesLong, PasswordHashError.BytesLong);
+            .If(Encoding.ASCII.GetByteCount(twoFactorTokenHash) > BytesLong, TwoFactorTokenError.BytesLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

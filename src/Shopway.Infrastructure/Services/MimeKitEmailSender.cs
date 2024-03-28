@@ -7,7 +7,7 @@ using Shopway.Infrastructure.Options;
 
 namespace Shopway.Infrastructure.Services;
 
-public sealed class MimeKitEmailSender(ILogger<MimeKitEmailSender> logger, IOptions<MailSenderOptions> options) : ISendEmail
+public sealed class MimeKitEmailSender(ILogger<MimeKitEmailSender> logger, IOptions<MailSenderOptions> options) : IEmailSender
 {
     private readonly ILogger<MimeKitEmailSender> _logger = logger;
     private readonly MailSenderOptions _options = options.Value;

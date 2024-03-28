@@ -33,6 +33,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     public Customer? Customer { get; set; }
     public RefreshToken? RefreshToken { get; set; }
     public TwoFactorTokenHash? TwoFactorTokenHash { get; private set; }
+    public TwoFactorToptSecret? TwoFactorToptSecret { get; private set; }
     public DateTimeOffset? TwoFactorTokenCreatedOn { get; private set; }
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
