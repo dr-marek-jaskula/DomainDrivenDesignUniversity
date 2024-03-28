@@ -31,12 +31,12 @@ internal sealed class LoginTwoFactorToptCommandHandler
     {
         ValidationResult<Email> emailResult = Email.Create(command.Email);
         ValidationResult<Password> passwordResult = Password.Create(command.Password);
-        ValidationResult<TwoFactorToptSecret> code = TwoFactorToptSecret.Create(command.Code);
+        ValidationResult<TwoFactorToptSecret> codeResult = TwoFactorToptSecret.Create(command.Code);
 
         _validator
             .Validate(emailResult)
             .Validate(passwordResult)
-            .Validate(code);
+            .Validate(codeResult);
 
         if (_validator.IsInvalid)
         {
@@ -67,16 +67,16 @@ internal sealed class LoginTwoFactorToptCommandHandler
         }
 
         _validator
-            .If(_toptService.VerifyCode(user.TwoFactorToptSecret!.Value, code.Value.Value) is false, thenError: Error.New("TwoFactorCode", $"TwoFactorCode is is invalid"));
+            .If(_toptService.VerifyCode(user.TwoFactorToptSecret!.Value, codeResult.Value.Value) is false, thenError: Error.New("TwoFactorCode", $"TwoFactorCode is is invalid"));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var accessTokenResult = _securityTokenService.GenerateJwt(user);
+        var accessTokenResponse = _securityTokenService.GenerateJwt(user);
 
-        var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
+        var refreshTokenResult = RefreshToken.Create(accessTokenResponse.RefreshToken);
 
         _validator
             .Validate(refreshTokenResult);
@@ -88,7 +88,7 @@ internal sealed class LoginTwoFactorToptCommandHandler
 
         user.RefreshToken = refreshTokenResult.Value;
 
-        return accessTokenResult
+        return accessTokenResponse
             .ToResult();
     }
 }

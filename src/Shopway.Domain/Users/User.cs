@@ -61,4 +61,9 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
         TwoFactorTokenHash = null;
         TwoFactorTokenCreatedOn = null;
     }
+
+    public void SetTwoFactorToptSecret(TwoFactorToptSecret twoFactorToptSecret)
+    {
+        TwoFactorToptSecret = twoFactorToptSecret;
+    }
 }
