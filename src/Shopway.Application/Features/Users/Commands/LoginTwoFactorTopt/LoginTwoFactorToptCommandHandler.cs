@@ -65,7 +65,7 @@ internal sealed class LoginTwoFactorToptCommandHandler
         }
 
         _validator
-            .If(_toptService.VerifyCode(user.TwoFactorToptSecret!.Value, command.Code) is false, thenError: Error.New("TwoFactorCode", $"TwoFactorCode is is invalid"));
+            .If(_toptService.VerifyCode(user.TwoFactorToptSecret!.Value, command.Code) is false, thenError: Error.InvalidArgument($"{nameof(command.Code)} is invalid"));
 
         if (_validator.IsInvalid)
         {
