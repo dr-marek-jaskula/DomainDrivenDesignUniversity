@@ -215,7 +215,7 @@
 								"exec": [
 									"var response = JSON.parse(responseBody);\r",
 									"\r",
-									"if(pm.response.to.have.status(201))\r",
+									"if(pm.response.to.have.status(200))\r",
 									"{\r",
 									"    pm.collectionVariables.set(\"validProductUlid\", response.id);\r",
 									"}"
@@ -1097,6 +1097,114 @@
 					]
 				},
 				{
+					"name": "Payment",
+					"item": [
+						{
+							"name": "StartPaymentProcess",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(201))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"sessionId\": \"SomeSessionId\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/payment/start",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"{{validOrderHeaderUlid}}",
+										"payment",
+										"start"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FinalizePaymentProcess (Webhook)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(201))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"SessionId\": \"SomeSessionId\",\r\n    \"WasPaymentSuccessful\": true,\r\n    \"SecretHash\": \"437a8e40f11d51d1c47115a0c9badec126e93f73bd562f69b524b8f0d148d31b\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/Payment/webhook",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"Payment",
+										"webhook"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "CreateOrderHeader.Valid",
 					"event": [
 						{
@@ -1105,12 +1213,13 @@
 								"exec": [
 									"var response = JSON.parse(responseBody);\r",
 									"\r",
-									"if(pm.response.to.have.status(201))\r",
+									"if(pm.response.to.have.status(200))\r",
 									"{\r",
 									"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -1157,7 +1266,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"NewOrderHeaderStatus\" : \"OnHold\"\r\n}",
+							"raw": "{\r\n    \"NewOrderHeaderStatus\" : \"InProgress\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2219,6 +2328,143 @@
 							"path": [
 								"proxy",
 								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PaymentGateway",
+			"item": [
+				{
+					"name": "ShareSecret",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Issuer\": \"Shopway\",\r\n    \"Secret\": \"payment_gateway_secret_do_not_store_in_unsecure_storage\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/share-secret",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"share-secret"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConfigureWebhook",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SecretHash\": \"437a8e40f11d51d1c47115a0c9badec126e93f73bd562f69b524b8f0d148d31b\",\r\n    \"Subscription\": {\r\n        \"Issuer\": \"Shopway\",\r\n        \"SessionId\": \"SomeSessionId\",\r\n        \"Callback\": \"{{payment_gateway_callback}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/configure-webhook",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"configure-webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RedirectToPaymentSession",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Items\": [\r\n        \"Pencil\",\r\n        \"Bike\"\r\n    ],\r\n    \"Total\": 300,\r\n    \"Currency\": \"USD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/redirect-to-payment-session",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"redirect-to-payment-session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PublishPaymentResult_Success",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Issuer\": \"Shopway\",\r\n    \"SessionId\": \"SomeSessionId\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/publish-payment-result/success",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"publish-payment-result",
+								"success"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PublishPaymentResult_Failure",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Issuer\": \"Shopway\",\r\n    \"SessionId\": \"SomeSessionId\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/publish-payment-result/failure",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"publish-payment-result",
+								"failure"
 							]
 						}
 					},
