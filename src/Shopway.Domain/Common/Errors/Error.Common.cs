@@ -127,6 +127,15 @@ public sealed partial class Error
     }
 
     /// <summary>
+    /// Create an Error describing that the verification failed
+    /// </summary>
+    /// <returns>VerificationError error</returns>
+    public static Error VerificationError(string message)
+    {
+        return New($"{nameof(VerificationError)}", message);
+    }
+
+    /// <summary>
     /// Create an Error describing that the request is duplicated (same key)
     /// </summary>
     /// <returns>DuplicatedRequest error</returns>

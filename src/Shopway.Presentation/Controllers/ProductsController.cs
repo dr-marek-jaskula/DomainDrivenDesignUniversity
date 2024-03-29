@@ -255,7 +255,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [RequiredApiKey(RequiredApiKey.PRODUCT_CREATE)]
     [ProducesResponseType<CreateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<CreatedAtRoute<CreateProductResponse>, ProblemHttpResult>> CreateProduct
+    public async Task<Results<Ok<CreateProductResponse>, ProblemHttpResult>> CreateProduct
     (
         [FromBody] CreateProductCommand command, 
         CancellationToken cancellationToken
@@ -268,7 +268,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
             return HandleFailure(result);
         }
 
-        return CreatedAtActionResult(result, nameof(GetProductById));
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpPut("{id}")]

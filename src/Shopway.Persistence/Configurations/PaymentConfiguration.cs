@@ -4,6 +4,7 @@ using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.Enumerations;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.Enums;
+using Shopway.Persistence.Converters.ValueObjects;
 using Shopway.Persistence.Utilities;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
 using static Shopway.Persistence.Constants.Constants;
@@ -27,6 +28,11 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasConversion<PaymentStatusConverter>()
             .HasColumnType(ColumnType.VarChar(LongestOf<PaymentStatus>()))
             .IsRequired(true);
+
+        builder.Property(p => p.SessionId)
+            .HasConversion<SessionIdConverter, SessionIdComparer>()
+            .HasColumnType(ColumnType.VarChar(256))
+            .IsRequired(false);
 
         builder.ConfigureAuditableEntity();
     }

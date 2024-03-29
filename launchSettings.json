@@ -4,7 +4,8 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "shopway.app": "StartDebugging"
+        "shopway.app": "StartDebugging",
+        "paymentgateway": "StartDebugging"
       }
     }
   }

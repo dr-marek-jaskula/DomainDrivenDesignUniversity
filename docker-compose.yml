@@ -16,6 +16,12 @@ services:
       context: .
       dockerfile: src/Shopway.App/Dockerfile
 
+  paymentgateway:
+    image: ${DOCKER_REGISTRY-}paymentgateway
+    build:
+      context: .
+      dockerfile: PaymentGateway/Dockerfile
+
 networks:
   db_net:
 

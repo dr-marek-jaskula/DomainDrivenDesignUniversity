@@ -44,7 +44,7 @@ public sealed partial class OrderHeadersController(ISender sender, IAuthorizatio
     [HttpPost]
     [ProducesResponseType<CreateOrderHeaderResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<CreatedAtRoute<CreateOrderHeaderResponse>, ProblemHttpResult>> CreateOrderHeader
+    public async Task<Results<Ok<CreateOrderHeaderResponse>, ProblemHttpResult>> CreateOrderHeader
     (
         [FromBody] CreateOrderHeaderCommand command,
         CancellationToken cancellationToken
@@ -57,7 +57,7 @@ public sealed partial class OrderHeadersController(ISender sender, IAuthorizatio
             return HandleFailure(result);
         }
 
-        return CreatedAtActionResult(result, nameof(GetOrderHeaderById));
+        return TypedResults.Ok(result.Value);
     }
 
     [HttpDelete("{id}")]

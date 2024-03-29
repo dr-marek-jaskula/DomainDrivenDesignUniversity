@@ -12,8 +12,8 @@ public static class OrderHeaderMapping
         return new OrderHeaderResponse
         (
             orderHeader.Id.Value,
-            orderHeader.Status,
-            orderHeader.Payment.Status,
+            orderHeader.Status.ToString(),
+            orderHeader.Payment.Status.ToString(),
             orderHeader.CalculateTotalPrice(),
             orderHeader.TotalDiscount.Value,
             orderHeader.OrderLines.ToResponses()

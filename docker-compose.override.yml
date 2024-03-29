@@ -51,3 +51,18 @@ services:
       - ddduniversitydb
     ports:
       - "8080:80"
+
+  paymentgateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8082
+      - ASPNETCORE_HTTPS_PORTS=8083
+    restart: unless-stopped
+    networks:
+      - db_net
+    ports:
+      - "61045:8082"
+      - "61046:8083"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

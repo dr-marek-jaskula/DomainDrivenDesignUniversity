@@ -2,6 +2,7 @@
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Orders;
+using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Users;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
@@ -61,6 +62,22 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
 
         return await baseQuery
             .FirstAsync(x => x.Id == id, cancellationToken);
+    }
+
+    public async Task<OrderHeaderId?> GetOrderHeaderIdByPaymentSessionId(SessionId sessionId, CancellationToken cancellationToken)
+    {
+        var orderHeader = await _dbContext
+            .Set<OrderHeader>()
+            .Where(oh => oh.Payment.SessionId == sessionId)
+            .Select(oh => oh.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (orderHeader != default)
+        {
+            return orderHeader;
+        }
+
+        return null;
     }
 
     public void Create(OrderHeader order)

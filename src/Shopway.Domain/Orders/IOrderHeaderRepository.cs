@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Users;
 using System.Linq.Expressions;
 
@@ -12,6 +13,10 @@ public interface IOrderHeaderRepository
     Task<OrderHeader> GetByIdWithOrderLineAsync(OrderHeaderId id, OrderLineId orderLineId, CancellationToken cancellationToken);
 
     Task<OrderHeader> GetByIdWithIncludesAsync(OrderHeaderId id, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes);
+
+    Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken);
+
+    Task<OrderHeaderId?> GetOrderHeaderIdByPaymentSessionId(SessionId sessionId, CancellationToken cancellationToken);
 
     void Create(OrderHeader order);
 
@@ -43,5 +48,4 @@ public interface IOrderHeaderRepository
         Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor;
-    Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken);
 }
