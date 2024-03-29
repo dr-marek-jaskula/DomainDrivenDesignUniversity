@@ -46,9 +46,9 @@ internal sealed class ConfigureTwoFactorToptLoginCommandHandler
             return _validator.Failure<TwoFactorToptResponse>();
         }
 
-        (string Secret, string QrCode) = _toptService.CreateSecret(user!.Username.Value);
+        (string secret, string qrCode) = _toptService.CreateSecret(user!.Username.Value);
 
-        var twoFactorToptSecret = TwoFactorToptSecret.Create(Secret);
+        var twoFactorToptSecret = TwoFactorToptSecret.Create(secret);
 
         _validator
             .Validate(twoFactorToptSecret);
@@ -60,7 +60,7 @@ internal sealed class ConfigureTwoFactorToptLoginCommandHandler
 
         user.SetTwoFactorToptSecret(twoFactorToptSecret.Value);
 
-        return new TwoFactorToptResponse(QrCode)
+        return new TwoFactorToptResponse(qrCode)
             .ToResult();
     }
 }

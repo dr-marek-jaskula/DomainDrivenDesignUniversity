@@ -22,10 +22,10 @@ Note: Remember to set the ClockSkew to 5s (or max 30s)
 options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(_authenticationOptions.ClockSkew); 
 ```
 
-## TwoFactorAuthorization
+## TwoFactorAuthorization With Email
 
-At first use the ```/users/login/two-factor/first-phase``` endpoint to trigger the email sender. Get the code and use the second endpoint 
-```/users/login/two-factor/second-phase```. TwoFactorToken is not stored in database - its hash is stored, both with date of its creation. 
+At first use the ```/users/login/two-factor/first-step``` endpoint to trigger the email sender. Get the code from email (papercut) and use the second endpoint 
+```/users/login/two-factor/second-step```. TwoFactorToken is not stored in database - its hash is stored, both with date of its creation. 
 
 If the invalid token is sent, then the token hash in the database is set to null. 
 
@@ -35,6 +35,13 @@ docker run --name=papercut -p 25:25 -p 37408:37408 jijiechen/papercut:latest -d
 ```
 
 Single step authorization is still valid, to show possible options.
+
+## TwoFactorAuthorization With TOPT (Microsoft Authenticator)
+
+At first use the ```/users/configure/two-factor/topt``` endpoint to configure topt secret. This will return an encoded imaged of `QR code`. To decode it use some online tool `Base64 to PNG`, for instance `https://base64.guru/converter/decode/image/png`. Then, use Microsoft Authenticator to scan the QR Code. Secondly, use `/users/login/two-factor/topt` endpoint and provide the current code from
+Microsoft Authenticator. 
+
+If You want to change the secret, just use configure endpoint again and again scan the `QR code`.
 
 ## Enum to string conversion
 
