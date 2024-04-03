@@ -23,7 +23,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
     {
     }
 
-    public SessionId SessionId { get; private set; }
+    public Session? Session { get; private set; }
     public PaymentStatus Status { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }
@@ -39,19 +39,13 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
         );
     }
 
-    public void ProcessPayment(bool paymentReceived)
+    public void SetStatus(PaymentStatus paymentStatus)
     {
-        if (paymentReceived)
-        {
-            Status = Received;
-            return;
-        }
-
-        Status = NotReceived;
+        Status = paymentStatus;
     }
 
-    public void SetSessionId(SessionId sessionId)
+    public void SetSession(Session session)
     {
-        SessionId = sessionId;
+        Session = session;
     }
 }

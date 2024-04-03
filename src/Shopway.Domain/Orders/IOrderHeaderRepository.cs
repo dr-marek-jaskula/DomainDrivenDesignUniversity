@@ -16,7 +16,7 @@ public interface IOrderHeaderRepository
 
     Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken);
 
-    Task<OrderHeaderId?> GetOrderHeaderIdByPaymentSessionId(SessionId sessionId, CancellationToken cancellationToken);
+    Task<OrderHeader?> GetByPaymentSessionIdWithIncludesAsync(string sessionId, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes);
 
     void Create(OrderHeader order);
 

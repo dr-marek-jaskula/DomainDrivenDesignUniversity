@@ -15,7 +15,8 @@ public static class InfrastructureLayerRegistration
         services
             .RegisterFuzzySearch()
             .RegisterDecorators()
-            .RegisterServices();
+            .RegisterServices()
+            .RegisterPaymentGateway();
 
         return services;
     }

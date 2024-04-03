@@ -2,9 +2,7 @@
 
 namespace Shopway.Application.Features.Orders.Commands.FinalizePaymentProcess;
 
-public sealed record FinalizePaymentProcessCommand
-(
-    string SessionId,
-    bool WasPaymentSuccessful,
-    string SecretHash
-) : ICommand;
+public sealed record FinalizePaymentProcessCommand : ICommand
+{
+    public static readonly FinalizePaymentProcessCommand Instance = new();
+}

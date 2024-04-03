@@ -28,7 +28,7 @@ app.UseHttpsRedirection();
 
 app.MapPost("/share-secret", ([FromServices] SecretStoreService secretStore, [FromBody] ConfigureIssuerRequest configureIssuerRequest) =>
 {
-    secretStore.SetSecretForIssuer(configureIssuerRequest.Issuer, configureIssuerRequest.Secret);
+    secretStore.SetSecretForIssuer(configureIssuerRequest.Issuer, configureIssuerRequest.PrivateKey);
     return TypedResults.Ok();
 })
 .WithName("ShareSecret")
@@ -36,7 +36,7 @@ app.MapPost("/share-secret", ([FromServices] SecretStoreService secretStore, [Fr
 
 app.MapPost("/configure-webhook", ([FromServices] WebhookService webhookService, [FromServices] SecretStoreService secretStore, [FromBody] ConfigureWebhookRequest configureWebhookRequest) =>
 {
-    var secretHashFromSecretStore = secretStore.GetSecretHashForIssuer(configureWebhookRequest.Subscription.Issuer);
+    var secretHashFromSecretStore = secretStore.GetPrivateKeyHashForIssuer(configureWebhookRequest.Subscription.Issuer);
     var secretHashFromRequest = configureWebhookRequest.SecretHash;
 
     if (secretHashFromSecretStore != secretHashFromRequest)
@@ -44,7 +44,9 @@ app.MapPost("/configure-webhook", ([FromServices] WebhookService webhookService,
         return Results.BadRequest("Secrets do not match");
     }
 
+    secretStore.SetWebhookSecretForIssuer(configureWebhookRequest.Subscription.Issuer, configureWebhookRequest.Subscription.WebhookSecret);
     webhookService.Subscribe(configureWebhookRequest.Subscription);
+
     return TypedResults.Ok();
 })
 .WithName("ConfigureWebhook")
@@ -52,24 +54,15 @@ app.MapPost("/configure-webhook", ([FromServices] WebhookService webhookService,
 
 app.MapPost("/redirect-to-payment-session", ([FromBody] PaymentRequest paymentRequest) =>
 {
-    var sessionId = RandomString(6);
-    return TypedResults.Ok(sessionId);
-
-    static string RandomString(int length)
-    {
-        var random = new Random();
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
-    }
+    return TypedResults.Ok();
 })
 .WithName("RedirectToPaymentSession")
 .WithOpenApi();
 
 app.MapPost("/publish-payment-result/success", async ([FromServices] WebhookService webhookService, [FromServices] SecretStoreService secretStore, [FromBody] PublishRequest publishRequest) =>
 {
-    var secretHash = secretStore.GetSecretHashForIssuer(publishRequest.Issuer);
-    await webhookService.PublishMessage(secretHash, publishRequest.Issuer, publishRequest.SessionId, true);
+    var webhookSecret = secretStore.GetWebhookSecretForIssuer(publishRequest.Issuer);
+    await webhookService.PublishMessage(webhookSecret, publishRequest.Issuer, publishRequest.SessionId, publishRequest.ClientSecret, true);
     return TypedResults.Ok();
 })
 .WithName("PublishPaymentResult_Success")
@@ -77,8 +70,8 @@ app.MapPost("/publish-payment-result/success", async ([FromServices] WebhookServ
 
 app.MapPost("/publish-payment-result/failure", async ([FromServices] WebhookService webhookService, [FromServices] SecretStoreService secretStore, [FromBody] PublishRequest publishRequest) =>
 {
-    var secretHash = secretStore.GetSecretHashForIssuer(publishRequest.Issuer);
-    await webhookService.PublishMessage(secretHash, publishRequest.Issuer, publishRequest.SessionId, false);
+    var webhookSecret = secretStore.GetWebhookSecretForIssuer(publishRequest.Issuer);
+    await webhookService.PublishMessage(webhookSecret, publishRequest.Issuer, publishRequest.SessionId, publishRequest.ClientSecret, false);
     return TypedResults.Ok();
 })
 .WithName("PublishPaymentResult_Failure")

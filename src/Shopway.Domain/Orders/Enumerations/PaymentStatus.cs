@@ -3,5 +3,7 @@
 public enum PaymentStatus
 {
     NotReceived = 1,
+    Confirmed,
+    Failed,
     Received
 }

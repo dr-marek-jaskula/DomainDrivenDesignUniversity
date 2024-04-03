@@ -73,6 +73,15 @@ public sealed partial class Error
     }
 
     /// <summary>
+    /// Create an Error describing the NullReference
+    /// </summary>
+    /// <returns>NullReference error</returns>
+    public static Error NullReference(string subject)
+    {
+        return New($"{subject}.{nameof(NullReference)}", $"{subject} is null.");
+    }
+
+    /// <summary>
     /// Create an Error describing that the provided reference is invalid
     /// </summary>
     /// <returns>InvalidReference error</returns>
@@ -97,6 +106,15 @@ public sealed partial class Error
     public static Error NullOrEmpty(string collectionName)
     {
         return New($"{collectionName}.{nameof(NullOrEmpty)}", $"{collectionName} is null or empty.");
+    }
+
+    /// <summary>
+    /// Create an Error describing that the give case is NotSupported
+    /// </summary>
+    /// <returns>NotSupported error</returns>
+    public static Error NotSupported(string message)
+    {
+        return New($"{nameof(NotSupported)}", message);
     }
 
     /// <summary>

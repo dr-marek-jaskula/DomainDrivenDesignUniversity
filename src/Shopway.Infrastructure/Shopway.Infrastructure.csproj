@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
     <PackageReference Include="Polly" Version="8.3.1" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
-    <PackageReference Include="SymSpell" Version="6.7.2" />
+	<PackageReference Include="SymSpell" Version="6.7.2" />
     <PackageReference Include="TwoFactorAuth.Net" Version="1.4.0" />
     <PackageReference Include="TwoFactorAuth.Net.QRCoder" Version="1.0.2" />
   </ItemGroup>

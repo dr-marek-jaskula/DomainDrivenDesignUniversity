@@ -2,7 +2,6 @@
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Orders;
-using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Users;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
@@ -41,9 +40,9 @@ public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated
         return await _decorated.IsOrderHeaderCreatedByUser(id, userId, cancellationToken);
     }
 
-    public async Task<OrderHeaderId?> GetOrderHeaderIdByPaymentSessionId(SessionId sessionId, CancellationToken cancellationToken)
+    public async Task<OrderHeader?> GetByPaymentSessionIdWithIncludesAsync(string sessionId, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes)
     {
-        return await _decorated.GetOrderHeaderIdByPaymentSessionId(sessionId, cancellationToken);
+        return await _decorated.GetByPaymentSessionIdWithIncludesAsync(sessionId, cancellationToken, includes);
     }
 
     public void Create(OrderHeader order)

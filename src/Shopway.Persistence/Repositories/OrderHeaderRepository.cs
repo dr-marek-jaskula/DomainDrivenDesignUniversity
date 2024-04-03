@@ -2,7 +2,6 @@
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Orders;
-using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Users;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
@@ -49,8 +48,7 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
     {
         var baseQuery = _dbContext
             .Set<OrderHeader>()
-            .AsSplitQuery()
-            .AsQueryable();
+            .AsSplitQuery();
 
         if (includes.Length != 0)
         {
@@ -64,20 +62,23 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<OrderHeaderId?> GetOrderHeaderIdByPaymentSessionId(SessionId sessionId, CancellationToken cancellationToken)
+    public async Task<OrderHeader?> GetByPaymentSessionIdWithIncludesAsync(string sessionId, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes)
     {
-        var orderHeader = await _dbContext
+        var baseQuery = _dbContext
             .Set<OrderHeader>()
-            .Where(oh => oh.Payment.SessionId == sessionId)
-            .Select(oh => oh.Id)
-            .FirstOrDefaultAsync(cancellationToken);
+            .Where(oh => oh.Payment.Session.Id == sessionId)
+            .AsSplitQuery();
 
-        if (orderHeader != default)
+        if (includes.Length != 0)
         {
-            return orderHeader;
+            foreach (var include in includes)
+            {
+                baseQuery = baseQuery.Include(include);
+            }
         }
 
-        return null;
+        return await baseQuery
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public void Create(OrderHeader order)

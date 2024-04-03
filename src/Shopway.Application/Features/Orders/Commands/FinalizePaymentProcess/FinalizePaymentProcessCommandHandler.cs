@@ -1,11 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Shopway.Application.Abstractions;
+﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
-using Shopway.Domain.Orders.ValueObjects;
 
 namespace Shopway.Application.Features.Orders.Commands.FinalizePaymentProcess;
 
@@ -13,52 +10,38 @@ internal sealed class FinalizePaymentProcessCommandHandler
 (
     IOrderHeaderRepository orderHeaderRepository, 
     IValidator validator, 
-    IConfiguration configuration
+    IPaymentGatewayService paymentGatewayService
 )
     : ICommandHandler<FinalizePaymentProcessCommand>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderHeaderRepository;
     private readonly IValidator _validator = validator;
-    private readonly IConfiguration _configuration = configuration;
+    private readonly IPaymentGatewayService _paymentGatewayService = paymentGatewayService;
 
     public async Task<IResult> Handle(FinalizePaymentProcessCommand command, CancellationToken cancellationToken)
     {
-        var secretHash = GetHashOfSecretSharedWithPaymentGateway();
-        var sessionIdResult = SessionId.Create(command.SessionId);
+        var paymentProcessResult = await _paymentGatewayService.GetPaymentProcessResult();
 
         _validator
-            .If(secretHash != command.SecretHash, Error.VerificationError("Provided secret is invalid"))
-            .Validate(sessionIdResult);
+            .Validate(paymentProcessResult);
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure();
         }
 
-        OrderHeaderId? orderHeaderId = await _orderHeaderRepository.GetOrderHeaderIdByPaymentSessionId(sessionIdResult.Value, cancellationToken);
+        var orderHeader = await _orderHeaderRepository.GetByPaymentSessionIdWithIncludesAsync(paymentProcessResult.Value.SessionId, cancellationToken, oh => oh.Payment);
 
         _validator
-            .If(orderHeaderId is null, Error.NotFound<OrderHeader>(sessionIdResult.Value.Value));
+            .If(orderHeader is null, Error.NotFound<OrderHeader>(paymentProcessResult.Value.SessionId));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure();
         }
 
-        var orderHeader = await _orderHeaderRepository.GetByIdWithIncludesAsync((OrderHeaderId)orderHeaderId!, cancellationToken, oh => oh.Payment);
-        orderHeader.Payment.ProcessPayment(command.WasPaymentSuccessful);
+        orderHeader!.Payment.SetStatus(paymentProcessResult.Value.PaymentStatus);
 
         return Result.Success();
-    }
-
-    /// <summary>
-    /// DO NOT STORE SECRET IN UNSECURE STORAGE LIKE appsettings.json. This was done just to simplicity purpose.
-    /// </summary>
-    private string GetHashOfSecretSharedWithPaymentGateway()
-    {
-        var secret = _configuration
-            .GetValue<string>("PaymentGatewaySecret")!;
-
-        return HashUtilities.ComputeSha256Hash(secret);
     }
 }

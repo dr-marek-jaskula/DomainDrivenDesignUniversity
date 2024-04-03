@@ -1,3 +1,3 @@
 ﻿namespace PaymentGateway.Webhook;
 
-public record Subscription(string Issuer, string SessionId, string Callback);
+public record Subscription(string Issuer, string Webhook, string WebhookSecret);

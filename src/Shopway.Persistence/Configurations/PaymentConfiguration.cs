@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.Enumerations;
+using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.Enums;
-using Shopway.Persistence.Converters.ValueObjects;
 using Shopway.Persistence.Utilities;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
 using static Shopway.Persistence.Constants.Constants;
@@ -29,10 +29,13 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasColumnType(ColumnType.VarChar(LongestOf<PaymentStatus>()))
             .IsRequired(true);
 
-        builder.Property(p => p.SessionId)
-            .HasConversion<SessionIdConverter, SessionIdComparer>()
-            .HasColumnType(ColumnType.VarChar(256))
-            .IsRequired(false);
+        builder.OwnsOne(o => o.Session, options =>
+        {
+            options.ToJson(nameof(Session));
+
+            options.Property(p => p.Id).IsRequired(false);
+            options.Property(x => x.Secret).IsRequired(false);
+        });
 
         builder.ConfigureAuditableEntity();
     }
