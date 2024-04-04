@@ -130,8 +130,7 @@ docker compose -f .\docker-compose.yml -f .\docker-compose.override.yml up --bui
 
 ### Payment Gateway :moneybag:
 
-Integration with **PaymentGateway** is presented in .Infrastructure and .Application layers. See **StartPaymentProcessCommand**, **FinalizePaymentProcessCommand**
-and **PaymentGatewayService**. It is described in details in .Infrastructure ReadMe.md file.
+Integration with **PaymentGateway** is presented in .Infrastructure and .Application layers. See **StartPaymentProcessCommand**, **FinalizePaymentProcessCommand** and **PaymentGatewayService**. It is described in details in .Infrastructure ReadMe.md file.
 
 To integrate with Payment Gateway we should use the docker compose approach. 
 
