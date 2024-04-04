@@ -2,8 +2,8 @@
 
 public class PaymentGatewayEvent
 {
-    public Data Data { get; internal set; } = null!;
-    public string Type { get; internal set; } = string.Empty;
+    public Data Data { get; set; } = null!;
+    public string Type { get; set; } = string.Empty;
 }
 
 public class Data

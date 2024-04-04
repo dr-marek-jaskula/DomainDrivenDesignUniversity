@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using PaymentGateway.HttpClients;
 using PaymentGateway.Persistence;
 using PaymentGateway.Requests;
 using PaymentGateway.Webhook;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +11,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<WebhookService>();
 builder.Services.AddSingleton<SecretStoreService>();
-builder.Services
-    .AddHttpClient("with-api-version", x =>
-    {
-        x.DefaultRequestHeaders.Add("api-version", "0.1");
-    });
+
+builder.Services.AddTransient<PaymentGatewayDelegatingHandler>();
+
+builder.Services.AddRefitClient<IShopwayApi>()
+    //.ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:7236/api"))
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://shopway.app/api"))
+    .AddHttpMessageHandler<PaymentGatewayDelegatingHandler>();
 
 var app = builder.Build();
 
