@@ -12,7 +12,8 @@ public class SessionService
         {
             ClientSecret = Guid.NewGuid().ToString(),
             Id = Guid.NewGuid().ToString(),
-            Url = "http://localhost:61045/redirect-to-payment-session"
+            Url = "http://localhost:61045/redirect-to-payment-session",
+            PaymentIntentId = Guid.NewGuid().ToString()
         });
     }
 }
