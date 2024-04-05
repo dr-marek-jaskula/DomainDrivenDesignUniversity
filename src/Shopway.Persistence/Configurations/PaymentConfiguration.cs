@@ -34,6 +34,10 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasColumnType(ColumnType.Char(UlidCharLenght))
             .IsRequired(true);
 
+        builder.Property(entity => entity.IsRefunded)
+            .HasColumnType(ColumnType.Bit)
+            .HasDefaultValue(false);
+
         builder.OwnsOne(o => o.Session, options =>
         {
             options.ToJson(nameof(Session));

@@ -1,5 +1,7 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.Results;
+using Shopway.Domain.Errors;
 using Shopway.Domain.Orders.Enumerations;
 using Shopway.Domain.Orders.ValueObjects;
 using static Shopway.Domain.Orders.Enumerations.PaymentStatus;
@@ -24,6 +26,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
     }
 
     public Session? Session { get; private set; }
+    public bool IsRefunded { get; private set; } = false;
     public OrderHeaderId OrderHeaderId { get; private set; }
     public PaymentStatus Status { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
@@ -38,6 +41,17 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
             id: PaymentId.New(),
             status: NotReceived
         );
+    }
+
+    public Result Refund()
+    {
+        if (Status is not Received)
+        {
+            return Result.Failure(Error.InvalidOperation("Refund cannot be performed on a not received payment."));
+        }
+
+        IsRefunded = true;
+        return Result.Success();
     }
 
     public void SetStatus(PaymentStatus paymentStatus)
