@@ -8,7 +8,6 @@ using Shopway.Domain.Orders.Enumerations;
 using Shopway.Domain.Orders.Events;
 using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Users;
-using System.ComponentModel.DataAnnotations;
 using static Shopway.Domain.Orders.Enumerations.OrderStatus;
 using static Shopway.Domain.Orders.Enumerations.PaymentStatus;
 using static Shopway.Domain.Orders.Errors.DomainErrors.Status;
@@ -172,6 +171,18 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISof
             return Result.Failure(Error.NotFound<Payment>(paymentId));
         }
 
-        return await paymentToRefund!.Refund(paymentGatewayService);
+        var refundResult = await paymentToRefund!.Refund(paymentGatewayService);
+
+        if (refundResult.IsFailure)
+        {
+            return refundResult;
+        }
+
+        if (Status.NotSent())
+        {
+            ChangeStatus(Rejected);
+        }
+
+        return Result.Success();
     }
 }

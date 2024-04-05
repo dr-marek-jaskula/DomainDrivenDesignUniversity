@@ -16,7 +16,8 @@ public static partial class Constants
             (New, Rejected),
             (InProgress, OnHold),
             (InProgress, Rejected),
-            (OnHold, New)
+            (OnHold, New),
+            (OnHold, Rejected)
         ];
     }
 }
