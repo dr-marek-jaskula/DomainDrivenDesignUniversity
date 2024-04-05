@@ -1,19 +1,14 @@
-﻿using Shopway.Domain.Errors;
+﻿
+using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest;
 
 /// <summary>
 /// Represents a helper class used to deserialize the response
 /// </summary>
-public sealed class ResponseResult<TValue> : ResponseResult
+public sealed class ResponseResult<TValue>(TValue? value, bool isSuccess, Error error) : ResponseResult(isSuccess, error)
 {
-    public TValue? Value { get; set; }
-
-    public ResponseResult(TValue? value, bool isSuccess, Error error)
-        : base(isSuccess, error)
-    {
-        Value = value;
-    }
+    public TValue? Value { get; set; } = value;
 }
 
 /// <summary>

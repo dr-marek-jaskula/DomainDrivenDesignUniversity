@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Features;
-using Shopway.Domain.Errors;
+using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 

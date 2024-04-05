@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Shopway.Domain.Common.Enums;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 using System.Security.Claims;

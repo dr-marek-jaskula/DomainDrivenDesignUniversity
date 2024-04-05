@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.Enumerations;
 
@@ -31,20 +31,18 @@ internal sealed class CancelPaymentProcessCommandHandler
             return _validator.Failure();
         }
 
-        var orderHeader = await _orderHeaderRepository.GetByPaymentSessionIdAsync(paymentProcessResult.Value.SessionId, cancellationToken);
+        var sessionId = paymentProcessResult.Value.SessionId;
+
+        var orderHeader = await _orderHeaderRepository.GetByPaymentSessionIdAsync(sessionId, cancellationToken);
 
         _validator
-            .If(orderHeader is null, Error.NotFound<OrderHeader>(paymentProcessResult.Value.SessionId));
+            .If(orderHeader is null, Error.NotFound<OrderHeader>(sessionId));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure();
         }
 
-        orderHeader!.Payments
-            .Single(x => x.Session!.Id == paymentProcessResult.Value.SessionId)
-            .SetStatus(PaymentStatus.Canceled);
-
-        return Result.Success();
+        return orderHeader!.SetPaymentStatus(PaymentStatus.Canceled, sessionId);
     }
 }

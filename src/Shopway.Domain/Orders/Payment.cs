@@ -3,12 +3,10 @@ using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Orders.Enumerations;
 using Shopway.Domain.Orders.ValueObjects;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
 using static Shopway.Domain.Orders.Enumerations.PaymentStatus;
-using static Shopway.Domain.Orders.Errors.DomainErrors;
 
 namespace Shopway.Domain.Orders;
 
@@ -47,7 +45,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
         );
     }
 
-    public async Task<Result> Refund(IPaymentGatewayService paymentGatewayService)
+    internal async Task<Result> Refund(IPaymentGatewayService paymentGatewayService)
     {
         var errors = EmptyList<Error>()
             .If(IsRefunded, Error.InvalidOperation("Payment is already refunded"))
@@ -70,7 +68,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
         return Result.Success();
     }
 
-    public void SetStatus(PaymentStatus paymentStatus)
+    internal void SetStatus(PaymentStatus paymentStatus)
     {
         Status = paymentStatus;
     }

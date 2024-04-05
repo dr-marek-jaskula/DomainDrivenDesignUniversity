@@ -1,4 +1,4 @@
-﻿namespace Shopway.Domain.Errors;
+﻿namespace Shopway.Domain.Common.Errors;
 
 /// <summary>
 /// Represents an error that contains the informations about the failure

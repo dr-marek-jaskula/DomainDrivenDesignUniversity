@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Orders.ValueObjects;
 
 namespace Shopway.Domain.Orders.Errors;

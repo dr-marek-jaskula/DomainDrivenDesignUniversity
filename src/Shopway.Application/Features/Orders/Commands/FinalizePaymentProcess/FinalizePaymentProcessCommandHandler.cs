@@ -1,10 +1,9 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.Enumerations;
-using static Shopway.Domain.Orders.Enumerations.OrderStatus;
 
 namespace Shopway.Application.Features.Orders.Commands.FinalizePaymentProcess;
 
@@ -44,15 +43,6 @@ internal sealed class FinalizePaymentProcessCommandHandler
             return _validator.Failure();
         }
 
-        orderHeader!.Payments
-            .Single(x => x.Session!.Id == sessionId)
-            .SetStatus(paymentStatus);
-
-        if (orderHeader.Status is New && paymentStatus.IsReceivedOrConfirmed())
-        {
-            orderHeader.ChangeStatus(InProgress);
-        }
-
-        return Result.Success();
+        return orderHeader!.SetPaymentStatus(paymentStatus, sessionId);
     }
 }

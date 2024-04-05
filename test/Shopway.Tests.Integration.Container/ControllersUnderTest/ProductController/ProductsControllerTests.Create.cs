@@ -1,6 +1,6 @@
 ﻿using RestSharp;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.EntityKeys;
-using Shopway.Domain.Errors;
 using Shopway.Tests.Integration.Container.Utilities;
 using Shopway.Tests.Integration.Utilities;
 using static Shopway.Tests.Integration.Container.ControllersUnderTest.ProductController.Utilities.CreateProductCommandUtility;

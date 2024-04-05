@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 
-namespace Shopway.Domain.Errors;
+namespace Shopway.Domain.Common.Errors;
 
 public sealed partial class Error
 {

@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Shopway.Application.Abstractions;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.Enumerations;
 using Shopway.Infrastructure.Payments.DummyGatewayTypes;

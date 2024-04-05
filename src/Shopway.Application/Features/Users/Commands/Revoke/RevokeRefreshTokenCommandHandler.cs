@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
 
 namespace Shopway.Application.Features.Users.Commands.Revoke;

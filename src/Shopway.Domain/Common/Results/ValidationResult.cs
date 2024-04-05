@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Common.Results.Abstractions;
-using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Common.Errors;
+using Shopway.Domain.Common.Results.Abstractions;
 
 namespace Shopway.Domain.Common.Results;
 
@@ -53,7 +53,7 @@ public sealed class ValidationResult : Result, IValidationResult
     private ValidationResult()
         : base(Error.None)
     {
-        ValidationErrors = Array.Empty<Error>();
+        ValidationErrors = [];
     }
 
     public Error[] ValidationErrors { get; }
@@ -65,7 +65,7 @@ public sealed class ValidationResult : Result, IValidationResult
     /// <returns>Failure ValidationResult</returns>
     public static ValidationResult WithErrors(ICollection<Error> validationErrors)
     {
-        return new(validationErrors.ToArray());
+        return new([.. validationErrors]);
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Common.Errors;
+using Shopway.Domain.Common.Results;
 
 namespace Shopway.Application.Abstractions;
 

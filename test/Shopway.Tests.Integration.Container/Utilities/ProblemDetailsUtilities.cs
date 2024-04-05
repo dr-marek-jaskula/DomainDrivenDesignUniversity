@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Common.Errors;
 using Shopway.Tests.Integration.ControllersUnderTest;
 using static Shopway.Application.Constants.Constants.ProblemDetails;
 

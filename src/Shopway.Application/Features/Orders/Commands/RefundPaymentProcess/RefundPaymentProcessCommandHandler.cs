@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
 
 namespace Shopway.Application.Features.Orders.Commands.RefundPaymentProcess;
@@ -30,18 +30,6 @@ internal sealed class RefundPaymentProcessCommandHandler
             return _validator.Failure();
         }
 
-        var paymentToRefund = orderHeader!.Payments
-            .Where(p => p.Id == command.PaymentId)
-            .FirstOrDefault();
-
-        _validator
-            .If(paymentToRefund is null, Error.NotFound<Payment>(command.PaymentId));
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure();
-        }
-
-        return await paymentToRefund!.Refund(_paymentGatewayService);
+        return await orderHeader!.Refund(command.PaymentId, _paymentGatewayService);
     }
 }

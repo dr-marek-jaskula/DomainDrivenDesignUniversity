@@ -2,8 +2,8 @@
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Utilities;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
 

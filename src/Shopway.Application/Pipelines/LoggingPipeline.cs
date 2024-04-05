@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Results.Abstractions;
-using Shopway.Domain.Errors;
 
 namespace Shopway.Application.Pipelines;
 

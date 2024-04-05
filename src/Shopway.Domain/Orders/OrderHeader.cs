@@ -1,11 +1,14 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.DomainEvents;
 using Shopway.Domain.Orders.Enumerations;
 using Shopway.Domain.Orders.Events;
 using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Users;
+using System.ComponentModel.DataAnnotations;
 using static Shopway.Domain.Orders.Enumerations.OrderStatus;
 using static Shopway.Domain.Orders.Enumerations.PaymentStatus;
 using static Shopway.Domain.Orders.Errors.DomainErrors.Status;
@@ -131,5 +134,44 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISof
     {
         SoftDeleted = true;
         SoftDeletedOn = DateTimeOffset.UtcNow;
+    }
+
+    public Result SetPaymentStatus(PaymentStatus paymentStatus, string sessionId)
+    {
+        var payment = Payments
+            .FirstOrDefault(x => x.Session!.Id == sessionId);
+
+        if (payment is null)
+        {
+            return Result.Failure(Error.NotFound(nameof(Payment), $"SessionId: '{sessionId}'", "To set Payment Status the valid sessionId should be provided"));
+        }
+
+        payment.SetStatus(paymentStatus);
+
+        if (Status is New && paymentStatus.IsReceivedOrConfirmed())
+        {
+            var changeStatusResult = ChangeStatus(InProgress);
+
+            if (changeStatusResult.IsFailure)
+            {
+                return changeStatusResult;
+            }
+        }
+
+        return Result.Success();
+    }
+
+    public async Task<Result> Refund(PaymentId paymentId, IPaymentGatewayService paymentGatewayService)
+    {
+        var paymentToRefund = Payments
+            .Where(p => p.Id == paymentId)
+            .FirstOrDefault();
+
+        if (paymentToRefund is null)
+        {
+            return Result.Failure(Error.NotFound<Payment>(paymentId));
+        }
+
+        return await paymentToRefund!.Refund(paymentGatewayService);
     }
 }
