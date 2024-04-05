@@ -41,7 +41,17 @@ internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRep
 
         OrderLine createdOrderLine = CreateOrderLine(product, command.OrderHeaderId, amountResult.Value, discountResult.Value);
 
-        orderHeader.AddOrderLine(createdOrderLine);
+        var addOrderLineResult = orderHeader.AddOrderLine(createdOrderLine);
+
+        _validator
+            .Validate(addOrderLineResult);
+
+        if (addOrderLineResult.IsFailure)
+        {
+            return _validator
+                .Failure<AddOrderLineResponse>()
+                .ToResult();
+        }
 
         return createdOrderLine
             .ToAddResponse()

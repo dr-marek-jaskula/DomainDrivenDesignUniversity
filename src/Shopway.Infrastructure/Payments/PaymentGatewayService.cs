@@ -93,7 +93,15 @@ public sealed partial class PaymentGatewayService(IHttpContextAccessor httpConte
         };
 
         var service = new RefundService();
-        await service.CreateAsync(options);
+
+        try
+        {
+            await service.CreateAsync(options);
+        }
+        catch (PaymentGatewayException exception)
+        {
+            return Result.Failure(Error.FromException(exception));
+        }
 
         return Result.Success();
     }

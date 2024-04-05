@@ -44,6 +44,21 @@ public sealed class Validator : IValidator
     }
 
     /// <summary>
+    /// If the result is failure, then result error will be added to the error list
+    /// </summary>
+    /// <param name="result">Result containing the value object</param>
+    /// <returns>IValidator to chain validation</returns>
+    public IValidator Validate(Result result)
+    {
+        if (result.IsFailure)
+        {
+            _errors.Add(result.Error);
+        }
+
+        return this;
+    }
+
+    /// <summary>
     /// If the validation result is failure, then all validation result errors will be added to the error list
     /// </summary>
     /// <param name="validationResult">ValidationResult containing the value object</param>

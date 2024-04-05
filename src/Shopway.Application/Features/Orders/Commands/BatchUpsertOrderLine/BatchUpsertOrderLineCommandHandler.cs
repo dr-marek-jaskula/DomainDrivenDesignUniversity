@@ -7,6 +7,7 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
+using Shopway.Domain.Orders.Enumerations;
 using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Products;
 using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.BatchUpsertOrderLineCommand;
@@ -60,7 +61,13 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
             return Result.BatchFailure(responseEntries.ToBatchInsertResponse());
         }
 
-        InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader, products);
+        var insertResult = InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader, products);
+
+        if (insertResult.IsFailure)
+        {
+            return Result.Failure<BatchUpsertOrderLineResponse>(insertResult.Error);
+        }
+
         UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);
 
         return responseEntries
@@ -76,7 +83,7 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
             .ToDictionary(orderLine => orderLine.ToOrderLineKey());
     }
 
-    private static void InsertOrderLines(IReadOnlyList<BatchUpsertOrderLineRequest> validRequestsToInsert, OrderHeader orderHeader, IList<Product> products)
+    private static Result InsertOrderLines(IReadOnlyList<BatchUpsertOrderLineRequest> validRequestsToInsert, OrderHeader orderHeader, IList<Product> products)
     {
         foreach (var request in validRequestsToInsert)
         {
@@ -89,8 +96,15 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
                 Discount.Create(request.Discount ?? 0).Value
             );
 
-            orderHeader.AddOrderLine(orderLineToInsert);
+            var addOrderLineResult = orderHeader.AddOrderLine(orderLineToInsert);
+
+            if (addOrderLineResult.IsFailure)
+            {
+                return addOrderLineResult;
+            }
         }
+
+        return Result.Success();
     }
 
     private static void UpdateOrderLines

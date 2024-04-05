@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using Shopway.Application.Abstractions;
+using Shopway.Domain.Orders;
 using Shopway.Infrastructure.Options;
 using Shopway.Infrastructure.Payments;
 using Shopway.Infrastructure.Payments.DummyGatewayTypes;

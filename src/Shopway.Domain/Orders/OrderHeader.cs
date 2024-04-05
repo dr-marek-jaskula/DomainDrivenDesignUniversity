@@ -75,11 +75,16 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISof
         .FirstOrDefault()?
         .Status ?? NotReceived;
 
-    public OrderLine AddOrderLine(OrderLine orderLine)
+    public Result AddOrderLine(OrderLine orderLine)
     {
+        if (Status is not New)
+        {
+            return Result.Failure(Errors.DomainErrors.AddOrderLineError.InvalidOrderHeaderStatus);
+        }
+
         _orderLines.Add(orderLine);
         RaiseDomainEvent(OrderLineAddedDomainEvent.New(orderLine.Id, Id));
-        return orderLine;
+        return Result.Success();
     }
 
     public Payment AddPayment(Payment payment)

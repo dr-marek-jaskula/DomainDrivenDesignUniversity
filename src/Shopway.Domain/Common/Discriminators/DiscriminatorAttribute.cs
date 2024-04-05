@@ -1,4 +1,4 @@
-﻿namespace Shopway.Domain.Common.Disciminators;
+﻿namespace Shopway.Domain.Common.Discriminators;
 
 public abstract class DiscriminatorAttribute<DiscriminatorType> : Attribute
     where DiscriminatorType : Discriminator

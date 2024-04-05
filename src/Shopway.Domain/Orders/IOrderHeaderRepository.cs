@@ -1,6 +1,5 @@
 ﻿using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
-using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Users;
 using System.Linq.Expressions;
 

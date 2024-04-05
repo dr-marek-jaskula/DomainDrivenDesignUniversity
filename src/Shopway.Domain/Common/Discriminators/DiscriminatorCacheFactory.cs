@@ -1,7 +1,7 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
 
-namespace Shopway.Domain.Common.Disciminators;
+namespace Shopway.Domain.Common.Discriminators;
 
 public sealed class DiscriminatorCacheFactory<DiscriminatorType, DelegateType>
     where DiscriminatorType : Discriminator

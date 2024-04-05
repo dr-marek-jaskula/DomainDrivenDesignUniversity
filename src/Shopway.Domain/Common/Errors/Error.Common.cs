@@ -10,7 +10,7 @@ public sealed partial class Error
     /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
     /// <param name="id">id of the entity that was not found</param>
     /// <returns>NotFound error</returns>
-    public static Error NotFound<TEntity>(IEntityId<TEntity> id)
+    public static Error NotFound<TEntity>(IEntityId id)
         where TEntity : class, IEntity
     {
         return New($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with id '{id.Value}' was not found.");
