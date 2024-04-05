@@ -1,7 +1,6 @@
-﻿using Shopway.Domain.Enums;
-using static Shopway.Domain.Constants.Constants.OrderHeader;
+﻿using static Shopway.Domain.Constants.Constants.OrderHeader;
 
-namespace Shopway.Domain.Orders;
+namespace Shopway.Domain.Orders.Enumerations;
 
 public static class OrderStatusUtilities
 {

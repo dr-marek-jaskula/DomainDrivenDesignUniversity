@@ -31,7 +31,7 @@ internal sealed class CancelPaymentProcessCommandHandler
             return _validator.Failure();
         }
 
-        var orderHeader = await _orderHeaderRepository.GetByPaymentSessionIdWithIncludesAsync(paymentProcessResult.Value.SessionId, cancellationToken, oh => oh.Payment);
+        var orderHeader = await _orderHeaderRepository.GetByPaymentSessionIdAsync(paymentProcessResult.Value.SessionId, cancellationToken);
 
         _validator
             .If(orderHeader is null, Error.NotFound<OrderHeader>(paymentProcessResult.Value.SessionId));
@@ -41,7 +41,9 @@ internal sealed class CancelPaymentProcessCommandHandler
             return _validator.Failure();
         }
 
-        orderHeader!.Payment.SetStatus(PaymentStatus.Canceled);
+        orderHeader!.Payments
+            .Single(x => x.Session!.Id == paymentProcessResult.Value.SessionId)
+            .SetStatus(PaymentStatus.Canceled);
 
         return Result.Success();
     }

@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Enums;
-using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Errors;
+using Shopway.Domain.Orders.Enumerations;
 
 namespace Shopway.Domain.Orders.Errors;
 

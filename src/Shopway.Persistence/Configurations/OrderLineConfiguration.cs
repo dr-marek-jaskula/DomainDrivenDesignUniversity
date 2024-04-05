@@ -49,7 +49,8 @@ internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguratio
 
         builder.Property(o => o.OrderHeaderId)
             .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
-            .HasColumnType(ColumnType.Char(UlidCharLenght));
+            .HasColumnType(ColumnType.Char(UlidCharLenght))
+            .IsRequired(true);
 
         builder.ConfigureAuditableEntity();
 

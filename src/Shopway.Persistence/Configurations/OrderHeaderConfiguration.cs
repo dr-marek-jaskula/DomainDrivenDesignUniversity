@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shopway.Domain.Enums;
 using Shopway.Domain.Orders;
+using Shopway.Domain.Orders.Enumerations;
 using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.Enums;
@@ -26,10 +26,6 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
             .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
             .HasColumnType(ColumnType.Char(UlidCharLenght));
 
-        builder.Property(o => o.PaymentId)
-            .HasConversion<PaymentIdConverter, PaymentIdComparer>()
-            .HasColumnType(ColumnType.Char(UlidCharLenght));
-
         builder.Property(o => o.UserId)
             .HasConversion<UserIdConverter, UserIdComparer>()
             .HasColumnType(ColumnType.Char(UlidCharLenght));
@@ -49,9 +45,10 @@ internal sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfigurat
             .ConfigureAuditableEntity()
             .ConfigureSoftDeletableEntity();
 
-        builder.HasOne(p => p.Payment)
+        builder.HasMany(p => p.Payments)
             .WithOne()
-            .HasForeignKey<OrderHeader>(o => o.PaymentId);
+            .HasForeignKey(payment => payment.OrderHeaderId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(o => o.OrderLines)
             .WithOne()

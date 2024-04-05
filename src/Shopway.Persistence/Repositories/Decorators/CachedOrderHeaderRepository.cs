@@ -40,9 +40,9 @@ public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated
         return await _decorated.IsOrderHeaderCreatedByUser(id, userId, cancellationToken);
     }
 
-    public async Task<OrderHeader?> GetByPaymentSessionIdWithIncludesAsync(string sessionId, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes)
+    public async Task<OrderHeader?> GetByPaymentSessionIdAsync(string sessionId, CancellationToken cancellationToken)
     {
-        return await _decorated.GetByPaymentSessionIdWithIncludesAsync(sessionId, cancellationToken, includes);
+        return await _decorated.GetByPaymentSessionIdAsync(sessionId, cancellationToken);
     }
 
     public void Create(OrderHeader order)

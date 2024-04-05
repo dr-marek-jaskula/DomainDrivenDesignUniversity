@@ -62,22 +62,13 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<OrderHeader?> GetByPaymentSessionIdWithIncludesAsync(string sessionId, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes)
+    public async Task<OrderHeader?> GetByPaymentSessionIdAsync(string sessionId, CancellationToken cancellationToken)
     {
-        var baseQuery = _dbContext
+        return await _dbContext
             .Set<OrderHeader>()
-            .Where(oh => oh.Payment.Session.Id == sessionId)
-            .AsSplitQuery();
-
-        if (includes.Length != 0)
-        {
-            foreach (var include in includes)
-            {
-                baseQuery = baseQuery.Include(include);
-            }
-        }
-
-        return await baseQuery
+            .Include(x => x.Payments)
+            .Where(oh => oh.Payments.Any(x => x.Session.Id == sessionId))
+            .AsSplitQuery()
             .FirstOrDefaultAsync(cancellationToken);
     }
 

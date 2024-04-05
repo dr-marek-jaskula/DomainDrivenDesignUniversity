@@ -14,7 +14,7 @@ internal sealed class StartPaymentProcessCommandHandler(IOrderHeaderRepository o
 
     public async Task<IResult<StartPaymentProcessResponse>> Handle(StartPaymentProcessCommand command, CancellationToken cancellationToken)
     {
-        var orderHeader = await _orderHeaderRepository.GetByIdWithIncludesAsync(command.OrderHeaderId, cancellationToken, oh => oh.Payment, oh => oh.OrderLines);
+        var orderHeader = await _orderHeaderRepository.GetByIdWithIncludesAsync(command.OrderHeaderId, cancellationToken, oh => oh.Payments, oh => oh.OrderLines);
         var sessionResult = await _paymentGatewayService.StartSessionAsync(orderHeader);
 
         if (sessionResult.IsFailure)
@@ -22,7 +22,10 @@ internal sealed class StartPaymentProcessCommandHandler(IOrderHeaderRepository o
             return Result.Failure<StartPaymentProcessResponse>(sessionResult.Error);
         }
 
-        orderHeader.Payment.SetSession(sessionResult.Value);
+        var payment = orderHeader.Payments.FirstOrDefault(x => x.Session is null) 
+            ?? orderHeader.AddPayment(Payment.Create());
+
+        payment.SetSession(sessionResult.Value);
 
         return new StartPaymentProcessResponse(sessionResult.Value.Id, sessionResult.Value.Secret)
             .ToResult();

@@ -18,7 +18,7 @@ internal static partial class OrderHeaderSpecification
                     .GetIncludeEntries(builder => builder.Include(orderHeader => orderHeader.OrderLines))
                     .ToFrozenSet();
 
-                internal static Specification<OrderHeader, OrderHeaderId> Create(OrderHeaderId orderHeaderId, bool includePayment = true)
+                internal static Specification<OrderHeader, OrderHeaderId> Create(OrderHeaderId orderHeaderId, bool includePayments = true)
                 {
                     var specification = Specification<OrderHeader, OrderHeaderId>.New()
                         .AddIncludes(_buildIncludesFrozen)
@@ -27,9 +27,9 @@ internal static partial class OrderHeaderSpecification
                         //    .Include(orderHeader => orderHeader.OrderLines))
                         .AddFilters(orderHeader => orderHeader.Id == orderHeaderId);
 
-                    if (includePayment)
+                    if (includePayments)
                     {
-                        specification.AddIncludes(orderHeader => orderHeader.Payment);
+                        specification.AddIncludes(orderHeader => orderHeader.Payments);
                     }
 
                     return specification;

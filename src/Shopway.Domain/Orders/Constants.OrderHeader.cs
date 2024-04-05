@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Enums;
-using static Shopway.Domain.Enums.OrderStatus;
+﻿using Shopway.Domain.Orders.Enumerations;
+using static Shopway.Domain.Orders.Enumerations.OrderStatus;
 
 namespace Shopway.Domain.Constants;
 

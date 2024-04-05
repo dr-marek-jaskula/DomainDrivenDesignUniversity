@@ -8,7 +8,7 @@ public sealed record OrderHeaderResponse
     Ulid Id,
     string OrderStatus,
     string PaymentStatus,
-    decimal TotalPayment,
+    decimal TotalCost,
     decimal TotalDiscount,
     IReadOnlyCollection<OrderLineResponse> OrderLines
 )

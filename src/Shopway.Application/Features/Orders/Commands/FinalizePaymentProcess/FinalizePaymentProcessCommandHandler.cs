@@ -3,6 +3,8 @@ using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
+using Shopway.Domain.Orders.Enumerations;
+using static Shopway.Domain.Orders.Enumerations.OrderStatus;
 
 namespace Shopway.Application.Features.Orders.Commands.FinalizePaymentProcess;
 
@@ -30,17 +32,26 @@ internal sealed class FinalizePaymentProcessCommandHandler
             return _validator.Failure();
         }
 
-        var orderHeader = await _orderHeaderRepository.GetByPaymentSessionIdWithIncludesAsync(paymentProcessResult.Value.SessionId, cancellationToken, oh => oh.Payment);
+        (string sessionId, PaymentStatus paymentStatus) = paymentProcessResult.Value;
+
+        var orderHeader = await _orderHeaderRepository.GetByPaymentSessionIdAsync(sessionId, cancellationToken);
 
         _validator
-            .If(orderHeader is null, Error.NotFound<OrderHeader>(paymentProcessResult.Value.SessionId));
+            .If(orderHeader is null, Error.NotFound<OrderHeader>(sessionId));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure();
         }
 
-        orderHeader!.Payment.SetStatus(paymentProcessResult.Value.PaymentStatus);
+        orderHeader!.Payments
+            .Single(x => x.Session!.Id == sessionId)
+            .SetStatus(paymentStatus);
+
+        if (orderHeader.Status is New && paymentStatus.IsReceivedOrConfirmed())
+        {
+            orderHeader.ChangeStatus(InProgress);
+        }
 
         return Result.Success();
     }

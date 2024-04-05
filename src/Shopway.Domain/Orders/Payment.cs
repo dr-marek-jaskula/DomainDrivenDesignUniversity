@@ -24,6 +24,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
     }
 
     public Session? Session { get; private set; }
+    public OrderHeaderId OrderHeaderId { get; private set; }
     public PaymentStatus Status { get; private set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset? UpdatedOn { get; set; }

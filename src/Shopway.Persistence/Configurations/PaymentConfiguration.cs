@@ -29,6 +29,11 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasColumnType(ColumnType.VarChar(LongestOf<PaymentStatus>()))
             .IsRequired(true);
 
+        builder.Property(o => o.OrderHeaderId)
+            .HasConversion<OrderHeaderIdConverter, OrderHeaderIdComparer>()
+            .HasColumnType(ColumnType.Char(UlidCharLenght))
+            .IsRequired(true);
+
         builder.OwnsOne(o => o.Session, options =>
         {
             options.ToJson(nameof(Session));
