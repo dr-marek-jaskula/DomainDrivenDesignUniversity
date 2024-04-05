@@ -46,7 +46,7 @@ public sealed partial class PaymentGatewayService(IHttpContextAccessor httpConte
         Session session = await service.CreateAsync(options);
 
         httpResponse!.Headers.Append(LocationHeader, session.Url);
-        return Domain.Orders.ValueObjects.Session.Create(session.Id, session.ClientSecret);
+        return Domain.Orders.ValueObjects.Session.Create(session.Id, session.ClientSecret, session.PaymentIntentId);
     }
 
     public async Task<Result<(string SessionId, PaymentStatus PaymentStatus)>> GetPaymentProcessResult()

@@ -40,6 +40,7 @@ internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<
 
             options.Property(p => p.Id).IsRequired(false);
             options.Property(x => x.Secret).IsRequired(false);
+            options.Property(x => x.PaymentIntentId).IsRequired(false);
         });
 
         builder.ConfigureAuditableEntity();
