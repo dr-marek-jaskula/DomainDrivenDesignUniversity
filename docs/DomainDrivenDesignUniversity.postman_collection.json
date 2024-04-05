@@ -1129,14 +1129,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/payment/start",
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/payments/start",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"OrderHeaders",
 										"{{validOrderHeaderUlid}}",
-										"payment",
+										"payments",
 										"start"
 									]
 								}
@@ -1172,14 +1172,102 @@
 									}
 								],
 								"url": {
-									"raw": "{{base_url}}/OrderHeaders/Payment/webhook",
+									"raw": "{{base_url}}/OrderHeaders/Payments/webhook",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"OrderHeaders",
-										"Payment",
+										"Payments",
 										"webhook"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RefundPayment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(201))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/Payments/{{validPaymentUlid}}/refund",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"{{validOrderHeaderUlid}}",
+										"Payments",
+										"{{validPaymentUlid}}",
+										"refund"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RefundPayment (set PamentId)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(201))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/Payments/01HTQSDRP3ZJB0HNX33GA4BR9V/refund",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"{{validOrderHeaderUlid}}",
+										"Payments",
+										"01HTQSDRP3ZJB0HNX33GA4BR9V",
+										"refund"
 									]
 								}
 							},

@@ -15,22 +15,20 @@ internal static partial class OrderHeaderSpecification
             {
                 //Static cache, use in case when performance improvements are required. Used for demonstration purposes. Can be use as simple array or FrozenSet
                 private static readonly FrozenSet<IncludeEntry<OrderHeader>> _buildIncludesFrozen = IncludeBuilderOrchestrator<OrderHeader>
-                    .GetIncludeEntries(builder => builder.Include(orderHeader => orderHeader.OrderLines))
+                    .GetIncludeEntries(builder => builder
+                        .Include(orderHeader => orderHeader.OrderLines)
+                        .Include(orderHeader => orderHeader.Payments))
                     .ToFrozenSet();
 
-                internal static Specification<OrderHeader, OrderHeaderId> Create(OrderHeaderId orderHeaderId, bool includePayments = true)
+                internal static Specification<OrderHeader, OrderHeaderId> Create(OrderHeaderId orderHeaderId)
                 {
                     var specification = Specification<OrderHeader, OrderHeaderId>.New()
                         .AddIncludes(_buildIncludesFrozen)
                         //Use the commented code as baseline. Use cached IncludeEntries when performance improvements are required
                         //.AddIncludes(builder => builder
-                        //    .Include(orderHeader => orderHeader.OrderLines))
+                        //    .Include(orderHeader => orderHeader.OrderLines)
+                        //    .Include(orderHeader => orderHeader.Payments))
                         .AddFilters(orderHeader => orderHeader.Id == orderHeaderId);
-
-                    if (includePayments)
-                    {
-                        specification.AddIncludes(orderHeader => orderHeader.Payments);
-                    }
 
                     return specification;
                 }

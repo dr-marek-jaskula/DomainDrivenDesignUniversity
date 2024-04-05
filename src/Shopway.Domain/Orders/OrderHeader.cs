@@ -71,12 +71,6 @@ public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISof
         return orderHeader;
     }
 
-    public PaymentStatus CurrentPaymentStatus => _payments
-        .OrderByDescending(x => x.UpdatedOn)
-        .ThenByDescending(x => x.CreatedOn)
-        .FirstOrDefault()?
-        .Status ?? NotReceived;
-
     public Result AddOrderLine(OrderLine orderLine)
     {
         if (Status is not New)

@@ -7,9 +7,9 @@ public sealed record OrderHeaderResponse
 (
     Ulid Id,
     string OrderStatus,
-    string PaymentStatus,
     decimal TotalCost,
     decimal TotalDiscount,
-    IReadOnlyCollection<OrderLineResponse> OrderLines
+    IReadOnlyCollection<OrderLineResponse> OrderLines,
+    IReadOnlyCollection<PaymentResponse> Payments
 )
     : IResponse, IHasCursor;
