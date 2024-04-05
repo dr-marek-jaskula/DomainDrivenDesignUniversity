@@ -1,4 +1,4 @@
-﻿namespace Shopway.Infrastructure.Payments.DummyGatewayTypes;
+﻿namespace Shopway.Infrastructure.Payments.DummyGatewayTypes.Sessions;
 
 internal class SessionCreateOptions
 {

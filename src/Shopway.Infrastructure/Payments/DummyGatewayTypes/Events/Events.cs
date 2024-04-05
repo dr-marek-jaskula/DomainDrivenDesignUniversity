@@ -1,4 +1,4 @@
-﻿namespace PaymentGateway.DummyGatewayTypes;
+﻿namespace Shopway.Infrastructure.Payments.DummyGatewayTypes.Events;
 
 public static class Events
 {

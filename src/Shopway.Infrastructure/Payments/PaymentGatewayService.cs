@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using PaymentGateway.DummyGatewayTypes;
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
@@ -8,6 +7,9 @@ using Shopway.Domain.Errors;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.Enumerations;
 using Shopway.Infrastructure.Payments.DummyGatewayTypes;
+using Shopway.Infrastructure.Payments.DummyGatewayTypes.Events;
+using Shopway.Infrastructure.Payments.DummyGatewayTypes.Refunds;
+using Shopway.Infrastructure.Payments.DummyGatewayTypes.Sessions;
 
 namespace Shopway.Infrastructure.Payments;
 
@@ -81,6 +83,19 @@ public sealed partial class PaymentGatewayService(IHttpContextAccessor httpConte
         {
             return Result.Failure<(string SessionId, PaymentStatus PaymentStatus)>(Error.FromException(exception));
         }
+    }
+
+    public async Task<Result> Refund(Domain.Orders.ValueObjects.Session session)
+    {
+        var options = new RefundCreateOptions
+        {
+            PaymentIntent = session.PaymentIntentId
+        };
+
+        var service = new RefundService();
+        await service.CreateAsync(options);
+
+        return Result.Success();
     }
 
     private SessionLineItemOptions ToPaymentGatewayItem(OrderLine line)

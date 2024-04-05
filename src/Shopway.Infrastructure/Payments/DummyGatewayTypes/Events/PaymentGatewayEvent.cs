@@ -1,4 +1,6 @@
-﻿namespace Shopway.Infrastructure.Payments.DummyGatewayTypes;
+﻿using Shopway.Infrastructure.Payments.DummyGatewayTypes.Sessions;
+
+namespace Shopway.Infrastructure.Payments.DummyGatewayTypes.Events;
 
 public class PaymentGatewayEvent
 {

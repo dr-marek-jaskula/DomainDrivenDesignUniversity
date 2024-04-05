@@ -1,4 +1,4 @@
-﻿namespace Shopway.Infrastructure.Payments;
+﻿namespace Shopway.Infrastructure.Payments.DummyGatewayTypes.Sessions;
 
 public class SessionLineItemPriceDataOptions
 {

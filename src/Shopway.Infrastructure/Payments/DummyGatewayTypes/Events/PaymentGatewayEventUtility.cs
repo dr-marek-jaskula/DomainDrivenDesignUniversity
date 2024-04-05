@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Infrastructure.Payments.DummyGatewayTypes;
 
-namespace Shopway.Infrastructure.Payments;
+namespace Shopway.Infrastructure.Payments.DummyGatewayTypes.Events;
 
 public static class PaymentGatewayEventUtility
 {
