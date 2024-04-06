@@ -8,7 +8,6 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Application.Pipelines;
 
-
 public sealed class QueryCachingPipeline<TRequest, TResultOfResponse>(IFusionCache fusionCache) : IPipelineBehavior<TRequest, TResultOfResponse>
     where TRequest : class, IRequest<TResultOfResponse>, IQuery<IResponse>, ICachedQuery
     where TResultOfResponse : IResult<IResponse>
