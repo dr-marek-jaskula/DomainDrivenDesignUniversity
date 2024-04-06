@@ -17,12 +17,9 @@ public partial class ProductsControllerTests
 
         _httpClient.WithApiKey(GetApiKey);
 
-        var simulations = Simulation.Inject(rate: 100, interval: TimeSpan.FromSeconds(1), during: TimeSpan.FromMinutes(3));
-
         var scenario = CreateScenario(GetProductById, url, HttpMethod.Get)
             .WithInit(async context => await InsertProduct(productId))
-            .WithWarmUpDuration(TimeSpan.FromSeconds(5))
-            .WithLoadSimulations(simulations)
+            .WithSetup(_loadSimulation, _warmUpDuration)
             .WithClean(async context => await DeleteProduct(productId));
 
         var stats = NBomberRunner

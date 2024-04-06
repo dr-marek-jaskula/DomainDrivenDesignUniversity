@@ -11,7 +11,7 @@ public static class NBomberUtilities
 
     public static NBomberContext WithReport(this NBomberContext context, string suiteType, string testName)
     {
-        var environment = Environment.GetEnvironmentVariable("ENVIRONMENT_NAME") ?? "Local";
+        var environment = EnvUtilities.GetEnvOrLocal();
 
         return context
             .WithTestSuite($"{environment}_{suiteType}")
@@ -20,5 +20,12 @@ public static class NBomberUtilities
             .WithReportFileName($"{Constants.Constants.NBomber.Report}_{environment}_{suiteType}")
             .WithReportFormats(_reportFormats)
             .WithReportingInterval(_fiveSecondsReportingInterval);
+    }
+
+    public static ScenarioProps WithSetup(this ScenarioProps scenarioProps, LoadSimulation loadSimulation, TimeSpan warmUpDuration)
+    {
+        return scenarioProps
+            .WithWarmUpDuration(warmUpDuration)
+            .WithLoadSimulations(loadSimulation);
     }
 }
