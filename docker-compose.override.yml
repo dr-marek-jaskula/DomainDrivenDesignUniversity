@@ -35,9 +35,18 @@ services:
     volumes:
       - papercut_volume:/Papercut
 
+  redis:
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - db_net
+    ports:
+      - "6379:6379"
+
   shopway.app:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__CacheConnection=redis
       - "MailSenderOptions__Host=papercut"
       - "MailSenderOptions__Port=25"
       - "MailSenderOptions__UseSSL=false"

@@ -9,6 +9,9 @@ services:
     
   papercut:
     image: jijiechen/papercut
+    
+  redis:
+    image: redis
 
   shopway.app:
     image: ${DOCKER_REGISTRY-}shopwayapp
