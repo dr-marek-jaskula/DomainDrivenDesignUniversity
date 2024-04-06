@@ -16,6 +16,7 @@ public static class MediatorRegistration
             configuration.AddOpenBehavior(typeof(CommandTransactionPipeline<,>));
             configuration.AddOpenBehavior(typeof(CommandWithResponseTransactionPipeline<,>));
             configuration.AddOpenBehavior(typeof(ReferenceValidationPipeline<,>));
+            configuration.AddOpenBehavior(typeof(QueryCachingPipeline<,>));
         });
 
         return services;
