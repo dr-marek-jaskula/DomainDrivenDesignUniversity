@@ -14,7 +14,7 @@
     <PackageReference Include="NBomber" Version="5.5.0" />
     <PackageReference Include="NBomber.Http" Version="5.0.1" />
     <PackageReference Include="xunit" Version="2.7.0" />
-    <PackageReference Include="Xunit.DependencyInjection" Version="9.0.1" />
+    <PackageReference Include="Xunit.DependencyInjection" Version="9.1.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
