@@ -58,7 +58,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle295\",\r\n  \"Description\": \"Added review description\"\r\n}",
+									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle299\",\r\n  \"Description\": \"Added review description\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -215,7 +215,7 @@
 								"exec": [
 									"var response = JSON.parse(responseBody);\r",
 									"\r",
-									"if(pm.response.to.have.status(201))\r",
+									"if(pm.response.to.have.status(200))\r",
 									"{\r",
 									"    pm.collectionVariables.set(\"validProductUlid\", response.id);\r",
 									"}"
@@ -236,7 +236,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Product24\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
+							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Product243\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -951,7 +951,8 @@
 											"    pm.collectionVariables.set(\"validOrderLineUlid\", response.id);\r",
 											"}"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -976,7 +977,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"Amount\": 999,\r\n  \"Discount\": 0\r\n}",
+									"raw": "{\r\n  \"Amount\": 10,\r\n  \"Discount\": 0\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1097,6 +1098,184 @@
 					]
 				},
 				{
+					"name": "Payment",
+					"item": [
+						{
+							"name": "StartPaymentProcess",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(201))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/payments/start",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"{{validOrderHeaderUlid}}",
+										"payments",
+										"start"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FinalizePaymentProcess (Webhook)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(201))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/Payments/webhook",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"Payments",
+										"webhook"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RefundPayment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(201))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/Payments/{{validPaymentUlid}}/refund",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"{{validOrderHeaderUlid}}",
+										"Payments",
+										"{{validPaymentUlid}}",
+										"refund"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RefundPayment (set PamentId)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(201))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/{{validOrderHeaderUlid}}/Payments/01HTQSDRP3ZJB0HNX33GA4BR9V/refund",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"{{validOrderHeaderUlid}}",
+										"Payments",
+										"01HTQSDRP3ZJB0HNX33GA4BR9V",
+										"refund"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "CreateOrderHeader.Valid",
 					"event": [
 						{
@@ -1105,12 +1284,13 @@
 								"exec": [
 									"var response = JSON.parse(responseBody);\r",
 									"\r",
-									"if(pm.response.to.have.status(201))\r",
+									"if(pm.response.to.have.status(200))\r",
 									"{\r",
 									"    pm.collectionVariables.set(\"validOrderHeaderUlid\", response.id);\r",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -1157,7 +1337,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"NewOrderHeaderStatus\" : \"OnHold\"\r\n}",
+							"raw": "{\r\n    \"NewOrderHeaderStatus\" : \"InProgress\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1394,7 +1574,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"TwoFactorToken\": \"BRzky-Yqffmb\"\r\n}",
+							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"TwoFactorToken\": \"HwsMr-KakVQ\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1973,7 +2153,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"Status\",\r\n          \"Operation\": \"Equal\",\r\n          \"Value\" : \"New\"\r\n      },\r\n      {\r\n          \"PropertyName\" : \"Payment.Status\",\r\n          \"Operation\": \"Equal\",\r\n          \"Value\" : \"NotReceived\"\r\n      },\r\n      {\r\n          \"PropertyName\" : \"Payment.CreatedBy\",\r\n          \"Operation\": \"Like\",\r\n          \"Value\" : \"%known\"\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"Status\",\r\n          \"Operation\": \"Equal\",\r\n          \"Value\" : \"New\"\r\n      },\r\n      {\r\n          \"PropertyName\" : \"Payments.Status\",\r\n          \"Operation\": \"All.Equal\",\r\n          \"Value\" : \"NotReceived\"\r\n      },\r\n      {\r\n          \"PropertyName\" : \"Payments.CreatedBy\",\r\n          \"Operation\": \"Any.Like\",\r\n          \"Value\" : \"%known\"\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2219,6 +2399,143 @@
 							"path": [
 								"proxy",
 								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PaymentGateway",
+			"item": [
+				{
+					"name": "ShareSecret",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Issuer\": \"Shopway\",\r\n    \"PrivateKey\": \"sk_test_7mJuPfZsBzc3JkrANrFrcDqC\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/share-secret",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"share-secret"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConfigureWebhook",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SecretHash\": \"da2bb79866a7642a13e705c2d3a05409e8a2c58545f57d11577bda184d29ba58\",\r\n    \"Subscription\": {\r\n        \"Issuer\": \"Shopway\",\r\n        \"Webhook\": \"{{payment_gateway_callback_success}}\",\r\n        \"WebhookSecret\": \"whsec_P9dK39tzc3JkrT6abO7\"\r\n    }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/configure-webhook",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"configure-webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RedirectToPaymentSession",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Items\": [\r\n        \"Pencil\",\r\n        \"Bike\"\r\n    ],\r\n    \"Total\": 300,\r\n    \"Currency\": \"USD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/redirect-to-payment-session",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"redirect-to-payment-session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PublishPaymentResult_Success",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Issuer\": \"Shopway\",\r\n    \"SessionId\": \"3b954a68-d995-415f-b444-4b4acd3757d6\", //from StartPaymentProcess endpoint,\r\n    \"ClientSecret\": \"9d32da26-2c9f-4cf2-953a-0121f0bf53bb\" //from StartPaymentProcess endpoint\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/publish-payment-result/success",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"publish-payment-result",
+								"success"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PublishPaymentResult_Failure",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Issuer\": \"Shopway\",\r\n    \"SessionId\": \"3b954a68-d995-415f-b444-4b4acd3757d6\", //from StartPaymentProcess endpoint\r\n    \"ClientSecret\": \"9d32da26-2c9f-4cf2-953a-0121f0bf53bb\" //from StartPaymentProcess endpoint\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_payment_gateway_url}}/publish-payment-result/failure",
+							"host": [
+								"{{base_payment_gateway_url}}"
+							],
+							"path": [
+								"publish-payment-result",
+								"failure"
 							]
 						}
 					},

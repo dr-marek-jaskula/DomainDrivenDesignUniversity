@@ -2,7 +2,6 @@
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Errors;
 using System.Text;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
 using static Shopway.Domain.Users.Errors.DomainErrors;

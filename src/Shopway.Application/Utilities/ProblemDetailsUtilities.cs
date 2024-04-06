@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shopway.Domain.Errors;
+using Shopway.Domain.Common.Errors;
 using static Shopway.Application.Constants.Constants.ProblemDetails;
 
 namespace Shopway.Application.Utilities;

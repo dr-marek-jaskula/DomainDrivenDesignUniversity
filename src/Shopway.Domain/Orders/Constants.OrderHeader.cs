@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Enums;
-using static Shopway.Domain.Enums.OrderStatus;
+﻿using Shopway.Domain.Orders.Enumerations;
+using static Shopway.Domain.Orders.Enumerations.OrderStatus;
 
 namespace Shopway.Domain.Constants;
 
@@ -16,7 +16,8 @@ public static partial class Constants
             (New, Rejected),
             (InProgress, OnHold),
             (InProgress, Rejected),
-            (OnHold, New)
+            (OnHold, New),
+            (OnHold, Rejected)
         ];
     }
 }

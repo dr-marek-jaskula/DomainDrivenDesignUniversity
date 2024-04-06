@@ -2,9 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Features.Users.Commands;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
 using Shopway.Infrastructure.Options;

@@ -35,6 +35,16 @@ public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated
         return _decorated.GetByIdWithIncludesAsync(id, cancellationToken, includes);
     }
 
+    public async Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken)
+    {
+        return await _decorated.IsOrderHeaderCreatedByUser(id, userId, cancellationToken);
+    }
+
+    public async Task<OrderHeader?> GetByPaymentSessionIdAsync(string sessionId, CancellationToken cancellationToken)
+    {
+        return await _decorated.GetByPaymentSessionIdAsync(sessionId, cancellationToken);
+    }
+
     public void Create(OrderHeader order)
     {
         _decorated.Create(order);
@@ -105,10 +115,5 @@ public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated
             mappingExpression: mappingExpression,
             buildIncludes: buildIncludes
         );
-    }
-
-    public async Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken)
-    {
-        return await _decorated.IsOrderHeaderCreatedByUser(id, userId, cancellationToken);
     }
 }

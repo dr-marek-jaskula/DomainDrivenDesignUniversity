@@ -1,9 +1,9 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Common.DataProcessing.Proxy;
-using Shopway.Domain.Common.Disciminators;
+using Shopway.Domain.Common.Discriminators;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 using System.Collections.Frozen;
 using System.Reflection;
 

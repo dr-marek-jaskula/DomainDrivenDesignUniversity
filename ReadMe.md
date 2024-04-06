@@ -104,7 +104,7 @@ Note: Alternative naming convention: switch T2 with T3:
 2. Create databases called **DDDUniveristy** and **DDDUniversityTest**.
 3. Run the application
 
-### Run Containerized Application with Containerized Database :whale:
+### Run Containerized Application with Containerized Database and Custom Payment Gateway :whale:
 
 Note: Portainer is used to investigate containers if required. 
 
@@ -128,6 +128,14 @@ If image rebuild is required:
 docker compose -f .\docker-compose.yml -f .\docker-compose.override.yml up --build
 ```
 
+### Payment Gateway :moneybag:
+
+Integration with **PaymentGateway** is presented in .Infrastructure and .Application layers. See **StartPaymentProcessCommand**, **FinalizePaymentProcessCommand** and **PaymentGatewayService**. It is described in details in .Infrastructure ReadMe.md file.
+
+To integrate with Payment Gateway we should use the docker compose approach. 
+
+Payment Gateway is a **dummy** application created by me to simulate the payment process. Postman Collection is enhanced with endpoints to test payments.
+
 ### Postman Collection :construction:
 
 To get all postman endpoints configured for local environment and docker containers:
@@ -139,7 +147,6 @@ To get all postman endpoints configured for local environment and docker contain
 
 All collection and global variables are set after requests. For instance, **Login** endpoint automatically
 sets a bearer token. Then, this token is used in the authentication process.
-
 
 ### GitHub Workflows :camel:
 

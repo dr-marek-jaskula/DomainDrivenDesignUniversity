@@ -4,9 +4,9 @@ public sealed class SkipForLocalEnvFact : FactAttribute
 {
     public SkipForLocalEnvFact()
     {
-        var environment = Environment.GetEnvironmentVariable("ENVIRONMENT_NAME");
+        var environment = EnvUtilities.GetEnvOrLocal();
 
-        if (environment is null || environment.ToLower() is "local")
+        if (environment.Equals("Local", StringComparison.InvariantCultureIgnoreCase))
         {
             Skip = "Performance tests should not run on local environment";
         }

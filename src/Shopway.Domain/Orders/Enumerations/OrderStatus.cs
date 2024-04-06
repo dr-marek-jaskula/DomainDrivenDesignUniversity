@@ -1,4 +1,4 @@
-﻿namespace Shopway.Domain.Enums;
+﻿namespace Shopway.Domain.Orders.Enumerations;
 
 public enum OrderStatus
 {

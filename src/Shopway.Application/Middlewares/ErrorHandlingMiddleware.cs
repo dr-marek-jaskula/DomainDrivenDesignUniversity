@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shopway.Application.Exceptions;
-using Shopway.Domain.Errors;
+using Shopway.Domain.Common.Errors;
 using static Shopway.Application.Constants.Constants.ProblemDetails;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
 

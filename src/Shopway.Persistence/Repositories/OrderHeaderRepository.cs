@@ -48,8 +48,7 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
     {
         var baseQuery = _dbContext
             .Set<OrderHeader>()
-            .AsSplitQuery()
-            .AsQueryable();
+            .AsSplitQuery();
 
         if (includes.Length != 0)
         {
@@ -61,6 +60,16 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
 
         return await baseQuery
             .FirstAsync(x => x.Id == id, cancellationToken);
+    }
+
+    public async Task<OrderHeader?> GetByPaymentSessionIdAsync(string sessionId, CancellationToken cancellationToken)
+    {
+        return await _dbContext
+            .Set<OrderHeader>()
+            .Include(x => x.Payments)
+            .Where(oh => oh.Payments.Any(x => x.Session.Id == sessionId))
+            .AsSplitQuery()
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public void Create(OrderHeader order)

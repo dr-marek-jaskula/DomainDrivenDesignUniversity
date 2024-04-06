@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Products.ValueObjects;
 using Shopway.Tests.Unit.Abstractions;
 using static Shopway.Domain.Products.Errors.DomainErrors;

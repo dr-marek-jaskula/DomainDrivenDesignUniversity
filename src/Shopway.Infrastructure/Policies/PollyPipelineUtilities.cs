@@ -1,6 +1,6 @@
 ﻿using Polly;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 
 namespace Shopway.Infrastructure.Policies;
 

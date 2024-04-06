@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
 using static Shopway.Domain.Common.Utilities.ListUtilities;

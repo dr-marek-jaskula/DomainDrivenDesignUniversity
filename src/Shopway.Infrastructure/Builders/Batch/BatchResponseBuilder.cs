@@ -1,7 +1,7 @@
 ﻿using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Features;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Domain.Errors;
+using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Infrastructure.Builders.Batch;
 

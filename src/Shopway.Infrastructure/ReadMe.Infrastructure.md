@@ -70,3 +70,30 @@ The OutboxMessageConsumer is explained in ReadMe.Infrastructur.md chapter **Idem
 FuzzySearch is used to approximate strings, spell checking, word segmentation. The use of fuzzy search is presented in 
 **.Application/CQRS/Products/Queries/FuzzySearchProductByName**. We should inject the **IFuzzySearchFactory** and then create an
 instance of a **FuzzySearch** that matches our expectations.
+
+## Payments
+
+Used Payment Gateway is my **dummy** application that just reflects the Payment Gateway behavior (like **Stripe** Payment Gateway).
+
+It can be run (with Shopway app) using docker compose (in relese or debug mode). This is the preferred approach, if someone wants to run it without a docker containers, he/she should make some adjustments and configuration changes.
+
+**SecretKey** and **WebhookSecret** should be both stored **securly**, however for demo purposes they are stored in appsettings.json file.
+
+### High level overview
+
+1. We share some secrets with the Payment Gateway provider to be able to confirm the provider's identity.
+2. We will simply redirect the customer to the payment gateway provider's website. Therefore, we ask the provider to start the payment session for the current customer and store the payment session information in our database.
+3. Payment is processed without any integration or knowledge on our part.
+4. Nevertheless, we need be informed by provider about the payment result. Therefore, we configure the webhook (and webhook secret) to which the Payment Gateway provider will send the payment result.
+5. We store the informations about the payment result in the database.
+
+### Payment setup:
+
+1. Share **PrivateKey** with Payment Gateway provider. Usually done at the provider's website or in another secure way. Here we use `ShareSecret` endpoint (see postman collection) `/share-secret`. No volume is set, in docker compose, to keep secrets after container destruction. If You want to store them, You can set a volume in docker-compose file.
+2. Configure Webhook with Payment Gateway provider. Usually done at providers website. Provider usually allow to set mutliple webhooks (up to 15-20), but here we just allow one webhook. We also configure the **WebhookSecret**. Here we use `ConfigureWebhook` endpoint (see postman collection) `/configure-webhook`. 
+
+### Payment process: 
+
+1. Start payment process for given **OrderHeader** by sending the **Session** details to the Payment Gateway Provider. Here we use `StartPaymentProcess` endpoint (StartPaymentProcessCommand). In **Location** header we send the url for redirection. We could also return the 301 status code, but here we use 200 OK. Copy the **SessionId** and **ClientSecret**.
+2. Call (just for demo purpose) the `RedirectToPaymentSession` endpoint and get OK response.
+3. Use `PublishPaymentResult_Success` or `PublishPaymentResult_Failure` (paste SessionId and ClientSecret). This will trigger the call to the webhook `FinalizePaymentProcess (Webhook)` endpoint. See in debug.

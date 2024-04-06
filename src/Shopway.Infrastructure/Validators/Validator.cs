@@ -1,8 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions;
-using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 
 namespace Shopway.Infrastructure.Validators;
 
@@ -31,11 +30,25 @@ public sealed class Validator : IValidator
     /// <summary>
     /// If the result is failure, then result error will be added to the error list
     /// </summary>
-    /// <typeparam name="TValueObject">ValueObject type</typeparam>
+    /// <typeparam name="TType">ValueObject type</typeparam>
     /// <param name="result">Result containing the value object</param>
     /// <returns>IValidator to chain validation</returns>
-    public IValidator Validate<TValueObject>(Result<TValueObject> result)
-        where TValueObject : ValueObject
+    public IValidator Validate<TType>(Result<TType> result)
+    {
+        if (result.IsFailure)
+        {
+            _errors.Add(result.Error);
+        }
+
+        return this;
+    }
+
+    /// <summary>
+    /// If the result is failure, then result error will be added to the error list
+    /// </summary>
+    /// <param name="result">Result containing the value object</param>
+    /// <returns>IValidator to chain validation</returns>
+    public IValidator Validate(Result result)
     {
         if (result.IsFailure)
         {
@@ -48,11 +61,9 @@ public sealed class Validator : IValidator
     /// <summary>
     /// If the validation result is failure, then all validation result errors will be added to the error list
     /// </summary>
-    /// <typeparam name="TValueObject">ValueObject type</typeparam>
     /// <param name="validationResult">ValidationResult containing the value object</param>
     /// <returns>IValidator to chain validation</returns>
-    public IValidator Validate<TValueObject>(ValidationResult<TValueObject> validationResult)
-        where TValueObject : ValueObject
+    public IValidator Validate<TType>(ValidationResult<TType> validationResult)
     {
         if (validationResult.IsFailure)
         {

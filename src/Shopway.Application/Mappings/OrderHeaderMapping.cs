@@ -12,11 +12,11 @@ public static class OrderHeaderMapping
         return new OrderHeaderResponse
         (
             orderHeader.Id.Value,
-            orderHeader.Status,
-            orderHeader.Payment.Status,
-            orderHeader.CalculateTotalPrice(),
+            orderHeader.Status.ToString(),
+            orderHeader.CalculateTotalCost(),
             orderHeader.TotalDiscount.Value,
-            orderHeader.OrderLines.ToResponses()
+            orderHeader.OrderLines.ToResponses(),
+            orderHeader.Payments.ToResponses()
         );
     }
 

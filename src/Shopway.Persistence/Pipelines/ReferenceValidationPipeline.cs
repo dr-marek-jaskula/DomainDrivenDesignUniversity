@@ -6,7 +6,6 @@ using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Errors;
 using Shopway.Persistence.Framework;
 using System.Linq.Dynamic.Core;
 using ZiggyCreatures.Caching.Fusion;

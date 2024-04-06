@@ -13,6 +13,10 @@ public interface IOrderHeaderRepository
 
     Task<OrderHeader> GetByIdWithIncludesAsync(OrderHeaderId id, CancellationToken cancellationToken, params Expression<Func<OrderHeader, object>>[] includes);
 
+    Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken);
+
+    Task<OrderHeader?> GetByPaymentSessionIdAsync(string sessionId, CancellationToken cancellationToken);
+
     void Create(OrderHeader order);
 
     void Update(OrderHeader order);
@@ -43,5 +47,4 @@ public interface IOrderHeaderRepository
         Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor;
-    Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken);
 }

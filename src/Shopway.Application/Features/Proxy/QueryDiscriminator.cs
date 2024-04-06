@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Common.Disciminators;
+﻿using Shopway.Domain.Common.Discriminators;
 
 namespace Shopway.Application.Features.Proxy;
 

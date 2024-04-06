@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Tests.Performance.Client;
+using Shopway.Tests.Performance.Options;
 using Shopway.Tests.Performance.Persistence;
 
 namespace Shopway.Tests.Performance;
@@ -17,5 +18,7 @@ public sealed class Startup
 
         services.AddSingleton<DatabaseFixture>()
             .RegisterTestClient(configuration);
+
+        services.Configure<PerformanceTestOptions>(configuration.GetSection(nameof(PerformanceTestOptions)));
     }
 }

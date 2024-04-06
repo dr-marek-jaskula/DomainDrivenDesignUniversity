@@ -1,6 +1,5 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Errors;
 
 namespace Shopway.Domain.Common.Errors;
 

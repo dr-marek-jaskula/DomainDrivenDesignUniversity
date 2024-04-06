@@ -1,3 +1,8 @@
 ﻿{
-  "ApiUrl": "https://localhost:7236/api/"
+  "ApiUrl": "https://localhost:7236/api/",
+  "PerformanceTestOptions": {
+    "RequestsPerSecond": 100,
+    "DurationInMinutes": 3,
+    "WarmUpDurationInSeconds": 5
+  }
 }

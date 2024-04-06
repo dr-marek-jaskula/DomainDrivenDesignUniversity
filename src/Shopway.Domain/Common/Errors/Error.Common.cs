@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 
-namespace Shopway.Domain.Errors;
+namespace Shopway.Domain.Common.Errors;
 
 public sealed partial class Error
 {
@@ -10,7 +10,7 @@ public sealed partial class Error
     /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
     /// <param name="id">id of the entity that was not found</param>
     /// <returns>NotFound error</returns>
-    public static Error NotFound<TEntity>(IEntityId<TEntity> id)
+    public static Error NotFound<TEntity>(IEntityId id)
         where TEntity : class, IEntity
     {
         return New($"{typeof(TEntity).Name}.{nameof(NotFound)}", $"{typeof(TEntity).Name} with id '{id.Value}' was not found.");
@@ -73,6 +73,15 @@ public sealed partial class Error
     }
 
     /// <summary>
+    /// Create an Error describing the NullReference
+    /// </summary>
+    /// <returns>NullReference error</returns>
+    public static Error NullReference(string subject)
+    {
+        return New($"{subject}.{nameof(NullReference)}", $"{subject} is null.");
+    }
+
+    /// <summary>
     /// Create an Error describing that the provided reference is invalid
     /// </summary>
     /// <returns>InvalidReference error</returns>
@@ -100,6 +109,15 @@ public sealed partial class Error
     }
 
     /// <summary>
+    /// Create an Error describing that the give case is NotSupported
+    /// </summary>
+    /// <returns>NotSupported error</returns>
+    public static Error NotSupported(string message)
+    {
+        return New($"{nameof(NotSupported)}", message);
+    }
+
+    /// <summary>
     /// Create an Error describing that the batch command is invalid
     /// </summary>
     /// <returns>InvalidBatchCommand error</returns>
@@ -124,6 +142,15 @@ public sealed partial class Error
     public static Error InvalidArgument(string message)
     {
         return New($"{nameof(InvalidArgument)}", message);
+    }
+
+    /// <summary>
+    /// Create an Error describing that the verification failed
+    /// </summary>
+    /// <returns>VerificationError error</returns>
+    public static Error VerificationError(string message)
+    {
+        return New($"{nameof(VerificationError)}", message);
     }
 
     /// <summary>

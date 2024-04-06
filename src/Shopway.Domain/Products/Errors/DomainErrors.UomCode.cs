@@ -1,5 +1,5 @@
-﻿using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Errors;
+﻿using Shopway.Domain.Common.Errors;
+using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Products.ValueObjects;
 
 namespace Shopway.Domain.Products.Errors;

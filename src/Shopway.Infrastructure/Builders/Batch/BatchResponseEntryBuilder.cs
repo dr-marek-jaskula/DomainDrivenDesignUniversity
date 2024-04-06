@@ -3,8 +3,8 @@ using Shopway.Application.Abstractions.CQRS.Batch;
 using Shopway.Application.Features;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Errors;
 using System.Reflection;
 using static Shopway.Application.Features.BatchEntryStatus;
 
@@ -136,7 +136,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         {
             if (parameteres.Any(parameter => parameter is null))
             {
-                _errors.Add(Domain.Errors.Error.New($"Error.{nameof(ValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
+                _errors.Add(Domain.Common.Errors.Error.New($"Error.{nameof(ValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
                 return true;
             }
 
