@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Infrastructure.Options;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Serialization.NewtonsoftJson;
@@ -8,7 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class CacheRegistration
 {
-    private const string Redis = nameof(Redis);
+    private const string localhost = nameof(localhost);
 
     internal static IServiceCollection RegisterCache(this IServiceCollection services)
     {
@@ -29,7 +28,7 @@ public static class CacheRegistration
             })
             .WithSerializer(new FusionCacheNewtonsoftJsonSerializer());
 
-        if (cacheOptions.ConnectionString!.Contains("localhost"))
+        if (cacheOptions.ConnectionString!.Contains(localhost))
         {
             services.AddMemoryCache();
         }

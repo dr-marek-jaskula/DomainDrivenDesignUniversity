@@ -11,7 +11,6 @@ public sealed class QueryCachingPipeline<TQuery, TResultOfResponse>(IFusionCache
     where TResultOfResponse : IResult<IResponse>
 {
     private readonly IFusionCache _fusionCache = fusionCache;
-    private static readonly TimeSpan _defaultCacheDuration = TimeSpan.FromSeconds(30);
 
     public async Task<TResultOfResponse> Handle(TQuery query, RequestHandlerDelegate<TResultOfResponse> next, CancellationToken cancellationToken)
     {
@@ -30,11 +29,16 @@ public sealed class QueryCachingPipeline<TQuery, TResultOfResponse>(IFusionCache
             (
                 query.CacheKey,
                 result,
-                query.Duration ?? _defaultCacheDuration,
+                query.Duration ?? CacheDuration.Default,
                 token: cancellationToken
             );
         }
 
         return result;
     }
+}
+
+file static class CacheDuration
+{
+    internal static TimeSpan Default = TimeSpan.FromSeconds(30);
 }
