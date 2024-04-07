@@ -1,22 +1,21 @@
 ﻿using MediatR;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Features.Products.Queries;
 using Shopway.Domain.Common.Results;
-using System.Text.Json;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Application.Pipelines;
 
-public sealed class QueryCachingPipeline<TRequest, TResultOfResponse>(IFusionCache fusionCache) : IPipelineBehavior<TRequest, TResultOfResponse>
-    where TRequest : class, IRequest<TResultOfResponse>, IQuery<IResponse>, ICachedQuery
+public sealed class QueryCachingPipeline<TQuery, TResultOfResponse>(IFusionCache fusionCache) : IPipelineBehavior<TQuery, TResultOfResponse>
+    where TQuery : class, IRequest<TResultOfResponse>, IQuery<IResponse>, ICachedQuery
     where TResultOfResponse : IResult<IResponse>
 {
     private readonly IFusionCache _fusionCache = fusionCache;
+    private static readonly TimeSpan _defaultCacheDuration = TimeSpan.FromSeconds(30);
 
-    public async Task<TResultOfResponse> Handle(TRequest request, RequestHandlerDelegate<TResultOfResponse> next, CancellationToken cancellationToken)
+    public async Task<TResultOfResponse> Handle(TQuery query, RequestHandlerDelegate<TResultOfResponse> next, CancellationToken cancellationToken)
     {
-        var cachedResult = await _fusionCache.GetOrDefaultAsync<TResultOfResponse>(request.CacheKey, token: cancellationToken);
+        var cachedResult = await _fusionCache.GetOrDefaultAsync<TResultOfResponse>(query.CacheKey, token: cancellationToken);
 
         if (cachedResult is not null)
         {
@@ -29,9 +28,9 @@ public sealed class QueryCachingPipeline<TRequest, TResultOfResponse>(IFusionCac
         {
             await _fusionCache.SetAsync
             (
-                request.CacheKey,
+                query.CacheKey,
                 result,
-                TimeSpan.FromSeconds(30),
+                query.Duration ?? _defaultCacheDuration,
                 token: cancellationToken
             );
         }
