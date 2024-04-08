@@ -11,6 +11,18 @@ public sealed class DiscriminatorCacheFactory<DiscriminatorType, DelegateType>
     {
     }
 
+    public static FrozenDictionary<DiscriminatorType, DelegateType> CreateFor<TType, AttributeType>()
+        where AttributeType : DiscriminatorAttribute<DiscriminatorType>
+    {
+        var strategies = typeof(TType)
+            .GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
+            .Where(method => method.GetCustomAttribute<AttributeType>() is not null)
+            .Select(x => x.CreateDelegate<DelegateType>());
+
+        return DiscriminatorCacheFactory<DiscriminatorType, DelegateType>
+            .CreateFor<AttributeType>(strategies);
+    }
+
     public static FrozenDictionary<DiscriminatorType, DelegateType> CreateFor<AttributeType>(IEnumerable<DelegateType> dictionaryValues)
         where AttributeType : DiscriminatorAttribute<DiscriminatorType>
     {
