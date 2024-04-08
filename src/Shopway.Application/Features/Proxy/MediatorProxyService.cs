@@ -5,26 +5,16 @@ using Shopway.Domain.Common.Discriminators;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using System.Collections.Frozen;
-using System.Reflection;
 
 namespace Shopway.Application.Features.Proxy;
 
 public partial class MediatorProxyService(IValidator validator) : IMediatorProxyService
 {
-    private static readonly FrozenDictionary<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyCache;
-    
+    private static readonly FrozenDictionary<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyCache =
+        DiscriminatorCacheFactory<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
+            .CreateFor<MediatorProxyService, QueryStrategyAttribute>();
+
     private readonly IValidator _validator = validator;
-
-    static MediatorProxyService()
-    {
-        var strategies = typeof(MediatorProxyService)
-            .GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-            .Where(method => method.GetCustomAttribute<QueryStrategyAttribute>() is not null)
-            .Select(x => x.CreateDelegate<Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>());
-
-        _strategyCache = DiscriminatorCacheFactory<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
-            .CreateFor<QueryStrategyAttribute>(strategies);
-    }
 
     public Result<IQuery<PageResponse<DataTransferObjectResponse>>> Map(ProxyQuery proxyQuery)
     {
