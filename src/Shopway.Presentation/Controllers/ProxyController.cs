@@ -18,7 +18,7 @@ public sealed class ProxyController(ISender sender, IMediatorProxyService generi
     [HttpPost("query")]
     [ProducesResponseType<PageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok<object>, ProblemHttpResult>> QueryProductsCursorDictionary
+    public async Task<Results<Ok<object>, ProblemHttpResult>> DynamicProxyQuery
     (
         [FromBody] ProxyQuery query,
         CancellationToken cancellationToken
