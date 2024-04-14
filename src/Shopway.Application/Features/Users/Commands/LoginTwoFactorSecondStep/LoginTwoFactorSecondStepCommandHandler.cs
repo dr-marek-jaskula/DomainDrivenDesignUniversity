@@ -25,12 +25,14 @@ internal sealed class LoginTwoFactorSecondStepCommandHandler
 
     public async Task<IResult<AccessTokenResponse>> Handle(LoginTwoFactorSecondStepCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<TwoFactorTokenHash> twoFactorTokenResult = TwoFactorTokenHash.Create(command.TwoFactorToken);
         ValidationResult<Email> emailResult = Email.Create(command.Email);
+        ValidationResult<Password> passwordResult = Password.Create(command.Password);
+        ValidationResult<TwoFactorTokenHash> twoFactorTokenResult = TwoFactorTokenHash.Create(command.TwoFactorToken);
 
         _validator
-            .Validate(twoFactorTokenResult)
-            .Validate(emailResult);
+            .Validate(emailResult)
+            .Validate(passwordResult)
+            .Validate(twoFactorTokenResult);
 
         if (_validator.IsInvalid)
         {
@@ -48,11 +50,15 @@ internal sealed class LoginTwoFactorSecondStepCommandHandler
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var result = _passwordHasher
+        var passwordVerificationResult = _passwordHasher
+            .VerifyHashedPassword(user!, user!.PasswordHash.Value, passwordResult.Value.Value);
+
+        var twoFactorTokenVerificaitonResult = _passwordHasher
             .VerifyHashedPassword(user!, user!.TwoFactorTokenHash!.Value, command.TwoFactorToken);
 
         _validator
-            .If(result is not PasswordVerificationResult.Success, thenError: Error.InvalidArgument("Invalid TwoFactorToken"))
+            .If(passwordVerificationResult is PasswordVerificationResult.Failed, thenError: Error.InvalidArgument("Invalid Password"))
+            .If(twoFactorTokenVerificaitonResult is PasswordVerificationResult.Failed, thenError: Error.InvalidArgument("Invalid TwoFactorToken"))
             .If(_securityTokenService.HasTwoFactorTokenExpired(user!.TwoFactorTokenCreatedOn), thenError: Error.InvalidArgument("TwoFactorToken has expired"));
 
         if (_validator.IsInvalid)
