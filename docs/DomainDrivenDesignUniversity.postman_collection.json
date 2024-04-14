@@ -1574,7 +1574,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"TwoFactorToken\": \"HwsMr-KakVQ\"\r\n}",
+							"raw": "{\r\n  \"Email\": \"{{email}}\",\r\n  \"Password\": \"{{password}}\",\r\n  \"TwoFactorToken\": \"uwZvF-dPgZM\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
