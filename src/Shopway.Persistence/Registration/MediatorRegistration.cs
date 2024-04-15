@@ -3,7 +3,7 @@ using Shopway.Persistence.Pipelines;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class MediatorRegistration
+internal static class MediatorRegistration
 {
     internal static IServiceCollection RegisterMediator(this IServiceCollection services)
     {

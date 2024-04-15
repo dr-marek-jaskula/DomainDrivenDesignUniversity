@@ -4,7 +4,7 @@ using Shopway.Infrastructure.Validators;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class OptionsRegistration
+internal static class OptionsRegistration
 {
     internal static IServiceCollection RegisterOptions(this IServiceCollection services)
     {

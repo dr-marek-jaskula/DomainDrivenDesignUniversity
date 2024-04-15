@@ -4,7 +4,7 @@ using Shopway.Persistence.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class BackgroundServiceRegistration
+internal static class BackgroundServiceRegistration
 {
     internal static IServiceCollection RegisterBackgroundServices(this IServiceCollection services)
     {

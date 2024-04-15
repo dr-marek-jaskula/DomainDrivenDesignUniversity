@@ -6,7 +6,7 @@ using Shopway.Persistence.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class RepositoriesRegistration
+internal static class RepositoriesRegistration
 {
     internal static IServiceCollection RegisterRepositories(this IServiceCollection services)
     {

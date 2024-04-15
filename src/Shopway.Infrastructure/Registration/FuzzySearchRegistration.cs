@@ -3,7 +3,7 @@ using Shopway.Infrastructure.FuzzySearch;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class FuzzySearchRegistration
+internal static class FuzzySearchRegistration
 {
     internal static IServiceCollection RegisterFuzzySearch(this IServiceCollection services)
     {

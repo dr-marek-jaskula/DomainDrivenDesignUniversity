@@ -6,7 +6,7 @@ using Shopway.Presentation.Authentication.RolePermissionAuthentication.Handlers;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class AuthenticationRegistration
+internal static class AuthenticationRegistration
 {
     internal static IServiceCollection RegisterAuthentication(this IServiceCollection services)
     {

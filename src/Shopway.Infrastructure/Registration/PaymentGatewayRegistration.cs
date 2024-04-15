@@ -6,7 +6,7 @@ using Shopway.Infrastructure.Payments.DummyGatewayTypes;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class PaymentGatewayRegistration
+internal static class PaymentGatewayRegistration
 {
     internal static IServiceCollection RegisterPaymentGateway(this IServiceCollection services)
     {

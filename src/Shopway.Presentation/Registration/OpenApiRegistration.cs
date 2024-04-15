@@ -8,7 +8,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class OpenApiRegistration
+internal static class OpenApiRegistration
 {
     private const string SwaggerDarkThameStyleFileName = "SwaggerDark.css";
     private const string WwwRootDirectoryName = "OpenApi";

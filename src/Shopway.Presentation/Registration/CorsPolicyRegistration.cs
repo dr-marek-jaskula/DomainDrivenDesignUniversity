@@ -2,7 +2,7 @@
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class CorsPolicyRegistration
+internal static class CorsPolicyRegistration
 {
     public static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app)
     {

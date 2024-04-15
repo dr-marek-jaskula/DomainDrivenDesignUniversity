@@ -3,7 +3,7 @@ using Shopway.Application.Middlewares;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class MiddlewaresRegistration
+internal static class MiddlewaresRegistration
 {
     internal static IServiceCollection RegisterMiddlewares(this IServiceCollection services)
     {

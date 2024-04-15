@@ -12,7 +12,7 @@ using static Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus;
 namespace Microsoft.Extensions.DependencyInjection;
 
 //To add other custom health checks, use AddCheck method and as a generic parameter pass a class that implements IHealthCheck interface
-public static class HealthCheckRegistration
+internal static class HealthCheckRegistration
 {
     private const string Basic = nameof(Basic);
     private const string Critical = nameof(Critical);
