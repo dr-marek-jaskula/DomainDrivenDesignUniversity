@@ -7,7 +7,7 @@ using Shopway.Persistence.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class DatabaseContextRegistration
+internal static class DatabaseContextRegistration
 {
     internal static IServiceCollection RegisterDatabaseContext(this IServiceCollection services, bool isDevelopment)
     {

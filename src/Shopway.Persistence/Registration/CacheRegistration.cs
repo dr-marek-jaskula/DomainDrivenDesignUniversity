@@ -5,7 +5,7 @@ using ZiggyCreatures.Caching.Fusion.Serialization.NewtonsoftJson;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class CacheRegistration
+internal static class CacheRegistration
 {
     private const string localhost = nameof(localhost);
 

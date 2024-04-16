@@ -9,7 +9,7 @@ using Shopway.Infrastructure.Validators;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ServiceRegistration
+internal static class ServiceRegistration
 {
     internal static IServiceCollection RegisterServices(this IServiceCollection services)
     {

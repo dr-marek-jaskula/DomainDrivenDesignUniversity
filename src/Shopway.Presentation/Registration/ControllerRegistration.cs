@@ -6,7 +6,7 @@ using ApiBehaviorOptions = Shopway.Presentation.Options.ApiBehaviorOptions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ControllerRegistration
+internal static class ControllerRegistration
 {
     internal static IServiceCollection RegisterControllers(this IServiceCollection services)
     {

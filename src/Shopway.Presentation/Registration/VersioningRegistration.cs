@@ -2,7 +2,7 @@
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class VersioningRegistration
+internal static class VersioningRegistration
 {
     private const string ApiVersionHeader = "api-version";
 
