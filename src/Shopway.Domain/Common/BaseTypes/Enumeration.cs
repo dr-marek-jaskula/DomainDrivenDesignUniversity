@@ -51,24 +51,24 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>, IComp
     /// </summary>
     public string Name { get; protected init; }
 
-    public static bool operator ==(Enumeration<TEnum>? a, Enumeration<TEnum>? b)
+    public static bool operator ==(Enumeration<TEnum>? first, Enumeration<TEnum>? second)
     {
-        if (a is null && b is null)
+        if (first is null && second is null)
         {
             return true;
         }
 
-        if (a is null || b is null)
+        if (first is null || second is null)
         {
             return false;
         }
 
-        return a.Equals(b);
+        return first.Equals(second);
     }
 
-    public static bool operator !=(Enumeration<TEnum> a, Enumeration<TEnum> b)
+    public static bool operator !=(Enumeration<TEnum> first, Enumeration<TEnum> second)
     {
-        return !(a == b);
+        return !(first == second);
     }
 
     /// <summary>

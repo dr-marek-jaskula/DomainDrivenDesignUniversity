@@ -71,24 +71,24 @@ public sealed partial class Error : IEquatable<Error>
         return error.Code;
     }
 
-    public static bool operator ==(Error? a, Error? b)
+    public static bool operator ==(Error? first, Error? second)
     {
-        if (a is null && b is null)
+        if (first is null && second is null)
         {
             return true;
         }
 
-        if (a is null || b is null)
+        if (first is null || second is null)
         {
             return false;
         }
 
-        return a.Equals(b);
+        return first.Equals(second);
     }
 
-    public static bool operator !=(Error? a, Error? b)
+    public static bool operator !=(Error? first, Error? second)
     {
-        return !(a == b);
+        return !(first == second);
     }
 
     /// <inheritdoc />
