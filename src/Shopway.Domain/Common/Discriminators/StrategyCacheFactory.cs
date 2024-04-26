@@ -3,28 +3,28 @@ using System.Reflection;
 
 namespace Shopway.Domain.Common.Discriminators;
 
-public sealed class DiscriminatorCacheFactory<DiscriminatorType, DelegateType>
+public sealed class StrategyCacheFactory<DiscriminatorType, DelegateType>
     where DiscriminatorType : Discriminator
     where DelegateType : notnull, Delegate
 {
-    private DiscriminatorCacheFactory()
+    private StrategyCacheFactory()
     {
     }
 
     public static FrozenDictionary<DiscriminatorType, DelegateType> CreateFor<TType, AttributeType>()
-        where AttributeType : DiscriminatorAttribute<DiscriminatorType>
+        where AttributeType : StrategyAttribute<DiscriminatorType>
     {
         var strategies = typeof(TType)
             .GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
             .Where(method => method.GetCustomAttribute<AttributeType>() is not null)
             .Select(x => x.CreateDelegate<DelegateType>());
 
-        return DiscriminatorCacheFactory<DiscriminatorType, DelegateType>
+        return StrategyCacheFactory<DiscriminatorType, DelegateType>
             .CreateFor<AttributeType>(strategies);
     }
 
     public static FrozenDictionary<DiscriminatorType, DelegateType> CreateFor<AttributeType>(IEnumerable<DelegateType> dictionaryValues)
-        where AttributeType : DiscriminatorAttribute<DiscriminatorType>
+        where AttributeType : StrategyAttribute<DiscriminatorType>
     {
         Dictionary<DiscriminatorType, DelegateType> cache = [];
 
@@ -37,7 +37,7 @@ public sealed class DiscriminatorCacheFactory<DiscriminatorType, DelegateType>
     }
 
     private static void AddToCache<AttributeType>(Dictionary<DiscriminatorType, DelegateType> cache, DelegateType @delegate)
-        where AttributeType : DiscriminatorAttribute<DiscriminatorType>
+        where AttributeType : StrategyAttribute<DiscriminatorType>
     {
         var discriminator = @delegate
             .GetMethodInfo()

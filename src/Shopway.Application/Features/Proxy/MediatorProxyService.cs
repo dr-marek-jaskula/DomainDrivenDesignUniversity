@@ -11,7 +11,7 @@ namespace Shopway.Application.Features.Proxy;
 public partial class MediatorProxyService(IValidator validator) : IMediatorProxyService
 {
     private static readonly FrozenDictionary<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyCache =
-        DiscriminatorCacheFactory<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
+        StrategyCacheFactory<QueryDiscriminator, Func<ProxyQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
             .CreateFor<MediatorProxyService, QueryStrategyAttribute>();
 
     private readonly IValidator _validator = validator;
