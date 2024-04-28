@@ -12,7 +12,7 @@ public partial class NamingConventionsTests
     public void JobNames_ShouldEndWithJob()
     {
         //Arrange
-        var assembly = Shopway.Infrastructure.AssemblyReference.Assembly;
+        var assembly = Shopway.Persistence.AssemblyReference.Assembly;
 
         //Act
         var result = Types
