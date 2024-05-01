@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Infrastructure.Outbox;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Outbox;
 using Shopway.Persistence.Utilities;
 using static Shopway.Infrastructure.Outbox.ExecutionStatus;
 

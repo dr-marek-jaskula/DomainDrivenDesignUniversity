@@ -1,7 +1,7 @@
 ﻿using Shopway.Domain.Orders;
 using Shopway.Domain.Products;
 using Shopway.Domain.Users;
-using Shopway.Persistence.Outbox;
+using Shopway.Infrastructure.Outbox;
 using Shopway.Persistence.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;

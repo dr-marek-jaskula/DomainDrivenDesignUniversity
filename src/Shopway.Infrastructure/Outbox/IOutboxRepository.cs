@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 
-namespace Shopway.Persistence.Outbox;
+namespace Shopway.Infrastructure.Outbox;
 
 public interface IOutboxRepository
 {
