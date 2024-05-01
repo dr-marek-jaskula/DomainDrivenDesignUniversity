@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Quartz;
+using Shopway.Infrastructure.Outbox;
 using Shopway.Infrastructure.Policies;
 using Shopway.Persistence.Framework;
-using Shopway.Persistence.Outbox;
 
 namespace Shopway.Persistence.BackgroundJobs;
 

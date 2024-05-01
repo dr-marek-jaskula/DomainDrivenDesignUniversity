@@ -2,7 +2,7 @@
 using Shopway.Application.Abstractions;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Persistence.Outbox;
+using Shopway.Infrastructure.Outbox;
 
 namespace Shopway.Infrastructure.Decoratos;
 

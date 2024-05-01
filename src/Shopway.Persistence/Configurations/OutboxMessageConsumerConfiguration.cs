@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shopway.Infrastructure.Outbox;
 using Shopway.Persistence.Converters;
-using Shopway.Persistence.Outbox;
 using static Shopway.Persistence.Constants.Constants;
 using static Shopway.Persistence.Constants.Constants.Number;
 

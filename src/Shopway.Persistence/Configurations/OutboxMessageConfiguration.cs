@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shopway.Infrastructure.Outbox;
 using Shopway.Persistence.Converters;
 using Shopway.Persistence.Converters.Enums;
-using Shopway.Persistence.Outbox;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
 using static Shopway.Persistence.Constants.Constants;
 using static Shopway.Persistence.Constants.Constants.Number;

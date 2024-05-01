@@ -1,4 +1,4 @@
-﻿namespace Shopway.Persistence.Outbox;
+﻿namespace Shopway.Infrastructure.Outbox;
 
 public sealed class OutboxMessageConsumer
 {
