@@ -1,7 +1,5 @@
 version: '3.8'
 
-name: shopway-compose
-
 services:
   ddduniversitydb:
     container_name: ddduniversitydb
@@ -82,22 +80,30 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
 
-  # prometheus:
-  #   container_name: prometheus
-  #   volumes:
-  #     - prometheus_volume:/OpenTelemetry/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-  #   networks:
-  #     - db_net
-  #   ports:
-  #     - 9090:9090
+  prometheus:
+    container_name: prometheus
+    networks:
+      - db_net
+    depends_on:
+      - shopway.app
+    ports:
+      - 9090:9090
+    volumes:
+      - "./OpenTelemetry/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
 
-  # grafana:
-  #   container_name: grafana
-  #   restart: unless-stopped
-  #   ports:
-  #    - '3000:3000'
-  #   volumes:
-  #     - grafana_volume:/var/lib/grafana
+  grafana:
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+     - '3000:3000'
+    networks:
+      - db_net
+    depends_on:
+      - shopway.app
+    volumes:
+      # - grafana_volume:/var/lib/grafana
+      - "./OpenTelemetry/grafana/config:/etc/grafana"
+      - "./OpenTelemetry/grafana/dashboards:/var/lib/grafana/dashboards"
 
   jaeger:
     container_name: jaeger

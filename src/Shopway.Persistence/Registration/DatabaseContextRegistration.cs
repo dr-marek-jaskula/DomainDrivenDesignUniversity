@@ -22,7 +22,7 @@ internal static class DatabaseContextRegistration
                 options.EnableRetryOnFailure(
                     databaseOptions.MaxRetryCount,
                     TimeSpan.FromSeconds(databaseOptions.MaxRetryDelay),
-                    Array.Empty<int>());
+                    []);
             });
 
             if (isDevelopment)

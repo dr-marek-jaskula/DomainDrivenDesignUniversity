@@ -5,8 +5,10 @@ namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 
 public sealed class OrdersOpenTelemetry : OpenTelemetryBase
 {
-    private const string OrderCounterName = "shopway.application.order.count";
-    private const string OrderHistogramName = "shopway.application.orders.duration";
+    private const string OrdersPrefix = $"{ShopwayApplicationPrefix}.orders";
+
+    private const string OrderCounterName = $"{OrdersPrefix}.count";
+    private const string OrderHistogramName = $"{OrdersPrefix}.duration";
 
     private readonly Counter<long> _orderRequestCounter;
     private readonly Histogram<double> _orderRequestDuration;

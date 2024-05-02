@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.Metrics;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Logs;
@@ -15,10 +14,22 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 internal static class OpenTelemetryRegistration
 {
+    internal static IApplicationBuilder UseOpenTelemetry(this IApplicationBuilder app)
+    {
+        var telemetryOptions = app.GetOptions<OpenTelemetryOptions>();
+
+        if (telemetryOptions.IsLocal() is false)
+        {
+            app.UseOpenTelemetryPrometheusScrapingEndpoint();
+        }
+
+        return app;
+    }
+
     internal static IServiceCollection RegisterOpenTelemetry(this IServiceCollection services, ILoggingBuilder logging, IHostEnvironment environment)
     {
         var openTelemetryOptions = services.GetOptions<OpenTelemetryOptions>();
-        bool useOnlyConsoleExporter = openTelemetryOptions.OtlpHost.Equals("localhost");
+        bool useOnlyConsoleExporter = openTelemetryOptions.IsLocal();
 
         services.AddMetrics();
 
@@ -52,7 +63,7 @@ internal static class OpenTelemetryRegistration
                 }
                 else
                 {
-                    metricBuilder.AddOtlpExporter(options => ConfigureOtlpExporter(options, openTelemetryOptions.OtlpHost));
+                    metricBuilder.AddPrometheusExporter();
                 }
             })
             .WithTracing(traceBuilder =>

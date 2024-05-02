@@ -6,6 +6,7 @@ public abstract class OpenTelemetryBase(IMeterFactory meterFactory)
 {
     private const string MeterName = $"{nameof(Shopway)}.{nameof(Application)}";
 
+    protected const string ShopwayApplicationPrefix = "shopway.application";
     protected const string DurationUnit = "ms";
     protected Meter _meter = meterFactory.Create(MeterName);
 
