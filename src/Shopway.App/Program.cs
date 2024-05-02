@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using static Microsoft.Extensions.DependencyInjection.LoggerUtilities;
 
@@ -22,7 +23,7 @@ try
     builder.Services
         .RegisterAppOptions()
         .RegisterApplicationLayer()
-        .RegisterPersistenceLayer(builder.Environment)
+        .RegisterPersistenceLayer(builder.Environment, builder.Logging)
         .RegisterInfrastructureLayer()
         .RegisterPresentationLayer();
 

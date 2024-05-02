@@ -1,5 +1,7 @@
 version: '3.8'
 
+name: shopway-compose
+
 services:
   ddduniversitydb:
     container_name: ddduniversitydb
@@ -44,6 +46,7 @@ services:
       - "6379:6379"
 
   shopway.app:
+    container_name: shopway
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__CacheConnection=redis
@@ -53,15 +56,18 @@ services:
       - "ConnectionStrings__DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ConnectionStrings__TestConnection=Server=ddduniversitydb;Database=DDDUniversityTest;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ASPNETCORE_HTTP_PORTS=80;8080"
+      - "OpenTelemetryOptions__OtlpHost=jaeger"
     restart: unless-stopped
     networks:
       - db_net
     depends_on:
       - ddduniversitydb
+      - redis
     ports:
       - "8080:80"
 
   paymentgateway:
+    container_name: payment_gateway
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8082
@@ -75,3 +81,34 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  # prometheus:
+  #   container_name: prometheus
+  #   volumes:
+  #     - prometheus_volume:/OpenTelemetry/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   networks:
+  #     - db_net
+  #   ports:
+  #     - 9090:9090
+
+  # grafana:
+  #   container_name: grafana
+  #   restart: unless-stopped
+  #   ports:
+  #    - '3000:3000'
+  #   volumes:
+  #     - grafana_volume:/var/lib/grafana
+
+  jaeger:
+    container_name: jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    restart: unless-stopped
+    networks:
+      - db_net
+    depends_on:
+      - shopway.app
+    ports:
+     - '13133:13133'
+     - '16686:16686'
+     - '4317:4317'

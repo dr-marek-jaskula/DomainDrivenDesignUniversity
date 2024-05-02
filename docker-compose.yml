@@ -25,6 +25,15 @@ services:
       context: .
       dockerfile: PaymentGateway/Dockerfile
 
+  jaeger:
+    image: jaegertracing/all-in-one
+
+  # prometheus:
+  #   image: prom/prometheus
+
+  # grafana:
+  #   image: grafana/grafana
+
 networks:
   db_net:
 
@@ -32,3 +41,5 @@ volumes:
   ddduniversity_volume:
   portainer_volume:  
   papercut_volume:  
+  # prometheus_volume:
+  # grafana_volume:

@@ -50,7 +50,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Tests.Benchmark", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PaymentGateway", "PaymentGateway", "{F57FF550-17E9-4619-AD5C-FF5D5552AB04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway", "PaymentGateway\PaymentGateway.csproj", "{40A40796-EF36-4A85-9DBA-53F44A13160D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway", "PaymentGateway\PaymentGateway.csproj", "{40A40796-EF36-4A85-9DBA-53F44A13160D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenTelemetry", "OpenTelemetry", "{7AE0DB25-E7F8-4A2E-BF9B-577771D823A6}"
+	ProjectSection(SolutionItems) = preProject
+		OpenTelemetry\Dockerfile = OpenTelemetry\Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
