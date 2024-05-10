@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
@@ -9,23 +8,12 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Shopway.Infrastructure.Options;
+using System.Diagnostics;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 internal static class OpenTelemetryRegistration
 {
-    internal static IApplicationBuilder UseOpenTelemetry(this IApplicationBuilder app)
-    {
-        var telemetryOptions = app.GetOptions<OpenTelemetryOptions>();
-
-        if (telemetryOptions.IsLocal() is false)
-        {
-            app.UseOpenTelemetryPrometheusScrapingEndpoint();
-        }
-
-        return app;
-    }
-
     internal static IServiceCollection RegisterOpenTelemetry(this IServiceCollection services, ILoggingBuilder logging, IHostEnvironment environment)
     {
         var openTelemetryOptions = services.GetOptions<OpenTelemetryOptions>();
@@ -44,8 +32,10 @@ internal static class OpenTelemetryRegistration
             }
             else
             {
-                options.AddOtlpExporter(options => ConfigureOtlpExporter(options, openTelemetryOptions.OtlpHost));
+                options.AddOtlpExporter(options => ConfigureOtlpCollectorExporter(options, openTelemetryOptions.OtlpCollectorHost));
             }
+
+            options.AddProcessor(new ActivityEventLogProcessor());
         });
 
         services
@@ -63,7 +53,7 @@ internal static class OpenTelemetryRegistration
                 }
                 else
                 {
-                    metricBuilder.AddPrometheusExporter();
+                    metricBuilder.AddOtlpExporter(options => ConfigureOtlpCollectorExporter(options, openTelemetryOptions.OtlpCollectorHost));
                 }
             })
             .WithTracing(traceBuilder =>
@@ -84,7 +74,7 @@ internal static class OpenTelemetryRegistration
                 }
                 else
                 {
-                    traceBuilder.AddOtlpExporter(options => ConfigureOtlpExporter(options, openTelemetryOptions.OtlpHost));
+                    traceBuilder.AddOtlpExporter(options => ConfigureOtlpCollectorExporter(options, openTelemetryOptions.OtlpCollectorHost));
                 }
             });
 
@@ -102,9 +92,19 @@ internal static class OpenTelemetryRegistration
             }));
     }
 
-    private static void ConfigureOtlpExporter(this OtlpExporterOptions options, string otlpHost)
+    private static void ConfigureOtlpCollectorExporter(this OtlpExporterOptions options, string otlpCollectorHost)
     {
-        options.Endpoint = new Uri($"http://{otlpHost}:4317");
+        const string _grpcCollectorPort = "4317";
+        options.Endpoint = new Uri($"http://{otlpCollectorHost}:{_grpcCollectorPort}");
         options.Protocol = OtlpExportProtocol.Grpc;
+    }
+
+    private class ActivityEventLogProcessor : BaseProcessor<LogRecord>
+    {
+        public override void OnEnd(LogRecord log)
+        {
+            base.OnEnd(log);
+            Activity.Current?.AddEvent(new ActivityEvent(log.FormattedMessage!));
+        }
     }
 }

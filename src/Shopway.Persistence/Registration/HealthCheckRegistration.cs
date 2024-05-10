@@ -31,20 +31,20 @@ internal static class HealthCheckRegistration
                 failureStatus: Unhealthy,
                 healthQuery: "SELECT 1",
                 name: "SqlServer connection",
-                tags: new[] { Basic, Critical }
+                tags: [Basic, Critical]
             )
             .AddDbContextCheck<ShopwayDbContext>
             (
                 failureStatus: Unhealthy,
                 name: "DbContext readiness",
                 customTestQuery: GetProduct,
-                tags: new[] { Readiness }
+                tags: [Readiness]
             )
             .AddCheck<AppHealthCheck>
             (
                 failureStatus: Unhealthy,
                 name: "Application status",
-                tags: new[] { Basic, Critical }
+                tags: [Basic, Critical]
             );
 
         services

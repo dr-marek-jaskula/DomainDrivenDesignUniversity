@@ -29,8 +29,7 @@ public static class PersistenceLayerRegistration
     {
         app
             .UseHealthChecks()
-            .ApplyMigrations<ShopwayDbContext>()
-            .UseOpenTelemetry();
+            .ApplyMigrations<ShopwayDbContext>();
 
         return app;
     }

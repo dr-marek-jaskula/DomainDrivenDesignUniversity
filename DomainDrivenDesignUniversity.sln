@@ -84,6 +84,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "datasources", "datasources"
 		OpenTelemetry\grafana\config\provisioning\datasources\default.yaml = OpenTelemetry\grafana\config\provisioning\datasources\default.yaml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "otelcollector", "otelcollector", "{B515B481-F98A-40DF-A0E7-6AE589CC9D95}"
+	ProjectSection(SolutionItems) = preProject
+		OpenTelemetry\otelcollector\otel-collector-config.yaml = OpenTelemetry\otelcollector\otel-collector-config.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +171,7 @@ Global
 		{B6E765C3-358A-4BA9-AAE2-1B4D7D3A5C57} = {88722650-1C39-4FEF-B66E-32E2BAF8A341}
 		{F1877966-BB74-459A-A55B-D44DAA78DDCA} = {B6E765C3-358A-4BA9-AAE2-1B4D7D3A5C57}
 		{668AB89F-9AEA-4468-A6A2-15D291B7C9EF} = {B6E765C3-358A-4BA9-AAE2-1B4D7D3A5C57}
+		{B515B481-F98A-40DF-A0E7-6AE589CC9D95} = {7AE0DB25-E7F8-4A2E-BF9B-577771D823A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {611D72BD-9F9B-485C-A4B7-14B98649BA32}

@@ -211,3 +211,115 @@ return queryable
 ```
 
 We need to use "((string)(object)product.ProductName)" because otherwise we would not be able to call **Contains** method.
+
+## Open Telemetry
+
+All configuration is done in **OpenTelemetryRegistration.cs** file.
+
+If project is run directly, then singlas will be exported to the console. Otherwise, when we use **docker-compose**, we will export singlas to **Open Telemetry Collector**.
+
+Then, signals are exported to Jaeger (see http://localhost:16686) and Prometheus (see http://localhost:9090) (plus Grafana at http://localhost:3000).
+
+In order to correlate traces with logs (logs configuration) we use **ActivityEventLogProcessor**:
+```csharp
+private class ActivityEventLogProcessor : BaseProcessor<LogRecord>
+{
+    public override void OnEnd(LogRecord log)
+    {
+        base.OnEnd(log);
+        Activity.Current?.AddEvent(new ActivityEvent(log.FormattedMessage!));
+    }
+}
+```
+
+There is also OpenTelemetryBase class in **.Application** layer that is used as a base class for custom metrics. On such custom metric is **CreateOrderHeaderOpenTelemetry**
+that is located directly in the CreateOrderHeader feature, both with **CreateOrderHeaderOpenTelemetryPipeline** to utilize these metrics.
+
+#### Obsolete **Serilog** configuration:
+
+Program.cs
+```csharp
+//Log.Logger = CreateSerilogLogger();
+
+try
+{
+    Log.Information("Staring the web host");
+
+    //Initial configuration
+
+    var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+    {
+        Args = args,
+        ContentRootPath = Directory.GetCurrentDirectory()
+    });
+
+    builder.ConfigureSerilog();
+...
+}
+catch (Exception exception)
+{
+    Log.Fatal(exception, "Host terminated unexpectedly");
+    return 1;
+}
+finally
+{
+    Log.Information("Ending the web host");
+    Log.CloseAndFlush();
+}
+```
+
+Logger Utilities:
+```csharp
+public static class LoggerUtilities
+{
+    private const string Microsoft = nameof(Microsoft);
+
+    public static Serilog.ILogger CreateSerilogLogger()
+    {
+        return new LoggerConfiguration()
+            .MinimumLevel.Override(Microsoft, Information)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .CreateBootstrapLogger();
+    }
+
+    public static void ConfigureSerilog(this WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((context, services, configuration) => configuration
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext());
+    }
+}
+```
+
+appsettings.json 
+```json
+"Serilog": {
+  "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File" ],
+  "MinimumLevel": {
+    "Default": "Information",
+    "Override": {
+      "Microsoft": "Warning",
+      "System": "Warning"
+    }
+  },
+  "WriteTo": [
+    {
+      "Name": "Console",
+      "Args": {
+        "restrictedToMinimumLevel": "Warning"
+      }
+    },
+    {
+      "Name": "File",
+      "Args": {
+        "path": "Logs/log-.json", //this '-' determines that the current timestamp will be appended to the log file name
+        "rollingInterval": "Day",
+        "formatter": "Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Formatting.Compact"
+      }
+    }
+  ],
+  "Enrich": [ "FromLogContext", "WithMachineName", "WithProcessId", "WithThreadId" ]
+}
+```

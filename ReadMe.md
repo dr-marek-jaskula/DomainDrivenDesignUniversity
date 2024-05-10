@@ -136,6 +136,14 @@ To integrate with Payment Gateway we should use the docker compose approach.
 
 Payment Gateway is a **dummy** application created by me to simulate the payment process. Postman Collection is enhanced with endpoints to test payments.
 
+### Open Telemetry :floppy_disk:
+
+Open telemetry is configured using **Open Telemetry Collector** that exports signal to:
+1. Jaeger (traces and logs)
+2. Prometheus (metrics)
+
+To display metrics I use **Grafana**. More information in **ReadMe.Persistence.md**.
+
 ### Postman Collection :construction:
 
 To get all postman endpoints configured for local environment and docker containers:

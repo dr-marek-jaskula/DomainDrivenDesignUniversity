@@ -14,7 +14,7 @@ public static class ApplicationLayerRegistration
         Console.WriteLine($"Seeding Application Layer Memory Cache: {ApplicationCache.SeedCache}");
 
         services.AddScoped<IMediatorProxyService, MediatorProxyService>();
-        services.AddSingleton<OrdersOpenTelemetry>();
+        services.AddSingleton<CreateOrderHeaderOpenTelemetry>();
 
         services
             .RegisterFluentValidation()

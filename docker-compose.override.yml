@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   ddduniversitydb:
@@ -54,7 +54,7 @@ services:
       - "ConnectionStrings__DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ConnectionStrings__TestConnection=Server=ddduniversitydb;Database=DDDUniversityTest;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ASPNETCORE_HTTP_PORTS=80;8080"
-      - "OpenTelemetryOptions__OtlpHost=jaeger"
+      - "OpenTelemetryOptions__OtlpCollectorHost=opentelemetrycollector"
     restart: unless-stopped
     networks:
       - db_net
@@ -80,12 +80,29 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
 
+  opentelemetrycollector:
+    container_name: open_telemetry_collector
+    command: ["--config=/etc/otelcol-contrib/otel-collector-config.yaml"]
+    networks:
+      - db_net
+    depends_on:
+      - jaeger
+      - prometheus
+    ports:
+      - 8888:8888   # Prometheus metrics exposed by the Collector
+      - 8889:8889   # Prometheus exporter metrics
+      - 4317:4317   # OTLP gRPC receiver
+      - 4318:4318   # OTLP http receiver
+    volumes:
+      - "./OpenTelemetry/otelcollector/otel-collector-config.yaml:/etc/otelcol-contrib/otel-collector-config.yaml"
+
   prometheus:
     container_name: prometheus
     networks:
       - db_net
     depends_on:
       - shopway.app
+      - grafana
     ports:
       - 9090:9090
     volumes:
@@ -101,7 +118,6 @@ services:
     depends_on:
       - shopway.app
     volumes:
-      # - grafana_volume:/var/lib/grafana
       - "./OpenTelemetry/grafana/config:/etc/grafana"
       - "./OpenTelemetry/grafana/dashboards:/var/lib/grafana/dashboards"
 
@@ -115,6 +131,4 @@ services:
     depends_on:
       - shopway.app
     ports:
-     - '13133:13133'
      - '16686:16686'
-     - '4317:4317'

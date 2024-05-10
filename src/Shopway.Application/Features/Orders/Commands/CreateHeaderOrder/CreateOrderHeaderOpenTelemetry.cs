@@ -3,7 +3,7 @@ using System.Diagnostics.Metrics;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 
-public sealed class OrdersOpenTelemetry : OpenTelemetryBase
+public sealed class CreateOrderHeaderOpenTelemetry : OpenTelemetryBase
 {
     private const string OrdersPrefix = $"{ShopwayApplicationPrefix}.orders";
 
@@ -13,7 +13,7 @@ public sealed class OrdersOpenTelemetry : OpenTelemetryBase
     private readonly Counter<long> _orderRequestCounter;
     private readonly Histogram<double> _orderRequestDuration;
 
-    public OrdersOpenTelemetry(IMeterFactory meterFactory) 
+    public CreateOrderHeaderOpenTelemetry(IMeterFactory meterFactory) 
         : base(meterFactory)
     {
         _orderRequestCounter = _meter.CreateCounter<long>(OrderCounterName);
