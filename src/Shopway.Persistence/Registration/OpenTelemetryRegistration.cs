@@ -99,7 +99,7 @@ internal static class OpenTelemetryRegistration
         options.Protocol = OtlpExportProtocol.Grpc;
     }
 
-    private class ActivityEventLogProcessor : BaseProcessor<LogRecord>
+    private sealed class ActivityEventLogProcessor : BaseProcessor<LogRecord>
     {
         public override void OnEnd(LogRecord log)
         {
