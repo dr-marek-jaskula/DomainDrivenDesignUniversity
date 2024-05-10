@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   ddduniversitydb:
@@ -44,6 +44,7 @@ services:
       - "6379:6379"
 
   shopway.app:
+    container_name: shopway
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__CacheConnection=redis
@@ -53,15 +54,18 @@ services:
       - "ConnectionStrings__DefaultConnection=Server=ddduniversitydb;Database=DDDUniversity;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ConnectionStrings__TestConnection=Server=ddduniversitydb;Database=DDDUniversityTest;User Id=sa;Password=DDDUniversity1233;TrustServerCertificate=True;"
       - "ASPNETCORE_HTTP_PORTS=80;8080"
+      - "OpenTelemetryOptions__OtlpCollectorHost=opentelemetrycollector"
     restart: unless-stopped
     networks:
       - db_net
     depends_on:
       - ddduniversitydb
+      - redis
     ports:
       - "8080:80"
 
   paymentgateway:
+    container_name: payment_gateway
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8082
@@ -75,3 +79,56 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  opentelemetrycollector:
+    container_name: open_telemetry_collector
+    command: ["--config=/etc/otelcol-contrib/otel-collector-config.yaml"]
+    networks:
+      - db_net
+    depends_on:
+      - jaeger
+      - prometheus
+    ports:
+      - 8888:8888   # Prometheus metrics exposed by the Collector
+      - 8889:8889   # Prometheus exporter metrics
+      - 4317:4317   # OTLP gRPC receiver
+      - 4318:4318   # OTLP http receiver
+    volumes:
+      - "./OpenTelemetry/otelcollector/otel-collector-config.yaml:/etc/otelcol-contrib/otel-collector-config.yaml"
+
+  prometheus:
+    container_name: prometheus
+    networks:
+      - db_net
+    depends_on:
+      - shopway.app
+      - grafana
+    ports:
+      - 9090:9090
+    volumes:
+      - "./OpenTelemetry/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+
+  grafana:
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+     - '3000:3000'
+    networks:
+      - db_net
+    depends_on:
+      - shopway.app
+    volumes:
+      - "./OpenTelemetry/grafana/config:/etc/grafana"
+      - "./OpenTelemetry/grafana/dashboards:/var/lib/grafana/dashboards"
+
+  jaeger:
+    container_name: jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    restart: unless-stopped
+    networks:
+      - db_net
+    depends_on:
+      - shopway.app
+    ports:
+     - '16686:16686'

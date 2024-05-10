@@ -1,4 +1,4 @@
-﻿using Shopway.Application.Pipelines;
+﻿using Shopway.Persistence;
 using Shopway.Persistence.Pipelines;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -9,14 +9,12 @@ internal static class MediatorRegistration
     {
         services.AddMediatR(configuration =>
         {
-            configuration.RegisterServicesFromAssembly(Shopway.Application.AssemblyReference.Assembly);
-            configuration.AddOpenBehavior(typeof(LoggingPipeline<,>));
-            configuration.AddOpenBehavior(typeof(FluentValidationPipeline<,>));
+            configuration.RegisterServicesFromAssembly(AssemblyReference.Assembly);
+
             configuration.AddOpenBehavior(typeof(QueryTransactionPipeline<,>));
             configuration.AddOpenBehavior(typeof(CommandTransactionPipeline<,>));
             configuration.AddOpenBehavior(typeof(CommandWithResponseTransactionPipeline<,>));
             configuration.AddOpenBehavior(typeof(ReferenceValidationPipeline<,>));
-            configuration.AddOpenBehavior(typeof(QueryCachingPipeline<,>));
         });
 
         return services;

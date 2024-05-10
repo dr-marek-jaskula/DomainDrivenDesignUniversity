@@ -1,11 +1,6 @@
-using Serilog;
-using static Microsoft.Extensions.DependencyInjection.LoggerUtilities;
-
-Log.Logger = CreateSerilogLogger();
-
 try
 {
-    Log.Information("Staring the web host");
+    Console.WriteLine("Staring the web host");
 
     //Initial configuration
 
@@ -15,14 +10,12 @@ try
         ContentRootPath = Directory.GetCurrentDirectory()
     });
 
-    builder.ConfigureSerilog();
-
     //Configure Services
 
     builder.Services
         .RegisterAppOptions()
         .RegisterApplicationLayer()
-        .RegisterPersistenceLayer(builder.Environment)
+        .RegisterPersistenceLayer(builder.Environment, builder.Logging)
         .RegisterInfrastructureLayer()
         .RegisterPresentationLayer();
 
@@ -45,13 +38,12 @@ try
 }
 catch (Exception exception)
 {
-    Log.Fatal(exception, "Host terminated unexpectedly");
+    Console.Error.WriteLine($"Host terminated unexpectedly. Exception: {exception.Message}");
     return 1;
 }
 finally
 {
-    Log.Information("Ending the web host");
-    Log.CloseAndFlush();
+    Console.WriteLine("Ending the web host");
 }
 
 return 0;

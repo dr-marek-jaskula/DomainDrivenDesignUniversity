@@ -14,12 +14,14 @@ internal static class OptionsRegistration
         services.ConfigureOptions<BearerAuthenticationOptionsSetup>();
         services.ConfigureOptions<HealthCheckOptionsSetup>();
         services.ConfigureOptions<MailSenderOptionsSetup>();
+        services.ConfigureOptions<OpenTelemetryOptionsSetup>();
 
         services.AddSingleton<IValidateOptions<DatabaseOptions>, DatabaseOptionsValidator>();
         services.AddSingleton<IValidateOptions<AuthenticationOptions>, AuthenticationOptionsValidator>();
         services.AddSingleton<IValidateOptions<HealthOptions>, HealthOptionsValidator>();
         services.AddSingleton<IValidateOptions<CacheOptions>, CacheOptionsValidator>();
         services.AddSingleton<IValidateOptions<MailSenderOptions>, MailSenderOptionsValidator>();
+        services.AddSingleton<IValidateOptions<OpenTelemetryOptions>, OpenTelemetryOptionsValidator>();
 
         return services;
     }
