@@ -14,7 +14,7 @@
   </ItemGroup>
 
 	<PropertyGroup>
-		<!-- Persist the source generator (and other) files to disk -->
+		<!-- Persist source generated files to obj -->
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 </Project>
