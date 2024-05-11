@@ -7,7 +7,7 @@
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<Description>dr-marek-jaskula source generator for generating entity ids</Description>
 		<PackageId>Shopway.SourceGenerator</PackageId>
-		<Version>1.0.5</Version>
+		<Version>1.0.0</Version>
 		<Authors>dr-marek-jaskula</Authors>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<ImplicitUsings>enable</ImplicitUsings>
