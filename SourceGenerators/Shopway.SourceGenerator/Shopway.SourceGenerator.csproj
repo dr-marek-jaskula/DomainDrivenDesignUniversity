@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<!-- We do not want to reference the source generator dll directly in consuming projects  -->
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<Description>dr-marek-jaskula source generator for generating entity ids</Description>
 		<PackageId>Shopway.SourceGenerator</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.0.5</Version>
 		<Authors>dr-marek-jaskula</Authors>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -25,7 +25,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
 	</ItemGroup>
 
 </Project>

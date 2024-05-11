@@ -13,4 +13,8 @@
     <PackageReference Include="Ulid" Version="1.3.3" />
   </ItemGroup>
 
+	<PropertyGroup>
+		<!-- Persist the source generator (and other) files to disk -->
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+	</PropertyGroup>
 </Project>

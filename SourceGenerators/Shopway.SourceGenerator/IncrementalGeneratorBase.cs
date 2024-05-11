@@ -32,9 +32,9 @@ public abstract class IncrementalGeneratorBase<TValue>
         }
 
         var provider = _registerSourceProvider(context)
-                .WithTrackingName(TrackingNames.InitialValues)
-                .Where(static m => m is not null)
-                .WithTrackingName(TrackingNames.NotNullValues);
+            .WithTrackingName(TrackingNames.InitialValues)
+            .Where(static m => m is not null)
+            .WithTrackingName(TrackingNames.NotNullValues);
 
         context.RegisterSourceOutput(provider.Collect(), Execute);
     }
