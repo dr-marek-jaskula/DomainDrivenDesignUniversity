@@ -5,7 +5,7 @@ public readonly record struct EntityIdToGenerateEntry
     public readonly string Name;
     public readonly string Namespace;
 
-    public static EntityIdToGenerateEntry None = new(string.Empty, string.Empty);
+    public static readonly EntityIdToGenerateEntry None = new(string.Empty, string.Empty);
 
     public EntityIdToGenerateEntry
     (
