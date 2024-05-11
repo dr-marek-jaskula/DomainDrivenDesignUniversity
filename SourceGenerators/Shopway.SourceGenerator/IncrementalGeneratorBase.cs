@@ -41,7 +41,7 @@ public abstract class IncrementalGeneratorBase<TValue>
 
     private void Execute(SourceProductionContext context, ImmutableArray<TValue> displayValues)
     {
-        if (_attachDebugger &&Debugger.IsAttached is false)
+        if (_attachDebugger && Debugger.IsAttached is false)
         {
             Debugger.Launch();
         }
