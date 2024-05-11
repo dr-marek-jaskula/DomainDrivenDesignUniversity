@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63AD0D7C-F45A-4430-BCCB-4980C8BC2FD7}"
 	ProjectSection(SolutionItems) = preProject
 		docs\LICENSE = docs\LICENSE
+		nuget.config = nuget.config
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
@@ -72,7 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "otelcollector", "otelcollec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SourceGenerators", "SourceGenerators", "{04AA239D-CADF-4CFC-BD4E-1076E7015093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopway.SourceGenerator", "SourceGenerators\Shopway.SourceGenerator\Shopway.SourceGenerator.csproj", "{85ACAB0C-1232-4D18-9636-FDAE75B95B22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.SourceGenerator", "SourceGenerators\Shopway.SourceGenerator\Shopway.SourceGenerator.csproj", "{85ACAB0C-1232-4D18-9636-FDAE75B95B22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
