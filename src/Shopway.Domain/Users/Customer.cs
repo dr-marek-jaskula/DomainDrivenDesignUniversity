@@ -5,6 +5,7 @@ using Shopway.Domain.Users.ValueObjects;
 
 namespace Shopway.Domain.Users;
 
+[EntityId]
 public sealed class Customer : Entity<CustomerId>, IAuditable
 {
     private Customer

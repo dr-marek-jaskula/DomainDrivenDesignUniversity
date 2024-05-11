@@ -10,6 +10,7 @@ using static Shopway.Domain.Orders.Enumerations.PaymentStatus;
 
 namespace Shopway.Domain.Orders;
 
+[EntityId]
 public sealed class Payment : Entity<PaymentId>, IAuditable
 {
     private Payment
