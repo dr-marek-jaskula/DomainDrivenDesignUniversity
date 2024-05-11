@@ -6,7 +6,9 @@
 		<!-- We do not want to reference the source generator dll directly in consuming projects  -->
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<Description>dr-marek-jaskula source generator created to generating strongly typed ids in the form that Shopway app requires</Description>
-		<PackageId>Cedrus.SourceGenerators</PackageId>
+		<PackageId>Shopway.SourceGenerator</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>dr-marek-jaskula</Authors>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
