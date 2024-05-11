@@ -34,6 +34,7 @@ try
     webApplication.MapControllers();
 
     //Run the application
+
     webApplication.Run();
 }
 catch (Exception exception)

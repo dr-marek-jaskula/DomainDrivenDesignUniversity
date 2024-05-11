@@ -96,7 +96,7 @@ internal sealed class ClearCacheWhenReviewRemovedDomainEventHandler(IFusionCache
 Then, the cache will be cleared by the background job, just after some delay. Nevertheless, approach with UnitOfWork will solve all cases which 
 for aggregate roots.
 
-NOTE: Since I use a MemoryCache in this approach, I do not need to remove from the cache the entities which were modified, because the modification will
+NOTE: When using a MemoryCache, we do not need to remove from the cache the entities which were modified, because the modification will
 be set if happens. 
 
 NOTE: Even if the SaveChanges fail and the transaction is rollback, we potentially only removed entity from the cache, which will not have any impact other
@@ -117,7 +117,7 @@ Therefore, verifying in the handler, that the entity is not null, is redundant.
 
 ## Transaction Pipelines
 
-There is not need to save changes inside handlers, because it is done in the transaction pipeline.
+There is no need to save changes inside handlers, because it is done in the transaction pipeline.
 Moreover, the pipeline provides the transaction scope, so if at least one database operation fail, all operations are rollbacked.
 Therefore in some cases, we return a task, which slightly increases the performance.
 
@@ -232,7 +232,7 @@ private class ActivityEventLogProcessor : BaseProcessor<LogRecord>
 }
 ```
 
-There is also OpenTelemetryBase class in **.Application** layer that is used as a base class for custom metrics. On such custom metric is **CreateOrderHeaderOpenTelemetry**
+There is also OpenTelemetryBase class in **.Application** layer that is used as a base class for custom metrics. Example custom metric is **CreateOrderHeaderOpenTelemetry**
 that is located directly in the CreateOrderHeader feature, both with **CreateOrderHeaderOpenTelemetryPipeline** to utilize these metrics.
 
 #### Obsolete **Serilog** configuration:
