@@ -4,6 +4,7 @@ using Shopway.Domain.Orders.ValueObjects;
 
 namespace Shopway.Domain.Orders;
 
+[EntityId]
 public sealed class OrderLine : Entity<OrderLineId>, IAuditable
 {
     private OrderLine

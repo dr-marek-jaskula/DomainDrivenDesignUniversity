@@ -5,6 +5,7 @@ using Shopway.Domain.Users.ValueObjects;
 
 namespace Shopway.Domain.Products;
 
+[EntityId]
 public sealed class Review : Entity<ReviewId>, IAuditable
 {
     private Review
