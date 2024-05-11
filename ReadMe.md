@@ -144,6 +144,14 @@ Open telemetry is configured using **Open Telemetry Collector** that exports sig
 
 To display metrics I use **Grafana**. More information in **ReadMe.Persistence.md**.
 
+### Source Generation :mushroom:
+
+Source generator is dedicated for **Shopway** application. 
+
+It is configured to generate strongly typed ids in the form that **Shopway** requires. 
+
+More information in **ReadMe.SourceGenerator.md** or **ReadMe.Domain.md**
+
 ### Postman Collection :construction:
 
 To get all postman endpoints configured for local environment and docker containers:
