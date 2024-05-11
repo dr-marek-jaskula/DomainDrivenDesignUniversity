@@ -138,7 +138,7 @@ Payment Gateway is a **dummy** application created by me to simulate the payment
 
 ### Open Telemetry :floppy_disk:
 
-Open telemetry is configured using **Open Telemetry Collector** that exports signal to:
+Open telemetry is configured using **Open Telemetry Collector** that exports signals to:
 1. Jaeger (traces and logs)
 2. Prometheus (metrics)
 
