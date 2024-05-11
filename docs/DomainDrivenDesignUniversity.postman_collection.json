@@ -906,7 +906,7 @@
 					"response": []
 				},
 				{
-					"name": "DeleteProduct.Invalid.EmptyGuid",
+					"name": "DeleteProduct.Invalid.EmptyUlid",
 					"request": {
 						"method": "DELETE",
 						"header": [
