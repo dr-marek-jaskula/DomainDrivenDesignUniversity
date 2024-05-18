@@ -218,7 +218,8 @@ All configuration is done in **OpenTelemetryRegistration.cs** file.
 
 If project is run directly, then singlas will be exported to the console. Otherwise, when we use **docker-compose**, we will export singlas to **Open Telemetry Collector**.
 
-Then, signals are exported to Jaeger (see http://localhost:16686) and Prometheus (see http://localhost:9090) (plus Grafana at http://localhost:3000).
+Then, signals are exported to Jaeger (see http://localhost:16686) and Prometheus (see http://localhost:9090) (plus Grafana at http://localhost:3000). 
+Additionally, all signals are exported to Aspire Dashboard (see http://localhost:18888).
 
 In order to correlate traces with logs (logs configuration) we use **ActivityEventLogProcessor**:
 ```csharp
