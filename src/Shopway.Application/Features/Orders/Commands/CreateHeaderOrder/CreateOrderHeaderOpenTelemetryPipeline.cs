@@ -14,7 +14,10 @@ public sealed class CreateOrderHeaderOpenTelemetryPipeline(CreateOrderHeaderOpen
 
         var result = await next();
 
-        _orderMetrics.IncreaseOrderRequestCount();
+        if (result.IsSuccess)
+        {
+            _orderMetrics.IncreaseOrderRequestCount(result.Value.Id);
+        }
 
         return result;
     }

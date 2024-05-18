@@ -1,10 +1,12 @@
 ﻿using Shopway.Application.OpenTelemetry;
+using Shopway.Domain.Common.BaseTypes;
 using System.Diagnostics.Metrics;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 
 public sealed class CreateOrderHeaderOpenTelemetry : OpenTelemetryBase
 {
+    private const int IncreaseCount = 1;
     private const string OrdersPrefix = $"{ShopwayApplicationPrefix}.orders";
 
     private const string OrderCounterName = $"{OrdersPrefix}.count";
@@ -20,9 +22,9 @@ public sealed class CreateOrderHeaderOpenTelemetry : OpenTelemetryBase
         _orderRequestDuration = _meter.CreateHistogram<double>(OrderHistogramName, DurationUnit);
     }
 
-    public void IncreaseOrderRequestCount()
+    public void IncreaseOrderRequestCount(Ulid orderHeaderId)
     {
-        _orderRequestCounter.Add(1);
+        _orderRequestCounter.Add(IncreaseCount, new KeyValuePair<string, object?>($"{OrdersPrefix}.id", orderHeaderId));
     }
 
     public RequestDuration MeasureRequestDuration()
