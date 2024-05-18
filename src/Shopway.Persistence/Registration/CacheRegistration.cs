@@ -14,6 +14,10 @@ internal static class CacheRegistration
         var cacheOptions = services.GetOptions<CacheOptions>();
 
         var fusionCacheBuilder = services.AddFusionCache()
+            .WithOptions(options =>
+            {
+                options.DistributedCacheCircuitBreakerDuration = TimeSpan.FromSeconds(2);
+            })
             .WithDefaultEntryOptions(options =>
             {
                 options.Duration = TimeSpan.FromMinutes(1);
@@ -23,8 +27,9 @@ internal static class CacheRegistration
                 options.FactorySoftTimeout = TimeSpan.FromMilliseconds(100);
                 options.FactoryHardTimeout = TimeSpan.FromMilliseconds(1500);
 
-                //options.DistributedCacheSoftTimeout = TimeSpan.FromSeconds(1);
-                //options.DistributedCacheHardTimeout = TimeSpan.FromSeconds(2);
+                options.DistributedCacheSoftTimeout = TimeSpan.FromSeconds(1);
+                options.DistributedCacheHardTimeout = TimeSpan.FromSeconds(2);
+                options.JitterMaxDuration = TimeSpan.FromSeconds(2);
             })
             .WithSerializer(new FusionCacheNewtonsoftJsonSerializer());
 

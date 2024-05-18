@@ -40,5 +40,5 @@ public sealed class QueryCachingPipeline<TQuery, TResultOfResponse>(IFusionCache
 
 file static class CacheDuration
 {
-    internal static TimeSpan Default = TimeSpan.FromSeconds(30);
+    internal static TimeSpan Default = TimeSpan.FromMinutes(2);
 }

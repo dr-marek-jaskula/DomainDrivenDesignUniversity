@@ -46,6 +46,7 @@ internal static class OpenTelemetryRegistration
                 metricBuilder
                     .AddRuntimeInstrumentation()
                     .AddAspNetCoreInstrumentation()
+                    .AddFusionCacheInstrumentation()
                     .AddMeter(openTelemetryOptions.Meters);
 
                 if (useOnlyConsoleExporter)
