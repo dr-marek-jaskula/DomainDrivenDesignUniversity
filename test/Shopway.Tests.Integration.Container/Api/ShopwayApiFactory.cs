@@ -45,6 +45,13 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
             //Remove background workers
             services.RemoveAll(typeof(IHostedService));
             services.RemoveAll(typeof(IJob));
+            //for e2e testing remember to use:
+            //services.AddQuartz(options =>
+            //{
+            //    var ulid = Ulid.NewUlid();
+            //    options.SchedulerId = $"job-id-{ulid}";
+            //    options.SchedulerName = $"job-name-{ulid}";
+            //});
 
             //Register options
             services.AddSingleton(x => new IntegrationTestsUrlOptions()
