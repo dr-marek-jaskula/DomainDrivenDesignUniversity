@@ -144,6 +144,8 @@ Open telemetry is configured using **Open Telemetry Collector** that exports sig
 
 To display metrics I use **Grafana**. More information in **ReadMe.Persistence.md**.
 
+Additionally, I added the **Aspire Dashboard** to for all signal, for the local development.
+
 ### Source Generation :mushroom:
 
 Source generator is dedicated for **Shopway** application. 
