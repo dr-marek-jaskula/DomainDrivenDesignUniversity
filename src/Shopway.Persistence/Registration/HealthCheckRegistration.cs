@@ -22,9 +22,18 @@ internal static class HealthCheckRegistration
     {
         var healthOptions = services.GetOptions<HealthOptions>();
         var databaseOptions = services.GetOptions<DatabaseOptions>();
+        var cacheOptions = services.GetOptions<CacheOptions>();
 
         services
             .AddHealthChecks()
+            .AddRedis
+            (
+                cacheOptions.ConnectionString!,
+                failureStatus: Unhealthy,
+                timeout: TimeSpan.FromSeconds(1),
+                name: "Redis conncetion",
+                tags: [Basic, Critical]
+            )
             .AddSqlServer
             (
                 connectionString: databaseOptions.ConnectionString!,
