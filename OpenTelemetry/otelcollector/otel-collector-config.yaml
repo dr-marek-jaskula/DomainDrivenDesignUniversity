@@ -11,6 +11,10 @@ exporters:
     endpoint: "jaeger:4317"
     tls:
       insecure: true
+  otlp/aspire:
+    endpoint: "aspiredashboard:18889"
+    tls:
+      insecure: true
   logging:
     verbosity: detailed
   prometheus:
@@ -35,12 +39,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp/jaeger, logging]
+      exporters: [otlp/jaeger, logging, otlp/aspire]
     metrics:
       receivers: [otlp]
       processors: [filter, batch]
-      exporters: [prometheus, logging]
+      exporters: [prometheus, logging, otlp/aspire]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, otlp/jaeger]
+      exporters: [logging, otlp/jaeger, otlp/aspire]

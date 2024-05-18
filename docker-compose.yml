@@ -37,6 +37,9 @@ services:
   grafana:
     image: grafana/grafana
 
+  aspiredashboard:
+    image: mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest
+
 networks:
   db_net:
 

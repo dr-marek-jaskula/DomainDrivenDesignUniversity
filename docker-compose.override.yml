@@ -132,3 +132,10 @@ services:
       - shopway.app
     ports:
      - '16686:16686'
+
+  aspiredashboard:
+    container_name: aspire-dashboard
+    ports:
+     - 18888:18888
+    networks:
+     - db_net
