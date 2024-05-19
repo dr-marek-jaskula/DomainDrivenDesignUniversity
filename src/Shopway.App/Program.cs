@@ -10,6 +10,8 @@ try
         ContentRootPath = Directory.GetCurrentDirectory()
     });
 
+    builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
+
     //Configure Services
 
     builder.Services
