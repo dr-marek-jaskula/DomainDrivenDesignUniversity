@@ -24,6 +24,11 @@ internal static class AuthenticationRegistration
 
         services.AddAuthorization(options =>
         {
+            //Fallback policy, so if there is no policy there, the user must be authenticated (commented due to the tutorial purposes)
+            //options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            //    .RequireAuthenticatedUser()
+            //    .Build();
+
             options.AddPolicy(OrderHeaderCreatedByUserRequirement.PolicyName, policy => policy.Requirements.Add(new OrderHeaderCreatedByUserRequirement()));
         });
 
