@@ -2,7 +2,7 @@
 
 public sealed class OutboxMessage
 {
-    private const int InitialAttemptCount = 1;
+    private const int InitialAttemptCount = 0;
     public const int InitialDelayInMinutes = 0;
     private static readonly int[] RetryDelaysInMinutes = [InitialDelayInMinutes, 1, 5, 15, 60];
 
