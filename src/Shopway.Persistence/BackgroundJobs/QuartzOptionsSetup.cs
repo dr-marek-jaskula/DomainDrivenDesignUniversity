@@ -12,21 +12,18 @@ public sealed class QuartzOptionsSetup : IConfigureOptions<QuartzOptions>
 
         options
             .AddJob<ProcessOutboxMessagesJob>(jobBuilder => jobBuilder.WithIdentity(processOutboxMessageJobKey))
-            .AddTrigger(trigger =>
-                trigger
-                    .ForJob(processOutboxMessageJobKey)
-                    .WithSimpleSchedule(schedule =>
-                        schedule
-                            .WithIntervalInSeconds(10)
-                            .RepeatForever()));
+            .AddTrigger(trigger => trigger
+                .ForJob(processOutboxMessageJobKey)
+                .WithSimpleSchedule(schedule => schedule
+                    .WithIntervalInSeconds(10)
+                    .RepeatForever()));
 
         var deleteOutdatedSoftDeletableEntitiesJobKey = JobKey.Create(nameof(DeleteOutdatedSoftDeletableEntitiesJob));
 
         options
             .AddJob<DeleteOutdatedSoftDeletableEntitiesJob>(jobBuilder => jobBuilder.WithIdentity(deleteOutdatedSoftDeletableEntitiesJobKey))
-            .AddTrigger(trigger =>
-                trigger
-                    .ForJob(deleteOutdatedSoftDeletableEntitiesJobKey)
-                    .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(1, 23, 0)));
+            .AddTrigger(trigger => trigger
+                .ForJob(deleteOutdatedSoftDeletableEntitiesJobKey)
+                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(1, 23, 0)));
     }
 }

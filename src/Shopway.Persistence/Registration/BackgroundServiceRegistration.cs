@@ -10,7 +10,12 @@ internal static class BackgroundServiceRegistration
     {
         services.AddScoped<IJob, ProcessOutboxMessagesJob>();
         services.AddScoped<IJob, DeleteOutdatedSoftDeletableEntitiesJob>();
-        services.AddQuartz();
+        services.AddQuartz(options =>
+        {
+            var shedulerId = Ulid.NewUlid();
+            options.SchedulerId = $"id-{shedulerId}";
+            options.SchedulerName = $"name-{shedulerId}";
+        });
 
         services.AddQuartzHostedService(options =>
         {

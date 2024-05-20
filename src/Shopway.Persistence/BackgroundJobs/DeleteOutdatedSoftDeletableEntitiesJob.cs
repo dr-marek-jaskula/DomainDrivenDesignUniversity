@@ -37,13 +37,13 @@ public sealed class DeleteOutdatedSoftDeletableEntitiesJob
             MethodInfo deleteOutdatedEntitiesMethod = typeof(DeleteOutdatedSoftDeletableEntitiesJob)
                 .GetSingleGenericMethod(nameof(DeleteOutdatedEntities), entityType);
 
-            await (Task)deleteOutdatedEntitiesMethod.Invoke(this, new object[]
-            {
+            await (Task)deleteOutdatedEntitiesMethod.Invoke(this,
+            [
                 _dbContext,
                 _logger,
                 _timeProvider,
                 context.CancellationToken
-            })!;
+            ])!;
         }
 
         _logger.LogEndingJob(nameof(DeleteOutdatedSoftDeletableEntitiesJob));

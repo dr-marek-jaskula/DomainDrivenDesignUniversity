@@ -51,4 +51,4 @@ finally
 
 return 0;
 
-sealed partial class Program { }
+sealed partial class Program;

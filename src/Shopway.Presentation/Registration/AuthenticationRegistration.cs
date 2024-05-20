@@ -10,7 +10,6 @@ internal static class AuthenticationRegistration
 {
     internal static IServiceCollection RegisterAuthentication(this IServiceCollection services)
     {
-
         services.AddHttpContextAccessor();
 
         services
