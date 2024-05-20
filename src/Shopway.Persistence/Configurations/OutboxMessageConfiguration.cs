@@ -28,7 +28,23 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
             .HasColumnType(ColumnType.VarChar(5000));
 
         builder.Property(x => x.Error)
-            .HasColumnType(ColumnType.VarChar(8000));
+            .HasColumnType(ColumnType.VarChar(8000))
+            .IsRequired(false)
+            .IsSparse();
+
+        builder.Property(x => x.AttemptCount)
+            .HasColumnType(ColumnType.TinyInt);
+
+        builder.Property(x => x.OccurredOn)
+            .HasColumnType(ColumnType.DateTimeOffset(2));
+
+        builder.Property(x => x.ProcessedOn)
+            .HasColumnType(ColumnType.DateTimeOffset(2));
+
+        builder.Property(x => x.NextProcessAttempt)
+            .HasColumnType(ColumnType.DateTimeOffset(2))
+            .IsRequired(false)
+            .IsSparse();
 
         builder.Property(p => p.ExecutionStatus)
             .HasConversion<ExecutionStatusConverter>()

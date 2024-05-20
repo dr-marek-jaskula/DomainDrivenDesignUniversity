@@ -2,6 +2,7 @@
 
 public sealed class OutboxMessage
 {
+    private const int InitialAttemptCount = 0;
     public const int InitialDelayInMinutes = 0;
     private static readonly int[] RetryDelaysInMinutes = [InitialDelayInMinutes, 1, 5, 15, 60];
 
@@ -15,8 +16,8 @@ public sealed class OutboxMessage
 
     public ExecutionStatus ExecutionStatus { get; set; }
 
-    public int AttemptCount { get; set; }
-
+    public int AttemptCount { get; private set; } = InitialAttemptCount;
+     
     public DateTimeOffset? NextProcessAttempt { get; set; }
 
     public DateTimeOffset? ProcessedOn { get; private set; }
