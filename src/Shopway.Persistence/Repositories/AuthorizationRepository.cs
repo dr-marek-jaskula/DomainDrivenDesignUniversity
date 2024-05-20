@@ -14,8 +14,6 @@ public sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAutho
     {
         var permissions = await _dbContext
             .Set<User>()
-            .Include(x => x.Roles)
-                .ThenInclude(x => x.Permissions)
             .Where(x => x.Id == userId)
             .SelectMany(x => x.Roles)
             .SelectMany(role => role.Permissions)
@@ -35,8 +33,6 @@ public sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAutho
 
         var userPermissionsQueryable = _dbContext
             .Set<User>()
-            .Include(x => x.Roles)
-                .ThenInclude(x => x.Permissions)
             .Where(x => x.Id == userId)
             .SelectMany(x => x.Roles)
             .SelectMany(role => role.Permissions)
@@ -69,7 +65,6 @@ public sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAutho
 
         var userRolesCount = await _dbContext
             .Set<User>()
-            .Include(x => x.Roles)
             .Where(x => x.Id == userId)
             .SelectMany(user => user.Roles)
             .Where(role => distinctRequiredRoles.Contains(role.Name))
