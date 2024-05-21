@@ -6,6 +6,7 @@ using Shopway.Application.Features.Orders.Commands.FinalizePaymentProcess;
 using Shopway.Application.Features.Orders.Commands.RefundPaymentProcess;
 using Shopway.Application.Features.Orders.Commands.StartPaymentProcess;
 using Shopway.Domain.Orders;
+using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -27,12 +28,9 @@ partial class OrderHeadersController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost($"{Payments}/{Webhook}/success")]
@@ -42,12 +40,9 @@ partial class OrderHeadersController
     {
         var result = await Sender.Send(FinalizePaymentProcessCommand.Instance, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok();
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost($"{Payments}/{Webhook}/cancel")]
@@ -57,12 +52,9 @@ partial class OrderHeadersController
     {
         var result = await Sender.Send(CancelPaymentProcessCommand.Instance, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok();
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost($"{{id}}/{Payments}/{{paymentId}}/refund")]
@@ -77,11 +69,8 @@ partial class OrderHeadersController
     {
         var result = await Sender.Send(new RefundPaymentProcessCommand(id, paymentId), cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok();
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 }

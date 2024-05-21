@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
+using Shopway.Application.Utilities;
 using Shopway.Domain.Orders;
-using static Shopway.Application.Features.BatchEntryStatus;
+using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -23,14 +24,14 @@ partial class OrderHeadersController
 
         if (result.IsFailure)
         {
-            return HandleFailure(result);
+            return result.ToProblemHttpResult();
         }
 
-        if (result.IsSuccess && result.Value.Entries.Any(entry => entry.Status is Error))
+        if (result.Value.AnyErrorEntry())
         {
-            return TypedResults.BadRequest(result.Value);
+            return result.ToBadRequestResult();
         }
 
-        return TypedResults.Ok(result.Value);
+        return result.ToOkResult();
     }
 }

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
-using static Shopway.Application.Features.BatchEntryStatus;
+using Shopway.Application.Utilities;
+using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -21,14 +22,14 @@ public partial class ProductsController
 
         if (result.IsFailure)
         {
-            return HandleFailure(result);
+            return result.ToProblemHttpResult();
         }
 
-        if (result.IsSuccess && result.Value.Entries.Any(entry => entry.Status is Error))
+        if (result.Value.AnyErrorEntry())
         {
-            return TypedResults.BadRequest(result.Value);
+            return result.ToBadRequestResult();
         }
 
-        return TypedResults.Ok(result.Value);
+        return result.ToOkResult();
     }
 }

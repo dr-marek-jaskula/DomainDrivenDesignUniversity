@@ -33,12 +33,9 @@ public sealed partial class OrderHeadersController(ISender sender, IAuthorizatio
 
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost]
@@ -52,12 +49,9 @@ public sealed partial class OrderHeadersController(ISender sender, IAuthorizatio
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpDelete("{id}")]
@@ -80,12 +74,9 @@ public sealed partial class OrderHeadersController(ISender sender, IAuthorizatio
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok();
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPatch("{id}")]
@@ -102,12 +93,9 @@ public sealed partial class OrderHeadersController(ISender sender, IAuthorizatio
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 }
 

@@ -28,18 +28,15 @@ public sealed class ProxyController(ISender sender, IMediatorProxyService generi
 
         if (queryResult!.IsFailure)
         {
-            return HandleFailure(queryResult);
+            return queryResult.ToProblemHttpResult();
         }
 
         object concretePageQuery = queryResult.Value;
 
         var result = await Sender.Send(concretePageQuery, cancellationToken) as Shopway.Domain.Common.Results.IResult<object>;
 
-        if (result!.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result!.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 }
