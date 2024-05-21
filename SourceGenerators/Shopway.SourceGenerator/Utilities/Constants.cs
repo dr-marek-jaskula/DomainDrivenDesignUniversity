@@ -13,6 +13,9 @@ public static class Constants
 #nullable enable
 ";
 
+    public const string IdName = nameof(IdName);
+    public const string IdNamespace = nameof(IdNamespace);
+
     public static class TrackingNames
     {
         public const string InitialValues = nameof(InitialValues);

@@ -26,6 +26,11 @@ public abstract class IncrementalGeneratorBase<TValue>
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+        if (_attachDebugger && Debugger.IsAttached is false)
+        {
+            Debugger.Launch();
+        }
+
         if (_registerPostInitializationSourceOutput is not null)
         {
             context.RegisterPostInitializationOutput(_registerPostInitializationSourceOutput);
@@ -41,11 +46,6 @@ public abstract class IncrementalGeneratorBase<TValue>
 
     private void Execute(SourceProductionContext context, ImmutableArray<TValue> displayValues)
     {
-        if (_attachDebugger && Debugger.IsAttached is false)
-        {
-            Debugger.Launch();
-        }
-
         if (displayValues.Length is 0)
         {
             ReportNoValueFound(context, ClassEntityName, $"No {ClassEntityName} declared in the actual scope. ");
