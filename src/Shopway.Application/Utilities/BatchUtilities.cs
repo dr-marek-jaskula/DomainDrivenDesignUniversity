@@ -7,6 +7,12 @@ namespace Shopway.Application.Utilities;
 
 public static class BatchUtilities
 {
+    public static bool AnyErrorEntry<TResponseKey>(this BatchResponseBase<TResponseKey> response)
+        where TResponseKey : struct, IUniqueKey
+    {
+        return response.Entries.Any(entry => entry.Status is Error);
+    }
+
     public static IList<BatchResponseEntry> NotErrorEntries<TResponseKey>(this BatchResponseBase<TResponseKey> response)
         where TResponseKey : struct, IUniqueKey
     {

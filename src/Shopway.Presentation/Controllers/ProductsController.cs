@@ -47,12 +47,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
 
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     /// <summary>
@@ -75,12 +72,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
 
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     /// <summary>
@@ -105,12 +99,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
 
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("name/{productNamePattern}")]
@@ -127,12 +118,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
 
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("query/dictionary/offset")]
@@ -146,12 +134,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     {
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("query/dictionary/cursor")]
@@ -165,12 +150,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     {
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     //These static or dynamic suffixes are only for tutorial purpose
@@ -185,12 +167,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     {
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     //These with-mapping suffixes are only for tutorial purpose
@@ -205,12 +184,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     {
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("query/dynamic")]
@@ -224,12 +200,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     {
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("query/dynamic/with-mapping")]
@@ -243,12 +216,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     {
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost]
@@ -263,12 +233,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPut("{id}")]
@@ -286,12 +253,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpDelete("{id}")]
@@ -308,11 +272,8 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 }

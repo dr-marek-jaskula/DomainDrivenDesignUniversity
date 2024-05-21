@@ -6,6 +6,7 @@ using Shopway.Application.Features.Orders.Commands.RemoveOrderLine;
 using Shopway.Application.Features.Orders.Commands.UpdateOrderLine;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Products;
+using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
 
@@ -29,12 +30,9 @@ partial class OrderHeadersController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpDelete($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
@@ -51,12 +49,9 @@ partial class OrderHeadersController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPut($"{{orderHeaderId}}/{OrderLines}/{{orderLineId}}")]
@@ -74,11 +69,8 @@ partial class OrderHeadersController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 }

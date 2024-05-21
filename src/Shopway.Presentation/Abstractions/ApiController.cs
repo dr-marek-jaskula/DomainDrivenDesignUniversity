@@ -16,8 +16,26 @@ namespace Shopway.Presentation.Abstractions;
 public abstract class ApiController(ISender sender) : ControllerBase
 {
     protected readonly ISender Sender = sender;
+}
 
-    protected static ProblemHttpResult HandleFailure(IResult result)
+public static class ResultUtilities
+{
+    public static Ok<TValue> ToOkResult<TValue>(this IResult<TValue> result)
+    {
+        return TypedResults.Ok(result.Value);
+    }
+
+    public static BadRequest<TValue> ToBadRequestResult<TValue>(this IResult<TValue> result)
+    {
+        return TypedResults.BadRequest(result.Value);
+    }
+
+    public static Ok ToOkResult(this IResult result)
+    {
+        return TypedResults.Ok();
+    }
+
+    public static ProblemHttpResult ToProblemHttpResult(this IResult result)
     {
         return result switch
         {
@@ -44,15 +62,5 @@ public abstract class ApiController(ISender sender) : ControllerBase
                 )
             )
         };
-    }
-
-    protected static CreatedAtRoute<T> CreatedAtActionResult<T>(IResult<T> result, string? routeName)
-    {
-        return TypedResults.CreatedAtRoute
-        (
-            result.Value,
-            routeName,
-            new { id = result.Value }
-        );
     }
 }

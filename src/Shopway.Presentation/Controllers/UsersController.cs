@@ -37,12 +37,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("[action]")]
@@ -56,12 +53,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("login/two-factor/first-step")]
@@ -75,12 +69,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok();
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("login/two-factor/second-step")]
@@ -94,12 +85,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("configure/two-factor/topt")]
@@ -110,12 +98,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     {
         var result = await Sender.Send(new ConfigureTwoFactorToptLoginCommand(), cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("login/two-factor/topt")]
@@ -129,12 +114,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("[action]")]
@@ -148,12 +130,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("[action]")]
@@ -171,12 +150,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
 
         var result = await Sender.Send(new RevokeRefreshTokenCommand(UserId.Create(userIdAsUlid)), cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok();
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpGet("{username}")]
@@ -191,12 +167,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         var query = new GetUserByUsernameQuery(username);
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpGet("{username}/roles")]
@@ -211,12 +184,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         var query = new GetUserRolesByUsernameQuery(username);
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpGet("roles/{role}/permissions")]
@@ -232,12 +202,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         var query = new GetRolePermissionsQuery(role);
         var result = await Sender.Send(query, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPost("roles/{role}/permissions/{permission}")]
@@ -254,12 +221,9 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         var command = new AddPermissionToRoleCommand(role, permission);
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok();
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpDelete("roles/{role}/permissions/{permission}")]
@@ -276,11 +240,8 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         var command = new RemovePermissionFromRoleCommand(role, permission);
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok();
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 }

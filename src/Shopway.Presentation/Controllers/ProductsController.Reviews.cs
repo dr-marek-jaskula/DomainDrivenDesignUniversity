@@ -6,6 +6,7 @@ using Shopway.Application.Features.Products.Commands.RemoveReview;
 using Shopway.Application.Features.Products.Commands.UpdateReview;
 using Shopway.Domain.Enums;
 using Shopway.Domain.Products;
+using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 namespace Shopway.Presentation.Controllers;
@@ -29,12 +30,9 @@ partial class ProductsController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpPatch($"{{productId}}/{Reviews}/{{reviewId}}")]
@@ -53,12 +51,9 @@ partial class ProductsController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 
     [HttpDelete($"{{productId}}/{Reviews}/{{reviewId}}")]
@@ -74,11 +69,8 @@ partial class ProductsController
     {
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return HandleFailure(result);
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
     }
 }
