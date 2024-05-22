@@ -28,6 +28,7 @@ public readonly record struct EntityIdComparerToGenerateEntry
         return stringBuilder
             .Append(Header)
             .AppendLine()
+            .AppendLine($"using Microsoft.EntityFrameworkCore.ChangeTracking;")
             .AppendLine($"using {IdNamespace};")
             .AppendLine()
             .AppendLine($"namespace {Namespace};")

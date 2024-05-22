@@ -28,6 +28,7 @@ public readonly record struct EntityIdConverterToGenerateEntry
         return stringBuilder
             .Append(Header)
             .AppendLine()
+            .AppendLine($"using Microsoft.EntityFrameworkCore.Storage.ValueConversion;")
             .AppendLine($"using {IdNamespace};")
             .AppendLine()
             .AppendLine($"namespace {Namespace};")

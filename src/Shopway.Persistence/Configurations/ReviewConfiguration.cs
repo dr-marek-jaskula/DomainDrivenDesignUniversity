@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
 using Shopway.Domain.Users.ValueObjects;
-using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Shopway.Persistence.Utilities;
 using static Shopway.Persistence.Constants.Constants;
@@ -11,6 +10,8 @@ using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;
 
+[GenerateEntityIdComparer(IdName = ReviewId.Name, IdNamespace = ReviewId.Namespace)]
+[GenerateEntityIdConverter(IdName = ReviewId.Name, IdNamespace = ReviewId.Namespace)]
 internal sealed class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)

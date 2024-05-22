@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
-using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Shopway.Persistence.Utilities;
 using static Shopway.Persistence.Constants.Constants;
@@ -10,6 +9,8 @@ using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;
 
+[GenerateEntityIdComparer(IdName = ProductId.Name, IdNamespace = ProductId.Namespace)]
+[GenerateEntityIdConverter(IdName = ProductId.Name, IdNamespace = ProductId.Namespace)]
 internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)

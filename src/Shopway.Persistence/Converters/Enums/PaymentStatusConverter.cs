@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shopway.Domain.Orders.Enumerations;
+﻿using Shopway.Domain.Orders.Enumerations;
 
 namespace Shopway.Persistence.Converters.Enums;
 
-public sealed class PaymentStatusConverter : ValueConverter<PaymentStatus, string>
+[GenerateEnumConverter(EnumName = nameof(PaymentStatus), EnumNamespace = PaymentStatusNamespace)]
+public sealed class GeneratePaymentStatusConverter
 {
-    public PaymentStatusConverter() : base(status => status.ToString(), @string => (PaymentStatus)Enum.Parse(typeof(PaymentStatus), @string)) { }
+    public const string PaymentStatusNamespace = "Shopway.Domain.Orders.Enumerations";
 }

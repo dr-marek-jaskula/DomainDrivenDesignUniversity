@@ -14,7 +14,7 @@ using static Shopway.Domain.Orders.Errors.DomainErrors.Status;
 
 namespace Shopway.Domain.Orders;
 
-[EntityId]
+[GenerateEntityId]
 public sealed class OrderHeader : AggregateRoot<OrderHeaderId>, IAuditable, ISoftDeletable
 {
     private readonly List<OrderLine> _orderLines = [];

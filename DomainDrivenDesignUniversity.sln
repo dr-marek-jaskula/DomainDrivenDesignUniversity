@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{49B6585D-A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63AD0D7C-F45A-4430-BCCB-4980C8BC2FD7}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		docs\LICENSE = docs\LICENSE
 		nuget.config = nuget.config
 		ReadMe.md = ReadMe.md
@@ -75,7 +76,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SourceGenerators", "SourceG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.SourceGenerator", "SourceGenerators\Shopway.SourceGenerator\Shopway.SourceGenerator.csproj", "{85ACAB0C-1232-4D18-9636-FDAE75B95B22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopway.SourceGenerator.Tests.Unit", "SourceGenerators\Shopway.SourceGenerator.Tests.Unit\Shopway.SourceGenerator.Tests.Unit.csproj", "{2AEF165B-1F6A-424A-95AE-D8182C84B58D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.SourceGenerator.Tests.Unit", "SourceGenerators\Shopway.SourceGenerator.Tests.Unit\Shopway.SourceGenerator.Tests.Unit.csproj", "{2AEF165B-1F6A-424A-95AE-D8182C84B58D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

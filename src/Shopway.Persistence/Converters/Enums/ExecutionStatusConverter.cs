@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shopway.Infrastructure.Outbox;
+﻿using Shopway.Infrastructure.Outbox;
 
 namespace Shopway.Persistence.Converters.Enums;
 
-public sealed class ExecutionStatusConverter : ValueConverter<ExecutionStatus, string>
+[GenerateEnumConverter(EnumName = nameof(ExecutionStatus), EnumNamespace = ExecutionStatusNamespace)]
+public sealed class GenerateExecutionStatusConverter
 {
-    public ExecutionStatusConverter() : base(status => status.ToString(), @string => (ExecutionStatus)Enum.Parse(typeof(ExecutionStatus), @string)) { }
+    public const string ExecutionStatusNamespace = "Shopway.Infrastructure.Outbox";
 }

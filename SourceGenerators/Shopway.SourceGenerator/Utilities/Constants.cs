@@ -16,6 +16,9 @@ public static class Constants
     public const string IdName = nameof(IdName);
     public const string IdNamespace = nameof(IdNamespace);
 
+    public const string EnumName = nameof(EnumName);
+    public const string EnumNamespace = nameof(EnumNamespace);
+
     public static class TrackingNames
     {
         public const string InitialValues = nameof(InitialValues);

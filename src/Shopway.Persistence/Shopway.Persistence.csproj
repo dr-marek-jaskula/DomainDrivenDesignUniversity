@@ -52,5 +52,10 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Shopway.Infrastructure\Shopway.Infrastructure.csproj" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<!-- Persist source generated files to obj -->
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+	</PropertyGroup>
 	
 </Project>

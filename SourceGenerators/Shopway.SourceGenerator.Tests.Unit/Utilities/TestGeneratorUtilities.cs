@@ -5,7 +5,7 @@ namespace Shopway.SourceGenerator.Tests.Unit.Utilities;
 
 public static class TestGeneratorUtilities
 {
-    public static string? GetGeneratedOutput<TGenerator>(this TGenerator generator, string sourceCode)
+    public static string? Generate<TGenerator>(this TGenerator generator, string sourceCode)
         where TGenerator : IIncrementalGenerator, new()
     {
         var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
@@ -25,7 +25,6 @@ public static class TestGeneratorUtilities
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
         );
 
-        // Source Generator to test
         CSharpGeneratorDriver
             .Create(generator)
             .RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);

@@ -40,6 +40,9 @@ public readonly record struct EntityIdToGenerateEntry
             .AppendLine($"public readonly record struct {Name} : IEntityId<{Name}>")
             .AppendLine($$$"""
             {
+                public const string Name = "{{{Name}}}";
+                public const string Namespace = "{{{Namespace}}}";
+
                 private {{{Name}}}(Ulid id)
                 {
                     Value = id;

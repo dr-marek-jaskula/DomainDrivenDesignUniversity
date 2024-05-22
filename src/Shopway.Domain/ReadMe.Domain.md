@@ -63,6 +63,9 @@ namespace Shopway.Domain.Products;
 
 public readonly record struct ProductId : IEntityId<ProductId>
 {
+    public const string Name = "ProductId";
+    public const string Namespace = "Shopway.Domain.Products";
+
     private ProductId(Ulid id)
     {
         Value = id;
@@ -110,10 +113,13 @@ public readonly record struct ProductId : IEntityId<ProductId>
     public static bool operator >=(ProductId a, ProductId b) => a.CompareTo(b) >= 0;
     public static bool operator <=(ProductId a, ProductId b) => a.CompareTo(b) <= 0;
 }
+
 ```
 
 NOTE: the **using Shopway.Domain.Common.BaseTypes.Abstractions;** is hardcoded in the source generator, because form the Shopway application perspective it is
-more than sufficient. To make it more customizable, see remarks made in **ReadMe.SourceGenerator.md**.
+more than sufficient. To make it more customizable, see remarks made in **ReadMe.SourceGenerator.md**. If You want to see how to deal with it, see SourceGenerator
+for id converters or comparers, where we use a property on a attribute to store the namespace - the desired approach would be to use generic parameter, however the 
+Roslyn source generator seems not to support that option.
 
 NOTE: for tutorial purposes, the UserId remains defined as before in **UserId.cs**, This approach is not preferred because if the definition of EntityId changes, 
 we would need to manually update all such ids manually. However, it has been left in place for the clarity of individuals analyzing this repository..

@@ -5,7 +5,7 @@ using Shopway.Domain.Products.ValueObjects;
 
 namespace Shopway.Domain.Products;
 
-[EntityId]
+[GenerateEntityId]
 public sealed class Product : AggregateRoot<ProductId>, IAuditable
 {
     private readonly List<Review> _reviews = [];

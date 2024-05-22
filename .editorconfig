@@ -1,0 +1,15 @@
+﻿[*.cs]
+
+# CS0436: Type conflicts with imported type
+dotnet_diagnostic.CS0436.severity = suggestion
+
+#### Core EditorConfig Options ####
+
+# Indentation and spacing
+indent_size = 4
+indent_style = space
+tab_width = 4
+
+# New line preferences
+end_of_line = crlf
+insert_final_newline = true
