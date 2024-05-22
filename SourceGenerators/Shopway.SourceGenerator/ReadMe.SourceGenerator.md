@@ -1,6 +1,6 @@
 ﻿# Source Generator :musical_keyboard:
 
-This source generator is dedicated for Shopway application. It is configured to generate strongly typed ids in the form that Shopway requires. 
+This source generator is dedicated for Shopway application. It is configured to generate strongly typed ids, id converters, id comparers, enum converters in the form that Shopway requires. 
 
 Nevertheless, feel free to use or/and modify the code for Your own purpose. The IncrementalGeneratorBase and some utilities should be generic enough to be highly
 reusable.
@@ -12,8 +12,6 @@ The default version is already packed to nuget, but if some updates are required
 2. Use command ```dotnet pack -c Release -o ./..``` at Shopway.SourceGenerator directory. You can specify other output directory and than copy it to SourceGenerators folder.
 
 **IMPORTANT**: remember to use ```-c Release```.
-
-In Shopway.Domain 
 
 Example of auto-generated entity id:
 
@@ -34,6 +32,9 @@ namespace Shopway.Domain.Products;
 
 public readonly record struct ProductId : IEntityId<ProductId>
 {
+    public const string Name = "ProductId";
+    public const string Namespace = "Shopway.Domain.Products";
+
     private ProductId(Ulid id)
     {
         Value = id;
@@ -80,5 +81,29 @@ public readonly record struct ProductId : IEntityId<ProductId>
     public static bool operator <(ProductId a, ProductId b) => a.CompareTo(b) is -1;
     public static bool operator >=(ProductId a, ProductId b) => a.CompareTo(b) >= 0;
     public static bool operator <=(ProductId a, ProductId b) => a.CompareTo(b) <= 0;
+}
+
+```
+
+## Testability
+
+Source generator are hard do debug. Therefore, a very important part of creating a source generator are tests. 
+They need a specific setup, so to examine it, see **Shopway.SourceGenerator.Tests.Unit**.
+
+## Generic Parameters for Attributes
+
+The desired approach would be to use type parameter:
+
+```csharp
+public class GenerateEntityIdConverterAttribute<TValue> : global::System.Attribute;
+```
+
+However the Roslyn source generator seems not to support that option. Therefore, we have:
+
+```csharp
+public class GenerateEntityIdConverterAttribute : global::System.Attribute
+{
+    public required string {{{IdName}}};
+    public required string {{{IdNamespace}}};
 }
 ```

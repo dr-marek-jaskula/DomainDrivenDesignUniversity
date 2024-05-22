@@ -14,6 +14,8 @@ using static Shopway.Persistence.Utilities.ConfigurationUtilities;
 
 namespace Shopway.Persistence.Configurations;
 
+[GenerateEntityIdComparer(IdName = CustomerId.Name, IdNamespace = CustomerId.Namespace)]
+[GenerateEntityIdConverter(IdName = CustomerId.Name, IdNamespace = CustomerId.Namespace)]
 internal sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)

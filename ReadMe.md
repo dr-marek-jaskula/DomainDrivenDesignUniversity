@@ -150,7 +150,7 @@ Additionally, I added the **Aspire Dashboard** to for all signal, for the local 
 
 Source generator is dedicated for **Shopway** application. 
 
-It is configured to generate strongly typed ids in the form that **Shopway** requires. 
+It is configured to generate strongly typed ids, id converters, id comparers, enum converters in the form that **Shopway** requires. 
 
 More information in **ReadMe.SourceGenerator.md** or **ReadMe.Domain.md**
 

@@ -12,6 +12,8 @@ using static Shopway.Persistence.Constants.Constants.Number;
 
 namespace Shopway.Persistence.Configurations;
 
+[GenerateEntityIdComparer(IdName = PaymentId.Name, IdNamespace = PaymentId.Namespace)]
+[GenerateEntityIdConverter(IdName = PaymentId.Name, IdNamespace = PaymentId.Namespace)]
 internal sealed class PaymentEntityTypeConfiguration : IEntityTypeConfiguration<Payment>
 {
     public void Configure(EntityTypeBuilder<Payment> builder)

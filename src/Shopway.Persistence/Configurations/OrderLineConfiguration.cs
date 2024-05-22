@@ -11,6 +11,8 @@ using static Shopway.Persistence.Utilities.ConfigurationUtilities;
 
 namespace Shopway.Persistence.Configurations;
 
+[GenerateEntityIdComparer(IdName = OrderLineId.Name, IdNamespace = OrderLineId.Namespace)]
+[GenerateEntityIdConverter(IdName = OrderLineId.Name, IdNamespace = OrderLineId.Namespace)]
 internal sealed class OrderLineEntityTypeConfiguration : IEntityTypeConfiguration<OrderLine>
 {
     public void Configure(EntityTypeBuilder<OrderLine> builder)
