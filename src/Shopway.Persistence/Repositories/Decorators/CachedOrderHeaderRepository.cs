@@ -116,4 +116,35 @@ public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated
             buildIncludes: buildIncludes
         );
     }
+
+    public async Task<OrderHeader> QueryByIdAsync
+    (
+        OrderHeaderId orderHeaderId, 
+        CancellationToken cancellationToken, 
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    )
+    {
+        return await _decorated.QueryByIdAsync
+        (
+            orderHeaderId,
+            cancellationToken,
+            buildIncludes
+        );
+    }
+
+    public async Task<TResponse> QueryByIdAsync<TResponse>
+    (
+        OrderHeaderId orderHeaderId, 
+        CancellationToken cancellationToken, 
+        IMapping<OrderHeader, TResponse>? mapping = null
+    )
+        where TResponse : class
+    {
+        return await _decorated.QueryByIdAsync
+        (
+            orderHeaderId,
+            cancellationToken,
+            mapping
+        );
+    }
 }

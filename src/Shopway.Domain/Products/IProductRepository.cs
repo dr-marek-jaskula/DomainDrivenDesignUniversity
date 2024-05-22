@@ -36,6 +36,12 @@ public interface IProductRepository
 
     Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken);
 
+    void Create(Product product);
+
+    void Update(Product product);
+
+    void Remove(ProductId id);
+
     Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
         IOffsetPage page,
@@ -61,9 +67,18 @@ public interface IProductRepository
     )
         where TResponse : class, IHasCursor;
 
-    void Create(Product product);
+    Task<Product> QueryByIdAsync
+    (
+        ProductId productId,
+        CancellationToken cancellationToken,
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
+    );
 
-    void Update(Product product);
-
-    void Remove(ProductId id);
+    Task<TResponse> QueryByIdAsync<TResponse>
+    (
+        ProductId productId,
+        CancellationToken cancellationToken,
+        IMapping<Product, TResponse>? mapping = null
+    )
+        where TResponse : class;
 }

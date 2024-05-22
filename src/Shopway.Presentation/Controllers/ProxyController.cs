@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
-using Shopway.Application.Features.Proxy;
+using Shopway.Application.Features.Proxy.PageQuery;
+using Shopway.Application.Features.Proxy.Query;
 using Shopway.Presentation.Abstractions;
 
 namespace Shopway.Presentation.Controllers;
@@ -16,11 +17,34 @@ public sealed class ProxyController(ISender sender, IMediatorProxyService generi
     private readonly IMediatorProxyService _genericMappingService = genericMappingService;
 
     [HttpPost("query")]
-    [ProducesResponseType<PageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<DataTransferObjectResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok<object>, ProblemHttpResult>> DynamicProxyQuery
+    public async Task<Results<Ok<DataTransferObjectResponse>, ProblemHttpResult>> DynamicProxyQuery
     (
         [FromBody] ProxyQuery query,
+        CancellationToken cancellationToken
+    )
+    {
+        var queryResult = _genericMappingService.Map(query);
+
+        if (queryResult!.IsFailure)
+        {
+            return queryResult.ToProblemHttpResult();
+        }
+
+        var result = await Sender.Send(queryResult.Value, cancellationToken);
+
+        return result!.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
+    [HttpPost("query/page")]
+    [ProducesResponseType<PageResponse<DataTransferObjectResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<object>, ProblemHttpResult>> DynamicProxyPageQuery
+    (
+        [FromBody] ProxyPageQuery query,
         CancellationToken cancellationToken
     )
     {

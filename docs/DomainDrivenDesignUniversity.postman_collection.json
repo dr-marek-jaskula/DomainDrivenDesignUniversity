@@ -1976,14 +1976,77 @@
 			"name": "Proxy Query",
 			"item": [
 				{
-					"name": "Product Dynamic With Mapping Offset",
+					"name": "ProductById Dynamic With Mapping",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Entity\" : \"Product\",\r\n  \"Id\" : \"{{validProductUlid}}\",\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Price\",\r\n         \"Revision\",\r\n        {\r\n            \"From\" : \"Reviews\",\r\n            \"Properties\": [\r\n                \"Title\",\r\n                \"Description\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/proxy/query",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"proxy",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderHeaderById Dynamic With Mapping",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-version",
+								"value": "2.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Entity\" : \"OrderHeader\",\r\n  \"Id\" : \"{{validOrderHeaderUlid}}\",\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/proxy/query",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"proxy",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product Dynamic With Mapping OffsetPage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-version",
+								"value": "2.0"
 							}
 						],
 						"body": {
@@ -1996,27 +2059,27 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Product Dynamic With Mapping Cursor",
+					"name": "Product Dynamic With Mapping CursorPage",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
@@ -2029,27 +2092,27 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Product Dynamic With Mapping Cursor2",
+					"name": "Product Dynamic With Mapping CursorPage2",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
@@ -2062,27 +2125,27 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Product Dynamic With Mapping Cursor3",
+					"name": "Product Dynamic With Mapping CursorPage3",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
@@ -2095,27 +2158,27 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Offset",
+					"name": "OrderHeader Dynamic With Mapping OffsetPage",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
@@ -2128,27 +2191,27 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Cursor",
+					"name": "OrderHeader Dynamic With Mapping CursorPage",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
@@ -2161,32 +2224,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Cursor CollectionFiltering Count",
+					"name": "OrderHeader Dynamic With Mapping CursorPage CollectionFiltering Count",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Count\",\r\n          \"Operation\": \"Equal\",\r\n          \"Value\" : 3\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Count\",\r\n          \"Operation\": \"Equal\",\r\n          \"Value\" : 3\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2194,32 +2257,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Cursor CollectionFiltering Any",
+					"name": "OrderHeader Dynamic With Mapping CursorPage CollectionFiltering Any",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Amount\",\r\n          \"Operation\": \"Any.GreaterThan\",\r\n          \"Value\" : 9\r\n      },\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Count\",\r\n          \"Operation\": \"GreaterThan\",\r\n          \"Value\" : 2\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Amount\",\r\n          \"Operation\": \"Any.GreaterThan\",\r\n          \"Value\" : 9\r\n      },\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Count\",\r\n          \"Operation\": \"GreaterThan\",\r\n          \"Value\" : 2\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2227,32 +2290,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Cursor CollectionFiltering Any And All",
+					"name": "OrderHeader Dynamic With Mapping CursorPage CollectionFiltering Any And All",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n          \"PropertyName\" : \"OrderLines.Amount\",\r\n          \"Operation\": \"Any.GreaterThan\",\r\n          \"Value\" : 500\r\n        },\r\n        {\r\n          \"PropertyName\" : \"OrderLines.Amount\",\r\n          \"Operation\": \"All.GreaterThan\",\r\n          \"Value\" : 10\r\n        }\r\n        ]\r\n      },\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Count\",\r\n          \"Operation\": \"GreaterThan\",\r\n          \"Value\" : 2\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n          \"PropertyName\" : \"OrderLines.Amount\",\r\n          \"Operation\": \"Any.GreaterThan\",\r\n          \"Value\" : 500\r\n        },\r\n        {\r\n          \"PropertyName\" : \"OrderLines.Amount\",\r\n          \"Operation\": \"All.GreaterThan\",\r\n          \"Value\" : 10\r\n        }\r\n        ]\r\n      },\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Count\",\r\n          \"Operation\": \"GreaterThan\",\r\n          \"Value\" : 2\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2260,32 +2323,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Cursor CollectionFiltering Any LIKE",
+					"name": "OrderHeader Dynamic With Mapping CursorPage CollectionFiltering Any LIKE",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n          \"PropertyName\" : \"OrderLines.CreatedBy\",\r\n          \"Operation\": \"Any.Like\",\r\n          \"Value\" : \"%known\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n          \"PropertyName\" : \"OrderLines.CreatedBy\",\r\n          \"Operation\": \"Any.Like\",\r\n          \"Value\" : \"%known\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2293,32 +2356,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Cursor CollectionFiltering Any Contains",
+					"name": "OrderHeader Dynamic With Mapping CursorPage CollectionFiltering Any Contains",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n          \"PropertyName\" : \"OrderLines.CreatedBy\",\r\n          \"Operation\": \"Any.Contains\",\r\n          \"Value\" : \"known\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n          \"PropertyName\" : \"OrderLines.CreatedBy\",\r\n          \"Operation\": \"Any.Contains\",\r\n          \"Value\" : \"known\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2326,32 +2389,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Cursor CollectionFiltering All",
+					"name": "OrderHeader Dynamic With Mapping CursorPage CollectionFiltering All",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Amount\",\r\n          \"Operation\": \"All.GreaterThan\",\r\n          \"Value\" : 9\r\n      },\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Count\",\r\n          \"Operation\": \"GreaterThan\",\r\n          \"Value\" : 2\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Amount\",\r\n          \"Operation\": \"All.GreaterThan\",\r\n          \"Value\" : 9\r\n      },\r\n      {\r\n          \"PropertyName\" : \"OrderLines.Count\",\r\n          \"Operation\": \"GreaterThan\",\r\n          \"Value\" : 2\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2359,32 +2422,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "OrderHeader Dynamic With Mapping Cursor CollectionFiltering Any And All Double Nested",
+					"name": "OrderHeader Dynamic With Mapping CursorPage CollectionFiltering Any And All Double Nested",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "api-version",
-								"value": "2.0",
-								"type": "text"
+								"value": "2.0"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n          \"PropertyName\" : \"OrderLines.ProductSummary.ProductName\",\r\n          \"Operation\": \"Any.Contains\",\r\n          \"Value\" : \"summary\"\r\n        }\r\n        ,{\r\n          \"PropertyName\" : \"OrderLines.ProductSummary.Price\",\r\n          \"Operation\": \"Any.LessThanOrEqual\",\r\n          \"Value\" : 121\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payment\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n          \"PropertyName\" : \"OrderLines.ProductSummary.ProductName\",\r\n          \"Operation\": \"Any.Contains\",\r\n          \"Value\" : \"summary\"\r\n        }\r\n        ,{\r\n          \"PropertyName\" : \"OrderLines.ProductSummary.Price\",\r\n          \"Operation\": \"Any.LessThanOrEqual\",\r\n          \"Value\" : 121\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2392,13 +2455,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query",
+							"raw": "{{base_url}}/proxy/query/page",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
-								"query"
+								"query",
+								"page"
 							]
 						}
 					},

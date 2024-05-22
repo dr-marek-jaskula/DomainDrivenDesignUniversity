@@ -105,7 +105,7 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
         Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
     )
     {
-        var specification = CommonSpecification.WithMapping.Create<OrderHeader, OrderHeaderId, TResponse>
+        var specification = CommonSpecification.Create<OrderHeader, OrderHeaderId, TResponse>
         (
             filter,
             null,
@@ -137,7 +137,7 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
     {
         Expression<Func<OrderHeader, bool>> cursorFilter = product => product.Id >= OrderHeaderId.Create(page.Cursor);
 
-        var specification = CommonSpecification.WithMapping.Create<OrderHeader, OrderHeaderId, TResponse>
+        var specification = CommonSpecification.Create<OrderHeader, OrderHeaderId, TResponse>
         (
             filter,
             cursorFilter,
@@ -152,5 +152,40 @@ public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHe
             .Set<OrderHeader>()
             .UseSpecification(specification)
             .PageAsync(page, cancellationToken);
+    }
+
+    public async Task<OrderHeader> QueryByIdAsync
+    (
+        OrderHeaderId productId,
+        CancellationToken cancellationToken,
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    )
+    {
+        Expression<Func<OrderHeader, bool>> idFilter = product => product.Id == productId;
+
+        var specification = CommonSpecification.Create<OrderHeader, OrderHeaderId>(idFilter, buildIncludes);
+
+        return await _dbContext
+            .Set<OrderHeader>()
+            .UseSpecification(specification)
+            .FirstAsync(cancellationToken);
+    }
+
+    public async Task<TResponse> QueryByIdAsync<TResponse>
+    (
+        OrderHeaderId orderHeaderId,
+        CancellationToken cancellationToken,
+        IMapping<OrderHeader, TResponse>? mapping = null
+    )
+        where TResponse : class
+    {
+        Expression<Func<OrderHeader, bool>> idFilter = orderHeader => orderHeader.Id == orderHeaderId;
+
+        var specificationWithMapping = CommonSpecification.Create<OrderHeader, OrderHeaderId, TResponse>(idFilter, mapping);
+
+        return await _dbContext
+            .Set<OrderHeader>()
+            .UseSpecification(specificationWithMapping)
+            .FirstAsync(cancellationToken);
     }
 }

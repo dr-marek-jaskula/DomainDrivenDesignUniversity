@@ -149,4 +149,35 @@ public sealed class CachedProductRepository(IProductRepository decorated, IFusio
             buildIncludes: buildIncludes
         );
     }
+
+    public async Task<Product> QueryByIdAsync
+    (
+        ProductId productId, 
+        CancellationToken cancellationToken, 
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
+    )
+    {
+        return await _decorated.QueryByIdAsync
+        (
+            productId,
+            cancellationToken,
+            buildIncludes
+        );
+    }
+
+    public async Task<TResponse> QueryByIdAsync<TResponse>
+    (
+        ProductId productId,
+        CancellationToken cancellationToken,
+        IMapping<Product, TResponse>? mapping = null
+    )
+        where TResponse : class
+    {
+        return await _decorated.QueryByIdAsync
+        (
+            productId,
+            cancellationToken,
+            mapping
+        );
+    }
 }

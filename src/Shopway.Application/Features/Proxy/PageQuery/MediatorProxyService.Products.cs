@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Features.Products.Queries.DynamicOffsetProductWithMappingQuery;
 using Shopway.Application.Features.Products.Queries.ProductCursorPageDynamicWithMappingQuery;
+using Shopway.Application.Features.Proxy.PageQuery;
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.DataProcessing.Filtering;
@@ -10,8 +11,8 @@ namespace Shopway.Application.Features.Proxy;
 
 public partial class MediatorProxyService
 {
-    [QueryStrategy(nameof(Product), typeof(OffsetPage))]
-    private static ProductOffsetPageDynamicWithMappingQuery QueryProductsUsingOffsetPage(ProxyQuery proxyQuery)
+    [PageQueryStrategy(nameof(Product), typeof(OffsetPage))]
+    private static ProductOffsetPageDynamicWithMappingQuery QueryProductsUsingOffsetPage(ProxyPageQuery proxyQuery)
     {
         var page = proxyQuery.Page.ToOffsetPage();
         var filter = proxyQuery.Filter?.To<ProductDynamicFilter, Product>();
@@ -26,8 +27,8 @@ public partial class MediatorProxyService
         };
     }
 
-    [QueryStrategy(nameof(Product), typeof(CursorPage))]
-    private static ProductCursorPageDynamicWithMappingQuery QueryProductsUsingCursorPage(ProxyQuery proxyQuery)
+    [PageQueryStrategy(nameof(Product), typeof(CursorPage))]
+    private static ProductCursorPageDynamicWithMappingQuery QueryProductsUsingCursorPage(ProxyPageQuery proxyQuery)
     {
         var page = proxyQuery.Page.ToCursorPage();
         var filter = proxyQuery.Filter?.To<ProductDynamicFilter, Product>();
