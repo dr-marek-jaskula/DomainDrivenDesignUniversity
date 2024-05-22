@@ -149,7 +149,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
         Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
     {
-        var specification = CommonSpecification.WithMapping.Create<Product, ProductId, TResponse>
+        var specification = CommonSpecification.Create<Product, ProductId, TResponse>
         (
             filter,
             null,
@@ -181,7 +181,7 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
     {
         Expression<Func<Product, bool>> cursorFilter = product => product.Id >= ProductId.Create(page.Cursor);
 
-        var specification = CommonSpecification.WithMapping.Create<Product, ProductId, TResponse>
+        var specification = CommonSpecification.Create<Product, ProductId, TResponse>
         (
             filter,
             cursorFilter,
@@ -196,6 +196,41 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
             .Set<Product>()
             .UseSpecification(specification)
             .PageAsync(page, cancellationToken);
+    }
+
+    public async Task<Product> QueryByIdAsync
+    (
+        ProductId productId,
+        CancellationToken cancellationToken,
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
+    )
+    {
+        Expression<Func<Product, bool>> idFilter = product => product.Id == productId;
+
+        var specification = CommonSpecification.Create<Product, ProductId>(idFilter, buildIncludes);
+
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specification)
+            .FirstAsync(cancellationToken);
+    }
+
+    public async Task<TResponse> QueryByIdAsync<TResponse>
+    (
+        ProductId productId,
+        CancellationToken cancellationToken,
+        IMapping<Product, TResponse>? mapping = null
+    )
+        where TResponse : class
+    {
+        Expression<Func<Product, bool>> idFilter = product => product.Id == productId;
+
+        var specificationWithMapping = CommonSpecification.Create<Product, ProductId, TResponse>(idFilter, mapping);
+
+        return await _dbContext
+            .Set<Product>()
+            .UseSpecification(specificationWithMapping)
+            .FirstAsync(cancellationToken);
     }
 
     public void Create(Product product)

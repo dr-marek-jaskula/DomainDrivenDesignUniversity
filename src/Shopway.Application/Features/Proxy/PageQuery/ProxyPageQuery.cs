@@ -1,8 +1,8 @@
 ﻿using Shopway.Domain.Common.DataProcessing.Proxy;
 
-namespace Shopway.Application.Features.Proxy;
+namespace Shopway.Application.Features.Proxy.PageQuery;
 
-public record ProxyQuery
+public sealed record ProxyPageQuery
 (
     string Entity,
     OffsetOrCursorPage Page,

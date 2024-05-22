@@ -47,4 +47,19 @@ public interface IOrderHeaderRepository
         Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
     )
         where TResponse : class, IHasCursor;
+
+    Task<OrderHeader> QueryByIdAsync
+    (
+        OrderHeaderId orderHeaderId,
+        CancellationToken cancellationToken,
+        Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
+    );
+
+    Task<TResponse> QueryByIdAsync<TResponse>
+    (
+        OrderHeaderId orderHeaderId,
+        CancellationToken cancellationToken,
+        IMapping<OrderHeader, TResponse>? mapping = null
+    )
+        where TResponse : class;
 }
