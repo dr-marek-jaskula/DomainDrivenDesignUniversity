@@ -8,7 +8,7 @@ using static Shopway.Infrastructure.Outbox.ExecutionStatus;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OutboxRepository(ShopwayDbContext dbContext, TimeProvider timeProvider) : IOutboxRepository
+internal sealed class OutboxRepository(ShopwayDbContext dbContext, TimeProvider timeProvider) : IOutboxRepository
 {
     private readonly ShopwayDbContext _dbContext = dbContext;
     private readonly TimeProvider _timeProvider = timeProvider;

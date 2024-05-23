@@ -12,7 +12,10 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHeaderRepository
+/// <summary>
+/// This repository does not inherit from ProxyRepositoryBase for the tutorial purposes (to show the option without the generic proxy repository)
+/// </summary>
+internal sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : IOrderHeaderRepository
 {
     private readonly ShopwayDbContext _dbContext = dbContext;
 
