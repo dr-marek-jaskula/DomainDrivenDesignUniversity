@@ -36,7 +36,8 @@ internal static class OpenTelemetryRegistration
             }
 
             options.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
-                serviceName: nameof(Shopway)));
+                serviceName: openTelemetryOptions.ApplicationName, 
+                serviceVersion: openTelemetryOptions.Version));
 
             options.AddProcessor(new ActivityEventLogProcessor());
         });
