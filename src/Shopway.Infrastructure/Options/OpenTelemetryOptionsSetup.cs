@@ -5,7 +5,7 @@ namespace Shopway.Infrastructure.Options;
 
 internal sealed class OpenTelemetryOptionsSetup(IConfiguration configuration) : IConfigureOptions<OpenTelemetryOptions>
 {
-    private const string _configurationSectionName = "OpenTelemetryOptions";
+    private const string _configurationSectionName = nameof(OpenTelemetryOptions);
     private readonly IConfiguration _configuration = configuration;
 
     public void Configure(OpenTelemetryOptions options)

@@ -17,11 +17,11 @@ internal sealed class RegisterUserCommandHandler(IUserRepository userRepository,
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
     private readonly IValidator _validator = validator;
 
-    public async Task<IResult<RegisterUserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<RegisterUserResponse>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<Email> emailResult = Email.Create(request.Email);
-        ValidationResult<Username> usernameResult = Username.Create(request.Username);
-        ValidationResult<Password> passwordResult = Password.Create(request.Password);
+        ValidationResult<Email> emailResult = Email.Create(command.Email);
+        ValidationResult<Username> usernameResult = Username.Create(command.Username);
+        ValidationResult<Password> passwordResult = Password.Create(command.Password);
 
         bool emailIsTaken = await _userRepository
             .IsEmailTakenAsync(emailResult.Value, cancellationToken);

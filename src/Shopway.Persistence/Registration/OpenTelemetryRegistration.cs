@@ -35,6 +35,10 @@ internal static class OpenTelemetryRegistration
                 options.AddOtlpExporter(options => ConfigureOtlpCollectorExporter(options, openTelemetryOptions.OtlpCollectorHost));
             }
 
+            options.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
+                serviceName: openTelemetryOptions.ApplicationName, 
+                serviceVersion: openTelemetryOptions.Version));
+
             options.AddProcessor(new ActivityEventLogProcessor());
         });
 
