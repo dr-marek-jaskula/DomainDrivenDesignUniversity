@@ -6,7 +6,7 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class UserRepository(ShopwayDbContext dbContext) : IUserRepository
+internal sealed class UserRepository(ShopwayDbContext dbContext) : IUserRepository
 {
     private readonly ShopwayDbContext _dbContext = dbContext;
 

@@ -10,7 +10,7 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-public sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) 
+internal sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) 
     : IOrderHeaderRepository
 {
     private readonly IOrderHeaderRepository _decorated = decorated;

@@ -6,7 +6,7 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAuthorizationRepository
+internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAuthorizationRepository
 {
     private readonly ShopwayDbContext _dbContext = dbContext;
 

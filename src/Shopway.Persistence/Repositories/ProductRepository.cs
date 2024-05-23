@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shopway.Domain.Common.DataProcessing;
-using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
+using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
-using Shopway.Persistence.Specifications.Common;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
@@ -15,10 +13,9 @@ using static Shopway.Domain.Common.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
-public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepository
+internal sealed class ProductRepository(ShopwayDbContext dbContext) 
+    : ProxyRepositoryBase<Product, ProductId>(dbContext, (ProductId productId) => product => product.Id >= productId), IProductRepository
 {
-    private readonly ShopwayDbContext _dbContext = dbContext;
-
     public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.Names.Create();
@@ -135,102 +132,6 @@ public sealed class ProductRepository(ShopwayDbContext dbContext) : IProductRepo
             .Where(product => productKeys.Any(key => key.ProductName.CaseInsensitiveEquals(product.ProductName.Value)
                                                   && key.Revision.CaseInsensitiveEquals(product.Revision.Value)))
             .ToDictionary(product => toProductKey(product));
-    }
-
-    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
-    (
-        IOffsetPage page,
-        CancellationToken cancellationToken,
-        IFilter<Product>? filter = null,
-        IList<LikeEntry<Product>>? likes = null,
-        ISortBy<Product>? sort = null,
-        IMapping<Product, TResponse>? mapping = null,
-        Expression<Func<Product, TResponse>>? mappingExpression = null,
-        Action<IIncludeBuilder<Product>>? buildIncludes = null
-    )
-    {
-        var specification = CommonSpecification.Create<Product, ProductId, TResponse>
-        (
-            filter,
-            null,
-            likes,
-            sort,
-            mapping,
-            mappingExpression,
-            buildIncludes: buildIncludes
-        );
-
-        return await _dbContext
-            .Set<Product>()
-            .UseSpecification(specification)
-            .PageAsync(page, cancellationToken);
-    }
-
-    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
-    (
-        ICursorPage page,
-        CancellationToken cancellationToken,
-        IFilter<Product>? filter = null,
-        IList<LikeEntry<Product>>? likes = null,
-        ISortBy<Product>? sort = null,
-        IMapping<Product, TResponse>? mapping = null,
-        Expression<Func<Product, TResponse>>? mappingExpression = null,
-        Action<IIncludeBuilder<Product>>? buildIncludes = null
-    )
-        where TResponse : class, IHasCursor
-    {
-        Expression<Func<Product, bool>> cursorFilter = product => product.Id >= ProductId.Create(page.Cursor);
-
-        var specification = CommonSpecification.Create<Product, ProductId, TResponse>
-        (
-            filter,
-            cursorFilter,
-            likes,
-            sort,
-            mapping,
-            mappingExpression,
-            buildIncludes: buildIncludes
-        );
-
-        return await _dbContext
-            .Set<Product>()
-            .UseSpecification(specification)
-            .PageAsync(page, cancellationToken);
-    }
-
-    public async Task<Product> QueryByIdAsync
-    (
-        ProductId productId,
-        CancellationToken cancellationToken,
-        Action<IIncludeBuilder<Product>>? buildIncludes = null
-    )
-    {
-        Expression<Func<Product, bool>> idFilter = product => product.Id == productId;
-
-        var specification = CommonSpecification.Create<Product, ProductId>(idFilter, buildIncludes);
-
-        return await _dbContext
-            .Set<Product>()
-            .UseSpecification(specification)
-            .FirstAsync(cancellationToken);
-    }
-
-    public async Task<TResponse> QueryByIdAsync<TResponse>
-    (
-        ProductId productId,
-        CancellationToken cancellationToken,
-        IMapping<Product, TResponse>? mapping = null
-    )
-        where TResponse : class
-    {
-        Expression<Func<Product, bool>> idFilter = product => product.Id == productId;
-
-        var specificationWithMapping = CommonSpecification.Create<Product, ProductId, TResponse>(idFilter, mapping);
-
-        return await _dbContext
-            .Set<Product>()
-            .UseSpecification(specificationWithMapping)
-            .FirstAsync(cancellationToken);
     }
 
     public void Create(Product product)

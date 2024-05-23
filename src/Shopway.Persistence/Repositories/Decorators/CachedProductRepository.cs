@@ -11,7 +11,7 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-public sealed class CachedProductRepository(IProductRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) : IProductRepository
+internal sealed class CachedProductRepository(IProductRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) : IProductRepository
 {
     private readonly IProductRepository _decorated = decorated;
     private readonly IFusionCache _fusionCache = fusionCache;
