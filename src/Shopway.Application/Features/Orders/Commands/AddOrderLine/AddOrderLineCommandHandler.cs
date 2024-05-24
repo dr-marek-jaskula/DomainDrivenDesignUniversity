@@ -1,6 +1,5 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Features.Orders.Commands.AddOrderLine;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
@@ -8,7 +7,7 @@ using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.ValueObjects;
 using Shopway.Domain.Products;
 
-namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
+namespace Shopway.Application.Features.Orders.Commands.AddOrderLine;
 
 internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IProductRepository productRepository, IValidator validator)
     : ICommandHandler<AddOrderLineCommand, AddOrderLineResponse>
@@ -19,19 +18,8 @@ internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRep
 
     public async Task<IResult<AddOrderLineResponse>> Handle(AddOrderLineCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<Discount> discountResult = Discount.Create(command.Body.Discount ?? 0);
-        ValidationResult<Amount> amountResult = Amount.Create(command.Body.Amount);
-
-        _validator
-            .Validate(discountResult)
-            .Validate(amountResult);
-
-        if (_validator.IsInvalid)
-        {
-            return _validator
-                .Failure<AddOrderLineResponse>()
-                .ToResult();
-        }
+        var discount = Discount.Create(command.Body.Discount ?? 0).Value;
+        var amount = Amount.Create(command.Body.Amount).Value;
 
         OrderHeader orderHeader = await _orderHeaderRepository
             .GetByIdAsync(command.OrderHeaderId, cancellationToken);
@@ -39,7 +27,7 @@ internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRep
         Product product = await _productRepository
             .GetByIdAsync(command.ProductId, cancellationToken);
 
-        OrderLine createdOrderLine = CreateOrderLine(product, command.OrderHeaderId, amountResult.Value, discountResult.Value);
+        OrderLine createdOrderLine = CreateOrderLine(product, command.OrderHeaderId, amount, discount);
 
         var addOrderLineResult = orderHeader.AddOrderLine(createdOrderLine);
 

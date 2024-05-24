@@ -8,7 +8,9 @@ internal sealed class BatchUpsertOrderLineCommandFluentValidator : AbstractValid
     {
         RuleForEach(command => command.Requests).ChildRules(request =>
         {
-            request.RuleFor(x => x.ProductId).NotNull().NotEmpty();
+            request.RuleFor(x => x.ProductId)
+                .NotNull()
+                .NotEmpty();
         });
     }
 }

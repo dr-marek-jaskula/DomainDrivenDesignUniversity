@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
+using Shopway.Application.Utilities;
+using Shopway.Domain.Users.ValueObjects;
 
 namespace Shopway.Application.Features.Users.Queries.GetUserRoles;
 
@@ -7,6 +9,7 @@ internal sealed class GetUserRolesByUsernameQueryValidator : AbstractValidator<G
 {
     public GetUserRolesByUsernameQueryValidator()
     {
-        RuleFor(x => x.Username).NotNull();
+        RuleFor(x => x.Username)
+            .MustSatisfyValueObjectValidation(Username.Validate);
     }
 }

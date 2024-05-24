@@ -6,11 +6,12 @@ internal sealed class BatchUpsertProductCommandFluentValidator : AbstractValidat
 {
     public BatchUpsertProductCommandFluentValidator()
     {
-        RuleForEach(command => command.Requests).ChildRules(request =>
-        {
-            request.RuleFor(x => x.ProductKey).NotNull();
-            request.RuleFor(x => x.ProductKey.ProductName).NotEmpty();
-            request.RuleFor(x => x.ProductKey.Revision).NotEmpty();
-        });
+        RuleForEach(command => command.Requests)
+            .ChildRules(request =>
+            {
+                request.RuleFor(x => x.ProductKey).NotNull();
+                request.RuleFor(x => x.ProductKey.ProductName).NotEmpty();
+                request.RuleFor(x => x.ProductKey.Revision).NotEmpty();
+            });
     }
 }

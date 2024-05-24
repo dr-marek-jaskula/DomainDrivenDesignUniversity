@@ -6,7 +6,10 @@ internal sealed class ChangeOrderHeaderStatusCommandValidator : AbstractValidato
 {
     public ChangeOrderHeaderStatusCommandValidator()
     {
-        RuleFor(command => command.OrderHeaderId).NotEmpty();
-        RuleFor(command => command.Body.NewOrderHeaderStatus).NotEmpty();
+        RuleFor(command => command.OrderHeaderId)
+            .NotEmpty();
+
+        RuleFor(command => command.Body.NewOrderHeaderStatus)
+            .NotEmpty();
     }
 }

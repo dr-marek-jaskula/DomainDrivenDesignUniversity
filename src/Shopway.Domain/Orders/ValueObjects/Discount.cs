@@ -29,17 +29,17 @@ public sealed class Discount : ValueObject
 
     public new decimal Value { get; }
 
-    public static ValidationResult<Discount> Create(decimal price)
+    public static ValidationResult<Discount> Create(decimal discount)
     {
-        var errors = Validate(price);
-        return errors.CreateValidationResult(() => new Discount(decimal.Round(price, 2)));
+        var errors = Validate(discount);
+        return errors.CreateValidationResult(() => new Discount(decimal.Round(discount, 2)));
     }
 
-    public static IList<Error> Validate(decimal price)
+    public static IList<Error> Validate(decimal discount)
     {
         return EmptyList<Error>()
-            .If(price < MinDiscount, TooLow)
-            .If(price > MaxDiscount, TooHigh);
+            .If(discount < MinDiscount, TooLow)
+            .If(discount > MaxDiscount, TooHigh);
     }
 
     public override IEnumerable<object> GetAtomicValues()

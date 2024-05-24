@@ -24,12 +24,11 @@ public sealed class Email : ValueObject
 
     public static readonly Error Invalid = Error.New(
         $"{nameof(Email)}.{nameof(Invalid)}",
-        $"{nameof(Email)} must start from a letter, contain '@' and after that '.'.");
+        $"{nameof(Email)} must start from a letter, contain '@', after that '.' and cannot contain special character besides '@'");
 
     public static readonly Error AlreadyTaken = Error.New(
         $"{nameof(Email)}.{nameof(AlreadyTaken)}",
         $"{nameof(Email)} is already taken.");
-
 
     private Email(string value)
     {

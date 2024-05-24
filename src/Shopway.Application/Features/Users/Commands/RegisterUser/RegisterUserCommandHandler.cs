@@ -18,17 +18,12 @@ internal sealed class RegisterUserCommandHandler(IUserRepository userRepository,
 
     public async Task<IResult<RegisterUserResponse>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<Email> emailResult = Email.Create(command.Email);
-        ValidationResult<Username> usernameResult = Username.Create(command.Username);
-        ValidationResult<Password> passwordResult = Password.Create(command.Password);
+        var email = Email.Create(command.Email).Value;
 
         bool emailIsTaken = await _userRepository
-            .IsEmailTakenAsync(emailResult.Value, cancellationToken);
+            .IsEmailTakenAsync(email, cancellationToken);
 
         _validator
-            .Validate(emailResult)
-            .Validate(usernameResult)
-            .Validate(passwordResult)
             .If(emailIsTaken, thenError: Email.AlreadyTaken);
 
         if (_validator.IsInvalid)
@@ -36,9 +31,7 @@ internal sealed class RegisterUserCommandHandler(IUserRepository userRepository,
             return _validator.Failure<RegisterUserResponse>();
         }
 
-        var result = RegisterUser(emailResult.Value, usernameResult.Value, passwordResult.Value);
-
-        return result;
+        return RegisterUser(email, Username.Create(command.Username).Value, Password.Create(command.Password).Value);
     }
 
     private IResult<RegisterUserResponse> RegisterUser(Email email, Username username, Password password)

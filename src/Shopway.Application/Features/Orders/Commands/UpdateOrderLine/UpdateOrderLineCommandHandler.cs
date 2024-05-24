@@ -1,5 +1,4 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features.Orders.Commands.UpdateOrderLine;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
@@ -7,13 +6,12 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.ValueObjects;
 
-namespace Shopway.Application.Features.Products.Commands.UpdateReview;
+namespace Shopway.Application.Features.Products.Commands.UpdateOrderLine;
 
-internal sealed class UpdateOrderLineCommandHandler(IOrderHeaderRepository orderHeaderRepository, IValidator validator)
+internal sealed class UpdateOrderLineCommandHandler(IOrderHeaderRepository orderHeaderRepository)
     : ICommandHandler<UpdateOrderLineCommand, UpdateOrderLineResponse>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderHeaderRepository;
-    private readonly IValidator _validator = validator;
 
     //It is not preferred to make partial updates, but for tutorial purpose it is done here
     public async Task<IResult<UpdateOrderLineResponse>> Handle(UpdateOrderLineCommand command, CancellationToken cancellationToken)
@@ -24,28 +22,15 @@ internal sealed class UpdateOrderLineCommandHandler(IOrderHeaderRepository order
             .OrderLines
             .First(x => x.Id == command.OrderLineId);
 
-        ValidationResult<Amount> amountResult = Amount.Create(command.Body.Amount);
-        ValidationResult<Discount> discountResult = Discount.Create(command.Body.Discount ?? 0);
+        orderLineToUpdate.UpdateAmount(Amount.Create(command.Body.Amount).Value);
 
-        _validator
-            .Validate(amountResult)
-            .Validate(discountResult);
-
-        if (_validator.IsInvalid)
+        if (command.Body.Discount is decimal discount)
         {
-            return _validator.Failure<UpdateOrderLineResponse>();
+            orderLineToUpdate.UpdateDiscount(Discount.Create(discount).Value);
         }
-
-        Update(orderLineToUpdate, amountResult.Value, discountResult.Value);
 
         return orderLineToUpdate
             .ToUpdateResponse()
             .ToResult();
-    }
-
-    private static void Update(OrderLine orderLineToUpdate, Amount amount, Discount discount)
-    {
-        orderLineToUpdate.UpdateAmount(amount);
-        orderLineToUpdate.UpdateDiscount(discount);
     }
 }

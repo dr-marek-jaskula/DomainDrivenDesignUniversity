@@ -5,6 +5,8 @@
 /// </summary>
 public sealed partial class Error : IEquatable<Error>
 {
+    private const string SerializationSeparator = ": ";
+
     /// <summary>
     /// The empty error instance used to represent that no error has occurred
     /// </summary>
@@ -119,6 +121,17 @@ public sealed partial class Error : IEquatable<Error>
     public override string ToString()
     {
         return Message;
+    }
+
+    public string Serialize()
+    {
+        return $"{Code}{SerializationSeparator}{Message}";
+    }
+
+    public static Error Deserialize(string serializedError)
+    {
+        var splitted = serializedError.Split(SerializationSeparator);
+        return New(splitted[0], splitted[1]);
     }
 
     public void ThrowIfErrorNone()

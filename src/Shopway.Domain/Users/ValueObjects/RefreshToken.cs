@@ -18,6 +18,10 @@ public sealed class RefreshToken : ValueObject
         $"{nameof(RefreshToken)}.{nameof(InvalidLength)}",
         $"{nameof(RefreshToken)} length must be {Length} characters.");
 
+    public static readonly Error NotMatch = Error.New(
+        $"{nameof(RefreshToken)}.{nameof(NotMatch)}",
+        $"{nameof(RefreshToken)} must match current user {nameof(RefreshToken)}.");
+
     private RefreshToken(string value)
     {
         Value = value;

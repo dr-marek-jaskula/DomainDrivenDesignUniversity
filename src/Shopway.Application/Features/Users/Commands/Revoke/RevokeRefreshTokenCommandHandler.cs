@@ -29,7 +29,7 @@ internal sealed class RevokeRefreshTokenCommandHandler
             return _validator.Failure();
         }
 
-        user!.RefreshToken = null;
+        user!.Revoke();
 
         return Result.Success();
     }

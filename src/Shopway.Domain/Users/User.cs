@@ -66,4 +66,14 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     {
         TwoFactorToptSecret = twoFactorToptSecret;
     }
+
+    public void Refresh(RefreshToken refreshToken)
+    {
+        RefreshToken = refreshToken;
+    }
+
+    public void Revoke()
+    {
+        RefreshToken = null;
+    }
 }
