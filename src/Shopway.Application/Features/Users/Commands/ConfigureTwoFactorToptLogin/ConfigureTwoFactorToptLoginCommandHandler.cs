@@ -24,22 +24,13 @@ internal sealed class ConfigureTwoFactorToptLoginCommandHandler
 
     public async Task<IResult<TwoFactorToptResponse>> Handle(ConfigureTwoFactorToptLoginCommand command, CancellationToken cancellationToken)
     {
-        var username = _userContextService.Username ?? string.Empty;
-        ValidationResult<Username> usernameResult = Username.Create(username);
-
-        _validator
-            .Validate(usernameResult);
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure<TwoFactorToptResponse>();
-        }
+        var username = Username.Create(_userContextService.Username!).Value;
 
         User? user = await _userRepository
-            .GetByUsernameAsync(usernameResult.Value, cancellationToken);
+            .GetByUsernameAsync(username, cancellationToken);
 
         _validator
-            .If(user is null, thenError: Error.NotFound<User>(usernameResult.Value.Value));
+            .If(user is null, thenError: Error.NotFound<User>(username.Value));
 
         if (_validator.IsInvalid)
         {

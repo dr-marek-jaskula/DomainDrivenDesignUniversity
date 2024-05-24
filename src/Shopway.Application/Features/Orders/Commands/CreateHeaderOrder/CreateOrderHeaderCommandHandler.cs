@@ -1,5 +1,4 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
@@ -8,28 +7,16 @@ using Shopway.Domain.Orders.ValueObjects;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 
-internal sealed class CreateOrderHeaderCommandHandler(IOrderHeaderRepository orderRepository, IValidator validator)
+internal sealed class CreateOrderHeaderCommandHandler(IOrderHeaderRepository orderRepository)
     : ICommandHandler<CreateOrderHeaderCommand, CreateOrderHeaderResponse>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderRepository;
-    private readonly IValidator _validator = validator;
 
     public Task<IResult<CreateOrderHeaderResponse>> Handle(CreateOrderHeaderCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<Discount> discountResult = Discount.Create(command.Discount ?? 0);
+        var discount = Discount.Create(command.Discount ?? 0).Value;
 
-        _validator
-            .Validate(discountResult);
-
-        if (_validator.IsInvalid)
-        {
-            return _validator
-                .Failure<CreateOrderHeaderResponse>()
-                .ToResult()
-                .ToTask();
-        }
-
-        OrderHeader createdOrderHeader = CreateOrderHeader(command, discountResult);
+        OrderHeader createdOrderHeader = CreateOrderHeader(command, discount);
 
         return createdOrderHeader
             .ToCreateResponse()

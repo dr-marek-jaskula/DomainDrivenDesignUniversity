@@ -3,13 +3,24 @@ using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
 public sealed class Username : ValueObject
 {
     public const int MaxLength = 30;
+
+    public static readonly Error Empty = Error.New(
+        $"{nameof(Username)}.{nameof(Empty)}",
+        $"{nameof(Username)} name is empty.");
+
+    public static readonly Error TooLong = Error.New(
+        $"{nameof(Username)}.{nameof(TooLong)}",
+        $"{nameof(Username)} name must be at most {MaxLength} characters.");
+
+    public static readonly Error ContainsIllegalCharacter = Error.New(
+        $"{nameof(Username)}.{nameof(ContainsIllegalCharacter)}",
+        $"{nameof(Username)} contains illegal character.");
 
     private Username(string value)
     {
@@ -27,9 +38,9 @@ public sealed class Username : ValueObject
     public static IList<Error> Validate(string username)
     {
         return EmptyList<Error>()
-            .If(username.IsNullOrEmptyOrWhiteSpace(), UsernameError.Empty)
-            .If(username.Length > MaxLength, UsernameError.TooLong)
-            .If(username.ContainsIllegalCharacter(), UsernameError.ContainsIllegalCharacter);
+            .If(username.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(username.Length > MaxLength, TooLong)
+            .If(username.ContainsIllegalCharacter(), ContainsIllegalCharacter);
     }
 
     public override IEnumerable<object> GetAtomicValues()

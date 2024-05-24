@@ -4,7 +4,6 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using System.Text;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
@@ -15,6 +14,14 @@ public sealed class TwoFactorTokenHash : ValueObject
     public const int NotHashedTokenSecondPartLength = 5;
 
     public const int BytesLong = 514;
+
+    public static readonly Error Empty = Error.New(
+        $"{nameof(TwoFactorTokenHash)}.{nameof(Empty)}",
+        $"{nameof(TwoFactorTokenHash)} is empty.");
+
+    public static readonly Error InvalidBytesLong = Error.New(
+        $"{nameof(TwoFactorTokenHash)}.{nameof(InvalidBytesLong)}",
+        $"{nameof(TwoFactorTokenHash)} needs to be less than {BytesLong} bytes long.");
 
     private TwoFactorTokenHash(string value)
     {
@@ -32,8 +39,8 @@ public sealed class TwoFactorTokenHash : ValueObject
     public static IList<Error> Validate(string twoFactorTokenHash)
     {
         return EmptyList<Error>()
-            .If(twoFactorTokenHash.IsNullOrEmptyOrWhiteSpace(), TwoFactorTokenError.Empty)
-            .If(Encoding.ASCII.GetByteCount(twoFactorTokenHash) > BytesLong, TwoFactorTokenError.BytesLong);
+            .If(twoFactorTokenHash.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(Encoding.ASCII.GetByteCount(twoFactorTokenHash) > BytesLong, InvalidBytesLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

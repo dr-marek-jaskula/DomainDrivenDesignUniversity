@@ -1,5 +1,4 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
@@ -8,11 +7,10 @@ using Shopway.Domain.Products.ValueObjects;
 
 namespace Shopway.Application.Features.Products.Commands.UpdateReview;
 
-internal sealed class UpdateReviewCommandHandler(IProductRepository productRepository, IValidator validator)
+internal sealed class UpdateReviewCommandHandler(IProductRepository productRepository)
     : ICommandHandler<UpdateReviewCommand, UpdateReviewResponse>
 {
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly IValidator _validator = validator;
 
     //It is not preferred to make partial updates, but for tutorial purpose it is done here
     public async Task<IResult<UpdateReviewResponse>> Handle(UpdateReviewCommand command, CancellationToken cancellationToken)
@@ -23,43 +21,18 @@ internal sealed class UpdateReviewCommandHandler(IProductRepository productRepos
             .Reviews
             .First(x => x.Id == command.ReviewId);
 
-        ValidationResult<Description>? descriptionResult = null;
-        ValidationResult<Stars>? starsResult = null;
-
-        if (command.Body.Description is not null)
+        if (command.Body.Description is string description)
         {
-            descriptionResult = Description.Create(command.Body.Description);
-            _validator.Validate(descriptionResult);
+            reviewToUpdate.UpdateDescription(Description.Create(description).Value);
         }
 
-        if (command.Body.Stars is not null)
+        if (command.Body.Stars is decimal stars)
         {
-            starsResult = Stars.Create((decimal)command.Body.Stars);
-            _validator.Validate(starsResult);
+            reviewToUpdate.UpdateStars(Stars.Create(stars).Value);
         }
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure<UpdateReviewResponse>();
-        }
-
-        Update(reviewToUpdate, descriptionResult, starsResult);
 
         return reviewToUpdate
             .ToUpdateResponse()
             .ToResult();
-    }
-
-    private static void Update(Review reviewToUpdate, ValidationResult<Description>? description, ValidationResult<Stars>? starts)
-    {
-        if (description is not null)
-        {
-            reviewToUpdate.UpdateDescription(description.Value);
-        }
-
-        if (starts is not null)
-        {
-            reviewToUpdate.UpdateStars(starts.Value);
-        }
     }
 }

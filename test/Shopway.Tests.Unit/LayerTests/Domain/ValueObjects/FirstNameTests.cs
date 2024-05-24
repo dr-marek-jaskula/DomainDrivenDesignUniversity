@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Users.ValueObjects;
 using Shopway.Tests.Unit.Abstractions;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
@@ -15,16 +14,16 @@ public sealed class FirstNameTests : TestBase
         {
             var invalidCharacter = "_";
             var firstNameWithNotAllowedCharacter = $"{TestString(10)}{invalidCharacter}";
-            Add(firstNameWithNotAllowedCharacter, FirstNameError.ContainsIllegalCharacter);
+            Add(firstNameWithNotAllowedCharacter, FirstName.ContainsIllegalCharacter);
 
             var tooLongFirstName = TestString(1000);
-            Add(tooLongFirstName, FirstNameError.TooLong);
+            Add(tooLongFirstName, FirstName.TooLong);
 
             string emptyFirstName = string.Empty;
-            Add(emptyFirstName, FirstNameError.Empty);
+            Add(emptyFirstName, FirstName.Empty);
 
             string whitespaceFirstName = "    ";
-            Add(whitespaceFirstName, FirstNameError.Empty);
+            Add(whitespaceFirstName, FirstName.Empty);
         }
     }
 

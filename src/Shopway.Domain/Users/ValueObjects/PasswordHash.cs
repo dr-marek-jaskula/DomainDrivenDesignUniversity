@@ -4,19 +4,31 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using System.Text;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
 public sealed class PasswordHash : ValueObject
 {
     public const int BytesLong = 514;
-    public new string Value { get; }
+
+    public static readonly Error Empty = Error.New(
+        $"{nameof(PasswordHash)}.{nameof(Empty)}",
+        $"{nameof(PasswordHash)} is empty.");
+
+    public static readonly Error InvalidBytesLong = Error.New(
+        $"{nameof(PasswordHash)}.{nameof(InvalidBytesLong)}",
+        $"{nameof(PasswordHash)} needs to be less than {BytesLong} bytes long.");
 
     private PasswordHash(string value)
     {
         Value = value;
     }
+
+    private PasswordHash()
+    {
+    }
+
+    public new string Value { get; }
 
     public static ValidationResult<PasswordHash> Create(string passwordHash)
     {
@@ -27,8 +39,8 @@ public sealed class PasswordHash : ValueObject
     public static IList<Error> Validate(string passwordHash)
     {
         return EmptyList<Error>()
-            .If(passwordHash.IsNullOrEmptyOrWhiteSpace(), PasswordHashError.Empty)
-            .If(Encoding.ASCII.GetByteCount(passwordHash) > BytesLong, PasswordHashError.BytesLong);
+            .If(passwordHash.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(Encoding.ASCII.GetByteCount(passwordHash) > BytesLong, InvalidBytesLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

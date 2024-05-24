@@ -4,7 +4,6 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using System.Text.RegularExpressions;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 using static System.Text.RegularExpressions.RegexOptions;
 
 namespace Shopway.Domain.Users.ValueObjects;
@@ -15,12 +14,32 @@ public sealed class Email : ValueObject
 
     private static readonly Regex _regex = new(@"^([a-zA-Z])([a-zA-Z0-9]+)\.?([a-zA-Z0-9]+)@([a-z]+)\.[a-z]{2,3}$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
-    public new string Value { get; }
+    public static readonly Error Empty = Error.New(
+        $"{nameof(Email)}.{nameof(Empty)}",
+        $"{nameof(Email)} is empty.");
+
+    public static readonly Error TooLong = Error.New(
+        $"{nameof(Email)}.{nameof(TooLong)}",
+        $"{nameof(Email)} must be at most {MaxLength} characters long.");
+
+    public static readonly Error Invalid = Error.New(
+        $"{nameof(Email)}.{nameof(Invalid)}",
+        $"{nameof(Email)} must start from a letter, contain '@', after that '.' and cannot contain special character besides '@'");
+
+    public static readonly Error AlreadyTaken = Error.New(
+        $"{nameof(Email)}.{nameof(AlreadyTaken)}",
+        $"{nameof(Email)} is already taken.");
 
     private Email(string value)
     {
         Value = value;
     }
+
+    private Email()
+    {
+    }
+
+    public new string Value { get; }
 
     public static ValidationResult<Email> Create(string email)
     {
@@ -31,9 +50,9 @@ public sealed class Email : ValueObject
     public static IList<Error> Validate(string email)
     {
         return EmptyList<Error>()
-            .If(email.IsNullOrEmptyOrWhiteSpace(), EmailError.Empty)
-            .If(email.Length > MaxLength, EmailError.TooLong)
-            .If(_regex.NotMatch(email), EmailError.Invalid);
+            .If(email.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(email.Length > MaxLength, TooLong)
+            .If(_regex.NotMatch(email), Invalid);
     }
 
     public override IEnumerable<object> GetAtomicValues()

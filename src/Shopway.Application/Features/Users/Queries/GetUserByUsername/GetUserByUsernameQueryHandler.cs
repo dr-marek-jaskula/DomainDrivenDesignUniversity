@@ -1,5 +1,4 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Errors;
@@ -9,26 +8,17 @@ using Shopway.Domain.Users.ValueObjects;
 
 namespace Shopway.Application.Features.Users.Queries.GetUserByUsername;
 
-internal sealed class GetUserByUsernameQueryHandler(IUserRepository userRepository, IValidator validator)
+internal sealed class GetUserByUsernameQueryHandler(IUserRepository userRepository)
     : IQueryHandler<GetUserByUsernameQuery, UserResponse>
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly IValidator _validator = validator;
 
     public async Task<IResult<UserResponse>> Handle(GetUserByUsernameQuery query, CancellationToken cancellationToken)
     {
-        var usernameResult = Username.Create(query.Username);
-
-        _validator
-            .Validate(usernameResult);
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure<UserResponse>();
-        }
+        var username = Username.Create(query.Username).Value;
 
         var user = await _userRepository
-            .GetByUsernameAsync(usernameResult.Value, cancellationToken);
+            .GetByUsernameAsync(username, cancellationToken);
 
         if (user is null)
         {

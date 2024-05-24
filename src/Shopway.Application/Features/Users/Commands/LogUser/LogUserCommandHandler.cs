@@ -25,20 +25,11 @@ internal sealed class LogUserCommandHandler
 
     public async Task<IResult<AccessTokenResponse>> Handle(LogUserCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<Email> emailResult = Email.Create(command.Email);
-        ValidationResult<Password> passwordResult = Password.Create(command.Password);
-
-        _validator
-            .Validate(emailResult)
-            .Validate(passwordResult);
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure<AccessTokenResponse>();
-        }
+        var email = Email.Create(command.Email).Value;
+        var password = Password.Create(command.Password).Value;
 
         User? user = await _userRepository
-            .GetByEmailAsync(emailResult.Value, cancellationToken);
+            .GetByEmailAsync(email, cancellationToken);
 
         _validator
             .If(user is null, thenError: InvalidPasswordOrEmail);
@@ -49,7 +40,7 @@ internal sealed class LogUserCommandHandler
         }
 
         var result = _passwordHasher
-            .VerifyHashedPassword(user!, user!.PasswordHash.Value, passwordResult.Value.Value);
+            .VerifyHashedPassword(user!, user!.PasswordHash.Value, password.Value);
 
         _validator
             .If(result is PasswordVerificationResult.Failed, thenError: InvalidPasswordOrEmail);
@@ -59,9 +50,8 @@ internal sealed class LogUserCommandHandler
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var accessTokenResult = _securityTokenService.GenerateJwt(user);
-
-        var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
+        var accessTokenResponse = _securityTokenService.GenerateJwt(user);
+        var refreshTokenResult = RefreshToken.Create(accessTokenResponse.RefreshToken);
 
         _validator
             .Validate(refreshTokenResult);
@@ -71,9 +61,9 @@ internal sealed class LogUserCommandHandler
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        user.RefreshToken = refreshTokenResult.Value;
+        user.Refresh(refreshTokenResult.Value);
 
-        return accessTokenResult
+        return accessTokenResponse
             .ToResult();
     }
 }

@@ -8,7 +8,8 @@ internal sealed class FuzzySearchProductByNameQueryValidator : OffsetPageQueryVa
 {
     public FuzzySearchProductByNameQueryValidator()
     {
-        RuleFor(x => x.ProductName).NotNull();
-        RuleFor(x => x.ProductName).NotEmpty();
+        RuleFor(x => x.ProductName)
+            .NotNull()
+            .NotEmpty();
     }
 }

@@ -5,7 +5,6 @@ using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
-using static Shopway.Domain.Users.Errors.DomainErrors.PasswordOrEmailError;
 
 namespace Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 
@@ -23,45 +22,42 @@ internal sealed class RefreshAccessTokenCommandHandler
 
     public async Task<IResult<AccessTokenResponse>> Handle(RefreshAccessTokenCommand command, CancellationToken cancellationToken)
     {
-        var emailClaim = _securityTokenService.GetClaimFromToken(command.AccessToken, nameof(Email));
-        ValidationResult<RefreshToken> refreshToken = RefreshToken.Create(command.RefreshToken);
-        var hasRefreshTokenExpired = _securityTokenService.HasRefreshTokenExpired(command.AccessToken);
+        var hasRefreshTokenExpiredResult = _securityTokenService.HasRefreshTokenExpired(command.AccessToken);
 
         _validator
-            .Validate(refreshToken)
-            .If(emailClaim.IsFailure, emailClaim.Error)
-            .If(hasRefreshTokenExpired.IsFailure, hasRefreshTokenExpired.Error);
+            .Validate(hasRefreshTokenExpiredResult);
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var email = Email.Create(emailClaim.Value!.Value!);
-
-        _validator
-            .Validate(email)
-            .If(emailClaim.IsFailure, emailClaim.Error)
-            .If(hasRefreshTokenExpired.Value, Error.InvalidArgument("Refresh Token has expired"));
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure<AccessTokenResponse>();
-        }
+        var emailClaim = _securityTokenService.GetClaimFromToken(command.AccessToken, nameof(Email)).Value;
+        var email = Email.Create(emailClaim!.Value).Value;
 
         User? user = await _userRepository
-            .GetByEmailAsync(email.Value, cancellationToken);
+            .GetByEmailAsync(email, cancellationToken);
 
         _validator
-            .If(user is null, thenError: InvalidPasswordOrEmail);
+            .If(user is null, thenError: Error.NotFound<User>(email.Value));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        var accessTokenResult = _securityTokenService.GenerateJwt(user!);
-        var refreshTokenResult = RefreshToken.Create(accessTokenResult.RefreshToken);
+        var refreshTokenFromCommand = RefreshToken.Create(command.RefreshToken).Value;
+
+        _validator
+            .If(user!.RefreshToken != refreshTokenFromCommand, thenError: RefreshToken.NotMatch);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure<AccessTokenResponse>();
+        }
+
+        var accessTokenResponse = _securityTokenService.GenerateJwt(user!);
+        var refreshTokenResult = RefreshToken.Create(accessTokenResponse.RefreshToken);
 
         _validator
             .Validate(refreshTokenResult);
@@ -71,9 +67,9 @@ internal sealed class RefreshAccessTokenCommandHandler
             return _validator.Failure<AccessTokenResponse>();
         }
 
-        user!.RefreshToken = refreshTokenResult.Value;
+        user!.Refresh(refreshTokenResult.Value);
 
-        return accessTokenResult
+        return accessTokenResponse
             .ToResult();
     }
 }

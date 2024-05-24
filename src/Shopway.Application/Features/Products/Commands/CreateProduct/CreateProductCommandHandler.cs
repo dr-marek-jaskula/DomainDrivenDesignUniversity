@@ -18,22 +18,6 @@ internal sealed class CreateProductCommandHandler(IProductRepository productRepo
 
     public async Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<ProductName> productNameResult = ProductName.Create(command.ProductKey.ProductName);
-        ValidationResult<Revision> revisionResult = Revision.Create(command.ProductKey.Revision);
-        ValidationResult<Price> priceResult = Price.Create(command.Price);
-        ValidationResult<UomCode> uomCodeResult = UomCode.Create(command.UomCode);
-
-        _validator
-            .Validate(productNameResult)
-            .Validate(priceResult)
-            .Validate(uomCodeResult)
-            .Validate(revisionResult);
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure<CreateProductResponse>();
-        }
-
         _validator
             .If(await ProductAlreadyExists(command.ProductKey, cancellationToken), Error.AlreadyExists(command.ProductKey));
 
@@ -42,7 +26,12 @@ internal sealed class CreateProductCommandHandler(IProductRepository productRepo
             return _validator.Failure<CreateProductResponse>();
         }
 
-        Product createdProduct = CreateProduct(productNameResult, priceResult, uomCodeResult, revisionResult);
+        var productName = ProductName.Create(command.ProductKey.ProductName).Value;
+        var revision = Revision.Create(command.ProductKey.Revision).Value;
+        var price = Price.Create(command.Price).Value;
+        var uomCode = UomCode.Create(command.UomCode).Value;
+
+        Product createdProduct = CreateProduct(productName, price, uomCode, revision);
 
         return createdProduct
             .ToCreateResponse()
@@ -57,19 +46,19 @@ internal sealed class CreateProductCommandHandler(IProductRepository productRepo
 
     private Product CreateProduct
     (
-        Result<ProductName> productNameResult,
-        Result<Price> priceResult,
-        Result<UomCode> uomCodeResult,
-        Result<Revision> revisionResult
+        ProductName productName,
+        Price price,
+        UomCode uomCode,
+        Revision revision
     )
     {
         var productToCreate = Product.Create
         (
             id: ProductId.New(),
-            productName: productNameResult.Value,
-            price: priceResult.Value,
-            uomCode: uomCodeResult.Value,
-            revision: revisionResult.Value
+            productName: productName,
+            price: price,
+            uomCode: uomCode,
+            revision: revision
         );
 
         _productRepository.Create(productToCreate);

@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.Common.Errors;
-using Shopway.Domain.Products.ValueObjects;
 using Shopway.Tests.Unit.Abstractions;
-using static Shopway.Domain.Products.Errors.DomainErrors;
+using Shopway.Domain.Products.ValueObjects;
 using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
@@ -15,16 +14,16 @@ public sealed class ProductNameTests : TestBase
         {
             var invalidCharacter = "_";
             var productNameWithNotAllowedCharacter = $"{TestString(10)}{invalidCharacter}";
-            Add(productNameWithNotAllowedCharacter, ProductNameError.ContainsIllegalCharacter);
+            Add(productNameWithNotAllowedCharacter, ProductName.ContainsIllegalCharacter);
 
             var tooLongProductName = TestString(1000);
-            Add(tooLongProductName, ProductNameError.TooLong);
+            Add(tooLongProductName, ProductName.TooLong);
 
             string emptyProductName = string.Empty;
-            Add(emptyProductName, ProductNameError.Empty);
+            Add(emptyProductName, ProductName.Empty);
 
             string whitespaceProductName = "    ";
-            Add(whitespaceProductName, ProductNameError.Empty);
+            Add(whitespaceProductName, ProductName.Empty);
         }
     }
 

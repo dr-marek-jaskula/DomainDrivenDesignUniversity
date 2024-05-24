@@ -62,12 +62,15 @@ public static class ErrorUtilities
     (
         this IList<Error> errors,
         bool condition,
-        Error error
+        params Error[] errorsToAdd
     )
     {
         if (condition is true)
         {
-            errors.Add(error);
+            foreach (Error errorToAdd in errorsToAdd)
+            {
+                errors.Add(errorToAdd);
+            }
         }
 
         return errors;

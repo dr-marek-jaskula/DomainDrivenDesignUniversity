@@ -3,13 +3,20 @@ using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Products.Errors.DomainErrors;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
 public sealed class Title : ValueObject
 {
     public const int MaxLength = 45;
+
+    public static readonly Error Empty = Error.New(
+        $"{nameof(Title)}.{nameof(Empty)}",
+        $"{nameof(Title)} is empty.");
+
+    public static readonly Error TooLong = Error.New(
+        $"{nameof(Title)}.{nameof(TooLong)}",
+        $"{nameof(Title)} needs to be at most {MaxLength} characters long.");
 
     private Title(string value)
     {
@@ -32,8 +39,8 @@ public sealed class Title : ValueObject
     public static IList<Error> Validate(string title)
     {
         return EmptyList<Error>()
-            .If(title.IsNullOrEmptyOrWhiteSpace(), TitleError.Empty)
-            .If(title.Length > MaxLength, TitleError.TooLong);
+            .If(title.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(title.Length > MaxLength, TooLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

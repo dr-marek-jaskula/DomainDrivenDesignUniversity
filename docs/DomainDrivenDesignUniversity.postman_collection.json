@@ -455,14 +455,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/products/name/%a",
+							"raw": "{{base_url}}/products/name/%l",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"products",
 								"name",
-								"%a"
+								"%l"
 							]
 						}
 					},
@@ -1464,6 +1464,50 @@
 					"response": []
 				},
 				{
+					"name": "Register.Invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if (pm.response.to.have.status(200))\r",
+									"{\r",
+									"    pm.collectionVariables.set(\"validUserId\", response.id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Username\": \"TooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongName\",\r\n  \"Email\": \"{{email}}!\",\r\n  \"Password\": \"TooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongNameTooLongName\",\r\n  \"ConfirmPassword\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Login",
 					"event": [
 						{
@@ -1711,6 +1755,51 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"AccessToken\": \"{{access_token}}\",\r\n  \"RefreshToken\": \"{{refresh_token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh.Invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"if (pm.response.to.have.status(200))\r",
+									"{\r",
+									"    pm.globals.set(\"access_token\", response.accessToken);\r",
+									"    pm.globals.set(\"refresh_token\", response.refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"AccessToken\": \"!!!\",\r\n  \"RefreshToken\": \"???\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

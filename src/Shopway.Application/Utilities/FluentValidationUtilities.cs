@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Application.Cache.ApplicationCache;
 using static Shopway.Application.Constants.Constants.Filter;
@@ -131,5 +132,53 @@ public static class FluentValidationUtilities
         {
             context.AddFailure(MappingProperties, $"{MappingProperties} contains invalid property names: {string.Join(", ", invalidProperties)}. Allowed property names: {string.Join(", ", allowedMappingPropertiesCache!)}. {MappingProperties} are case sensitive.");
         }
+    }
+
+    public static IRuleBuilderOptions<TInput, TOutput> MustSatisfyValueObjectValidation<TInput, TOutput>(this IRuleBuilder<TInput, TOutput> ruleBuilder, Func<TOutput, IList<Error>> validationMethod)
+    {
+        return (IRuleBuilderOptions<TInput, TOutput>)ruleBuilder.Custom((value, context) =>
+        {
+            IList<Error> errors = validationMethod(value);
+
+            if (errors.NotNullOrEmpty())
+            {
+                foreach (var error in errors)
+                {
+                    context.AddFailure(error.Serialize());
+                }
+            }
+        });
+    }
+
+    public static IRuleBuilderOptions<TInput, TInput> MustSatisfyValueObjectValidation<TInput>(this IRuleBuilder<TInput, TInput> ruleBuilder, Func<IList<Error>> validationMethod)
+    {
+        return (IRuleBuilderOptions<TInput, TInput>)ruleBuilder.Custom((value, context) =>
+        {
+            IList<Error> errors = validationMethod();
+
+            if (errors.NotNullOrEmpty())
+            {
+                foreach (var error in errors)
+                {
+                    context.AddFailure(error.Serialize());
+                }
+            }
+        });
+    }
+
+    public static IRuleBuilderOptions<TInput, TOutput> MustSatisfy<TInput, TOutput>(this IRuleBuilder<TInput, TOutput> ruleBuilder, Func<TOutput, IList<Error>> validationMethod)
+    {
+        return (IRuleBuilderOptions<TInput, TOutput>)ruleBuilder.Custom((value, context) =>
+        {
+            IList<Error> errors = validationMethod(value);
+
+            if (errors.NotNullOrEmpty())
+            {
+                foreach (var error in errors)
+                {
+                    context.AddFailure(error.Serialize());
+                }
+            }
+        });
     }
 }

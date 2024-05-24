@@ -20,33 +20,23 @@ internal sealed class AddReviewCommandHandler(IProductRepository productReposito
 
     public async Task<IResult<AddReviewResponse>> Handle(AddReviewCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult<Title> titleResult = Title.Create(command.Body.Title);
-        ValidationResult<Description> descriptionResult = Description.Create(command.Body.Description);
-        ValidationResult<Username> usernameResult = Username.Create(_userContext.Username!);
-        ValidationResult<Stars> starsResult = Stars.Create(command.Body.Stars);
+        var title = Title.Create(command.Body.Title).Value;
+
+        var product = await _productRepository.GetByIdWithReviewAsync(command.ProductId, title, cancellationToken);
 
         _validator
-            .Validate(titleResult)
-            .Validate(descriptionResult)
-            .Validate(usernameResult)
-            .Validate(starsResult);
+            .If(product.Reviews.Count is not 0, thenError: Error.AlreadyExists(ReviewKey.Create(title.Value)));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<AddReviewResponse>();
         }
 
-        var product = await _productRepository.GetByIdWithReviewAsync(command.ProductId, titleResult.Value, cancellationToken);
+        Description description = Description.Create(command.Body.Description).Value;
+        Username username = Username.Create(_userContext.Username!).Value;
+        Stars stars = Stars.Create(command.Body.Stars).Value;
 
-        _validator
-            .If(product.Reviews.Any(), thenError: Error.AlreadyExists(ReviewKey.Create(titleResult.Value.Value)));
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure<AddReviewResponse>();
-        }
-
-        Review reviewToAdd = CreateReview(titleResult.Value, descriptionResult.Value, usernameResult.Value, starsResult.Value);
+        Review reviewToAdd = CreateReview(title, description, username, stars);
 
         product.AddReview(reviewToAdd);
 
