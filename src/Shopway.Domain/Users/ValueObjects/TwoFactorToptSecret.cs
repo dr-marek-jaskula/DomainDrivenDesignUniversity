@@ -4,13 +4,20 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using System.Text;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
 public sealed class TwoFactorToptSecret : ValueObject
 {
     public const int BytesLong = 32;
+
+    public static readonly Error Empty = Error.New(
+        $"{nameof(TwoFactorToptSecret)}.{nameof(Empty)}",
+        $"{nameof(TwoFactorToptSecret)} is empty.");
+
+    public static readonly Error InvalidBytesLong = Error.New(
+        $"{nameof(TwoFactorToptSecret)}.{nameof(InvalidBytesLong)}",
+        $"{nameof(TwoFactorToptSecret)} needs to be {BytesLong} bytes long.");
 
     private TwoFactorToptSecret(string value)
     {
@@ -28,8 +35,8 @@ public sealed class TwoFactorToptSecret : ValueObject
     public static IList<Error> Validate(string twoFactorTokenHash)
     {
         return EmptyList<Error>()
-            .If(twoFactorTokenHash.IsNullOrEmptyOrWhiteSpace(), TwoFactorToptSecretError.Empty)
-            .If(Encoding.ASCII.GetByteCount(twoFactorTokenHash) != BytesLong, TwoFactorToptSecretError.BytesLong);
+            .If(twoFactorTokenHash.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(Encoding.ASCII.GetByteCount(twoFactorTokenHash) != BytesLong, InvalidBytesLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

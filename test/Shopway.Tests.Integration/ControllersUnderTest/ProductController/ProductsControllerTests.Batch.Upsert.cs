@@ -3,7 +3,7 @@ using Shopway.Domain.EntityKeys;
 using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using Shopway.Tests.Integration.Utilities;
 using static Shopway.Application.Features.BatchEntryStatus;
-using static Shopway.Domain.Products.Errors.DomainErrors.ProductNameError;
+using Shopway.Domain.Products.ValueObjects;
 using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.ProductBatchUpsertCommandUtility;
 using static System.Net.HttpStatusCode;
@@ -51,7 +51,7 @@ public partial class ProductsControllerTests
 
         var batchResponse = response.Deserialize<ProductBatchResponseResult>();
         batchResponse!.ShouldHaveCount(batchCommand.Requests.Count);
-        batchResponse!.ShouldContainEntryWithErrors(TooLong, ContainsIllegalCharacter);
+        batchResponse!.ShouldContainEntryWithErrors(ProductName.TooLong, ProductName.ContainsIllegalCharacter);
     }
 
     [Fact]

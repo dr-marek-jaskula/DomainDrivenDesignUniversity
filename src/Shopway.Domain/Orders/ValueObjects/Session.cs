@@ -3,15 +3,22 @@ using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Orders.Errors.DomainErrors;
 
 namespace Shopway.Domain.Orders.ValueObjects;
 
 public sealed class Session : ValueObject
 {
-    public string Id { get; }
-    public string Secret { get; }
-    public string PaymentIntentId { get; }
+    public static readonly Error EmptyId = Error.New(
+        $"{nameof(Session)}.{nameof(EmptyId)}",
+        $"{nameof(EmptyId)} is empty.");
+
+    public static readonly Error EmptySecret = Error.New(
+        $"{nameof(Session)}.{nameof(EmptySecret)}",
+        $"{nameof(EmptySecret)} is empty.");
+
+    public static readonly Error EmptyPaymentIntentId = Error.New(
+        $"{nameof(Session)}.{nameof(EmptyPaymentIntentId)}",
+        $"{nameof(EmptyPaymentIntentId)} is empty.");
 
     private Session(string sessionId, string sessionSecret, string paymentIntentId)
     {
@@ -25,6 +32,10 @@ public sealed class Session : ValueObject
     {
     }
 
+    public string Id { get; }
+    public string Secret { get; }
+    public string PaymentIntentId { get; }
+
     public static ValidationResult<Session> Create(string sessionId, string sessionSecret, string paymentIntentId)
     {
         var errors = Validate(sessionId, sessionSecret, paymentIntentId);
@@ -34,9 +45,9 @@ public sealed class Session : ValueObject
     public static IList<Error> Validate(string sessionId, string sessionSecret, string paymentIntentId)
     {
         return EmptyList<Error>()
-            .If(sessionId.IsNullOrEmptyOrWhiteSpace(), SessionError.EmptyId)
-            .If(sessionSecret.IsNullOrEmptyOrWhiteSpace(), SessionError.EmptySecret)
-            .If(paymentIntentId.IsNullOrEmptyOrWhiteSpace(), SessionError.EmptyPaymentIntentId);
+            .If(sessionId.IsNullOrEmptyOrWhiteSpace(), EmptyId)
+            .If(sessionSecret.IsNullOrEmptyOrWhiteSpace(), EmptySecret)
+            .If(paymentIntentId.IsNullOrEmptyOrWhiteSpace(), EmptyPaymentIntentId);
     }
 
     public override IEnumerable<object> GetAtomicValues()

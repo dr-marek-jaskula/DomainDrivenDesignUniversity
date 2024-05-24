@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Users.ValueObjects;
 using Shopway.Tests.Unit.Abstractions;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
@@ -14,13 +13,13 @@ public sealed class EmailTests : TestBase
         public InvalidEmailTestData()
         {
             var tooLongEmail = TestString(1000);
-            Add(tooLongEmail, [EmailError.TooLong, EmailError.Invalid]);
+            Add(tooLongEmail, [Email.TooLong, Email.Invalid]);
 
             string emptyEmail = string.Empty;
-            Add(emptyEmail, [EmailError.Empty, EmailError.Invalid]);
+            Add(emptyEmail, [Email.Empty, Email.Invalid]);
 
             string whitespaceEmail = "    ";
-            Add(whitespaceEmail, [EmailError.Empty, EmailError.Invalid]);
+            Add(whitespaceEmail, [Email.Empty, Email.Invalid]);
         }
     }
 

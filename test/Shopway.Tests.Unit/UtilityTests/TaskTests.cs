@@ -8,7 +8,7 @@ namespace Shopway.Tests.Unit.UtilityTests;
 public sealed class TaskTests
 {
     [Fact]
-    public async void TaskWhenAllOnTuple_ShouldRunInParallelAndReturnProperValues_WhenTasksDoNotThrowExceptions()
+    public async Task TaskWhenAllOnTuple_ShouldRunInParallelAndReturnProperValues_WhenTasksDoNotThrowExceptions()
     {
         //Act
         var stopwatch = Stopwatch.StartNew();
@@ -33,7 +33,7 @@ public sealed class TaskTests
     }
 
     [Fact]
-    public async void TaskWhenAllOnEnumerable_ShouldRunInParallelAndReturnProperValues_WhenTasksDoNotThrowExceptions()
+    public async Task TaskWhenAllOnEnumerable_ShouldRunInParallelAndReturnProperValues_WhenTasksDoNotThrowExceptions()
     {
         //Act
         var stopwatch = Stopwatch.StartNew();

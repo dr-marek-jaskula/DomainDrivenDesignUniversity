@@ -3,7 +3,6 @@ using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Products.Errors.DomainErrors;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
@@ -11,9 +10,21 @@ public sealed class Description : ValueObject
 {
     public const int MaxLength = 600;
 
+    public static readonly Error Empty = Error.New(
+        $"{nameof(Description)}.{nameof(Empty)}",
+        $"{nameof(Description)} is empty.");
+
+    public static readonly Error TooLong = Error.New(
+        $"{nameof(Description)}.{nameof(TooLong)}",
+        $"{nameof(Description)} needs to be at most {MaxLength} characters long.");
+
     private Description(string value)
     {
         Value = value;
+    }
+
+    private Description()
+    {
     }
 
     public new string Value { get; }
@@ -27,8 +38,8 @@ public sealed class Description : ValueObject
     public static IList<Error> Validate(string description)
     {
         return EmptyList<Error>()
-            .If(description.IsNullOrEmptyOrWhiteSpace(), DescriptionError.Empty)
-            .If(description.Length > MaxLength, DescriptionError.TooLong);
+            .If(description.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(description.Length > MaxLength, TooLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

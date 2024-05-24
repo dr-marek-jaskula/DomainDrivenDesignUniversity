@@ -2,7 +2,6 @@
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Orders.Errors.DomainErrors;
 
 namespace Shopway.Domain.Orders.ValueObjects;
 
@@ -11,12 +10,24 @@ public sealed class Amount : ValueObject
     public const int MaxAmount = 1000;
     public const int MinAmount = 1;
 
-    public new int Value { get; }
+    public static readonly Error TooLow = Error.New(
+        $"{nameof(Amount)}.{nameof(TooLow)}",
+        $"{nameof(Amount)} must be at least {MinAmount}.");
+
+    public static readonly Error TooHigh = Error.New(
+        $"{nameof(Amount)}.{nameof(TooHigh)}",
+        $"{nameof(Amount)} must be at most {MaxAmount}.");
 
     private Amount(int value)
     {
         Value = value;
     }
+
+    private Amount() 
+    { 
+    }
+
+    public new int Value { get; }
 
     public static ValidationResult<Amount> Create(int amount)
     {
@@ -27,8 +38,8 @@ public sealed class Amount : ValueObject
     public static IList<Error> Validate(int amount)
     {
         return EmptyList<Error>()
-            .If(amount < MinAmount, AmountError.TooLow)
-            .If(amount > MaxAmount, AmountError.TooHigh);
+            .If(amount < MinAmount, TooLow)
+            .If(amount > MaxAmount, TooHigh);
     }
 
     public override IEnumerable<object> GetAtomicValues()

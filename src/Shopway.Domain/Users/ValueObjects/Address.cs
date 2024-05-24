@@ -4,7 +4,6 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using System.Text.RegularExpressions;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 using static System.Text.RegularExpressions.RegexOptions;
 
 namespace Shopway.Domain.Users.ValueObjects;
@@ -18,12 +17,41 @@ public sealed class Address : ValueObject
     public static readonly string[] AvailableCountries = ["Poland", "Germany", "England", "Russia"];
     private static readonly Regex _zipCodeRegex = new(@"^\d{5}?$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
-    public string City { get; }
-    public string Country { get; }
-    public string ZipCode { get; }
-    public string Street { get; }
-    public int Building { get; }
-    public int? Flat { get; }
+    public static readonly Error EmptyCountry = Error.New(
+        $"{nameof(Address)}.{nameof(EmptyCountry)}",
+        "Country is empty.");
+
+    public static readonly Error UnsupportedCountry = Error.New(
+        $"{nameof(Address)}.{nameof(UnsupportedCountry)}",
+        $"Country name must be: {AvailableCountries.Join(',')}.");
+
+    public static readonly Error EmptyCity = Error.New(
+        $"{nameof(Address)}.{nameof(EmptyCity)}",
+        "City is empty.");
+
+    public static readonly Error ContainsIllegalCharacterOrDigit = Error.New(
+        $"{nameof(Address)}.{nameof(ContainsIllegalCharacterOrDigit)}",
+        "City contains illegal character or digit.");
+
+    public static readonly Error ZipCodeDoesNotMatch = Error.New(
+        $"{nameof(Address)}.{nameof(ZipCodeDoesNotMatch)}",
+        "Zip code must consist of 5 digits.");
+
+    public static readonly Error ContainsIllegalCharacter = Error.New(
+        $"{nameof(Address)}.{nameof(ContainsIllegalCharacter)}",
+        "Street contains illegal character.");
+
+    public static readonly Error WrongBuildingNumber = Error.New(
+        $"{nameof(Address)}.{nameof(WrongBuildingNumber)}",
+        $"Building number must be positive and at most {MaxBuildingNumber} and at least {MinBuildingNumber}.");
+
+    public static readonly Error WrongFlatNumber = Error.New(
+        $"{nameof(Address)}.{nameof(WrongFlatNumber)}",
+        $"Flat number must be positive and at most {MaxFlatNumber} and at least {MinFlatNumber}.");
+
+    public static readonly Error Invalid = Error.New(
+        $"{nameof(Address)}.{nameof(Invalid)}",
+        $"{nameof(Address)} must consist of nine digits and cannot start from zero.");
 
     private Address(string city, string country, string zipCode, string street, int building, int? flat)
     {
@@ -39,6 +67,13 @@ public sealed class Address : ValueObject
     private Address()
     {
     }
+
+    public string City { get; }
+    public string Country { get; }
+    public string ZipCode { get; }
+    public string Street { get; }
+    public int Building { get; }
+    public int? Flat { get; }
 
     public static ValidationResult<Address> Create(string city, string country, string zipCode, string street, int building, int? flat)
     {
@@ -75,40 +110,40 @@ public sealed class Address : ValueObject
     private static IList<Error> ValidateCountry(IList<Error> errors, string country)
     {
         return errors
-            .If(country.IsNullOrEmptyOrWhiteSpace(), AddressError.EmptyCountry)
-            .If(AvailableCountries.NotContains(country), AddressError.UnsupportedCountry);
+            .If(country.IsNullOrEmptyOrWhiteSpace(), EmptyCountry)
+            .If(AvailableCountries.NotContains(country), UnsupportedCountry);
     }
 
     private static IList<Error> ValidateCity(IList<Error> errors, string city)
     {
         return errors
-            .If(city.IsNullOrEmptyOrWhiteSpace(), AddressError.EmptyCity)
-            .If(city.ContainsIllegalCharacter() || city.ContainsDigit(), AddressError.ContainsIllegalCharacterOrDigit);
+            .If(city.IsNullOrEmptyOrWhiteSpace(), EmptyCity)
+            .If(city.ContainsIllegalCharacter() || city.ContainsDigit(), ContainsIllegalCharacterOrDigit);
     }
 
     private static IList<Error> ValidateZipCode(IList<Error> errors, string zipCode)
     {
         return errors
-            .If(_zipCodeRegex.NotMatch(zipCode), AddressError.ZipCodeDoesNotMatch);
+            .If(_zipCodeRegex.NotMatch(zipCode), ZipCodeDoesNotMatch);
     }
 
     private static IList<Error> ValidateStreet(IList<Error> errors, string street)
     {
         return errors
-            .If(street.IsNullOrEmptyOrWhiteSpace(), AddressError.EmptyCity)
-            .If(street.ContainsIllegalCharacter(), AddressError.ContainsIllegalCharacter);
+            .If(street.IsNullOrEmptyOrWhiteSpace(), EmptyCity)
+            .If(street.ContainsIllegalCharacter(), ContainsIllegalCharacter);
     }
 
     private static IList<Error> ValidateBuilding(IList<Error> errors, int building)
     {
         return errors
-            .If(building < MinBuildingNumber || building > MaxBuildingNumber, AddressError.WrongBuildingNumber);
+            .If(building < MinBuildingNumber || building > MaxBuildingNumber, WrongBuildingNumber);
     }
 
     private static IList<Error> ValidateFlat(IList<Error> errors, int? flat)
     {
         return errors
-            .If(flat is not null && (flat < MinFlatNumber || flat > MaxFlatNumber), AddressError.WrongFlatNumber);
+            .If(flat is not null && (flat < MinFlatNumber || flat > MaxFlatNumber), WrongFlatNumber);
     }
 }
 

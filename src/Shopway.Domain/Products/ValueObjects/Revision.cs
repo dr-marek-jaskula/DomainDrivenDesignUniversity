@@ -3,7 +3,6 @@ using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Products.Errors.DomainErrors;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
@@ -11,17 +10,24 @@ public sealed class Revision : ValueObject
 {
     public const int MaxLength = 10;
 
-    public new string Value { get; }
+    public static readonly Error Empty = Error.New(
+        $"{nameof(Revision)}.{nameof(Empty)}",
+        $"{nameof(Revision)} is empty.");
+
+    public static readonly Error TooLong = Error.New(
+        $"{nameof(Revision)}.{nameof(TooLong)}",
+        $"{nameof(Revision)} must be at most {MaxLength} characters long.");
 
     private Revision(string value)
     {
         Value = value;
     }
 
-    //For EF Core
     private Revision()
     {
     }
+
+    public new string Value { get; }
 
     public static ValidationResult<Revision> Create(string revision)
     {
@@ -32,8 +38,8 @@ public sealed class Revision : ValueObject
     public static IList<Error> Validate(string revision)
     {
         return EmptyList<Error>()
-            .If(revision.IsNullOrEmptyOrWhiteSpace(), RevisionError.Empty)
-            .If(revision.Length > MaxLength, RevisionError.TooLong);
+            .If(revision.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(revision.Length > MaxLength, TooLong);
     }
 
     public override IEnumerable<object> GetAtomicValues()

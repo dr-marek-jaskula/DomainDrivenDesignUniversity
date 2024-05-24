@@ -3,7 +3,6 @@ using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Common.Utilities.ListUtilities;
-using static Shopway.Domain.Products.Errors.DomainErrors;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
@@ -11,12 +10,29 @@ public sealed class ProductName : ValueObject
 {
     public const int MaxLength = 50;
 
-    public new string Value { get; }
+    public static readonly Error Empty = Error.New(
+        $"{nameof(ProductName)}.{nameof(Empty)}",
+        $"{nameof(ProductName)} is empty.");
+
+    public static readonly Error TooLong = Error.New(
+        $"{nameof(ProductName)}.{nameof(TooLong)}",
+        $"{nameof(ProductName)} must be at most {MaxLength} characters long.");
+
+    public static readonly Error ContainsIllegalCharacter = Error.New(
+        $"{nameof(ProductName)}.{nameof(ContainsIllegalCharacter)}",
+        $"{nameof(ProductName)} contains illegal character.");
 
     private ProductName(string value)
     {
         Value = value;
     }
+
+    private ProductName()
+    {
+        
+    }
+
+    public new string Value { get; }
 
     public override IEnumerable<object> GetAtomicValues()
     {
@@ -32,8 +48,8 @@ public sealed class ProductName : ValueObject
     public static IList<Error> Validate(string productName)
     {
         return EmptyList<Error>()
-            .If(productName.IsNullOrEmptyOrWhiteSpace(), ProductNameError.Empty)
-            .If(productName.Length > MaxLength, ProductNameError.TooLong)
-            .If(productName.ContainsIllegalCharacter(), ProductNameError.ContainsIllegalCharacter);
+            .If(productName.IsNullOrEmptyOrWhiteSpace(), Empty)
+            .If(productName.Length > MaxLength, TooLong)
+            .If(productName.ContainsIllegalCharacter(), ContainsIllegalCharacter);
     }
 }

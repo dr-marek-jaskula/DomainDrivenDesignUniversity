@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Users.ValueObjects;
 using Shopway.Tests.Unit.Abstractions;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
@@ -11,16 +10,16 @@ public sealed class PasswordTests : TestBase
 {
     public static TheoryData<string, Error> InvalidPasswordTestData => new()
     {
-        { "invalidPassword", PasswordError.Invalid },
-        { "invalidPassword1", PasswordError.Invalid },
-        { "invalidPassword!", PasswordError.Invalid },
-        { "Sa1!", PasswordError.TooShort },
-        { "tooLongTooLongToLongTooLongtooLongTooLongToLongTooLongtooLongTooLongToLongTooLong", PasswordError.TooLong },
-        { " ", PasswordError.Empty },
-        { "\n", PasswordError.Empty },
-        { "\t", PasswordError.Empty },
-        { " ", PasswordError.Empty },
-        { string.Empty, PasswordError.Empty }
+        { "invalidPassword", Password.Invalid },
+        { "invalidPassword1", Password.Invalid },
+        { "invalidPassword!", Password.Invalid },
+        { "Sa1!", Password.TooShort },
+        { "tooLongTooLongToLongTooLongtooLongTooLongToLongTooLongtooLongTooLongToLongTooLong", Password.TooLong },
+        { " ", Password.Empty },
+        { "\n", Password.Empty },
+        { "\t", Password.Empty },
+        { " ", Password.Empty },
+        { string.Empty, Password.Empty }
     };
 
     public static TheoryData<string> ValidPasswordTestData => new()

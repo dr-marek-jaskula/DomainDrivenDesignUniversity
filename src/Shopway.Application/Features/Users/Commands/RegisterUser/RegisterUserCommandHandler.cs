@@ -6,7 +6,6 @@ using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
-using static Shopway.Domain.Users.Errors.DomainErrors;
 
 namespace Shopway.Application.Features.Users.Commands.RegisterUser;
 
@@ -30,7 +29,7 @@ internal sealed class RegisterUserCommandHandler(IUserRepository userRepository,
             .Validate(emailResult)
             .Validate(usernameResult)
             .Validate(passwordResult)
-            .If(emailIsTaken, thenError: EmailError.EmailAlreadyTaken);
+            .If(emailIsTaken, thenError: Email.AlreadyTaken);
 
         if (_validator.IsInvalid)
         {
