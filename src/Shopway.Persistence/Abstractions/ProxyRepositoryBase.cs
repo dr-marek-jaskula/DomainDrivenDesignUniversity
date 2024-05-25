@@ -98,7 +98,7 @@ internal abstract class ProxyRepositoryBase<TEntity, TEntityId>(ShopwayDbContext
     (
         TEntityId entityId,
         CancellationToken cancellationToken,
-        IMapping<TEntity, TResponse>? mapping = null
+        IMapping<TEntity, TResponse>? mapping
     )
         where TResponse : class
     {

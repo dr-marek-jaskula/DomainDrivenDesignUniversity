@@ -136,7 +136,7 @@ internal sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorat
     (
         OrderHeaderId orderHeaderId, 
         CancellationToken cancellationToken, 
-        IMapping<OrderHeader, TResponse>? mapping = null
+        IMapping<OrderHeader, TResponse>? mapping
     )
         where TResponse : class
     {

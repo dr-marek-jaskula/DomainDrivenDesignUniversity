@@ -67,7 +67,7 @@ public sealed partial class OrderHeadersController(ISender sender, IAuthorizatio
 
         if (authorizationResult.Succeeded is false)
         {
-            return TypedResults.Forbid();
+            return authorizationResult.ToForbidResult();
         }
 
         var command = new SoftDeleteOrderHeaderCommand(id);
