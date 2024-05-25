@@ -78,7 +78,7 @@ public interface IProductRepository
     (
         ProductId productId,
         CancellationToken cancellationToken,
-        IMapping<Product, TResponse>? mapping = null
+        IMapping<Product, TResponse>? mapping
     )
         where TResponse : class;
 }

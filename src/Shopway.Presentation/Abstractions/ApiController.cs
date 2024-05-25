@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,11 @@ public static class ResultUtilities
     public static Ok ToOkResult(this IResult result)
     {
         return TypedResults.Ok();
+    }
+
+    public static ForbidHttpResult ToForbidResult(this AuthorizationResult result)
+    {
+        return TypedResults.Forbid();
     }
 
     public static ProblemHttpResult ToProblemHttpResult(this IResult result)

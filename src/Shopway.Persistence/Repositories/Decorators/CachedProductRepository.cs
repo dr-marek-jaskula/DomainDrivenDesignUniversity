@@ -169,7 +169,7 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
     (
         ProductId productId,
         CancellationToken cancellationToken,
-        IMapping<Product, TResponse>? mapping = null
+        IMapping<Product, TResponse>? mapping
     )
         where TResponse : class
     {
