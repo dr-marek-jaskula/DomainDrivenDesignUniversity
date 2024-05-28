@@ -59,18 +59,37 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "grafana", "grafana", "{118CA542-55A6-41C9-AB7F-F978444888CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prometheus", "prometheus", "{2AD2B65A-C378-42C4-9B45-C7633F0D049C}"
+	ProjectSection(SolutionItems) = preProject
+		OpenTelemetry\prometheus\prometheus.yml = OpenTelemetry\prometheus\prometheus.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{88722650-1C39-4FEF-B66E-32E2BAF8A341}"
+	ProjectSection(SolutionItems) = preProject
+		OpenTelemetry\grafana\config\grafana.ini = OpenTelemetry\grafana\config\grafana.ini
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dashboards", "dashboards", "{3DC84A8F-D038-420B-81DD-4CEE15DA5660}"
+	ProjectSection(SolutionItems) = preProject
+		OpenTelemetry\grafana\dashboards\aspnetcore-endpoint.json = OpenTelemetry\grafana\dashboards\aspnetcore-endpoint.json
+		OpenTelemetry\grafana\dashboards\aspnetcore.json = OpenTelemetry\grafana\dashboards\aspnetcore.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "provisioning", "provisioning", "{B6E765C3-358A-4BA9-AAE2-1B4D7D3A5C57}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dashboards", "dashboards", "{F1877966-BB74-459A-A55B-D44DAA78DDCA}"
+	ProjectSection(SolutionItems) = preProject
+		OpenTelemetry\grafana\config\provisioning\dashboards\default.yaml = OpenTelemetry\grafana\config\provisioning\dashboards\default.yaml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "datasources", "datasources", "{668AB89F-9AEA-4468-A6A2-15D291B7C9EF}"
+	ProjectSection(SolutionItems) = preProject
+		OpenTelemetry\grafana\config\provisioning\datasources\default.yaml = OpenTelemetry\grafana\config\provisioning\datasources\default.yaml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "otelcollector", "otelcollector", "{B515B481-F98A-40DF-A0E7-6AE589CC9D95}"
+	ProjectSection(SolutionItems) = preProject
+		OpenTelemetry\otelcollector\otel-collector-config.yaml = OpenTelemetry\otelcollector\otel-collector-config.yaml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SourceGenerators", "SourceGenerators", "{04AA239D-CADF-4CFC-BD4E-1076E7015093}"
 EndProject
