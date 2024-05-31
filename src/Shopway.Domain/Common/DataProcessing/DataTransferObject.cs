@@ -46,7 +46,7 @@ public class DataTransferObject : IDictionary<string, object?>, IHasCursor
             resultExpression = ChainAppendExpression(resultExpression, mappingEntry, entity);
         }
 
-        return Expression.Lambda<Func<TEntity, DataTransferObject>> (resultExpression!, entity);
+        return Expression.Lambda<Func<TEntity, DataTransferObject>>(resultExpression!, entity);
     }
 
     private static MethodCallExpression ChainAppendExpression
