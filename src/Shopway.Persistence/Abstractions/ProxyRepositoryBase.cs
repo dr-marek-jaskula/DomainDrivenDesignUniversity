@@ -11,12 +11,12 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Abstractions;
 
-internal abstract class ProxyRepositoryBase<TEntity, TEntityId>(ShopwayDbContext dbContext, Func<TEntityId, Expression<Func<TEntity, bool>>> cursorFilterFactory)
+internal abstract class ProxyRepositoryBase<TEntity, TEntityId>(ShopwayDbContext dbContext)
     where TEntity : Entity<TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
 {
     protected readonly ShopwayDbContext _dbContext = dbContext;
-    private readonly Func<TEntityId, Expression<Func<TEntity, bool>>> _cursorFilterFactory = cursorFilterFactory;
+    private static readonly Func<TEntityId, Expression<Func<TEntity, bool>>> _cursorFilterFactory = GenerateCursorFilterFactory();
 
     public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
@@ -110,5 +110,19 @@ internal abstract class ProxyRepositoryBase<TEntity, TEntityId>(ShopwayDbContext
             .Set<TEntity>()
             .UseSpecification(specificationWithMapping)
             .FirstAsync(cancellationToken);
+    }
+
+    private static Func<TEntityId, Expression<Func<TEntity, bool>>> GenerateCursorFilterFactory()
+    {
+        var parameter = Expression.Parameter(typeof(TEntityId), typeof(TEntityId).Name);
+        var parameterNested = Expression.Parameter(typeof(TEntity), typeof(TEntity).Name);
+
+        var nestedParameterId = Expression.PropertyOrField(parameterNested, IEntityId.Id);
+        var greatherThan = Expression.MakeBinary(ExpressionType.GreaterThanOrEqual, nestedParameterId, parameter);
+
+        var innerlambdaExpression = Expression.Lambda<Func<TEntity, bool>>(greatherThan, false, parameterNested);
+        var resultLambdaExpression = Expression.Lambda<Func<TEntityId, Expression<Func<TEntity, bool>>>>(innerlambdaExpression, false, parameter);
+
+        return resultLambdaExpression.Compile();
     }
 }

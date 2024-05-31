@@ -13,8 +13,7 @@ using static Shopway.Domain.Common.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
-internal sealed class ProductRepository(ShopwayDbContext dbContext) 
-    : ProxyRepositoryBase<Product, ProductId>(dbContext, (ProductId productId) => product => product.Id >= productId), IProductRepository
+internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyRepositoryBase<Product, ProductId>(dbContext), IProductRepository
 {
     public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
     {
