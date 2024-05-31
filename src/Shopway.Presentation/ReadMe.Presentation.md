@@ -71,3 +71,17 @@ Due to the fact that base ApiController has attribute
 [Route("api/[controller]")]
 ```
 we should name our controllers **ProductsController** and not ProductController.
+
+## FastEndpoints
+
+FastEndpoints are the go to approach for organizing presentation layer with endpoints pattern. They are add a significant performance boosts and provide multiple
+feature from out of the box. One of the advantage of FastEndpoitns over MinimalApi is the possibility to overwrite RequestDeserializer, which is not possible
+for MinialApi:
+
+```csharp
+options.Serializer.RequestDeserializer = async (request, dto, jCtx, cancellationToken) =>
+{
+    using var reader = new StreamReader(request.Body);
+    return JsonConvert.DeserializeObject(await reader.ReadToEndAsync(), dto, _jsonSerializerSettings);
+};
+```

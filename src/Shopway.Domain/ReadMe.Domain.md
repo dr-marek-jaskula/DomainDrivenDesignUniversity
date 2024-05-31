@@ -371,3 +371,48 @@ Example of manual approach:
 specification
     .AddFilters(product => product.Id == productId);
 ```
+
+## Generic Dynamic Filtering/Sorting/Mapping
+
+The go to approach should be using the developer created filtering/sorting/mapping when needed. In many cases we can use the generic dynamic ones.
+
+Filter example:
+
+```csharp
+public sealed class DynamicFilter<TEntity, TEntityId> : IDynamicFilter<TEntity>
+    where TEntity : Entity<TEntityId>
+    where TEntityId : struct, IEntityId<TEntityId>
+{
+    public static IReadOnlyCollection<string> AllowedFilterProperties => [];
+
+    public static IReadOnlyCollection<string> AllowedFilterOperations => [];
+
+    public IList<FilterByEntry> FilterProperties { get; init; } = [];
+
+    public IQueryable<TEntity> Apply(IQueryable<TEntity> queryable, ILikeProvider<TEntity>? likeProvider = null)
+    {
+        if (FilterProperties.IsNullOrEmpty())
+        {
+            return queryable;
+        }
+
+        return queryable
+            .Where(FilterProperties.CreateFilterExpression(likeProvider));
+    }
+
+    public static DynamicFilter<TEntity, TEntityId>? From(DynamicFilter? dynamicFilter)
+    {
+        if (dynamicFilter is null)
+        {
+            return null;
+        }
+
+        return new DynamicFilter<TEntity, TEntityId>()
+        {
+            FilterProperties = dynamicFilter.FilterProperties
+        };
+    }
+}
+```
+
+To see how to use ultimate dynamic and generic data processing, see Proxy Generic Features in .Application layer.

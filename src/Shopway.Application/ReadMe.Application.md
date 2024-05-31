@@ -161,3 +161,48 @@ Endpoint ```/proxy/query``` (see **ProxyController**) uses ```MediatorProxySeriv
 - we can use any dynamic mapping
 
 Flexibility of this solution was the main idea behind its implementation. Nevertheless, the performance is also impressive despite some boxing that can occur (DataTansferObject value type is ```object```).
+
+### Ultimate Generic Proxy Endpoints
+
+Proxy endpoints (for instance ones defined by FastEndpoints) with `generic` in path are capable to use only one generic handler and one generic repository to query:
+- any registered entity by id
+- any registered entity by key that implements generic IUniqueKey interface
+- offset page of any registered entities
+- cursor page of any registered entities
+
+Therefore, it is the ultimate solution - supporting new entities requires only adding a new strategy methods in MediatorProxyService like:
+
+```csharp
+//Users
+[GenericPageQueryStrategy(nameof(User), typeof(OffsetPage))]
+private static GenericOffsetPageQuery<User, UserId> GenericQueryUsersUsingOffsetPage(GenericProxyPageQuery proxyQuery)
+    => GenericOffsetPageQuery<User, UserId>.From(proxyQuery);
+
+[GenericPageQueryStrategy(nameof(User), typeof(CursorPage))]
+private static GenericCursorPageQuery<User, UserId> GenericQueryUsersUsingCursorPage(GenericProxyPageQuery proxyQuery)
+    => GenericCursorPageQuery<User, UserId>.From(proxyQuery);
+```
+
+and ones for id
+
+```csharp
+//Users
+[GenericByIdQueryStrategy(nameof(User))]
+private static GenericByIdQuery<User, UserId> GenericQueryUserById(GenericProxyByIdQuery proxyQuery)
+    => GenericByIdQuery<User, UserId>.From(proxyQuery);
+```
+
+for supporting key for User entity, we would need to create an UserKey like this: 
+
+```csharp
+public readonly record struct UserKey : IUniqueKey<User, UserKey>
+{
+    ...
+}
+```
+
+I assume that we can uniquely query one element only by Id or by UniqueKey. If we need more unique values that we can query by, just implement similar solution  for UniqueKey approach.
+
+Its is preferred to use FastEndpoint for these ultimate strategy to obtain the best possible performance.
+
+It is considerable to use caching for these queries, but for the tutorial purpose it is not used here. To add caching simply implement ICachedQuery interface or go decorator approach - use IFusionCache or upcoming `HybridCache`, however IFusionCache seems to be a easy winner.
