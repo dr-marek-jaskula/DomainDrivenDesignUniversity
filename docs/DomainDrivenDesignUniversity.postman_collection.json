@@ -3407,11 +3407,14 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "GET",
 								"header": [
 									{
 										"key": "x-api-key",
-										"value": "{{api_key_product_get}}"
+										"value": "{{api_key_product_get}}d"
 									}
 								],
 								"body": {
@@ -3427,6 +3430,143 @@
 										"endpoints",
 										"products",
 										"{{validProductUlid}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddReview.Valid.RequireJwtToken",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(200))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validReviewUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle399\",\r\n  \"Description\": \"Added review description\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/products/{{validProductUlid}}/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"products",
+										"{{validProductUlid}}",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteReview.Valid.RequireJwtToken",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/endpoints/products/{{validProductUlid}}/reviews/{{validReviewUlid}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"products",
+										"{{validProductUlid}}",
+										"reviews",
+										"{{validReviewUlid}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Orders",
+					"item": [
+						{
+							"name": "SoftDeleteOrderHeader.ById.Valid",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "1.0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/endpoints/OrderHeaders/{{validOrderHeaderUlid}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"OrderHeaders",
+										"{{validOrderHeaderUlid}}"
 									]
 								}
 							},
