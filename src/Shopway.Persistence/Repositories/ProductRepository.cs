@@ -3,9 +3,9 @@ using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
+using Shopway.Persistence.Specifications.Common;
 using Shopway.Persistence.Specifications.Products;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
@@ -13,7 +13,7 @@ using static Shopway.Domain.Common.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
-internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyRepositoryBase<Product, ProductId>(dbContext), IProductRepository
+internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyWithKeyRepository<Product, ProductId, ProductKey>(dbContext), IProductRepository
 {
     public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
     {
@@ -27,7 +27,7 @@ internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyRepos
 
     public async Task<Product?> GetByKeyOrDefaultAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
-        var specification = ProductSpecification.ByKey.Create(productKey);
+        var specification = CommonSpecification.Create<Product, ProductId, ProductKey>(productKey);
 
         return await _dbContext
             .Set<Product>()
@@ -37,6 +37,7 @@ internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyRepos
 
     public async Task<bool> AnyAsync(ProductKey productKey, CancellationToken cancellationToken)
     {
+        //Use for tutorial purposes. More generic CommonSpecification.Create<Product, ProductId, ProductKey>(productKey); is go to approach.
         var specification = ProductSpecification.ByKey.Create(productKey);
 
         return await _dbContext

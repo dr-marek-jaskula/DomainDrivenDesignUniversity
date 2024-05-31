@@ -1,4 +1,5 @@
-﻿using Shopway.Domain.Orders;
+﻿using Shopway.Domain.Common.DataProcessing.Proxy;
+using Shopway.Domain.Orders;
 using Shopway.Domain.Products;
 using Shopway.Domain.Users;
 using Shopway.Infrastructure.Outbox;
@@ -15,6 +16,8 @@ internal static class RepositoriesRegistration
         services.AddScoped<IOutboxRepository, OutboxRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
+        services.AddScoped(typeof(IProxyRepository<,>), typeof(ProxyRepository<,>));
+        services.AddScoped(typeof(IProxyWithKeyRepository<,,>), typeof(ProxyWithKeyRepository<,,>));
 
         return services;
     }

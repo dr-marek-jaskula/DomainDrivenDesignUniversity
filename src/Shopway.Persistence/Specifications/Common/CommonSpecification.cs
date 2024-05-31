@@ -64,4 +64,36 @@ internal static partial class CommonSpecification
             .AddFilter(filter)
             .AddTag($"Common {typeof(TEntity).Name} query");
     }
+
+    internal static Specification<TEntity, TEntityId> Create<TEntity, TEntityId, TUniqueKey>
+    (
+        IUniqueKey<TEntity, TUniqueKey> uniqueKey,
+        Action<IIncludeBuilder<TEntity>>? buildIncludes = null
+    )
+        where TEntityId : struct, IEntityId<TEntityId>
+        where TUniqueKey : IUniqueKey<TEntity, TUniqueKey>
+        where TEntity : Entity<TEntityId>
+    {
+        return Specification<TEntity, TEntityId>.New()
+            .AddIncludes(buildIncludes)
+            .AddFilters(uniqueKey.FindSpecification())
+            .AddTag($"Common {typeof(TEntity).Name} query");
+    }
+
+    internal static SpecificationWithMapping<TEntity, TEntityId, TResponse> Create<TEntity, TEntityId, TUniqueKey, TResponse>
+    (
+        IUniqueKey<TEntity, TUniqueKey> uniqueKey,
+        IMapping<TEntity, TResponse>? mapping = null
+    )
+        where TEntityId : struct, IEntityId<TEntityId>
+        where TUniqueKey : IUniqueKey<TEntity, TUniqueKey>
+        where TEntity : Entity<TEntityId>
+    {
+
+        return SpecificationWithMapping<TEntity, TEntityId, TResponse>.New()
+            .AddMapping(mapping)
+            .AddFilters(uniqueKey.FindSpecification())
+            .AddTag($"Common {typeof(TEntity).Name} query")
+            .AsMappingSpecification<TResponse>();
+    }
 }

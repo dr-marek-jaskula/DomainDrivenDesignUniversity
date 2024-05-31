@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Users;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
 using Shopway.Persistence.Specifications.OrderHeaders;
@@ -10,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Shopway.Persistence.Repositories;
 
-internal sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : ProxyRepositoryBase<OrderHeader, OrderHeaderId>(dbContext), IOrderHeaderRepository
+internal sealed class OrderHeaderRepository(ShopwayDbContext dbContext) : ProxyRepository<OrderHeader, OrderHeaderId>(dbContext), IOrderHeaderRepository
 {
     public async Task<bool> IsOrderHeaderCreatedByUser(OrderHeaderId id, UserId userId, CancellationToken cancellationToken)
     {

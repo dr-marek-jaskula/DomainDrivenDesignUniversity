@@ -3,15 +3,16 @@ using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.DataProcessing.Proxy;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
 using Shopway.Persistence.Specifications.Common;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
 
-namespace Shopway.Persistence.Abstractions;
+namespace Shopway.Persistence.Repositories;
 
-internal abstract class ProxyRepositoryBase<TEntity, TEntityId>(ShopwayDbContext dbContext)
+internal class ProxyRepository<TEntity, TEntityId>(ShopwayDbContext dbContext) : IProxyRepository<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
 {

@@ -105,6 +105,8 @@ public sealed partial class NamingConventionsTests
             .AreClasses()
             .And()
             .ImplementInterface(typeof(IQuery<>))
+            .And()
+            .AreNotGeneric()
             .Should()
             .HaveNameEndingWith(Query)
             .GetResult();
@@ -126,6 +128,8 @@ public sealed partial class NamingConventionsTests
             .AreClasses()
             .And()
             .ImplementInterface(typeof(IQueryHandler<,>))
+            .And()
+            .AreNotGeneric()
             .Should()
             .HaveNameEndingWith(QueryHandler)
             .GetResult();

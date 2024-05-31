@@ -18,6 +18,11 @@ public static partial class ApplicationCache
 
         foreach (var type in dynamicSortByTypes)
         {
+            if (type.IsGenericType)
+            {
+                continue;
+            }
+
             var typeAllowedSortByProperties = type!.GetProperty(nameof(IDynamicSortBy.AllowedSortProperties))
                 !.GetValue(null) as IReadOnlyCollection<string>;
             allowedSortPropertiesCache.TryAdd(type, typeAllowedSortByProperties!);
