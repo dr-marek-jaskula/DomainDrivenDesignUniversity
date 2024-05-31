@@ -1,4 +1,6 @@
 ﻿using Asp.Versioning.ApiExplorer;
+using FastEndpoints.AspVersioning;
+using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
@@ -10,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 internal static class OpenApiRegistration
 {
+    private const string SwaggerDefaultDocumentTitle = $"{nameof(Shopway)}";
     private const string SwaggerDarkThameStyleFileName = "SwaggerDark.css";
     private const string WwwRootDirectoryName = "OpenApi";
     private const string ShopwayPresentation = $"{nameof(Shopway)}.{nameof(Shopway.Presentation)}";
@@ -31,7 +34,36 @@ internal static class OpenApiRegistration
 
         services.AddSwaggerExamplesFromAssemblies(Shopway.Presentation.AssemblyReference.Assembly);
 
+        services.SetSwaggerForEndpoints();
+
         return services;
+    }
+
+    private static IServiceCollection SetSwaggerForEndpoints(this IServiceCollection services)
+    {
+        return services
+            .SwaggerDocument(options =>
+            {
+                options.MaxEndpointVersion = 1;
+                options.DocumentSettings = documentSettings =>
+                {
+                    documentSettings.DocumentName = "Release 1.0";
+                    documentSettings.Title = SwaggerDefaultDocumentTitle;
+                };
+
+                options.AutoTagPathSegmentIndex = 0;
+            })
+            .SwaggerDocument(options =>
+            {
+                options.MaxEndpointVersion = 2;
+                options.DocumentSettings = documentSettings =>
+                {
+                    documentSettings.DocumentName = "Release 2.0";
+                    documentSettings.Title = SwaggerDefaultDocumentTitle;
+                };
+
+                options.AutoTagPathSegmentIndex = 0;
+            });
     }
 
     internal static IApplicationBuilder ConfigureOpenApi(this IApplicationBuilder app, bool isDevelopment)
