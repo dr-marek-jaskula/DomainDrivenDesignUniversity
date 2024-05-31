@@ -56,6 +56,19 @@ public static class ReflectionUtilities
         return methodFormBaseType.MakeGenericMethod(genericType);
     }
 
+    public static MethodInfo GetSingleGenericMethod(this Type baseType, string methodName, BindingFlags bindingFlags, params Type[] genericType)
+    {
+        var methodFormBaseType = baseType
+            .GetMethod(methodName, bindingFlags);
+
+        if (methodFormBaseType is null || methodFormBaseType.IsGenericMethod is false)
+        {
+            throw new ArgumentException($"{baseType.Name} does not contain generic method {methodName}");
+        }
+
+        return methodFormBaseType.MakeGenericMethod(genericType);
+    }
+
     public static IEntityId GetEntityIdFromEntity(this IEntity baseType)
     {
         return (IEntityId)baseType

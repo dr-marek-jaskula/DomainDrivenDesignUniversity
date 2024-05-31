@@ -21,6 +21,14 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
         StrategyCacheFactory<QueryDiscriminator, Func<ProxyQuery, IQuery<DataTransferObjectResponse>>>
             .CreateFor<MediatorProxyService, QueryStrategyAttribute>();
 
+    private static readonly FrozenDictionary<GenericPageQueryDiscriminator, Func<GenericProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyGenericPageQueryCache =
+        StrategyCacheFactory<GenericPageQueryDiscriminator, Func<GenericProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
+            .CreateFor<MediatorProxyService, GenericPageQueryStrategyAttribute>();
+
+    private static readonly FrozenDictionary<GenericQueryDiscriminator, Func<GenericProxyQuery, IQuery<DataTransferObjectResponse>>> _strategyGenericQueryCache =
+        StrategyCacheFactory<GenericQueryDiscriminator, Func<GenericProxyQuery, IQuery<DataTransferObjectResponse>>>
+            .CreateFor<MediatorProxyService, GenericQueryStrategyAttribute>();
+
     private readonly IValidator _validator = validator;
 
     public Result<IQuery<DataTransferObjectResponse>> Map(ProxyQuery proxyQuery)
@@ -61,6 +69,53 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
 
         _validator
             .If(_strategyPageQueryCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{proxyQuery.Entity}' with page type '{proxyQuery.Page.GetPageType().Name}' is not supported. Supported strategies: [{string.Join(", ", _strategyPageQueryCache.Keys.Select(x => (x.Entity, x.PageType.Name)))}]"));
+
+        if (_validator.IsInvalid)
+        {
+            return Failure<PageResponse<DataTransferObjectResponse>>();
+        }
+
+        return Result.Success(@delegate!(proxyQuery));
+    }
+
+    public Result<IQuery<DataTransferObjectResponse>> GenericMap(GenericProxyQuery proxyQuery)
+    {
+        _validator
+            .If(proxyQuery.Mapping is null || proxyQuery.Mapping.MappingEntries.IsEmpty(), Error.InvalidArgument("Mapping must be provided."));
+
+        if (_validator.IsInvalid)
+        {
+            return Failure<DataTransferObjectResponse>();
+        }
+
+        var strategyKey = new GenericQueryDiscriminator(proxyQuery.Entity);
+
+        _validator
+            .If(_strategyGenericQueryCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{proxyQuery.Entity}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericQueryCache.Keys.Select(x => x.Entity))}]"));
+
+        if (_validator.IsInvalid)
+        {
+            return Failure<DataTransferObjectResponse>();
+        }
+
+        return Result.Success(@delegate!(proxyQuery));
+    }
+
+    public Result<IQuery<PageResponse<DataTransferObjectResponse>>> GenericMap(GenericProxyPageQuery proxyQuery)
+    {
+        _validator
+            .If(PageIsNotOffsetOrCursorPage(proxyQuery.Page), Error.InvalidArgument("Cursor or PageNumber must be provided."))
+            .If(PageIsBothOffsetAndCursorPage(proxyQuery.Page), Error.InvalidArgument("Both Cursor and PageNumber cannot be provided."));
+
+        if (_validator.IsInvalid)
+        {
+            return Failure<PageResponse<DataTransferObjectResponse>>();
+        }
+
+        var strategyKey = new GenericPageQueryDiscriminator(proxyQuery.Entity, proxyQuery.Page.GetPageType());
+
+        _validator
+            .If(_strategyGenericPageQueryCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{proxyQuery.Entity}' with page type '{proxyQuery.Page.GetPageType().Name}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericPageQueryCache.Keys.Select(x => (x.Entity, x.PageType.Name)))}]"));
 
         if (_validator.IsInvalid)
         {

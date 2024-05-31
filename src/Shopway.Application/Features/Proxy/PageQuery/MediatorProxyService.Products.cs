@@ -1,6 +1,7 @@
 ﻿using Shopway.Application.Features.Products.Queries.DynamicOffsetProductWithMappingQuery;
 using Shopway.Application.Features.Products.Queries.ProductCursorPageDynamicWithMappingQuery;
 using Shopway.Application.Features.Proxy.PageQuery;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.DataProcessing.Filtering;
@@ -37,13 +38,13 @@ public partial class MediatorProxyService
 
         bool noMappingForCursorWhenMappingIsNotNull = mapping is not null && mapping
             .MappingEntries
-            .Any(x => x.PropertyName is nameof(Product.Id)) is false;
+            .Any(x => x.PropertyName is nameof(IEntityId.Id)) is false;
 
         if (noMappingForCursorWhenMappingIsNotNull)
         {
             mapping!.MappingEntries.Insert(0, new MappingEntry()
             {
-                PropertyName = nameof(Product.Id)
+                PropertyName = nameof(IEntityId.Id)
             });
         }
 

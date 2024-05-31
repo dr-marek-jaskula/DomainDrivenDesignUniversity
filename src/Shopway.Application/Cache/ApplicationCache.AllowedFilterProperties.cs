@@ -18,6 +18,11 @@ public static partial class ApplicationCache
 
         foreach (var type in dynamicFilterTypes)
         {
+            if (type.IsGenericType)
+            {
+                continue;
+            }
+
             var typeAllowedFilterProperties = type!.GetProperty(nameof(IDynamicFilter.AllowedFilterProperties))
                 !.GetValue(null) as IReadOnlyCollection<string>;
             allowedFilterPropertiesCache.TryAdd(type, typeAllowedFilterProperties!);

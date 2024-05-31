@@ -18,6 +18,11 @@ public static partial class ApplicationCache
 
         foreach (var type in dynamicMappingTypes)
         {
+            if (type.IsGenericType)
+            {
+                continue;
+            }
+
             var typeAllowedMappingProperties = type!.GetProperty(nameof(IDynamicMapping.AllowedProperties))
                 !.GetValue(null) as IReadOnlyCollection<string>;
             allowedMappingPropertiesCache.TryAdd(type, typeAllowedMappingProperties!);

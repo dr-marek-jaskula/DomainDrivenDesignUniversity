@@ -3,7 +3,6 @@ using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.EntityKeys;
 using Shopway.Domain.Products;
 using Shopway.Domain.Products.ValueObjects;
-using Shopway.Persistence.Abstractions;
 using Shopway.Persistence.Framework;
 using Shopway.Persistence.Specifications;
 using Shopway.Persistence.Specifications.Products;
@@ -13,7 +12,7 @@ using static Shopway.Domain.Common.Utilities.StringUtilities;
 
 namespace Shopway.Persistence.Repositories;
 
-internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyRepositoryBase<Product, ProductId>(dbContext), IProductRepository
+internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyRepository<Product, ProductId>(dbContext), IProductRepository
 {
     public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
     {
