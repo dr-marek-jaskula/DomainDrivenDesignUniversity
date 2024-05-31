@@ -12,7 +12,8 @@ public static class PresentationLayerRegistration
             .RegisterControllers()
             .RegisterOpenApi()
             .RegisterVersioning()
-            .RegisterAuthentication();
+            .RegisterAuthentication()
+            .RegisterEndpoints();
 
         services.Scan(selector => selector
             .FromAssemblies(
@@ -30,7 +31,8 @@ public static class PresentationLayerRegistration
         app
             .ConfigureOpenApi(environment.IsDevelopment())
             .UseAuthorization()
-            .UseCorsPolicy();
+            .UseCorsPolicy()
+            .UseEndpoints();
 
         return app;
     }

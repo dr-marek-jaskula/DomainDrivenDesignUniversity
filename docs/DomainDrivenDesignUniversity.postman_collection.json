@@ -2683,13 +2683,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/proxy/query/generic",
+							"raw": "{{base_url}}/proxy/query/id/generic",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"proxy",
 								"query",
+								"id",
 								"generic"
 							]
 						}
@@ -3043,7 +3044,7 @@
 			"name": "FastEndpoints",
 			"item": [
 				{
-					"name": "Proxy",
+					"name": "GenericProxy",
 					"item": [
 						{
 							"name": "ProductById",
@@ -3065,21 +3066,128 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/endpoints/proxy/query",
+									"raw": "{{base_url}}/endpoints/proxy/query/id/generic",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"endpoints",
 										"proxy",
-										"query"
+										"query",
+										"id",
+										"generic"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Product Dynamic With Mapping OffsetPage",
+							"name": "OrderHeaderById",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "2.0"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Entity\" : \"OrderHeader\",\r\n  \"Id\" : \"{{validOrderHeaderUlid}}\",\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/proxy/query/id/generic",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"proxy",
+										"query",
+										"id",
+										"generic"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UserById",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "2.0"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Entity\" : \"User\",\r\n  \"Id\" : \"01H6EC2836W3MYRAFKM6VADBGB\",\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Username\",\r\n         \"Email\"\r\n      ]\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/proxy/query/id/generic",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"proxy",
+										"query",
+										"id",
+										"generic"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ProductByKey",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "2.0"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Entity\" : \"Product\",\r\n  \"Key\" : {\r\n    \"ProductName\" : \"Pencil\",\r\n    \"revision\" : \"2.0\"\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Price\",\r\n         \"Revision\",\r\n        {\r\n            \"From\" : \"Reviews\",\r\n            \"Properties\": [\r\n                \"Title\",\r\n                \"Description\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/proxy/query/key/generic",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"proxy",
+										"query",
+										"key",
+										"generic"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ProductOffsetPage",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -3098,7 +3206,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/endpoints/proxy/query/page",
+									"raw": "{{base_url}}/endpoints/proxy/query/page/generic",
 									"host": [
 										"{{base_url}}"
 									],
@@ -3106,7 +3214,183 @@
 										"endpoints",
 										"proxy",
 										"query",
-										"page"
+										"page",
+										"generic"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ProductCursorQuery",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "2.0"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Entity\": \"Product\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"Operation\": \"LessThanOrEqual\",\r\n            \"Value\" : 121\r\n        },\r\n        {\r\n            \"PropertyName\" : \"ProductName\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"oductx\"\r\n        }\r\n        ]\r\n      },\r\n      {\r\n          \"PropertyName\" : \"ProductName\",\r\n          \"Operation\": \"Contains\",\r\n          \"Value\" : \"firstpr\"\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"ProductName\",\r\n        \"Price:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"ProductName\",\r\n         \"Price\",\r\n         \"Revision\",\r\n        {\r\n            \"From\" : \"Reviews\",\r\n            \"Properties\": [\r\n                \"Title\",\r\n                \"Description\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/proxy/query/page/generic",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"proxy",
+										"query",
+										"page",
+										"generic"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "OrderHeaderOffsetPage",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "2.0"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Status\",\r\n            \"Operation\": \"Equal\",\r\n            \"Value\" : \"New\" \r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         \"TotalDiscount\"\r\n        ,{\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/proxy/query/page/generic",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"proxy",
+										"query",
+										"page",
+										"generic"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "OrderHeaderCursorPage",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "2.0"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n          \"PropertyName\" : \"Status\",\r\n          \"Operation\": \"Equal\",\r\n          \"Value\" : \"New\"\r\n      },\r\n      {\r\n          \"PropertyName\" : \"Payments.Status\",\r\n          \"Operation\": \"All.Equal\",\r\n          \"Value\" : \"NotReceived\"\r\n      },\r\n      {\r\n          \"PropertyName\" : \"Payments.CreatedBy\",\r\n          \"Operation\": \"Any.Like\",\r\n          \"Value\" : \"%known\"\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                \"CreatedBy\"\r\n            ]\r\n         },\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\" : \"ProductSummary\",\r\n                    \"Properties\": [ \r\n                        \"ProductName\",\r\n                        \"Revision\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/proxy/query/page/generic",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"proxy",
+										"query",
+										"page",
+										"generic"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UserOffsetPage",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "2.0"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Entity\": \"User\",\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Username\",\r\n            \"Operation\": \"Contains\",\r\n            \"Value\" : \"mar\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Username\",\r\n        \"Email:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Username\",\r\n         \"Email\"\r\n      ]\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/proxy/query/page/generic",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"proxy",
+										"query",
+										"page",
+										"generic"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UserCursorQuery",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "2.0"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Entity\": \"User\",\r\n  \"Page\" : {\r\n    \"PageSize\": 15,\r\n    \"Cursor\": \"00000000000000000000000000\"\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Username\",\r\n            \"Operation\": \"Like\",\r\n            \"Value\" : \"%x\"\r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Username\",\r\n        \"Email:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Username\",\r\n         \"Email\"\r\n      ]\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endpoints/proxy/query/page/generic",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endpoints",
+										"proxy",
+										"query",
+										"page",
+										"generic"
 									]
 								}
 							},
