@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Proxy;
+using Shopway.Application.Features.Proxy.GenericQuery.QueryByKey;
 using Shopway.Application.Features.Proxy.PageQuery;
 using Shopway.Application.Features.Proxy.Query;
 using Shopway.Presentation.Abstractions;
@@ -65,12 +66,35 @@ public sealed class ProxyController(ISender sender, IMediatorProxyService generi
             : result.ToOkResult();
     }
 
-    [HttpPost("query/generic")]
+    [HttpPost("query/id/generic")]
     [ProducesResponseType<DataTransferObjectResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok<DataTransferObjectResponse>, ProblemHttpResult>> GenericProxyQuery
+    public async Task<Results<Ok<DataTransferObjectResponse>, ProblemHttpResult>> GenericProxyQueryById
     (
-        [FromBody] GenericProxyQuery query,
+        [FromBody] GenericProxyByIdQuery query,
+        CancellationToken cancellationToken
+    )
+    {
+        var queryResult = _genericMappingService.GenericMap(query);
+
+        if (queryResult!.IsFailure)
+        {
+            return queryResult.ToProblemHttpResult();
+        }
+
+        var result = await Sender.Send(queryResult.Value, cancellationToken);
+
+        return result!.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
+    [HttpPost("query/key/generic")]
+    [ProducesResponseType<DataTransferObjectResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<DataTransferObjectResponse>, ProblemHttpResult>> GenericProxyQueryByKey
+    (
+        [FromBody] GenericProxyByKeyQuery query,
         CancellationToken cancellationToken
     )
     {

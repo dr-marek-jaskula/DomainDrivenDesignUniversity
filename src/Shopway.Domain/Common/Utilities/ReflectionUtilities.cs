@@ -24,6 +24,22 @@ public static class ReflectionUtilities
             .Single();
     }
 
+    public static Type? GetEntityGenericKeyTypeFromEntityIdTypeOrDefault(Type entityIdType)
+    {
+        if (entityIdType.Implements<IEntityId>() is false)
+        {
+            throw new ArgumentException($"{entityIdType.Name} must implements {nameof(IEntityId)}");
+        }
+
+        var typeName = entityIdType.Name.Replace(IEntityId.Id, IUniqueKey.Key);
+
+        return AssemblyReference.Assembly
+            .GetTypes()
+            .Where(type => type.ImplementsGeneric<IUniqueKey>())
+            .Where(type => type.Name == typeName)
+            .SingleOrDefault();
+    }
+
     public static Type[] GetEntityIdTypes()
     {
         return AssemblyReference.Assembly
@@ -88,6 +104,16 @@ public static class ReflectionUtilities
     {
         return baseType
             .GetInterface(typeof(TInterface).Name) is not null;
+    }
+
+    public static bool ImplementsGeneric<TInterface>(this Type baseType)
+    {
+        var @interface = baseType
+            .GetInterfaces()
+            .FirstOrDefault(i => i.Name.Contains(typeof(TInterface).Name));
+
+        return @interface is not null
+            && @interface.IsGenericType;
     }
 
     public static IEnumerable<Type> GetTypesWithAnyMatchingInterface(this Assembly assembly, Func<Type, bool> typeInterfaceMatch)

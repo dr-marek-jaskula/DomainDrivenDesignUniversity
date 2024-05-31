@@ -2,7 +2,7 @@
 
 namespace Shopway.Application.Features.Proxy;
 
-public sealed record GenericProxyQuery
+public sealed record GenericProxyByIdQuery
 (
     string Entity,
     Ulid Id,

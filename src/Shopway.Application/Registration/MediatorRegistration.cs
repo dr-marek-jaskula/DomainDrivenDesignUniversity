@@ -5,6 +5,7 @@ using Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 using Shopway.Application.Features.Proxy;
 using Shopway.Application.Features.Proxy.GenericPageQuery;
 using Shopway.Application.Features.Proxy.GenericQuery.QueryById;
+using Shopway.Application.Features.Proxy.GenericQuery.QueryByKey;
 using Shopway.Application.Pipelines;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
@@ -40,10 +41,10 @@ internal static class MediatorRegistration
         {
             Type entityType = GetEntityTypeFromEntityIdType(entityIdType);
 
-            MethodInfo registerGenericQueryMethod = typeof(MediatorRegistration)
-                .GetSingleGenericMethod(nameof(RegisterGenericQuery), BindingFlags.NonPublic | BindingFlags.Static, entityType, entityIdType);
+            MethodInfo registerGenericQueryByIdMethod = typeof(MediatorRegistration)
+                .GetSingleGenericMethod(nameof(RegisterGenericQueryById), BindingFlags.NonPublic | BindingFlags.Static, entityType, entityIdType);
 
-            registerGenericQueryMethod.Invoke(null, [services]);
+            registerGenericQueryByIdMethod.Invoke(null, [services]);
 
             MethodInfo registerGenericOffsetPageQueryMethod = typeof(MediatorRegistration)
                 .GetSingleGenericMethod(nameof(RegisterGenericOffsetPageQuery), BindingFlags.NonPublic | BindingFlags.Static, entityType, entityIdType);
@@ -54,15 +55,37 @@ internal static class MediatorRegistration
                 .GetSingleGenericMethod(nameof(RegisterGenericCursorPageQuery), BindingFlags.NonPublic | BindingFlags.Static, entityType, entityIdType);
 
             registerGenericCursorPageQueryMethod.Invoke(null, [services]);
+
+
+            var entityKeyType = GetEntityGenericKeyTypeFromEntityIdTypeOrDefault(entityIdType);
+
+            if (entityKeyType is null)
+            {
+                continue;
+            }
+
+            MethodInfo registerGenericQueryByKeyMethod = typeof(MediatorRegistration)
+                .GetSingleGenericMethod(nameof(RegisterGenericQueryByKey), BindingFlags.NonPublic | BindingFlags.Static, entityType, entityIdType, entityKeyType);
+
+            registerGenericQueryByKeyMethod.Invoke(null, [services]);
         }
     }
 
-    private static IServiceCollection RegisterGenericQuery<TEntity, TEntityId>(IServiceCollection services)
+    private static IServiceCollection RegisterGenericQueryById<TEntity, TEntityId>(IServiceCollection services)
         where TEntity : Entity<TEntityId>
         where TEntityId : struct, IEntityId<TEntityId>
     {
         return services
-            .AddTransient<IRequestHandler<GenericQuery<TEntity, TEntityId>, IResult<DataTransferObjectResponse>>, GenericQueryHandler<TEntity, TEntityId>>();
+            .AddTransient<IRequestHandler<GenericByIdQuery<TEntity, TEntityId>, IResult<DataTransferObjectResponse>>, GenericByIdQueryHandler<TEntity, TEntityId>>();
+    }
+
+    private static IServiceCollection RegisterGenericQueryByKey<TEntity, TEntityId, TEntityKey>(IServiceCollection services)
+        where TEntity : Entity<TEntityId>
+        where TEntityId : struct, IEntityId<TEntityId>
+        where TEntityKey : IUniqueKey<TEntity, TEntityKey>
+    {
+        return services
+            .AddTransient<IRequestHandler<GenericByKeyQuery<TEntity, TEntityId, TEntityKey>, IResult<DataTransferObjectResponse>>, GenericByKeyQueryHandler<TEntity, TEntityId, TEntityKey>>();
     }
 
     private static IServiceCollection RegisterGenericOffsetPageQuery<TEntity, TEntityId>(IServiceCollection services)

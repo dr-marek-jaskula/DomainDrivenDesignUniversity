@@ -7,14 +7,14 @@ using Shopway.Domain.Common.Results;
 
 namespace Shopway.Application.Features.Proxy.GenericQuery.QueryById;
 
-internal sealed class GenericQueryHandler<TEntity, TEntityId>(IProxyRepository<TEntity, TEntityId> proxyRepository)
-    : IQueryHandler<GenericQuery<TEntity, TEntityId>, DataTransferObjectResponse>
+internal sealed class GenericByIdQueryHandler<TEntity, TEntityId>(IProxyRepository<TEntity, TEntityId> proxyRepository)
+    : IQueryHandler<GenericByIdQuery<TEntity, TEntityId>, DataTransferObjectResponse>
     where TEntity : Entity<TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>
 {
     private readonly IProxyRepository<TEntity, TEntityId> _proxyRepository = proxyRepository;
 
-    public async Task<IResult<DataTransferObjectResponse>> Handle(GenericQuery<TEntity, TEntityId> query, CancellationToken cancellationToken)
+    public async Task<IResult<DataTransferObjectResponse>> Handle(GenericByIdQuery<TEntity, TEntityId> query, CancellationToken cancellationToken)
     {
         var entityDto = await _proxyRepository
             .QueryByIdAsync(query.EntityId, cancellationToken, query.Mapping);

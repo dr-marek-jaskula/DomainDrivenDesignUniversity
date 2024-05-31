@@ -1,5 +1,7 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Features.Proxy.GenericQuery.QueryById;
+using Shopway.Application.Features.Proxy.GenericQuery.QueryByKey;
 using Shopway.Application.Features.Proxy.PageQuery;
 using Shopway.Application.Features.Proxy.Query;
 using Shopway.Domain.Common.DataProcessing.Proxy;
@@ -25,9 +27,13 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
         StrategyCacheFactory<GenericPageQueryDiscriminator, Func<GenericProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
             .CreateFor<MediatorProxyService, GenericPageQueryStrategyAttribute>();
 
-    private static readonly FrozenDictionary<GenericQueryDiscriminator, Func<GenericProxyQuery, IQuery<DataTransferObjectResponse>>> _strategyGenericQueryCache =
-        StrategyCacheFactory<GenericQueryDiscriminator, Func<GenericProxyQuery, IQuery<DataTransferObjectResponse>>>
-            .CreateFor<MediatorProxyService, GenericQueryStrategyAttribute>();
+    private static readonly FrozenDictionary<GenericByIdQueryDiscriminator, Func<GenericProxyByIdQuery, IQuery<DataTransferObjectResponse>>> _strategyGenericQueryByIdCache =
+        StrategyCacheFactory<GenericByIdQueryDiscriminator, Func<GenericProxyByIdQuery, IQuery<DataTransferObjectResponse>>>
+            .CreateFor<MediatorProxyService, GenericByIdQueryStrategyAttribute>();
+
+    private static readonly FrozenDictionary<GenericByKeyQueryDiscriminator, Func<GenericProxyByKeyQuery, IQuery<DataTransferObjectResponse>>> _strategyGenericQueryByKeyCache =
+        StrategyCacheFactory<GenericByKeyQueryDiscriminator, Func<GenericProxyByKeyQuery, IQuery<DataTransferObjectResponse>>>
+            .CreateFor<MediatorProxyService, GenericByKeyQueryStrategyAttribute>();
 
     private readonly IValidator _validator = validator;
 
@@ -78,7 +84,7 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
         return Result.Success(@delegate!(proxyQuery));
     }
 
-    public Result<IQuery<DataTransferObjectResponse>> GenericMap(GenericProxyQuery proxyQuery)
+    public Result<IQuery<DataTransferObjectResponse>> GenericMap(GenericProxyByIdQuery proxyQuery)
     {
         _validator
             .If(proxyQuery.Mapping is null || proxyQuery.Mapping.MappingEntries.IsEmpty(), Error.InvalidArgument("Mapping must be provided."));
@@ -88,10 +94,33 @@ public partial class MediatorProxyService(IValidator validator) : IMediatorProxy
             return Failure<DataTransferObjectResponse>();
         }
 
-        var strategyKey = new GenericQueryDiscriminator(proxyQuery.Entity);
+        var strategyKey = new GenericByIdQueryDiscriminator(proxyQuery.Entity);
 
         _validator
-            .If(_strategyGenericQueryCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{proxyQuery.Entity}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericQueryCache.Keys.Select(x => x.Entity))}]"));
+            .If(_strategyGenericQueryByIdCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{proxyQuery.Entity}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericQueryByIdCache.Keys.Select(x => x.Entity))}]"));
+
+        if (_validator.IsInvalid)
+        {
+            return Failure<DataTransferObjectResponse>();
+        }
+
+        return Result.Success(@delegate!(proxyQuery));
+    }
+
+    public Result<IQuery<DataTransferObjectResponse>> GenericMap(GenericProxyByKeyQuery proxyQuery)
+    {
+        _validator
+            .If(proxyQuery.Mapping is null || proxyQuery.Mapping.MappingEntries.IsEmpty(), Error.InvalidArgument("Mapping must be provided."));
+
+        if (_validator.IsInvalid)
+        {
+            return Failure<DataTransferObjectResponse>();
+        }
+
+        var strategyKey = new GenericByKeyQueryDiscriminator(proxyQuery.Entity);
+
+        _validator
+            .If(_strategyGenericQueryByKeyCache.TryGetValue(strategyKey, out var @delegate) is false, Error.InvalidOperation($"Entity '{proxyQuery.Entity}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericQueryByKeyCache.Keys.Select(x => x.Entity))}]"));
 
         if (_validator.IsInvalid)
         {

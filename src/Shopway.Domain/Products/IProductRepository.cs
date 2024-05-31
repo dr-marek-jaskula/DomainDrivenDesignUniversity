@@ -81,4 +81,19 @@ public interface IProductRepository
         IMapping<Product, TResponse>? mapping
     )
         where TResponse : class;
+
+    Task<Product> QueryByKeyAsync
+    (
+        ProductKey productKey,
+        CancellationToken cancellationToken,
+        Action<IIncludeBuilder<Product>>? buildIncludes = null
+    );
+
+    Task<TResponse> QueryByKeyAsync<TResponse>
+    (
+        ProductKey productKey,
+        CancellationToken cancellationToken,
+        IMapping<Product, TResponse>? mapping
+    )
+        where TResponse : class;
 }

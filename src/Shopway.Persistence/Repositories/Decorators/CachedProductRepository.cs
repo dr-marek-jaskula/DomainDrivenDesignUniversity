@@ -8,6 +8,7 @@ using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
 using ZiggyCreatures.Caching.Fusion;
+using static Shopway.Domain.Constants.Constants;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -176,6 +177,26 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
         return await _decorated.QueryByIdAsync
         (
             productId,
+            cancellationToken,
+            mapping
+        );
+    }
+
+    public async Task<Product> QueryByKeyAsync(ProductKey productKey, CancellationToken cancellationToken, Action<IIncludeBuilder<Product>>? buildIncludes = null)
+    {
+        return await _decorated.QueryByKeyAsync
+        (
+            productKey,
+            cancellationToken,
+            buildIncludes
+        );
+    }
+
+    public async Task<TResponse> QueryByKeyAsync<TResponse>(ProductKey productKey, CancellationToken cancellationToken, IMapping<Product, TResponse>? mapping) where TResponse : class
+    {
+        return await _decorated.QueryByKeyAsync
+        (
+            productKey,
             cancellationToken,
             mapping
         );

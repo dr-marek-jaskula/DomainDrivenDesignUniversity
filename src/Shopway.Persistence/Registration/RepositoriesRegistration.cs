@@ -17,6 +17,7 @@ internal static class RepositoriesRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
         services.AddScoped(typeof(IProxyRepository<,>), typeof(ProxyRepository<,>));
+        services.AddScoped(typeof(IProxyWithKeyRepository<,,>), typeof(ProxyWithKeyRepository<,,>));
 
         return services;
     }
