@@ -1,7 +1,7 @@
 ﻿using FastEndpoints.AspVersioning;
 using Microsoft.AspNetCore.Builder;
 
-namespace Shopway.Presentation.Abstractions;
+namespace Shopway.Presentation.Utilities;
 
 public static class EndpointConventionBuilderUtilities
 {

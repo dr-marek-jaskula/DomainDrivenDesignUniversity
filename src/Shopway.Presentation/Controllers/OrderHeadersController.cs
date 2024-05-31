@@ -12,13 +12,14 @@ using Shopway.Application.Features.Orders.Queries.GetOrderById;
 using Shopway.Domain.Orders;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.OrderHeaders.OrderHeaderCreatedByUser;
+using Shopway.Presentation.Utilities;
 
 namespace Shopway.Presentation.Controllers;
 
 [ApiVersion("0.1", Deprecated = true)]
-public sealed partial class OrderHeadersController(ISender sender, IAuthorizationService _authorizationService) : ApiController(sender)
+public sealed partial class OrderHeadersController(ISender sender, IAuthorizationService authorizationService) : ApiController(sender)
 {
-    private readonly IAuthorizationService _authorizationService = _authorizationService;
+    private readonly IAuthorizationService _authorizationService = authorizationService;
 
     [HttpGet("{id}")]
     [ProducesResponseType<OrderHeaderResponse>(StatusCodes.Status200OK)]

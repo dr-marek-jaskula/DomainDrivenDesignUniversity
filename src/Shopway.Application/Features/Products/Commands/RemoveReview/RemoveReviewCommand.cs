@@ -8,3 +8,4 @@ public sealed record RemoveReviewCommand
     ProductId ProductId,
     ReviewId ReviewId
 ) : ICommand<RemoveReviewResponse>;
+

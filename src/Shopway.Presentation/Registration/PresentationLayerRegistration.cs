@@ -12,7 +12,7 @@ public static class PresentationLayerRegistration
             .RegisterControllers()
             .RegisterOpenApi()
             .RegisterVersioning()
-            .RegisterAuthentication()
+            .RegisterSecurity()
             .RegisterEndpoints();
 
         services.Scan(selector => selector

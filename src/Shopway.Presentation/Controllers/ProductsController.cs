@@ -21,6 +21,7 @@ using Shopway.Domain.EntityKeys;
 using Shopway.Domain.Products;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication;
+using Shopway.Presentation.Utilities;
 
 namespace Shopway.Presentation.Controllers;
 

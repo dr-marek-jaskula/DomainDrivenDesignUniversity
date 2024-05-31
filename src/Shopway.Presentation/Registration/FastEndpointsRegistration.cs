@@ -1,7 +1,4 @@
-﻿using Asp.Versioning;
-using Asp.Versioning.Conventions;
-using FastEndpoints;
-using FastEndpoints.AspVersioning;
+﻿using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -41,6 +38,7 @@ internal static class FastEndpointsRegistration
                 {
                     configure.Description(builder => builder.ProducesProblem(StatusCodes.Status400BadRequest));
                 };
+
                 options.Serializer.RequestDeserializer = async (request, dto, jCtx, cancellationToken) =>
                 {
                     using var reader = new StreamReader(request.Body);

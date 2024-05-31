@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Shopway.Application.Features.Products.Queries;
 using Shopway.Application.Features.Products.Queries.GetProductById;
 using Shopway.Domain.Products;
-using Shopway.Presentation.Abstractions;
+using Shopway.Presentation.Authentication;
+using Shopway.Presentation.Authentication.ApiKeyAuthentication;
+using Shopway.Presentation.Utilities;
 
 namespace Shopway.Presentation.Endpoints.Products;
 
@@ -29,13 +31,13 @@ public sealed class GetProductByIdEndpoint(ISender sender)
             .WithName(_name)
             .WithDescription(_description)
             .WithSummary(_summary)
+            .WithMetadata(new RequiredApiKeyAttribute(RequiredApiKey.PRODUCT_GET))
             .WithVersion(VersionGroup.Products, 1, 0));
+
+        AuthSchemes(AnonymousSchema.Name);
     }
 
-    public override async Task<Results<Ok<ProductResponse>, ProblemHttpResult>> ExecuteAsync
-    (
-        CancellationToken cancellationToken
-    )
+    public override async Task<Results<Ok<ProductResponse>, ProblemHttpResult>> ExecuteAsync(CancellationToken cancellationToken)
     {
         var id = Route<Ulid>("id");
 

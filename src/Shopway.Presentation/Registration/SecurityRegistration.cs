@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Shopway.Presentation.Authentication;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication.Handlers;
 using Shopway.Presentation.Authentication.OrderHeaders.OrderHeaderCreatedByUser;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication.Handlers;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-internal static class AuthenticationRegistration
+internal static class SecurityRegistration
 {
-    internal static IServiceCollection RegisterAuthentication(this IServiceCollection services)
+    internal static IServiceCollection RegisterSecurity(this IServiceCollection services)
     {
         services.AddHttpContextAccessor();
 
@@ -19,6 +21,7 @@ internal static class AuthenticationRegistration
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+            .AddScheme<AuthenticationSchemeOptions, AnonymousSchema>(AnonymousSchema.Name, null)
             .AddJwtBearer();
 
         services.AddAuthorization(options =>

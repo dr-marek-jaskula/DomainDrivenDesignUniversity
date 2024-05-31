@@ -47,7 +47,7 @@ internal static class VersioningRegistration
            })
            .AddVersionSet(VersionGroup.Proxy, (1, 0), (2, 0))
            .AddVersionSet(VersionGroup.Products, (1, 0), (2, 0))
-           .AddVersionSet(VersionGroup.Orders, (1, 0), (2, 0));
+           .AddVersionSet(VersionGroup.OrderHeaders, (1, 0), (2, 0));
 
         return services;
     }
