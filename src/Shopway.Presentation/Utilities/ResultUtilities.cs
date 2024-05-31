@@ -7,7 +7,7 @@ using static Shopway.Application.Constants.Constants.ProblemDetails;
 using static Shopway.Application.Utilities.ProblemDetailsUtilities;
 using IResult = Shopway.Domain.Common.Results.IResult;
 
-namespace Shopway.Presentation.Abstractions;
+namespace Shopway.Presentation.Utilities;
 
 public static class ResultUtilities
 {

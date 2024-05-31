@@ -13,9 +13,6 @@ public sealed class ProductsGroup : Group
         Configure(Prefix, endpointDefinition =>
         {
             endpointDefinition
-                .AllowAnonymous();
-
-            endpointDefinition
                 .Description(builder => builder
                     .WithTags(Tag));
         });

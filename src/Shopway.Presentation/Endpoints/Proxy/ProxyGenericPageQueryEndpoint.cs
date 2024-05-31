@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Proxy;
-using Shopway.Presentation.Abstractions;
+using Shopway.Presentation.Utilities;
 
 namespace Shopway.Presentation.Endpoints.Proxy;
 

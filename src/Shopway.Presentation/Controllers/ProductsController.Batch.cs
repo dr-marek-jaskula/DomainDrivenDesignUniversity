@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 using Shopway.Application.Utilities;
-using Shopway.Presentation.Abstractions;
+using Shopway.Presentation.Utilities;
 
 namespace Shopway.Presentation.Controllers;
 
