@@ -230,13 +230,12 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{api_key_product_create}}",
-								"type": "text"
+								"value": "{{api_key_product_create}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Product243\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
+							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Product245\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3414,7 +3413,7 @@
 								"header": [
 									{
 										"key": "x-api-key",
-										"value": "{{api_key_product_get}}d"
+										"value": "{{api_key_product_get}}"
 									}
 								],
 								"body": {
@@ -3554,8 +3553,7 @@
 								"header": [
 									{
 										"key": "api-version",
-										"value": "1.0",
-										"type": "text"
+										"value": "1.0"
 									}
 								],
 								"url": {
