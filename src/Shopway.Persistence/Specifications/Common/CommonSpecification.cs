@@ -76,7 +76,7 @@ internal static partial class CommonSpecification
     {
         return Specification<TEntity, TEntityId>.New()
             .AddIncludes(buildIncludes)
-            .AddFilters(uniqueKey.FindSpecification())
+            .AddFilters(uniqueKey.GetFindSpecification())
             .AddTag($"Common {typeof(TEntity).Name} query");
     }
 
@@ -92,7 +92,7 @@ internal static partial class CommonSpecification
 
         return SpecificationWithMapping<TEntity, TEntityId, TResponse>.New()
             .AddMapping(mapping)
-            .AddFilters(uniqueKey.FindSpecification())
+            .AddFilters(uniqueKey.GetFindSpecification())
             .AddTag($"Common {typeof(TEntity).Name} query")
             .AsMappingSpecification<TResponse>();
     }
