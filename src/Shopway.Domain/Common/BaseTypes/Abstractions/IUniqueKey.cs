@@ -14,7 +14,7 @@ public interface IUniqueKey<TEntity, TUniqueKey> : IUniqueKey
     where TEntity : class, IEntity
     where TUniqueKey : IUniqueKey
 {
-    Expression<Func<TEntity, bool>> FindSpecification();
+    Expression<Func<TEntity, bool>> GetFindSpecification();
 
     abstract static TUniqueKey Create(Dictionary<string, string> key);
 }

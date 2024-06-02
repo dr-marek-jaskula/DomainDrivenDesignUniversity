@@ -28,7 +28,7 @@ public sealed class RemoveReviewEndpoint(ISender sender)
 
     public override void Configure()
     {
-        Delete("{productId}/Reviews/{reviewId}");
+        Delete("{@productId}/Reviews/{@reviewId}", request => new { request.ProductId, request.ReviewId });
 
         Group<ProductsGroup>();
 
