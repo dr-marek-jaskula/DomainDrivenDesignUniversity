@@ -13,22 +13,42 @@ public static class ResultUtilities
 {
     public static Ok<TValue> ToOkResult<TValue>(this IResult<TValue> result)
     {
-        return TypedResults.Ok(result.Value);
+        return result switch
+        {
+            { IsSuccess: true } => TypedResults.Ok(result.Value),
+
+            _ => throw new InvalidOperationException("Result was failed")
+        };
     }
 
     public static BadRequest<TValue> ToBadRequestResult<TValue>(this IResult<TValue> result)
     {
-        return TypedResults.BadRequest(result.Value);
+        return result switch
+        {
+            { IsSuccess: true } => TypedResults.BadRequest(result.Value),
+
+            _ => throw new InvalidOperationException("Result was failed")
+        };
     }
 
     public static Ok ToOkResult(this IResult result)
     {
-        return TypedResults.Ok();
+        return result switch
+        {
+            { IsSuccess: true } => TypedResults.Ok(),
+
+            _ => throw new InvalidOperationException("Result was failed")
+        };
     }
 
     public static ForbidHttpResult ToForbidResult(this AuthorizationResult result)
     {
-        return TypedResults.Forbid();
+        return result switch
+        {
+            { Succeeded: true } => throw new InvalidOperationException("Result was successful"),
+
+            _ => TypedResults.Forbid()
+        };
     }
 
     public static ProblemHttpResult ToProblemHttpResult(this IResult result)
