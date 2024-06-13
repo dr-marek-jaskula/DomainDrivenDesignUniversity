@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-    <PackageReference Include="MediatR" Version="12.2.0" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="1.1.0" />
-    <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="1.1.0" />
+    <PackageReference Include="MediatR" Version="12.3.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="1.2.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
