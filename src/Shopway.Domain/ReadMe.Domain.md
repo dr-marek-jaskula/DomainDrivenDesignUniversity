@@ -19,7 +19,7 @@ In this layer we define:
 
 Validation in the Domain Layer is mainly connected to ValueObjects. 
 
-Errors, that occur when in-domain validation fails, need to be explicitly handled. This is done by "Validator" that is defined in .Infrastructure
+Errors, that occur when in-domain validation fails, need to be explicitly handled. This is done by "Validator" that is defined in .Infrastructure project.
 
 We can examine handling the in-domain validation in for instance "CreateProductCommandHandler.Handle"
 
@@ -44,7 +44,7 @@ Moreover, we use [Ulid](https://github.com/Cysharp/Ulid) NuGet Package that prov
 In order to create a EntityId in the desired format for the Shopway application, we utilize our custom **Shopway.SourceGenerator**, 
 which is also included in this repository. See **ReadMe.SourceGenerator.md** for details. 
 
-To use it, simply decorate an entity with the **[EntityId]** attribute.". The generated entity id is in the following form:
+To use it, simply decorate an entity with the **[GenerateEntityId]** attribute.". The generated entity id is in the following form:
 
 ```csharp
 //------------------------------------------------------------------------------
@@ -116,13 +116,13 @@ public readonly record struct ProductId : IEntityId<ProductId>
 
 ```
 
-NOTE: the **using Shopway.Domain.Common.BaseTypes.Abstractions;** is hardcoded in the source generator, because form the Shopway application perspective it is
+NOTE: the **using Shopway.Domain.Common.BaseTypes.Abstractions;** is hardcoded in the source generator, because from the Shopway application perspective it is
 more than sufficient. To make it more customizable, see remarks made in **ReadMe.SourceGenerator.md**. If You want to see how to deal with it, see SourceGenerator
 for id converters or comparers, where we use a property on a attribute to store the namespace - the desired approach would be to use generic parameter, however the 
 Roslyn source generator seems not to support that option.
 
 NOTE: for tutorial purposes, the UserId remains defined as before in **UserId.cs**, This approach is not preferred because if the definition of EntityId changes, 
-we would need to manually update all such ids manually. However, it has been left in place for the clarity of individuals analyzing this repository..
+we would need to manually update all such ids manually. However, it has been left in place for the clarity of individuals analyzing this repository.
 
 ## EntityIds and EntityIdConverter
 
@@ -149,15 +149,15 @@ Domain event should not leave the bounded context. Therefore, we can use the dom
 
 ## Referencing Aggregates
 
-Entities in the aggregates (also aggregate root) should not contain the direct references to the other aggregates, but they can contain ids of them.
-Therefore, one aggregate will not be queried as a part of other aggregate. For instance, **OrderHeader** contains property **public UserId UserId** but not 
-a reference **public User User**.
+Entities in the aggregates (also aggregate roots) should not contain the direct references to entities in other aggregates, but they can contain ids of them.
+Therefore, one aggregate will not be queried as a part of other aggregate. For instance, **OrderHeader** contains property **UserId** but not 
+a reference **User**.
 
 ## Data Processing (Filter, SortBy, Mapping)
 
 Filtering, sorting and mapping are done by objects that implements ```IFilter<TEntity>```, ```ISortBy<TEntity>```, ``` IMapping<TEntity, TOutput>``` interfaces. The apply method 
 invoked in UseSpecification method that is located in the BaseRepository. The dynamic filtering, sorting and mapping can be obtained by objects 
-that implements ```IDynamicFilter<TEntity>```, ```IDynamicSortBy<TEntity>```, ```IDynamicMapping<TEntity>```. To set the filtering,sorting and mapping in the specification we use 
+that implements ```IDynamicFilter<TEntity>```, ```IDynamicSortBy<TEntity>```, ```IDynamicMapping<TEntity>```. To set the filtering, sorting and mapping in the specification we use 
 
 ```csharp
 specification
@@ -367,6 +367,7 @@ We can also combine dynamic and static filtering/sorting/mapping.
 Moreover, we can combine dynamic/static filtering/sorting/mapping with manual approach.
 
 Example of manual approach:
+
 ```
 specification
     .AddFilters(product => product.Id == productId);
