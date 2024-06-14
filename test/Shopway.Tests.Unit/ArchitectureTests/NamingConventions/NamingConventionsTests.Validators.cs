@@ -20,6 +20,8 @@ public partial class NamingConventionsTests
             .That()
             .AreNotAbstract()
             .And()
+            .AreNotGeneric()
+            .And()
             .Inherit(typeof(AbstractValidator<>))
             .Should()
             .HaveNameEndingWith(Validator)
