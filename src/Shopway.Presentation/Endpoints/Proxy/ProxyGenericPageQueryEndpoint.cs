@@ -1,20 +1,23 @@
 ﻿using FastEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Proxy;
+using Shopway.Presentation.Authentication.GenericProxy;
 using Shopway.Presentation.Utilities;
 
 namespace Shopway.Presentation.Endpoints.Proxy;
 
-public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxyService genericMappingService) 
-    : Endpoint<GenericProxyPageQuery, Results<Ok<object>, ProblemHttpResult>>
+public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxyService genericMappingService, IAuthorizationService authorizationService) 
+    : Endpoint<GenericProxyPageQuery, Results<Ok<object>, ProblemHttpResult, ForbidHttpResult>>
 {
     private readonly ISender _sender = sender;
     private readonly IMediatorProxyService _genericMappingService = genericMappingService;
+    private readonly IAuthorizationService _authorizationService = authorizationService;
 
     private const string _name = nameof(ProxyGenericPageQueryEndpoint);
     private const string _summary = "Gets entities for specified pagination settings: offset or cursor";
@@ -34,7 +37,7 @@ public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxy
             .WithVersion(VersionGroup.Proxy, 2, 0));
     }
 
-    public override async Task<Results<Ok<object>, ProblemHttpResult>> ExecuteAsync(GenericProxyPageQuery query, CancellationToken cancellationToken)
+    public override async Task<Results<Ok<object>, ProblemHttpResult, ForbidHttpResult>> ExecuteAsync(GenericProxyPageQuery query, CancellationToken cancellationToken)
     {
         var queryResult = _genericMappingService.GenericMap(query);
 
@@ -44,6 +47,14 @@ public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxy
         }
 
         object concretePageQuery = queryResult.Value;
+
+        var resource = GenericProxyRequirementResource.From(query, queryResult.Value);
+        AuthorizationResult authorizationResult = await _authorizationService.AuthorizeAsync(User, resource, GenericProxyPropertiesRequirement.PolicyName);
+
+        if (authorizationResult.Succeeded is false)
+        {
+            return authorizationResult.ToForbidResult();
+        }
 
         var result = await _sender.Send(concretePageQuery, cancellationToken) as Shopway.Domain.Common.Results.IResult<object>;
 

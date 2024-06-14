@@ -1,4 +1,5 @@
-﻿using static Shopway.Domain.Common.Utilities.CollectionUtilities;
+﻿using Shopway.Domain.Orders;
+using static Shopway.Domain.Common.Utilities.CollectionUtilities;
 
 namespace Shopway.Domain.Constants;
 
@@ -12,19 +13,17 @@ public static partial class Constants
             (
                  nameof(Orders.OrderHeader.Id),
                  nameof(Orders.OrderHeader.Status),
-                 nameof(Orders.OrderHeader.OrderLines),
                  nameof(Orders.OrderHeader.SoftDeleted),
                  nameof(Orders.OrderHeader.CreatedBy),
                  nameof(Orders.OrderHeader.CreatedOn),
                  nameof(Orders.OrderHeader.TotalDiscount),
-                 nameof(Orders.OrderHeader.Payments),
-                 nameof(Orders.Payment.CreatedBy),
-                 nameof(Orders.Payment.Status),
-                 nameof(Orders.OrderLine.Amount),
-                 nameof(Orders.OrderLine.ProductSummary),
-                 nameof(Orders.OrderLine.LineDiscount),
-                 nameof(Orders.OrderLine.ProductSummary.ProductName),
-                 nameof(Orders.OrderLine.ProductSummary.Revision)
+                 $"{nameof(Orders.OrderHeader.Payments)}.{nameof(Payment.CreatedBy)}",
+                 $"{nameof(Orders.OrderHeader.Payments)}.{nameof(Payment.Status)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(OrderLine.Amount)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(OrderLine.LineDiscount)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(OrderLine.ProductSummary)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(OrderLine.ProductSummary)}.{nameof(Orders.OrderLine.ProductSummary.ProductName)}",
+                 $"{nameof(Orders.OrderHeader.OrderLines)}.{nameof(OrderLine.ProductSummary)}.{nameof(Orders.OrderLine.ProductSummary.Revision)}"
             );
         }
     }

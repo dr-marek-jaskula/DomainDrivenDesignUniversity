@@ -16,19 +16,17 @@ public sealed class MappingEntry
         };
     }
 
-    public List<string> GetAllPropertyNames()
+    public List<string> GetAllPropertyNamesWithHierarchy(string? hierarchy = null)
     {
         var names = new List<string>();
 
         if (PropertyName is not null)
         {
-            names.Add(PropertyName);
+            names.Add(hierarchy is not null ? $"{hierarchy}.{PropertyName}" : PropertyName);
         }
 
         if (From is not null)
         {
-            names.Add(From);
-
             if (Properties is not null)
             {
                 foreach (var property in Properties)
@@ -39,7 +37,7 @@ public sealed class MappingEntry
                         continue;
                     }
 
-                    names.AddRange(property.GetAllPropertyNames());
+                    names.AddRange(property.GetAllPropertyNamesWithHierarchy(hierarchy is not null ? $"{hierarchy}.{From}" : From));
                 }
             }
         }

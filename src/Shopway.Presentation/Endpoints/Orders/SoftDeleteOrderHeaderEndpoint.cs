@@ -39,7 +39,7 @@ public sealed class SoftDeleteOrderHeaderEndpoint(ISender sender, IAuthorization
         var id = Route<Ulid>("id");
         var orderHeaderId = OrderHeaderId.Create(id);
 
-        var authorizationResult = await _authorizationService.AuthorizeAsync(User, orderHeaderId, OrderHeaderCreatedByUserRequirement.PolicyName);
+        AuthorizationResult authorizationResult = await _authorizationService.AuthorizeAsync(User, orderHeaderId, OrderHeaderCreatedByUserRequirement.PolicyName);
 
         if (authorizationResult.Succeeded is false)
         {
