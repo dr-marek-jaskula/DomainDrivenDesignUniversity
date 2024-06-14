@@ -7,7 +7,7 @@ public static class MappingUtilities
     public static bool ContainsInvalidMappingProperty(this IList<MappingEntry> mappingEntries, IReadOnlyCollection<string> allowedMappingProperties, out IReadOnlyCollection<string> invalidProperties)
     {
         invalidProperties = mappingEntries
-            .SelectMany(x => x.GetAllPropertyNames())
+            .SelectMany(x => x.GetAllPropertyNamesWithHierarchy())
             .Except(allowedMappingProperties)
             .ToList()
             .AsReadOnly();

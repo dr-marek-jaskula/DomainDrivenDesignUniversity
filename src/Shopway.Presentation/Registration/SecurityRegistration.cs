@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Shopway.Presentation.Authentication;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication.Handlers;
+using Shopway.Presentation.Authentication.GenericProxy;
 using Shopway.Presentation.Authentication.OrderHeaders.OrderHeaderCreatedByUser;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication.Handlers;
 
@@ -32,9 +33,11 @@ internal static class SecurityRegistration
             //    .Build();
 
             options.AddPolicy(OrderHeaderCreatedByUserRequirement.PolicyName, policy => policy.Requirements.Add(new OrderHeaderCreatedByUserRequirement()));
+            options.AddPolicy(GenericProxyPropertiesRequirement.PolicyName, policy => policy.Requirements.Add(new GenericProxyPropertiesRequirement()));
         });
 
         services.AddScoped<IAuthorizationHandler, OrderHeaderCreatedByUserRequirementHandler>();
+        services.AddScoped<IAuthorizationHandler, GenericProxyPropertiesRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, RoleRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, ApiKeyRequirementHandler>();

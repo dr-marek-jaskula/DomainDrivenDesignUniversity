@@ -2,9 +2,9 @@
 
 public static class FilterByEntryUtilities
 {
-    public static bool ContainsInvalidFilterProperty(this IList<FilterByEntry> filterProperties, IReadOnlyCollection<string> allowedFilterProperties, out IReadOnlyCollection<string> invalidProperties)
+    public static bool ContainsInvalidFilterProperty(this IList<FilterByEntry> filterEntries, IReadOnlyCollection<string> allowedFilterProperties, out IReadOnlyCollection<string> invalidProperties)
     {
-        invalidProperties = filterProperties
+        invalidProperties = filterEntries
             .SelectMany(x => x.Predicates)
             .Select(x => x.PropertyName)
             .Except(allowedFilterProperties)
@@ -14,9 +14,9 @@ public static class FilterByEntryUtilities
         return invalidProperties.Count is not 0;
     }
 
-    public static bool ContainsOnlyOperationsFrom(this IList<FilterByEntry> filterProperties, IReadOnlyCollection<string> allowedOperations, out IReadOnlyCollection<string> invalidOperations)
+    public static bool ContainsOnlyOperationsFrom(this IList<FilterByEntry> filterEntries, IReadOnlyCollection<string> allowedOperations, out IReadOnlyCollection<string> invalidOperations)
     {
-        invalidOperations = filterProperties
+        invalidOperations = filterEntries
             .SelectMany(x => x.Predicates)
             .Select(x => x.Operation)
             .Except(allowedOperations)

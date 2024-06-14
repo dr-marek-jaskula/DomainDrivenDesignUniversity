@@ -16,7 +16,7 @@
     <PackageReference Include="RestSharp" Version="111.2.0" />
     <PackageReference Include="Testcontainers" Version="3.8.0" />
     <PackageReference Include="Testcontainers.MsSql" Version="3.8.0" />
-    <PackageReference Include="WireMock.Net" Version="1.5.55" />
+    <PackageReference Include="WireMock.Net" Version="1.5.58" />
     <PackageReference Include="xunit" Version="2.8.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

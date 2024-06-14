@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
@@ -28,12 +29,12 @@ internal static class MediatorRegistration
             configuration.AddBehavior<CreateOrderHeaderOpenTelemetryPipeline>();
         });
 
-        AddOpenHandlers(services);
+        AddOpenHandlersWithValidators(services);
 
         return services;
     }
 
-    private static void AddOpenHandlers(IServiceCollection services)
+    private static void AddOpenHandlersWithValidators(IServiceCollection services)
     {
         var entityIdTypes = GetEntityIdTypes();
 
@@ -56,7 +57,6 @@ internal static class MediatorRegistration
 
             registerGenericCursorPageQueryMethod.Invoke(null, [services]);
 
-
             var entityKeyType = GetEntityGenericKeyTypeFromEntityIdTypeOrDefault(entityIdType);
 
             if (entityKeyType is null)
@@ -76,7 +76,7 @@ internal static class MediatorRegistration
         where TEntityId : struct, IEntityId<TEntityId>
     {
         return services
-            .AddTransient<IRequestHandler<GenericByIdQuery<TEntity, TEntityId>, IResult<DataTransferObjectResponse>>, GenericByIdQueryHandler<TEntity, TEntityId>>();
+            .AddScoped<IRequestHandler<GenericByIdQuery<TEntity, TEntityId>, IResult<DataTransferObjectResponse>>, GenericByIdQueryHandler<TEntity, TEntityId>>();
     }
 
     private static IServiceCollection RegisterGenericQueryByKey<TEntity, TEntityId, TEntityKey>(IServiceCollection services)
@@ -85,7 +85,7 @@ internal static class MediatorRegistration
         where TEntityKey : IUniqueKey<TEntity, TEntityKey>
     {
         return services
-            .AddTransient<IRequestHandler<GenericByKeyQuery<TEntity, TEntityId, TEntityKey>, IResult<DataTransferObjectResponse>>, GenericByKeyQueryHandler<TEntity, TEntityId, TEntityKey>>();
+            .AddScoped<IRequestHandler<GenericByKeyQuery<TEntity, TEntityId, TEntityKey>, IResult<DataTransferObjectResponse>>, GenericByKeyQueryHandler<TEntity, TEntityId, TEntityKey>>();
     }
 
     private static IServiceCollection RegisterGenericOffsetPageQuery<TEntity, TEntityId>(IServiceCollection services)
@@ -93,7 +93,8 @@ internal static class MediatorRegistration
         where TEntityId : struct, IEntityId<TEntityId>
     {
         return services
-            .AddTransient<IRequestHandler<GenericCursorPageQuery<TEntity, TEntityId>, IResult<CursorPageResponse<DataTransferObjectResponse>>>, GenericCursorPageQueryHandler<TEntity, TEntityId>>();
+            .AddScoped<IValidator<GenericCursorPageQuery<TEntity, TEntityId>>, GenericCursorPageQueryValidator<TEntity, TEntityId>>()
+            .AddScoped<IRequestHandler<GenericCursorPageQuery<TEntity, TEntityId>, IResult<CursorPageResponse<DataTransferObjectResponse>>>, GenericCursorPageQueryHandler<TEntity, TEntityId>>();
     }
 
     private static IServiceCollection RegisterGenericCursorPageQuery<TEntity, TEntityId>(IServiceCollection services)
@@ -101,6 +102,7 @@ internal static class MediatorRegistration
         where TEntityId : struct, IEntityId<TEntityId>
     {
         return services
-            .AddTransient<IRequestHandler<GenericOffsetPageQuery<TEntity, TEntityId>, IResult<OffsetPageResponse<DataTransferObjectResponse>>>, GenericOffsetPageQueryHandler<TEntity, TEntityId>>();
+            .AddScoped<IValidator<GenericOffsetPageQuery<TEntity, TEntityId>>, GenericOffsetPageQueryValidator<TEntity, TEntityId>>()
+            .AddScoped<IRequestHandler<GenericOffsetPageQuery<TEntity, TEntityId>, IResult<OffsetPageResponse<DataTransferObjectResponse>>>, GenericOffsetPageQueryHandler<TEntity, TEntityId>>();
     }
 }

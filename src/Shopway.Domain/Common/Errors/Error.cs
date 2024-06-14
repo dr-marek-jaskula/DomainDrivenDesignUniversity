@@ -6,6 +6,7 @@
 public sealed partial class Error : IEquatable<Error>
 {
     private const string SerializationSeparator = ": ";
+    private const int MaximalErrorMessageLenght = 500;
 
     /// <summary>
     /// The empty error instance used to represent that no error has occurred
@@ -30,7 +31,7 @@ public sealed partial class Error : IEquatable<Error>
     public Error(string code, string message)
     {
         Code = code;
-        Message = message;
+        Message = KeepMessageNotTooLongForSecurityReasons(message);
     }
 
     /// <summary>
@@ -150,5 +151,15 @@ public sealed partial class Error : IEquatable<Error>
         }
 
         return Message;
+    }
+
+    /// <summary>
+    /// To prevent malicious users to generate a very long error to be send (in order to overload the network), we limit the maximal number of errors
+    /// </summary>
+    public static string KeepMessageNotTooLongForSecurityReasons(string message)
+    {
+        return message.Length > MaximalErrorMessageLenght 
+            ? message[..MaximalErrorMessageLenght] 
+            : message;
     }
 }

@@ -4,9 +4,9 @@ namespace Shopway.Domain.Common.Utilities;
 
 public static class SortByEntryUtilities
 {
-    public static bool ContainsInvalidSortProperty(this IList<SortByEntry> sortProperties, IReadOnlyCollection<string> allowedSortProperties, out IReadOnlyCollection<string> invalidProperties)
+    public static bool ContainsInvalidSortProperty(this IList<SortByEntry> sortEntries, IReadOnlyCollection<string> allowedSortProperties, out IReadOnlyCollection<string> invalidProperties)
     {
-        invalidProperties = sortProperties
+        invalidProperties = sortEntries
             .Select(x => x.PropertyName)
             .Except(allowedSortProperties)
             .ToList()
@@ -15,23 +15,23 @@ public static class SortByEntryUtilities
         return invalidProperties.Count is not 0;
     }
 
-    public static bool ContainsSortPriorityDuplicate(this IList<SortByEntry> sortProperties)
+    public static bool ContainsSortPriorityDuplicate(this IList<SortByEntry> sortEntries)
     {
-        return sortProperties
+        return sortEntries
             .SetSortPriorities()
             .ToList()
             .ContainsDuplicates(x => x.SortPriority);
     }
 
-    public static bool ContainsNullSortByProperty(this IList<SortByEntry> sortProperties)
+    public static bool ContainsNullSortByProperty(this IList<SortByEntry> sortEntries)
     {
-        return sortProperties
+        return sortEntries
             .Any(x => x is null);
     }
 
-    public static IList<SortByEntry> SetSortPriorities(this IEnumerable<SortByEntry> sortProperties)
+    public static IList<SortByEntry> SetSortPriorities(this IEnumerable<SortByEntry> sortEntries)
     {
-        return sortProperties
+        return sortEntries
             .Select((property, index) =>
             {
                 if (property.ParsedFromString)

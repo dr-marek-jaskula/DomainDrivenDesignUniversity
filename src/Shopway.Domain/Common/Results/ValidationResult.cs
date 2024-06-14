@@ -5,10 +5,12 @@ namespace Shopway.Domain.Common.Results;
 
 public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
 {
+    private const int MaximalErrorsLength = 40;
+
     private ValidationResult(Error[] validationErrors)
         : base(default, Error.ValidationError)
     {
-        ValidationErrors = validationErrors;
+        ValidationErrors = ValidationResult<TValue>.KeepErrorsLenghtNotTooLongForSecurityReasons(validationErrors);
     }
 
     private ValidationResult(TValue? value)
@@ -37,6 +39,16 @@ public sealed class ValidationResult<TValue> : Result<TValue>, IValidationResult
     public static ValidationResult<TValue> WithoutErrors(TValue? value)
     {
         return new(value);
+    }
+
+    /// <summary>
+    /// To prevent malicious users to generate a very high number of errors to be send (in order to overload the network), we limit the maximal number of errors
+    /// </summary>
+    private static Error[] KeepErrorsLenghtNotTooLongForSecurityReasons(Error[] validationErrors)
+    {
+        return validationErrors.Length > MaximalErrorsLength
+            ? validationErrors.Take(MaximalErrorsLength).ToArray()
+            : validationErrors;
     }
 }
 

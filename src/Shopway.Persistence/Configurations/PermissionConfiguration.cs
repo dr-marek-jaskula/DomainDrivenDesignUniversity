@@ -20,6 +20,13 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
         builder.Property(r => r.Name)
             .HasColumnType(ColumnType.VarChar(128));
 
+        builder.Ignore(r => r.HasAllProperties);
+        builder.Ignore(r => r.RelatedAggregateRoot);
+        builder.Ignore(r => r.RelatedEntity);
+        builder.Ignore(r => r.Properties);
+        builder.Ignore(r => r.RelatedEnum);
+        builder.Ignore(r => r.Type);
+
         var permissionsFromEnumeration = Permission.GetNames();
         var permissionsFromEnum = GetNamesOf<Domain.Enums.Permission>();
 
