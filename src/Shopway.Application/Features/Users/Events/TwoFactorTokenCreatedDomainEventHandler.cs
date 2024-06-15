@@ -44,8 +44,8 @@ internal sealed class TwoFactorTokenCreatedDomainEventHandler
             user.Username.Value,
             user.Email.Value,
             $"{nameof(Shopway)}@test.com",
-            $"{nameof(Shopway)} Authorization Code", 
-            $"Hello {user.Username.Value}, \n \n thank You for using the {nameof(Shopway)}! \n \n Here is the authorization code. It is valid only for a short period of time. After failure attempt, code is reseted. \n \n Code: {domainEvent.TwoFactorToken}", 
+            $"{nameof(Shopway)} Authorization Code",
+            $"Hello {user.Username.Value}, \n \n thank You for using the {nameof(Shopway)}! \n \n Here is the authorization code. It is valid only for a short period of time. After failure attempt, code is reseted. \n \n Code: {domainEvent.TwoFactorToken}",
             cancellationToken
         );
     }

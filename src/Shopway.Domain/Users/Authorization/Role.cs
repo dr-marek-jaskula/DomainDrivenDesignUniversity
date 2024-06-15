@@ -1,5 +1,16 @@
 using Shopway.Domain.Common.BaseTypes;
 
+namespace Shopway.Domain.Users.Authorization
+{
+    public enum Role
+    {
+        Customer = 1,
+        Employee = 2,
+        Manager = 3,
+        Administrator = 4
+    }
+}
+
 namespace Shopway.Domain.Users.Enumerations
 {
     public sealed class Role : Enumeration<Role>
@@ -21,16 +32,5 @@ namespace Shopway.Domain.Users.Enumerations
 
         public ICollection<User> Users { get; set; }
         public ICollection<Permission> Permissions { get; set; }
-    }
-}
-
-namespace Shopway.Domain.Enums
-{
-    public enum Role
-    {
-        Customer = 1,
-        Employee = 2,
-        Manager = 3,
-        Administrator = 4
     }
 }

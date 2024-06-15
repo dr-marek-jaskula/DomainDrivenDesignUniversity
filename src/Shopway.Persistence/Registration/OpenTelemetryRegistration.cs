@@ -36,7 +36,7 @@ internal static class OpenTelemetryRegistration
             }
 
             options.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
-                serviceName: openTelemetryOptions.ApplicationName, 
+                serviceName: openTelemetryOptions.ApplicationName,
                 serviceVersion: openTelemetryOptions.Version));
 
             options.AddProcessor(new ActivityEventLogProcessor());

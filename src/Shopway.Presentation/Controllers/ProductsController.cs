@@ -40,7 +40,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<ProductResponse>, ProblemHttpResult>> GetProductById
     (
-        [FromRoute] ProductId id, 
+        [FromRoute] ProductId id,
         CancellationToken cancellationToken
     )
     {
@@ -65,7 +65,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<ProductResponse>, ProblemHttpResult>> GetProductByKey
     (
-        [FromBody] ProductKey key, 
+        [FromBody] ProductKey key,
         CancellationToken cancellationToken
     )
     {
@@ -129,7 +129,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<OffsetPageResponse<DictionaryResponseEntry>>, ProblemHttpResult>> QueryProductsOffsetDictionary
     (
-        [FromBody] ProductDictionaryOffsetPageQuery query, 
+        [FromBody] ProductDictionaryOffsetPageQuery query,
         CancellationToken cancellationToken
     )
     {
@@ -145,7 +145,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<CursorPageResponse<DictionaryResponseEntry>>, ProblemHttpResult>> QueryProductsCursorDictionary
     (
-        [FromBody] ProductDictionaryCursorPageQuery query, 
+        [FromBody] ProductDictionaryCursorPageQuery query,
         CancellationToken cancellationToken
     )
     {
@@ -162,7 +162,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<OffsetPageResponse<ProductResponse>>, ProblemHttpResult>> StaticQueryProducts
     (
-        [FromBody] ProductOffsetPageQuery query, 
+        [FromBody] ProductOffsetPageQuery query,
         CancellationToken cancellationToken
     )
     {
@@ -179,7 +179,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<OffsetPageResponse<DataTransferObjectResponse>>, ProblemHttpResult>> StaticQueryProductsWithMapping
     (
-        [FromBody] ProductOffsetPageWithMappingQuery query, 
+        [FromBody] ProductOffsetPageWithMappingQuery query,
         CancellationToken cancellationToken
     )
     {
@@ -195,7 +195,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<OffsetPageResponse<ProductResponse>>, ProblemHttpResult>> DynamicQueryProducts
     (
-        [FromBody] ProductOffsetPageDynamicQuery query, 
+        [FromBody] ProductOffsetPageDynamicQuery query,
         CancellationToken cancellationToken
     )
     {
@@ -211,7 +211,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<OffsetPageResponse<DataTransferObjectResponse>>, ProblemHttpResult>> DynamicQueryProductsWithMapping
     (
-        [FromBody] ProductOffsetPageDynamicWithMappingQuery query, 
+        [FromBody] ProductOffsetPageDynamicWithMappingQuery query,
         CancellationToken cancellationToken
     )
     {
@@ -228,7 +228,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<CreateProductResponse>, ProblemHttpResult>> CreateProduct
     (
-        [FromBody] CreateProductCommand command, 
+        [FromBody] CreateProductCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -265,7 +265,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RemoveProductResponse>, ProblemHttpResult>> RemoveProduct
     (
-        [FromRoute] ProductId id, 
+        [FromRoute] ProductId id,
         CancellationToken cancellationToken
     )
     {

@@ -23,8 +23,8 @@ public sealed class Amount : ValueObject
         Value = value;
     }
 
-    private Amount() 
-    { 
+    private Amount()
+    {
     }
 
     public new int Value { get; }

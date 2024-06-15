@@ -6,7 +6,7 @@ namespace Shopway.Tests.Performance.Utilities;
 
 public static class NBomberUtilities
 {
-    private static readonly ReportFormat[] _reportFormats = [ ReportFormat.Html ];
+    private static readonly ReportFormat[] _reportFormats = [ReportFormat.Html];
     private static readonly TimeSpan _fiveSecondsReportingInterval = TimeSpan.FromSeconds(5);
 
     public static NBomberContext WithReport(this NBomberContext context, string suiteType, string testName)

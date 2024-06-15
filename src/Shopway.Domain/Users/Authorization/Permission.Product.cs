@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Products;
+using System.Collections.Frozen;
 using static Shopway.Domain.Users.Enumerations.PermissionType;
 
 namespace Shopway.Domain.Users.Enumerations;
@@ -10,7 +11,7 @@ partial class Permission : Enumeration<Permission>
     {
         return new Permission(id, name)
         {
-            Properties = properties,
+            Properties = properties?.ToFrozenSet(),
             RelatedAggregateRoot = typeof(Product),
             RelatedEntity = typeof(Review),
             Type = permissionType
@@ -21,7 +22,7 @@ partial class Permission : Enumeration<Permission>
     {
         return new Permission(id, name)
         {
-            Properties = properties,
+            Properties = properties?.ToFrozenSet(),
             RelatedAggregateRoot = typeof(Product),
             Type = permissionType
         };
@@ -31,7 +32,7 @@ partial class Permission : Enumeration<Permission>
     public static readonly Permission Review_Update = CreateReviewPermission(3, nameof(Review_Update), Update);
     public static readonly Permission Review_Remove = CreateReviewPermission(4, nameof(Review_Remove), Remove);
     public static readonly Permission Review_Read = CreateReviewPermission(5, nameof(Review_Read), Read); //Only for demo purposes
-    
+
     public static readonly Permission Product_Read = CreateProductPermission(6, nameof(Product_Read), Read);
     public static readonly Permission Product_Read_Customer = CreateProductPermission(7, nameof(Product_Read_Customer), Read, [.. Product_Read_Customer_Properties, .. Review_Read_Customer_Properties]);
 

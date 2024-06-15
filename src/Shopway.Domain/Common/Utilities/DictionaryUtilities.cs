@@ -5,7 +5,7 @@ namespace Shopway.Domain.Common.Utilities;
 public static class DictionaryUtilities
 {
     public static Dictionary<TKey, TValue> AddIf<TKey, TValue>(this Dictionary<TKey, TValue> source, bool condition, TKey key, TValue value)
-        where TKey: notnull 
+        where TKey : notnull
     {
         if (condition is false)
         {
@@ -31,7 +31,7 @@ public static class DictionaryUtilities
     public static TValue? Find<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> source, TKey key)
     {
         return source.TryGetValue(key, out var value) is false
-            ? default 
+            ? default
             : value;
     }
 

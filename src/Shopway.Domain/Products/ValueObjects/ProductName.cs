@@ -29,7 +29,7 @@ public sealed class ProductName : ValueObject
 
     private ProductName()
     {
-        
+
     }
 
     public new string Value { get; }

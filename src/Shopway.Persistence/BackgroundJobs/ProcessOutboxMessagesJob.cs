@@ -33,7 +33,7 @@ public sealed class ProcessOutboxMessagesJob
             .GetOutboxMessagesAsync(context.CancellationToken);
 
         if (messages.Length is 0)
-        { 
+        {
             return;
         }
 

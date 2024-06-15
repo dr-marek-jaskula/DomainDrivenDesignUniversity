@@ -26,7 +26,7 @@ public sealed partial class OrderHeadersController(ISender sender, IAuthorizatio
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<OrderHeaderResponse>, ProblemHttpResult>> GetOrderHeaderById
     (
-        [FromRoute] OrderHeaderId id, 
+        [FromRoute] OrderHeaderId id,
         CancellationToken cancellationToken
     )
     {

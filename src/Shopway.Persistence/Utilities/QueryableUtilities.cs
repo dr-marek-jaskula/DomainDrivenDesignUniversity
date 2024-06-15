@@ -188,8 +188,8 @@ public static class QueryableUtilities
             var propertyName = likeEntry.Property.GetPropertyName();
             var likeExpression = CreateLikeExpression(parameter, propertyName, likeEntry.LikeTerm);
 
-            expression = expression is null 
-                ? likeExpression 
+            expression = expression is null
+                ? likeExpression
                 : Expression.AndAlso(expression, likeExpression);
         }
 
@@ -244,7 +244,7 @@ public static class QueryableUtilities
     {
         var newQueryable = _includeMethodInfo
             .MakeGenericMethod(includeEntry.EntityType, includeEntry.PropertyType)
-            .Invoke(null, [ query, includeEntry.Property ]);
+            .Invoke(null, [query, includeEntry.Property]);
 
         if (newQueryable is null)
         {
@@ -267,9 +267,9 @@ public static class QueryableUtilities
             ? _thenIncludeAfterEnumerableMethodInfo
             : _thenIncludeAfterReferenceMethodInfo;
 
-         var newQueryable = thenIncludeMethodInfo
-            .MakeGenericMethod(includeEntry.EntityType, previousPropertyType, includeEntry.PropertyType)
-            .Invoke(null, [ queryable, includeEntry.Property ]);
+        var newQueryable = thenIncludeMethodInfo
+           .MakeGenericMethod(includeEntry.EntityType, previousPropertyType, includeEntry.PropertyType)
+           .Invoke(null, [queryable, includeEntry.Property]);
 
         if (newQueryable is null)
         {

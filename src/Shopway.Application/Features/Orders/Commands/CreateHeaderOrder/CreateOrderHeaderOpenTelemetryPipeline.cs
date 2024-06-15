@@ -3,7 +3,7 @@ using Shopway.Domain.Common.Results;
 
 namespace Shopway.Application.Features.Orders.Commands.CreateHeaderOrder;
 
-public sealed class CreateOrderHeaderOpenTelemetryPipeline(CreateOrderHeaderOpenTelemetry orderMetrics) 
+public sealed class CreateOrderHeaderOpenTelemetryPipeline(CreateOrderHeaderOpenTelemetry orderMetrics)
     : IPipelineBehavior<CreateOrderHeaderCommand, IResult<CreateOrderHeaderResponse>>
 {
     private readonly CreateOrderHeaderOpenTelemetry _orderMetrics = orderMetrics;

@@ -16,9 +16,9 @@ public static class PageUtilities
     {
         return new OffsetPageResponse<DataTransferObjectResponse>
         (
-            response.Responses.Select(dto => DataTransferObjectResponse.From(dto)).ToList(), 
-            response.TotalCount, 
-            page.PageSize, 
+            response.Responses.Select(dto => DataTransferObjectResponse.From(dto)).ToList(),
+            response.TotalCount,
+            page.PageSize,
             page.PageNumber
         );
     }

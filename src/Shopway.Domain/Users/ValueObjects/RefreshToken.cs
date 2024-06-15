@@ -29,7 +29,7 @@ public sealed class RefreshToken : ValueObject
 
     private RefreshToken()
     {
-        
+
     }
 
     public new string Value { get; }

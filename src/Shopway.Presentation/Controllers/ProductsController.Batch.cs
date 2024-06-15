@@ -14,7 +14,7 @@ public partial class ProductsController
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<BatchUpsertProductResponse>, ProblemHttpResult, BadRequest<BatchUpsertProductResponse>>> ProductsBatchUpsert
     (
-        [FromBody] BatchUpsertProductCommand command, 
+        [FromBody] BatchUpsertProductCommand command,
         CancellationToken cancellationToken
     )
     {

@@ -3,8 +3,8 @@ using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Users;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
-using System.Globalization;
 using System.Security.Claims;
 
 namespace Shopway.Presentation.Authentication.Services;
@@ -29,7 +29,7 @@ public sealed class UserAuthorizationService(IAuthorizationRepository authorizat
         return UserId.Create(userUlid);
     }
 
-    public async Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params Domain.Enums.Permission[] permissions)
+    public async Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params Permission[] permissions)
     {
         if (permissions.Length is 0)
         {
@@ -40,7 +40,7 @@ public sealed class UserAuthorizationService(IAuthorizationRepository authorizat
             .HasPermissionsAsync(userId, permissions, logicalOperation);
     }
 
-    public async Task<bool> HasRolesAsync(UserId userId, params Domain.Enums.Role[] roles)
+    public async Task<bool> HasRolesAsync(UserId userId, params Role[] roles)
     {
         return await _authorizationRepository
             .HasRolesAsync(userId, roles);

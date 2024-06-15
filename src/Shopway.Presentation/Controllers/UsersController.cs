@@ -18,6 +18,7 @@ using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
 using Shopway.Domain.Users;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 using Shopway.Presentation.Utilities;
@@ -48,7 +49,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> Login
     (
-        [FromBody] LogUserCommand command, 
+        [FromBody] LogUserCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -64,7 +65,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> LoginTwoFactorFirstStep
     (
-        [FromBody] LoginTwoFactorFirstStepCommand command, 
+        [FromBody] LoginTwoFactorFirstStepCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -80,7 +81,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> LoginTwoFactorSecondStep
     (
-        [FromBody] LoginTwoFactorSecondStepCommand command, 
+        [FromBody] LoginTwoFactorSecondStepCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -125,7 +126,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> Refresh
     (
-        [FromBody] RefreshAccessTokenCommand command, 
+        [FromBody] RefreshAccessTokenCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -161,7 +162,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<UserResponse>, ProblemHttpResult>> GetUserByUsername
     (
-        [FromRoute] string username, 
+        [FromRoute] string username,
         CancellationToken cancellationToken
     )
     {
@@ -178,7 +179,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RolesResponse>, ProblemHttpResult>> GetUserRolesByUsername
     (
-        [FromRoute] string username, 
+        [FromRoute] string username,
         CancellationToken cancellationToken
     )
     {
@@ -191,12 +192,12 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpGet("roles/{role}/permissions")]
-    [RequiredRoles(Domain.Enums.Role.Administrator)]
+    [RequiredRoles(Role.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RolePermissionsResponse>, ProblemHttpResult>> GetRolePermissions
     (
-        [FromRoute] string role, 
+        [FromRoute] string role,
         CancellationToken cancellationToken
     )
     {
@@ -209,13 +210,13 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("roles/{role}/permissions/{permission}")]
-    [RequiredRoles(Domain.Enums.Role.Administrator)]
+    [RequiredRoles(Role.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddPermissionToRole
     (
-        [FromRoute] string role, 
-        [FromRoute] string permission, 
+        [FromRoute] string role,
+        [FromRoute] string permission,
         CancellationToken cancellationToken
     )
     {
@@ -228,13 +229,13 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpDelete("roles/{role}/permissions/{permission}")]
-    [RequiredRoles(Domain.Enums.Role.Administrator)]
+    [RequiredRoles(Role.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemovePermissionFromRole
     (
-        [FromRoute] string role, 
-        [FromRoute] string permission, 
+        [FromRoute] string role,
+        [FromRoute] string permission,
         CancellationToken cancellationToken
     )
     {

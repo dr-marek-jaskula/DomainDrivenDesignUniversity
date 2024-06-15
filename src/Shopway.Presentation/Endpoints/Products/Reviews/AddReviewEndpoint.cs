@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Shopway.Application.Features.Products.Commands.AddReview;
-using Shopway.Domain.Enums;
 using Shopway.Domain.Products;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 using Shopway.Presentation.Utilities;
 

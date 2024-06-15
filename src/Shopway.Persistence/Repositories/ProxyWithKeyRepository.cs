@@ -9,7 +9,7 @@ using Shopway.Persistence.Specifications.Common;
 
 namespace Shopway.Persistence.Repositories;
 
-internal class ProxyWithKeyRepository<TEntity, TEntityId, TEntityKey>(ShopwayDbContext dbContext) 
+internal class ProxyWithKeyRepository<TEntity, TEntityId, TEntityKey>(ShopwayDbContext dbContext)
     : ProxyRepository<TEntity, TEntityId>(dbContext), IProxyWithKeyRepository<TEntity, TEntityId, TEntityKey>
     where TEntity : Entity<TEntityId>
     where TEntityId : struct, IEntityId<TEntityId>

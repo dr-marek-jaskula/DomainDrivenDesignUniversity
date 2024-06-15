@@ -158,8 +158,8 @@ public sealed partial class Error : IEquatable<Error>
     /// </summary>
     public static string KeepMessageNotTooLongForSecurityReasons(string message)
     {
-        return message.Length > MaximalErrorMessageLenght 
-            ? message[..MaximalErrorMessageLenght] 
+        return message.Length > MaximalErrorMessageLenght
+            ? message[..MaximalErrorMessageLenght]
             : message;
     }
 }

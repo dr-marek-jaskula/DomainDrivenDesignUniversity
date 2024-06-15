@@ -28,8 +28,8 @@ public sealed record SortByEntry
         return new SortByEntry()
         {
             PropertyName = splitted.First(),
-            SortDirection = splitted.Last() == "-1" 
-                ? SortDirection.Descending 
+            SortDirection = splitted.Last() == "-1"
+                ? SortDirection.Descending
                 : SortDirection.Ascending,
             ParsedFromString = true
         };

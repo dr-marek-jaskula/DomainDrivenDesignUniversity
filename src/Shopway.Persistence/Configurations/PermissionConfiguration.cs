@@ -28,7 +28,7 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
         builder.Ignore(r => r.Type);
 
         var permissionsFromEnumeration = Permission.GetNames();
-        var permissionsFromEnum = GetNamesOf<Domain.Enums.Permission>();
+        var permissionsFromEnum = GetNamesOf<Domain.Users.Authorization.Permission>();
 
         bool areEnumPermisionsEquivalentToEnumerationPermissions =
             permissionsFromEnumeration.SetEquals(permissionsFromEnum);

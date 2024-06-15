@@ -178,8 +178,8 @@ public static class ExpressionUtilities
 
         protected override Expression VisitParameter(ParameterExpression parameter)
         {
-            return parameter == _oldParameter 
-                ? _newExpression 
+            return parameter == _oldParameter
+                ? _newExpression
                 : parameter;
         }
     }

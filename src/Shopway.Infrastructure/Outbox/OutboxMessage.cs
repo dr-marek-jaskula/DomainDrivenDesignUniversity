@@ -17,7 +17,7 @@ public sealed class OutboxMessage
     public ExecutionStatus ExecutionStatus { get; set; }
 
     public int AttemptCount { get; private set; } = InitialAttemptCount;
-     
+
     public DateTimeOffset? NextProcessAttempt { get; set; }
 
     public DateTimeOffset? ProcessedOn { get; private set; }
@@ -45,7 +45,7 @@ public sealed class OutboxMessage
 
     private bool IsFailure(string? error)
     {
-        return error is not null 
+        return error is not null
             && AttemptCount >= RetryDelaysInMinutes.Length;
     }
 

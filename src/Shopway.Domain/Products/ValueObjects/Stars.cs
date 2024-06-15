@@ -21,7 +21,7 @@ public sealed class Stars : ValueObject
 
     private Stars()
     {
-        
+
     }
 
     public new decimal Value { get; }

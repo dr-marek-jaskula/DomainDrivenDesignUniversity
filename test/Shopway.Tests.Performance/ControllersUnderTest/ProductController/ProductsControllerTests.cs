@@ -8,7 +8,7 @@ using static System.Threading.CancellationToken;
 
 namespace Shopway.Tests.Performance.ControllersUnderTest.ProductController;
 
-public sealed partial class ProductsControllerTests(DatabaseFixture databaseFixture, IHttpClientFactory httpClientFactory, IOptions<PerformanceTestOptions> options) 
+public sealed partial class ProductsControllerTests(DatabaseFixture databaseFixture, IHttpClientFactory httpClientFactory, IOptions<PerformanceTestOptions> options)
     : PerformanceTestsBase(databaseFixture, httpClientFactory, options)
 {
     private const string ControllerUri = "products";

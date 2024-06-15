@@ -51,8 +51,8 @@ public class DataTransferObject : IDictionary<string, object?>, IHasCursor
 
     private static MethodCallExpression ChainAppendExpression
     (
-        Expression resultExpression, 
-        MappingEntry mappingEntry, 
+        Expression resultExpression,
+        MappingEntry mappingEntry,
         Expression parameter
     )
     {

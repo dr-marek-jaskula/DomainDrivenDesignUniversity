@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Common.Enums;
-using Shopway.Domain.Enums;
 using Shopway.Domain.Users;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Repositories;
@@ -44,7 +44,7 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
         {
             var userPermissions = await userPermissionsQueryable
                 .CountAsync();
-                
+
             return userPermissions == distinctRequiredPermissions.Length;
         }
 

@@ -13,7 +13,7 @@ public sealed record FilterByEntry
             return;
         }
 
-        Predicates = [ new Predicate
+        Predicates = [new Predicate
         {
             PropertyName = propertyName,
             Operation = operation,
