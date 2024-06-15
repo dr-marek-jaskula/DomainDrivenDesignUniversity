@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Common.Enums;
-using Shopway.Domain.Enums;
 using Shopway.Domain.Users;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Repositories;

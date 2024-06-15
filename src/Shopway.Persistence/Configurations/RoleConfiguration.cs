@@ -28,7 +28,7 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
             .WithMany(u => u.Roles);
 
         var rolesFromEnumeration = Role.GetNames();
-        var rolesFromEnum = GetNamesOf<Domain.Enums.Role>();
+        var rolesFromEnum = GetNamesOf<Domain.Users.Authorization.Role>();
 
         bool areEnumRolesEquivalentToEnumerationRoles =
             rolesFromEnumeration.SetEquals(rolesFromEnum);

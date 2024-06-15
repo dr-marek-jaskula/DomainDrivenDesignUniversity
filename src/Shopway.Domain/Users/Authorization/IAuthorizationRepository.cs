@@ -1,7 +1,6 @@
 ﻿using Shopway.Domain.Common.Enums;
-using Shopway.Domain.Enums;
 
-namespace Shopway.Domain.Users;
+namespace Shopway.Domain.Users.Authorization;
 
 public interface IAuthorizationRepository
 {

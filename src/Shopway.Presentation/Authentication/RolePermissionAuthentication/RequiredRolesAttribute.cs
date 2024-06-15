@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Shopway.Domain.Enums;
+using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Presentation.Authentication.RolePermissionAuthentication;
 

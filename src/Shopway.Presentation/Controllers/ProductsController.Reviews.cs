@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Application.Features.Products.Commands.RemoveReview;
 using Shopway.Application.Features.Products.Commands.UpdateReview;
-using Shopway.Domain.Enums;
 using Shopway.Domain.Products;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 using Shopway.Presentation.Utilities;
 

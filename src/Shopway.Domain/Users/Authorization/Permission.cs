@@ -2,7 +2,7 @@
 using Shopway.Domain.Common.Utilities;
 using System.Collections.Frozen;
 
-namespace Shopway.Domain.Enums
+namespace Shopway.Domain.Users.Authorization
 {
     public enum Permission
     {
@@ -27,7 +27,7 @@ namespace Shopway.Domain.Users.Enumerations
 
         public Type? _relatedEntity;
 
-        public Enums.Permission RelatedEnum { get; }
+        public Authorization.Permission RelatedEnum { get; }
         public PermissionType? Type { get; init; }
         public Type? RelatedAggregateRoot { get; init; }
         public Type? RelatedEntity { get => _relatedEntity is null ? RelatedAggregateRoot : _relatedEntity; init => _relatedEntity = value; }
@@ -42,7 +42,7 @@ namespace Shopway.Domain.Users.Enumerations
                 throw new ArgumentException($"Permission must contain '{_floor}'.");
             }
 
-            RelatedEnum = Enum.Parse<Enums.Permission>(name);
+            RelatedEnum = Enum.Parse<Authorization.Permission>(name);
         }
 
         // Empty constructor in this case is required by EF Core

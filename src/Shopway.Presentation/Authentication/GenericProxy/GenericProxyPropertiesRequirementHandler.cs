@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Enums;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 namespace Shopway.Presentation.Authentication.GenericProxy;

@@ -2,6 +2,7 @@
 using Shopway.Domain.Orders;
 using Shopway.Domain.Products;
 using Shopway.Domain.Users;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Infrastructure.Outbox;
 using Shopway.Persistence.Repositories;
 

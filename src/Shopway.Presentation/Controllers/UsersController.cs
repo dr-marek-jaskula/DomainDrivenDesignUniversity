@@ -18,6 +18,7 @@ using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
 using Shopway.Domain.Users;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 using Shopway.Presentation.Utilities;
@@ -191,7 +192,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpGet("roles/{role}/permissions")]
-    [RequiredRoles(Domain.Enums.Role.Administrator)]
+    [RequiredRoles(Role.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RolePermissionsResponse>, ProblemHttpResult>> GetRolePermissions
@@ -209,7 +210,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("roles/{role}/permissions/{permission}")]
-    [RequiredRoles(Domain.Enums.Role.Administrator)]
+    [RequiredRoles(Role.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddPermissionToRole
@@ -228,7 +229,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpDelete("roles/{role}/permissions/{permission}")]
-    [RequiredRoles(Domain.Enums.Role.Administrator)]
+    [RequiredRoles(Role.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemovePermissionFromRole
