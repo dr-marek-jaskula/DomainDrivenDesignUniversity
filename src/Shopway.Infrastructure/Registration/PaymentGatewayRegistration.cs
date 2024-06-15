@@ -14,7 +14,7 @@ internal static class PaymentGatewayRegistration
         services.AddScoped<IPaymentGatewayService, PaymentGatewayService>();
         services.ConfigureOptions<PaymentGatewayOptionsSetup>();
         services.AddSingleton<IValidateOptions<PaymentGatewayOptions>, PaymentGatewayOptionsValidator>();
-        
+
         SetPaymentGatewayApiKey(services);
 
         return services;

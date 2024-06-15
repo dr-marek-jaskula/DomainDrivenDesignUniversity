@@ -59,7 +59,7 @@ public sealed class Payment : Entity<PaymentId>, IAuditable
         }
 
         var refundResult = await paymentGatewayService.Refund(Session!);
-        
+
         if (refundResult.IsFailure)
         {
             return refundResult;

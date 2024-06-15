@@ -25,7 +25,7 @@ public static class IEnumerableUtilities
         using var secondEnumerator = second.GetEnumerator();
         while (firstEnumerator.MoveNext())
         {
-            if (secondEnumerator.MoveNext() is false 
+            if (secondEnumerator.MoveNext() is false
                 || StructuralComparisons.StructuralEqualityComparer.Equals(firstEnumerator.Current, secondEnumerator.Current) is false)
             {
                 return false;

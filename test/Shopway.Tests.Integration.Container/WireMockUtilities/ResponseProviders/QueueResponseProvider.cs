@@ -11,8 +11,8 @@ public sealed class QueueResponseProvider(Queue<IResponseBuilder> responseQueue)
 
     public async Task<(IResponseMessage Message, IMapping? Mapping)> ProvideResponseAsync
     (
-        IMapping mapping, 
-        IRequestMessage requestMessage, 
+        IMapping mapping,
+        IRequestMessage requestMessage,
         WireMockServerSettings settings
     )
     {

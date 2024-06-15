@@ -106,7 +106,7 @@ public static class QueryableUtilities
         return Expression.Lambda<Func<TEntity, bool>>(expression!, parameter);
     }
 
-    private static Expression CreateFilterEntryExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, FilterByEntry filterEntry) 
+    private static Expression CreateFilterEntryExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, FilterByEntry filterEntry)
         where TEntity : class, IEntity
     {
         //We create expression that is logic OR of all provided predicates
@@ -166,7 +166,7 @@ public static class QueryableUtilities
         return filterEntryExpression!;
     }
 
-    private static Expression CreatePredicateExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, Predicate predicate, ConvertedMember convertedMember, string propertyOperation) 
+    private static Expression CreatePredicateExpression<TEntity>(ILikeProvider<TEntity>? likeProvider, ParameterExpression parameter, Predicate predicate, ConvertedMember convertedMember, string propertyOperation)
         where TEntity : class, IEntity
     {
         var isBinaryOperation = Enum.TryParse(propertyOperation, out ExpressionType expressionType);

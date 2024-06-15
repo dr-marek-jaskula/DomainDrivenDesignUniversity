@@ -26,7 +26,7 @@ public sealed class GenericProxyPropertiesRequirementHandler(IServiceScopeFactor
             context.Fail(new AuthorizationFailureReason(this, "Missing user."));
             return;
         }
-        
+
         var permissionsThatAtLeastOneIsRequired = GetPermissionsThatAtLeastOneIsRequired(resource);
 
         var userHasPermission = await authorizationService

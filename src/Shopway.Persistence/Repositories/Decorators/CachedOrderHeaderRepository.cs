@@ -10,7 +10,7 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
-internal sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext) 
+internal sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorated, IFusionCache fusionCache, ShopwayDbContext dbContext)
     : IOrderHeaderRepository
 {
     private readonly IOrderHeaderRepository _decorated = decorated;
@@ -119,8 +119,8 @@ internal sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorat
 
     public async Task<OrderHeader> QueryByIdAsync
     (
-        OrderHeaderId orderHeaderId, 
-        CancellationToken cancellationToken, 
+        OrderHeaderId orderHeaderId,
+        CancellationToken cancellationToken,
         Action<IIncludeBuilder<OrderHeader>>? buildIncludes = null
     )
     {
@@ -134,8 +134,8 @@ internal sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorat
 
     public async Task<TResponse> QueryByIdAsync<TResponse>
     (
-        OrderHeaderId orderHeaderId, 
-        CancellationToken cancellationToken, 
+        OrderHeaderId orderHeaderId,
+        CancellationToken cancellationToken,
         IMapping<OrderHeader, TResponse>? mapping
     )
         where TResponse : class

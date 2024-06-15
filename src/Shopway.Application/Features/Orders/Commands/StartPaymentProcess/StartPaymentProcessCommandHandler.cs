@@ -22,7 +22,7 @@ internal sealed class StartPaymentProcessCommandHandler(IOrderHeaderRepository o
             return Result.Failure<StartPaymentProcessResponse>(sessionResult.Error);
         }
 
-        var payment = orderHeader.Payments.FirstOrDefault(x => x.Session is null) 
+        var payment = orderHeader.Payments.FirstOrDefault(x => x.Session is null)
             ?? orderHeader.AddPayment(Payment.Create());
 
         payment.SetSession(sessionResult.Value);

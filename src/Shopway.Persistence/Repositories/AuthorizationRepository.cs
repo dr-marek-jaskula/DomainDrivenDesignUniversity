@@ -44,7 +44,7 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
         {
             var userPermissions = await userPermissionsQueryable
                 .CountAsync();
-                
+
             return userPermissions == distinctRequiredPermissions.Length;
         }
 

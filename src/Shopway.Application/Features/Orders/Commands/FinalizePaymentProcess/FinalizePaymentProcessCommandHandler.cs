@@ -9,8 +9,8 @@ namespace Shopway.Application.Features.Orders.Commands.FinalizePaymentProcess;
 
 internal sealed class FinalizePaymentProcessCommandHandler
 (
-    IOrderHeaderRepository orderHeaderRepository, 
-    IValidator validator, 
+    IOrderHeaderRepository orderHeaderRepository,
+    IValidator validator,
     IPaymentGatewayService paymentGatewayService
 )
     : ICommandHandler<FinalizePaymentProcessCommand>

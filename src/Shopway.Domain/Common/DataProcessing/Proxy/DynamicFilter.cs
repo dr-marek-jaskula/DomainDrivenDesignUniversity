@@ -13,7 +13,7 @@ public sealed class DynamicFilter : IDynamicFilter
 
     public IList<FilterByEntry> FilterProperties { get; init; } = [];
 
-    public TDynamicFilter To<TDynamicFilter, TEntity>() 
+    public TDynamicFilter To<TDynamicFilter, TEntity>()
         where TDynamicFilter : class, IDynamicFilter<TEntity>, new()
         where TEntity : class, IEntity
     {

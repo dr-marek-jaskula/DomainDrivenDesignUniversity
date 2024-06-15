@@ -12,7 +12,7 @@ using Shopway.Presentation.Utilities;
 
 namespace Shopway.Presentation.Endpoints.Proxy;
 
-public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxyService genericMappingService, IAuthorizationService authorizationService) 
+public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxyService genericMappingService, IAuthorizationService authorizationService)
     : Endpoint<GenericProxyPageQuery, Results<Ok<object>, ProblemHttpResult, ForbidHttpResult>>
 {
     private readonly ISender _sender = sender;

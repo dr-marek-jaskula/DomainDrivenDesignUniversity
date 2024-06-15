@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace Shopway.Presentation.Authentication.OrderHeaders.OrderHeaderCreatedByUser;
 
-public sealed class OrderHeaderCreatedByUserRequirementHandler(IOrderHeaderRepository orderHeaderRepository) 
+public sealed class OrderHeaderCreatedByUserRequirementHandler(IOrderHeaderRepository orderHeaderRepository)
     : AuthorizationHandler<OrderHeaderCreatedByUserRequirement, OrderHeaderId>
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, OrderHeaderCreatedByUserRequirement requirement, OrderHeaderId orderHeaderId)

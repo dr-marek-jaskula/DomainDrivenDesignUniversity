@@ -7,5 +7,5 @@ public sealed record LoginTwoFactorSecondStepCommand
     string Email,
     string Password,
     string TwoFactorToken
-) 
+)
     : ICommand<AccessTokenResponse>;

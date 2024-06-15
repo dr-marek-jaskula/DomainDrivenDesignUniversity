@@ -63,7 +63,7 @@ partial class ProductsController
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RemoveReviewResponse>, ProblemHttpResult>> RemoveReview
     (
-        [FromRoute] RemoveReviewCommand command, 
+        [FromRoute] RemoveReviewCommand command,
         CancellationToken cancellationToken
     )
     {

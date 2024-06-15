@@ -102,8 +102,8 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
 
     public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
-        IOffsetPage page, 
-        CancellationToken cancellationToken, 
+        IOffsetPage page,
+        CancellationToken cancellationToken,
         IFilter<Product>? filter = null,
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
@@ -127,8 +127,8 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
 
     public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
     (
-        ICursorPage page, 
-        CancellationToken cancellationToken, 
+        ICursorPage page,
+        CancellationToken cancellationToken,
         IFilter<Product>? filter = null,
         IList<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
@@ -153,8 +153,8 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
 
     public async Task<Product> QueryByIdAsync
     (
-        ProductId productId, 
-        CancellationToken cancellationToken, 
+        ProductId productId,
+        CancellationToken cancellationToken,
         Action<IIncludeBuilder<Product>>? buildIncludes = null
     )
     {

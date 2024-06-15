@@ -48,7 +48,7 @@ public readonly record struct ProductKey : IUniqueKey<Product, ProductKey>
         return new ProductKey(product.ProductName.Value, product.Revision.Value);
     }
 
-    public Expression<Func<Product, bool>> GetFindSpecification() 
+    public Expression<Func<Product, bool>> GetFindSpecification()
     {
         var name = ProductName;
         var revision = Revision;

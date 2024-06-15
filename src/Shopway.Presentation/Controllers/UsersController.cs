@@ -48,7 +48,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> Login
     (
-        [FromBody] LogUserCommand command, 
+        [FromBody] LogUserCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -64,7 +64,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> LoginTwoFactorFirstStep
     (
-        [FromBody] LoginTwoFactorFirstStepCommand command, 
+        [FromBody] LoginTwoFactorFirstStepCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -80,7 +80,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> LoginTwoFactorSecondStep
     (
-        [FromBody] LoginTwoFactorSecondStepCommand command, 
+        [FromBody] LoginTwoFactorSecondStepCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -125,7 +125,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<AccessTokenResponse>, ProblemHttpResult>> Refresh
     (
-        [FromBody] RefreshAccessTokenCommand command, 
+        [FromBody] RefreshAccessTokenCommand command,
         CancellationToken cancellationToken
     )
     {
@@ -161,7 +161,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<UserResponse>, ProblemHttpResult>> GetUserByUsername
     (
-        [FromRoute] string username, 
+        [FromRoute] string username,
         CancellationToken cancellationToken
     )
     {
@@ -178,7 +178,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RolesResponse>, ProblemHttpResult>> GetUserRolesByUsername
     (
-        [FromRoute] string username, 
+        [FromRoute] string username,
         CancellationToken cancellationToken
     )
     {
@@ -196,7 +196,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RolePermissionsResponse>, ProblemHttpResult>> GetRolePermissions
     (
-        [FromRoute] string role, 
+        [FromRoute] string role,
         CancellationToken cancellationToken
     )
     {
@@ -214,8 +214,8 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddPermissionToRole
     (
-        [FromRoute] string role, 
-        [FromRoute] string permission, 
+        [FromRoute] string role,
+        [FromRoute] string permission,
         CancellationToken cancellationToken
     )
     {
@@ -233,8 +233,8 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemovePermissionFromRole
     (
-        [FromRoute] string role, 
-        [FromRoute] string permission, 
+        [FromRoute] string role,
+        [FromRoute] string permission,
         CancellationToken cancellationToken
     )
     {

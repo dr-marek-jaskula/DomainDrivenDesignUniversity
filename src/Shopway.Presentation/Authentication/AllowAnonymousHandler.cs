@@ -6,7 +6,7 @@ using System.Text.Encodings.Web;
 
 namespace Shopway.Presentation.Authentication;
 
-public class AnonymousSchema(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder) 
+public class AnonymousSchema(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder)
     : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
     public const string Name = nameof(AnonymousSchema);

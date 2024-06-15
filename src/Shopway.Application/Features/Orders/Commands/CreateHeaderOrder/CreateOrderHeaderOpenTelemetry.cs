@@ -15,7 +15,7 @@ public sealed class CreateOrderHeaderOpenTelemetry : OpenTelemetryBase
     private readonly Counter<long> _orderRequestCounter;
     private readonly Histogram<double> _orderRequestDuration;
 
-    public CreateOrderHeaderOpenTelemetry(IMeterFactory meterFactory) 
+    public CreateOrderHeaderOpenTelemetry(IMeterFactory meterFactory)
         : base(meterFactory)
     {
         _orderRequestCounter = _meter.CreateCounter<long>(OrderCounterName);

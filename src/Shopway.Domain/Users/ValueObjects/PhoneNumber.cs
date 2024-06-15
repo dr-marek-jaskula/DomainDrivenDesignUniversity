@@ -27,7 +27,7 @@ public sealed class PhoneNumber : ValueObject
 
     private PhoneNumber()
     {
-        
+
     }
 
     public new string Value { get; }

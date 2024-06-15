@@ -10,7 +10,7 @@ using Shopway.Presentation.Utilities;
 
 namespace Shopway.Presentation.Endpoints.Proxy;
 
-public sealed class GenericProxyByIdQueryEndpoint(ISender sender, IMediatorProxyService genericMappingService) 
+public sealed class GenericProxyByIdQueryEndpoint(ISender sender, IMediatorProxyService genericMappingService)
     : Endpoint<GenericProxyByIdQuery, Results<Ok<DataTransferObjectResponse>, ProblemHttpResult>>
 {
     private readonly ISender _sender = sender;

@@ -66,13 +66,13 @@ public sealed partial class PaymentGatewayService(IHttpContextAccessor httpConte
         {
             return await GetPaymentGatewayEvent(httpRequest, webhookSecret) switch
             {
-                { Type: Events.CheckoutSessionCompleted, Data.Object: Session session } 
+                { Type: Events.CheckoutSessionCompleted, Data.Object: Session session }
                     => Result.Success((session.Id, PaymentStatus.Confirmed)),
 
-                { Type: Events.CheckoutSessionAsyncPaymentSucceeded, Data.Object: Session session } 
+                { Type: Events.CheckoutSessionAsyncPaymentSucceeded, Data.Object: Session session }
                     => Result.Success((session.Id, PaymentStatus.Received)),
 
-                { Type: Events.CheckoutSessionAsyncPaymentFailed, Data.Object: Session session } 
+                { Type: Events.CheckoutSessionAsyncPaymentFailed, Data.Object: Session session }
                     => Result.Success((session.Id, PaymentStatus.Failed)),
 
                 _ => Result.Failure<(string SessionId, PaymentStatus PaymentStatus)>(Error.NotSupported("Event type not supported")),

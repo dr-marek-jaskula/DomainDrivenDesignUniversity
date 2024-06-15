@@ -8,7 +8,7 @@ namespace Shopway.Infrastructure.Decoratos;
 
 public sealed class IdempotentDomainEventHandlerDecorator<TDomainEvent>
 (
-    IDomainEventHandler<TDomainEvent> decorated, 
+    IDomainEventHandler<TDomainEvent> decorated,
     IOutboxRepository outboxRepository,
     ILogger<IdempotentDomainEventHandlerDecorator<TDomainEvent>> logger
 )
