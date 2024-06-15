@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.Utilities;
+using System.Collections.Frozen;
 
 namespace Shopway.Domain.Enums
 {
@@ -31,7 +32,7 @@ namespace Shopway.Domain.Users.Enumerations
         public Type? RelatedAggregateRoot { get; init; }
         public Type? RelatedEntity { get => _relatedEntity is null ? RelatedAggregateRoot : _relatedEntity; init => _relatedEntity = value; }
         public bool HasAllProperties => Properties is null;
-        public string[]? Properties { get; init; } = null;
+        public FrozenSet<string>? Properties { get; init; } = null;
 
         public Permission(int id, string name)
             : base(id, name)
