@@ -30,7 +30,7 @@ public sealed class AddReviewEndpoint(ISender sender)
             .WithName(_name)
             .WithDescription(_description)
             .WithSummary(_summary)
-            .WithMetadata(new RequiredPermissionsAttribute(Domain.Common.Enums.LogicalOperation.Or, Permission.Review_Add, Permission.INVALID_PERMISSION))
+            .WithMetadata(new RequiredPermissionsAttribute(Domain.Common.Enums.LogicalOperation.Or, PermissionName.Review_Add, PermissionName.INVALID_PERMISSION))
             .WithVersion(VersionGroup.Products, 1, 0));
     }
 

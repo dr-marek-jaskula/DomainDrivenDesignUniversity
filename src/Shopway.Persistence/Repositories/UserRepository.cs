@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopway.Domain.Users;
-using Shopway.Domain.Users.Enumerations;
 using Shopway.Domain.Users.ValueObjects;
 using Shopway.Persistence.Framework;
 
@@ -60,15 +59,6 @@ internal sealed class UserRepository(ShopwayDbContext dbContext) : IUserReposito
             .Include(user => user.Roles)
                 .ThenInclude(role => role.Permissions)
             .Where(user => user.Username == username)
-            .FirstOrDefaultAsync(cancellationToken);
-    }
-
-    public async Task<Role?> GetRolePermissionsAsync(Role role, CancellationToken cancellationToken)
-    {
-        return await _dbContext
-            .Set<Role>()
-                .Include(x => x.Permissions)
-            .Where(x => x.Id == role.Id)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

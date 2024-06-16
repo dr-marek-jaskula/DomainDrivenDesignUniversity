@@ -9,6 +9,7 @@ namespace Shopway.Presentation.Authentication.RolePermissionAuthentication;
 public interface IUserAuthorizationService
 {
     Result<UserId> GetUserId(AuthorizationHandlerContext context);
-    Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params Permission[] permissions);
-    Task<bool> HasRolesAsync(UserId userId, params Role[] roles);
+    Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params PermissionName[] permissions);
+    Task<bool> HasPermissionToReadAsync(UserId userId, string entity, List<string> requestedProperties);
+    Task<bool> HasRolesAsync(UserId userId, params RoleName[] roles);
 }

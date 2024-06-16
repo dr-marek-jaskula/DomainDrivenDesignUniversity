@@ -3,7 +3,7 @@ using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
 using Shopway.Domain.Users;
-using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Mappings;
 

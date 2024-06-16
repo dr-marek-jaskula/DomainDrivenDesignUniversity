@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.Authorization;
+using Shopway.Persistence.Converters.Enums;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
 using static Shopway.Persistence.Constants.Constants;
 
@@ -14,21 +15,30 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 
         builder.HasKey(p => p.Id);
 
-        builder.Property(r => r.Id)
+        builder.Property(p => p.Id)
             .HasColumnType(ColumnType.TinyInt);
 
-        builder.Property(r => r.Name)
-            .HasColumnType(ColumnType.VarChar(128));
+        builder.Property(p => p.Name)
+            .HasColumnType(ColumnType.NVarChar(128))
+            .IsRequired(true);
 
-        builder.Ignore(r => r.HasAllProperties);
-        builder.Ignore(r => r.RelatedAggregateRoot);
-        builder.Ignore(r => r.RelatedEntity);
-        builder.Ignore(r => r.Properties);
-        builder.Ignore(r => r.RelatedEnum);
-        builder.Ignore(r => r.Type);
+        builder.Property(p => p.RelatedAggregateRoot)
+            .HasColumnType(ColumnType.NVarChar(128))
+            .IsRequired(false);
+
+        builder.Property(p => p.RelatedEntity)
+            .HasColumnType(ColumnType.NVarChar(128))
+            .IsRequired(false);
+
+        builder.Property(p => p.Type)
+            .HasConversion<PermissionTypeConverter>()
+            .HasColumnType(ColumnType.VarChar(LongestOf<PermissionType>()))
+            .IsRequired(true);
+
+        builder.Property(p => p.Properties);
 
         var permissionsFromEnumeration = Permission.GetNames();
-        var permissionsFromEnum = GetNamesOf<Domain.Users.Authorization.Permission>();
+        var permissionsFromEnum = GetNamesOf<PermissionName>();
 
         bool areEnumPermisionsEquivalentToEnumerationPermissions =
             permissionsFromEnumeration.SetEquals(permissionsFromEnum);
@@ -40,5 +50,8 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 
         //Inserting static data (data that are not related to other)
         builder.HasData(Permission.List);
+
+        builder.HasIndex(x => x.Name)
+            .IsUnique();
     }
 }

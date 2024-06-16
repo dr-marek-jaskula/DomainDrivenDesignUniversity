@@ -6,7 +6,7 @@ using Shopway.Application.Features.Users.Commands;
 using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Domain.Users;
-using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Controllers;
 using Shopway.Tests.Integration.Configurations;
 using Shopway.Tests.Integration.Persistence;
