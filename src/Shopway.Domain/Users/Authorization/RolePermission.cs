@@ -1,4 +1,4 @@
-﻿namespace Shopway.Domain.Users.Enumerations;
+﻿namespace Shopway.Domain.Users.Authorization;
 
 public sealed class RolePermission
 {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Users.Commands;
 using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
+using Shopway.Application.Features.Users.Commands.AddPropertyToReadPermission;
 using Shopway.Application.Features.Users.Commands.ConfigureTwoFactorToptLogin;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstStep;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
@@ -13,7 +14,9 @@ using Shopway.Application.Features.Users.Commands.LogUser;
 using Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Application.Features.Users.Commands.RemovePermissionFromRole;
+using Shopway.Application.Features.Users.Commands.RemovePropertyFromReadPermission;
 using Shopway.Application.Features.Users.Commands.Revoke;
+using Shopway.Application.Features.Users.Queries.GetPermissionDetails;
 using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
@@ -192,7 +195,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpGet("roles/{role}/permissions")]
-    [RequiredRoles(Role.Administrator)]
+    [RequiredRoles(RoleName.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RolePermissionsResponse>, ProblemHttpResult>> GetRolePermissions
@@ -209,8 +212,26 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
             : result.ToOkResult();
     }
 
+    [HttpGet("permissions/{permission}")]
+    [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<PermissionDetailsResponse>, ProblemHttpResult>> GetPermissionDetails
+    (
+        [FromRoute] string permission,
+        CancellationToken cancellationToken
+    )
+    {
+        var query = new GetPermissionDetailsQuery(permission);
+        var result = await Sender.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
     [HttpPost("roles/{role}/permissions/{permission}")]
-    [RequiredRoles(Role.Administrator)]
+    [RequiredRoles(RoleName.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddPermissionToRole
@@ -229,7 +250,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpDelete("roles/{role}/permissions/{permission}")]
-    [RequiredRoles(Role.Administrator)]
+    [RequiredRoles(RoleName.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemovePermissionFromRole
@@ -240,6 +261,44 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     )
     {
         var command = new RemovePermissionFromRoleCommand(role, permission);
+        var result = await Sender.Send(command, cancellationToken);
+
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
+    [HttpPost("permissions/{permission}/properties/{property}")]
+    [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok, ProblemHttpResult>> AddPropertyToReadPermission
+    (
+        [FromRoute] string permission,
+        [FromRoute] string property,
+        CancellationToken cancellationToken
+    )
+    {
+        var command = new AddPropertyToReadPermissionCommand(permission, property);
+        var result = await Sender.Send(command, cancellationToken);
+
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
+    [HttpDelete("permissions/{permission}/properties/{property}")]
+    [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok, ProblemHttpResult>> RemovePropertyToReadPermission
+    (
+        [FromRoute] string permission,
+        [FromRoute] string property,
+        CancellationToken cancellationToken
+    )
+    {
+        var command = new RemovePropertyFromReadPermissionCommand(permission, property);
         var result = await Sender.Send(command, cancellationToken);
 
         return result.IsFailure

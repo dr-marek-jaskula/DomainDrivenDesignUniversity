@@ -39,6 +39,14 @@ public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxy
 
     public override async Task<Results<Ok<object>, ProblemHttpResult, ForbidHttpResult>> ExecuteAsync(GenericProxyPageQuery query, CancellationToken cancellationToken)
     {
+        var authorizationResult = await _authorizationService
+            .AuthorizeAsync(User, GenericProxyRequirementResource.From(query), GenericProxyPropertiesRequirement.PolicyName);
+
+        if (authorizationResult.Succeeded is false)
+        {
+            return authorizationResult.ToForbidResult();
+        }
+
         var queryResult = _genericMappingService.GenericMap(query);
 
         if (queryResult!.IsFailure)
@@ -47,14 +55,6 @@ public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxy
         }
 
         object concretePageQuery = queryResult.Value;
-
-        var resource = GenericProxyRequirementResource.From(query, queryResult.Value);
-        AuthorizationResult authorizationResult = await _authorizationService.AuthorizeAsync(User, resource, GenericProxyPropertiesRequirement.PolicyName);
-
-        if (authorizationResult.Succeeded is false)
-        {
-            return authorizationResult.ToForbidResult();
-        }
 
         var result = await _sender.Send(concretePageQuery, cancellationToken) as Shopway.Domain.Common.Results.IResult<object>;
 

@@ -16,12 +16,17 @@ public sealed class TestUserAuthorizationService : IUserAuthorizationService
         return UserId.Create(_testUserUlid);
     }
 
-    public Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params Permission[] permissions)
+    public Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params PermissionName[] permissions)
     {
         return Task.FromResult(true);
     }
 
-    public Task<bool> HasRolesAsync(UserId userId, params Role[] roles)
+    public Task<bool> HasPermissionToReadAsync(UserId userId, string entity, List<string> requestedProperties)
+    {
+        return Task.FromResult(true);
+    }
+
+    public Task<bool> HasRolesAsync(UserId userId, params RoleName[] roles)
     {
         return Task.FromResult(true);
     }

@@ -4,38 +4,40 @@ using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Users;
-using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Queries.GetRolePermissions;
 
-internal sealed class GetRolePermissionsQueryHandler(IUserRepository userRepository, IValidator validator)
+internal sealed class GetRolePermissionsQueryHandler(IAuthorizationRepository authorizationRepository, IValidator validator)
     : IQueryHandler<GetRolePermissionsQuery, RolePermissionsResponse>
 {
-    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult<RolePermissionsResponse>> Handle(GetRolePermissionsQuery query, CancellationToken cancellationToken)
     {
-        var role = Role.FromName(query.Role);
+        var successfulyParsed = Enum.TryParse<RoleName>(query.Role, out var roleName);
 
         _validator
-            .If(role is null, Error.NotFound(nameof(Role), query.Role, "Roles are case sensitive."));
+            .If(successfulyParsed is false, Error.NotFound(nameof(RoleName), query.Role, "Roles are case sensitive."));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure<RolePermissionsResponse>();
         }
 
-        var roleWithPermissions = await _userRepository
-            .GetRolePermissionsAsync(role!, cancellationToken);
+        var roleWithPermissions = await _authorizationRepository
+            .GetRolePermissionsAsync(roleName, cancellationToken);
 
-        if (roleWithPermissions is null)
+        _validator
+            .If(roleWithPermissions is null, Error.NotFound(nameof(Role), query.Role, "Role not found in database."));
+
+        if (_validator.IsInvalid)
         {
-            return Result.Failure<RolePermissionsResponse>(Error.NotFound<User>(query.Role));
+            return _validator.Failure<RolePermissionsResponse>();
         }
 
-        return roleWithPermissions
+        return roleWithPermissions!
             .ToResponse()
             .ToResult();
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FastEndpoints.Security;
+using Microsoft.AspNetCore.Authorization;
 using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
@@ -29,7 +30,13 @@ public sealed class UserAuthorizationService(IAuthorizationRepository authorizat
         return UserId.Create(userUlid);
     }
 
-    public async Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params Permission[] permissions)
+    public async Task<bool> HasRolesAsync(UserId userId, params RoleName[] roles)
+    {
+        return await _authorizationRepository
+            .HasRolesAsync(userId, roles);
+    }
+
+    public async Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params PermissionName[] permissions)
     {
         if (permissions.Length is 0)
         {
@@ -40,9 +47,14 @@ public sealed class UserAuthorizationService(IAuthorizationRepository authorizat
             .HasPermissionsAsync(userId, permissions, logicalOperation);
     }
 
-    public async Task<bool> HasRolesAsync(UserId userId, params Role[] roles)
+    public async Task<bool> HasPermissionToReadAsync(UserId userId, string entity, List<string> requestedProperties)
     {
+        if (requestedProperties.Count is 0)
+        {
+            return true;
+        }
+
         return await _authorizationRepository
-            .HasRolesAsync(userId, roles);
+            .HasPermissionToReadAsync(userId, entity, requestedProperties);
     }
 }

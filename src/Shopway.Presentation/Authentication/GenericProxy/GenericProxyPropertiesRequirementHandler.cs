@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Shopway.Domain.Common.Enums;
-using Shopway.Domain.Common.Utilities;
-using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 namespace Shopway.Presentation.Authentication.GenericProxy;
@@ -27,10 +24,8 @@ public sealed class GenericProxyPropertiesRequirementHandler(IServiceScopeFactor
             return;
         }
 
-        var permissionsThatAtLeastOneIsRequired = GetPermissionsThatAtLeastOneIsRequired(resource);
-
         var userHasPermission = await authorizationService
-            .HasPermissionsAsync(userIdResult.Value, LogicalOperation.Or, permissionsThatAtLeastOneIsRequired);
+            .HasPermissionToReadAsync(userIdResult.Value, resource.Entity, resource.RequestedProperties);
 
         if (userHasPermission)
         {
@@ -39,27 +34,5 @@ public sealed class GenericProxyPropertiesRequirementHandler(IServiceScopeFactor
         }
 
         context.Fail(new AuthorizationFailureReason(this, "Missing required permissions."));
-    }
-
-    private static Permission[] GetPermissionsThatAtLeastOneIsRequired(GenericProxyRequirementResource resource)
-    {
-        return Domain.Users.Enumerations.Permission.List
-            .Where(permission => permission.RelatedEntity == resource.EntityType)
-            .Where(permission => permission.Type is Domain.Users.Enumerations.PermissionType.Read)
-            .Where(permission => permission.HasAllProperties || CanReadRequestedProperties(resource, permission))
-            .Select(x => x.RelatedEnum)
-            .ToArray();
-    }
-
-    private static bool CanReadRequestedProperties(GenericProxyRequirementResource resource, Domain.Users.Enumerations.Permission permission)
-    {
-        if (permission.Properties is null)
-        {
-            return false;
-        }
-
-        return resource.RequestedProperties
-            .Except(permission.Properties)
-            .IsEmpty();
     }
 }

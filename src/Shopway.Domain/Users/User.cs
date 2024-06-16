@@ -1,6 +1,6 @@
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
-using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Domain.Users.Events;
 using Shopway.Domain.Users.ValueObjects;
 

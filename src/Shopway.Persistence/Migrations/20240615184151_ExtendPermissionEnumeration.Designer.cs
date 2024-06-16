@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopway.Persistence.Framework;
 
@@ -11,9 +12,11 @@ using Shopway.Persistence.Framework;
 namespace Shopway.Persistence.Migrations
 {
     [DbContext(typeof(ShopwayDbContext))]
-    partial class ShopwayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240615184151_ExtendPermissionEnumeration")]
+    partial class ExtendPermissionEnumeration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -388,7 +391,6 @@ namespace Shopway.Persistence.Migrations
                             Id = (byte)6,
                             Name = "Product_Read",
                             RelatedAggregateRoot = "Product",
-                            RelatedEntity = "Product",
                             Type = "Read"
                         },
                         new
@@ -397,7 +399,6 @@ namespace Shopway.Persistence.Migrations
                             Name = "Product_Read_Customer",
                             Properties = "[\"Id\",\"ProductName\",\"Price\",\"Revision\",\"Reviews.Id\",\"Reviews.Description\",\"Reviews.Title\",\"Reviews.Username\",\"Reviews.Stars\",\"Reviews.CreatedOn\",\"Reviews.CreatedBy\",\"Reviews.UpdatedOn\",\"Reviews.UpdatedBy\"]",
                             RelatedAggregateRoot = "Product",
-                            RelatedEntity = "Product",
                             Type = "Read"
                         });
                 });

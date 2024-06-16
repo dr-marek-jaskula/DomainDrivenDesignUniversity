@@ -36,8 +36,8 @@ public sealed class RemoveReviewEndpoint(ISender sender)
             .WithName(_name)
             .WithDescription(_description)
             .WithSummary(_summary)
-            .WithMetadata(new RequiredPermissionsAttribute(Permission.Review_Remove))
-            .WithMetadata(new RequiredRolesAttribute(Role.Administrator))
+            .WithMetadata(new RequiredPermissionsAttribute(PermissionName.Review_Remove))
+            .WithMetadata(new RequiredRolesAttribute(RoleName.Administrator))
             .WithVersion(VersionGroup.Products, 1, 0));
     }
 

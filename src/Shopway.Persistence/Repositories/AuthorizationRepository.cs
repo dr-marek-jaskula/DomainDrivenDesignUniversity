@@ -24,7 +24,17 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
             .ToHashSet();
     }
 
-    public async Task<bool> HasPermissionsAsync(UserId userId, Permission[] requiredPermissions, LogicalOperation logicalOperation = LogicalOperation.And)
+    public async Task<Permission?> GetPermissionAsync(PermissionName permission, CancellationToken cancellationToken)
+    {
+        var permissionName = $"{permission}";
+
+        return await _dbContext
+            .Set<Permission>()
+            .Where(x => x.Name == permissionName)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<bool> HasPermissionsAsync(UserId userId, PermissionName[] requiredPermissions, LogicalOperation logicalOperation = LogicalOperation.And)
     {
         var distinctRequiredPermissions = requiredPermissions
             .Select(x => $"{x}")
@@ -56,7 +66,24 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
         return false;
     }
 
-    public async Task<bool> HasRolesAsync(UserId userId, Role[] requiredRoles)
+    public async Task<bool> HasPermissionToReadAsync(UserId userId, string entity, List<string> requestedProperties)
+    {
+        var distinctRequiredPermissions = requestedProperties
+            .Distinct()
+            .ToArray();
+
+        return await _dbContext
+            .Set<User>()
+            .Where(x => x.Id == userId)
+            .SelectMany(x => x.Roles)
+            .SelectMany(role => role.Permissions)
+            .Where(permission => permission.RelatedEntity == entity)
+            .Where(permission => permission.Type == PermissionType.Read)
+            .Where(permission => permission.Properties == null || !requestedProperties.Except(permission.Properties).Any())
+            .AnyAsync();
+    }
+
+    public async Task<bool> HasRolesAsync(UserId userId, RoleName[] requiredRoles)
     {
         var distinctRequiredRoles = requiredRoles
             .Select(x => $"{x}")
@@ -72,5 +99,16 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
             .CountAsync();
 
         return userRolesCount == distinctRequiredRoles.Length;
+    }
+
+    public async Task<Role?> GetRolePermissionsAsync(RoleName role, CancellationToken cancellationToken)
+    {
+        var roleName = $"{role}";
+
+        return await _dbContext
+            .Set<Role>()
+                .Include(x => x.Permissions)
+            .Where(x => x.Name == roleName)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

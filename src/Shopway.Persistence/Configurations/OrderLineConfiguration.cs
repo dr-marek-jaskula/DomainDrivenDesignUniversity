@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shopway.Domain.Orders;
 using Shopway.Domain.Orders.ValueObjects;
-using Shopway.Persistence.Converters.EntityIds;
 using Shopway.Persistence.Converters.ValueObjects;
 using Shopway.Persistence.Utilities;
 using static Shopway.Persistence.Constants.Constants;

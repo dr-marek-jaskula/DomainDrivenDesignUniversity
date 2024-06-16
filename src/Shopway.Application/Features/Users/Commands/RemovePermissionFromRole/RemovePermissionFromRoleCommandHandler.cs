@@ -2,46 +2,46 @@
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Users;
-using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Commands.RemovePermissionFromRole;
 
-internal sealed class RemovePermissionFromRoleCommandHandler(IUserRepository userRepository, IValidator validator)
+internal sealed class RemovePermissionFromRoleCommandHandler(IAuthorizationRepository authorizationRepository, IValidator validator)
     : ICommandHandler<RemovePermissionFromRoleCommand>
 {
-    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult> Handle(RemovePermissionFromRoleCommand command, CancellationToken cancellationToken)
     {
-        var role = Role.FromName(command.Role);
-        var permission = Permission.FromName(command.Permission);
+        var permissionSuccessfulyParsed = Enum.TryParse<PermissionName>(command.Permission, out var permissionName);
+        var roleSuccessfulyParsed = Enum.TryParse<RoleName>(command.Role, out var roleName);
 
         _validator
-            .If(role is null, Error.NotFound(nameof(Role), command.Role, "Roles are case sensitive."))
-            .If(permission is null, Error.NotFound(nameof(Permission), command.Permission, "Permissions are case sensitive."))
-            .If(role == Role.Administrator, Error.InvalidOperation("Removing permission from to Administrator role is forbidden."));
+            .If(roleSuccessfulyParsed is false, Error.NotFound(nameof(RoleName), command.Role, "Roles are case sensitive."))
+            .If(permissionSuccessfulyParsed is false, Error.NotFound(nameof(PermissionName), command.Permission, "Permissions are case sensitive."))
+            .If(roleName is RoleName.Administrator, Error.InvalidOperation("Removing permission from to Administrator role is forbidden."));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure();
         }
 
-        var roleWithPermissions = await _userRepository
-            .GetRolePermissionsAsync(role!, cancellationToken);
+        var roleWithPermissions = await _authorizationRepository
+            .GetRolePermissionsAsync(roleName, cancellationToken);
 
         _validator
-            .If(roleWithPermissions!.Permissions.Any(x => x.Name == permission!.Name) is false, Error.InvalidOperation("Role does not contain given permission."));
+            .If(roleWithPermissions is null, Error.NotFound(nameof(Role), command.Role, "Role not found in database."))
+            .If(roleWithPermissions?.Permissions.Any(x => x.Name == $"{permissionName}") is not true, Error.InvalidOperation("Role does not contain given permission."));
 
         if (_validator.IsInvalid)
         {
             return _validator.Failure();
         }
 
-        var permissionToRemove = roleWithPermissions
+        var permissionToRemove = roleWithPermissions!
             .Permissions
-            .First(x => x.Name == permission!.Name);
+            .First(x => x.Name == $"{permissionName}");
 
         roleWithPermissions!
             .Permissions

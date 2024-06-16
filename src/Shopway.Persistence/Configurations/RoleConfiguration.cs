@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shopway.Domain.Users.Enumerations;
+using Shopway.Domain.Users.Authorization;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
 using static Shopway.Persistence.Constants.Constants;
 
@@ -28,7 +28,7 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
             .WithMany(u => u.Roles);
 
         var rolesFromEnumeration = Role.GetNames();
-        var rolesFromEnum = GetNamesOf<Domain.Users.Authorization.Role>();
+        var rolesFromEnum = GetNamesOf<RoleName>();
 
         bool areEnumRolesEquivalentToEnumerationRoles =
             rolesFromEnumeration.SetEquals(rolesFromEnum);
