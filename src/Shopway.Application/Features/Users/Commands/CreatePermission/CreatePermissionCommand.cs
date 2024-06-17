@@ -4,6 +4,10 @@ namespace Shopway.Application.Features.Users.Commands.CreatePermission;
 
 public sealed record CreatePermissionCommand
 (
-    string PermissionName
+    string PermissionName,
+    string RelatedAggregateRoot,
+    string RelatedEntity,
+    string PermissionType,
+    List<string>? AllowedProperties
 )
     : ICommand;

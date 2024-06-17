@@ -8,6 +8,8 @@ using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
 using Shopway.Application.Features.Users.Commands.AddPropertyToReadPermission;
 using Shopway.Application.Features.Users.Commands.AddRoleToUser;
 using Shopway.Application.Features.Users.Commands.ConfigureTwoFactorToptLogin;
+using Shopway.Application.Features.Users.Commands.CreatePermission;
+using Shopway.Application.Features.Users.Commands.DeletePermission;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstStep;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorTopt;
@@ -206,8 +208,8 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         CancellationToken cancellationToken
     )
     {
-        var query = new AddRoleToUserCommand(username, role);
-        var result = await Sender.Send(query, cancellationToken);
+        var command = new AddRoleToUserCommand(username, role);
+        var result = await Sender.Send(command, cancellationToken);
 
         return result.IsFailure
             ? result.ToProblemHttpResult()
@@ -224,8 +226,8 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
         CancellationToken cancellationToken
     )
     {
-        var query = new RemoveRoleFromUserCommand(username, role);
-        var result = await Sender.Send(query, cancellationToken);
+        var command = new RemoveRoleFromUserCommand(username, role);
+        var result = await Sender.Send(command, cancellationToken);
 
         return result.IsFailure
             ? result.ToProblemHttpResult()
@@ -262,6 +264,41 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     {
         var query = new GetPermissionDetailsQuery(permission);
         var result = await Sender.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
+    [HttpPost("permissions")]
+    [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok, ProblemHttpResult>> CreatePermission
+    (
+        [FromBody] CreatePermissionCommand command,
+        CancellationToken cancellationToken
+    )
+    {
+        var result = await Sender.Send(command, cancellationToken);
+
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
+    [HttpDelete("permissions/{permission}")]
+    [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok, ProblemHttpResult>> DeletePermission
+    (
+        [FromRoute] string permission,
+        CancellationToken cancellationToken
+    )
+    {
+        var command = new DeletePermissionCommand(permission);
+        var result = await Sender.Send(command, cancellationToken);
 
         return result.IsFailure
             ? result.ToProblemHttpResult()

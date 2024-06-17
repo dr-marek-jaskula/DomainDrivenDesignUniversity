@@ -4,6 +4,8 @@ namespace Shopway.Domain.Users.Authorization;
 
 public interface IAuthorizationRepository
 {
+    Task CreatePermissionAsync(Permission value);
+    Task DeletePermissionAsync(Permission permission);
     Task<Permission?> GetPermissionAsync(PermissionName permission, CancellationToken cancellationToken);
     Task<HashSet<string>> GetPermissionsAsync(UserId userId);
     Task<Role?> GetRolePermissionsAsync(RoleName role, CancellationToken cancellationToken);

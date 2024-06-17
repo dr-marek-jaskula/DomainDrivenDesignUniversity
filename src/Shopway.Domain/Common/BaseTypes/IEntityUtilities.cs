@@ -12,6 +12,22 @@ public static class IEntityUtilities
 {
     private static readonly ConcurrentDictionary<string, List<string>> _entityPropertiesCache = new();
 
+    public static bool IsEntity(string entityName)
+    {
+        return AssemblyReference.Assembly
+            .GetTypes()
+            .Where(x => x.Name == entityName)
+            .Any(x => x.Implements<IEntity>());
+    }
+
+    public static bool IsAggregateRoot(string entityName)
+    {
+        return AssemblyReference.Assembly
+            .GetTypes()
+            .Where(x => x.Name == entityName)
+            .Any(x => x.Implements<IAggregateRoot>());
+    }
+
     public static List<string> GetEntityPropertiesWithHierarchy(string entityName)
     {
         return _entityPropertiesCache.GetOrAdd(entityName, key =>

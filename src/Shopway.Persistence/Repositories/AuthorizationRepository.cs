@@ -111,4 +111,22 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
             .Where(x => x.Name == roleName)
             .FirstOrDefaultAsync(cancellationToken);
     }
+
+    public Task CreatePermissionAsync(Permission permission)
+    {
+        _dbContext
+            .Set<Permission>()
+            .Add(permission);
+
+        return Task.CompletedTask;
+    }
+
+    public Task DeletePermissionAsync(Permission permission)
+    {
+        _dbContext
+            .Set<Permission>()
+            .Remove(permission);
+
+        return Task.CompletedTask;
+    }
 }
