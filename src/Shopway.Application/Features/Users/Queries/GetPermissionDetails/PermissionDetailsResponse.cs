@@ -4,7 +4,6 @@ namespace Shopway.Application.Features.Users.Queries.GetPermissionDetails;
 
 public sealed record PermissionDetailsResponse
 (
-    int Id,
     string Name,
     string? RelatedAggregateRoot,
     string? RelatedEntity,

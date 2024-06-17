@@ -1,4 +1,7 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.Errors;
+using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 
 namespace Shopway.Domain.Users.Authorization;
@@ -26,23 +29,54 @@ public enum PermissionType
     Read = 5,
 }
 
-public sealed partial class Permission : Enumeration<Permission>
+public sealed partial class Permission
 {
     private const char _floor = '_';
-    public static readonly Permission INVALID_PERMISSION = new(1, nameof(INVALID_PERMISSION));
 
+    public string Name { get; init; }
     public PermissionType Type { get; init; } = PermissionType.Other;
     public string? RelatedAggregateRoot { get; init; }
     public string? RelatedEntity { get; init; }
     public List<string>? Properties { get; init; } = null;
 
-    public Permission(int id, string name)
-        : base(id, name)
+    private Permission(string name)
+    {
+        Name = name;
+    }
+
+    public static Result<Permission> CreatePermission<TAggregateRoot, TEntity>
+    (
+        string name, 
+        PermissionType permissionType,
+        List<string>? allowedProperties = null
+    )
+        where TAggregateRoot : class, IAggregateRoot
+        where TEntity : class, IEntity
     {
         if (name.NotContains(_floor))
         {
-            throw new ArgumentException($"Permission must contain '{_floor}'.");
+            Result.Failure<Permission>(Error.InvalidArgument($"Permission must contain '{_floor}'."));
         }
+
+        var entityName = typeof(TEntity).Name;
+
+        if (allowedProperties is not null)
+        {
+            Result propertiesCheck = IEntityUtilities.ValidateEntityProperties(entityName, allowedProperties);
+
+            if (propertiesCheck!.IsFailure)
+            {
+                return propertiesCheck.Failure<Permission>();
+            }
+        }
+
+        return new Permission(name)
+        {
+            RelatedAggregateRoot = typeof(TAggregateRoot).Name,
+            RelatedEntity = entityName,
+            Type = permissionType,
+            Properties = allowedProperties
+        };
     }
 
     // Empty constructor in this case is required by EF Core

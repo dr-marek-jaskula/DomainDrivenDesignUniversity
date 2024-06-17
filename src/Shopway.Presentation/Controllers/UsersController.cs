@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shopway.Application.Features.Users.Commands;
 using Shopway.Application.Features.Users.Commands.AddPermissionToRole;
 using Shopway.Application.Features.Users.Commands.AddPropertyToReadPermission;
+using Shopway.Application.Features.Users.Commands.AddRoleToUser;
 using Shopway.Application.Features.Users.Commands.ConfigureTwoFactorToptLogin;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorFirstStep;
 using Shopway.Application.Features.Users.Commands.LoginTwoFactorSecondStep;
@@ -15,6 +16,7 @@ using Shopway.Application.Features.Users.Commands.RefreshAccessToken;
 using Shopway.Application.Features.Users.Commands.RegisterUser;
 using Shopway.Application.Features.Users.Commands.RemovePermissionFromRole;
 using Shopway.Application.Features.Users.Commands.RemovePropertyFromReadPermission;
+using Shopway.Application.Features.Users.Commands.RemoveRoleFromUser;
 using Shopway.Application.Features.Users.Commands.Revoke;
 using Shopway.Application.Features.Users.Queries.GetPermissionDetails;
 using Shopway.Application.Features.Users.Queries.GetRolePermissions;
@@ -187,6 +189,42 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     )
     {
         var query = new GetUserRolesByUsernameQuery(username);
+        var result = await Sender.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
+    [HttpPost("{username}/roles/{role}")]
+    [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok, ProblemHttpResult>> AddRoleToUser
+    (
+        [FromRoute] string username,
+        [FromRoute] string role,
+        CancellationToken cancellationToken
+    )
+    {
+        var query = new AddRoleToUserCommand(username, role);
+        var result = await Sender.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
+    [HttpDelete("{username}/roles/{role}")]
+    [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok, ProblemHttpResult>> RemoveRoleFromUser
+    (
+        [FromRoute] string username,
+        [FromRoute] string role,
+        CancellationToken cancellationToken
+    )
+    {
+        var query = new RemoveRoleFromUserCommand(username, role);
         var result = await Sender.Send(query, cancellationToken);
 
         return result.IsFailure

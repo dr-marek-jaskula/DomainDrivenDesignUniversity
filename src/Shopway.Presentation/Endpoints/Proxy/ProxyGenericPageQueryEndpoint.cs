@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Proxy;
+using Shopway.Domain.Common.BaseTypes;
 using Shopway.Presentation.Authentication.GenericProxy;
 using Shopway.Presentation.Utilities;
 
@@ -39,14 +40,6 @@ public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxy
 
     public override async Task<Results<Ok<object>, ProblemHttpResult, ForbidHttpResult>> ExecuteAsync(GenericProxyPageQuery query, CancellationToken cancellationToken)
     {
-        var authorizationResult = await _authorizationService
-            .AuthorizeAsync(User, GenericProxyRequirementResource.From(query), GenericProxyPropertiesRequirement.PolicyName);
-
-        if (authorizationResult.Succeeded is false)
-        {
-            return authorizationResult.ToForbidResult();
-        }
-
         var queryResult = _genericMappingService.GenericMap(query);
 
         if (queryResult!.IsFailure)
@@ -54,9 +47,25 @@ public sealed class ProxyGenericPageQueryEndpoint(ISender sender, IMediatorProxy
             return queryResult.ToProblemHttpResult();
         }
 
+        var resourse = GenericProxyRequirementResource.From(query);
+        var propertiesCheck = IEntityUtilities.ValidateEntityProperties(resourse.Entity, resourse.RequestedProperties);
+
+        if (propertiesCheck!.IsFailure)
+        {
+            return propertiesCheck.ToProblemHttpResult();
+        }
+
+        var authorizationResult = await _authorizationService
+            .AuthorizeAsync(User, resourse, GenericProxyPropertiesRequirement.PolicyName);
+
+        if (authorizationResult.Succeeded is false)
+        {
+            return authorizationResult.ToForbidResult();
+        }
+
         object concretePageQuery = queryResult.Value;
 
-        var result = await _sender.Send(concretePageQuery, cancellationToken) as Shopway.Domain.Common.Results.IResult<object>;
+        var result = await _sender.Send(concretePageQuery, cancellationToken) as Domain.Common.Results.IResult<object>;
 
         return result!.IsFailure
             ? result.ToProblemHttpResult()

@@ -1,4 +1,4 @@
-using Shopway.Domain.Common.BaseTypes;
+using static System.Reflection.BindingFlags;
 
 namespace Shopway.Domain.Users.Authorization;
 
@@ -10,16 +10,16 @@ public enum RoleName
     Administrator = 4
 }
 
-public sealed class Role : Enumeration<Role>
+public sealed class Role
 {
-    public static readonly Role Customer = new(1, nameof(Customer));
-    public static readonly Role Employee = new(2, nameof(Employee));
-    public static readonly Role Manager = new(3, nameof(Manager));
-    public static readonly Role Administrator = new(4, nameof(Administrator));
+    public static readonly Role Customer = new(nameof(Customer));
+    public static readonly Role Employee = new(nameof(Employee));
+    public static readonly Role Manager = new(nameof(Manager));
+    public static readonly Role Administrator = new(nameof(Administrator));
 
-    public Role(int id, string name)
-        : base(id, name)
+    public Role(string name)
     {
+        Name = name;
     }
 
     //Empty constructor in this case is required by EF Core
@@ -27,12 +27,22 @@ public sealed class Role : Enumeration<Role>
     {
     }
 
-    public ICollection<User> Users { get; set; }
-    public ICollection<Permission> Permissions { get; set; }
+    public string Name { get; init; }
+    public ICollection<User> Users { get; init; }
+    public ICollection<Permission> Permissions { get; init; }
 
-
-    public Authorization.RoleName GetRelatedEnum()
+    public static List<Role> GetPredefinedRoles()
     {
-        return Enum.Parse<Authorization.RoleName>(Name);
+        return typeof(Role)
+            .GetFields(Public | Static | Instance)
+            .Where(x => x.DeclaringType == typeof(Role))
+            .Select(x => x.GetValue(null))
+            .Cast<Role>()
+            .ToList();
+    }
+
+    public RoleName GetRelatedEnum()
+    {
+        return Enum.Parse<RoleName>(Name);
     }
 }

@@ -11,27 +11,33 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
     {
         builder.ToTable(TableName.RolePermission, SchemaName.Master);
 
-        builder.HasKey(x => new { x.RoleId, x.PermissionId });
+        builder.HasKey(x => new { x.RoleName, x.PermissionName });
+
+        builder.Property(x => x.RoleName)
+            .HasColumnType(ColumnType.VarChar(128));
+
+        builder.Property(x => x.PermissionName)
+            .HasColumnType(ColumnType.VarChar(128));
 
         //Insert static data
         builder.HasData
         (
-            Create(Role.Administrator, Permission.Review_Read),
-            Create(Role.Administrator, Permission.Review_Add),
-            Create(Role.Administrator, Permission.Review_Update),
-            Create(Role.Administrator, Permission.Review_Remove),
-            Create(Role.Manager, Permission.Review_Read),
-            Create(Role.Manager, Permission.Review_Add),
-            Create(Role.Manager, Permission.Review_Update),
-            Create(Role.Employee, Permission.Review_Read),
-            Create(Role.Customer, Permission.Review_Read),
-            Create(Role.Customer, Permission.Review_Add),
-            Create(Role.Customer, Permission.Review_Update)
+            Create(RoleName.Administrator, PermissionName.Review_Read),
+            Create(RoleName.Administrator, PermissionName.Review_Add),
+            Create(RoleName.Administrator, PermissionName.Review_Update),
+            Create(RoleName.Administrator, PermissionName.Review_Remove),
+            Create(RoleName.Manager, PermissionName.Review_Read),
+            Create(RoleName.Manager, PermissionName.Review_Add),
+            Create(RoleName.Manager, PermissionName.Review_Update),
+            Create(RoleName.Employee, PermissionName.Review_Read),
+            Create(RoleName.Customer, PermissionName.Review_Read),
+            Create(RoleName.Customer, PermissionName.Review_Add),
+            Create(RoleName.Customer, PermissionName.Review_Update)
         );
     }
 
-    private static RolePermission Create(Role role, Permission permission)
+    private static RolePermission Create(RoleName role, PermissionName permission)
     {
-        return new RolePermission(role.Id, permission.Id);
+        return new RolePermission(role.ToString(), permission.ToString());
     }
 }

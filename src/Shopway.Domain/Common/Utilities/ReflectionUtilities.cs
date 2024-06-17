@@ -7,6 +7,26 @@ namespace Shopway.Domain.Common.Utilities;
 
 public static class ReflectionUtilities
 {
+    public static bool EntityOrNotValueObjectWithSingleValue(this Type type)
+    {
+        return type.Implements<IEntity>() || NotValueObjectWithSingleValue(type);
+    }
+
+    public static bool NotValueObjectWithSingleValue(this Type type)
+    {
+        return type.IsAssignableTo(typeof(ValueObject)) && type.GetProperties().Length > 1;
+    }
+
+    public static bool EntityOrNotValueObjectWithSingleValue(this PropertyInfo propertyInfo)
+    {
+        return propertyInfo.Implements<IEntity>() || NotValueObjectWithSingleValue(propertyInfo);
+    }
+
+    public static bool NotValueObjectWithSingleValue(this PropertyInfo propertyInfo)
+    {
+        return propertyInfo.PropertyType.IsAssignableTo(typeof(ValueObject)) && propertyInfo.PropertyType.GetProperties().Length > 1;
+    }
+
     public static Type GetEntityTypeFromEntityIdType(Type entityIdType)
     {
         if (entityIdType.Implements<IEntityId>() is false)
