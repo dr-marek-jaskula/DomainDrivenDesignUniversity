@@ -63,7 +63,8 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
             Permission.CreatePermission<Product, Review>(nameof(PermissionName.Review_Remove), PermissionType.Remove).Value,
             Permission.CreatePermission<Product, Review>(nameof(PermissionName.Review_Read), PermissionType.Read).Value,
             Permission.CreatePermission<Product, Product>(nameof(PermissionName.Product_Read), PermissionType.Read).Value,
-            Permission.CreatePermission<Product, Product>(nameof(PermissionName.Product_Read_Customer), PermissionType.Read, customerAllowedProperties).Value
+            Permission.CreatePermission<Product, Product>(nameof(PermissionName.Product_Read_Customer), PermissionType.Read, customerAllowedProperties).Value,
+            Permission.INVALID_PERMISSION
         ];
     }
 }

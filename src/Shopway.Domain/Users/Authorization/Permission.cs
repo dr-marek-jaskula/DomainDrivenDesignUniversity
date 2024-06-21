@@ -34,6 +34,10 @@ public enum PermissionType
 public sealed partial class Permission
 {
     private const char _floor = '_';
+    public static Permission INVALID_PERMISSION = new(nameof(INVALID_PERMISSION)) //Test purposes
+    {
+        Type = PermissionType.Other
+    };
 
     public string Name { get; init; }
     public PermissionType Type { get; init; } = PermissionType.Other;

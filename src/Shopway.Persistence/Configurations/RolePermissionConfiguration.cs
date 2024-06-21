@@ -26,6 +26,7 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
             Create(RoleName.Administrator, PermissionName.Review_Add),
             Create(RoleName.Administrator, PermissionName.Review_Update),
             Create(RoleName.Administrator, PermissionName.Review_Remove),
+            Create(RoleName.Administrator, PermissionName.INVALID_PERMISSION),
             Create(RoleName.Manager, PermissionName.Review_Read),
             Create(RoleName.Manager, PermissionName.Review_Add),
             Create(RoleName.Manager, PermissionName.Review_Update),
