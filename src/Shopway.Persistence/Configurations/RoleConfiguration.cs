@@ -12,10 +12,7 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
     {
         builder.ToTable(TableName.Role, SchemaName.Master);
 
-        builder.HasKey(r => r.Id);
-
-        builder.Property(r => r.Id)
-            .HasColumnType(ColumnType.TinyInt);
+        builder.HasKey(r => r.Name);
 
         builder.Property(r => r.Name)
             .HasColumnType(ColumnType.VarChar(128));
@@ -27,18 +24,19 @@ internal sealed class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Rol
         builder.HasMany(r => r.Users)
             .WithMany(u => u.Roles);
 
-        var rolesFromEnumeration = Role.GetNames();
+        var predefinedRoles = Role.GetPredefinedRoles();
         var rolesFromEnum = GetNamesOf<RoleName>();
 
-        bool areEnumRolesEquivalentToEnumerationRoles =
-            rolesFromEnumeration.SetEquals(rolesFromEnum);
+        bool areEnumRolesEquivalentToPredefinedRoles = predefinedRoles
+            .Select(x => x.Name)
+            .SequenceEqual(rolesFromEnum);
 
-        if (areEnumRolesEquivalentToEnumerationRoles is false)
+        if (areEnumRolesEquivalentToPredefinedRoles is false)
         {
-            throw new Exception($"{nameof(Role)} enum values are not equivalent to {nameof(Role)} enumeration values");
+            throw new Exception($"{nameof(Role)} enum values are not equivalent to predefined {nameof(Role)}s");
         }
 
         //Insert static data
-        builder.HasData(Role.List);
+        builder.HasData(predefinedRoles);
     }
 }

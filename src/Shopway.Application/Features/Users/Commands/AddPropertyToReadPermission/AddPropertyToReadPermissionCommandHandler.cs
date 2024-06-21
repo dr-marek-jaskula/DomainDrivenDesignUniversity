@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Users.Authorization;
@@ -37,7 +38,13 @@ internal sealed class AddPropertyToReadPermissionCommandHandler(IAuthorizationRe
             return _validator.Failure();
         }
 
-        //No check if the property exists in entity for now
+        var check = IEntityUtilities.ValidateEntityProperties(permission!.RelatedEntity!, [command.Property]);
+
+        if (check.IsFailure)
+        {
+            return check;
+        }
+
         permission!
             .Properties!
             .Add(command.Property);

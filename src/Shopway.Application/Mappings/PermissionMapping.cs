@@ -9,7 +9,6 @@ public static class PermissionMapping
     {
         return new PermissionDetailsResponse
         (
-            permission.Id,
             permission.Name,
             permission.RelatedAggregateRoot,
             permission.RelatedEntity,

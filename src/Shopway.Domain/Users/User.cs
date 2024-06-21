@@ -76,4 +76,14 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     {
         RefreshToken = null;
     }
+
+    public void AddRole(Role role)
+    {
+        _roles.Add(role);
+    }
+
+    public void RemoveRole(Role role)
+    {
+        _roles.Remove(role);
+    }
 }

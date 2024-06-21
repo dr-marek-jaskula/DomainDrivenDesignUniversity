@@ -1882,19 +1882,181 @@
 					"response": []
 				},
 				{
-					"name": "GetUserRolesByUsername.Valid",
+					"name": "AddRoleToUser.Valid",
 					"request": {
-						"method": "GET",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/{{username}}/roles",
+							"raw": "{{base_url}}/users/{{username}}/roles/Customer",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
 								"{{username}}",
-								"roles"
+								"roles",
+								"Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreatePermission.Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\t\"permissionName\": \"OrderHeader_Read_Customer\",\r\n\t\t\"relatedAggregateRoot\": \"OrderHeader\",\r\n\t\t\"relatedEntity\": \"OrderHeader\",\r\n\t\t\"permissionType\": \"Read\",\r\n\t\t\"allowedProperties\": [\r\n\t\t\t\"Id\"\r\n\t\t]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/permissions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreatePermission.AllProperties.Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\t\"permissionName\": \"OrderHeader_Read_Customer\",\r\n\t\t\"relatedAggregateRoot\": \"OrderHeader\",\r\n\t\t\"relatedEntity\": \"OrderHeader\",\r\n\t\t\"permissionType\": \"Read\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/permissions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletePermission.Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/permissions/OrderHeader_Read_Customer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"permissions",
+								"OrderHeader_Read_Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveRoleFromUser.Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{username}}/roles/Customer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{username}}",
+								"roles",
+								"Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserRolesByUsername.Valid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{username}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{username}}"
 							]
 						}
 					},
@@ -2052,6 +2214,37 @@
 					"response": []
 				},
 				{
+					"name": "AddPermissionToRole.Valid.OrderHeader_Read_Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/roles/Customer/permissions/OrderHeader_Read_Customer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"roles",
+								"Customer",
+								"permissions",
+								"OrderHeader_Read_Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "RemovePermissionFromRole.Valid",
 					"request": {
 						"auth": {
@@ -2108,6 +2301,37 @@
 								"Customer",
 								"permissions",
 								"Product_Read_Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemovePermissionFromRole.Valid.OrderHeader_Read_Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/roles/Customer/permissions/OrderHeader_Read_Customer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"roles",
+								"Customer",
+								"permissions",
+								"OrderHeader_Read_Customer"
 							]
 						}
 					},

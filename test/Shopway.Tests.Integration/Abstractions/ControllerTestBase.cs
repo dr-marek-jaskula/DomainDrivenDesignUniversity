@@ -156,7 +156,7 @@ public abstract class ControllerTestsBase : IDisposable
             .GetValue(user) as List<Role>;
 
         //Give all roles to the test user
-        roles!.AddRange(Role.List);
+        roles!.AddRange(Role.GetPredefinedRoles());
 
         await databaseFixture.Context.SaveChangesAsync();
     }

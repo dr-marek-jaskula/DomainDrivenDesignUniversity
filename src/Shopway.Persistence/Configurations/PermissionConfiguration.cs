@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shopway.Domain.Products;
 using Shopway.Domain.Users.Authorization;
 using Shopway.Persistence.Converters.Enums;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
@@ -13,21 +14,17 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
     {
         builder.ToTable(TableName.Permission, SchemaName.Master);
 
-        builder.HasKey(p => p.Id);
-
-        builder.Property(p => p.Id)
-            .HasColumnType(ColumnType.TinyInt);
+        builder.HasKey(p => p.Name);
 
         builder.Property(p => p.Name)
-            .HasColumnType(ColumnType.NVarChar(128))
-            .IsRequired(true);
+            .HasColumnType(ColumnType.VarChar(128));
 
         builder.Property(p => p.RelatedAggregateRoot)
-            .HasColumnType(ColumnType.NVarChar(128))
+            .HasColumnType(ColumnType.VarChar(128))
             .IsRequired(false);
 
         builder.Property(p => p.RelatedEntity)
-            .HasColumnType(ColumnType.NVarChar(128))
+            .HasColumnType(ColumnType.VarChar(128))
             .IsRequired(false);
 
         builder.Property(p => p.Type)
@@ -37,21 +34,37 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 
         builder.Property(p => p.Properties);
 
-        var permissionsFromEnumeration = Permission.GetNames();
-        var permissionsFromEnum = GetNamesOf<PermissionName>();
+        builder.HasData(PredefinedPermissions());
+    }
 
-        bool areEnumPermisionsEquivalentToEnumerationPermissions =
-            permissionsFromEnumeration.SetEquals(permissionsFromEnum);
+    //For tutorial purposes
+    private static List<Permission> PredefinedPermissions()
+    {
+        List<string> customerAllowedProperties = [
+            "Id",
+            "Price",
+            "Revision",
+            "ProductName",
+            "Reviews.Id",
+            "Reviews.Description",
+            "Reviews.Title",
+            "Reviews.Username",
+            "Reviews.Stars",
+            "Reviews.CreatedOn",
+            "Reviews.CreatedBy",
+            "Reviews.UpdatedOn",
+            "Reviews.UpdatedBy"
+        ];
 
-        if (areEnumPermisionsEquivalentToEnumerationPermissions is false)
-        {
-            throw new Exception($"{nameof(Permission)} enum values are not equivalent to {nameof(Permission)} enumeration values");
-        }
-
-        //Inserting static data (data that are not related to other)
-        builder.HasData(Permission.List);
-
-        builder.HasIndex(x => x.Name)
-            .IsUnique();
+        return
+        [
+            Permission.CreatePermission<Product, Review>(nameof(PermissionName.Review_Add), PermissionType.Add).Value,
+            Permission.CreatePermission<Product, Review>(nameof(PermissionName.Review_Update), PermissionType.Update).Value,
+            Permission.CreatePermission<Product, Review>(nameof(PermissionName.Review_Remove), PermissionType.Remove).Value,
+            Permission.CreatePermission<Product, Review>(nameof(PermissionName.Review_Read), PermissionType.Read).Value,
+            Permission.CreatePermission<Product, Product>(nameof(PermissionName.Product_Read), PermissionType.Read).Value,
+            Permission.CreatePermission<Product, Product>(nameof(PermissionName.Product_Read_Customer), PermissionType.Read, customerAllowedProperties).Value,
+            Permission.INVALID_PERMISSION
+        ];
     }
 }

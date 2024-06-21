@@ -2,17 +2,17 @@
 
 public sealed class RolePermission
 {
-    public RolePermission(int roleId, int permissionId)
+    public RolePermission(string roleName, string permissionName)
     {
-        RoleId = roleId;
-        PermissionId = permissionId;
+        RoleName = roleName;
+        PermissionName = permissionName;
     }
 
     private RolePermission()
     {
     }
 
-    public int RoleId { get; }
+    public string RoleName { get; init; }
 
-    public int PermissionId { get; }
+    public string PermissionName { get; init; }
 }
