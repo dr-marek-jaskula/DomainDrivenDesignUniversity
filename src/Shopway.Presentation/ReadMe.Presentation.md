@@ -47,11 +47,11 @@ If You want to change the secret, just use configure endpoint again and again sc
 
 1. Go to GoogleCloud **APIs & Services** and configure url and project (use test settings)
 2. Create and get Credentials -> choose **OAuth client ID** and then **Web application**
-3. Store cleintId and secretId in safe storage like local secrets (not directly in appsettings!)
+3. Store clientId and secretId in safe storage like local secrets (not directly in appsettings!)
 
 ! Use Swagger !
 4. Call `/google/redirect` endpoint, and copy value from the `location` header. 
-5. Paste header value to browser and log to google
+5. Paste header value to browser and log to Google
 6. Get the result token and use it to authenticate
 
 ## Proxy authorization
