@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shopway.Application.Abstractions;
 using Shopway.Application.Features.Users.Commands;
@@ -12,14 +14,24 @@ using Shopway.Infrastructure.Policies;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
+using static Google.Apis.Requests.BatchRequest;
 using static System.StringComparison;
 
 namespace Shopway.Infrastructure.Services;
 
-internal sealed class SecurityTokenService(IOptions<AuthenticationOptions> options, TimeProvider timeProvider) : ISecurityTokenService
+internal sealed class SecurityTokenService
+(
+    IOptions<AuthenticationOptions> authenticationOptions, 
+    IOptions<GoogleOptions> googleOptions,
+    TimeProvider timeProvider
+) 
+    : ISecurityTokenService
 {
-    private readonly AuthenticationOptions _options = options.Value;
+    private readonly AuthenticationOptions _options = authenticationOptions.Value;
+    private readonly GoogleOptions _googleOptions = googleOptions.Value;
     private readonly TimeProvider _timeProvider = timeProvider;
+    private const string _errorMessage = "Invalid token";
 
     public AccessTokenResponse GenerateJwt(User user)
     {
@@ -65,7 +77,7 @@ internal sealed class SecurityTokenService(IOptions<AuthenticationOptions> optio
 
         if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, InvariantCultureIgnoreCase))
         {
-            return Result.Failure<Claim?>(Error.InvalidArgument("Invalid token"));
+            return Result.Failure<Claim?>(Error.InvalidArgument(_errorMessage));
         }
 
         return jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.Equals(claimInvariantName, InvariantCultureIgnoreCase));
@@ -77,7 +89,7 @@ internal sealed class SecurityTokenService(IOptions<AuthenticationOptions> optio
 
         if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, InvariantCultureIgnoreCase))
         {
-            return Result.Failure<bool>(Error.InvalidArgument("Invalid token"));
+            return Result.Failure<bool>(Error.InvalidArgument(_errorMessage));
         }
 
         return securityToken.ValidFrom.AddDays(_options.RefreshTokenExpirationInDays) < _timeProvider.GetUtcNow();
@@ -91,6 +103,34 @@ internal sealed class SecurityTokenService(IOptions<AuthenticationOptions> optio
         }
 
         return ((DateTimeOffset)twoFactorTokenCreatedOn).AddSeconds(_options.TwoFactorTokenExpirationInSeconds) < _timeProvider.GetUtcNow();
+    }
+
+    public Result<(Email Email, Username Username)> GetUserLogDetailsFormGoogleClaims(ClaimsPrincipal claimsPrincipal)
+    {
+        var givenNameClaimValue = claimsPrincipal.FindFirstValue(ClaimTypes.GivenName);
+        var surnameClaimValue = claimsPrincipal.FindFirstValue(ClaimTypes.Surname);
+        var emailClaimValue = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
+
+        if (surnameClaimValue is null | givenNameClaimValue is null || emailClaimValue is null)
+        {
+            return Result.Failure<(Email Email, Username Username)>(Error.InvalidArgument("Google user is missing at least one of required claims"));
+        }
+
+        var email = Email.Create(emailClaimValue);
+
+        if (email.IsFailure)
+        {
+            return Result.Failure<(Email Email, Username Username)>(Error.InvalidArgument(email.Error));
+        }
+
+        var username = Username.Create($"{givenNameClaimValue}{surnameClaimValue}"); //Normalize
+
+        if (username.IsFailure)
+        {
+            return Result.Failure<(Email Email, Username Username)>(Error.InvalidArgument(username.Error));
+        }
+
+        return Result.Success((email.Value, username.Value));
     }
 
     private SecurityToken GetSecurityToken(string token)

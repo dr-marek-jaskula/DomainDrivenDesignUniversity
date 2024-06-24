@@ -4,8 +4,7 @@
 		"name": "DomainDrivenDesignUniversity",
 		"description": "# Introduction\nTutorial solution to present Domain Driven Design approach\n\n# Authentication\nJwt and ApiKey authorizations\n",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17572840",
-		"_collection_link": "https://www.postman.com/eltin13/workspace/domaindrivendesignuniversityworkspace/collection/17572840-c427976a-e8a9-4123-b432-4faa2cb6b3ee?action=share&source=collection_link&creator=17572840"
+		"_exporter_id": "17572840"
 	},
 	"item": [
 		{
@@ -59,6 +58,71 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle299\",\r\n  \"Description\": \"Added review description\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/products/{{validProductUlid}}/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products",
+										"{{validProductUlid}}",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddReview.Valid.RequireJwtToke.Hardcoded",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(pm.response.to.have.status(200))\r",
+											"{\r",
+											"    pm.collectionVariables.set(\"validReviewUlid\", response.id);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxSjEzQ1JNRTlNRVc1RjVUQVE4M1NLUFc1IiwibmFtZSI6IkFkYW1Lb2xrYSIsImVtYWlsIjoia29sa2FhMzQzQGdtYWlsLmNvbSIsIkN1c3RvbWVySWQiOiIiLCJuYmYiOjE3MTkyNDYxNTksImV4cCI6MTcxOTI0Njc1OSwiaXNzIjoiU2hvcHdheSIsImF1ZCI6IlNob3B3YXkifQ.HIUifD2ySTxghFBuCxQFWFhdU-lqRnV5fGoOl34t6z8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Stars\": 5,\r\n  \"Title\": \"AddReviewTitle239\",\r\n  \"Description\": \"Added review description\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1986,6 +2050,43 @@
 					"response": []
 				},
 				{
+					"name": "CreatePermission.User.AllProperties.Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\t\"permissionName\": \"User_Read_Customer\",\r\n\t\t\"relatedAggregateRoot\": \"User\",\r\n\t\t\"relatedEntity\": \"User\",\r\n\t\t\"permissionType\": \"Read\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/permissions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DeletePermission.Valid",
 					"request": {
 						"auth": {
@@ -2152,6 +2253,35 @@
 					"response": []
 				},
 				{
+					"name": "GetPermissionDetails.Valid.User_Read_Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/permissions/User_Read_Customer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"permissions",
+								"User_Read_Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "AddPermissionToRole.Valid",
 					"request": {
 						"auth": {
@@ -2208,6 +2338,37 @@
 								"Customer",
 								"permissions",
 								"Product_Read_Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddPermissionToRole.Valid.User_Read_Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/roles/Customer/permissions/User_Read_Customer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"roles",
+								"Customer",
+								"permissions",
+								"User_Read_Customer"
 							]
 						}
 					},
@@ -2394,6 +2555,35 @@
 								"Product_Read_Customer",
 								"properties",
 								"ProductName"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "USER SWAGGER TO -> RedirectToGoogleLogin. DO NOT USE POSTMAN",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-version",
+								"value": "1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/google/redirect",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"google",
+								"redirect"
 							]
 						}
 					},

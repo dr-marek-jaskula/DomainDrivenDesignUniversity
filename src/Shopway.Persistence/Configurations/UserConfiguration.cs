@@ -50,6 +50,12 @@ internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<Use
             .HasColumnType(ColumnType.VarChar(RefreshToken.Length))
             .IsRequired(false);
 
+        builder.Property(u => u.ExternalIdentityProvider)
+            .HasConversion<ExternalIdentityProviderConverter, ExternalIdentityProviderComparer>()
+            .HasColumnName(nameof(ExternalIdentityProvider))
+            .HasColumnType(ColumnType.VarChar(ExternalIdentityProvider.LegalIdentityProviders.Max(x => x.Length)))
+            .IsRequired(false);
+
         builder.Property(u => u.TwoFactorTokenHash)
             .HasConversion<TwoFactorTokenHashConverter, TwoFactorTokenHashComparer>()
             .HasColumnName(nameof(TwoFactorTokenHash))

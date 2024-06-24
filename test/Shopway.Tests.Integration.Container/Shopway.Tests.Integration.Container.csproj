@@ -13,9 +13,9 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.6" />
 		<PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-    <PackageReference Include="RestSharp" Version="111.2.0" />
-    <PackageReference Include="Testcontainers" Version="3.8.0" />
-    <PackageReference Include="Testcontainers.MsSql" Version="3.8.0" />
+    <PackageReference Include="RestSharp" Version="111.3.0" />
+    <PackageReference Include="Testcontainers" Version="3.9.0" />
+    <PackageReference Include="Testcontainers.MsSql" Version="3.9.0" />
     <PackageReference Include="WireMock.Net" Version="1.5.58" />
     <PackageReference Include="xunit" Version="2.8.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.1">

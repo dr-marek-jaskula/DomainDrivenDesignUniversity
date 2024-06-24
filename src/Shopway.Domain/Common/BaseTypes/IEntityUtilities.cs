@@ -10,7 +10,7 @@ namespace Shopway.Domain.Common.BaseTypes;
 
 public static class IEntityUtilities
 {
-    private static readonly ConcurrentDictionary<string, List<string>> _entityPropertiesCache = new();
+    private static readonly ConcurrentDictionary<string, List<string>> _aggregatePropertiesCache = new();
 
     public static bool IsEntity(string entityName)
     {
@@ -28,16 +28,16 @@ public static class IEntityUtilities
             .Any(x => x.Implements<IAggregateRoot>());
     }
 
-    public static List<string> GetEntityPropertiesWithHierarchy(string entityName)
+    public static List<string> GetAggregatePropertiesWithHierarchy(string entityName)
     {
-        return _entityPropertiesCache.GetOrAdd(entityName, key =>
+        return _aggregatePropertiesCache.GetOrAdd(entityName, key =>
         {
             var entitiyType = AssemblyReference.Assembly
                 .GetTypes()
                 .Where(x => x.Name == entityName)
-                .First(x => x.Implements<IEntity>());
+                .First(x => x.Implements<IAggregateRoot>());
 
-            var allProperties = GetEntityPropertiesWithHierarchy(entitiyType, string.Empty);
+            var allProperties = GetEntityPropertiesWithHierarchy(entitiyType, string.Empty, []);
 
             return allProperties
                 .Select(x => x.NameWithHierarchy)
@@ -47,7 +47,7 @@ public static class IEntityUtilities
 
     public static Result ValidateEntityProperties(string entity, List<string> requestedProperties)
     {
-        var entityProperties = GetEntityPropertiesWithHierarchy(entity);
+        var entityProperties = GetAggregatePropertiesWithHierarchy(entity);
 
         var invalidRequestedProperties = requestedProperties.Except(entityProperties);
 
@@ -66,12 +66,12 @@ public static class IEntityUtilities
         return Result.Success();
     }
 
-    private static List<(PropertyInfo Info, string NameWithHierarchy)> GetEntityPropertiesWithHierarchy(Type entitiyType, string previousName)
+    private static List<(PropertyInfo Info, string NameWithHierarchy)> GetEntityPropertiesWithHierarchy(Type entitiyType, string currentName, List<(PropertyInfo info, string nameWithHierarchy)> skipPropertiesToAvoidCyclicReference)
     {
         List<(PropertyInfo Info, string NameWithHierarchy)> entityProperties = entitiyType
             .GetProperties()
             .Where(x => x.Name.NotContains(nameof(DomainEvent)))
-            .Select(x => (x, previousName.NotNullOrEmptyOrWhiteSpace() ? $"{previousName}.{x.Name}" : x.Name))
+            .Select(x => (x, currentName.NotNullOrEmptyOrWhiteSpace() ? $"{currentName}.{x.Name}" : x.Name))
             .ToList();
 
         var nestedEntitiesOrNotValueObjectsWithSingleValue = entityProperties
@@ -94,13 +94,23 @@ public static class IEntityUtilities
             })
             .ToList();
 
-        foreach (var (info, nameWithHierarchy) in nestedEntitiesOrNotValueObjectsWithSingleValue)
+
+        foreach ((PropertyInfo info, string nameWithHierarchy) in nestedEntitiesOrNotValueObjectsWithSingleValue)
         {
+            if (skipPropertiesToAvoidCyclicReference.Any(toSkip => toSkip.info == info && nameWithHierarchy.Contains(toSkip.nameWithHierarchy)))
+            {
+                entityProperties.Remove((info, nameWithHierarchy));
+                continue;
+            }
+
+            skipPropertiesToAvoidCyclicReference.Add((info, nameWithHierarchy));
+
             var nestedProperties = info.PropertyType.IsGeneric(out var genericType)
-                ? GetEntityPropertiesWithHierarchy(genericType, nameWithHierarchy)
-                : GetEntityPropertiesWithHierarchy(info.PropertyType, nameWithHierarchy);
+                ? GetEntityPropertiesWithHierarchy(genericType, nameWithHierarchy, skipPropertiesToAvoidCyclicReference)
+                : GetEntityPropertiesWithHierarchy(info.PropertyType, nameWithHierarchy, skipPropertiesToAvoidCyclicReference);
 
             entityProperties.AddRange(nestedProperties);
+            entityProperties.Remove((info, nameWithHierarchy));
         }
 
         return entityProperties;

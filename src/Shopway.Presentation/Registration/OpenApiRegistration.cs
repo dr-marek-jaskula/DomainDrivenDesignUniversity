@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning.ApiExplorer;
-using FastEndpoints.AspVersioning;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
