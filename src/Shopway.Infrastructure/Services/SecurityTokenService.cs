@@ -22,10 +22,10 @@ namespace Shopway.Infrastructure.Services;
 
 internal sealed class SecurityTokenService
 (
-    IOptions<AuthenticationOptions> authenticationOptions, 
+    IOptions<AuthenticationOptions> authenticationOptions,
     IOptions<GoogleOptions> googleOptions,
     TimeProvider timeProvider
-) 
+)
     : ISecurityTokenService
 {
     private readonly AuthenticationOptions _options = authenticationOptions.Value;

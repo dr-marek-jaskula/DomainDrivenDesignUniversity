@@ -15,7 +15,7 @@ internal sealed class LoginByGoogleCommandHandler
     IUserRepository userRepository,
     ISecurityTokenService securityTokenService,
     IValidator validator,
-    IPasswordHasher<User> passwordHasher, 
+    IPasswordHasher<User> passwordHasher,
     IAuthorizationRepository authorizationRepository
 )
     : ICommandHandler<LoginByGoogleCommand, AccessTokenResponse>

@@ -29,7 +29,7 @@ internal sealed class DeletePermissionCommandHandler(IAuthorizationRepository au
             .GetPermissionAsync(permissionName, cancellationToken);
 
         _validator
-            .If(permission is null, Error.NotFound(nameof(Permission),command.PermissionName, $"{command.PermissionName} not found in the database"));
+            .If(permission is null, Error.NotFound(nameof(Permission), command.PermissionName, $"{command.PermissionName} not found in the database"));
 
         if (_validator.IsInvalid)
         {
