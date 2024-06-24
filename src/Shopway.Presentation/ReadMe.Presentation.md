@@ -45,11 +45,20 @@ If You want to change the secret, just use configure endpoint again and again sc
 
 ## Login by Google
 
-1. Go to GoogleCloud **APIs & Services** (create google project at first if needed)
-2. Go to Credentials and click "Create Credentials" and choose **OAuth client ID** and then **Web application**
-3. Set project and uri.
-4. Create credentials and safety store clientId and secret (not directly in appsettings!)
-1. 
+1. Go to GoogleCloud **APIs & Services** and configure url and project (use test settings)
+2. Create and get Credentials -> choose **OAuth client ID** and then **Web application**
+3. Store cleintId and secretId in safe storage like local secrets (not directly in appsettings!)
+
+! Use Swagger !
+4. Call `/google/redirect` endpoint, and copy value from the `location` header. 
+5. Paste header value to browser and log to google
+6. Get the result token and use it to authenticate
+
+## Proxy authorization
+
+Proxy endpoint `ProxyGenericPageQueryEndpoint` demonstrates how to deal with advance authentication strategy. It allows to specify which field are allowed for which permissions. To test it we can create a user with roles that have a permission with properties (for instance for Customer - see postman).
+
+
 ## Enum to string conversion
 
 Due to the 
