@@ -42,7 +42,7 @@ internal sealed class AddPermissionToRoleCommandHandler(IAuthorizationRepository
 
         var permission = await _authorizationRepository
             .GetPermissionAsync(permissionName, cancellationToken);
-        
+
         _validator
             .If(permission is null, Error.NotFound(nameof(Permission), command.Permission, "Permission not found in database."));
 

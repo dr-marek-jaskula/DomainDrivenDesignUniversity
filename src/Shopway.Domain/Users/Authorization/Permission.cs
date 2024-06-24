@@ -43,7 +43,7 @@ public sealed partial class Permission
 
     public static Result<Permission> CreatePermission
     (
-        string name, 
+        string name,
         string relatedAggregateRoot,
         string relatedEntity,
         string permissionTypeAsString,
@@ -70,7 +70,7 @@ public sealed partial class Permission
 
     public static Result<Permission> CreatePermission<TAggregateRoot, TEntity>
     (
-        string name, 
+        string name,
         PermissionType permissionType,
         List<string>? allowedProperties = null
     )
