@@ -31,6 +31,7 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
     public PasswordHash PasswordHash { get; set; }
     public CustomerId? CustomerId { get; set; }
     public Customer? Customer { get; set; }
+    public ExternalIdentityProvider? ExternalIdentityProvider { get; set; }
     public RefreshToken? RefreshToken { get; set; }
     public TwoFactorTokenHash? TwoFactorTokenHash { get; private set; }
     public TwoFactorToptSecret? TwoFactorToptSecret { get; private set; }
@@ -44,9 +45,19 @@ public sealed class User : AggregateRoot<UserId>, IAuditable
         return user;
     }
 
+    public static User New(Username username, Email email)
+    {
+        return Create(UserId.New(), username, email);
+    }
+
     public void SetHashedPassword(PasswordHash passwordHash)
     {
         PasswordHash = passwordHash;
+    }
+
+    public void SetExternalIdentityProvider(ExternalIdentityProvider externalIdentityProvider)
+    {
+        ExternalIdentityProvider = externalIdentityProvider;
     }
 
     public void SetTwoFactorToken(TwoFactorTokenHash twoFactorToken, string twoFactorTokenAsString)

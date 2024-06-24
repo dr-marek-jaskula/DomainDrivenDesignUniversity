@@ -33,7 +33,7 @@ using System.Security.Claims;
 
 namespace Shopway.Presentation.Controllers;
 
-public sealed class UsersController(ISender sender) : ApiController(sender)
+public sealed partial class UsersController(ISender sender) : ApiController(sender)
 {
     [HttpPost("[action]")]
     [ProducesResponseType(StatusCodes.Status200OK)]

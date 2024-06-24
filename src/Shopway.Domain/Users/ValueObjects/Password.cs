@@ -48,6 +48,18 @@ public sealed class Password : ValueObject
         return errors.CreateValidationResult(() => new Password(password));
     }
 
+    public static ValidationResult<Password> CreateRandomPassword()
+    {
+        var randomPassword = $"aA1!{Ulid.NewUlid()}";
+
+        if (randomPassword.Length > MaxLength)
+        {
+            randomPassword = randomPassword[..MaxLength];
+        }
+
+        return Create(randomPassword);
+    }
+
     public static IList<Error> Validate(string password)
     {
         return EmptyList<Error>()

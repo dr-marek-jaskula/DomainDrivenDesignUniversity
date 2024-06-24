@@ -19,16 +19,7 @@ public enum PermissionName
     Product_Read = 6,
     Product_Read_Customer = 7,
     OrderHeader_Read_Customer = 8,
-}
-
-public enum PermissionType
-{
-    Other = 0,
-    Add = 1,
-    Update = 2,
-    Remove = 3,
-    Delete = 4,
-    Read = 5,
+    User_Read_Customer = 9
 }
 
 public sealed partial class Permission

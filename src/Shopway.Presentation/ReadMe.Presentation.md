@@ -43,6 +43,13 @@ Microsoft Authenticator.
 
 If You want to change the secret, just use configure endpoint again and again scan the `QR code`.
 
+## Login by Google
+
+1. Go to GoogleCloud **APIs & Services** (create google project at first if needed)
+2. Go to Credentials and click "Create Credentials" and choose **OAuth client ID** and then **Web application**
+3. Set project and uri.
+4. Create credentials and safety store clientId and secret (not directly in appsettings!)
+1. 
 ## Enum to string conversion
 
 Due to the 

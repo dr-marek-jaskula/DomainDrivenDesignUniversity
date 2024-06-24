@@ -16,7 +16,6 @@ public static class ResultUtilities
         return result switch
         {
             { IsSuccess: true } => TypedResults.Ok(result.Value),
-
             _ => throw new InvalidOperationException("Result was failed")
         };
     }
@@ -26,7 +25,6 @@ public static class ResultUtilities
         return result switch
         {
             { IsSuccess: true } => TypedResults.BadRequest(result.Value),
-
             _ => throw new InvalidOperationException("Result was failed")
         };
     }
@@ -36,7 +34,6 @@ public static class ResultUtilities
         return result switch
         {
             { IsSuccess: true } => TypedResults.Ok(),
-
             _ => throw new InvalidOperationException("Result was failed")
         };
     }
@@ -46,7 +43,6 @@ public static class ResultUtilities
         return result switch
         {
             { Succeeded: true } => throw new InvalidOperationException("Result was successful"),
-
             _ => TypedResults.Forbid()
         };
     }

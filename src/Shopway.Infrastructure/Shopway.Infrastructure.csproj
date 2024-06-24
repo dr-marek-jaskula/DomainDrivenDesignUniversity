@@ -11,14 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.68.0" />
     <PackageReference Include="MailKit" Version="4.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.6" />
     <PackageReference Include="Polly" Version="8.4.0" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
 	<PackageReference Include="SymSpell" Version="6.7.2" />
     <PackageReference Include="TwoFactorAuth.Net" Version="1.4.0" />
     <PackageReference Include="TwoFactorAuth.Net.QRCoder" Version="1.0.2" />
-
   </ItemGroup>
 
   <ItemGroup>
