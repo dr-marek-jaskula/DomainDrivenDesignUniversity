@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
-public sealed class Stars : ValueObject
+public sealed record class Stars : ValueObject<decimal>
 {
     public static readonly decimal[] AdmissibleStars = [0, 0.5m, 1, 1.5m, 2, 2.5m, 3, 3.5m, 4, 4.5m, 5];
 
@@ -14,17 +14,9 @@ public sealed class Stars : ValueObject
         $"{nameof(Stars)}.{nameof(Invalid)}",
         $"{nameof(Stars)} name must be: {AdmissibleStars.Join(',')}.");
 
-    private Stars(decimal value)
+    private Stars(decimal stars) : base(stars)
     {
-        Value = value;
     }
-
-    private Stars()
-    {
-
-    }
-
-    public new decimal Value { get; }
 
     public static ValidationResult<Stars> Create(decimal stars)
     {
@@ -36,11 +28,6 @@ public sealed class Stars : ValueObject
     {
         return EmptyList<Error>()
             .If(AdmissibleStars.NotContains(stars), Invalid);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }
 

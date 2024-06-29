@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
-public sealed class Title : ValueObject
+public sealed record class Title : ValueObject<string>
 {
     public const int MaxLength = 45;
 
@@ -18,17 +18,9 @@ public sealed class Title : ValueObject
         $"{nameof(Title)}.{nameof(TooLong)}",
         $"{nameof(Title)} needs to be at most {MaxLength} characters long.");
 
-    private Title(string value)
-    {
-        Value = value;
-    }
-
-    //For EF Core
-    private Title()
+    private Title(string title) : base(title)
     {
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<Title> Create(string title)
     {
@@ -41,10 +33,5 @@ public sealed class Title : ValueObject
         return EmptyList<Error>()
             .If(title.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(title.Length > MaxLength, TooLong);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

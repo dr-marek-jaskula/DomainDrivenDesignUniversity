@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
-public sealed class UomCode : ValueObject
+public sealed record class UomCode : ValueObject<string>
 {
     public readonly static string[] AllowedUomCodes = ["pcs", "kg"];
 
@@ -14,17 +14,9 @@ public sealed class UomCode : ValueObject
         $"{nameof(UomCode)}.{nameof(Invalid)}",
         $"{nameof(UomCode)} name must be: {AllowedUomCodes.Join(',')}.");
 
-    private UomCode(string value)
-    {
-        Value = value;
-    }
-
-    //For EF Core
-    private UomCode()
+    private UomCode(string uomCode) : base(uomCode)
     {
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<UomCode> Create(string uomCode)
     {
@@ -36,10 +28,5 @@ public sealed class UomCode : ValueObject
     {
         return EmptyList<Error>()
             .If(AllowedUomCodes.NotContains(uomCode), Invalid);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

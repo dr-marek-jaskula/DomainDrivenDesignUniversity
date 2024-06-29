@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class FirstName : ValueObject
+public sealed record class FirstName : ValueObject<string>
 {
     public const int MaxLength = 50;
 
@@ -26,16 +26,9 @@ public sealed class FirstName : ValueObject
         $"{nameof(FirstName)}.{nameof(ContainsDigit)}",
         $"{nameof(FirstName)} contains digit.");
 
-    private FirstName(string value)
-    {
-        Value = value;
-    }
-
-    private FirstName()
+    private FirstName(string firstName) : base(firstName)
     {
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<FirstName> Create(string firstName)
     {
@@ -50,10 +43,5 @@ public sealed class FirstName : ValueObject
             .If(firstName.Length > MaxLength, TooLong)
             .If(firstName.ContainsIllegalCharacter(), ContainsIllegalCharacter)
             .If(firstName.ContainsDigit(), ContainsDigit);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

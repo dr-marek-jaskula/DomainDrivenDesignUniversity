@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class RefreshToken : ValueObject
+public sealed record class RefreshToken : ValueObject<string>
 {
     public const int Length = 32;
 
@@ -22,17 +22,9 @@ public sealed class RefreshToken : ValueObject
         $"{nameof(RefreshToken)}.{nameof(NotMatch)}",
         $"{nameof(RefreshToken)} must match current user {nameof(RefreshToken)}.");
 
-    private RefreshToken(string value)
+    private RefreshToken(string reefreshToken) : base(reefreshToken)
     {
-        Value = value;
     }
-
-    private RefreshToken()
-    {
-
-    }
-
-    public new string Value { get; }
 
     public static ValidationResult<RefreshToken> Create(string refreshToken)
     {
@@ -45,10 +37,5 @@ public sealed class RefreshToken : ValueObject
         return EmptyList<Error>()
             .If(refreshToken.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(refreshToken.Length != Length, InvalidLength);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

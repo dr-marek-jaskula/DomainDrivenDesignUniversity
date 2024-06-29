@@ -77,9 +77,11 @@ public class GenerateEntityIdAttribute : global::System.Attribute;");
         #nullable enable
 
         using Shopway.Domain.Common.BaseTypes.Abstractions;
+        using System.Diagnostics;
 
         namespace MyNamespace;
 
+        [DebuggerDisplay("{Value}")]
         public readonly record struct ProductId : IEntityId<ProductId>
         {
             public const string Name = "ProductId";

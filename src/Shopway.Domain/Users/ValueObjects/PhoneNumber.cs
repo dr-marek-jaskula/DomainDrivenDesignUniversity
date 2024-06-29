@@ -8,7 +8,7 @@ using static System.Text.RegularExpressions.RegexOptions;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class PhoneNumber : ValueObject
+public sealed record class PhoneNumber : ValueObject<string>
 {
     private static readonly Regex _regex = new(@"^([1-9])[0-9]{8}$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
@@ -20,17 +20,9 @@ public sealed class PhoneNumber : ValueObject
         $"{nameof(PhoneNumber)}.{nameof(Invalid)}",
         $"{nameof(PhoneNumber)} must consist of 9 digits and cannot start from zero.");
 
-    private PhoneNumber(string value)
+    private PhoneNumber(string phoneNumber) : base(phoneNumber)
     {
-        Value = value;
     }
-
-    private PhoneNumber()
-    {
-
-    }
-
-    public new string Value { get; }
 
     public static ValidationResult<PhoneNumber> Create(string number)
     {
@@ -43,10 +35,5 @@ public sealed class PhoneNumber : ValueObject
         return EmptyList<Error>()
             .If(number.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(_regex.NotMatch(number), Invalid);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

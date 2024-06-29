@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
-using static Shopway.Domain.Common.BaseTypes.ValueObject;
 
 namespace Shopway.Domain.Common.Utilities;
 
@@ -51,7 +51,7 @@ public static class ExpressionUtilities
 
     public static Type GetValueObjectInnerType(this MemberExpression expression)
     {
-        return expression.Type.GetProperty(Value)!.PropertyType;
+        return expression.Type.GetProperty(IValueObject.SingleValueName)!.PropertyType;
     }
 
     public static UnaryExpression ToConvertedExpression(this Type innerType, object value)
@@ -190,7 +190,7 @@ public static class ExpressionUtilities
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node.Member.Name is not Value)
+            if (node.Member.Name is not IValueObject.SingleValueName)
             {
                 _propertyName = node.Member.Name;
             }

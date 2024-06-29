@@ -7,7 +7,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class PasswordHash : ValueObject
+public sealed record class PasswordHash : ValueObject<string>
 {
     public const int BytesLong = 514;
 
@@ -19,16 +19,9 @@ public sealed class PasswordHash : ValueObject
         $"{nameof(PasswordHash)}.{nameof(InvalidBytesLong)}",
         $"{nameof(PasswordHash)} needs to be less than {BytesLong} bytes long.");
 
-    private PasswordHash(string value)
-    {
-        Value = value;
-    }
-
-    private PasswordHash()
+    private PasswordHash(string passwrodHash) : base(passwrodHash)
     {
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<PasswordHash> Create(string passwordHash)
     {
@@ -41,10 +34,5 @@ public sealed class PasswordHash : ValueObject
         return EmptyList<Error>()
             .If(passwordHash.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(Encoding.ASCII.GetByteCount(passwordHash) > BytesLong, InvalidBytesLong);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

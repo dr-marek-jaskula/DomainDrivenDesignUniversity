@@ -1,10 +1,15 @@
-﻿using Shopway.Domain.Common.BaseTypes;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Results;
 
 namespace Shopway.Domain.Common.Errors;
 
 public static class ErrorUtilities
 {
+    public static ValidationResult<TValue> ToValidationResult<TValue>(this IList<Error> errors)
+    {
+        return ValidationResult<TValue>.WithErrors([.. errors]);
+    }
+
     public static TResult CreateValidationResult<TResult>(this ICollection<Error> errors)
         where TResult : class, IResult
     {
@@ -36,7 +41,7 @@ public static class ErrorUtilities
         this ICollection<Error> errors,
         Func<TValueObject> createValueObject
     )
-        where TValueObject : ValueObject
+        where TValueObject : IValueObject
     {
         if (errors is null)
         {
@@ -45,7 +50,7 @@ public static class ErrorUtilities
 
         if (errors.Count != 0)
         {
-            return ValidationResult<TValueObject>.WithErrors(errors.ToArray());
+            return ValidationResult<TValueObject>.WithErrors([.. errors]);
         }
 
         return ValidationResult<TValueObject>.WithoutErrors(createValueObject.Invoke());

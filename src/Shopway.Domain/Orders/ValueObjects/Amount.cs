@@ -5,7 +5,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Orders.ValueObjects;
 
-public sealed class Amount : ValueObject
+public sealed record class Amount : ValueObject<int>
 {
     public const int MaxAmount = 1000;
     public const int MinAmount = 1;
@@ -18,16 +18,9 @@ public sealed class Amount : ValueObject
         $"{nameof(Amount)}.{nameof(TooHigh)}",
         $"{nameof(Amount)} must be at most {MaxAmount}.");
 
-    private Amount(int value)
-    {
-        Value = value;
-    }
-
-    private Amount()
+    private Amount(int amount) : base(amount)
     {
     }
-
-    public new int Value { get; }
 
     public static ValidationResult<Amount> Create(int amount)
     {
@@ -40,10 +33,5 @@ public sealed class Amount : ValueObject
         return EmptyList<Error>()
             .If(amount < MinAmount, TooLow)
             .If(amount > MaxAmount, TooHigh);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Shopway.Domain.Common.Errors;
 
-public sealed partial class Error
+partial record class Error
 {
     /// <summary>
     /// Create an Error based on the entity type name and the id that was not found

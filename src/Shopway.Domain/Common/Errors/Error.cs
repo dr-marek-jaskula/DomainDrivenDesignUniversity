@@ -1,12 +1,17 @@
-﻿namespace Shopway.Domain.Common.Errors;
+﻿using Shopway.Domain.Common.Results;
+
+namespace Shopway.Domain.Common.Errors;
 
 /// <summary>
 /// Represents an error that contains the informations about the failure
 /// </summary>
-public sealed partial class Error : IEquatable<Error>
+public sealed partial record class Error(string Code, string Message)
 {
     private const string SerializationSeparator = ": ";
     private const int MaximalErrorMessageLenght = 500;
+
+    public string Code { get; } = Code;
+    public string Message { get; } = KeepMessageNotTooLongForSecurityReasons(Message);
 
     /// <summary>
     /// The empty error instance used to represent that no error has occurred
@@ -27,12 +32,6 @@ public sealed partial class Error : IEquatable<Error>
     /// The validation error instance
     /// </summary>
     public static readonly Error ValidationError = new($"{nameof(ValidationError)}", "A validation problem occurred.");
-
-    public Error(string code, string message)
-    {
-        Code = code;
-        Message = KeepMessageNotTooLongForSecurityReasons(message);
-    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Error"/> class
@@ -59,69 +58,26 @@ public sealed partial class Error : IEquatable<Error>
         return New(exception.GetType().Name, $"{exception.Message}. ({exception.InnerException.Message})");
     }
 
-    /// <summary>
-    /// Gets the error code
-    /// </summary>
-    public string Code { get; }
-
-    /// <summary>
-    /// Gets the error message
-    /// </summary>
-    public string Message { get; }
 
     public static implicit operator string(Error error)
     {
         return error.Code;
     }
 
-    public static bool operator ==(Error? first, Error? second)
-    {
-        if (first is null && second is null)
-        {
-            return true;
-        }
-
-        if (first is null || second is null)
-        {
-            return false;
-        }
-
-        return first.Equals(second);
-    }
-
-    public static bool operator !=(Error? first, Error? second)
-    {
-        return !(first == second);
-    }
-
-    /// <inheritdoc />
-    public bool Equals(Error? other)
-    {
-        if (other is null)
-        {
-            return false;
-        }
-
-        return Code == other.Code
-            && Message == other.Message;
-    }
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj)
-    {
-        return obj is Error error && Equals(error);
-    }
-
-    /// <inheritdoc />
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Code, Message);
-    }
-
     /// <inheritdoc />
     public override string ToString()
     {
         return Message;
+    }
+
+    public ValidationResult<TValue> ToValidationResult<TValue>()
+    {
+        return ValidationResult<TValue>.WithErrors(this);
+    }
+
+    public Result<TValue> ToResult<TValue>()
+    {
+        return Result.Failure<TValue>(this);
     }
 
     public string Serialize()

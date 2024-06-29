@@ -12,6 +12,7 @@ public readonly record struct EntityIdToGenerateEntry
     /// That would allow to read the namespace where generic IEntityId is. 
     /// </summary>
     private const string GenericIEntityIdNamespace = "using Shopway.Domain.Common.BaseTypes.Abstractions;";
+    private const string DiagnosticsNamespace = "using System.Diagnostics;";
 
     public readonly string Name;
     public readonly string Namespace;
@@ -34,9 +35,11 @@ public readonly record struct EntityIdToGenerateEntry
             .Append(Header)
             .AppendLine()
             .AppendLine(GenericIEntityIdNamespace)
+            .AppendLine(DiagnosticsNamespace)
             .AppendLine()
             .AppendLine($"namespace {Namespace};")
             .AppendLine()
+            .AppendLine($$$"""[DebuggerDisplay("{Value}")]""")
             .AppendLine($"public readonly record struct {Name} : IEntityId<{Name}>")
             .AppendLine($$$"""
             {

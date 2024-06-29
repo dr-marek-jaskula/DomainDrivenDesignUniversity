@@ -14,7 +14,7 @@ public static class ReflectionUtilities
 
     public static bool NotValueObjectWithSingleValue(this Type type)
     {
-        return type.IsAssignableTo(typeof(ValueObject)) && type.GetProperties().Length > 1;
+        return type.IsAssignableTo(typeof(IValueObject)) && type.GetProperties().Length > 1;
     }
 
     public static bool EntityOrNotValueObjectWithSingleValue(this PropertyInfo propertyInfo)
@@ -24,7 +24,7 @@ public static class ReflectionUtilities
 
     public static bool NotValueObjectWithSingleValue(this PropertyInfo propertyInfo)
     {
-        return propertyInfo.PropertyType.IsAssignableTo(typeof(ValueObject)) && propertyInfo.PropertyType.GetProperties().Length > 1;
+        return propertyInfo.PropertyType.NotValueObjectWithSingleValue();
     }
 
     public static Type GetEntityTypeFromEntityIdType(Type entityIdType)
@@ -76,7 +76,7 @@ public static class ReflectionUtilities
 
     public static bool IsValueObject(this Type type)
     {
-        return type.BaseType == typeof(ValueObject);
+        return type.IsAssignableTo(typeof(IValueObject));
     }
 
     public static MethodInfo GetSingleGenericMethod(this Type baseType, string methodName, params Type[] genericType)

@@ -1,5 +1,5 @@
 ﻿using NetArchTest.Rules;
-using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Tests.Unit.ArchitectureTests.Utilities;
 using static Shopway.Tests.Unit.Constants.Constants;
 
@@ -9,7 +9,7 @@ namespace Shopway.Tests.Unit.ArchitectureTests;
 public sealed class ValueObjectTests
 {
     [Fact]
-    public void ValueObjects_ShouldBeImmutable()
+    public void IValueObjects_ShouldBeImmutable()
     {
         //Arrange
         var assembly = Domain.AssemblyReference.Assembly;
@@ -18,7 +18,9 @@ public sealed class ValueObjectTests
         var result = Types
             .InAssembly(assembly)
             .That()
-            .Inherit(typeof(ValueObject))
+            .ImplementInterface(typeof(IValueObject))
+            .And()
+            .AreNotAbstract()
             .Should()
             .BeImmutable()
             .GetResult();
@@ -28,9 +30,9 @@ public sealed class ValueObjectTests
     }
 
     [Theory]
-    [InlineData("Validate")]
-    [InlineData("Create")]
-    public void ValueObjects_ShouldDefineMethod(string methodName)
+    [InlineData(IValueObject.ValidateMethodName)]
+    [InlineData(IValueObject.CreateMethodName)]
+    public void IValueObjects_ShouldDefineMethod(string methodName)
     {
         //Arrange
         var assembly = Domain.AssemblyReference.Assembly;
@@ -39,7 +41,9 @@ public sealed class ValueObjectTests
         var result = Types
             .InAssembly(assembly)
             .That()
-            .Inherit(typeof(ValueObject))
+            .ImplementInterface(typeof(IValueObject))
+            .And()
+            .AreNotAbstract()
             .Should()
             .DefineMethod(methodName)
             .GetResult();

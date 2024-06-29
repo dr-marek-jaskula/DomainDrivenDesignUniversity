@@ -7,7 +7,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class TwoFactorTokenHash : ValueObject
+public sealed record class TwoFactorTokenHash : ValueObject<string>
 {
     public const int NotHashedTokenFirstPartLength = 5;
     public const char NotHashedTokenSeparator = '-';
@@ -23,12 +23,9 @@ public sealed class TwoFactorTokenHash : ValueObject
         $"{nameof(TwoFactorTokenHash)}.{nameof(InvalidBytesLong)}",
         $"{nameof(TwoFactorTokenHash)} needs to be less than {BytesLong} bytes long.");
 
-    private TwoFactorTokenHash(string value)
+    private TwoFactorTokenHash(string twoFactorTokenHash) : base(twoFactorTokenHash)
     {
-        Value = value;
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<TwoFactorTokenHash> Create(string twoFactorTokenHash)
     {
@@ -41,10 +38,5 @@ public sealed class TwoFactorTokenHash : ValueObject
         return EmptyList<Error>()
             .If(twoFactorTokenHash.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(Encoding.ASCII.GetByteCount(twoFactorTokenHash) > BytesLong, InvalidBytesLong);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

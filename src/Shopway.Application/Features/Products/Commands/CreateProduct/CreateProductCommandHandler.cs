@@ -1,5 +1,4 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Errors;
@@ -10,20 +9,20 @@ using Shopway.Domain.Products.ValueObjects;
 
 namespace Shopway.Application.Features.Products.Commands.CreateProduct;
 
-internal sealed class CreateProductCommandHandler(IProductRepository productRepository, IValidator validator)
+//Option without using my own IValidator (for tutorial purposes). Due to the fact the most of the validation is moved to Fluent Validation
+//and that this approach does not create an Error instance if not needed (and IValidator does - extra cost), this approach may be 
+//preferable. I leave it to viewer decision.
+internal sealed class CreateProductCommandHandler(IProductRepository productRepository)
     : ICommandHandler<CreateProductCommand, CreateProductResponse>
 {
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly IValidator _validator = validator;
 
     public async Task<IResult<CreateProductResponse>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        _validator
-            .If(await ProductAlreadyExists(command.ProductKey, cancellationToken), Error.AlreadyExists(command.ProductKey));
-
-        if (_validator.IsInvalid)
+        if (await ProductAlreadyExists(command.ProductKey, cancellationToken))
         {
-            return _validator.Failure<CreateProductResponse>();
+            return Error.AlreadyExists(command.ProductKey)
+                .ToValidationResult<CreateProductResponse>();
         }
 
         var productName = ProductName.Create(command.ProductKey.ProductName).Value;

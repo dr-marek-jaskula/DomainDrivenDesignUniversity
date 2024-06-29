@@ -7,7 +7,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class TwoFactorToptSecret : ValueObject
+public sealed record class TwoFactorToptSecret : ValueObject<string>
 {
     public const int BytesLong = 32;
 
@@ -19,12 +19,9 @@ public sealed class TwoFactorToptSecret : ValueObject
         $"{nameof(TwoFactorToptSecret)}.{nameof(InvalidBytesLong)}",
         $"{nameof(TwoFactorToptSecret)} needs to be {BytesLong} bytes long.");
 
-    private TwoFactorToptSecret(string value)
+    private TwoFactorToptSecret(string twoFactorToptSecret) : base(twoFactorToptSecret)
     {
-        Value = value;
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<TwoFactorToptSecret> Create(string twoFactorToptSecret)
     {
@@ -37,10 +34,5 @@ public sealed class TwoFactorToptSecret : ValueObject
         return EmptyList<Error>()
             .If(twoFactorTokenHash.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(Encoding.ASCII.GetByteCount(twoFactorTokenHash) != BytesLong, InvalidBytesLong);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Domain.Common.BaseTypes;
+using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Tests.Unit.ArchitectureTests.Utilities;
 using static Shopway.Tests.Unit.Constants.Constants;
 
@@ -22,7 +23,7 @@ public sealed class EntityTests
             .And()
             .AreNotAbstract()
             .Should()
-            .DefineMethod("Create")
+            .DefineMethod(IEntity.CreateMethodName)
             .GetResult();
 
         //Assert

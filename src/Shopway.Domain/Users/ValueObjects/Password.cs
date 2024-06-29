@@ -8,7 +8,7 @@ using static System.Text.RegularExpressions.RegexOptions;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class Password : ValueObject
+public sealed record class Password : ValueObject<string>
 {
     private static readonly Regex _regex = new(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{0,}$", Compiled | CultureInvariant | Singleline, TimeSpan.FromMilliseconds(100));
 
@@ -31,16 +31,9 @@ public sealed class Password : ValueObject
         $"{nameof(Password)}.{nameof(Invalid)}",
         $"{nameof(Password)} needs to contain at least one digit, one small letter, one capital letter and one special character.");
 
-    private Password(string value)
-    {
-        Value = value;
-    }
-
-    private Password()
+    private Password(string password) : base(password)
     {
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<Password> Create(string password)
     {
@@ -67,10 +60,5 @@ public sealed class Password : ValueObject
             .If(password.Length < MinLength, TooShort)
             .If(password.Length > MaxLength, TooLong)
             .If(_regex.NotMatch(password), Invalid);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

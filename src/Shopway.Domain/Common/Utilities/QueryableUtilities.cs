@@ -149,11 +149,11 @@ public static class QueryableUtilities
 
             var collectionParameter = Expression.Parameter(colletionItemType, colletionItemType.Name);
 
-            var collcetionConvertedMember = collectionParameter
+            var collectionConvertedMember = collectionParameter
                 .ToMemberExpression(collectionItemProperty)
                 .ToConvertedMember();
 
-            var collectionPredicateExpression = CreatePredicateExpression(likeProvider, collectionParameter, predicate, collcetionConvertedMember, propertyOperation);
+            var collectionPredicateExpression = CreatePredicateExpression(likeProvider, collectionParameter, predicate, collectionConvertedMember, propertyOperation);
 
             var lambdaExpression = Expression.Lambda(collectionPredicateExpression, collectionParameter);
             var entityPredicateExpression = Expression.Call(null, methodInfoForCollectionFilter, member, lambdaExpression);

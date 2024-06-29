@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Common.BaseTypes;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
@@ -8,7 +8,7 @@ using static System.Text.RegularExpressions.RegexOptions;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class Address : ValueObject
+public sealed record class Address : IValueObject
 {
     public const int MaxFlatNumber = 1000;
     public const int MaxBuildingNumber = 1000;
@@ -63,7 +63,6 @@ public sealed class Address : ValueObject
         Flat = flat;
     }
 
-    //Empty constructor in this case is required by EF Core, because has a complex type as a parameter in the default constructor.
     private Address()
     {
     }
@@ -90,21 +89,6 @@ public sealed class Address : ValueObject
             .UseValidation(ValidateStreet, street)
             .UseValidation(ValidateBuilding, building)
             .UseValidation(ValidateFlat, flat);
-    }
-
-    /// <returns>Street, City, Country, ZipCode, Building and Flat if not null</returns>
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Street;
-        yield return City;
-        yield return Country;
-        yield return ZipCode;
-        yield return Building;
-
-        if (Flat is not null)
-        {
-            yield return Flat;
-        }
     }
 
     private static IList<Error> ValidateCountry(IList<Error> errors, string country)

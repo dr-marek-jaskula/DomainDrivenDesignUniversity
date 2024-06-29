@@ -1,5 +1,4 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Mappings;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
@@ -9,12 +8,14 @@ using Shopway.Domain.Products;
 
 namespace Shopway.Application.Features.Orders.Commands.AddOrderLine;
 
-internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IProductRepository productRepository, IValidator validator)
+//Option without using my own IValidator (for tutorial purposes). Due to the fact the most of the validation is moved to Fluent Validation
+//and that this approach does not create an Error instance if not needed (and IValidator does - extra cost), this approach may be 
+//preferable. I leave it to viewer decision.
+internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRepository, IProductRepository productRepository)
     : ICommandHandler<AddOrderLineCommand, AddOrderLineResponse>
 {
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderRepository;
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly IValidator _validator = validator;
 
     public async Task<IResult<AddOrderLineResponse>> Handle(AddOrderLineCommand command, CancellationToken cancellationToken)
     {
@@ -31,14 +32,9 @@ internal sealed class AddOrderLineCommandHandler(IOrderHeaderRepository orderRep
 
         var addOrderLineResult = orderHeader.AddOrderLine(createdOrderLine);
 
-        _validator
-            .Validate(addOrderLineResult);
-
         if (addOrderLineResult.IsFailure)
         {
-            return _validator
-                .Failure<AddOrderLineResponse>()
-                .ToResult();
+            return addOrderLineResult.ToValidationResult<AddOrderLineResponse>();
         }
 
         return createdOrderLine

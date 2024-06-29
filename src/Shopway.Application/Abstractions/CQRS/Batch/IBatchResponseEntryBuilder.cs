@@ -36,5 +36,5 @@ public interface IBatchResponseEntryBuilder<TBatchRequest, TResponseKey>
     /// <param name="parameters">Parameters for value object validation method</param>
     /// <returns>Same instance to chain the validation</returns>
     IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameters)
-            where TValueObject : ValueObject;
+            where TValueObject : IValueObject;
 }

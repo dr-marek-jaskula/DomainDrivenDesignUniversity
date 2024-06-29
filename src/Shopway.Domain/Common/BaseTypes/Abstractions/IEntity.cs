@@ -2,4 +2,5 @@
 
 public interface IEntity
 {
+    const string CreateMethodName = "Create";
 }

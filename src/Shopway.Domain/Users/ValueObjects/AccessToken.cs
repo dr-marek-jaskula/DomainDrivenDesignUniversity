@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class AccessToken : ValueObject
+public sealed record class AccessToken : ValueObject<string>
 {
     public const int Length = 384;
 
@@ -18,17 +18,9 @@ public sealed class AccessToken : ValueObject
         $"{nameof(AccessToken)}.{nameof(InvalidLength)}",
         $"{nameof(AccessToken)} length must be {Length} characters.");
 
-    private AccessToken(string value)
+    private AccessToken(string accessToken) : base(accessToken)
     {
-        Value = value;
     }
-
-    private AccessToken()
-    {
-
-    }
-
-    public new string Value { get; }
 
     public static ValidationResult<AccessToken> Create(string accessToken)
     {
@@ -41,10 +33,5 @@ public sealed class AccessToken : ValueObject
         return EmptyList<Error>()
             .If(accessToken.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(accessToken.Length != Length, InvalidLength);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

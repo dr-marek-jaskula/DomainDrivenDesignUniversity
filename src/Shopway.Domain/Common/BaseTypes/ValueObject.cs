@@ -1,6 +1,39 @@
-﻿using Shopway.Domain.Common.Utilities;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.Utilities;
+using System.Diagnostics;
 
 namespace Shopway.Domain.Common.BaseTypes;
+
+//ValueObject with record approach. The go-to way
+
+[DebuggerDisplay("{Value}")]
+public abstract record class ValueObject<TValue> : IValueObject
+    where TValue : notnull
+{
+    protected ValueObject(TValue value)
+    {
+        Value = value;
+    }
+
+    protected ValueObject()
+    {
+    }
+
+    public TValue Value { get; }
+
+    //Do not remove 'sealed'. It forces DataTransferObject to use this ToString implementation
+    public override sealed string ToString()
+    {
+        return Value.ToString()!;
+    }
+
+    public override int GetHashCode()
+    {
+        return Value.GetHashCode();
+    }
+}
+
+//Alternative approach -> ValueObject with inheritance. 
 
 /// <summary>
 /// Each ValueObject should contain at least two public, static methods: "Create" and "Validate".
@@ -8,7 +41,7 @@ namespace Shopway.Domain.Common.BaseTypes;
 /// "Validate" method should return List<Error> and contain all value object validation
 /// </summary>
 [Serializable]
-public abstract class ValueObject : IEquatable<ValueObject>
+public abstract class ValueObject : IEquatable<ValueObject>, IValueObject
 {
     public const string Value = nameof(Value);
 

@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
-public sealed class Description : ValueObject
+public sealed record class Description : ValueObject<string>
 {
     public const int MaxLength = 600;
 
@@ -18,16 +18,9 @@ public sealed class Description : ValueObject
         $"{nameof(Description)}.{nameof(TooLong)}",
         $"{nameof(Description)} needs to be at most {MaxLength} characters long.");
 
-    private Description(string value)
-    {
-        Value = value;
-    }
-
-    private Description()
+    private Description(string description) : base(description)
     {
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<Description> Create(string description)
     {
@@ -40,10 +33,5 @@ public sealed class Description : ValueObject
         return EmptyList<Error>()
             .If(description.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(description.Length > MaxLength, TooLong);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }
