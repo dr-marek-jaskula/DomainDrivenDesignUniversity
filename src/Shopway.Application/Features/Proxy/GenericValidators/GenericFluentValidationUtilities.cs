@@ -2,16 +2,31 @@
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Utilities;
+using System.Linq.Expressions;
 using static Shopway.Application.Constants.Constants.Filter;
 using static Shopway.Application.Constants.Constants.Mapping;
 using static Shopway.Application.Constants.Constants.Sort;
 using static Shopway.Domain.Common.DataProcessing.FilterByEntryUtilities;
+using static Shopway.Domain.Common.Utilities.EnumUtilities;
+using static Shopway.Domain.Common.Utilities.ListUtilities;
 using static Shopway.Domain.Common.Utilities.SortByEntryUtilities;
 
 namespace Shopway.Application.Features.Proxy.GenericValidators;
 
 public static class GenericFluentValidationUtilities
 {
+    private const string Like = nameof(Like);
+    private readonly static IReadOnlyCollection<string> _allowedOperations = AsList
+    (
+        nameof(string.Contains), 
+        Like, 
+        nameof(string.StartsWith), 
+        nameof(string.EndsWith)
+    )
+        .Concat(GetNamesOf<ExpressionType>())
+        .ToList()
+        .AsReadOnly();
+
     public static void ValidateFilter<TFilter, TPageQuery>(TFilter? filter, ValidationContext<TPageQuery> context)
         where TFilter : IDynamicFilter
     {
@@ -31,6 +46,11 @@ public static class GenericFluentValidationUtilities
         {
             context.AddFailure(FilterProperties, $"{FilterProperties} contains null or null predicate");
             return;
+        }
+
+        if (filter.FilterProperties.ContainsOnlyOperationsFrom(_allowedOperations, out IReadOnlyCollection<string> invalidOperations))
+        {
+            context.AddFailure(FilterProperties, $"{FilterProperties} contains invalid operations: {string.Join(", ", invalidOperations)}. Allowed operations: {string.Join(", ", _allowedOperations)}.");
         }
     }
 
