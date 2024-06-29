@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Common.BaseTypes;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Products;
@@ -7,7 +7,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Orders.ValueObjects;
 
-public sealed class ProductSummary : ValueObject
+public sealed record class ProductSummary : IValueObject
 {
     private ProductSummary(ProductId productId, string productName, string revision, decimal price, string uomCode)
     {
@@ -42,14 +42,5 @@ public sealed class ProductSummary : ValueObject
             .UseValidation(Revision.Validate, revision)
             .UseValidation(Price.Validate, price)
             .UseValidation(UomCode.Validate, uomCode);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return ProductId;
-        yield return ProductName;
-        yield return Revision;
-        yield return Price;
-        yield return UomCode;
     }
 }

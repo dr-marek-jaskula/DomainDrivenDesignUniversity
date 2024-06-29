@@ -1,4 +1,4 @@
-﻿using Shopway.Domain.Common.BaseTypes;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Orders.ValueObjects;
 
-public sealed class Session : ValueObject
+public sealed record class Session : IValueObject
 {
     public static readonly Error EmptyId = Error.New(
         $"{nameof(Session)}.{nameof(EmptyId)}",
@@ -48,11 +48,5 @@ public sealed class Session : ValueObject
             .If(sessionId.IsNullOrEmptyOrWhiteSpace(), EmptyId)
             .If(sessionSecret.IsNullOrEmptyOrWhiteSpace(), EmptySecret)
             .If(paymentIntentId.IsNullOrEmptyOrWhiteSpace(), EmptyPaymentIntentId);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Id;
-        yield return Secret;
     }
 }

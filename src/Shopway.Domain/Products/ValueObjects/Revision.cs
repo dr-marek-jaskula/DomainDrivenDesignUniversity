@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
-public sealed class Revision : ValueObject
+public sealed record class Revision : ValueObject<string>
 {
     public const int MaxLength = 10;
 
@@ -18,16 +18,10 @@ public sealed class Revision : ValueObject
         $"{nameof(Revision)}.{nameof(TooLong)}",
         $"{nameof(Revision)} must be at most {MaxLength} characters long.");
 
-    private Revision(string value)
-    {
-        Value = value;
-    }
-
-    private Revision()
+    private Revision(string revision) : base(revision)
     {
     }
 
-    public new string Value { get; }
 
     public static ValidationResult<Revision> Create(string revision)
     {
@@ -40,11 +34,6 @@ public sealed class Revision : ValueObject
         return EmptyList<Error>()
             .If(revision.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(revision.Length > MaxLength, TooLong);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }
 

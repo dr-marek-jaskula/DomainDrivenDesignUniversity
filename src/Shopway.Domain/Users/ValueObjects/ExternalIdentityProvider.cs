@@ -7,7 +7,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class ExternalIdentityProvider : ValueObject
+public sealed record class ExternalIdentityProvider : ValueObject<string>
 {
     public const string GoogleExternalIdentityProvider = "Google";
     public static readonly FrozenSet<string> LegalIdentityProviders = AsList
@@ -23,16 +23,9 @@ public sealed class ExternalIdentityProvider : ValueObject
         $"{nameof(ExternalIdentityProvider)}.{nameof(Invalid)}",
         $"{nameof(ExternalIdentityProvider)} be valid identity provider");
 
-    private ExternalIdentityProvider(string value)
-    {
-        Value = value;
-    }
-
-    private ExternalIdentityProvider()
+    private ExternalIdentityProvider(string externalIdentityProvider) : base(externalIdentityProvider)
     {
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<ExternalIdentityProvider> Create(string externalIdentityProvider)
     {
@@ -45,10 +38,5 @@ public sealed class ExternalIdentityProvider : ValueObject
         return EmptyList<Error>()
             .If(externalIdentityProvider.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(LegalIdentityProviders.Contains(externalIdentityProvider) is false, Invalid);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

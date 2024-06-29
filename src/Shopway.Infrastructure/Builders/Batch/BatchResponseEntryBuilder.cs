@@ -86,7 +86,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <exception cref="ArgumentException">Thrown if no parameters were specified</exception>
         /// <exception cref="InvalidOperationException">Thrown if given ValueObject type does not contain the public, static method "Validate"</exception>
         public IBatchResponseEntryBuilder<TBatchRequest, TResponseKey> UseValueObjectValidation<TValueObject>(params object[] parameters)
-            where TValueObject : ValueObject
+            where TValueObject : IValueObject
         {
             if (parameters.IsNullOrEmpty())
             {
@@ -103,7 +103,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
 
             if (validationMethod is null)
             {
-                throw new InvalidOperationException($"{nameof(ValueObject)}: {typeof(TValueObject).Name} does not contain public, static method \"Validate\"");
+                throw new InvalidOperationException($"{nameof(IValueObject)}: {typeof(TValueObject).Name} does not contain public, static method \"Validate\"");
             }
 
             object errors = validationMethod.Invoke(null, parameters)!;
@@ -132,11 +132,11 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// <param name="parameteres">Input parameters</param>
         /// <returns>True if there is null parameter. Otherwise, return false</returns>
         private bool AnyNullParameter<TValueObject>(object[] parameteres)
-            where TValueObject : ValueObject
+            where TValueObject : IValueObject
         {
             if (parameteres.Any(parameter => parameter is null))
             {
-                _errors.Add(Domain.Common.Errors.Error.New($"Error.{nameof(ValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
+                _errors.Add(Domain.Common.Errors.Error.New($"Error.{nameof(IValueObject)}", $"At least one of {typeof(TValueObject).Name} components is null"));
                 return true;
             }
 

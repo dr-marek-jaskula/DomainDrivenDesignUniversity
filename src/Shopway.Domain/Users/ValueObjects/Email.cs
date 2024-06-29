@@ -8,7 +8,7 @@ using static System.Text.RegularExpressions.RegexOptions;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class Email : ValueObject
+public sealed record class Email : ValueObject<string>
 {
     public const int MaxLength = 40;
 
@@ -30,16 +30,9 @@ public sealed class Email : ValueObject
         $"{nameof(Email)}.{nameof(AlreadyTaken)}",
         $"{nameof(Email)} is already taken.");
 
-    private Email(string value)
-    {
-        Value = value;
-    }
-
-    private Email()
+    private Email(string email) : base(email)
     {
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<Email> Create(string email)
     {
@@ -53,10 +46,5 @@ public sealed class Email : ValueObject
             .If(email.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(email.Length > MaxLength, TooLong)
             .If(_regex.NotMatch(email), Invalid);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

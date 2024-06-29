@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Users.ValueObjects;
 
-public sealed class Username : ValueObject
+public sealed record class Username : ValueObject<string>
 {
     public const int MaxLength = 30;
 
@@ -22,12 +22,9 @@ public sealed class Username : ValueObject
         $"{nameof(Username)}.{nameof(ContainsIllegalCharacter)}",
         $"{nameof(Username)} contains illegal character.");
 
-    private Username(string value)
+    private Username(string username) : base(username)
     {
-        Value = value;
     }
-
-    public new string Value { get; }
 
     public static ValidationResult<Username> Create(string username)
     {
@@ -41,10 +38,5 @@ public sealed class Username : ValueObject
             .If(username.IsNullOrEmptyOrWhiteSpace(), Empty)
             .If(username.Length > MaxLength, TooLong)
             .If(username.ContainsIllegalCharacter(), ContainsIllegalCharacter);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }

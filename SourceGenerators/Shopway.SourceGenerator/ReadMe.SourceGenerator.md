@@ -27,9 +27,11 @@ Example of auto-generated entity id:
 #nullable enable
 
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using System.Diagnostics;
 
 namespace Shopway.Domain.Products;
 
+[DebuggerDisplay("{Value}")]
 public readonly record struct ProductId : IEntityId<ProductId>
 {
     public const string Name = "ProductId";

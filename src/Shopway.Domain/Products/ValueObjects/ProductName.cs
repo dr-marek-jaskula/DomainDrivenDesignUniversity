@@ -6,7 +6,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Products.ValueObjects;
 
-public sealed class ProductName : ValueObject
+public sealed record class ProductName : ValueObject<string>
 {
     public const int MaxLength = 50;
 
@@ -22,21 +22,8 @@ public sealed class ProductName : ValueObject
         $"{nameof(ProductName)}.{nameof(ContainsIllegalCharacter)}",
         $"{nameof(ProductName)} contains illegal character.");
 
-    private ProductName(string value)
+    private ProductName(string productName) : base(productName)
     {
-        Value = value;
-    }
-
-    private ProductName()
-    {
-
-    }
-
-    public new string Value { get; }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 
     public static ValidationResult<ProductName> Create(string productName)

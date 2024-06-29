@@ -5,7 +5,7 @@ using static Shopway.Domain.Common.Utilities.ListUtilities;
 
 namespace Shopway.Domain.Orders.ValueObjects;
 
-public sealed class Discount : ValueObject
+public sealed record class Discount : ValueObject<decimal>
 {
     public const decimal MaxDiscount = 0.5m;
     public const decimal MinDiscount = 0;
@@ -18,16 +18,9 @@ public sealed class Discount : ValueObject
         $"{nameof(Discount)}.{nameof(TooHigh)}",
         $"{nameof(Discount)} must be at most {MaxDiscount}.");
 
-    private Discount(decimal value)
-    {
-        Value = value;
-    }
-
-    private Discount()
+    private Discount(decimal discount) : base(discount)
     {
     }
-
-    public new decimal Value { get; }
 
     public static ValidationResult<Discount> Create(decimal discount)
     {
@@ -40,11 +33,6 @@ public sealed class Discount : ValueObject
         return EmptyList<Error>()
             .If(discount < MinDiscount, TooLow)
             .If(discount > MaxDiscount, TooHigh);
-    }
-
-    public override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Value;
     }
 }
 
