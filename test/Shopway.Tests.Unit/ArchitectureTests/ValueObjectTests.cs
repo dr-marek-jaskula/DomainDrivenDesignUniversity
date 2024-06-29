@@ -30,8 +30,8 @@ public sealed class ValueObjectTests
     }
 
     [Theory]
-    [InlineData("Validate")]
-    [InlineData("Create")]
+    [InlineData(IValueObject.ValidateMethodName)]
+    [InlineData(IValueObject.CreateMethodName)]
     public void IValueObjects_ShouldDefineMethod(string methodName)
     {
         //Arrange

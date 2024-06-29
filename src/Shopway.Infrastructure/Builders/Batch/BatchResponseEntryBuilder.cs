@@ -99,7 +99,7 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
             }
 
             var validationMethod = typeof(TValueObject)
-                .GetMethod("Validate", BindingFlags.Public | BindingFlags.Static);
+                .GetMethod(IValueObject.ValidateMethodName, BindingFlags.Public | BindingFlags.Static);
 
             if (validationMethod is null)
             {
