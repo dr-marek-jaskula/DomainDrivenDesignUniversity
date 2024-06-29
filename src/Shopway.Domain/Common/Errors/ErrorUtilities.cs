@@ -5,6 +5,11 @@ namespace Shopway.Domain.Common.Errors;
 
 public static class ErrorUtilities
 {
+    public static ValidationResult<TValue> ToValidationResult<TValue>(this IList<Error> errors)
+    {
+        return ValidationResult<TValue>.WithErrors([.. errors]);
+    }
+
     public static TResult CreateValidationResult<TResult>(this ICollection<Error> errors)
         where TResult : class, IResult
     {

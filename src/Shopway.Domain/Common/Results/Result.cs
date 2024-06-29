@@ -34,6 +34,12 @@ public class Result<TValue> : Result, IResult<TValue>
     {
         return Create(value);
     }
+
+    public ValidationResult<TValue> ToValidationResult()
+    {
+        Error.ThrowIfErrorNone();
+        return ValidationResult<TValue>.WithErrors(Error);
+    }
 }
 
 /// <summary>
@@ -66,6 +72,12 @@ public class Result : IResult
     /// Gets the error
     /// </summary>
     public Error Error { get; }
+
+    public ValidationResult<TValue> ToValidationResult<TValue>()
+    {
+        Error.ThrowIfErrorNone();
+        return ValidationResult<TValue>.WithErrors(Error);
+    }
 
     /// <summary>
     /// Returns a success <see cref="Result"/>

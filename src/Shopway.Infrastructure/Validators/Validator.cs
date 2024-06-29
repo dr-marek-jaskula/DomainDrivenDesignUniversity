@@ -87,7 +87,7 @@ public sealed class Validator : IValidator
             throw new InvalidOperationException("Validation was successful, but Failure was called");
         }
 
-        return ValidationResult<TResponse>.WithErrors(_errors.ToArray());
+        return ValidationResult<TResponse>.WithErrors([.. _errors]);
     }
 
     /// <summary>
@@ -103,6 +103,6 @@ public sealed class Validator : IValidator
             throw new InvalidOperationException("Validation was successful, but Failure was called");
         }
 
-        return ValidationResult.WithErrors(_errors.ToArray());
+        return ValidationResult.WithErrors([.. _errors]);
     }
 }
