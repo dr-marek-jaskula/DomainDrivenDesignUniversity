@@ -5,7 +5,7 @@ using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Infrastructure.Builders.Batch;
 
-internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
+internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey>(Func<TBatchRequest, TResponseKey> mapFromRequestToResponseKey)
     : IBatchResponseBuilder<TBatchRequest, TResponseKey>
         where TBatchRequest : class, IBatchRequest
         where TResponseKey : struct, IUniqueKey
@@ -15,7 +15,7 @@ internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
     /// Due to the fact that the builder will be injected from the Dependency Injection Container, it needs to be set after the injection.
     /// It is required to provide this delegate. 
     /// </summary>
-    private Func<TBatchRequest, TResponseKey>? _mapFromRequestToResponseKey;
+    private readonly Func<TBatchRequest, TResponseKey> _mapFromRequestToResponseKey = mapFromRequestToResponseKey;
 
     /// <summary>
     /// (ResponseKey, ResponseEntryBuilder) dictionary to store builder for all requests and allow to deal with duplicates in the easy way
@@ -39,19 +39,6 @@ internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
             .Where(predicate)
             .Select(builder => builder.Request)
             .ToList();
-    }
-
-    /// <summary>
-    /// Provides the way how to get the response key from the request. 
-    /// This mapper must be provided before validation.
-    /// </summary>
-    /// <param name="mapFromRequestToResponseKey"></param>
-    public void SetRequestToResponseKeyMapper
-    (
-        Func<TBatchRequest, TResponseKey> mapFromRequestToResponseKey
-    )
-    {
-        _mapFromRequestToResponseKey = mapFromRequestToResponseKey;
     }
 
     /// <summary>
@@ -139,11 +126,6 @@ internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         BatchEntryStatus successStatus
     )
     {
-        if (_mapFromRequestToResponseKey is null)
-        {
-            throw new InvalidOperationException($"The Request-to-ResponseKey mapper is null. Use '{nameof(SetRequestToResponseKeyMapper)}' method to set mapper.");
-        }
-
         var responseKey = _mapFromRequestToResponseKey(request);
 
         if (_responseEntryBuilders.TryGetValue(responseKey, out var responseEntryBuilder))

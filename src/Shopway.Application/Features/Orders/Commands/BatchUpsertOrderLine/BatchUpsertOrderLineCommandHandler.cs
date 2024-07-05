@@ -16,14 +16,14 @@ namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
 internal sealed partial class BatchUpsertOrderLineCommandHandler
 (
-    IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder,
+    IBatchResponseBuilderFactory responseBuilderFactory,
     IOrderHeaderRepository orderHeaderRepository,
     IProductRepository productRepository
 )
     : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
 {
-    private readonly IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _responseBuilder = responseBuilder;
     private readonly IProductRepository _productRepository = productRepository;
+    private readonly IBatchResponseBuilderFactory _responseBuilderFactory = responseBuilderFactory;
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderHeaderRepository;
 
     public async Task<IResult<BatchUpsertOrderLineResponse>> Handle(BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
@@ -49,25 +49,24 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
 
         var dictionaryOfOrderLinesToUpdate = GetDictionaryOfOrderLinesToUpdate(products, orderHeader);
 
-        //Required step: set RequestToProductKeyMapping method for the injected builder
-        _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToOrderLineKey);
+        var responseBuilder = _responseBuilderFactory.Create<BatchUpsertOrderLineRequest, OrderLineKey>(MapFromRequestToOrderLineKey);
 
         //Perform validation: using the builder, trimmed command and queried productsToUpdate
-        var responseEntries = command.Validate(_responseBuilder, dictionaryOfOrderLinesToUpdate);
+        var responseEntries = command.Validate(responseBuilder, dictionaryOfOrderLinesToUpdate);
 
         if (responseEntries.Any(response => response.Status is BatchEntryStatus.Error))
         {
             return Result.BatchFailure(responseEntries.ToBatchInsertResponse());
         }
 
-        var insertResult = InsertOrderLines(_responseBuilder.ValidRequestsToInsert, orderHeader, products);
+        var insertResult = InsertOrderLines(responseBuilder.ValidRequestsToInsert, orderHeader, products);
 
         if (insertResult.IsFailure)
         {
             return Result.Failure<BatchUpsertOrderLineResponse>(insertResult.Error);
         }
 
-        UpdateOrderLines(_responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);
+        UpdateOrderLines(responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);
 
         return responseEntries
             .ToBatchInsertResponse()
