@@ -143,9 +143,7 @@ public readonly record struct EntityIdToGenerateEntry
 
                 public override void Write(Utf8JsonWriter writer, {{{Name}}} entityId, JsonSerializerOptions options)
                 {
-                    writer.WriteStartObject();
                     writer.WriteStringValue(entityId.Value.ToString());
-                    writer.WriteEndObject();
                 }
             }
             """)

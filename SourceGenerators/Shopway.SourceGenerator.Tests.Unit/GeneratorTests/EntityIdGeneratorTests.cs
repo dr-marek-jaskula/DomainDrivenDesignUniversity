@@ -181,9 +181,7 @@ public class GenerateEntityIdAttribute : global::System.Attribute;");
 
             public override void Write(Utf8JsonWriter writer, ProductId entityId, JsonSerializerOptions options)
             {
-                writer.WriteStartObject();
                 writer.WriteStringValue(entityId.Value.ToString());
-                writer.WriteEndObject();
             }
         }
         """;
