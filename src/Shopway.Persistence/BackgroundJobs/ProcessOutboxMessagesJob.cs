@@ -43,6 +43,7 @@ public sealed class ProcessOutboxMessagesJob
             if (domainEvent is null)
             {
                 _logger.LogDomainEventInvalidDeserialization(message.Content);
+                message.UpdatePropertiesWhenUnableToDeserializeMessage(_timeProvider.GetUtcNow());
                 continue;
             }
 

@@ -13,7 +13,6 @@ internal static class ConfigureSerialization
             option.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             option.SerializerOptions.WriteIndented = true;
             option.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            //option.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
 
         return services;

@@ -43,6 +43,11 @@ public sealed class OutboxMessage
         UpdateWhenInProgress(error);
     }
 
+    public void UpdatePropertiesWhenUnableToDeserializeMessage(DateTimeOffset? utcNow)
+    {
+        UpdateWhenFailure(utcNow, "Unable to deserialize a message");
+    }
+
     private bool IsFailure(string? error)
     {
         return error is not null

@@ -12,6 +12,13 @@ public static class OutboxMessageUtilities
             return null;
         }
 
-        return JsonSerializer.Deserialize<IDomainEvent>(outboxMessage.Content);
+        var domainEventType = Domain.AssemblyReference.Assembly.GetTypes().FirstOrDefault(x => x.Name == outboxMessage.Type);
+
+        if (domainEventType is null)
+        {
+            return null;
+        }
+
+        return (IDomainEvent)JsonSerializer.Deserialize(outboxMessage.Content, domainEventType)!;
     }
 }

@@ -67,7 +67,8 @@ internal sealed class OutboxRepository(ShopwayDbContext dbContext, TimeProvider 
             .AddRange(outboxMessages);
     }
 
-    private OutboxMessage ToOutboxMessage(IDomainEvent domainEvent)
+    private OutboxMessage ToOutboxMessage<TDomainEvent>(TDomainEvent domainEvent)
+        where TDomainEvent : IDomainEvent
     {
         return new OutboxMessage
         {
