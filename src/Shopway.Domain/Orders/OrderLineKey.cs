@@ -22,7 +22,7 @@ public readonly record struct OrderLineKey : IUniqueKey
 
     public override string ToString()
     {
-        return $"OrderLine {{ Id: {ProductId} }}";
+        return $"OrderLine {{ ProductId: {ProductId} }}";
     }
 }
 
