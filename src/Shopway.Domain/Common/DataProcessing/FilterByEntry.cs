@@ -126,7 +126,7 @@ public sealed class FilterByEntryJsonConverter : JsonConverter<FilterByEntry>
 
             if (propertyName.Equals(nameof(FilterByEntry.Predicate.Value), StringComparison.CurrentCultureIgnoreCase))
             {
-                predicateValue = reader.GetCurrentPropertyStringValue();
+                predicateValue = reader.GetCurrentPropertyValue();
                 continue;
             }
 

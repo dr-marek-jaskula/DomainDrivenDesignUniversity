@@ -15,15 +15,31 @@ namespace Shopway.Application.Features.Proxy.GenericValidators;
 
 public static class GenericFluentValidationUtilities
 {
+    private const string All = nameof(All);
+    private const string Any = nameof(Any);
     private const string Like = nameof(Like);
+    private const string AllLike = $"{All}.{Like}";
+    private const string AnyLike = $"{Any}.{Like}";
+    private const string AllStartsWith = $"{All}.{nameof(string.StartsWith)}";
+    private const string AnyStartsWith = $"{Any}.{nameof(string.StartsWith)}";
+    private const string AllEndsWith = $"{All}.{nameof(string.EndsWith)}";
+    private const string AnyEndsWith = $"{Any}.{nameof(string.EndsWith)}";
     private readonly static IReadOnlyCollection<string> _allowedOperations = AsList
     (
         nameof(string.Contains), 
-        Like, 
+        Like,
         nameof(string.StartsWith), 
-        nameof(string.EndsWith)
+        nameof(string.EndsWith),
+        AllLike,
+        AnyLike,
+        AllStartsWith,
+        AnyStartsWith,
+        AllEndsWith,
+        AnyEndsWith
     )
         .Concat(GetNamesOf<ExpressionType>())
+        .Concat(GetNamesOf<ExpressionType>().Select(x => $"All.{x}"))
+        .Concat(GetNamesOf<ExpressionType>().Select(x => $"Any.{x}"))
         .ToList()
         .AsReadOnly();
 
