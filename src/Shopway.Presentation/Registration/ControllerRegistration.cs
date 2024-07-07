@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json.Converters;
-using Shopway.Presentation.Resolvers;
-using static Newtonsoft.Json.Formatting;
-using static Newtonsoft.Json.ReferenceLoopHandling;
-using ApiBehaviorOptions = Shopway.Presentation.Options.ApiBehaviorOptions;
+﻿using ApiBehaviorOptions = Shopway.Presentation.Options.ApiBehaviorOptions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -14,14 +10,7 @@ internal static class ControllerRegistration
             .AddControllers()
             .AddApplicationPart(Shopway.Presentation.AssemblyReference.Assembly)
             .ConfigureApiBehaviorOptions(options =>
-                options.InvalidModelStateResponseFactory = ApiBehaviorOptions.InvalidModelStateResponse)
-            .AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ContractResolver = new RequiredPropertiesCamelCaseContractResolver();
-                options.SerializerSettings.Formatting = Indented;
-                options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                options.SerializerSettings.ReferenceLoopHandling = Ignore;
-            });
+                options.InvalidModelStateResponseFactory = ApiBehaviorOptions.InvalidModelStateResponse);
 
         return services;
     }

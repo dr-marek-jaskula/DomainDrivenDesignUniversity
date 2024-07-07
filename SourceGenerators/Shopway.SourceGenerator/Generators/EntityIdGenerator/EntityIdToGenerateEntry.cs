@@ -13,6 +13,9 @@ public readonly record struct EntityIdToGenerateEntry
     /// </summary>
     private const string GenericIEntityIdNamespace = "using Shopway.Domain.Common.BaseTypes.Abstractions;";
     private const string DiagnosticsNamespace = "using System.Diagnostics;";
+    private const string DiagnosticCodeAnalysisNamespace = "using System.Diagnostics.CodeAnalysis;";
+    private const string TestJsonNamespace = "using System.Text.Json;";
+    private const string TestJsonSerializationNamespace = "using System.Text.Json.Serialization;";
 
     public readonly string Name;
     public readonly string Namespace;
@@ -36,11 +39,15 @@ public readonly record struct EntityIdToGenerateEntry
             .AppendLine()
             .AppendLine(GenericIEntityIdNamespace)
             .AppendLine(DiagnosticsNamespace)
+            .AppendLine(DiagnosticCodeAnalysisNamespace)
+            .AppendLine(TestJsonNamespace)
+            .AppendLine(TestJsonSerializationNamespace)
             .AppendLine()
             .AppendLine($"namespace {Namespace};")
             .AppendLine()
             .AppendLine($$$"""[DebuggerDisplay("{Value}")]""")
-            .AppendLine($"public readonly record struct {Name} : IEntityId<{Name}>")
+            .AppendLine($$$"""[JsonConverter(typeof({{{Name}}}JsonConverter))]""")
+            .AppendLine($"public readonly record struct {Name} : IEntityId<{Name}>, IParsable<{Name}>")
             .AppendLine($$$"""
             {
                 public const string Name = "{{{Name}}}";
@@ -51,7 +58,7 @@ public readonly record struct EntityIdToGenerateEntry
                     Value = id;
                 }
 
-                public Ulid Value { get; }
+                public readonly Ulid Value { get; init; }
 
                 public static {{{Name}}} New()
                 {
@@ -61,6 +68,16 @@ public readonly record struct EntityIdToGenerateEntry
                 public static {{{Name}}} Create(Ulid id)
                 {
                     return new {{{Name}}}(id);
+                }
+
+                public static {{{Name}}} Create(string id)
+                {
+                    if (Ulid.TryParse(id, out var ulid))
+                    {
+                        return Create(ulid);
+                    }
+
+                    throw new InvalidOperationException($"'{id}' cannot be parsed to Ulid");
                 }
 
                 public override int GetHashCode()
@@ -88,10 +105,48 @@ public readonly record struct EntityIdToGenerateEntry
                     return Value.CompareTo(otherId.Value);
                 }
 
+                public static {{{Name}}} Parse(string entityIdAsString, IFormatProvider? provider)
+                {
+                    return Create(entityIdAsString);
+                }
+
+                public static bool TryParse([NotNullWhen(true)] string? entityIdAsString, IFormatProvider? provider, [MaybeNullWhen(false)] out {{{Name}}} result)
+                {
+                    if (entityIdAsString is null)
+                    {
+                        throw new InvalidOperationException($"'{entityIdAsString}' cannot be null");
+                    }
+
+                    result = Create(entityIdAsString);
+                    return true;
+                }
+
                 public static bool operator >({{{Name}}} a, {{{Name}}} b) => a.CompareTo(b) is 1;
                 public static bool operator <({{{Name}}} a, {{{Name}}} b) => a.CompareTo(b) is -1;
                 public static bool operator >=({{{Name}}} a, {{{Name}}} b) => a.CompareTo(b) >= 0;
                 public static bool operator <=({{{Name}}} a, {{{Name}}} b) => a.CompareTo(b) <= 0;
+            }
+
+            public sealed class {{{Name}}}JsonConverter : JsonConverter<{{{Name}}}>
+            {
+                public override {{{Name}}} Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+                {
+                    var entityIdAsString = reader.GetString();
+
+                    if (Ulid.TryParse(entityIdAsString, out var ulid))
+                    {
+                        return {{{Name}}}.Create(ulid);
+                    }
+
+                    throw new InvalidOperationException($"'{entityIdAsString}' cannot be parsed to Ulid");
+                }
+
+                public override void Write(Utf8JsonWriter writer, {{{Name}}} entityId, JsonSerializerOptions options)
+                {
+                    writer.WriteStartObject();
+                    writer.WriteStringValue(entityId.Value.ToString());
+                    writer.WriteEndObject();
+                }
             }
             """)
             .ToString();

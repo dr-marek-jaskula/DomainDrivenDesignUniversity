@@ -1,11 +1,17 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using Shopway.Tests.Integration.ControllersUnderTest;
+using System.Text.Json;
 
 namespace Shopway.Tests.Integration.Utilities;
 
 public static class RestResponseUtilities
 {
+    private static JsonSerializerOptions _serializerOptions = new()
+    {
+        WriteIndented = true,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
     /// <summary>
     /// Deserialize response content to given type 
     /// </summary>
@@ -20,7 +26,7 @@ public static class RestResponseUtilities
             throw new ArgumentNullException(nameof(response.Content));
         }
 
-        return JsonConvert.DeserializeObject<TValue>(response.Content)!;
+        return JsonSerializer.Deserialize<TValue>(response.Content, _serializerOptions)!;
     }
 
     /// <summary>
@@ -37,7 +43,7 @@ public static class RestResponseUtilities
             throw new ArgumentNullException(nameof(response.Content));
         }
 
-        var responseResult = JsonConvert.DeserializeObject<ResponseResult<TValue>>(response.Content);
+        var responseResult = JsonSerializer.Deserialize<ResponseResult<TValue>>(response.Content, _serializerOptions);
 
         if (responseResult is null || responseResult.IsFailure)
         {

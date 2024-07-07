@@ -45,7 +45,7 @@ internal sealed partial class BatchResponseBuilder<TBatchRequest, TResponseKey>(
     /// The builder output.
     /// </summary>
     /// <returns>List of all responseEntries</returns>
-    public List<BatchResponseEntry> BuildResponseEntries()
+    public List<BatchResponseEntry<TResponseKey>> BuildResponseEntries()
     {
         return _responseEntryBuilders
             .Values

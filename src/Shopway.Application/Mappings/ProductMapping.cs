@@ -102,7 +102,7 @@ public static class ProductMapping
         return new CreateProductResponse(productToCreate.Id.Value);
     }
 
-    public static BatchUpsertProductResponse ToBatchUpsertResponse(this IList<BatchResponseEntry> batchResponseEntries)
+    public static BatchUpsertProductResponse ToBatchProductUpsertResponse(this IList<BatchResponseEntry<ProductKey>> batchResponseEntries)
     {
         return new BatchUpsertProductResponse(batchResponseEntries);
     }

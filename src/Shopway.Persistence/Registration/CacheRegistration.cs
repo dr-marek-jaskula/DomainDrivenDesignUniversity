@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Shopway.Infrastructure.Options;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.Caching.Fusion.Serialization.NewtonsoftJson;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -30,8 +29,7 @@ internal static class CacheRegistration
                 options.DistributedCacheSoftTimeout = TimeSpan.FromSeconds(1);
                 options.DistributedCacheHardTimeout = TimeSpan.FromSeconds(2);
                 options.JitterMaxDuration = TimeSpan.FromSeconds(2);
-            })
-            .WithSerializer(new FusionCacheNewtonsoftJsonSerializer());
+            });
 
         if (cacheOptions.ConnectionString!.Contains(localhost))
         {

@@ -32,7 +32,7 @@ public interface IBatchResponseBuilder<TBatchRequest, TResponseKey>
     /// Build response entries: key, status and errors if there are some
     /// </summary>
     /// <returns></returns>
-    List<BatchResponseEntry> BuildResponseEntries();
+    List<BatchResponseEntry<TResponseKey>> BuildResponseEntries();
 
     /// <summary>
     /// Validate requests that are supposed to insert an entity

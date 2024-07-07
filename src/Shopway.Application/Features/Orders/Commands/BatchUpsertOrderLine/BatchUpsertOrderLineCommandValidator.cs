@@ -15,7 +15,7 @@ internal static class BatchUpsertOrderLineCommandValidator
     /// <param name="responseBuilder">Response builder for given command</param>
     /// <param name="orderLinesToUpdateWithKeys">OrderLines meant to be updated with their unique keys</param>
     /// <returns>List of response entries, that are required to create the batch response</returns>
-    public static IList<BatchResponseEntry> Validate
+    public static IList<BatchResponseEntry<OrderLineKey>> Validate
     (
         this BatchUpsertOrderLineCommand command,
         IBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> responseBuilder,

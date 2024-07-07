@@ -1,20 +1,17 @@
-﻿using Newtonsoft.Json;
-using Shopway.Domain.Common.BaseTypes.Abstractions;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
+using System.Text.Json;
 
 namespace Shopway.Infrastructure.Outbox;
 
 public static class OutboxMessageUtilities
 {
-    public static IDomainEvent? Deserialize(this OutboxMessage outboxMessage, TypeNameHandling typeNameHandling = TypeNameHandling.None)
+    public static IDomainEvent? Deserialize(this OutboxMessage outboxMessage)
     {
         if (outboxMessage is null)
         {
             return null;
         }
 
-        return JsonConvert.DeserializeObject<IDomainEvent>(outboxMessage.Content, new JsonSerializerSettings
-        {
-            TypeNameHandling = typeNameHandling
-        });
+        return JsonSerializer.Deserialize<IDomainEvent>(outboxMessage.Content);
     }
 }

@@ -11,9 +11,8 @@ public readonly record struct ProductKey : IUniqueKey<Product, ProductKey>
     private const string NormalizedProductName = "productname";
     private const string NormalizedRevision = "revision";
     private const int ComponentsCount = 2;
-
-    public readonly string ProductName { get; }
-    public readonly string Revision { get; }
+    public readonly string ProductName { get; init; }
+    public readonly string Revision { get; init; }
 
     public ProductKey(string productName, string revision)
     {
@@ -48,7 +47,7 @@ public readonly record struct ProductKey : IUniqueKey<Product, ProductKey>
         return new ProductKey(product.ProductName.Value, product.Revision.Value);
     }
 
-    public Expression<Func<Product, bool>> GetFindSpecification()
+    public Expression<Func<Product, bool>> CreateQuerySpecification()
     {
         var name = ProductName;
         var revision = Revision;

@@ -20,7 +20,7 @@ public sealed partial class BatchUpsertProductCommandHandler
     IProductRepository productRepository,
     IFusionCache fusionCache
 )
-    : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse>
+    : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse, ProductKey>
 {
     private readonly IFusionCache _fusionCache = fusionCache;
     private readonly IBatchResponseBuilderFactory _responseBuilderFactory = responseBuilderFactory;
@@ -44,7 +44,7 @@ public sealed partial class BatchUpsertProductCommandHandler
 
         if (responseEntries.Any(response => response.Status is BatchEntryStatus.Error))
         {
-            return Result.BatchFailure(responseEntries.ToBatchUpsertResponse());
+            return Result.BatchFailure(responseEntries.ToBatchProductUpsertResponse());
         }
 
         //Perform batch upsert
@@ -52,7 +52,7 @@ public sealed partial class BatchUpsertProductCommandHandler
         UpdateProducts(responseBuilder.ValidRequestsToUpdate, productsToUpdateDictionary);
 
         return responseEntries
-            .ToBatchUpsertResponse()
+            .ToBatchProductUpsertResponse()
             .ToResult();
     }
 

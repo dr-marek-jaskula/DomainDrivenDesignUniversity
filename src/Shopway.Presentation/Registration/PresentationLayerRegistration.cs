@@ -9,6 +9,7 @@ public static class PresentationLayerRegistration
     public static IServiceCollection RegisterPresentationLayer(this IServiceCollection services)
     {
         services
+            .ConfigureJsonOptions()
             .RegisterControllers()
             .RegisterOpenApi()
             .RegisterVersioning()

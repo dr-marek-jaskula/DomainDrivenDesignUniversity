@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
 using Shopway.Domain.Common.Utilities;
-using Shopway.Infrastructure.Payments.DummyGatewayTypes;
+using System.Text.Json;
 
 namespace Shopway.Infrastructure.Payments.DummyGatewayTypes.Events;
 
@@ -17,7 +16,7 @@ public static class PaymentGatewayEventUtility
             throw new PaymentGatewayException("Invalid Client Secret");
         }
 
-        return JsonConvert.DeserializeObject<PaymentGatewayEvent>(json)
+        return JsonSerializer.Deserialize<PaymentGatewayEvent>(json)
             ?? throw new PaymentGatewayException("PaymentGatewayEvent has invalid format");
     }
 }

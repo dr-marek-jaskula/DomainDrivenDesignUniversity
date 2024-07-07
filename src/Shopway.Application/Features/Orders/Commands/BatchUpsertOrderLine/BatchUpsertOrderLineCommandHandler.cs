@@ -20,7 +20,7 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
     IOrderHeaderRepository orderHeaderRepository,
     IProductRepository productRepository
 )
-    : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
+    : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse, OrderLineKey>
 {
     private readonly IProductRepository _productRepository = productRepository;
     private readonly IBatchResponseBuilderFactory _responseBuilderFactory = responseBuilderFactory;
@@ -56,7 +56,7 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
 
         if (responseEntries.Any(response => response.Status is BatchEntryStatus.Error))
         {
-            return Result.BatchFailure(responseEntries.ToBatchInsertResponse());
+            return Result.BatchFailure(responseEntries.ToBatchOrderLineUpsertResponse());
         }
 
         var insertResult = InsertOrderLines(responseBuilder.ValidRequestsToInsert, orderHeader, products);
@@ -69,7 +69,7 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
         UpdateOrderLines(responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);
 
         return responseEntries
-            .ToBatchInsertResponse()
+            .ToBatchOrderLineUpsertResponse()
             .ToResult();
     }
 

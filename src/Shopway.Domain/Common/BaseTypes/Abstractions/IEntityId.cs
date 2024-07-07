@@ -1,8 +1,6 @@
-﻿using System.ComponentModel;
+﻿namespace Shopway.Domain.Common.BaseTypes.Abstractions;
 
-namespace Shopway.Domain.Common.BaseTypes.Abstractions;
-
-[TypeConverter(typeof(EntityIdConverter))]
+//[TypeConverter(typeof(EntityIdConverter))] //Only for Newtonsoft.Json
 public interface IEntityId<TEntityId> : IEntityId
 {
     /// <summary>

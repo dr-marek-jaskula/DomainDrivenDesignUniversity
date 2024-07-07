@@ -127,7 +127,10 @@ we would need to manually update all such ids manually. However, it has been lef
 ## EntityIds and EntityIdConverter
 
 EntityId is a strongly typed id that is a readonly record struct (due to the fact that ulid is a struct). 
-EntityIds are generated using my own custom source generator **Shopway.SourceGenerator**
+EntityIds are generated using my own custom source generator **Shopway.SourceGenerator**.
+
+NOTE: It is important for serialization purposes that **Value** should have an `init` setter. Otherwise,
+**System.Text.Json** serializer would incorrectly serialize its value. This problem holds for all **reaonly record struct** types.
 
 The EntityIdConverter handles the conversion from and to string, so we can have controllers parameters like "PersonId",
 because the conversion will be done behind the scenes. If conversion fails, the proper error message is returned.

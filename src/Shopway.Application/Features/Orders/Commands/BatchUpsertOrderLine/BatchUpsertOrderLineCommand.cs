@@ -5,15 +5,11 @@ using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.B
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
-public sealed record BatchUpsertOrderLineCommand : IBatchCommand<BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse>
+public sealed record BatchUpsertOrderLineCommand(IList<BatchUpsertOrderLineRequest> Requests, OrderHeaderId OrderHeaderId) 
+    : IBatchCommand<BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse, OrderLineKey>
 {
-    public BatchUpsertOrderLineCommand(IList<BatchUpsertOrderLineRequest> requests)
-    {
-        Requests = requests;
-    }
-
-    public IList<BatchUpsertOrderLineRequest> Requests { get; set; }
-    public OrderHeaderId OrderHeaderId { get; set; }
+    public IList<BatchUpsertOrderLineRequest> Requests { get; init; } = Requests;
+    public OrderHeaderId OrderHeaderId { get; init; } = OrderHeaderId;
 
     public sealed record BatchUpsertOrderLineRequest
     (
