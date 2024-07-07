@@ -111,13 +111,13 @@ public sealed class ProductKeyJsonConverter : JsonConverter<ProductKey>
 
             if (propertyName.Equals(nameof(ProductKey.ProductName), StringComparison.CurrentCultureIgnoreCase))
             {
-                productName = reader.GetCurrentPropertyValue();
+                productName = reader.GetCurrentPropertyStringValue();
                 continue;
             }
 
             if (propertyName.Equals(nameof(ProductKey.Revision), StringComparison.CurrentCultureIgnoreCase))
             {
-                productRevision = reader.GetCurrentPropertyValue();
+                productRevision = reader.GetCurrentPropertyStringValue();
                 continue;
             }
 

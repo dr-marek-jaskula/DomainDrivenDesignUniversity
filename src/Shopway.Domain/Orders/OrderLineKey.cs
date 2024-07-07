@@ -63,7 +63,7 @@ public sealed class OrderLineKeyJsonConverter : JsonConverter<OrderLineKey>
 
             if (propertyName.Equals(nameof(OrderLineKey.ProductId), StringComparison.CurrentCultureIgnoreCase))
             {
-                productIdAsString = reader.GetCurrentPropertyValue();
+                productIdAsString = reader.GetCurrentPropertyStringValue();
                 continue;
             }
 

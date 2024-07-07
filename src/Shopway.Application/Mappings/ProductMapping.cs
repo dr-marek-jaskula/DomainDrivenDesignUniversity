@@ -43,7 +43,7 @@ public static class ProductMapping
     /// Used for performance reasons. More info in: ReadMe.Application.md (Mapping section). 
     /// </summary>
     /// <returns></returns>
-    public static readonly Expression<Func<Product, DictionaryResponseEntry>> DictionaryResponseEntry = product => new DictionaryResponseEntry
+    public static readonly Expression<Func<Product, DictionaryResponseEntry<ProductKey>>> DictionaryResponseEntry = product => new DictionaryResponseEntry<ProductKey>
     (
         product.Id.Value,
         //Method *ToProductKey* is not used on purpose here
