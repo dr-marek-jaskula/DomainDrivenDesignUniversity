@@ -299,7 +299,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Product245\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
+							"raw": "{\r\n  \"productKey\" : {\r\n      \"productName\" : \"Product269\",\r\n      \"revision\" : \"2.0\"\r\n  },\r\n  \"price\": 12,\r\n  \"uomCode\": \"pcs\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1074,7 +1074,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"requests\": [\r\n    {\r\n        \"ProductId\": \"01H6EC1ADR3Z6FXPK75YEX1NTH\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.4\r\n    },\r\n    {\r\n        \"ProductId\": \"01H6EC1AENZK4AE1AATW0D1VKS\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.3\r\n    }\r\n  ]\r\n}",
+									"raw": "{\r\n  \"requests\": [\r\n    {\r\n        \"ProductId\": \"01H6EC1ADR3Z6FXPK75YEX1NTH\",\r\n        \"Amount\": -10,\r\n        \"Discount\": 0.4\r\n    },\r\n    {\r\n        \"ProductId\": \"01H6EC1AENZK4AE1AATW0D1VKS\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.3\r\n    }\r\n  ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2151,13 +2151,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/{{username}}",
+							"raw": "{{base_url}}/users/{{username}}/roles",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								"{{username}}"
+								"{{username}}",
+								"roles"
 							]
 						}
 					},
@@ -2247,6 +2248,35 @@
 								"users",
 								"permissions",
 								"Product_Read_Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPermissionDetails.Valid.OrderHeader_Read_Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/permissions/OrderHeader_Read_Customer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"permissions",
+								"OrderHeader_Read_Customer"
 							]
 						}
 					},
@@ -4012,7 +4042,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Status\",\r\n            \"Operation\": \"Equal\",\r\n            \"Value\" : \"New\" \r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\": \"ProductSummary\",\r\n                    \"Properties\": [\r\n                        \"ProductName\"\r\n                    ]\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+									"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Status\",\r\n            \"Operation\": \"Equal\",\r\n            \"Value\" : \"New\" \r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\",\r\n                {\r\n                    \"From\": \"ProductSummary\",\r\n                    \"Properties\": [\r\n                        \"ProductName\"\r\n                    ]\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"From\" : \"Payments\",\r\n            \"Properties\": [\r\n                \"Status\",\r\n                {\r\n                    \"From\": \"Session\",\r\n                    \"Properties\": [\r\n                        \"Secret\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
