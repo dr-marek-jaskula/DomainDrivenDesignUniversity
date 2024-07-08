@@ -116,13 +116,13 @@ partial class BatchResponseBuilder<TBatchRequest, TResponseKey>
         /// Builds the response entry based on a previous validations. If there is at least one error, status will be set to error.
         /// </summary>
         /// <returns>Response entry: (ResponseKey, ResponseStatus, Errors)</returns>
-        internal BatchResponseEntry BuildBatchResponseEntry()
+        internal BatchResponseEntry<TResponseKey> BuildBatchResponseEntry()
         {
             var responseStatus = IsValid
                 ? _successStatus
                 : BatchEntryStatus.Error;
 
-            return new BatchResponseEntry(_responseKey, responseStatus, _errors);
+            return new BatchResponseEntry<TResponseKey>(_responseKey, responseStatus, _errors);
         }
 
         /// <summary>

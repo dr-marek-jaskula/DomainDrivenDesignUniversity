@@ -1,6 +1,6 @@
 ﻿using NBomber.Http.CSharp;
-using Newtonsoft.Json;
 using Shopway.Application.Features.Users.Commands;
+using System.Text.Json;
 using static Shopway.Tests.Performance.Constants.Constants.Http;
 
 namespace Shopway.Tests.Performance.Utilities;
@@ -34,7 +34,7 @@ public static class HttpClientUtilities
         var response = await client.SendAsync(request);
 
         var contentAsString = await response.Content.ReadAsStringAsync();
-        var accessTokenResponse = JsonConvert.DeserializeObject<AccessTokenResponse>(contentAsString)!;
+        var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenResponse>(contentAsString)!;
 
         return accessTokenResponse.AccessToken;
     }

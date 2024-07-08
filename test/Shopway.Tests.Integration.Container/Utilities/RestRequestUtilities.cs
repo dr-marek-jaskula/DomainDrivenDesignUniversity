@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using Shopway.Domain.Common.Utilities;
+using System.Text.Json;
 using static Shopway.Tests.Integration.Container.Constants.Constants.Header;
 
 namespace Shopway.Tests.Integration.Utilities;
@@ -52,7 +52,7 @@ public static class RestRequestUtilities
     /// <returns></returns>
     public static RestRequest AddJson(this RestRequest restRequest, object body)
     {
-        string serialized = JsonConvert.SerializeObject(body);
+        string serialized = JsonSerializer.Serialize(body);
 
         return restRequest
             .AddJsonContentHeader()

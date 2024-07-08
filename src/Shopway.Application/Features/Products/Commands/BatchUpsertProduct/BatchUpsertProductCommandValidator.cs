@@ -15,7 +15,7 @@ internal static class BatchUpsertProductCommandValidator
     /// <param name="responseBuilder">Response builder for given command</param>
     /// <param name="productsToUpdateWithKeys">Product meant to be updated with their unique keys</param>
     /// <returns>List of response entries, that are required to create the batch response</returns>
-    public static IList<BatchResponseEntry> Validate
+    public static IList<BatchResponseEntry<ProductKey>> Validate
     (
         this BatchUpsertProductCommand command,
         IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder,

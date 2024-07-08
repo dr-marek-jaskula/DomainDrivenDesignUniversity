@@ -106,7 +106,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPost("name/{productNamePattern}")]
-    [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry<ProductKey>>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<OffsetPageResponse<ProductResponse>>, ProblemHttpResult>> QueryProductsByNameLike
     (
@@ -125,9 +125,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPost("query/dictionary/offset")]
-    [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<OffsetPageResponse<DictionaryResponseEntry<ProductKey>>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok<OffsetPageResponse<DictionaryResponseEntry>>, ProblemHttpResult>> QueryProductsOffsetDictionary
+    public async Task<Results<Ok<OffsetPageResponse<DictionaryResponseEntry<ProductKey>>>, ProblemHttpResult>> QueryProductsOffsetDictionary
     (
         [FromBody] ProductDictionaryOffsetPageQuery query,
         CancellationToken cancellationToken
@@ -141,9 +141,9 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPost("query/dictionary/cursor")]
-    [ProducesResponseType<CursorPageResponse<DictionaryResponseEntry>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<CursorPageResponse<DictionaryResponseEntry<ProductKey>>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<Results<Ok<CursorPageResponse<DictionaryResponseEntry>>, ProblemHttpResult>> QueryProductsCursorDictionary
+    public async Task<Results<Ok<CursorPageResponse<DictionaryResponseEntry<ProductKey>>>, ProblemHttpResult>> QueryProductsCursorDictionary
     (
         [FromBody] ProductDictionaryCursorPageQuery query,
         CancellationToken cancellationToken

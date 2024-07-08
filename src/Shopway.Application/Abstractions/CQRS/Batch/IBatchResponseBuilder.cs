@@ -29,16 +29,10 @@ public interface IBatchResponseBuilder<TBatchRequest, TResponseKey>
     IReadOnlyList<TBatchRequest> ValidRequestsToUpdate { get; }
 
     /// <summary>
-    /// Required to use the builder. Set the request to response key to mapping method
-    /// </summary>
-    /// <param name="mapFromRequestToResponseKey">Request to ResponseKey mapping method</param>
-    void SetRequestToResponseKeyMapper(Func<TBatchRequest, TResponseKey> mapFromRequestToResponseKey);
-
-    /// <summary>
     /// Build response entries: key, status and errors if there are some
     /// </summary>
     /// <returns></returns>
-    List<BatchResponseEntry> BuildResponseEntries();
+    List<BatchResponseEntry<TResponseKey>> BuildResponseEntries();
 
     /// <summary>
     /// Validate requests that are supposed to insert an entity

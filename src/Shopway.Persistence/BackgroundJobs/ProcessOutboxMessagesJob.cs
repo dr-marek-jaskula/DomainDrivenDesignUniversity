@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Quartz;
 using Shopway.Infrastructure.Outbox;
 using Shopway.Infrastructure.Policies;
@@ -39,11 +38,12 @@ public sealed class ProcessOutboxMessagesJob
 
         foreach (var message in messages)
         {
-            var domainEvent = message.Deserialize(TypeNameHandling.All);
+            var domainEvent = message.Deserialize();
 
             if (domainEvent is null)
             {
                 _logger.LogDomainEventInvalidDeserialization(message.Content);
+                message.UpdatePropertiesWhenUnableToDeserializeMessage(_timeProvider.GetUtcNow());
                 continue;
             }
 

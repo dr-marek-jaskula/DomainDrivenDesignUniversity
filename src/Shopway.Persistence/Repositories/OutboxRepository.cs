@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Infrastructure.Outbox;
 using Shopway.Persistence.Framework;
@@ -68,13 +67,14 @@ internal sealed class OutboxRepository(ShopwayDbContext dbContext, TimeProvider 
             .AddRange(outboxMessages);
     }
 
-    private OutboxMessage ToOutboxMessage(IDomainEvent domainEvent)
+    private OutboxMessage ToOutboxMessage<TDomainEvent>(TDomainEvent domainEvent)
+        where TDomainEvent : IDomainEvent
     {
         return new OutboxMessage
         {
             Id = domainEvent.Id,
             Type = domainEvent.GetType().Name,
-            Content = domainEvent.Serialize(TypeNameHandling.All),
+            Content = domainEvent.Serialize(),
             OccurredOn = DateTimeOffset.UtcNow,
             ExecutionStatus = InProgress,
             NextProcessAttempt = _timeProvider.GetUtcNow().AddMinutes(OutboxMessage.InitialDelayInMinutes)

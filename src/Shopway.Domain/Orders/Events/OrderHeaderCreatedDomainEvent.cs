@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Orders;
+using System.Text.Json;
 
 namespace Shopway.Domain.DomainEvents;
 

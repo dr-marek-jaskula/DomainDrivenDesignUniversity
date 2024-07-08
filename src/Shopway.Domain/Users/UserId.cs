@@ -1,24 +1,41 @@
 ﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Shopway.Domain.Users;
 
-public readonly record struct UserId : IEntityId<UserId>
+//This id was lets for tutorial purposes. All other are source generated (with their JsonConverters)
+
+[DebuggerDisplay("{Value}")]
+[JsonConverter(typeof(UserIdJsonConverter))]
+public readonly record struct UserId : IEntityId<UserId>, IParsable<UserId>
 {
     private UserId(Ulid id)
     {
         Value = id;
     }
 
-    public Ulid Value { get; }
+    public readonly Ulid Value { get; init; }
 
     public static UserId New()
     {
         return new UserId(Ulid.NewUlid());
     }
-
+    
     public static UserId Create(Ulid id)
     {
         return new UserId(id);
+    }
+    
+    public static UserId Create(string id)
+    {
+        if (Ulid.TryParse(id, out var ulid))
+        {
+            return Create(ulid);
+        }
+
+        throw new InvalidOperationException($"'{id}' cannot be parsed to Ulid");
     }
 
     public override int GetHashCode()
@@ -44,6 +61,22 @@ public readonly record struct UserId : IEntityId<UserId>
         }
 
         return Value.CompareTo(otherUserId.Value);
+    }
+
+    public static UserId Parse(string entityIdAsString, IFormatProvider? provider)
+    {
+        return Create(entityIdAsString);
+    }
+
+    public static bool TryParse([NotNullWhen(true)] string? entityIdAsString, IFormatProvider? provider, [MaybeNullWhen(false)] out UserId result)
+    {
+        if (entityIdAsString is null)
+        {
+            throw new InvalidOperationException($"'{entityIdAsString}' cannot be null");
+        }
+
+        result = Create(entityIdAsString);
+        return true;
     }
 
     public static bool operator >(UserId a, UserId b) => a.CompareTo(b) is 1;

@@ -5,7 +5,7 @@ namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 
 public sealed record BatchUpsertProductResponse : BatchResponseBase<ProductKey>
 {
-    public BatchUpsertProductResponse(IList<BatchResponseEntry> entries)
+    public BatchUpsertProductResponse(IList<BatchResponseEntry<ProductKey>> entries)
         : base(entries)
     {
     }

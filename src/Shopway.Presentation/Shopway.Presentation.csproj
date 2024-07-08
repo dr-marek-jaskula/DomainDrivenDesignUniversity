@@ -17,15 +17,14 @@
 
 	<ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
-    <PackageReference Include="FastEndpoints" Version="5.26.0" />
-    <PackageReference Include="FastEndpoints.AspVersioning" Version="5.26.0" />
-    <PackageReference Include="FastEndpoints.Security" Version="5.26.0" />
-    <PackageReference Include="FastEndpoints.Swagger" Version="5.26.0" />
+    <PackageReference Include="FastEndpoints" Version="5.27.0" />
+    <PackageReference Include="FastEndpoints.AspVersioning" Version="5.27.0" />
+    <PackageReference Include="FastEndpoints.Security" Version="5.27.0" />
+    <PackageReference Include="FastEndpoints.Swagger" Version="5.27.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.6" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
 	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 	<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
-	<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.6" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
   </ItemGroup>
 

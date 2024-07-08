@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using Shopway.Tests.Integration.Container.WireMockUtilities.ResponseProviders;
 using System.Net;
+using System.Text.Json;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -11,6 +11,7 @@ namespace Shopway.Tests.Integration.Container.WireMockUtilities;
 
 public sealed class WebServiceMock(int? port = null) : IDisposable
 {
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
     private readonly WireMockServer _mockServer = WireMockServer.Start(port);
     private bool _disposed;
 
@@ -80,7 +81,7 @@ public sealed class WebServiceMock(int? port = null) : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private static Queue<IResponseBuilder> CreateQueue(ResponseEntry[] responseEntries)
+    private Queue<IResponseBuilder> CreateQueue(ResponseEntry[] responseEntries)
     {
         var builders = responseEntries
             .Select(responseEntry =>
@@ -101,13 +102,13 @@ public sealed class WebServiceMock(int? port = null) : IDisposable
         return new Queue<IResponseBuilder>(builders);
     }
 
-    private static string? ConvertToJson<TBody>(TBody? body)
+    private string? ConvertToJson<TBody>(TBody? body)
     {
         if (body is null)
         {
             return null;
         }
 
-        return JsonConvert.SerializeObject(body, Formatting.Indented);
+        return JsonSerializer.Serialize(body, _jsonSerializerOptions);
     }
 }

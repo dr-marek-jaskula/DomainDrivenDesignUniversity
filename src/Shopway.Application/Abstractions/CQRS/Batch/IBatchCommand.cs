@@ -1,4 +1,6 @@
-﻿namespace Shopway.Application.Abstractions.CQRS.Batch;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
+
+namespace Shopway.Application.Abstractions.CQRS.Batch;
 
 /// <summary>
 /// Represents the batch command interface
@@ -13,9 +15,10 @@ public interface IBatchCommand<TBatchRequest> : ICommand
 /// Represents the batch command interface
 /// </summary>
 /// <typeparam name="TBatchResponse">The command response type</typeparam>
-public interface IBatchCommand<TBatchRequest, out TBatchResponse> : ICommand<TBatchResponse>
+public interface IBatchCommand<TBatchRequest, out TBatchResponse, TResponseKey> : ICommand<TBatchResponse>
     where TBatchRequest : IBatchRequest
-    where TBatchResponse : IBatchResponse
+    where TBatchResponse : IBatchResponse<TResponseKey>
+    where TResponseKey : IUniqueKey
 {
     IList<TBatchRequest> Requests { get; }
 }

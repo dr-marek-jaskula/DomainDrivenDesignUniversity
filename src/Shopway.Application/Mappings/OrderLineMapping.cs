@@ -46,7 +46,7 @@ public static class OrderLineMapping
         return new UpdateOrderLineResponse(orderLineToUpdate.Id.Value);
     }
 
-    public static BatchUpsertOrderLineResponse ToBatchInsertResponse(this IList<BatchResponseEntry> batchResponseEntries)
+    public static BatchUpsertOrderLineResponse ToBatchOrderLineUpsertResponse(this IList<BatchResponseEntry<OrderLineKey>> batchResponseEntries)
     {
         return new BatchUpsertOrderLineResponse(batchResponseEntries);
     }

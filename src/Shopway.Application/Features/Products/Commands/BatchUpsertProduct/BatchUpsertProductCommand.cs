@@ -4,7 +4,7 @@ using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.B
 
 namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 
-public sealed record BatchUpsertProductCommand : IBatchCommand<ProductBatchUpsertRequest, BatchUpsertProductResponse>
+public sealed record BatchUpsertProductCommand : IBatchCommand<ProductBatchUpsertRequest, BatchUpsertProductResponse, ProductKey>
 {
     public BatchUpsertProductCommand(IList<ProductBatchUpsertRequest> requests)
     {

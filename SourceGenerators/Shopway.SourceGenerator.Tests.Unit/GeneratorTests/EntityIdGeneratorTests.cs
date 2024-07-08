@@ -78,11 +78,15 @@ public class GenerateEntityIdAttribute : global::System.Attribute;");
 
         using Shopway.Domain.Common.BaseTypes.Abstractions;
         using System.Diagnostics;
+        using System.Diagnostics.CodeAnalysis;
+        using System.Text.Json;
+        using System.Text.Json.Serialization;
 
         namespace MyNamespace;
 
         [DebuggerDisplay("{Value}")]
-        public readonly record struct ProductId : IEntityId<ProductId>
+        [JsonConverter(typeof(ProductIdJsonConverter))]
+        public readonly record struct ProductId : IEntityId<ProductId>, IParsable<ProductId>
         {
             public const string Name = "ProductId";
             public const string Namespace = "MyNamespace";
@@ -92,7 +96,7 @@ public class GenerateEntityIdAttribute : global::System.Attribute;");
                 Value = id;
             }
 
-            public Ulid Value { get; }
+            public readonly Ulid Value { get; init; }
 
             public static ProductId New()
             {
@@ -103,7 +107,17 @@ public class GenerateEntityIdAttribute : global::System.Attribute;");
             {
                 return new ProductId(id);
             }
-
+        
+            public static ProductId Create(string id)
+            {
+                if (Ulid.TryParse(id, out var ulid))
+                {
+                    return Create(ulid);
+                }
+        
+                throw new InvalidOperationException($"'{id}' cannot be parsed to Ulid");
+            }
+        
             public override int GetHashCode()
             {
                 return Value.GetHashCode();
@@ -129,10 +143,46 @@ public class GenerateEntityIdAttribute : global::System.Attribute;");
                 return Value.CompareTo(otherId.Value);
             }
 
+            public static ProductId Parse(string entityIdAsString, IFormatProvider? provider)
+            {
+                return Create(entityIdAsString);
+            }
+
+            public static bool TryParse([NotNullWhen(true)] string? entityIdAsString, IFormatProvider? provider, [MaybeNullWhen(false)] out ProductId result)
+            {
+                if (entityIdAsString is null)
+                {
+                    throw new InvalidOperationException($"'{entityIdAsString}' cannot be null");
+                }
+
+                result = Create(entityIdAsString);
+                return true;
+            }
+
             public static bool operator >(ProductId a, ProductId b) => a.CompareTo(b) is 1;
             public static bool operator <(ProductId a, ProductId b) => a.CompareTo(b) is -1;
             public static bool operator >=(ProductId a, ProductId b) => a.CompareTo(b) >= 0;
             public static bool operator <=(ProductId a, ProductId b) => a.CompareTo(b) <= 0;
+        }
+
+        public sealed class ProductIdJsonConverter : JsonConverter<ProductId>
+        {
+            public override ProductId Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                var entityIdAsString = reader.GetString();
+
+                if (Ulid.TryParse(entityIdAsString, out var ulid))
+                {
+                    return ProductId.Create(ulid);
+                }
+
+                throw new InvalidOperationException($"'{entityIdAsString}' cannot be parsed to Ulid");
+            }
+
+            public override void Write(Utf8JsonWriter writer, ProductId entityId, JsonSerializerOptions options)
+            {
+                writer.WriteStringValue(entityId.Value.ToString());
+            }
         }
         """;
 

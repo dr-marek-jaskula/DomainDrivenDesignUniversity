@@ -1,5 +1,6 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Users.Authorization;
@@ -18,6 +19,17 @@ internal sealed class CreatePermissionCommandHandler(IAuthorizationRepository au
 
         _validator
             .Validate(permissionToCreateResult);
+
+        if (_validator.IsInvalid)
+        {
+            return _validator.Failure();
+        }
+
+        var permissionFromDatabase = await _authorizationRepository.GetPermissionAsync(Enum.Parse<PermissionName>(permissionToCreateResult.Value.Name), cancellationToken);
+
+
+        _validator
+            .If(permissionFromDatabase is not null, Error.AlreadyExists<Permission>(permissionToCreateResult.Value.Name));
 
         if (_validator.IsInvalid)
         {

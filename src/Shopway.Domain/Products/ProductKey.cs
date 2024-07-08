@@ -1,19 +1,21 @@
 ﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Products;
 using System.Linq.Expressions;
+using System.Text.Json.Serialization;
 
 namespace Shopway.Domain.EntityKeys;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
+[JsonConverter(typeof(ProductKeyJsonConverter))]
 public readonly record struct ProductKey : IUniqueKey<Product, ProductKey>
 {
     private const string NormalizedProductName = "productname";
     private const string NormalizedRevision = "revision";
     private const int ComponentsCount = 2;
 
-    public readonly string ProductName { get; }
-    public readonly string Revision { get; }
+    public readonly string ProductName { get; init; }
+    public readonly string Revision { get; init; }
 
     public ProductKey(string productName, string revision)
     {
@@ -48,7 +50,7 @@ public readonly record struct ProductKey : IUniqueKey<Product, ProductKey>
         return new ProductKey(product.ProductName.Value, product.Revision.Value);
     }
 
-    public Expression<Func<Product, bool>> GetFindSpecification()
+    public Expression<Func<Product, bool>> CreateQuerySpecification()
     {
         var name = ProductName;
         var revision = Revision;
@@ -64,7 +66,7 @@ public readonly record struct ProductKey : IUniqueKey<Product, ProductKey>
         var getProductNameResult = normalizedKey.TryGetValue(NormalizedProductName, out var productName);
         var getRevisionResult = normalizedKey.TryGetValue(NormalizedRevision, out var revision);
 
-        if (getProductNameResult is false || getRevisionResult is false || key.Count != ComponentsCount)
+        if (getProductNameResult is false || getRevisionResult is false || key.Count is not ComponentsCount)
         {
             throw new ArgumentException($"Current: {string.Join(", ", key.Keys)}. Valid: {nameof(ProductName)}, {nameof(Revision)}");
         }
@@ -72,5 +74,3 @@ public readonly record struct ProductKey : IUniqueKey<Product, ProductKey>
         return Create(productName!, revision!);
     }
 }
-
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

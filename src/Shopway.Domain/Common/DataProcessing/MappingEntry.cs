@@ -1,7 +1,9 @@
 ﻿using Shopway.Domain.Common.Utilities;
+using System.Text.Json.Serialization;
 
 namespace Shopway.Domain.Common.DataProcessing;
 
+[JsonConverter(typeof(MappingEntryJsonConverter))]
 public sealed class MappingEntry
 {
     public string? PropertyName { get; init; }

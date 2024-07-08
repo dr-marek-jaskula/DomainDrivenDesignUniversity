@@ -16,15 +16,15 @@ namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 
 public sealed partial class BatchUpsertProductCommandHandler
 (
-    IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> responseBuilder,
+    IBatchResponseBuilderFactory responseBuilderFactory,
     IProductRepository productRepository,
     IFusionCache fusionCache
 )
-    : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse>
+    : IBatchCommandHandler<BatchUpsertProductCommand, ProductBatchUpsertRequest, BatchUpsertProductResponse, ProductKey>
 {
     private readonly IFusionCache _fusionCache = fusionCache;
+    private readonly IBatchResponseBuilderFactory _responseBuilderFactory = responseBuilderFactory;
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly IBatchResponseBuilder<ProductBatchUpsertRequest, ProductKey> _responseBuilder = responseBuilder;
 
     public async Task<IResult<BatchUpsertProductResponse>> Handle(BatchUpsertProductCommand command, CancellationToken cancellationToken)
     {
@@ -37,23 +37,22 @@ public sealed partial class BatchUpsertProductCommandHandler
 
         var productsToUpdateDictionary = await GetProductsToUpdateDictionary(command, cancellationToken);
 
-        //Required step: set RequestToProductKeyMapping method for the injected builder
-        _responseBuilder.SetRequestToResponseKeyMapper(MapFromRequestToProductKey);
+        var responseBuilder = _responseBuilderFactory.Create<ProductBatchUpsertRequest, ProductKey>(MapFromRequestToProductKey);
 
         //Perform validation: using the builder, trimmed command and queried productsToUpdate
-        var responseEntries = command.Validate(_responseBuilder, productsToUpdateDictionary);
+        var responseEntries = command.Validate(responseBuilder, productsToUpdateDictionary);
 
         if (responseEntries.Any(response => response.Status is BatchEntryStatus.Error))
         {
-            return Result.BatchFailure(responseEntries.ToBatchUpsertResponse());
+            return Result.BatchFailure(responseEntries.ToBatchProductUpsertResponse());
         }
 
         //Perform batch upsert
-        InsertProducts(_responseBuilder.ValidRequestsToInsert);
-        UpdateProducts(_responseBuilder.ValidRequestsToUpdate, productsToUpdateDictionary);
+        InsertProducts(responseBuilder.ValidRequestsToInsert);
+        UpdateProducts(responseBuilder.ValidRequestsToUpdate, productsToUpdateDictionary);
 
         return responseEntries
-            .ToBatchUpsertResponse()
+            .ToBatchProductUpsertResponse()
             .ToResult();
     }
 

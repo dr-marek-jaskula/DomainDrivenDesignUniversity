@@ -44,7 +44,7 @@ Moreover, we use [Ulid](https://github.com/Cysharp/Ulid) NuGet Package that prov
 In order to create a EntityId in the desired format for the Shopway application, we utilize our custom **Shopway.SourceGenerator**, 
 which is also included in this repository. See **ReadMe.SourceGenerator.md** for details. 
 
-To use it, simply decorate an entity with the **[GenerateEntityId]** attribute.". The generated entity id is in the following form:
+To use it, simply decorate an entity with the **[GenerateEntityId]** attribute.". The generated entity id (and its JsonConverter) is in the following form:
 
 ```csharp
 //------------------------------------------------------------------------------
@@ -114,6 +114,25 @@ public readonly record struct ProductId : IEntityId<ProductId>
     public static bool operator <=(ProductId a, ProductId b) => a.CompareTo(b) <= 0;
 }
 
+public sealed class ProductIdJsonConverter : JsonConverter<ProductId>
+{
+    public override ProductId Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        var entityIdAsString = reader.GetString();
+
+        if (Ulid.TryParse(entityIdAsString, out var ulid))
+        {
+            return ProductId.Create(ulid);
+        }
+
+        throw new InvalidOperationException($"'{entityIdAsString}' cannot be parsed to Ulid");
+    }
+
+    public override void Write(Utf8JsonWriter writer, ProductId entityId, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(entityId.Value.ToString());
+    }
+}
 ```
 
 NOTE: the **using Shopway.Domain.Common.BaseTypes.Abstractions;** is hardcoded in the source generator, because from the Shopway application perspective it is
@@ -127,10 +146,10 @@ we would need to manually update all such ids manually. However, it has been lef
 ## EntityIds and EntityIdConverter
 
 EntityId is a strongly typed id that is a readonly record struct (due to the fact that ulid is a struct). 
-EntityIds are generated using my own custom source generator **Shopway.SourceGenerator**
+EntityIds AND its JsonConverters are generated using my own custom source generator **Shopway.SourceGenerator**.
 
-The EntityIdConverter handles the conversion from and to string, so we can have controllers parameters like "PersonId",
-because the conversion will be done behind the scenes. If conversion fails, the proper error message is returned.
+NOTE: It is important for serialization purposes that **Value** should have an `init` setter. Otherwise,
+**System.Text.Json** serializer would incorrectly serialize its value. This problem holds for all **reaonly record struct** types.
 
 To create a new id we use a static method "New". For instance, "ProductId.New()".
 

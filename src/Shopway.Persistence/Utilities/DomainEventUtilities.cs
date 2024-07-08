@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 
 namespace Shopway.Persistence.Utilities;
 
 public static class DomainEventUtilities
 {
-    public static string Serialize(this IDomainEvent domainEvent, TypeNameHandling typeNameHandling = TypeNameHandling.None)
+    public static string Serialize(this IDomainEvent domainEvent)
     {
-        return JsonConvert.SerializeObject(domainEvent, new JsonSerializerSettings
-        {
-            TypeNameHandling = typeNameHandling
-        });
+        var serialize = DomainEvent.SerializeCache[domainEvent.GetType()];
+        return serialize(domainEvent);
     }
 }

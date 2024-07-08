@@ -67,6 +67,16 @@ partial record class Error
     /// </summary>
     /// <param name="key">unique key of the entity that is already in the database</param>
     /// <returns>AlreadyExists error</returns>
+    public static Error AlreadyExists<TEntity>(string key)
+    {
+        return New($"{typeof(TEntity).Name}.{nameof(AlreadyExists)}", $"{typeof(TEntity).Name} '{key}' already exists.");
+    }
+
+    /// <summary>
+    /// Create an Error based on the unique key
+    /// </summary>
+    /// <param name="key">unique key of the entity that is already in the database</param>
+    /// <returns>AlreadyExists error</returns>
     public static Error AlreadyExists(string subject, string key)
     {
         return New($"{subject}.{nameof(AlreadyExists)}", $"{subject} '{key}' already exists.");

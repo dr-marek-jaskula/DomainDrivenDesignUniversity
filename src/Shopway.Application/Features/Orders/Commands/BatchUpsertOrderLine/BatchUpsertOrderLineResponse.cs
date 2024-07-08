@@ -5,7 +5,7 @@ namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
 public sealed record BatchUpsertOrderLineResponse : BatchResponseBase<OrderLineKey>
 {
-    public BatchUpsertOrderLineResponse(IList<BatchResponseEntry> entries)
+    public BatchUpsertOrderLineResponse(IList<BatchResponseEntry<OrderLineKey>> entries)
         : base(entries)
     {
     }
