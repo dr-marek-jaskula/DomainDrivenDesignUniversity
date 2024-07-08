@@ -5,6 +5,8 @@ namespace Shopway.Infrastructure.Outbox;
 
 public static class OutboxMessageUtilities
 {
+    private static readonly Type[] _domainTypes = Domain.AssemblyReference.Assembly.GetTypes();
+
     public static IDomainEvent? Deserialize(this OutboxMessage outboxMessage)
     {
         if (outboxMessage is null)
@@ -12,7 +14,7 @@ public static class OutboxMessageUtilities
             return null;
         }
 
-        var domainEventType = Domain.AssemblyReference.Assembly.GetTypes().FirstOrDefault(x => x.Name == outboxMessage.Type);
+        var domainEventType = Array.Find(_domainTypes, x => x.Name == outboxMessage.Type);
 
         if (domainEventType is null)
         {

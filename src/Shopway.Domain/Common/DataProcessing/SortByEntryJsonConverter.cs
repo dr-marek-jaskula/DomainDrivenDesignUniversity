@@ -28,7 +28,7 @@ public sealed class SortByEntryJsonConverter : JsonConverter<SortByEntry>
                 {
                     PropertyName = sortByEntryPropertyName!,
                     SortDirection = Enum.Parse<SortDirection>(sortByEntrySortDirectionAsString!),
-                    SortPriority = (int)sortByEntrySortPriority!,
+                    SortPriority = sortByEntrySortPriority ?? default,
                     ParsedFromString = false
                 };
             }

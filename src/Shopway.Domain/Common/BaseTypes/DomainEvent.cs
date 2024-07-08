@@ -14,7 +14,7 @@ namespace Shopway.Domain.Common.BaseTypes;
 /// <param name="Id">DomainEvent id</param>
 public abstract record class DomainEvent(Ulid Id) : IDomainEvent
 {
-    public static FrozenDictionary<Type, Func<IDomainEvent, string>> SerializeCache = Domain.AssemblyReference.Assembly
+    public static readonly FrozenDictionary<Type, Func<IDomainEvent, string>> SerializeCache = Domain.AssemblyReference.Assembly
         .GetTypes()
         .Where(x => x.Implements<IDomainEvent>())
         .Where(x => x.IsAbstract is false && x.IsInterface is false)
