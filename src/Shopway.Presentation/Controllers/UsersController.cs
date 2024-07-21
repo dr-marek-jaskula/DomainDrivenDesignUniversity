@@ -68,7 +68,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpPost("login/two-factor/first-step")]
-    [ProducesResponseType<AccessTokenResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> LoginTwoFactorFirstStep
     (
@@ -146,7 +146,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
 
     [HttpPost("[action]")]
     [Authorize]
-    [ProducesResponseType<Ok>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> Revoke(CancellationToken cancellationToken)
     {
@@ -200,6 +200,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
 
     [HttpPost("{username}/roles/{role}")]
     [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddRoleToUser
     (
@@ -218,6 +219,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
 
     [HttpDelete("{username}/roles/{role}")]
     [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemoveRoleFromUser
     (
@@ -272,7 +274,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
 
     [HttpPost("permissions")]
     [RequiredRoles(RoleName.Administrator)]
-    [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> CreatePermission
     (
@@ -289,7 +291,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
 
     [HttpDelete("permissions/{permission}")]
     [RequiredRoles(RoleName.Administrator)]
-    [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> DeletePermission
     (
