@@ -18,7 +18,6 @@ public sealed class ToptService : IToptService
 
     public bool VerifyCode(string secret, string code, int codeLength = 6, int periodInSeconds = 30)
     {
-
         var twoFactorAuthorization = new TwoFactorAuth(Issuer, codeLength, periodInSeconds, Algorithm.SHA1);
         return twoFactorAuthorization.VerifyCode(secret, code);
     }

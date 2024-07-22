@@ -1,5 +1,3 @@
 ﻿namespace Shopway.App.wwwroot;
 
-public interface IApiMarker
-{
-}
+public interface IApiMarker;

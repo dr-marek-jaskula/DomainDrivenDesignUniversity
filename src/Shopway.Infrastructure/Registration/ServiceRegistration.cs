@@ -18,7 +18,7 @@ internal static class ServiceRegistration
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserContextService, UserContextService>();
         services.AddScoped<IEmailSender, MimeKitEmailSender>();
-        services.AddScoped<IToptService, ToptService>();
+        services.AddSingleton<IToptService, ToptService>();
 
         //Validators
 
