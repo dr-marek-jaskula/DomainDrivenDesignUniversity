@@ -146,7 +146,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
 
     [HttpPost("[action]")]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<Ok>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> Revoke(CancellationToken cancellationToken)
     {
