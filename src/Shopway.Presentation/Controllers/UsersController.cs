@@ -200,6 +200,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
 
     [HttpPost("{username}/roles/{role}")]
     [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddRoleToUser
     (
@@ -218,6 +219,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
 
     [HttpDelete("{username}/roles/{role}")]
     [RequiredRoles(RoleName.Administrator)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemoveRoleFromUser
     (
