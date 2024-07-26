@@ -1,5 +1,4 @@
-﻿using Shopway.Domain.Common.BaseTypes;
-using Shopway.Domain.Common.BaseTypes.Abstractions;
+﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Utilities;
 using System.Reflection;
 
@@ -141,6 +140,13 @@ public static class ReflectionUtilities
         return assembly
             .GetTypes()
             .Where(type => type.GetInterfaces().Any(typeInterfaceMatch));
+    }
+
+    public static IEnumerable<Type> GetKeyTypes()
+    {
+        return Domain.AssemblyReference.Assembly
+            .GetTypesWithAnyMatchingInterface(i => i.Name.Contains(nameof(IUniqueKey)))
+            .Where(type => type.IsInterface is false);
     }
 
     public static bool IsGenericEnumerable(this Type type, out Type propertyType)
