@@ -3,6 +3,7 @@ using MediatR;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Utilities;
+using static Shopway.Application.Cache.ApplicationCache;
 
 namespace Shopway.Application.Pipelines;
 
@@ -34,7 +35,7 @@ public sealed class FluentValidationPipeline<TRequest, TResponse>(IEnumerable<IV
 
         if (errors.Length is not 0)
         {
-            return errors.CreateValidationResult<TResponse>();
+            return (TResponse)ValidationResultCache[typeof(TResponse)](errors);
         }
 
         return await next();

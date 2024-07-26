@@ -6,7 +6,7 @@ using Shopway.Domain.Products.DataProcessing.Sorting;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductsCursorDictionary;
 
-public sealed record ProductDictionaryCursorPageQuery(CursorPage Page) 
+public sealed record ProductDictionaryCursorPageQuery(CursorPage Page)
     : ICursorPageQuery<DictionaryResponseEntry<ProductKey>, ProductDictionaryStaticFilter, ProductDynamicSortBy, CursorPage>
 {
     public ProductDictionaryStaticFilter? Filter { get; init; }

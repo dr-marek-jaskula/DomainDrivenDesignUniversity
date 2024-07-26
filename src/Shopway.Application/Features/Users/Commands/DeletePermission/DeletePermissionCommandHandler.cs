@@ -15,15 +15,7 @@ internal sealed class DeletePermissionCommandHandler(IAuthorizationRepository au
 
     public async Task<IResult> Handle(DeletePermissionCommand command, CancellationToken cancellationToken)
     {
-        var parsePermissionNameResult = Enum.TryParse<PermissionName>(command.PermissionName, out var permissionName);
-
-        _validator
-            .If(parsePermissionNameResult is false, Error.InvalidArgument($"{command.PermissionName} is not a valid PermissionName"));
-
-        if (_validator.IsInvalid)
-        {
-            return _validator.Failure();
-        }
+        var permissionName = Enum.Parse<PermissionName>(command.PermissionName);
 
         var permission = await _authorizationRepository
             .GetPermissionAsync(permissionName, cancellationToken);

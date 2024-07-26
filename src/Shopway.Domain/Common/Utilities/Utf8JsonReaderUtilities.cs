@@ -28,7 +28,7 @@ public static class Utf8JsonReaderUtilities
     public static object GetCurrentPropertyValue(this ref Utf8JsonReader reader)
     {
         reader.Read();
-        
+
         object propertyValue = reader.TokenType switch
         {
             JsonTokenType.True => true,

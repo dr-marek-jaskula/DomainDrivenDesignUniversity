@@ -34,7 +34,7 @@ public abstract record class DomainEvent(Ulid Id) : IDomainEvent
 
     private static Func<IDomainEvent, string> CompileFunc(Type eventType, MethodInfo methodInfo)
     {
-        var domainEventParameter = Expression.Parameter(typeof(IDomainEvent),nameof(DomainEvent));
+        var domainEventParameter = Expression.Parameter(typeof(IDomainEvent), nameof(DomainEvent));
 
         var lambda = Expression.Lambda<Func<IDomainEvent, string>>
         (

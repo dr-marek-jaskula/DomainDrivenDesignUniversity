@@ -30,7 +30,8 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
     {
         if (command.Requests.IsNullOrEmpty())
         {
-            return Result.Failure<BatchUpsertOrderLineResponse>(Error.NullOrEmpty(nameof(BatchUpsertOrderLineCommand)));
+            return Error.NullOrEmpty(nameof(BatchUpsertOrderLineCommand))
+                .ToResult<BatchUpsertOrderLineResponse>();
         }
 
         var productIdsFromCommand = command.GetRequestsProductIds();
@@ -42,7 +43,8 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
 
         if (invalidProductIds.NotNullOrEmpty())
         {
-            return Result.Failure<BatchUpsertOrderLineResponse>(Error.InvalidReferences(invalidProductIds.GetUlids(), nameof(Product)));
+            return Error.InvalidReferences(invalidProductIds.GetUlids(), nameof(Product))
+                .ToResult<BatchUpsertOrderLineResponse>();
         }
 
         var orderHeader = await _orderHeaderRepository.GetByIdAsync(command.OrderHeaderId, cancellationToken);
@@ -63,7 +65,8 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
 
         if (insertResult.IsFailure)
         {
-            return Result.Failure<BatchUpsertOrderLineResponse>(insertResult.Error);
+            return insertResult.Error
+                .ToResult<BatchUpsertOrderLineResponse>();
         }
 
         UpdateOrderLines(responseBuilder.ValidRequestsToUpdate, dictionaryOfOrderLinesToUpdate);

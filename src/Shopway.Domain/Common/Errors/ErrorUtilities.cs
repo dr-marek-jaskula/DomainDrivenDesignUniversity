@@ -10,10 +10,11 @@ public static class ErrorUtilities
         return ValidationResult<TValue>.WithErrors([.. errors]);
     }
 
+    //Slow due to reflection usage. Prefer cache approach. See FluentValidationPipeline.CreateValidationResult method
     public static TResult CreateValidationResult<TResult>(this ICollection<Error> errors)
         where TResult : class, IResult
     {
-        if (typeof(TResult) == typeof(Result))
+        if (typeof(TResult) == typeof(Result) || typeof(TResult) == typeof(IResult))
         {
             return (ValidationResult.WithErrors(errors) as TResult)!;
         }

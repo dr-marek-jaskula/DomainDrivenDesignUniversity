@@ -80,6 +80,11 @@ public sealed partial record class Error(string Code, string Message)
         return Result.Failure<TValue>(this);
     }
 
+    public Result ToResult()
+    {
+        return Result.Failure(this);
+    }
+
     public string Serialize()
     {
         return $"{Code}{SerializationSeparator}{Message}";

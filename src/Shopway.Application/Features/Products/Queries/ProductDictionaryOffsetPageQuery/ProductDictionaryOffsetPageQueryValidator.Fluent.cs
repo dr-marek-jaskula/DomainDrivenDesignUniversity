@@ -6,7 +6,7 @@ using Shopway.Domain.Products.DataProcessing.Sorting;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductsOffsetDictionary;
 
-internal sealed class ProductDictionaryOffsetPageQueryValidator 
+internal sealed class ProductDictionaryOffsetPageQueryValidator
     : OffsetPageQueryValidator<ProductDictionaryOffsetPageQuery, DictionaryResponseEntry<ProductKey>, ProductDictionaryStaticFilter, ProductDynamicSortBy, OffsetPage>
 {
     public ProductDictionaryOffsetPageQueryValidator()

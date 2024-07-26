@@ -6,7 +6,7 @@ using Shopway.Domain.Products.DataProcessing.Sorting;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductsOffsetDictionary;
 
-public sealed record ProductDictionaryOffsetPageQuery(OffsetPage Page) 
+public sealed record ProductDictionaryOffsetPageQuery(OffsetPage Page)
     : IOffsetPageQuery<DictionaryResponseEntry<ProductKey>, ProductDictionaryStaticFilter, ProductDynamicSortBy, OffsetPage>
 {
     public ProductDictionaryStaticFilter? Filter { get; init; }
