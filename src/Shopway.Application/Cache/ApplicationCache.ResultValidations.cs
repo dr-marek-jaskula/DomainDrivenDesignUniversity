@@ -98,12 +98,12 @@ public static partial class ApplicationCache
             .MakeGenericType(result)
             .GetMethod(nameof(ValidationResult.WithErrors))!;
 
-        var validationDelegate = CompileFunc(validationMethod, result);
+        var validationDelegate = CompileFunc(validationMethod);
         var resultType = typeof(IResult<>).MakeGenericType(result);
         resultValidationsCache.TryAdd(resultType, validationDelegate);
     }
 
-    private static Func<Error[], IValidationResult> CompileFunc(MethodInfo methodInfo, Type type)
+    private static Func<Error[], IValidationResult> CompileFunc(MethodInfo methodInfo)
     {
         var parameter = Expression.Parameter(typeof(Error[]), Errors);
         var call = Expression.Call(null, methodInfo, parameter);
