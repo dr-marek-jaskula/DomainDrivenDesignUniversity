@@ -1,8 +1,8 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Utilities;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Orders;
+using Shopway.Application.Mappings;
 
 namespace Shopway.Application.Features.Orders.Commands.StartPaymentProcess;
 
@@ -19,7 +19,8 @@ internal sealed class StartPaymentProcessCommandHandler(IOrderHeaderRepository o
 
         if (sessionResult.IsFailure)
         {
-            return Result.Failure<StartPaymentProcessResponse>(sessionResult.Error);
+            return sessionResult.Error
+                .ToResult<StartPaymentProcessResponse>();
         }
 
         var payment = orderHeader.Payments.FirstOrDefault(x => x.Session is null)
@@ -27,7 +28,8 @@ internal sealed class StartPaymentProcessCommandHandler(IOrderHeaderRepository o
 
         payment.SetSession(sessionResult.Value);
 
-        return new StartPaymentProcessResponse(sessionResult.Value.Id, sessionResult.Value.Secret)
+        return sessionResult.Value
+            .ToResponse()
             .ToResult();
     }
 }

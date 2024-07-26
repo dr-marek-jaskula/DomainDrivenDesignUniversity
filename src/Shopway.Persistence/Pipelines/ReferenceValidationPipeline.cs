@@ -5,10 +5,13 @@ using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
+using Shopway.Domain.Common.Results.Abstractions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Persistence.Framework;
+using System.Collections.Frozen;
 using System.Linq.Dynamic.Core;
 using ZiggyCreatures.Caching.Fusion;
+using static Shopway.Application.Cache.ApplicationCache;
 using static Shopway.Domain.Common.Utilities.ReflectionUtilities;
 using static Shopway.Persistence.Cache.PersistenceCache;
 using static Shopway.Persistence.Utilities.QueryableUtilities;
@@ -39,7 +42,8 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse>(ShopwayDbCo
 
         if (errors.Length is not 0)
         {
-            return errors.CreateValidationResult<TResponse>();
+            return (TResponse)ValidationResultCache[typeof(TResponse)](errors);
+            //return CreateValidationResult<TResponse>(errors, ResultValidationsCache);
         }
 
         return await next();
@@ -81,5 +85,16 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse>(ShopwayDbCo
         }
 
         return Error.InvalidReference(entityId.Value, typeof(TEntity).Name);
+    }
+
+    private static TResult CreateValidationResult<TResult>(Error[] errors, FrozenDictionary<Type, Func<Error[], IValidationResult>> keyValuePairs)
+        where TResult : class, IResult
+    {
+        if (typeof(TResult) == typeof(Result) || typeof(TResult) == typeof(IResult))
+        {
+            return (ValidationResult.WithErrors(errors) as TResult)!;
+        }
+
+        return (TResult)keyValuePairs[typeof(TResult)](errors)!;
     }
 }

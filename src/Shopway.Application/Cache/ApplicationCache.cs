@@ -11,5 +11,6 @@ public static partial class ApplicationCache
         AllowedFilterPropertiesCache = CreateAllowedFilterPropertiesCache();
         AllowedFilterOperationsCache = CreateAllowedFilterOperationsCache();
         AllowedMappingPropertiesCache = CreateAllowedMappingPropertiesCache();
+        ValidationResultCache = CreateValidationResultCache();
     }
 }
