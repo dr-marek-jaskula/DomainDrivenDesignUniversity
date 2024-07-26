@@ -5,10 +5,8 @@ using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Common.Results.Abstractions;
 using Shopway.Domain.Common.Utilities;
 using Shopway.Persistence.Framework;
-using System.Collections.Frozen;
 using System.Linq.Dynamic.Core;
 using ZiggyCreatures.Caching.Fusion;
 using static Shopway.Application.Cache.ApplicationCache;
@@ -84,16 +82,5 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse>(ShopwayDbCo
         }
 
         return Error.InvalidReference(entityId.Value, typeof(TEntity).Name);
-    }
-
-    private static TResult CreateValidationResult<TResult>(Error[] errors, FrozenDictionary<Type, Func<Error[], IValidationResult>> keyValuePairs)
-        where TResult : class, IResult
-    {
-        if (typeof(TResult) == typeof(Result) || typeof(TResult) == typeof(IResult))
-        {
-            return (ValidationResult.WithErrors(errors) as TResult)!;
-        }
-
-        return (TResult)keyValuePairs[typeof(TResult)](errors)!;
     }
 }
