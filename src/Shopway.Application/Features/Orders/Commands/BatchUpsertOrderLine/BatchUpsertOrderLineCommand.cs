@@ -5,7 +5,7 @@ using static Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine.B
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
-public sealed record BatchUpsertOrderLineCommand(IList<BatchUpsertOrderLineRequest> Requests, OrderHeaderId OrderHeaderId) 
+public sealed record BatchUpsertOrderLineCommand(IList<BatchUpsertOrderLineRequest> Requests, OrderHeaderId OrderHeaderId)
     : IBatchCommand<BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse, OrderLineKey>
 {
     public IList<BatchUpsertOrderLineRequest> Requests { get; init; } = Requests;

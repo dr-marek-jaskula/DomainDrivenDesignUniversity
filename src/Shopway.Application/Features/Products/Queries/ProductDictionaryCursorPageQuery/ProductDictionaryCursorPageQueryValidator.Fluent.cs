@@ -6,7 +6,7 @@ using Shopway.Domain.Products.DataProcessing.Sorting;
 
 namespace Shopway.Application.Features.Products.Queries.GetProductsCursorDictionary;
 
-internal sealed class ProductDictionaryCursorPageQueryValidator 
+internal sealed class ProductDictionaryCursorPageQueryValidator
     : CursorPageQueryValidator<ProductDictionaryCursorPageQuery, DictionaryResponseEntry<ProductKey>, ProductDictionaryStaticFilter, ProductDynamicSortBy, CursorPage>
 {
     public ProductDictionaryCursorPageQueryValidator()

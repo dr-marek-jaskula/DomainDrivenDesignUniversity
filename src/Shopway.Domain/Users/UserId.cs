@@ -22,12 +22,12 @@ public readonly record struct UserId : IEntityId<UserId>, IParsable<UserId>
     {
         return new UserId(Ulid.NewUlid());
     }
-    
+
     public static UserId Create(Ulid id)
     {
         return new UserId(id);
     }
-    
+
     public static UserId Create(string id)
     {
         if (Ulid.TryParse(id, out var ulid))

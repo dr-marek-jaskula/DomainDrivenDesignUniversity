@@ -2,9 +2,7 @@
 using MediatR;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Common.Results.Abstractions;
 using Shopway.Domain.Common.Utilities;
-using System.Collections.Frozen;
 using static Shopway.Application.Cache.ApplicationCache;
 
 namespace Shopway.Application.Pipelines;
@@ -34,7 +32,7 @@ public sealed class FluentValidationPipeline<TRequest, TResponse>(IEnumerable<IV
             .Select(failure => Error.New(failure.PropertyName, failure.ErrorMessage))
             .Distinct()
             .ToArray();
-        
+
         if (errors.Length is not 0)
         {
             return (TResponse)ValidationResultCache[typeof(TResponse)](errors);

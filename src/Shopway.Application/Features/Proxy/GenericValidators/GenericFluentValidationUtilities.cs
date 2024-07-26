@@ -26,9 +26,9 @@ public static class GenericFluentValidationUtilities
     private const string AnyEndsWith = $"{Any}.{nameof(string.EndsWith)}";
     private readonly static IReadOnlyCollection<string> _allowedOperations = AsList
     (
-        nameof(string.Contains), 
+        nameof(string.Contains),
         Like,
-        nameof(string.StartsWith), 
+        nameof(string.StartsWith),
         nameof(string.EndsWith),
         AllLike,
         AnyLike,
