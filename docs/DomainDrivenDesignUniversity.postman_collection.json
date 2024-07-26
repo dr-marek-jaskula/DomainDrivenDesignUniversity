@@ -850,6 +850,35 @@
 					"response": []
 				},
 				{
+					"name": "QueryProducts.Dictionary.Cursor.Invalid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Page\" : {\r\n    \"Cursor\": \"00000000000000000000000000\",\r\n    \"PageSize\": 5\r\n  },\r\n  \"Filter\" : {\r\n    \"LikeQuery\" : \"Product\"\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        {\r\n            \"PropertyName\" : \"ProductNamec\",\r\n            \"SortDirection\": \"Ascending\",\r\n            \"SortPriority\" : 2\r\n        },\r\n        {\r\n            \"PropertyName\" : \"Price\",\r\n            \"SortDirection\": \"Descending\",\r\n            \"SortPriority\" : 1\r\n        }\r\n      ]\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/query/dictionary/cursor",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"query",
+								"dictionary",
+								"cursor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "UpdateProduct.Price.Invalid.NoApiKey",
 					"request": {
 						"method": "PUT",
@@ -1063,6 +1092,41 @@
 						},
 						{
 							"name": "BatchUpsertOrderLine.MultipleOrderLines.Valid",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-version",
+										"value": "0.1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"requests\": [\r\n    {\r\n        \"ProductId\": \"01H6EC1ADR3Z6FXPK75YEX1NTH\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.4\r\n    },\r\n    {\r\n        \"ProductId\": \"01H6EC1AENZK4AE1AATW0D1VKS\",\r\n        \"Amount\": 10,\r\n        \"Discount\": 0.3\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/OrderHeaders/batch/upsert/{{validOrderHeaderUlid}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"OrderHeaders",
+										"batch",
+										"upsert",
+										"{{validOrderHeaderUlid}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "BatchUpsertOrderLine.MultipleOrderLines.Invalid",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -2110,6 +2174,35 @@
 								"users",
 								"permissions",
 								"OrderHeader_Read_Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletePermission.Invalid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/permissions/INVALID_OrderHeader_Read_Customer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"permissions",
+								"INVALID_OrderHeader_Read_Customer"
 							]
 						}
 					},
@@ -3436,7 +3529,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Status\",\r\n            \"Operation\": \"Equal\",\r\n            \"Value\" : \"New\" \r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         \"TotalDiscount\"\r\n        ,{\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
+							"raw": "{\r\n  \"Entity\": \"OrderHeader\",\r\n  \"Page\" : {\r\n    \"PageNumber\": 1,\r\n    \"PageSize\": 15\r\n  },\r\n  \"filter\": {\r\n    \"filterProperties\": [\r\n      {\r\n        \"predicates\": [\r\n        {\r\n            \"PropertyName\" : \"Status\",\r\n            \"Operation\": \"Equal\",\r\n            \"Value\" : \"New\" \r\n        }\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  \"SortBy\" : {\r\n      \"SortProperties\" : [\r\n        \"Status\",\r\n        \"TotalDiscount:-1\"\r\n      ]\r\n  },\r\n  \"Mapping\" : {\r\n      \"MappingEntries\": [\r\n         \"Id\",\r\n         \"Status\",\r\n         \"SoftDeleted\",\r\n         \"TotalDiscount\",\r\n        {\r\n            \"From\" : \"OrderLines\",\r\n            \"Properties\": [\r\n                \"Amount\",\r\n                \"LineDiscount\"\r\n            ]\r\n        }\r\n      ]\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
