@@ -43,7 +43,6 @@ public sealed class ReferenceValidationPipeline<TRequest, TResponse>(ShopwayDbCo
         if (errors.Length is not 0)
         {
             return (TResponse)ValidationResultCache[typeof(TResponse)](errors);
-            //return CreateValidationResult<TResponse>(errors, ResultValidationsCache);
         }
 
         return await next();
