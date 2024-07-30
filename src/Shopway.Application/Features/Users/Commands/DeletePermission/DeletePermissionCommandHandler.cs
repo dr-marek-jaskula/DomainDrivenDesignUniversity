@@ -1,17 +1,14 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using Shopway.Domain.Common.Utilities;
 using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Commands.DeletePermission;
 
-internal sealed class DeletePermissionCommandHandler(IAuthorizationRepository authorizationRepository, IValidator validator)
+internal sealed class DeletePermissionCommandHandler(IAuthorizationRepository authorizationRepository)
     : ICommandHandler<DeletePermissionCommand>
 {
     private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
-    private readonly IValidator _validator = validator;
 
     public async Task<IResult> Handle(DeletePermissionCommand command, CancellationToken cancellationToken)
     {
@@ -20,12 +17,10 @@ internal sealed class DeletePermissionCommandHandler(IAuthorizationRepository au
         var permission = await _authorizationRepository
             .GetPermissionAsync(permissionName, cancellationToken);
 
-        _validator
-            .If(permission is null, Error.NotFound(nameof(Permission), command.PermissionName, $"{command.PermissionName} not found in the database"));
-
-        if (_validator.IsInvalid)
+        if (permission is null)
         {
-            return _validator.Failure();
+            return Error.NotFound(nameof(Permission), command.PermissionName, $"{command.PermissionName} not found in the database")
+                .ToResult();
         }
 
         await _authorizationRepository
