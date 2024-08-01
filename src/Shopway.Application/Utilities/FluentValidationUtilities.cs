@@ -171,9 +171,9 @@ public static class FluentValidationUtilities
     {
         return (IRuleBuilderOptions<TInput, string>)ruleBuilder.Custom((value, context) =>
         {
-            if (Enum.TryParse<TEnum>(value, out var _) is false)
+            if (int.TryParse(value, out var _) || Enum.TryParse<TEnum>(value, out var _) is false)
             {
-                context.AddFailure(Error.InvalidArgument($"{value} is not a valid {typeof(TEnum).Name}").Serialize());
+                context.AddFailure(Error.InvalidArgument($"'{value}' is not a valid {typeof(TEnum).Name}").Serialize());
             }
         });
     }
