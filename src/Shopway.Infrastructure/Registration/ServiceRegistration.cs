@@ -32,7 +32,7 @@ internal static class ServiceRegistration
 
         //Builders
 
-        services.RegisterBatchResponsBuilderGenericDelegae();
+        services.RegisterBatchResponsBuilderGenericDelegate();
         services.AddScoped(typeof(IBatchResponseBuilder<,>), typeof(BatchResponseBuilder<,>));
 
         //Scan for the rest
@@ -48,7 +48,7 @@ internal static class ServiceRegistration
         return services;
     }
 
-    private static void RegisterBatchResponsBuilderGenericDelegae(this IServiceCollection services)
+    private static void RegisterBatchResponsBuilderGenericDelegate(this IServiceCollection services)
     {
         var typesThatInjectCreateBatchBuilder = Shopway.Application.AssemblyReference.Assembly
             .GetTypesThatInjectGeneric(typeof(CreateBatchResponseBuilder<,>));
