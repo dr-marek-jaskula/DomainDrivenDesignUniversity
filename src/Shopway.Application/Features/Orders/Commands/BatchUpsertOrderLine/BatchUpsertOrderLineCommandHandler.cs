@@ -14,6 +14,7 @@ using static Shopway.Application.Mappings.OrderLineMapping;
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
+//Option with delegate `CreateBatchResponseBuilder`. If it does not suit Your coding style, use approach used in `BatchUpsertProductCommandHandler`
 internal sealed partial class BatchUpsertOrderLineCommandHandler
 (
     IOrderHeaderRepository orderHeaderRepository,
