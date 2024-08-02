@@ -14,16 +14,17 @@ using static Shopway.Application.Mappings.OrderLineMapping;
 
 namespace Shopway.Application.Features.Orders.Commands.BatchUpsertOrderLine;
 
+//Option with delegate `CreateBatchResponseBuilder`. If it does not suit Your coding style, use approach used in `BatchUpsertProductCommandHandler`
 internal sealed partial class BatchUpsertOrderLineCommandHandler
 (
-    IBatchResponseBuilderFactory responseBuilderFactory,
     IOrderHeaderRepository orderHeaderRepository,
-    IProductRepository productRepository
+    IProductRepository productRepository,
+    CreateBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> createBatchBuilder
 )
     : IBatchCommandHandler<BatchUpsertOrderLineCommand, BatchUpsertOrderLineRequest, BatchUpsertOrderLineResponse, OrderLineKey>
 {
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly IBatchResponseBuilderFactory _responseBuilderFactory = responseBuilderFactory;
+    private readonly CreateBatchResponseBuilder<BatchUpsertOrderLineRequest, OrderLineKey> _createBatchBuilder = createBatchBuilder;
     private readonly IOrderHeaderRepository _orderHeaderRepository = orderHeaderRepository;
 
     public async Task<IResult<BatchUpsertOrderLineResponse>> Handle(BatchUpsertOrderLineCommand command, CancellationToken cancellationToken)
@@ -51,7 +52,7 @@ internal sealed partial class BatchUpsertOrderLineCommandHandler
 
         var dictionaryOfOrderLinesToUpdate = GetDictionaryOfOrderLinesToUpdate(products, orderHeader);
 
-        var responseBuilder = _responseBuilderFactory.Create<BatchUpsertOrderLineRequest, OrderLineKey>(MapFromRequestToOrderLineKey);
+        var responseBuilder = _createBatchBuilder(MapFromRequestToOrderLineKey);
 
         //Perform validation: using the builder, trimmed command and queried productsToUpdate
         var responseEntries = command.Validate(responseBuilder, dictionaryOfOrderLinesToUpdate);

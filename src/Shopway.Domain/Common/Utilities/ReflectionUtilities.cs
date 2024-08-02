@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Domain.Common.Utilities;
+using System.Collections.Immutable;
 using System.Reflection;
 
 namespace Shopway.Domain.Common.Utilities;
@@ -133,6 +134,50 @@ public static class ReflectionUtilities
 
         return @interface is not null
             && @interface.IsGenericType;
+    }
+
+    public static ImmutableArray<Type> GetTypesThatInjectGeneric(this Assembly assembly, Type genericInjectedType)
+    {
+        if (genericInjectedType.IsGenericType is false)
+        {
+            throw new InvalidOperationException($"Type '{genericInjectedType} must be a generic type'");
+        }
+
+        return assembly.GetTypes()
+            .Where(t => t.IsValueType is false)
+            .Where(t => t.GetConstructors().Length is 1)
+            .Where(t => t.GetConstructors().Single()
+                .GetParameters()
+                .Where(x => x.ParameterType.IsGenericType && x.ParameterType.IsValueType is false)
+                .Any(x => x.ParameterType.IsAssignableToGenericType(genericInjectedType)))
+            .ToImmutableArray();
+    }
+
+    public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
+    {
+        var interfaceTypes = givenType.GetInterfaces();
+
+        foreach (var it in interfaceTypes)
+        {
+            if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
+            {
+                return true;
+            }
+        }
+
+        if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+        {
+            return true;
+        }
+
+        Type? baseType = givenType.BaseType;
+
+        if (baseType is null)
+        {
+            return false;
+        }
+
+        return IsAssignableToGenericType(baseType, genericType);
     }
 
     public static IEnumerable<Type> GetTypesWithAnyMatchingInterface(this Assembly assembly, Func<Type, bool> typeInterfaceMatch)

@@ -14,6 +14,7 @@ using static Shopway.Application.Utilities.CacheUtilities;
 
 namespace Shopway.Application.Features.Products.Commands.BatchUpsertProduct;
 
+//Option with delegate `IBatchResponseBuilderFactory`. See also option with delegate `CreateBatchResponseBuilder`
 public sealed partial class BatchUpsertProductCommandHandler
 (
     IBatchResponseBuilderFactory responseBuilderFactory,
