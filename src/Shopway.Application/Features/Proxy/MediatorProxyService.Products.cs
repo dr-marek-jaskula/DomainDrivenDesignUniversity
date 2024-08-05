@@ -9,11 +9,11 @@ namespace Shopway.Application.Features.Proxy;
 
 public partial class MediatorProxyService
 {
-    [GenericPageQueryStrategy(nameof(Product), typeof(OffsetPage))]
+    [GenericPageQueryStrategy(nameof(Product), nameof(OffsetPage))]
     private static GenericOffsetPageQuery<Product, ProductId> GenericQueryProductsUsingOffsetPage(GenericProxyPageQuery proxyQuery)
         => GenericOffsetPageQuery<Product, ProductId>.From(proxyQuery);
 
-    [GenericPageQueryStrategy(nameof(Product), typeof(CursorPage))]
+    [GenericPageQueryStrategy(nameof(Product), nameof(CursorPage))]
     private static GenericCursorPageQuery<Product, ProductId> GenericQueryProductsUsingCursorPage(GenericProxyPageQuery proxyQuery)
         => GenericCursorPageQuery<Product, ProductId>.From(proxyQuery);
 

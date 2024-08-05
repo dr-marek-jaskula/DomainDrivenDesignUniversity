@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Abstractions.CQRS;
+using Shopway.Application.Features.Proxy.GenericQuery;
 using Shopway.Application.Features.Proxy.GenericQuery.QueryById;
 using Shopway.Application.Features.Proxy.GenericQuery.QueryByKey;
 using Shopway.Application.Features.Proxy.PageQuery;
@@ -13,6 +14,7 @@ namespace Shopway.Application.Features.Proxy;
 
 public partial class MediatorProxyService : IMediatorProxyService
 {
+    //Not generic caches
     private static readonly FrozenDictionary<PageQueryDiscriminator, Func<ProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyPageQueryCache =
         StrategyCacheFactory<PageQueryDiscriminator, Func<ProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
             .CreateFor<MediatorProxyService, PageQueryStrategyAttribute>();
@@ -21,16 +23,17 @@ public partial class MediatorProxyService : IMediatorProxyService
         StrategyCacheFactory<QueryDiscriminator, Func<ProxyQuery, IQuery<DataTransferObjectResponse>>>
             .CreateFor<MediatorProxyService, QueryStrategyAttribute>();
 
-    private static readonly FrozenDictionary<GenericPageQueryDiscriminator, Func<GenericProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyGenericPageQueryCache =
-        StrategyCacheFactory<GenericPageQueryDiscriminator, Func<GenericProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
+    //Generic caches
+    private static readonly FrozenDictionary<string, Func<GenericProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyGenericPageQueryCache =
+        StrategyCacheFactory<Func<GenericProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
             .CreateFor<MediatorProxyService, GenericPageQueryStrategyAttribute>();
 
-    private static readonly FrozenDictionary<GenericByIdQueryDiscriminator, Func<GenericProxyByIdQuery, IQuery<DataTransferObjectResponse>>> _strategyGenericQueryByIdCache =
-        StrategyCacheFactory<GenericByIdQueryDiscriminator, Func<GenericProxyByIdQuery, IQuery<DataTransferObjectResponse>>>
+    private static readonly FrozenDictionary<string, Func<GenericProxyByIdQuery, IQuery<DataTransferObjectResponse>>> _strategyGenericQueryByIdCache =
+        StrategyCacheFactory<Func<GenericProxyByIdQuery, IQuery<DataTransferObjectResponse>>>
             .CreateFor<MediatorProxyService, GenericByIdQueryStrategyAttribute>();
 
-    private static readonly FrozenDictionary<GenericByKeyQueryDiscriminator, Func<GenericProxyByKeyQuery, IQuery<DataTransferObjectResponse>>> _strategyGenericQueryByKeyCache =
-        StrategyCacheFactory<GenericByKeyQueryDiscriminator, Func<GenericProxyByKeyQuery, IQuery<DataTransferObjectResponse>>>
+    private static readonly FrozenDictionary<string, Func<GenericProxyByKeyQuery, IQuery<DataTransferObjectResponse>>> _strategyGenericQueryByKeyCache =
+        StrategyCacheFactory<Func<GenericProxyByKeyQuery, IQuery<DataTransferObjectResponse>>>
             .CreateFor<MediatorProxyService, GenericByKeyQueryStrategyAttribute>();
 
     public Result<IQuery<DataTransferObjectResponse>> Map(ProxyQuery proxyQuery)
@@ -81,7 +84,7 @@ public partial class MediatorProxyService : IMediatorProxyService
         return Result.Success(@delegate!(proxyQuery));
     }
 
-    public Result<IQuery<DataTransferObjectResponse>> GenericMap(GenericProxyByIdQuery proxyQuery)
+    public Result<IQuery<DataTransferObjectResponse>> GenericMap(IProxyQueryWithMapping proxyQuery)
     {
         if (proxyQuery.Mapping is null || proxyQuery.Mapping.MappingEntries.IsEmpty())
         {
@@ -89,62 +92,50 @@ public partial class MediatorProxyService : IMediatorProxyService
                 .ToResult<IQuery<DataTransferObjectResponse>>();
         }
 
-        var strategyKey = new GenericByIdQueryDiscriminator(proxyQuery.Entity);
-
-        if (_strategyGenericQueryByIdCache.TryGetValue(strategyKey, out var @delegate) is false)
+        return proxyQuery switch
         {
-            return Error.InvalidOperation($"Entity '{proxyQuery.Entity}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericQueryByIdCache.Keys.Select(x => x.Entity))}]")
-                .ToResult<IQuery<DataTransferObjectResponse>>();
-        }
-
-        return Result.Success(@delegate!(proxyQuery));
-    }
-
-    public Result<IQuery<DataTransferObjectResponse>> GenericMap(GenericProxyByKeyQuery proxyQuery)
-    {
-        if (proxyQuery.Mapping is null || proxyQuery.Mapping.MappingEntries.IsEmpty())
-        {
-            return Error.InvalidArgument("Mapping must be provided.")
-                .ToResult<IQuery<DataTransferObjectResponse>>();
-        }
-
-        var strategyKey = new GenericByKeyQueryDiscriminator(proxyQuery.Entity);
-
-        if (_strategyGenericQueryByKeyCache.TryGetValue(strategyKey, out var @delegate) is false)
-        {
-            return Error.InvalidOperation($"Entity '{proxyQuery.Entity}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericQueryByKeyCache.Keys.Select(x => x.Entity))}]")
-                .ToResult<IQuery<DataTransferObjectResponse>>();
-        }
-
-        return Result.Success(@delegate!(proxyQuery));
+            GenericProxyByIdQuery queryById => GetResult(queryById, _strategyGenericQueryByIdCache),
+            GenericProxyByKeyQuery queryByKey => GetResult(queryByKey, _strategyGenericQueryByKeyCache),
+            _ => throw new NotSupportedException()
+        };
     }
 
     public Result<IQuery<PageResponse<DataTransferObjectResponse>>> GenericMap(GenericProxyPageQuery proxyQuery)
     {
-        var pageIsNotOffsetOrCursorPageResult = proxyQuery.Page.IsNotOffsetOrCursorPage();
+        var pageNameResult = proxyQuery.Page.GetPageName();
 
-        if (pageIsNotOffsetOrCursorPageResult.IsFailure)
+        if (pageNameResult.IsFailure)
         {
-            return pageIsNotOffsetOrCursorPageResult.Error
-                .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
+            return pageNameResult.Error.ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
         }
 
-        var pageIsBothOffsetAndCursorPageResult = proxyQuery.Page.IsBothOffsetAndCursorPage();
+        var key = GenericProxyPageQuery.GetCacheKey(pageNameResult.Value, proxyQuery.Entity);
 
-        if (pageIsBothOffsetAndCursorPageResult.IsFailure)
+        if (_strategyGenericPageQueryCache.TryGetValue(key, out var @delegate) is false)
         {
-            return pageIsBothOffsetAndCursorPageResult.Error
-                .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
-        }
-
-        var strategyKey = new GenericPageQueryDiscriminator(proxyQuery.Entity, proxyQuery.Page.GetPageType());
-
-        if (_strategyGenericPageQueryCache.TryGetValue(strategyKey, out var @delegate) is false)
-        {
-            return Error.InvalidOperation($"Entity '{proxyQuery.Entity}' with page type '{proxyQuery.Page.GetPageType().Name}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericPageQueryCache.Keys.Select(x => (x.Entity, x.PageType.Name)))}]")
+            return Error.InvalidOperation($"Entity '{proxyQuery.Entity}' with page type '{proxyQuery.Page.GetPageType().Name}' is not supported. Supported strategies: [{string.Join(", ", _strategyGenericPageQueryCache.Keys)}]")
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
         }
 
         return Result.Success(@delegate!(proxyQuery));
+    }
+
+    private static Result<IQuery<DataTransferObjectResponse>> GetResult<TQuery>(TQuery query, FrozenDictionary<string, Func<TQuery, IQuery<DataTransferObjectResponse>>> cache)
+        where TQuery : IProxyQueryWithMapping
+    {
+        var result = cache.TryGetValue(query.GetCacheKey(), out var @delegate);
+
+        if (result is false)
+        {
+            return Error.InvalidOperation($"Entity '{query.Entity}' is not supported. Supported strategies: [{string.Join(", ", cache.Keys.Select(GetSupportedEntities))}]")
+                .ToResult<IQuery<DataTransferObjectResponse>>();
+        }
+
+        return Result.Success(@delegate!(query));
+    }
+
+    private static string GetSupportedEntities(string input)
+    {
+        return input.Split('-').Last();
     }
 }

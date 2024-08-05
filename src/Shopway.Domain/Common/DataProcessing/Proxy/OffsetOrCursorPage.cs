@@ -23,6 +23,32 @@ public sealed class OffsetOrCursorPage : IPage
         return typeof(CursorPage);
     }
 
+    public Result<string> GetPageName()
+    {
+        var pageIsNotOffsetOrCursorPageResult = IsNotOffsetOrCursorPage();
+
+        if (pageIsNotOffsetOrCursorPageResult.IsFailure)
+        {
+            return pageIsNotOffsetOrCursorPageResult.Error
+                .ToResult<string>();
+        }
+
+        var pageIsBothOffsetAndCursorPageResult = IsBothOffsetAndCursorPage();
+
+        if (pageIsBothOffsetAndCursorPageResult.IsFailure)
+        {
+            return pageIsBothOffsetAndCursorPageResult.Error
+                .ToResult<string>();
+        }
+
+        if (Cursor is null)
+        {
+            return nameof(OffsetPage);
+        }
+
+        return nameof(CursorPage);
+    }
+
     public OffsetPage ToOffsetPage()
     {
         return new OffsetPage()
