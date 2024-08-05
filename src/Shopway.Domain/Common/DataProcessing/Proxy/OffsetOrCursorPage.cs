@@ -1,9 +1,14 @@
 ﻿using Shopway.Domain.Common.DataProcessing.Abstractions;
+using Shopway.Domain.Common.Errors;
+using Shopway.Domain.Common.Results;
 
 namespace Shopway.Domain.Common.DataProcessing.Proxy;
 
 public sealed class OffsetOrCursorPage : IPage
 {
+    private static readonly Result _notOffsetOrCursorPageFailureResult = Error.InvalidArgument("Cursor or PageNumber must be provided.").ToResult();
+    private static readonly Result _bothOffsetAndCursorPageFailureResult = Error.InvalidArgument("Both Cursor and PageNumber cannot be provided.").ToResult();
+
     public required int PageSize { get; init; }
     public int? PageNumber { get; init; }
     public Ulid? Cursor { get; init; }
@@ -36,13 +41,23 @@ public sealed class OffsetOrCursorPage : IPage
         };
     }
 
-    public bool PageIsNotOffsetOrCursorPage()
+    public Result IsNotOffsetOrCursorPage()
     {
-        return Cursor is null && PageNumber is null;
+        if (Cursor is null && PageNumber is null)
+        {
+            return _notOffsetOrCursorPageFailureResult;
+        }
+
+        return Result.Success();
     }
 
-    public bool PageIsBothOffsetAndCursorPage()
+    public Result IsBothOffsetAndCursorPage()
     {
-        return Cursor is not null && PageNumber is not null;
+        if (Cursor is not null && PageNumber is not null)
+        {
+            return _bothOffsetAndCursorPageFailureResult;
+        }
+
+        return Result.Success();
     }
 }

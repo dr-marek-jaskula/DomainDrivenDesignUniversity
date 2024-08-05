@@ -54,15 +54,19 @@ public partial class MediatorProxyService : IMediatorProxyService
 
     public Result<IQuery<PageResponse<DataTransferObjectResponse>>> Map(ProxyPageQuery proxyQuery)
     {
-        if (proxyQuery.Page.PageIsNotOffsetOrCursorPage())
+        var pageIsNotOffsetOrCursorPageResult = proxyQuery.Page.IsNotOffsetOrCursorPage();
+
+        if (pageIsNotOffsetOrCursorPageResult.IsFailure)
         {
-            return Error.InvalidArgument("Cursor or PageNumber must be provided.")
+            return pageIsNotOffsetOrCursorPageResult.Error
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
         }
 
-        if (proxyQuery.Page.PageIsBothOffsetAndCursorPage())
+        var pageIsBothOffsetAndCursorPageResult = proxyQuery.Page.IsBothOffsetAndCursorPage();
+
+        if (pageIsBothOffsetAndCursorPageResult.IsFailure)
         {
-            return Error.InvalidArgument("Both Cursor and PageNumber cannot be provided.")
+            return pageIsBothOffsetAndCursorPageResult.Error
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
         }
 
@@ -117,15 +121,19 @@ public partial class MediatorProxyService : IMediatorProxyService
 
     public Result<IQuery<PageResponse<DataTransferObjectResponse>>> GenericMap(GenericProxyPageQuery proxyQuery)
     {
-        if (proxyQuery.Page.PageIsNotOffsetOrCursorPage())
+        var pageIsNotOffsetOrCursorPageResult = proxyQuery.Page.IsNotOffsetOrCursorPage();
+
+        if (pageIsNotOffsetOrCursorPageResult.IsFailure)
         {
-            return Error.InvalidArgument("Cursor or PageNumber must be provided.")
+            return pageIsNotOffsetOrCursorPageResult.Error
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
         }
 
-        if (proxyQuery.Page.PageIsBothOffsetAndCursorPage())
+        var pageIsBothOffsetAndCursorPageResult = proxyQuery.Page.IsBothOffsetAndCursorPage();
+
+        if (pageIsBothOffsetAndCursorPageResult.IsFailure)
         {
-            return Error.InvalidArgument("Both Cursor and PageNumber cannot be provided.")
+            return pageIsBothOffsetAndCursorPageResult.Error
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
         }
 
