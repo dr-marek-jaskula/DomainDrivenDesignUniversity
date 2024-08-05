@@ -13,7 +13,7 @@ public static class ApplicationLayerRegistration
     {
         Console.WriteLine($"Seeding Application Layer Memory Cache: {ApplicationCache.SeedCache}");
 
-        services.AddScoped<IMediatorProxyService, MediatorProxyService>();
+        services.AddSingleton<IMediatorProxyService, MediatorProxyService>();
         services.AddSingleton<CreateOrderHeaderOpenTelemetry>();
 
         services

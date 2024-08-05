@@ -2077,6 +2077,43 @@
 					"response": []
 				},
 				{
+					"name": "CreatePermission.Valid2",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\t\"permissionName\": \"Review_Remove\",\r\n\t\t\"relatedAggregateRoot\": \"Product\",\r\n\t\t\"relatedEntity\": \"Review\",\r\n\t\t\"permissionType\": \"Read\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/permissions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "CreatePermission.AllProperties.Valid",
 					"request": {
 						"auth": {
