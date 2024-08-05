@@ -35,4 +35,14 @@ public sealed class OffsetOrCursorPage : IPage
             Cursor = (Ulid)Cursor!
         };
     }
+
+    public bool PageIsNotOffsetOrCursorPage()
+    {
+        return Cursor is null && PageNumber is null;
+    }
+
+    public bool PageIsBothOffsetAndCursorPage()
+    {
+        return Cursor is not null && PageNumber is not null;
+    }
 }

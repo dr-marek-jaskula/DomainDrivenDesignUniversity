@@ -1,10 +1,8 @@
-﻿using Shopway.Application.Abstractions;
-using Shopway.Application.Abstractions.CQRS;
+﻿using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features.Proxy.GenericQuery.QueryById;
 using Shopway.Application.Features.Proxy.GenericQuery.QueryByKey;
 using Shopway.Application.Features.Proxy.PageQuery;
 using Shopway.Application.Features.Proxy.Query;
-using Shopway.Domain.Common.DataProcessing.Proxy;
 using Shopway.Domain.Common.Discriminators;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
@@ -56,13 +54,13 @@ public partial class MediatorProxyService : IMediatorProxyService
 
     public Result<IQuery<PageResponse<DataTransferObjectResponse>>> Map(ProxyPageQuery proxyQuery)
     {
-        if (PageIsNotOffsetOrCursorPage(proxyQuery.Page))
+        if (proxyQuery.Page.PageIsNotOffsetOrCursorPage())
         {
             return Error.InvalidArgument("Cursor or PageNumber must be provided.")
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
         }
 
-        if (PageIsBothOffsetAndCursorPage(proxyQuery.Page))
+        if (proxyQuery.Page.PageIsBothOffsetAndCursorPage())
         {
             return Error.InvalidArgument("Both Cursor and PageNumber cannot be provided.")
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
@@ -119,13 +117,13 @@ public partial class MediatorProxyService : IMediatorProxyService
 
     public Result<IQuery<PageResponse<DataTransferObjectResponse>>> GenericMap(GenericProxyPageQuery proxyQuery)
     {
-        if (PageIsNotOffsetOrCursorPage(proxyQuery.Page))
+        if (proxyQuery.Page.PageIsNotOffsetOrCursorPage())
         {
             return Error.InvalidArgument("Cursor or PageNumber must be provided.")
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
         }
 
-        if (PageIsBothOffsetAndCursorPage(proxyQuery.Page))
+        if (proxyQuery.Page.PageIsBothOffsetAndCursorPage())
         {
             return Error.InvalidArgument("Both Cursor and PageNumber cannot be provided.")
                 .ToResult<IQuery<PageResponse<DataTransferObjectResponse>>>();
@@ -140,15 +138,5 @@ public partial class MediatorProxyService : IMediatorProxyService
         }
 
         return Result.Success(@delegate!(proxyQuery));
-    }
-
-    private static bool PageIsNotOffsetOrCursorPage(OffsetOrCursorPage offsetOrCursorPage)
-    {
-        return offsetOrCursorPage.Cursor is null && offsetOrCursorPage.PageNumber is null;
-    }
-
-    private static bool PageIsBothOffsetAndCursorPage(OffsetOrCursorPage offsetOrCursorPage)
-    {
-        return offsetOrCursorPage.Cursor is not null && offsetOrCursorPage.PageNumber is not null;
     }
 }
