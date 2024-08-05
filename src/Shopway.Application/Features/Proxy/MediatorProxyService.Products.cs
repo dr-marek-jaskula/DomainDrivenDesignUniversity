@@ -1,4 +1,5 @@
 ﻿using Shopway.Application.Features.Proxy.GenericPageQuery;
+using Shopway.Application.Features.Proxy.GenericQuery;
 using Shopway.Application.Features.Proxy.GenericQuery.QueryById;
 using Shopway.Application.Features.Proxy.GenericQuery.QueryByKey;
 using Shopway.Domain.Common.DataProcessing;

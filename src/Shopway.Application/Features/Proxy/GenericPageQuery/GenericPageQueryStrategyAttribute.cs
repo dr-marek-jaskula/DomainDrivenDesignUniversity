@@ -15,6 +15,8 @@ public sealed class GenericPageQueryStrategyAttribute(string entity, string page
 }
 
 //Option with discriminators
+//public sealed record class GenericPageQueryDiscriminator(string Entity, Type PageType) : Discriminator;
+
 //[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 //public sealed class GenericPageQueryStrategyAttribute(string entity, Type pageType) : StrategyAttribute<GenericPageQueryDiscriminator>
 //{

@@ -1,6 +1,6 @@
 ﻿using Shopway.Domain.Common.DataProcessing.Proxy;
 
-namespace Shopway.Application.Features.Proxy.GenericQuery.QueryByKey;
+namespace Shopway.Application.Features.Proxy.GenericQuery;
 
 public sealed record GenericProxyByKeyQuery
 (

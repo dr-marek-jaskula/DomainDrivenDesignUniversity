@@ -1,5 +1,5 @@
 ﻿using Shopway.Application.Features.Proxy;
-using Shopway.Application.Features.Proxy.GenericQuery.QueryByKey;
+using Shopway.Application.Features.Proxy.GenericQuery;
 using Shopway.Domain.Common.DataProcessing;
 using Shopway.Domain.Common.Utilities;
 

@@ -14,6 +14,8 @@ public sealed class GenericByIdQueryStrategyAttribute(string entity) : StrategyA
 }
 
 //Option with discriminators
+//public sealed record class GenericByIdQueryDiscriminator(string Entity) : Discriminator;
+
 //[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 //public sealed class GenericByIdQueryStrategyAttribute(string entity) : StrategyAttribute<GenericByIdQueryDiscriminator>
 //{

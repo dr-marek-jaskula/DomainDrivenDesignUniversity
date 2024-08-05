@@ -14,6 +14,8 @@ public sealed class GenericByKeyQueryStrategyAttribute(string entity) : Strategy
 }
 
 //Option with discriminators
+//public sealed record class GenericByKeyQueryDiscriminator(string Entity) : Discriminator;
+
 //[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 //public sealed class GenericByKeyQueryStrategyAttribute(string entity) : StrategyAttribute<GenericByKeyQueryDiscriminator>
 //{

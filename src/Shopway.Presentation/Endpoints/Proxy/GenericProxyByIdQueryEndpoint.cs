@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
-using Shopway.Application.Features.Proxy;
+using Shopway.Application.Features.Proxy.GenericQuery;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Presentation.Authentication.GenericProxy;
 using Shopway.Presentation.Utilities;
