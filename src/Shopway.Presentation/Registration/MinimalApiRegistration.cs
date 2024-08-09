@@ -2,6 +2,7 @@
 using Shopway.Presentation;
 using Shopway.Presentation.Abstractions;
 using System.Reflection;
+using Shopway.Domain.Common.Utilities;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -65,10 +66,5 @@ public static class MinimalApiRegistration
     private static MethodInfo GetEndpointRegisterMethod(this TypeInfo endpointType)
     {
         return endpointType.GetStaticMethod(nameof(IEndpoint.RegisterEndpoint));
-    }
-
-    private static MethodInfo GetStaticMethod(this Type type, string name)
-    {
-        return type.GetMethod(name, BindingFlags.Static | BindingFlags.Public)!;
     }
 }
