@@ -10,14 +10,14 @@ using Shopway.Presentation.Authentication;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication;
 using Shopway.Presentation.Utilities;
 
-namespace Shopway.Presentation.Endpoints.Products;
+namespace Shopway.Presentation.FastEndpoints.Products;
 
-public sealed class GetProductByIdEndpoint(ISender sender)
+public sealed class GetProductByIdFastEndpoint(ISender sender)
     : EndpointWithoutRequest<Results<Ok<ProductResponse>, ProblemHttpResult>>
 {
     private readonly ISender _sender = sender;
 
-    private const string _name = nameof(GetProductByIdEndpoint);
+    private const string _name = nameof(GetProductByIdFastEndpoint);
     private const string _summary = "Gets product by specified id";
     private const string _description = "This documentation is for tutorial purpose - to demonstrate how to provide the OpenApi documentation";
 

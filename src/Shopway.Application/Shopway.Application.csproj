@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-    <PackageReference Include="MediatR" Version="12.3.0" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="1.2.0" />
+    <PackageReference Include="MediatR" Version="12.4.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="1.3.0" />
   </ItemGroup>
 
   <ItemGroup>

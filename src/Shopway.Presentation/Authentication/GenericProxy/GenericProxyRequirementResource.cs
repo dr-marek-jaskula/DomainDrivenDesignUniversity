@@ -7,13 +7,7 @@ namespace Shopway.Presentation.Authentication.GenericProxy;
 
 public sealed record GenericProxyRequirementResource(string Entity, List<string> RequestedProperties)
 {
-    public static GenericProxyRequirementResource From(GenericProxyByKeyQuery query)
-    {
-        var allProperties = GetAllPropertiesWithHierarchy(query.Mapping?.MappingEntries);
-        return new GenericProxyRequirementResource(query.Entity, allProperties);
-    }
-
-    public static GenericProxyRequirementResource From(GenericProxyByIdQuery query)
+    public static GenericProxyRequirementResource From(IProxyQueryWithMapping query)
     {
         var allProperties = GetAllPropertiesWithHierarchy(query.Mapping?.MappingEntries);
         return new GenericProxyRequirementResource(query.Entity, allProperties);

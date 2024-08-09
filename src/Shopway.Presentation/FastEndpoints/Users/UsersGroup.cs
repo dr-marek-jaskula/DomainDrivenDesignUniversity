@@ -1,16 +1,16 @@
 ﻿using FastEndpoints;
 using Microsoft.AspNetCore.Http;
 
-namespace Shopway.Presentation.Endpoints.Proxy;
+namespace Shopway.Presentation.FastEndpoints.Users;
 
-public sealed class ProxyGroup : Group
+public sealed class UsersGroup : Group
 {
-    private const string Prefix = "Proxy";
-    private const string Tag = $"{Prefix}.Endpoints";
+    private const string Group = "Users";
+    private const string Tag = $"{Group}.FastEndpoints";
 
-    public ProxyGroup()
+    public UsersGroup()
     {
-        Configure(Prefix, endpointDefinition =>
+        Configure(Group, endpointDefinition =>
         {
             endpointDefinition
                 .AllowAnonymous();

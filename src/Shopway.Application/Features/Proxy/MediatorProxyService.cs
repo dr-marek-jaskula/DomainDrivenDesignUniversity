@@ -96,7 +96,8 @@ public partial class MediatorProxyService : IMediatorProxyService
         {
             GenericProxyByIdQuery queryById => GetResult(queryById, _strategyGenericQueryByIdCache),
             GenericProxyByKeyQuery queryByKey => GetResult(queryByKey, _strategyGenericQueryByKeyCache),
-            _ => throw new NotSupportedException()
+            _ => Error.InvalidArgument($"Not supported query type: '{proxyQuery.GetType()}'")
+                    .ToResult<IQuery<DataTransferObjectResponse>>()
         };
     }
 

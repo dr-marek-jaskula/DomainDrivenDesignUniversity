@@ -1,16 +1,16 @@
 ﻿using FastEndpoints;
 using Microsoft.AspNetCore.Http;
 
-namespace Shopway.Presentation.Endpoints.Orders;
+namespace Shopway.Presentation.FastEndpoints.Orders;
 
 public sealed class OrderHeadersGroup : Group
 {
-    private const string Prefix = "OrderHeaders";
-    private const string Tag = $"{Prefix}.Endpoints";
+    private const string Group = "OrderHeaders";
+    private const string Tag = $"{Group}.FastEndpoints";
 
     public OrderHeadersGroup()
     {
-        Configure(Prefix, endpointDefinition =>
+        Configure(Group, endpointDefinition =>
         {
             endpointDefinition
                 .Description(builder => builder

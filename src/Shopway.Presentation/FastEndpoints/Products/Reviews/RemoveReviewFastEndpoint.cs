@@ -9,7 +9,7 @@ using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 using Shopway.Presentation.Utilities;
 
-namespace Shopway.Presentation.Endpoints.Products.Reviews;
+namespace Shopway.Presentation.FastEndpoints.Products.Reviews;
 
 public class RemoveReviewRequest
 {
@@ -17,12 +17,12 @@ public class RemoveReviewRequest
     public Ulid ReviewId { get; set; }
 }
 
-public sealed class RemoveReviewEndpoint(ISender sender)
+public sealed class RemoveReviewFastEndpoint(ISender sender)
     : Endpoint<RemoveReviewRequest, Results<Ok<RemoveReviewResponse>, ProblemHttpResult>>
 {
     private readonly ISender _sender = sender;
 
-    private const string _name = nameof(RemoveReviewEndpoint);
+    private const string _name = nameof(RemoveReviewFastEndpoint);
     private const string _summary = "Remove review from product";
     private const string _description = "This documentation is for tutorial purpose - to demonstrate how to provide the OpenApi documentation";
 

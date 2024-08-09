@@ -105,6 +105,11 @@ public static class ReflectionUtilities
         return methodFormBaseType.MakeGenericMethod(genericType);
     }
 
+    public static MethodInfo GetStaticMethod(this Type type, string name)
+    {
+        return type.GetMethod(name, BindingFlags.Static | BindingFlags.Public)!;
+    }
+
     public static IEntityId GetEntityIdFromEntity(this IEntity baseType)
     {
         return (IEntityId)baseType

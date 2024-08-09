@@ -1,9 +1,9 @@
 ﻿using RestSharp;
 using Shopway.Domain.EntityKeys;
+using Shopway.Domain.Products.ValueObjects;
 using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using Shopway.Tests.Integration.Utilities;
 using static Shopway.Application.Features.BatchEntryStatus;
-using Shopway.Domain.Products.ValueObjects;
 using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities.ProductBatchUpsertCommandUtility;
 using static System.Net.HttpStatusCode;
@@ -18,7 +18,7 @@ public partial class ProductsControllerTests
     {
         //Arrange
         var batchCommand = CreateProductBatchUpsertCommand();
-        var request = PostRequest($"batch/upsert", batchCommand);
+        var request = PostRequest("batch/upsert", batchCommand);
 
         //Act
         var response = await _restClient!.PostAsync(request);
@@ -37,11 +37,11 @@ public partial class ProductsControllerTests
         //Arrange
         var batchCommand = CreateProductBatchUpsertCommand
         (
-            CreateProductBatchUpsertRequest(ProductKey.Create("firstTest+=.,ProductfirstTestProductfirstTestProductfirstTestProductfirstTestProduct", "1,0"), 100m, "pcs"),
+            CreateProductBatchUpsertRequest(ProductKey.Create("firstTest+=.,ProductfirstTestProductfirstTestProductfirstTestProductfirstTestProduct", Product.Revision.One), Product.Price.Expensive, Product.UomCode.Pcs),
             CreateProductBatchUpsertRequest()
         );
 
-        var request = PostRequest($"batch/upsert", batchCommand);
+        var request = PostRequest("batch/upsert", batchCommand);
 
         //Act
         var response = await _restClient!.ExecutePostAsync(request);
@@ -59,9 +59,9 @@ public partial class ProductsControllerTests
     public async Task Batch_Upsert_ShouldReturnProblemDetailsWithTwoErrors_WhenProductNameAndRevisionFromProductKeyAreNull()
     {
         //Arrange
-        var batchCommand = CreateProductBatchUpsertCommandWithSingleRequest(new ProductKey(), 100m, "pcs");
+        var batchCommand = CreateProductBatchUpsertCommandWithSingleRequest(new ProductKey(), Product.Price.Expensive, Product.UomCode.Pcs);
 
-        var request = PostRequest($"batch/upsert", batchCommand);
+        var request = PostRequest("batch/upsert", batchCommand);
 
         //Act
         var response = await _restClient!.ExecutePostAsync(request);

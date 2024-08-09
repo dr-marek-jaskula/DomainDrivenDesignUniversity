@@ -21,14 +21,14 @@ public static class ProductBatchUpsertCommandUtility
 
     public static BatchUpsertProductCommand CreateProductBatchUpsertCommandWithSingleRequest
     (
-        ProductKey? ProductKey = null,
-        decimal? Price = null,
-        string? UomCode = null
+        ProductKey? productKey = null,
+        decimal? price = null,
+        string? uomCode = null
     )
     {
-        if (ProductKey is not null && Price is not null && UomCode is not null)
+        if (productKey is not null && price is not null && uomCode is not null)
         {
-            return new BatchUpsertProductCommand([new ProductBatchUpsertRequest((ProductKey)ProductKey, (decimal)Price, UomCode)]);
+            return new BatchUpsertProductCommand([new ProductBatchUpsertRequest((ProductKey)productKey, (decimal)price, uomCode)]);
         }
 
         return new BatchUpsertProductCommand([Request]);
@@ -36,14 +36,14 @@ public static class ProductBatchUpsertCommandUtility
 
     public static ProductBatchUpsertRequest CreateProductBatchUpsertRequest
     (
-        ProductKey? ProductKey = null,
-        decimal? Price = null,
-        string? UomCode = null
+        ProductKey? productKey = null,
+        decimal? price = null,
+        string? uomCode = null
     )
     {
-        if (ProductKey is not null && Price is not null && UomCode is not null)
+        if (productKey is not null && price is not null && uomCode is not null)
         {
-            return new ProductBatchUpsertRequest((ProductKey)ProductKey, (decimal)Price, UomCode);
+            return new ProductBatchUpsertRequest((ProductKey)productKey, (decimal)price, uomCode);
         }
 
         return Request;

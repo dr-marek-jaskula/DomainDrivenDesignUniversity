@@ -35,6 +35,9 @@ public static class PresentationLayerRegistration
             .UseCorsPolicy()
             .UseEndpoints();
 
+        ((WebApplication)app)
+            .UseMinimalApiEndpoints();
+
         return app;
     }
 }

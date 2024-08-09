@@ -16,4 +16,29 @@ public static class ObjectUtilities
 
         return false;
     }
+
+    public static bool NotNullOrEmptyString(this object? value)
+    {
+        return IsNullOrEmptyString(value) is false;
+    }
+
+    public static bool IsNullOrEmptyObject(this object? value)
+    {
+        if (value is null)
+        {
+            return true;
+        }
+
+        if (value is System.DBNull)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool NotNullOrEmptyObject(this object? value)
+    {
+        return IsNullOrEmptyObject(value) is false;
+    }
 }

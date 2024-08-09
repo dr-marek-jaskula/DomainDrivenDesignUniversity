@@ -1,45 +1,47 @@
-﻿using FastEndpoints;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Shopway.Application.Abstractions.CQRS;
 using Shopway.Application.Features;
 using Shopway.Application.Features.Proxy.GenericQuery;
 using Shopway.Domain.Common.BaseTypes;
+using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.GenericProxy;
 using Shopway.Presentation.Utilities;
+using System.Security.Claims;
 
-namespace Shopway.Presentation.Endpoints.Proxy;
+namespace Shopway.Presentation.MinimalEndpoints.Proxy;
 
-public sealed class GenericProxyByIdQueryEndpoint(ISender sender, IMediatorProxyService genericMappingService, IAuthorizationService authorizationService)
-    : Endpoint<GenericProxyByIdQuery, Results<Ok<DataTransferObjectResponse>, ProblemHttpResult, ForbidHttpResult>>
+public sealed class GenericProxyByIdQueryMinimalEndpoint : IEndpoint<ProxyGroup>
 {
-    private readonly ISender _sender = sender;
-    private readonly IMediatorProxyService _genericMappingService = genericMappingService;
-    private readonly IAuthorizationService _authorizationService = authorizationService;
-
-    private const string _name = nameof(GenericProxyByIdQueryEndpoint);
+    private const string _name = nameof(GenericProxyByIdQueryMinimalEndpoint);
     private const string _summary = "Gets entity by specified id";
     private const string _description = "Generic proxy query that allows to specify entity type and its desired properties";
 
-    public override void Configure()
+    public static void RegisterEndpoint(IEndpointRouteBuilder app)
     {
-        Post("query/id/generic");
-
-        Group<ProxyGroup>();
-
-        Options(builder => builder
+        app.MapPost("/query/id/generic", GenericProxyByIdQuery)
             .WithName(_name)
             .WithDescription(_description)
             .WithSummary(_summary)
-            .WithVersion(VersionGroup.Proxy, 2, 0));
+            .WithVersion(VersionGroup.Proxy, 2, 0);
     }
 
-    public override async Task<Results<Ok<DataTransferObjectResponse>, ProblemHttpResult, ForbidHttpResult>> ExecuteAsync(GenericProxyByIdQuery query, CancellationToken cancellationToken)
+    private static async Task<Results<Ok<DataTransferObjectResponse>, ProblemHttpResult, ForbidHttpResult>> GenericProxyByIdQuery
+    (
+        [FromBody] GenericProxyByIdQuery query,
+        ISender sender,
+        ClaimsPrincipal user,
+        IMediatorProxyService genericMappingService,
+        IAuthorizationService authorizationService,
+        CancellationToken cancellationToken
+    )
     {
-        var queryResult = _genericMappingService.GenericMap(query);
+        var queryResult = genericMappingService.GenericMap(query);
 
         if (queryResult!.IsFailure)
         {
@@ -54,15 +56,15 @@ public sealed class GenericProxyByIdQueryEndpoint(ISender sender, IMediatorProxy
             return propertiesCheck.ToProblemHttpResult();
         }
 
-        var authorizationResult = await _authorizationService
-            .AuthorizeAsync(User, resourse, GenericProxyPropertiesRequirement.PolicyName);
+        var authorizationResult = await authorizationService
+            .AuthorizeAsync(user, resourse, GenericProxyPropertiesRequirement.PolicyName);
 
         if (authorizationResult.Succeeded is false)
         {
             return authorizationResult.ToForbidResult();
         }
 
-        var result = await _sender.Send(queryResult.Value, cancellationToken);
+        var result = await sender.Send(queryResult.Value, cancellationToken);
 
         return result!.IsFailure
             ? result.ToProblemHttpResult()

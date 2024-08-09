@@ -8,6 +8,6 @@ public static class CreateProductCommandUtility
 {
     public static CreateProductCommand CreateProductCommand(ProductKey key, decimal? price = null, string? uomCode = null)
     {
-        return new CreateProductCommand(key, price ?? Price, uomCode ?? UomCode);
+        return new CreateProductCommand(key, price ?? Price.Cheap, uomCode ?? UomCode.Kg);
     }
 }

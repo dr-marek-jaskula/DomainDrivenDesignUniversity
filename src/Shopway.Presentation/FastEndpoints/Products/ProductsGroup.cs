@@ -1,16 +1,16 @@
 ﻿using FastEndpoints;
 using Microsoft.AspNetCore.Http;
 
-namespace Shopway.Presentation.Endpoints.Products;
+namespace Shopway.Presentation.FastEndpoints.Products;
 
 public sealed class ProductsGroup : Group
 {
-    private const string Prefix = "Products";
-    private const string Tag = $"{Prefix}.Endpoints";
+    private const string Group = "Products";
+    private const string Tag = $"{Group}.FastEndpoints";
 
     public ProductsGroup()
     {
-        Configure(Prefix, endpointDefinition =>
+        Configure(Group, endpointDefinition =>
         {
             endpointDefinition
                 .Description(builder => builder

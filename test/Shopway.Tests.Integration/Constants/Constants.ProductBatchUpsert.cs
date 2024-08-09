@@ -1,5 +1,6 @@
 ﻿using Shopway.Domain.EntityKeys;
 using static Shopway.Application.Features.Products.Commands.BatchUpsertProduct.BatchUpsertProductCommand;
+using static Shopway.Tests.Integration.Constants.Constants.Product;
 
 namespace Shopway.Tests.Integration.Constants;
 
@@ -9,11 +10,11 @@ public static partial class Constants
     {
         public static List<ProductBatchUpsertRequest> Requests =
         [
-            new ProductBatchUpsertRequest(ProductKey.Create("firstTestProduct", "1,0"), 100m, "pcs"),
-            new ProductBatchUpsertRequest(ProductKey.Create("secondTestProduct", "2,0"), 50m, "kg"),
-            new ProductBatchUpsertRequest(ProductKey.Create("thirdTestProduct", "3,0"), 10m, "pcs")
+            new ProductBatchUpsertRequest(ProductKey.Create(Name.FirstTestProduct, Revision.One), Price.Expensive, UomCode.Pcs),
+            new ProductBatchUpsertRequest(ProductKey.Create(Name.SecondTestProduct, Revision.Two), Price.Balanced, UomCode.Kg),
+            new ProductBatchUpsertRequest(ProductKey.Create(Name.ThirdTestProduct, Revision.Three), Price.Cheap, UomCode.Pcs)
         ];
 
-        public static ProductBatchUpsertRequest Request = new ProductBatchUpsertRequest(ProductKey.Create("firstTestProduct", "1,0"), 100m, "pcs");
+        public static ProductBatchUpsertRequest Request = new(ProductKey.Create(Name.FirstTestProduct, Revision.One), Price.Expensive, UomCode.Kg);
     }
 }
