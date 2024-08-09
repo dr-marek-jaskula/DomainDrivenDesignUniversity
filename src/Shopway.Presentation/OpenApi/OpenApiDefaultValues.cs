@@ -46,7 +46,7 @@ public sealed class OpenApiDefaultValues : IOperationFilter
 
             parameter.Description ??= description.ModelMetadata?.Description;
 
-            if (parameter.Schema.Default is null && description.DefaultValue.NotNullOrEmptyObject()) //TODO: Check it?
+            if (parameter.Schema.Default is null && description.DefaultValue.NotNullOrEmptyObject())
             {
                 if (description.ModelMetadata is not null)
                 {
