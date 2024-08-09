@@ -13,7 +13,6 @@ public sealed class ProxyGroup : IEndpointGroup
     public static IEndpointRouteBuilder RegisterEndpointGroup(IEndpointRouteBuilder app)
     {
         return app.MapGroup($"/minimal/{Group}")
-            .WithOpenApi()
             .AllowAnonymous()
             .WithTags(Tag);
     }

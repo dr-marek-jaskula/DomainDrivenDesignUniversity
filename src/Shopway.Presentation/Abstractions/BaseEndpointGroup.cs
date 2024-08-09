@@ -14,7 +14,6 @@ public sealed class BaseEndpointGroup : IEndpointGroup
     public static IEndpointRouteBuilder RegisterEndpointGroup(IEndpointRouteBuilder app)
     {
         return app.MapGroup("/api")
-            .WithMetadata(new ProducesResponseTypeAttribute<ProblemDetails>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson))
-            .WithOpenApi();
+            .WithMetadata(new ProducesResponseTypeAttribute<ProblemDetails>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson));
     }
 }

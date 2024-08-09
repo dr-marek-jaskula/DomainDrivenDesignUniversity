@@ -14,7 +14,6 @@ public sealed class UsersGroup : IEndpointGroup
     {
         return app.MapGroup($"/minimal/{Group}")
             .AllowAnonymous()
-            .WithOpenApi()
             .WithTags(Tag);
     }
 }

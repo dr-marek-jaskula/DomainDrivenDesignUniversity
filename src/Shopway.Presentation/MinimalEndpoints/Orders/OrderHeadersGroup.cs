@@ -13,7 +13,6 @@ public sealed class OrderHeadersGroup : IEndpointGroup
     public static IEndpointRouteBuilder RegisterEndpointGroup(IEndpointRouteBuilder app)
     {
         return app.MapGroup($"/minimal/{Group}")
-            .WithOpenApi()
             .WithTags(Tag);
     }
 }
