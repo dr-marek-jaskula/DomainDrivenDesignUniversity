@@ -243,6 +243,34 @@
 					"response": []
 				},
 				{
+					"name": "BatchUpsertProduct.MultipleProducts.Invalid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"requests\": [\r\n    {\r\n      \"productKey\" : {\r\n          \"productName\": \"firstTest+=.,ProductfirstTestProductfirstTestProductfirstTestProductfirstTestProduct\",\r\n          \"revision\": \"2.0\"\r\n      },\r\n      \"price\": 111,\r\n      \"uomCode\": \"pcs\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/batch/upsert",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"batch",
+								"upsert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "BatchUpsertProduct.Invalid.NoProductKey",
 					"request": {
 						"method": "POST",
