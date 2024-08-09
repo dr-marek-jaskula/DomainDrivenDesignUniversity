@@ -9,17 +9,17 @@ using Shopway.Domain.Orders;
 using Shopway.Presentation.Authentication.OrderHeaders.OrderHeaderCreatedByUser;
 using Shopway.Presentation.Utilities;
 
-namespace Shopway.Presentation.Endpoints.Orders;
+namespace Shopway.Presentation.FastEndpoints.Orders;
 
-public sealed class SoftDeleteOrderHeaderEndpoint(ISender sender, IAuthorizationService authorizationService)
+public sealed class SoftDeleteOrderHeaderFastEndpoint(ISender sender, IAuthorizationService authorizationService)
     : EndpointWithoutRequest<Results<Ok, ProblemHttpResult, ForbidHttpResult>>
 {
     private readonly ISender _sender = sender;
     private readonly IAuthorizationService _authorizationService = authorizationService;
 
-    private const string _name = nameof(SoftDeleteOrderHeaderEndpoint);
+    private const string _name = nameof(SoftDeleteOrderHeaderFastEndpoint);
     private const string _summary = "Mark order header as deleted";
-    private const string _description = "This documentation is for tutorial purpose - to demonstrate how to provide the OpenApi documentation";
+    private const string _description = "This documentation is for tutorial purpose - to demonstrate how to provide the OpenApi documentation for FastEndpoints";
 
     public override void Configure()
     {

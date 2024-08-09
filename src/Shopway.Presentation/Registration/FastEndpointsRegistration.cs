@@ -20,7 +20,7 @@ internal static class FastEndpointsRegistration
         app
             .UseFastEndpoints(options =>
             {
-                options.Endpoints.RoutePrefix = "api/endpoints";
+                options.Endpoints.RoutePrefix = "api/fast";
 
                 options.Endpoints.Configurator = configure =>
                 {

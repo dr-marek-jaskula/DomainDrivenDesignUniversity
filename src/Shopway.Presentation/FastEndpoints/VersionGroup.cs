@@ -1,4 +1,4 @@
-﻿namespace Shopway.Presentation.Endpoints;
+﻿namespace Shopway.Presentation.FastEndpoints;
 
 public static class VersionGroup
 {

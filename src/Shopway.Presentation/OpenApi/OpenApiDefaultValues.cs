@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Shopway.Domain.Common.Utilities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json;
 
@@ -45,7 +46,7 @@ public sealed class OpenApiDefaultValues : IOperationFilter
 
             parameter.Description ??= description.ModelMetadata?.Description;
 
-            if (parameter.Schema.Default is null && description.DefaultValue is not null)
+            if (parameter.Schema.Default is null && description.DefaultValue.NotNullOrEmptyObject()) //TODO: Check it?
             {
                 if (description.ModelMetadata is not null)
                 {
@@ -54,7 +55,7 @@ public sealed class OpenApiDefaultValues : IOperationFilter
                 }
                 else
                 {
-                    parameter.Schema.Default = new OpenApiString(description.DefaultValue.ToString());
+                    parameter.Schema.Default = new OpenApiString($"{description.DefaultValue}");
                 }
             }
 
@@ -73,7 +74,7 @@ public sealed class OpenApiDefaultValues : IOperationFilter
     {
         if (parameter is not null && parameter.Name.Contains(id, StringComparison.OrdinalIgnoreCase))
         {
-            parameter.Examples.Add(parameter.Name, new OpenApiExample
+            parameter.Examples.TryAdd(parameter.Name, new OpenApiExample
             {
                 Value = new OpenApiString(UlidExample)
             });

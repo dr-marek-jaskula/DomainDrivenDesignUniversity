@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using Asp.Versioning.Conventions;
 using FastEndpoints.AspVersioning;
-using Shopway.Presentation.Endpoints;
+using Shopway.Presentation.FastEndpoints;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

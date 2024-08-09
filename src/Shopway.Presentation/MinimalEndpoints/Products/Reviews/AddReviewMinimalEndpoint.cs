@@ -1,46 +1,44 @@
-﻿using FastEndpoints;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Routing;
 using Shopway.Application.Features.Products.Commands.AddReview;
 using Shopway.Domain.Products;
 using Shopway.Domain.Users.Authorization;
+using Shopway.Presentation.Abstractions;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 using Shopway.Presentation.Utilities;
 
-namespace Shopway.Presentation.Endpoints.Products.Reviews;
+namespace Shopway.Presentation.MinimalEndpoints.Products.Reviews;
 
-public sealed class AddReviewEndpoint(ISender sender)
-    : Endpoint<AddReviewCommand.AddReviewRequestBody, Results<Ok<AddReviewResponse>, ProblemHttpResult>>
+public sealed class AddReviewMinimalEndpoint : IEndpoint<ProductsGroup>
 {
-    private readonly ISender _sender = sender;
-
-    private const string _name = nameof(AddReviewEndpoint);
+    private const string _name = nameof(AddReviewMinimalEndpoint);
     private const string _summary = "Add review to product";
     private const string _description = "This documentation is for tutorial purpose - to demonstrate how to provide the OpenApi documentation";
 
-    public override void Configure()
+    public static void RegisterEndpoint(IEndpointRouteBuilder app)
     {
-        Post("{productId}/Reviews");
-
-        Group<ProductsGroup>();
-
-        Options(builder => builder
+        app.MapPost("/{productId}/Reviews", AddReview)
             .WithName(_name)
             .WithDescription(_description)
             .WithSummary(_summary)
             .WithMetadata(new RequiredPermissionsAttribute(Domain.Common.Enums.LogicalOperation.Or, PermissionName.Review_Add, PermissionName.INVALID_PERMISSION))
-            .WithVersion(VersionGroup.Products, 1, 0));
+            .WithVersion(VersionGroup.Products, 1, 0);
     }
 
-    public override async Task<Results<Ok<AddReviewResponse>, ProblemHttpResult>> ExecuteAsync(AddReviewCommand.AddReviewRequestBody body, CancellationToken cancellationToken)
+    private static async Task<Results<Ok<AddReviewResponse>, ProblemHttpResult, ForbidHttpResult>> AddReview
+    (
+        ProductId productId,
+        ISender sender,
+        AddReviewCommand.AddReviewRequestBody body,
+        CancellationToken cancellationToken
+    )
     {
-        var productId = Route<Ulid>("productId");
+        var query = new AddReviewCommand(productId, body);
 
-        var command = new AddReviewCommand(ProductId.Create(productId), body);
-
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await sender.Send(query, cancellationToken);
 
         return result.IsFailure
             ? result.ToProblemHttpResult()
