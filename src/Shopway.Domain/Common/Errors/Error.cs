@@ -58,7 +58,6 @@ public sealed partial record class Error(string Code, string Message)
         return New(exception.GetType().Name, $"{exception.Message}. ({exception.InnerException.Message})");
     }
 
-
     public static implicit operator string(Error error)
     {
         return error.Code;
@@ -73,6 +72,11 @@ public sealed partial record class Error(string Code, string Message)
     public ValidationResult<TValue> ToValidationResult<TValue>()
     {
         return ValidationResult<TValue>.WithErrors(this);
+    }
+
+    public ValidationResult ToValidationResult()
+    {
+        return ValidationResult.WithErrors(this);
     }
 
     public Result<TValue> ToResult<TValue>()

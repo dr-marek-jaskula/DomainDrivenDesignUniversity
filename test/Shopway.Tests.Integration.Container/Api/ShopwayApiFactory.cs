@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Quartz;
 using Shopway.App.wwwroot;
 using Shopway.Application.Abstractions;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Infrastructure.Options;
 using Shopway.Persistence.Framework;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication;
@@ -60,12 +61,12 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
             });
 
             //Mock api key authentication
-            services.RemoveAll(typeof(IApiKeyService));
-            services.AddScoped<IApiKeyService, TestApiKeyService>();
+            services.RemoveAll(typeof(IApiKeyService<ApiKeyName>));
+            services.AddScoped<IApiKeyService<ApiKeyName>, TestApiKeyService<ApiKeyName>>();
 
             //Mock jwt authentication
-            services.RemoveAll(typeof(IUserAuthorizationService));
-            services.AddScoped<IUserAuthorizationService, TestUserAuthorizationService>();
+            services.RemoveAll(typeof(IUserAuthorizationService<PermissionName, RoleName>));
+            services.AddScoped<IUserAuthorizationService<PermissionName, RoleName>, TestUserAuthorizationService>();
 
             //Mock user context
             services.RemoveAll(typeof(IUserContextService));

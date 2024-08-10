@@ -24,8 +24,8 @@ public sealed class RemoveReviewMinimalEndpoint : IEndpoint<ProductsGroup>
             .WithName(_name)
             .WithDescription(_description)
             .WithSummary(_summary)
-            .WithMetadata(new RequiredPermissionsAttribute(PermissionName.Review_Remove))
-            .WithMetadata(new RequiredRolesAttribute(RoleName.Administrator))
+            .WithMetadata(new RequiredPermissionsAttribute<PermissionName>(PermissionName.Review_Remove))
+            .WithMetadata(new RequiredRolesAttribute<RoleName>(RoleName.Administrator))
             .WithVersion(VersionGroup.Products, 1, 0);
     }
 

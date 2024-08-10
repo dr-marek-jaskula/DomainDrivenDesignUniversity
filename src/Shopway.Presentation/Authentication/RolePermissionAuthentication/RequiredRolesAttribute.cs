@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true)]
-public sealed class RequiredRolesAttribute(params RoleName[] roles)
+public sealed class RequiredRolesAttribute<TRole>(params TRole[] roles)
     : AuthorizeAttribute, IAuthorizationRequirement, IAuthorizationRequirementData
+    where TRole : struct, Enum
 {
-    public new RoleName[] Roles { get; } = roles;
+    public new TRole[] Roles { get; } = roles;
 
     public IEnumerable<IAuthorizationRequirement> GetRequirements()
     {

@@ -1,19 +1,18 @@
-﻿using Shopway.Application.Abstractions.CQRS;
-using Shopway.Application.Abstractions;
-using Shopway.Application.Features.Users.Commands.AddRoleToUser;
+﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Abstractions.CQRS;
+using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
+using Shopway.Domain.Users;
 using Shopway.Domain.Users.Authorization;
 using Shopway.Domain.Users.ValueObjects;
-using Shopway.Domain.Users;
-using Shopway.Domain.Common.Errors;
 
 namespace Shopway.Application.Features.Users.Commands.RemoveRoleFromUser;
 
-internal sealed class RemoveRoleFromUserCommandHandler(IUserRepository userRepository, IAuthorizationRepository authorizationRepository, IValidator validator, IUserContextService userContextService)
+internal sealed class RemoveRoleFromUserCommandHandler(IUserRepository userRepository, IAuthorizationRepository<PermissionName, RoleName> authorizationRepository, IValidator validator, IUserContextService userContextService)
     : ICommandHandler<RemoveRoleFromUserCommand>
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
     private readonly IUserContextService _userContextService = userContextService;
 

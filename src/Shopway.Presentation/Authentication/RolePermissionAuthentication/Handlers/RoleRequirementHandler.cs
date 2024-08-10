@@ -3,16 +3,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Shopway.Presentation.Authentication.RolePermissionAuthentication.Handlers;
 
-public sealed class RoleRequirementHandler(IServiceScopeFactory serviceScopeFactory) : AuthorizationHandler<RequiredRolesAttribute>
+public sealed class RoleRequirementHandler<TPermission, TRole>(IServiceScopeFactory serviceScopeFactory) : AuthorizationHandler<RequiredRolesAttribute<TRole>>
+    where TPermission : struct, Enum
+    where TRole : struct, Enum
 {
     private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
 
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, RequiredRolesAttribute requirement)
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, RequiredRolesAttribute<TRole> requirement)
     {
         using IServiceScope scope = _serviceScopeFactory.CreateScope();
 
         var authorizationService = scope.ServiceProvider
-            .GetRequiredService<IUserAuthorizationService>();
+            .GetRequiredService<IUserAuthorizationService<TPermission, TRole>>();
 
         var userIdResult = authorizationService.GetUserId(context);
 

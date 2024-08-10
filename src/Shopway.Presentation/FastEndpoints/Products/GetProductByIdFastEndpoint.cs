@@ -31,7 +31,7 @@ public sealed class GetProductByIdFastEndpoint(ISender sender)
             .WithName(_name)
             .WithDescription(_description)
             .WithSummary(_summary)
-            .WithMetadata(new RequiredApiKeyAttribute(RequiredApiKey.PRODUCT_GET))
+            .WithMetadata(new RequiredApiKeyAttribute<ApiKeyName>(ApiKeyName.PRODUCT_GET))
             .WithVersion(VersionGroup.Products, 1, 0));
 
         AuthSchemes(AnonymousSchema.Name);

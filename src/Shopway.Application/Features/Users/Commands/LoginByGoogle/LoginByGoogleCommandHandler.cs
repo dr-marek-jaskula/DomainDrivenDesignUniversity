@@ -16,7 +16,7 @@ internal sealed class LoginByGoogleCommandHandler
     ISecurityTokenService securityTokenService,
     IValidator validator,
     IPasswordHasher<User> passwordHasher,
-    IAuthorizationRepository authorizationRepository
+    IAuthorizationRepository<PermissionName, RoleName> authorizationRepository
 )
     : ICommandHandler<LoginByGoogleCommand, AccessTokenResponse>
 {
@@ -24,7 +24,7 @@ internal sealed class LoginByGoogleCommandHandler
     private readonly ISecurityTokenService _securityTokenService = securityTokenService;
     private readonly IValidator _validator = validator;
     private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
-    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
     private readonly RoleName _customerRoleName = RoleName.Customer;
 
     public async Task<IResult<AccessTokenResponse>> Handle(LoginByGoogleCommand command, CancellationToken cancellationToken)

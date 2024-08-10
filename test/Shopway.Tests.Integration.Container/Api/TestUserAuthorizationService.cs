@@ -7,7 +7,7 @@ using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 namespace Shopway.Tests.Integration.Container.Api;
 
-public sealed class TestUserAuthorizationService : IUserAuthorizationService
+public sealed class TestUserAuthorizationService : IUserAuthorizationService<PermissionName, RoleName>
 {
     private static readonly Ulid _testUserUlid = Ulid.Parse("01AN4Z07BY79KA1307SR9X4MV3");
 

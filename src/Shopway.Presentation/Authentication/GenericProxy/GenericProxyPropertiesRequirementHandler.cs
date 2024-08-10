@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
 namespace Shopway.Presentation.Authentication.GenericProxy;
@@ -14,7 +15,7 @@ public sealed class GenericProxyPropertiesRequirementHandler(IServiceScopeFactor
         using IServiceScope scope = _serviceScopeFactory.CreateScope();
 
         var authorizationService = scope.ServiceProvider
-            .GetRequiredService<IUserAuthorizationService>();
+            .GetRequiredService<IUserAuthorizationService<PermissionName, RoleName>>();
 
         var userIdResult = authorizationService.GetUserId(context);
 

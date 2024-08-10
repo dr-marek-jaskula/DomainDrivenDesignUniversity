@@ -23,7 +23,7 @@ public sealed class OrderHeaderCreatedByUserRequirementHandler(IOrderHeaderRepos
 
         if (isOrderHeaderCreatedByUser is false)
         {
-            context.Fail(new AuthorizationFailureReason(this, "User can delete only its own orderHeader"));
+            context.Fail(new AuthorizationFailureReason(this, "OrderHeader was not created by User"));
             return;
         }
 

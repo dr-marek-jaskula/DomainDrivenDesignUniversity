@@ -1,6 +1,7 @@
 ﻿namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
-public interface IApiKeyService
+public interface IApiKeyService<in TEnum> 
+    where TEnum : struct, Enum
 {
-    bool IsProvidedApiKeyEqualToRequiredApiKey(RequiredApiKey requiredApiKey, string? apiKeyFromHeader);
+    bool IsProvidedApiKeyEqualToRequiredApiKey(TEnum requiredApiKey, string? apiKeyFromHeader);
 }

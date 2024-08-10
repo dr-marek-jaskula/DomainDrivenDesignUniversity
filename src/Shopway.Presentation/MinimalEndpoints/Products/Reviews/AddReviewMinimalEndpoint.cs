@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Routing;
 using Shopway.Application.Features.Products.Commands.AddReview;
+using Shopway.Domain.Common.Enums;
 using Shopway.Domain.Products;
 using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Abstractions;
@@ -24,7 +25,7 @@ public sealed class AddReviewMinimalEndpoint : IEndpoint<ProductsGroup>
             .WithName(_name)
             .WithDescription(_description)
             .WithSummary(_summary)
-            .WithMetadata(new RequiredPermissionsAttribute(Domain.Common.Enums.LogicalOperation.Or, PermissionName.Review_Add, PermissionName.INVALID_PERMISSION))
+            .WithMetadata(new RequiredPermissionsAttribute<PermissionName>(LogicalOperation.Or, PermissionName.Review_Add, PermissionName.INVALID_PERMISSION))
             .WithVersion(VersionGroup.Products, 1, 0);
     }
 

@@ -16,7 +16,7 @@ partial class ProductsController
     public const string Reviews = nameof(Reviews);
 
     [HttpPost($"{{productId}}/{Reviews}")]
-    [RequiredPermissions(Domain.Common.Enums.LogicalOperation.Or, PermissionName.Review_Add, PermissionName.INVALID_PERMISSION)] //For demo purposes
+    [RequiredPermissions<PermissionName>(Domain.Common.Enums.LogicalOperation.Or, PermissionName.Review_Add, PermissionName.INVALID_PERMISSION)] //For demo purposes
     [ProducesResponseType<AddReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<AddReviewResponse>, ProblemHttpResult>> AddReview
@@ -36,7 +36,7 @@ partial class ProductsController
     }
 
     [HttpPatch($"{{productId}}/{Reviews}/{{reviewId}}")]
-    [RequiredPermissions(PermissionName.Review_Update)]
+    [RequiredPermissions<PermissionName>(PermissionName.Review_Update)]
     [ProducesResponseType<UpdateReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<UpdateReviewResponse>, ProblemHttpResult>> UpdateReview
@@ -57,8 +57,8 @@ partial class ProductsController
     }
 
     [HttpDelete($"{{productId}}/{Reviews}/{{reviewId}}")]
-    [RequiredPermissions(PermissionName.Review_Remove)]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredPermissions<PermissionName>(PermissionName.Review_Remove)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType<RemoveReviewResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RemoveReviewResponse>, ProblemHttpResult>> RemoveReview
