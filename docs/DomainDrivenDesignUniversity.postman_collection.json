@@ -2323,6 +2323,25 @@
 					"response": []
 				},
 				{
+					"name": "GetUserRolesWithPermissionsByUsername.Valid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{username}}/roles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{username}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GetRolePermissions.Valid.Employee",
 					"request": {
 						"auth": {
