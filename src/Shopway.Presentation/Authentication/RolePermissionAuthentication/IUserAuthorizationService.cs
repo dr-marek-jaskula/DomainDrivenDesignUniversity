@@ -5,7 +5,7 @@ using Shopway.Domain.Users;
 
 namespace Shopway.Presentation.Authentication.RolePermissionAuthentication;
 
-public interface IUserAuthorizationService<TPermission, TRole>
+public interface IUserAuthorizationService<in TPermission, in TRole>
     where TPermission : struct, Enum
     where TRole : struct, Enum
 {
