@@ -199,7 +199,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpPost("{username}/roles/{role}")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddRoleToUser
@@ -218,7 +218,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpDelete("{username}/roles/{role}")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemoveRoleFromUser
@@ -237,7 +237,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpGet("roles/{role}/permissions")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RolePermissionsResponse>, ProblemHttpResult>> GetRolePermissions
@@ -255,7 +255,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpGet("permissions/{permission}")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<PermissionDetailsResponse>, ProblemHttpResult>> GetPermissionDetails
@@ -273,7 +273,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpPost("permissions")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> CreatePermission
@@ -290,7 +290,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpDelete("permissions/{permission}")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> DeletePermission
@@ -308,7 +308,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpPost("roles/{role}/permissions/{permission}")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddPermissionToRole
@@ -327,7 +327,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpDelete("roles/{role}/permissions/{permission}")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemovePermissionFromRole
@@ -346,7 +346,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpPost("permissions/{permission}/properties/{property}")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> AddPropertyToReadPermission
@@ -365,7 +365,7 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
     }
 
     [HttpDelete("permissions/{permission}/properties/{property}")]
-    [RequiredRoles(RoleName.Administrator)]
+    [RequiredRoles<RoleName>(RoleName.Administrator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok, ProblemHttpResult>> RemovePropertyToReadPermission

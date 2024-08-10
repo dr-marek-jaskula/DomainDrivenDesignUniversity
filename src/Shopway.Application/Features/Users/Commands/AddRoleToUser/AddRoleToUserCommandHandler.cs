@@ -8,11 +8,11 @@ using Shopway.Domain.Users.ValueObjects;
 
 namespace Shopway.Application.Features.Users.Commands.AddRoleToUser;
 
-internal sealed class AddRoleToUserCommandHandler(IUserRepository userRepository, IAuthorizationRepository authorizationRepository, IValidator validator, IUserContextService userContextService)
+internal sealed class AddRoleToUserCommandHandler(IUserRepository userRepository, IAuthorizationRepository<PermissionName, RoleName> authorizationRepository, IValidator validator, IUserContextService userContextService)
     : ICommandHandler<AddRoleToUserCommand>
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
     private readonly IUserContextService _userContextService = userContextService;
 

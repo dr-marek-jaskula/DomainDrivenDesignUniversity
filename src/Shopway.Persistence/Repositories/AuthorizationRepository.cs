@@ -6,7 +6,9 @@ using Shopway.Persistence.Framework;
 
 namespace Shopway.Persistence.Repositories;
 
-internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAuthorizationRepository
+internal sealed class AuthorizationRepository<TPermission, TRole>(ShopwayDbContext dbContext) : IAuthorizationRepository<TPermission, TRole>
+    where TPermission : struct, Enum
+    where TRole : struct, Enum
 {
     private readonly ShopwayDbContext _dbContext = dbContext;
 
@@ -24,7 +26,7 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
             .ToHashSet();
     }
 
-    public async Task<Permission?> GetPermissionAsync(PermissionName permission, CancellationToken cancellationToken)
+    public async Task<Permission?> GetPermissionAsync(TPermission permission, CancellationToken cancellationToken)
     {
         var permissionName = $"{permission}";
 
@@ -34,7 +36,7 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<bool> HasPermissionsAsync(UserId userId, PermissionName[] requiredPermissions, LogicalOperation logicalOperation = LogicalOperation.And)
+    public async Task<bool> HasPermissionsAsync(UserId userId, TPermission[] requiredPermissions, LogicalOperation logicalOperation = LogicalOperation.And)
     {
         var distinctRequiredPermissions = requiredPermissions
             .Select(x => $"{x}")
@@ -83,7 +85,7 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
             .AnyAsync();
     }
 
-    public async Task<bool> HasRolesAsync(UserId userId, RoleName[] requiredRoles)
+    public async Task<bool> HasRolesAsync(UserId userId, TRole[] requiredRoles)
     {
         var distinctRequiredRoles = requiredRoles
             .Select(x => $"{x}")
@@ -101,7 +103,7 @@ internal sealed class AuthorizationRepository(ShopwayDbContext dbContext) : IAut
         return userRolesCount == distinctRequiredRoles.Length;
     }
 
-    public async Task<Role?> GetRolePermissionsAsync(RoleName role, CancellationToken cancellationToken)
+    public async Task<Role?> GetRolePermissionsAsync(TRole role, CancellationToken cancellationToken)
     {
         var roleName = $"{role}";
 

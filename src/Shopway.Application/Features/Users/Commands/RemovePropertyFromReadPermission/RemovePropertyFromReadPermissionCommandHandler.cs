@@ -6,10 +6,10 @@ using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Commands.RemovePropertyFromReadPermission;
 
-internal sealed class RemovePropertyFromReadPermissionCommandHandler(IAuthorizationRepository authorizationRepository, IValidator validator)
+internal sealed class RemovePropertyFromReadPermissionCommandHandler(IAuthorizationRepository<PermissionName, RoleName> authorizationRepository, IValidator validator)
     : ICommandHandler<RemovePropertyFromReadPermissionCommand>
 {
-    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult> Handle(RemovePropertyFromReadPermissionCommand command, CancellationToken cancellationToken)

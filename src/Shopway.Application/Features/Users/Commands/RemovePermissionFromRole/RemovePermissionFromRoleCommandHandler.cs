@@ -6,10 +6,10 @@ using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Commands.RemovePermissionFromRole;
 
-internal sealed class RemovePermissionFromRoleCommandHandler(IAuthorizationRepository authorizationRepository, IValidator validator)
+internal sealed class RemovePermissionFromRoleCommandHandler(IAuthorizationRepository<PermissionName, RoleName> authorizationRepository, IValidator validator)
     : ICommandHandler<RemovePermissionFromRoleCommand>
 {
-    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult> Handle(RemovePermissionFromRoleCommand command, CancellationToken cancellationToken)

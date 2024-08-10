@@ -5,10 +5,10 @@ using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Commands.DeletePermission;
 
-internal sealed class DeletePermissionCommandHandler(IAuthorizationRepository authorizationRepository)
+internal sealed class DeletePermissionCommandHandler(IAuthorizationRepository<PermissionName, RoleName> authorizationRepository)
     : ICommandHandler<DeletePermissionCommand>
 {
-    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
 
     public async Task<IResult> Handle(DeletePermissionCommand command, CancellationToken cancellationToken)
     {

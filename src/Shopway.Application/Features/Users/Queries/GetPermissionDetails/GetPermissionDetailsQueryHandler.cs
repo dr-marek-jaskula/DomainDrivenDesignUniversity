@@ -8,10 +8,10 @@ using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Queries.GetPermissionDetails;
 
-internal sealed class GetPermissionDetailsQueryHandler(Domain.Users.Authorization.IAuthorizationRepository authorizationRepository, IValidator validator)
+internal sealed class GetPermissionDetailsQueryHandler(IAuthorizationRepository<PermissionName, RoleName> authorizationRepository, IValidator validator)
     : IQueryHandler<GetPermissionDetailsQuery, PermissionDetailsResponse>
 {
-    private readonly Domain.Users.Authorization.IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult<PermissionDetailsResponse>> Handle(GetPermissionDetailsQuery query, CancellationToken cancellationToken)

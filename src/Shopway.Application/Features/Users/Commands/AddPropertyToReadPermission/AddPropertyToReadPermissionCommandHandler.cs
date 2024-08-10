@@ -7,10 +7,10 @@ using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Commands.AddPropertyToReadPermission;
 
-internal sealed class AddPropertyToReadPermissionCommandHandler(IAuthorizationRepository authorizationRepository, IValidator validator)
+internal sealed class AddPropertyToReadPermissionCommandHandler(IAuthorizationRepository<PermissionName, RoleName> authorizationRepository, IValidator validator)
     : ICommandHandler<AddPropertyToReadPermissionCommand>
 {
-    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult> Handle(AddPropertyToReadPermissionCommand command, CancellationToken cancellationToken)

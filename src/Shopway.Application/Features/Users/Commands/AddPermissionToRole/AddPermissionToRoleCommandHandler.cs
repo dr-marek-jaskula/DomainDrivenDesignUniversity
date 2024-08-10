@@ -7,10 +7,10 @@ using Shopway.Domain.Users.Authorization;
 
 namespace Shopway.Application.Features.Users.Commands.AddPermissionToRole;
 
-internal sealed class AddPermissionToRoleCommandHandler(IAuthorizationRepository authorizationRepository, IValidator validator)
+internal sealed class AddPermissionToRoleCommandHandler(IAuthorizationRepository<PermissionName, RoleName> authorizationRepository, IValidator validator)
     : ICommandHandler<AddPermissionToRoleCommand>
 {
-    private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
+    private readonly IAuthorizationRepository<PermissionName, RoleName> _authorizationRepository = authorizationRepository;
     private readonly IValidator _validator = validator;
 
     public async Task<IResult> Handle(AddPermissionToRoleCommand command, CancellationToken cancellationToken)
