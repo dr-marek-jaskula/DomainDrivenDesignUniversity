@@ -48,8 +48,8 @@ internal static class SecurityRegistration
 
         services.AddScoped<IAuthorizationHandler, OrderHeaderCreatedByUserRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, GenericProxyPropertiesRequirementHandler>();
-        services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
-        services.AddScoped<IAuthorizationHandler, RoleRequirementHandler>();
+        services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler<PermissionName, RoleName>>();
+        services.AddScoped<IAuthorizationHandler, RoleRequirementHandler<PermissionName, RoleName>>();
         services.AddScoped<IAuthorizationHandler, ApiKeyRequirementHandler<ApiKey>>();
         services.AddScoped<IUserAuthorizationService<PermissionName, RoleName>, UserAuthorizationService<PermissionName, RoleName>>();
 
