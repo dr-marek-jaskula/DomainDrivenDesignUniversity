@@ -90,7 +90,7 @@ we should name our controllers **ProductsController** and not ProductController.
 
 ## FastEndpoints
 
-FastEndpoints are the go to approach for organizing presentation layer with endpoints pattern. They are add a significant performance boosts and provide multiple
+FastEndpoints organize presentation layer with endpoints pattern. They are add a significant performance boosts and provide multiple
 feature from out of the box. One of the advantage of FastEndpoitns over MinimalApi is the possibility to overwrite RequestDeserializer, which is not possible
 for MinialApi:
 
@@ -101,3 +101,10 @@ options.Serializer.RequestDeserializer = async (request, dto, jCtx, cancellation
     return JsonConvert.DeserializeObject(await reader.ReadToEndAsync(), dto, _jsonSerializerSettings);
 };
 ```
+
+## MinimalApi
+
+MinimalApi endpoints organize presentation layer with endpoints pattern. It is a build-in approach that adds a significant performance boosts and provide multiple
+feature from out of the box. To register minimal api endpoints automatically I had to introduced additional logic in `MinimalApiRegistration`. This results in 
+auto-registering all endpoints that implement `IEndpoint` interface (or its generic alternative). One of the major advantage of MinimalApi over FastEndpoints 
+is that parameter binding is much easier and the method injection is provided out of the box. 

@@ -75,6 +75,16 @@ public sealed class ValidationResult : Result, IValidationResult
     /// </summary>
     /// <param name="validationErrors">Validation errors</param>
     /// <returns>Failure ValidationResult</returns>
+    public static ValidationResult WithErrors(params Error[] validationErrors)
+    {
+        return new([.. validationErrors]);
+    }
+
+    /// <summary>
+    /// Creates failure ValidationResult
+    /// </summary>
+    /// <param name="validationErrors">Validation errors</param>
+    /// <returns>Failure ValidationResult</returns>
     public static ValidationResult WithErrors(ICollection<Error> validationErrors)
     {
         return new([.. validationErrors]);
