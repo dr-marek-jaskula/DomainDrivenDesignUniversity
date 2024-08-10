@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Authentication;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication;
 using Shopway.Presentation.Authentication.ApiKeyAuthentication.Handlers;
 using Shopway.Presentation.Authentication.GenericProxy;
 using Shopway.Presentation.Authentication.OrderHeaders.OrderHeaderCreatedByUser;
+using Shopway.Presentation.Authentication.RolePermissionAuthentication;
 using Shopway.Presentation.Authentication.RolePermissionAuthentication.Handlers;
+using Shopway.Presentation.Authentication.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -48,6 +51,7 @@ internal static class SecurityRegistration
         services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, RoleRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, ApiKeyRequirementHandler<ApiKey>>();
+        services.AddScoped<IUserAuthorizationService<PermissionName, RoleName>, UserAuthorizationService<PermissionName, RoleName>>();
 
         return services;
     }

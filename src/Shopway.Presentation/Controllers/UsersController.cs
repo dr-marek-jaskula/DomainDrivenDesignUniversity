@@ -24,6 +24,7 @@ using Shopway.Application.Features.Users.Queries.GetPermissionDetails;
 using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
+using Shopway.Application.Features.Users.Queries.GetUserRolesWithPermissions;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.Authorization;
 using Shopway.Presentation.Abstractions;
@@ -197,6 +198,24 @@ public sealed partial class UsersController(ISender sender) : ApiController(send
             ? result.ToProblemHttpResult()
             : result.ToOkResult();
     }
+
+    [HttpGet("{username}/roles/permissions")]
+    [ProducesResponseType<RolesResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<RolesWithPermissionsResponse>, ProblemHttpResult>> GetRolesWithPermissions
+    (
+        [FromRoute] string username,
+        CancellationToken cancellationToken
+    )
+    {
+        var query = new GetUserRolesWithPermissionsQuery(username);
+        var result = await Sender.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? result.ToProblemHttpResult()
+            : result.ToOkResult();
+    }
+
 
     [HttpPost("{username}/roles/{role}")]
     [RequiredRoles<RoleName>(RoleName.Administrator)]

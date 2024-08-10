@@ -6,14 +6,14 @@ using Shopway.Domain.Common.Results;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.ValueObjects;
 
-namespace Shopway.Application.Features.Users.Queries.GetUserRoles;
+namespace Shopway.Application.Features.Users.Queries.GetUserRolesWithPermissions;
 
-internal sealed class GetUserRolesByUsernameQueryHandler(IUserRepository userRepository)
-    : IQueryHandler<GetUserRolesByUsernameQuery, RolesResponse>
+internal sealed class GetUserRolesWithPermissionsQueryHandler(IUserRepository userRepository)
+    : IQueryHandler<GetUserRolesWithPermissionsQuery, RolesWithPermissionsResponse>
 {
     private readonly IUserRepository _userRepository = userRepository;
 
-    public async Task<IResult<RolesResponse>> Handle(GetUserRolesByUsernameQuery query, CancellationToken cancellationToken)
+    public async Task<IResult<RolesWithPermissionsResponse>> Handle(GetUserRolesWithPermissionsQuery query, CancellationToken cancellationToken)
     {
         var username = Username.Create(query.Username).Value;
 
@@ -22,12 +22,12 @@ internal sealed class GetUserRolesByUsernameQueryHandler(IUserRepository userRep
 
         if (user is null)
         {
-            return Error.NotFound<User>(query.Username).ToResult<RolesResponse>();
+            return Error.NotFound<User>(query.Username).ToResult<RolesWithPermissionsResponse>();
         }
 
         return user
             .Roles
-            .ToResponse()
+            .ToRolesWithPermissionsResponse()
             .ToResult();
     }
 }

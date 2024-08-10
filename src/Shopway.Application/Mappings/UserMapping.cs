@@ -2,6 +2,7 @@
 using Shopway.Application.Features.Users.Queries.GetRolePermissions;
 using Shopway.Application.Features.Users.Queries.GetUserByUsername;
 using Shopway.Application.Features.Users.Queries.GetUserRoles;
+using Shopway.Application.Features.Users.Queries.GetUserRolesWithPermissions;
 using Shopway.Domain.Users;
 using Shopway.Domain.Users.Authorization;
 
@@ -33,5 +34,10 @@ public static class UserMapping
     public static RolePermissionsResponse ToResponse(this Role role)
     {
         return new RolePermissionsResponse(role.Permissions.Select(x => x.Name).ToList());
+    }
+
+    public static RolesWithPermissionsResponse ToRolesWithPermissionsResponse(this IReadOnlyCollection<Role> roles)
+    {
+        return new RolesWithPermissionsResponse(roles.ToDictionary(role => role.Name, role => role.Permissions.Select(permission => permission.Name).ToList()));
     }
 }

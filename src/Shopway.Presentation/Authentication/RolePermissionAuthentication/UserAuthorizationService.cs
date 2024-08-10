@@ -25,7 +25,7 @@ public sealed class UserAuthorizationService<TPermission, TRole>(IAuthorizationR
 
         if (Ulid.TryParse(userIdentifier, out Ulid userUlid) is false)
         {
-            return Result.Failure<UserId>(Error.ParseFailure<Ulid>(nameof(ClaimTypes.NameIdentifier)));
+            return Error.ParseFailure<Ulid>(nameof(ClaimTypes.NameIdentifier)).ToResult<UserId>();
         }
 
         return UserId.Create(userUlid);
