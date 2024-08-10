@@ -61,8 +61,8 @@ public sealed class ShopwayApiFactory : WebApplicationFactory<IApiMarker>, IAsyn
             });
 
             //Mock api key authentication
-            services.RemoveAll(typeof(IApiKeyService<ApiKey>));
-            services.AddScoped<IApiKeyService<ApiKey>, TestApiKeyService<ApiKey>>();
+            services.RemoveAll(typeof(IApiKeyService<ApiKeyName>));
+            services.AddScoped<IApiKeyService<ApiKeyName>, TestApiKeyService<ApiKeyName>>();
 
             //Mock jwt authentication
             services.RemoveAll(typeof(IUserAuthorizationService<PermissionName, RoleName>));

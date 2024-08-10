@@ -35,7 +35,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Product</returns>
     [HttpGet("{id}")]
-    [RequiredApiKey<ApiKey>(ApiKey.PRODUCT_GET)]
+    [RequiredApiKey<ApiKeyName>(ApiKeyName.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<ProductResponse>, ProblemHttpResult>> GetProductById
@@ -60,7 +60,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Product</returns>
     [HttpGet("key")]
-    [RequiredApiKey<ApiKey>(ApiKey.PRODUCT_GET)]
+    [RequiredApiKey<ApiKeyName>(ApiKeyName.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<ProductResponse>, ProblemHttpResult>> GetProductByKey
@@ -86,7 +86,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Product</returns>
     [HttpPost("fuzzy-search/{productName}")]
-    [RequiredApiKey<ApiKey>(ApiKey.PRODUCT_GET)]
+    [RequiredApiKey<ApiKeyName>(ApiKeyName.PRODUCT_GET)]
     [ProducesResponseType<ProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<OffsetPageResponse<ProductResponse>>, ProblemHttpResult>> FuzzySearchProductByName
@@ -223,7 +223,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPost]
-    [RequiredApiKey<ApiKey>(ApiKey.PRODUCT_CREATE)]
+    [RequiredApiKey<ApiKeyName>(ApiKeyName.PRODUCT_CREATE)]
     [ProducesResponseType<CreateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<CreateProductResponse>, ProblemHttpResult>> CreateProduct
@@ -240,7 +240,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpPut("{id}")]
-    [RequiredApiKey<ApiKey>(ApiKey.PRODUCT_UPDATE)]
+    [RequiredApiKey<ApiKeyName>(ApiKeyName.PRODUCT_UPDATE)]
     [ProducesResponseType<UpdateProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<UpdateProductResponse>, ProblemHttpResult>> UpdateProduct
@@ -260,7 +260,7 @@ public sealed partial class ProductsController(ISender sender) : ApiController(s
     }
 
     [HttpDelete("{id}")]
-    [RequiredApiKey<ApiKey>(ApiKey.PRODUCT_REMOVE)]
+    [RequiredApiKey<ApiKeyName>(ApiKeyName.PRODUCT_REMOVE)]
     [ProducesResponseType<RemoveProductResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<Results<Ok<RemoveProductResponse>, ProblemHttpResult>> RemoveProduct

@@ -50,7 +50,7 @@ internal static class SecurityRegistration
         services.AddScoped<IAuthorizationHandler, GenericProxyPropertiesRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler<PermissionName, RoleName>>();
         services.AddScoped<IAuthorizationHandler, RoleRequirementHandler<PermissionName, RoleName>>();
-        services.AddScoped<IAuthorizationHandler, ApiKeyRequirementHandler<ApiKey>>();
+        services.AddScoped<IAuthorizationHandler, ApiKeyRequirementHandler<ApiKeyName>>();
         services.AddScoped<IUserAuthorizationService<PermissionName, RoleName>, UserAuthorizationService<PermissionName, RoleName>>();
 
         return services;

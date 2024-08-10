@@ -30,9 +30,9 @@ public sealed class TestRoleRequirementHandler : AuthorizationHandler<RequiredRo
     }
 }
 
-public sealed class TestApiKeyRequirementHandler : AuthorizationHandler<RequiredApiKeyAttribute<ApiKey>>
+public sealed class TestApiKeyRequirementHandler : AuthorizationHandler<RequiredApiKeyAttribute<ApiKeyName>>
 {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RequiredApiKeyAttribute<ApiKey> requirement)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RequiredApiKeyAttribute<ApiKeyName> requirement)
     {
         foreach (var pendingRequirement in context.PendingRequirements)
         {

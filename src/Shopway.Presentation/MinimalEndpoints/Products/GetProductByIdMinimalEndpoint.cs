@@ -24,7 +24,7 @@ public sealed class GetProductByIdMinimalEndpoint : IEndpoint<ProductsGroup>
             .WithName(_name)
             .WithDescription(_description)
             .WithSummaryApiKey(_summary)
-            .WithMetadata(new RequiredApiKeyAttribute<ApiKey>(ApiKey.PRODUCT_GET))
+            .WithMetadata(new RequiredApiKeyAttribute<ApiKeyName>(ApiKeyName.PRODUCT_GET))
             .WithVersion(VersionGroup.Products, 1, 0);
     }
 
