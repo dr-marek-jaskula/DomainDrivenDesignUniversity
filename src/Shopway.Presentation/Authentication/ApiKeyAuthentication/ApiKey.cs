@@ -1,6 +1,6 @@
 ﻿namespace Shopway.Presentation.Authentication.ApiKeyAuthentication;
 
-public enum RequiredApiKey
+public enum ApiKey
 {
     PRODUCT_GET,
     PRODUCT_UPDATE,
