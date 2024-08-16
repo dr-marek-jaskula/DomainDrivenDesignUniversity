@@ -1,4 +1,6 @@
-﻿using Shopway.Domain.Common.Results;
+﻿// Ignore Spelling: Deserialize
+
+using Shopway.Domain.Common.Results;
 
 namespace Shopway.Domain.Common.Errors;
 
@@ -17,21 +19,6 @@ public sealed partial record class Error(string Code, string Message)
     /// The empty error instance used to represent that no error has occurred
     /// </summary>
     public static readonly Error None = new(string.Empty, string.Empty);
-
-    /// <summary>
-    /// The null value error instance
-    /// </summary>
-    public static readonly Error NullValue = new($"{nameof(NullValue)}", "The result value is null.");
-
-    /// <summary>
-    /// The condition not satisfied error instance
-    /// </summary>
-    public static readonly Error ConditionNotSatisfied = new($"{nameof(ConditionNotSatisfied)}", "The specified condition was not satisfied.");
-
-    /// <summary>
-    /// The validation error instance
-    /// </summary>
-    public static readonly Error ValidationError = new($"{nameof(ValidationError)}", "A validation problem occurred.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Error"/> class

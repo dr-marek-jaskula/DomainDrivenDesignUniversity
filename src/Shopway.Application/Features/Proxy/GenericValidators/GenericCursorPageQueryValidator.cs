@@ -10,7 +10,7 @@ namespace Shopway.Application.Features.Proxy.GenericValidators;
 /// A generic cursor page query validator, created to encapsulate common cursor page query validation logic
 /// </summary>
 internal abstract class GenericCursorPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TMapping, TPage> : PageQueryValidator<TPageQuery, CursorPageResponse<TResponse>, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TFilter : IDynamicFilter
     where TSortBy : IDynamicSortBy
     where TMapping : IDynamicMapping

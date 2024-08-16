@@ -10,7 +10,7 @@ namespace Shopway.Application.Abstractions;
 /// A generic cursor page query validator, created to encapsulate common cursor page query validation logic
 /// </summary>
 internal abstract class CursorPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TPage> : PageQueryValidator<TPageQuery, CursorPageResponse<TResponse>, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TFilter : IFilter
     where TSortBy : ISortBy
     where TPage : ICursorPage
@@ -28,7 +28,7 @@ internal abstract class CursorPageQueryValidator<TPageQuery, TResponse, TFilter,
 /// A generic cursor page query validator, created to encapsulate common cursor page query validation logic
 /// </summary>
 internal abstract class CursorPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TMapping, TPage> : CursorPageQueryValidator<TPageQuery, TResponse, TFilter, TSortBy, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TFilter : IFilter
     where TSortBy : ISortBy
     where TMapping : IMapping

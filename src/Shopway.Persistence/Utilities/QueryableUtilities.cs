@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using Shopway.Domain.Common.BaseTypes;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
@@ -103,8 +102,8 @@ public static class QueryableUtilities
         var cursor = Ulid.Empty;
         if (responsesWithCursor.Count > page.PageSize)
         {
-            cursor = responsesWithCursor.Last().Id;
-            responsesWithCursor = responsesWithCursor.SkipLast(1).ToList();
+            cursor = responsesWithCursor[^1].Id;
+            responsesWithCursor = responsesWithCursor[..^1];
         }
 
         return (responsesWithCursor, cursor);

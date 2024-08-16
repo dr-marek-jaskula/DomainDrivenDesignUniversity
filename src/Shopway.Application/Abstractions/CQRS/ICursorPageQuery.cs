@@ -12,7 +12,7 @@ namespace Shopway.Application.Abstractions.CQRS;
 /// <typeparam name="TMapping">The provided mapping type</typeparam>
 /// <typeparam name="TPage">The provided cursor page type</typeparam>
 public interface ICursorPageQuery<TResponse, TFilter, TSortBy, TMapping, TPage> : ICursorPageQuery<TResponse, TFilter, TSortBy, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TFilter : IFilter
     where TSortBy : ISortBy
     where TMapping : IMapping
@@ -29,7 +29,7 @@ public interface ICursorPageQuery<TResponse, TFilter, TSortBy, TMapping, TPage> 
 /// <typeparam name="TSortBy">The provided order type</typeparam>
 /// <typeparam name="TPage">The provided cursor page type</typeparam>
 public interface ICursorPageQuery<TResponse, TFilter, TSortBy, TPage> : ICursorPageQuery<TResponse, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TFilter : IFilter
     where TSortBy : ISortBy
     where TPage : ICursorPage
@@ -44,7 +44,7 @@ public interface ICursorPageQuery<TResponse, TFilter, TSortBy, TPage> : ICursorP
 /// <typeparam name="TResponse">The page query response type</typeparam>
 /// <typeparam name="TPage">The provided offset page type</typeparam>
 public interface ICursorPageQuery<TResponse, TPage> : IPageQuery<CursorPageResponse<TResponse>, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TPage : ICursorPage
 {
 }

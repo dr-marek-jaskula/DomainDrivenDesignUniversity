@@ -14,7 +14,7 @@ namespace Shopway.Application.Abstractions.CQRS;
 /// <typeparam name="TPage">The provided cursor page type</typeparam>
 public interface ICursorPageQueryHandler<TQuery, TResponse, TFilter, TSortBy, TMapping, TPage> : ICursorPageQueryHandler<TQuery, TResponse, TFilter, TSortBy, TPage>
     where TQuery : ICursorPageQuery<TResponse, TFilter, TSortBy, TMapping, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TFilter : IFilter
     where TSortBy : ISortBy
     where TMapping : IMapping
@@ -32,7 +32,7 @@ public interface ICursorPageQueryHandler<TQuery, TResponse, TFilter, TSortBy, TM
 /// <typeparam name="TPage">The provided cursor page type</typeparam>
 public interface ICursorPageQueryHandler<TQuery, TResponse, TFilter, TSortBy, TPage> : ICursorPageQueryHandler<TQuery, TResponse, TPage>
     where TQuery : ICursorPageQuery<TResponse, TFilter, TSortBy, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TFilter : IFilter
     where TSortBy : ISortBy
     where TPage : ICursorPage
@@ -47,7 +47,7 @@ public interface ICursorPageQueryHandler<TQuery, TResponse, TFilter, TSortBy, TP
 /// <typeparam name="TPage">The provided cursor page type</typeparam>
 public interface ICursorPageQueryHandler<TQuery, TResponse, TPage> : IQueryHandler<TQuery, CursorPageResponse<TResponse>>
     where TQuery : ICursorPageQuery<TResponse, TPage>
-    where TResponse : IResponse
+    where TResponse : IResponse, IHasCursor
     where TPage : ICursorPage
 {
 }

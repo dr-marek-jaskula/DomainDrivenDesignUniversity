@@ -1,11 +1,12 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Shopway.Application.Features;
 
-public class DataTransferObjectResponse(DataTransferObject dataTransferObject) : IDictionary<string, object>, IResponse
+public class DataTransferObjectResponse(DataTransferObject dataTransferObject) : IDictionary<string, object>, IResponse, IHasCursor
 {
     protected readonly Dictionary<string, object?> _dictionary = dataTransferObject.Dictionary;
 
@@ -25,6 +26,8 @@ public class DataTransferObjectResponse(DataTransferObject dataTransferObject) :
     public int Count => _dictionary.Count;
 
     public bool IsReadOnly => false;
+
+    public Ulid Id => Ulid.Parse((string)Dictionary[nameof(Id)]!);
 
     public void Add(string key, object? value)
     {

@@ -5,6 +5,21 @@ namespace Shopway.Domain.Common.Errors;
 partial record class Error
 {
     /// <summary>
+    /// The validation error instance
+    /// </summary>
+    public static readonly Error ValidationError = new($"{nameof(ValidationError)}", "A validation problem occurred.");
+
+    /// <summary>
+    /// The null value error instance
+    /// </summary>
+    public static readonly Error NullValue = new($"{nameof(NullValue)}", "The result value is null.");
+
+    /// <summary>
+    /// The condition not satisfied error instance
+    /// </summary>
+    public static readonly Error ConditionNotSatisfied = new($"{nameof(ConditionNotSatisfied)}", "The specified condition was not satisfied.");
+
+    /// <summary>
     /// Create an Error based on the entity type name and the id that was not found
     /// </summary>
     /// <param name="name">name of the entity type. Use "nameof(TValue)" syntax</param>
