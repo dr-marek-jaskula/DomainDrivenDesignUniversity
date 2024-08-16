@@ -28,7 +28,7 @@ public sealed class UserAuthorizationService<TPermission, TRole>(IAuthorizationR
             return Error.ParseFailure<Ulid>(nameof(ClaimTypes.NameIdentifier)).ToResult<UserId>();
         }
 
-        return UserId.Create(userUlid);
+        return Result.Success(UserId.Create(userUlid));
     }
 
     public async Task<bool> HasRolesAsync(UserId userId, params TRole[] roles)
