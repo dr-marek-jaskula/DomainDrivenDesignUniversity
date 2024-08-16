@@ -6,8 +6,17 @@ namespace Shopway.Domain.Common.DataProcessing.Proxy;
 
 public sealed class OffsetOrCursorPage : IPage
 {
-    private static readonly Result _notOffsetOrCursorPageFailureResult = Error.InvalidArgument("Cursor or PageNumber must be provided.").ToResult();
-    private static readonly Result _bothOffsetAndCursorPageFailureResult = Error.InvalidArgument("Both Cursor and PageNumber cannot be provided.").ToResult();
+    private const string NotCursorAndNotOffsetError = "Cursor or PageNumber must be provided.";
+    private const string BothCursorAndOffsetError = "Both Cursor and PageNumber cannot be provided.";
+
+    private static readonly Result _notOffsetOrCursorPageFailureResult = Error.InvalidArgument(NotCursorAndNotOffsetError).ToResult();
+    private static readonly Result _bothOffsetAndCursorPageFailureResult = Error.InvalidArgument(BothCursorAndOffsetError).ToResult();
+
+    private static readonly Result<string> _notOffsetOrCursorPageFailureStringResult = Error.InvalidArgument(NotCursorAndNotOffsetError).ToResult<string>();
+    private static readonly Result<string> _bothOffsetAndCursorPageFailureStringResult = Error.InvalidArgument(BothCursorAndOffsetError).ToResult<string>();
+
+    private static readonly Result<string> _offsetPageNameResult = Result.Success(nameof(OffsetPage));
+    private static readonly Result<string> _cursorPageResult = Result.Success(nameof(CursorPage));
 
     public required int PageSize { get; init; }
     public int? PageNumber { get; init; }
@@ -29,24 +38,22 @@ public sealed class OffsetOrCursorPage : IPage
 
         if (pageIsNotOffsetOrCursorPageResult.IsFailure)
         {
-            return pageIsNotOffsetOrCursorPageResult.Error
-                .ToResult<string>();
+            return _notOffsetOrCursorPageFailureStringResult;
         }
 
         var pageIsBothOffsetAndCursorPageResult = IsBothOffsetAndCursorPage();
 
         if (pageIsBothOffsetAndCursorPageResult.IsFailure)
         {
-            return pageIsBothOffsetAndCursorPageResult.Error
-                .ToResult<string>();
+            return _bothOffsetAndCursorPageFailureStringResult;
         }
 
         if (Cursor is null)
         {
-            return Result.Success(nameof(OffsetPage));
+            return _offsetPageNameResult;
         }
 
-        return Result.Success(nameof(CursorPage));
+        return _cursorPageResult;
     }
 
     public OffsetPage ToOffsetPage()
