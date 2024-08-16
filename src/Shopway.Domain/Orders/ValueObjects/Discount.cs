@@ -7,6 +7,8 @@ namespace Shopway.Domain.Orders.ValueObjects;
 
 public sealed record class Discount : ValueObject<decimal>
 {
+    public static Discount NoDiscount = new(0);
+
     public const decimal MaxDiscount = 0.5m;
     public const decimal MinDiscount = 0;
 

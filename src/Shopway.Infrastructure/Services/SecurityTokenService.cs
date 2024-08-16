@@ -80,7 +80,9 @@ internal sealed class SecurityTokenService
             return Result.Failure<Claim?>(Error.InvalidArgument(_errorMessage));
         }
 
-        return jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.Equals(claimInvariantName, InvariantCultureIgnoreCase));
+        var claim = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.Equals(claimInvariantName, InvariantCultureIgnoreCase));
+
+        return Result.Success(claim);
     }
 
     public Result<bool> HasRefreshTokenExpired(string token)
@@ -92,7 +94,9 @@ internal sealed class SecurityTokenService
             return Result.Failure<bool>(Error.InvalidArgument(_errorMessage));
         }
 
-        return securityToken.ValidFrom.AddDays(_options.RefreshTokenExpirationInDays) < _timeProvider.GetUtcNow();
+        var hasExpired = securityToken.ValidFrom.AddDays(_options.RefreshTokenExpirationInDays) < _timeProvider.GetUtcNow();
+
+        return Result.Success(hasExpired);
     }
 
     public bool HasTwoFactorTokenExpired(DateTimeOffset? twoFactorTokenCreatedOn)
