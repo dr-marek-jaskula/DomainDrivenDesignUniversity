@@ -36,9 +36,7 @@ internal sealed class SymSpellFuzzySearch(SymSpell fuzzySearchEngine) : IFuzzySe
             return Result.Failure<string>(error);
         }
 
-        return suggestions
-            .First()
-            .term;
+        return Result.Success(suggestions.First().term);
     }
 
     /// <summary>
@@ -48,18 +46,18 @@ internal sealed class SymSpellFuzzySearch(SymSpell fuzzySearchEngine) : IFuzzySe
     /// <param name="count">The number of results</param>
     /// <param name="maxEditDistance">Distance from the stringToApproximate</param>
     /// <returns>Specified number of approximated strings</returns>
-    public Result<IList<string>> FindMultipleBestSuggestions(string stringToApproximate, int count, int maxEditDistance = DefaultMaxTermDistance)
+    public Result<List<string>> FindMultipleBestSuggestions(string stringToApproximate, int count, int maxEditDistance = DefaultMaxTermDistance)
     {
         if (maxEditDistance < 0)
         {
             var error = Error.New(nameof(SymSpellFuzzySearch), $"Distance must be a non negative value. Current value: '{maxEditDistance}'.");
-            return Result.Failure<IList<string>>(error);
+            return Result.Failure<List<string>>(error);
         }
 
         if (count < 1)
         {
             var error = Error.New(nameof(SymSpellFuzzySearch), $"Invalid count: '{count}'. It has be at least 1.");
-            return Result.Failure<IList<string>>(error);
+            return Result.Failure<List<string>>(error);
         }
 
         var suggestions = _fuzzySearchEngine.Lookup(stringToApproximate, Verbosity.Closest, maxEditDistance);
@@ -67,13 +65,15 @@ internal sealed class SymSpellFuzzySearch(SymSpell fuzzySearchEngine) : IFuzzySe
         if (suggestions.IsNullOrEmpty())
         {
             var error = Error.New(nameof(SymSpellFuzzySearch), $"There is no suggestion for '{stringToApproximate}' in maximal distance: '{maxEditDistance}'.");
-            return Result.Failure<IList<string>>(error);
+            return Result.Failure<List<string>>(error);
         }
 
-        return suggestions
+        var terms = suggestions
             .Take(count)
             .Select(s => s.term)
             .ToList();
+
+        return Result.Success(terms);
     }
 
     /// <summary>
@@ -91,6 +91,6 @@ internal sealed class SymSpellFuzzySearch(SymSpell fuzzySearchEngine) : IFuzzySe
         }
 
         var suggestion = _fuzzySearchEngine.WordSegmentation(inputTerm, maxEditDistance);
-        return suggestion.correctedString;
+        return Result.Success(suggestion.correctedString);
     }
 }

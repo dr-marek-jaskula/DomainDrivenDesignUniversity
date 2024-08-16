@@ -30,11 +30,6 @@ public class Result<TValue> : Result, IResult<TValue>
         _value = value;
     }
 
-    public static implicit operator Result<TValue>(TValue? value)
-    {
-        return Create(value);
-    }
-
     public ValidationResult<TValue> ToValidationResult()
     {
         Error.ThrowIfErrorNone();
@@ -77,38 +72,6 @@ public class Result : IResult
     {
         Error.ThrowIfErrorNone();
         return ValidationResult<TValue>.WithErrors(Error);
-    }
-
-    /// <summary>
-    /// Returns a success <see cref="Result"/>
-    /// </summary>
-    /// <param name="condition">The condition</param>
-    /// <returns>A new instance of <see cref="Result"/></returns>
-    public static Result Create(bool condition)
-    {
-        return condition
-            ? Success()
-            : Failure(Error.ConditionNotSatisfied);
-    }
-
-    /// <summary>
-    /// Returns a success <see cref="Result"/>
-    /// </summary>
-    /// <param name="condition">The condition</param>
-    /// <returns>A new instance of <see cref="Result"/></returns>
-    public static Result<TValue> Create<TValue>(TValue? value)
-    {
-        if (value is null)
-        {
-            return Failure<TValue>(Error.NullValue);
-        }
-
-        if (value is Error)
-        {
-            throw new InvalidOperationException("Provided value is an Error");
-        }
-
-        return Success(value);
     }
 
     /// <summary>

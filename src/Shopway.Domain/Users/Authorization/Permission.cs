@@ -59,13 +59,13 @@ public sealed partial class Permission
             return ValidationResult<Permission>.WithErrors([.. errors]);
         }
 
-        return new Permission(name)
+        return Result.Success(new Permission(name)
         {
             RelatedAggregateRoot = relatedAggregateRoot,
             RelatedEntity = relatedEntity,
             Type = permissionType,
             Properties = allowedProperties
-        };
+        });
     }
 
     public static Result<Permission> CreatePermission<TAggregateRoot, TEntity>

@@ -43,10 +43,10 @@ public sealed class OffsetOrCursorPage : IPage
 
         if (Cursor is null)
         {
-            return nameof(OffsetPage);
+            return Result.Success(nameof(OffsetPage));
         }
 
-        return nameof(CursorPage);
+        return Result.Success(nameof(CursorPage));
     }
 
     public OffsetPage ToOffsetPage()

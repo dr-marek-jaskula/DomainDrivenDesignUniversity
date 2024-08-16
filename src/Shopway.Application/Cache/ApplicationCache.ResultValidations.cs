@@ -1,5 +1,7 @@
 ﻿using Shopway.Application.Abstractions;
+using Shopway.Application.Features;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using Shopway.Domain.Common.Results.Abstractions;
@@ -34,11 +36,16 @@ public static partial class ApplicationCache
         var keyResponseTypes = GetKeyResponseTypes();
         var keyTypes = GetKeyTypes();
 
-        foreach (var pageResposneType in GetPageResponseTypes())
+        foreach (var pageResponseType in GetPageResponseTypes())
         {
             foreach (var responseType in responseTypes)
             {
-                var genericPageResponseType = pageResposneType.MakeGenericType(responseType);
+                if (ResponseOfCursorPageDoesNotHaveCursor(responseType, pageResponseType))
+                {
+                    continue;
+                }
+
+                var genericPageResponseType = pageResponseType.MakeGenericType(responseType);
                 AddToCache(resultValidationsCache, genericPageResponseType);
             }
 
@@ -46,8 +53,13 @@ public static partial class ApplicationCache
             {
                 foreach (var keyType in keyTypes)
                 {
+                    if (ResponseOfCursorPageDoesNotHaveCursor(keyResponseType, pageResponseType))
+                    {
+                        continue;
+                    }
+
                     var genericKeyResponseType = keyResponseType.MakeGenericType(keyType);
-                    var genericPageResponseType = pageResposneType.MakeGenericType(genericKeyResponseType);
+                    var genericPageResponseType = pageResponseType.MakeGenericType(genericKeyResponseType);
                     AddToCache(resultValidationsCache, genericPageResponseType);
                 }
             }
@@ -124,5 +136,11 @@ public static partial class ApplicationCache
 
         return genericArguments.Length is 1
             && genericArguments.Any(x => x.IsAssignableTo(typeof(IUniqueKey)));
+    }
+
+    private static bool ResponseOfCursorPageDoesNotHaveCursor(Type responseType, Type pageResponseType)
+    {
+        return responseType.IsAssignableTo(typeof(IHasCursor)) is false 
+            && pageResponseType.IsAssignableTo(typeof(CursorPageResponse<>));
     }
 }

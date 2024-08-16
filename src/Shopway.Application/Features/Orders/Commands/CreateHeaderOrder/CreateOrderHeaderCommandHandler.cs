@@ -14,7 +14,9 @@ internal sealed class CreateOrderHeaderCommandHandler(IOrderHeaderRepository ord
 
     public Task<IResult<CreateOrderHeaderResponse>> Handle(CreateOrderHeaderCommand command, CancellationToken cancellationToken)
     {
-        var discount = Discount.Create(command.Discount ?? 0).Value;
+        var discount = command.Discount is null 
+            ? Discount.NoDiscount
+            : Discount.Create((decimal)command.Discount).Value;
 
         OrderHeader createdOrderHeader = CreateOrderHeader(command, discount);
 
@@ -24,13 +26,13 @@ internal sealed class CreateOrderHeaderCommandHandler(IOrderHeaderRepository ord
             .ToTask();
     }
 
-    private OrderHeader CreateOrderHeader(CreateOrderHeaderCommand command, Result<Discount> discountResult)
+    private OrderHeader CreateOrderHeader(CreateOrderHeaderCommand command, Discount discount)
     {
         var orderToCreate = OrderHeader.Create
         (
             id: OrderHeaderId.New(),
             userId: command.UserId,
-            discount: discountResult.Value
+            discount: discount
         );
 
         _orderHeaderRepository.Create(orderToCreate);

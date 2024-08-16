@@ -1,10 +1,11 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Exceptions;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Application.Features;
 
 public sealed record CursorPageResponse<TValue> : PageResponse<TValue>
-    where TValue : IResponse
+    where TValue : IResponse, IHasCursor
 {
     /// <summary>
     /// Current page cursor. Id from which we query records

@@ -13,7 +13,7 @@ public sealed class TestUserAuthorizationService : IUserAuthorizationService<Per
 
     public Result<UserId> GetUserId(AuthorizationHandlerContext context)
     {
-        return UserId.Create(_testUserUlid);
+        return Result.Success(UserId.Create(_testUserUlid));
     }
 
     public Task<bool> HasPermissionsAsync(UserId userId, LogicalOperation logicalOperation, params PermissionName[] permissions)

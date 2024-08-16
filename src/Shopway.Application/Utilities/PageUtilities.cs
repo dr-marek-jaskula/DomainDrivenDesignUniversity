@@ -1,6 +1,7 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Application.Features;
 using Shopway.Domain.Common.DataProcessing;
+using Shopway.Domain.Common.DataProcessing.Abstractions;
 
 namespace Shopway.Application.Utilities;
 
@@ -24,7 +25,7 @@ public static class PageUtilities
     }
 
     public static CursorPageResponse<TResponse> ToPageResponse<TResponse>(this (IList<TResponse> Responses, Ulid NextCursor) response, CursorPage page)
-        where TResponse : class, IResponse
+        where TResponse : class, IResponse, IHasCursor
     {
         return new CursorPageResponse<TResponse>(response.Responses, page.Cursor, response.NextCursor);
     }

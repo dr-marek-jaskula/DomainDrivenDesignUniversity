@@ -8,7 +8,7 @@ public static class ResponseUtilities
     public static IResult<TResponse> ToResult<TResponse>(this TResponse response)
         where TResponse : class, IResponse
     {
-        return Result.Create(response);
+        return Result.Success(response);
     }
 
     public static IResult<TResponse> ToResult<TResponse>(this ValidationResult<TResponse> response)
