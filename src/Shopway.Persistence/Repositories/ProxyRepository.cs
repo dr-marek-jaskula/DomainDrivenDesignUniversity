@@ -19,12 +19,12 @@ internal class ProxyRepository<TEntity, TEntityId>(ShopwayDbContext dbContext) :
     protected readonly ShopwayDbContext _dbContext = dbContext;
     private static readonly Func<TEntityId, Expression<Func<TEntity, bool>>> _cursorFilterFactory = GenerateCursorFilterFactory();
 
-    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    public async Task<(List<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
         IOffsetPage page,
         CancellationToken cancellationToken,
         IFilter<TEntity>? filter = null,
-        IList<LikeEntry<TEntity>>? likes = null,
+        List<LikeEntry<TEntity>>? likes = null,
         ISortBy<TEntity>? sort = null,
         IMapping<TEntity, TResponse>? mapping = null,
         Expression<Func<TEntity, TResponse>>? mappingExpression = null,
@@ -48,12 +48,12 @@ internal class ProxyRepository<TEntity, TEntityId>(ShopwayDbContext dbContext) :
             .PageAsync(page, cancellationToken);
     }
 
-    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    public async Task<(List<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
     (
         ICursorPage page,
         CancellationToken cancellationToken,
         IFilter<TEntity>? filter = null,
-        IList<LikeEntry<TEntity>>? likes = null,
+        List<LikeEntry<TEntity>>? likes = null,
         ISortBy<TEntity>? sort = null,
         IMapping<TEntity, TResponse>? mapping = null,
         Expression<Func<TEntity, TResponse>>? mappingExpression = null,

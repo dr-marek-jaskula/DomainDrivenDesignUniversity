@@ -35,7 +35,7 @@ internal static class BatchUpsertOrderLineCommandUtilities
             .FilterValidRequests(orderLinesToUpdateWithKeys, Inserted);
     }
 
-    public static IList<ProductId> GetRequestsProductIds
+    public static List<ProductId> GetRequestsProductIds
     (
         this BatchUpsertOrderLineCommand command
     )

@@ -59,18 +59,13 @@ public static class QueryableUtilities
     /// <param name="queryable">Queryable</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Tuple of  items and total count</returns>
-    public static async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    public static async Task<(List<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
         this IQueryable<TResponse> queryable,
         IOffsetPage page,
         CancellationToken cancellationToken
     )
     {
-        if (page is null)
-        {
-            throw new ArgumentNullException(nameof(page), "Page is null");
-        }
-
         var totalCount = await queryable.CountAsync(cancellationToken);
 
         var responses = await queryable
@@ -86,8 +81,8 @@ public static class QueryableUtilities
     /// <typeparam name="TResponse">Response type to map to</typeparam>
     /// <param name="queryable">Queryable</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Tuple of  items and next cursor. If the last record was reach, the Ulid.Empty is returned as next cursor</returns>
-    public static async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    /// <returns>Tuple of  items and next cursor. If the last record was reached, the Ulid.Empty is returned as next cursor</returns>
+    public static async Task<(List<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
     (
         this IQueryable<TResponse> queryable,
         ICursorPage page,
@@ -95,18 +90,18 @@ public static class QueryableUtilities
     )
         where TResponse : class, IHasCursor
     {
-        var responsesWithCursor = await queryable
+        var responses = await queryable
             .Take(page.PageSize + AdditionalRecordForCursor)
             .ToListAsync(cancellationToken);
 
         var cursor = Ulid.Empty;
-        if (responsesWithCursor.Count > page.PageSize)
+        if (responses.Count > page.PageSize)
         {
-            cursor = responsesWithCursor[^1].Id;
-            responsesWithCursor = responsesWithCursor[..^1];
+            cursor = responses[^1].Id;
+            responses = responses[..^1];
         }
 
-        return (responsesWithCursor, cursor);
+        return (responses, cursor);
     }
 
     public static async Task<bool> AnyAsync<TEntity, TEntityId>

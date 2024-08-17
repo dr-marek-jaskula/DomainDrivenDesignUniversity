@@ -66,12 +66,12 @@ internal sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorat
         return await _decorated.GetByIdWithOrderLineAsync(id, orderLineId, cancellationToken);
     }
 
-    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    public async Task<(List<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
         IOffsetPage page,
         CancellationToken cancellationToken,
         IFilter<OrderHeader>? filter = null,
-        IList<LikeEntry<OrderHeader>>? likes = null,
+        List<LikeEntry<OrderHeader>>? likes = null,
         ISortBy<OrderHeader>? sort = null,
         IMapping<OrderHeader, TResponse>? mapping = null,
         Expression<Func<OrderHeader, TResponse>>? mappingExpression = null,
@@ -91,12 +91,12 @@ internal sealed class CachedOrderHeaderRepository(IOrderHeaderRepository decorat
         );
     }
 
-    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    public async Task<(List<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
     (
         ICursorPage page,
         CancellationToken cancellationToken,
         IFilter<OrderHeader>? filter = null,
-        IList<LikeEntry<OrderHeader>>? likes = null,
+        List<LikeEntry<OrderHeader>>? likes = null,
         ISortBy<OrderHeader>? sort = null,
         IMapping<OrderHeader, TResponse>? mapping = null,
         Expression<Func<OrderHeader, TResponse>>? mappingExpression = null,
