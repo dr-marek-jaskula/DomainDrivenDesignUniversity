@@ -8,7 +8,6 @@ using Shopway.Persistence.Framework;
 using Shopway.Persistence.Utilities;
 using System.Linq.Expressions;
 using ZiggyCreatures.Caching.Fusion;
-using static Shopway.Domain.Constants.Constants;
 
 namespace Shopway.Persistence.Repositories.Decorators;
 
@@ -31,7 +30,7 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
         return _dbContext.AttachToChangeTrackerWhenTrackingBehaviorIsDifferentFromNoTracking(product);
     }
 
-    public Task<IList<Product>> GetByIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
+    public Task<List<Product>> GetByIdsAsync(List<ProductId> ids, CancellationToken cancellationToken)
     {
         return _decorated.GetByIdsAsync(ids, cancellationToken);
     }
@@ -60,7 +59,7 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
         _fusionCache.Update<Product, ProductId>(product);
     }
 
-    public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
+    public async Task<List<string>> GetNamesAsync(CancellationToken cancellationToken)
     {
         return await _decorated.GetNamesAsync(cancellationToken);
     }
@@ -80,7 +79,7 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
         return _decorated.AnyAsync(productKey, cancellationToken);
     }
 
-    public Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
+    public Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(List<string> productNames, List<string> productRevisions, List<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
     {
         return _decorated.GetProductsDictionaryByNameAndRevision(productNames, productRevisions, productKeys, toProductKey, cancellationToken);
     }
@@ -95,17 +94,17 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
         return _decorated.GetByIdWithReviewAsync(id, title, cancellationToken);
     }
 
-    public Task<IList<ProductId>> VerifyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
+    public Task<List<ProductId>> VerifyIdsAsync(List<ProductId> ids, CancellationToken cancellationToken)
     {
         return _decorated.VerifyIdsAsync(ids, cancellationToken);
     }
 
-    public async Task<(IList<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
+    public async Task<(List<TResponse> Responses, int TotalCount)> PageAsync<TResponse>
     (
         IOffsetPage page,
         CancellationToken cancellationToken,
         IFilter<Product>? filter = null,
-        IList<LikeEntry<Product>>? likes = null,
+        List<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         IMapping<Product, TResponse>? mapping = null,
         Expression<Func<Product, TResponse>>? mappingExpression = null,
@@ -125,12 +124,12 @@ internal sealed class CachedProductRepository(IProductRepository decorated, IFus
         );
     }
 
-    public async Task<(IList<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
+    public async Task<(List<TResponse> Responses, Ulid Cursor)> PageAsync<TResponse>
     (
         ICursorPage page,
         CancellationToken cancellationToken,
         IFilter<Product>? filter = null,
-        IList<LikeEntry<Product>>? likes = null,
+        List<LikeEntry<Product>>? likes = null,
         ISortBy<Product>? sort = null,
         IMapping<Product, TResponse>? mapping = null,
         Expression<Func<Product, TResponse>>? mappingExpression = null,

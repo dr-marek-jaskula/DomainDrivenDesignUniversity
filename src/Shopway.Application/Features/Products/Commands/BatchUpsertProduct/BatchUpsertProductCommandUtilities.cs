@@ -12,7 +12,7 @@ internal static class BatchUpsertProductCommandUtilities
     /// Product Key components list
     /// </summary>
     /// <returns>List of distinct product names</returns>
-    public static IList<string> ProductNames(this BatchUpsertProductCommand command)
+    public static List<string> ProductNames(this BatchUpsertProductCommand command)
     {
         return command
             .Requests
@@ -25,7 +25,7 @@ internal static class BatchUpsertProductCommandUtilities
     /// Product Key components list
     /// </summary>
     /// <returns>List of distinct product revisions</returns>
-    public static IList<string> ProductRevisions(this BatchUpsertProductCommand command)
+    public static List<string> ProductRevisions(this BatchUpsertProductCommand command)
     {
         return command
             .Requests

@@ -15,7 +15,7 @@ namespace Shopway.Persistence.Repositories;
 
 internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyWithKeyRepository<Product, ProductId, ProductKey>(dbContext), IProductRepository
 {
-    public async Task<IList<string>> GetNamesAsync(CancellationToken cancellationToken)
+    public async Task<List<string>> GetNamesAsync(CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.Names.Create();
 
@@ -56,7 +56,7 @@ internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyWithK
             .AnyAsync(cancellationToken);
     }
 
-    public async Task<IList<ProductId>> VerifyIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
+    public async Task<List<ProductId>> VerifyIdsAsync(List<ProductId> ids, CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.ById.Create(ids, product => product.Id);
 
@@ -78,7 +78,7 @@ internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyWithK
             .FirstAsync(cancellationToken);
     }
 
-    public async Task<IList<Product>> GetByIdsAsync(IList<ProductId> ids, CancellationToken cancellationToken)
+    public async Task<List<Product>> GetByIdsAsync(List<ProductId> ids, CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.ById.Create(ids);
 
@@ -118,7 +118,7 @@ internal sealed class ProductRepository(ShopwayDbContext dbContext) : ProxyWithK
             .FirstAsync(cancellationToken);
     }
 
-    public async Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(IList<string> productNames, IList<string> productRevisions, IList<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
+    public async Task<IDictionary<ProductKey, Product>> GetProductsDictionaryByNameAndRevision(List<string> productNames, List<string> productRevisions, List<ProductKey> productKeys, Func<Product, ProductKey> toProductKey, CancellationToken cancellationToken)
     {
         var specification = ProductSpecification.ByNamesAndRevisions.Create(productNames, productRevisions);
 
