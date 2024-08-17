@@ -14,6 +14,8 @@ namespace Shopway.Application.Features.Proxy;
 
 public partial class MediatorProxyService : IMediatorProxyService
 {
+    private static readonly Result<IQuery<DataTransferObjectResponse>> _invalidMappingResult = Error.InvalidArgument("Mapping must be provided.").ToResult<IQuery<DataTransferObjectResponse>>();
+
     //Not generic caches
     private static readonly FrozenDictionary<PageQueryDiscriminator, Func<ProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>> _strategyPageQueryCache =
         StrategyCacheFactory<PageQueryDiscriminator, Func<ProxyPageQuery, IQuery<PageResponse<DataTransferObjectResponse>>>>
@@ -40,8 +42,7 @@ public partial class MediatorProxyService : IMediatorProxyService
     {
         if (proxyQuery.Mapping is null || proxyQuery.Mapping.MappingEntries.IsEmpty())
         {
-            return Error.InvalidArgument("Mapping must be provided.")
-                .ToResult<IQuery<DataTransferObjectResponse>>();
+            return _invalidMappingResult;
         }
 
         var strategyKey = new QueryDiscriminator(proxyQuery.Entity);
@@ -88,8 +89,7 @@ public partial class MediatorProxyService : IMediatorProxyService
     {
         if (proxyQuery.Mapping is null || proxyQuery.Mapping.MappingEntries.IsEmpty())
         {
-            return Error.InvalidArgument("Mapping must be provided.")
-                .ToResult<IQuery<DataTransferObjectResponse>>();
+            return _invalidMappingResult;
         }
 
         return proxyQuery switch
