@@ -17,16 +17,16 @@
 
 	<ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
-	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
     <PackageReference Include="FastEndpoints" Version="5.28.0" />
     <PackageReference Include="FastEndpoints.AspVersioning" Version="5.28.0" />
     <PackageReference Include="FastEndpoints.Security" Version="5.28.0" />
     <PackageReference Include="FastEndpoints.Swagger" Version="5.28.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.8" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
-	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.1" />
 	<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
-	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
   </ItemGroup>
 
   <ItemGroup>
