@@ -7,7 +7,7 @@
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<Description>dr-marek-jaskula source generator for generating entity ids and converters</Description>
 		<PackageId>Shopway.SourceGenerator</PackageId>
-		<Version>4.1.18</Version>
+		<Version>4.1.20</Version>
 		<Authors>dr-marek-jaskula</Authors>
 		
 		<!-- See https://github.com/dotnet/roslyn/issues/63290 -->
@@ -17,14 +17,6 @@
 		<Nullable>enable</Nullable>
 		<LangVersion>Latest</LangVersion>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<!-- This ensures the library will be packaged as a source generator when we use "dotnet pack" -->
@@ -37,6 +29,8 @@
 		<None Include="ReadMe.SourceGenerator.md" Pack="true" PackagePath="\" />
 		<ProjectReference Include="..\$(AssemblyName).Base\$(AssemblyName).Base.csproj" PrivateAssets="all" />
 		<None Include="$(OutputPath)\$(AssemblyName).Base.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" PrivateAssets="all"/>
+
+		<None Include="$(OutputPath)\$(AssemblyName).Base.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
 </Project>
