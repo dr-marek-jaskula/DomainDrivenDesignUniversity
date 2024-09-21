@@ -6,7 +6,7 @@ using static Shopway.Tests.Integration.Container.Constants.Constants.CollectionN
 namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 
 [Collection(WebApplicationFactoryCollection)]
-//[IntegrationTest.Api]
+[IntegrationTest.Api]
 public sealed partial class ProductsControllerTests : ControllerTestsBase
 {
     private readonly RestClient _restClient;

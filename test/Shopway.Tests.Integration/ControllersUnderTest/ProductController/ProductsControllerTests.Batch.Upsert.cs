@@ -13,7 +13,7 @@ namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 public partial class ProductsControllerTests
 {
     [Fact]
-    [Trait(nameof(IntegrationTest), IntegrationTest.PublicApi)]
+    [IntegrationTest.PublicApi]
     public async Task Batch_Upsert_ShouldReturnValidResponseEntries_WhenRequestsAreValid()
     {
         //Arrange
@@ -31,7 +31,7 @@ public partial class ProductsControllerTests
     }
 
     [Fact]
-    [Trait(nameof(IntegrationTest), IntegrationTest.PublicApi)]
+    [IntegrationTest.PublicApi]
     public async Task Batch_Upsert_ShouldReturnOneErrorResponseEntry_WhenOneRequestIsInvalid()
     {
         //Arrange
@@ -55,7 +55,7 @@ public partial class ProductsControllerTests
     }
 
     [Fact]
-    [Trait(nameof(IntegrationTest), IntegrationTest.PublicApi)]
+    [IntegrationTest.PublicApi]
     public async Task Batch_Upsert_ShouldReturnProblemDetailsWithTwoErrors_WhenProductNameAndRevisionFromProductKeyAreNull()
     {
         //Arrange

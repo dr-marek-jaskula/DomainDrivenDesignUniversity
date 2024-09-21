@@ -2,7 +2,7 @@
 
 public static partial class Constants
 {
-    public static class IntegrationTest2
+    public static class Test
     {
         public const string Controller = nameof(Controller);
         public const string ControllerTests = nameof(ControllerTests);

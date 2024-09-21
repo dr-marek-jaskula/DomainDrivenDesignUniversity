@@ -2,11 +2,8 @@
 
 public static partial class Constants
 {
-    public static class IntegrationTest
+    public static class Test
     {
-        public const string Api = nameof(Api);
-        public const string PublicApi = nameof(PublicApi);
-        public const string CleanDatabase = nameof(CleanDatabase);
         public const string Controller = nameof(Controller);
         public const string ControllerTests = nameof(ControllerTests);
         public const string IntegrationTestsUrl = nameof(IntegrationTestsUrl);

@@ -15,7 +15,7 @@ using System.Data;
 using System.Reflection;
 using static RestSharp.Method;
 using static Shopway.Tests.Integration.Constants.Constants;
-using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
+using static Shopway.Tests.Integration.Constants.Constants.Test;
 
 namespace Shopway.Tests.Integration.Abstractions;
 

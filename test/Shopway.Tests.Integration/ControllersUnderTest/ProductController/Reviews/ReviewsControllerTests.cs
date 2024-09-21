@@ -5,16 +5,15 @@ using Shopway.Domain.Products;
 using Shopway.Presentation.Controllers;
 using Shopway.Tests.Integration.Abstractions;
 using Shopway.Tests.Integration.Persistence;
-using static Shopway.Tests.Integration.Constants.Constants;
 using static Shopway.Tests.Integration.Constants.Constants.CollectionName;
-using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
+using static Shopway.Tests.Integration.Constants.Constants.Test;
 using static System.Threading.CancellationToken;
 using Review = Shopway.Domain.Products.Review;
 
 namespace Shopway.Tests.Integration.ControllersUnderTest.Reviews;
 
 [Collection(ProductControllerCollection)]
-[Trait(nameof(IntegrationTest), Api)]
+[IntegrationTest.Api]
 public sealed partial class ReviewsControllerTests : ControllerTestsBase, IAsyncLifetime
 {
     private RestClient? _restClient;
