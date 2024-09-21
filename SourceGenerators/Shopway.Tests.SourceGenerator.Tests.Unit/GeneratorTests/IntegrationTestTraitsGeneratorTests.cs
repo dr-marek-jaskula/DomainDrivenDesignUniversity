@@ -97,6 +97,11 @@ public class GenerateIntegrationTestTraitsAttribute : global::System.Attribute;"
             {
                 public override string IntegrationTest => nameof(CleanDatabase);
             }
+            
+            public class Performance : IntegrationTestAttribute
+            {
+                public override string IntegrationTest => nameof(Performance);
+            }
         }
         
         [TraitDiscoverer("MyNamespace.IntegrationTestDiscoverer", "MyNamespace")]
@@ -116,7 +121,7 @@ public class GenerateIntegrationTestTraitsAttribute : global::System.Attribute;"
                 yield return new KeyValuePair<string, string>(Key, category);
             }
         }
-        """; ;
+        """;
 
         return (input, output);
     }

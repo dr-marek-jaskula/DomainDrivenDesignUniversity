@@ -2,7 +2,7 @@
 
 public static partial class Constants
 {
-    public static class IntegrationTest
+    public static class Test
     {
         public const string Performance = nameof(Performance);
     }

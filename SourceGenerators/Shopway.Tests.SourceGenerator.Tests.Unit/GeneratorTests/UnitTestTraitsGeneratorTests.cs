@@ -141,7 +141,7 @@ public class GenerateUnitTestTraitsAttribute : global::System.Attribute;");
                 yield return new KeyValuePair<string, string>(Key, category);
             }
         }
-        """; ;
+        """;
 
         return (input, output);
     }

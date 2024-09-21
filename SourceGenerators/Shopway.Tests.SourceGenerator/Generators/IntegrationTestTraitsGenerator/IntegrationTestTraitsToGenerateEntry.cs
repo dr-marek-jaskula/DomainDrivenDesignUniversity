@@ -28,7 +28,6 @@ public readonly record struct IntegrationTestTraitsToGenerateEntry
             .AppendLine($"namespace {Namespace};")
             .AppendLine()
             .AppendLine(AppendIntegrationTests())
-            .AppendLine()
             .ToString();
     }
 
@@ -50,6 +49,11 @@ public readonly record struct IntegrationTestTraitsToGenerateEntry
             public class CleanDatabase : IntegrationTestAttribute
             {
                 public override string IntegrationTest => nameof(CleanDatabase);
+            }
+            
+            public class Performance : IntegrationTestAttribute
+            {
+                public override string IntegrationTest => nameof(Performance);
             }
         }
 
