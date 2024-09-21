@@ -7,7 +7,7 @@
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<Description>dr-marek-jaskula source generator for generating xunit test traits</Description>
 		<PackageId>Shopway.Tests.SourceGenerator</PackageId>
-		<Version>1.0.5</Version>
+		<Version>1.0.6</Version>
 		<Authors>dr-marek-jaskula</Authors>
 
 		<!-- See https://github.com/dotnet/roslyn/issues/63290 -->
@@ -29,7 +29,7 @@
 		<None Include="ReadMe.Test.SourceGenerator.md" Pack="true" PackagePath="\" />
 		<ProjectReference Include="..\Shopway.SourceGenerator.Base\Shopway.SourceGenerator.Base.csproj" PrivateAssets="all" />
 		<None Include="$(OutputPath)\Shopway.SourceGenerator.Base.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
-
+		<None Include="$(OutputPath)\Shopway.SourceGenerator.Base.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
 </Project>
