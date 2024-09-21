@@ -7,14 +7,11 @@
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<Description>dr-marek-jaskula source generator for generating entity ids and converters</Description>
 		<PackageId>Shopway.SourceGenerator</PackageId>
-		<Version>4.1.6</Version>
+		<Version>4.1.14</Version>
 		<Authors>dr-marek-jaskula</Authors>
 		
 		<!-- See https://github.com/dotnet/roslyn/issues/63290 -->
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-
-		<!-- See https://github.com/NuGet/Home/wiki/DevelopmentDependency-support-for-PackageReference -->
-		<DevelopmentDependency>true</DevelopmentDependency>
 		
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>

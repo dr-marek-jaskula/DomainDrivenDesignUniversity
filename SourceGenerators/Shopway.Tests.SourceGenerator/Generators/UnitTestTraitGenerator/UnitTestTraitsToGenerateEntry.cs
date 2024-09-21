@@ -3,16 +3,16 @@ using static Shopway.SourceGenerator.Base.Utilities.Constants;
 
 namespace Shopway.Tests.SourceGenerator.Generators;
 
-public readonly record struct TraitsToGenerateEntry
+public readonly record struct UnitTestTraitsToGenerateEntry
 {
     private const string XUnitAbstractions = "using Xunit.Abstractions;";
     private const string XUnitSdkNamespace = "using Xunit.Sdk;";
 
     public readonly string Namespace;
 
-    public static readonly TraitsToGenerateEntry None = new(string.Empty);
+    public static readonly UnitTestTraitsToGenerateEntry None = new(string.Empty);
 
-    public TraitsToGenerateEntry(string @namespace)
+    public UnitTestTraitsToGenerateEntry(string @namespace)
     {
         Namespace = @namespace;
     }
@@ -28,6 +28,7 @@ public readonly record struct TraitsToGenerateEntry
             .AppendLine($"namespace {Namespace};")
             .AppendLine()
             .AppendLine(AppendUnitTests())
+            .AppendLine()
             .ToString();
     }
 

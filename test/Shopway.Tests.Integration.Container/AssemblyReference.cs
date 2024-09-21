@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace Shopway.Tests.Unit;
+namespace Shopway.Tests.Integration.Container;
 
-[GenerateUnitTestTraits]
+[GenerateIntegrationTestTraits]
 public static class AssemblyReference
 {
     public static Assembly Assembly { get; set; } = typeof(AssemblyReference).Assembly;
