@@ -1,11 +1,10 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
 using Shopway.Tests.Unit.ArchitectureTests.Utilities;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
 
-[Trait(nameof(UnitTest), UnitTest.Architecture)]
+[UnitTest.Architecture]
 public sealed class ValueObjectTests
 {
     [Fact]

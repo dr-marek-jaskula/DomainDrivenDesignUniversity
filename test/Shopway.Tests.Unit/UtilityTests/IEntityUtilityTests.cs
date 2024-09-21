@@ -2,11 +2,10 @@
 using Shopway.Domain.Products;
 using Shopway.Domain.Users;
 using static Shopway.Domain.Common.BaseTypes.IEntityUtilities;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 
-[Trait(nameof(UnitTest), UnitTest.Utility)]
+[UnitTest.Utility]
 public sealed class IEntityUtilityTests
 {
     private static readonly List<string> _productAllPropertiesWithNestedProperties = ["Id", "Price", "Revision", "ProductName", "UomCode", "CreatedOn", "CreatedBy", "UpdatedOn", "UpdatedBy", "Reviews.ProductId", "Reviews.Id", "Reviews.Description", "Reviews.Title", "Reviews.Username", "Reviews.Stars", "Reviews.CreatedOn", "Reviews.CreatedBy", "Reviews.UpdatedOn", "Reviews.UpdatedBy"];

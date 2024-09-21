@@ -2,11 +2,10 @@
 using Shopway.Domain.Products.Events;
 using Shopway.Domain.Products.ValueObjects;
 using Shopway.Tests.Unit.Abstractions;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.Products;
 
-[Trait(nameof(UnitTest), UnitTest.Domain)]
+[UnitTest.Domain]
 public sealed class ProductTests : TestBase
 {
     [Fact]

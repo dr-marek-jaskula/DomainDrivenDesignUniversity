@@ -1,11 +1,10 @@
 ﻿using Shopway.Domain.Common.Utilities;
 using static Shopway.Domain.Common.Utilities.RangeUtility;
 using static Shopway.Domain.Common.Utilities.StringUtilities;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 
-[Trait(nameof(UnitTest), UnitTest.Utility)]
+[UnitTest.Utility]
 public sealed class StringUtilityTests
 {
     private sealed class DigitTestData : TheoryData<int>

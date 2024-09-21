@@ -1,11 +1,10 @@
 ﻿using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Users.ValueObjects;
 using Shopway.Tests.Unit.Abstractions;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
 
-[Trait(nameof(UnitTest), UnitTest.Domain)]
+[UnitTest.Domain]
 public sealed class EmailTests : TestBase
 {
     private sealed class InvalidEmailTestData : TheoryData<string, Error[]>

@@ -1,11 +1,10 @@
 ﻿using Shopway.Domain.Common.Errors;
-using Shopway.Tests.Unit.Abstractions;
 using Shopway.Domain.Products.ValueObjects;
-using static Shopway.Tests.Unit.Constants.Constants;
+using Shopway.Tests.Unit.Abstractions;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.ValueObjects;
 
-[Trait(nameof(UnitTest), UnitTest.Domain)]
+[UnitTest.Domain]
 public sealed class ProductNameTests : TestBase
 {
     private sealed class InvalidProductNameTestData : TheoryData<string, Error>

@@ -1,11 +1,10 @@
 ﻿using NetArchTest.Rules;
 using Shopway.Domain.Common.BaseTypes.Abstractions;
-using static Shopway.Tests.Unit.Constants.Constants;
 using static Shopway.Tests.Unit.Constants.Constants.NamingConvention;
 
 namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
-[Trait(nameof(UnitTest), UnitTest.Architecture)]
+[UnitTest.Architecture]
 public partial class NamingConventionsTests
 {
     [Fact]

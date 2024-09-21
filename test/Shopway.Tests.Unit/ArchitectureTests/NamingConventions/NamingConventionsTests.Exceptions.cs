@@ -3,7 +3,7 @@ using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests.NamingConventions;
 
-[Trait(nameof(UnitTest), UnitTest.Architecture)]
+[UnitTest.Architecture]
 public partial class NamingConventionsTests
 {
     [Fact]
