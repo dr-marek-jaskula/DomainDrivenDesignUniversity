@@ -1,9 +1,10 @@
-﻿using Microsoft.CodeAnalysis.Text;
-using Microsoft.CodeAnalysis;
-using Shopway.SourceGenerator.Utilities;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using Shopway.SourceGenerator.Base;
+using Shopway.SourceGenerator.Base.Utilities;
 using System.Collections.Immutable;
 using System.Text;
-using static Shopway.SourceGenerator.Utilities.Constants;
+using static Shopway.SourceGenerator.Base.Utilities.Constants;
 
 namespace Shopway.SourceGenerator.Generators;
 
@@ -49,7 +50,7 @@ public class GenerateEnumConverterAttribute : global::System.Attribute
         {
             StringBuilder sb = new();
             var result = enumConverterToGenerateEntry.Generate(sb);
-            context.AddSource(enumConverterToGenerateEntry.EnumName + ".g.cs", SourceText.From(result, Encoding.UTF8));
+            context.AddSource(enumConverterToGenerateEntry.EnumName + GeneratedFileExtension, SourceText.From(result, Encoding.UTF8));
         }
     }
 

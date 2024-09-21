@@ -5,17 +5,17 @@
 		<LangVersion>latest</LangVersion>
 		<!-- We do not want to reference the source generator dll directly in consuming projects  -->
 		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<Description>dr-marek-jaskula source generator for generating entity ids and converters</Description>
-		<PackageId>Shopway.SourceGenerator</PackageId>
-		<Version>4.1.6</Version>
+		<Description>dr-marek-jaskula source generator for generating xunit test traits</Description>
+		<PackageId>Shopway.Tests.SourceGenerator</PackageId>
+		<Version>1.0.0</Version>
 		<Authors>dr-marek-jaskula</Authors>
-		
+
 		<!-- See https://github.com/dotnet/roslyn/issues/63290 -->
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
 		<!-- See https://github.com/NuGet/Home/wiki/DevelopmentDependency-support-for-PackageReference -->
 		<DevelopmentDependency>true</DevelopmentDependency>
-		
+
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>Latest</LangVersion>
@@ -28,10 +28,10 @@
 
 	<ItemGroup>
 		<!-- Set the analyzer to the base source generator project -->
-		<Analyzer Include="..\$(AssemblyName).Base\bin\$(Configuration)\netstandard2.0\$(AssemblyName).Base.dll" />
-		<None Include="ReadMe.SourceGenerator.md" Pack="true" PackagePath="\" />
-		<ProjectReference Include="..\$(AssemblyName).Base\$(AssemblyName).Base.csproj" PrivateAssets="all" />
-		<None Include="$(OutputPath)\$(AssemblyName).Base.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+		<Analyzer Include="..\Shopway.SourceGenerator.Base\bin\$(Configuration)\netstandard2.0\Shopway.SourceGenerator.Base.dll" />
+		<None Include="ReadMe.Test.SourceGenerator.md" Pack="true" PackagePath="\" />
+		<ProjectReference Include="..\Shopway.SourceGenerator.Base\Shopway.SourceGenerator.Base.csproj" PrivateAssets="all" />
+		<None Include="$(OutputPath)\Shopway.SourceGenerator.Base.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
 	</ItemGroup>
 
 </Project>

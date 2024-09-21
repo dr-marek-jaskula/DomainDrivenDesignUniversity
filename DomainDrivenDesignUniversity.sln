@@ -97,6 +97,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.SourceGenerator", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.SourceGenerator.Tests.Unit", "SourceGenerators\Shopway.SourceGenerator.Tests.Unit\Shopway.SourceGenerator.Tests.Unit.csproj", "{2AEF165B-1F6A-424A-95AE-D8182C84B58D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.Tests.SourceGenerator", "SourceGenerators\Shopway.Tests.SourceGenerator\Shopway.Tests.SourceGenerator.csproj", "{697C7F9B-96B8-47BC-8FF8-379ECC4BDEFF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopway.SourceGenerator.Base", "SourceGenerators\Shopway.SourceGenerator.Base\Shopway.SourceGenerator.Base.csproj", "{51C644A3-69AF-4200-B651-A93C31EBE68A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopway.Tests.SourceGenerator.Tests.Unit", "SourceGenerators\Shopway.Tests.SourceGenerator.Tests.Unit\Shopway.Tests.SourceGenerator.Tests.Unit.csproj", "{6FD96406-9051-4460-9B37-8C6881E0DF37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopway.SourceGenerator.Base.Tests.Unit", "SourceGenerators\Shopway.SourceGenerator.Base.Tests.Unit\Shopway.SourceGenerator.Base.Tests.Unit.csproj", "{99A72B0E-86BF-46AA-BC74-12E28D7DEB0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +171,22 @@ Global
 		{2AEF165B-1F6A-424A-95AE-D8182C84B58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AEF165B-1F6A-424A-95AE-D8182C84B58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AEF165B-1F6A-424A-95AE-D8182C84B58D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{697C7F9B-96B8-47BC-8FF8-379ECC4BDEFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{697C7F9B-96B8-47BC-8FF8-379ECC4BDEFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{697C7F9B-96B8-47BC-8FF8-379ECC4BDEFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{697C7F9B-96B8-47BC-8FF8-379ECC4BDEFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C644A3-69AF-4200-B651-A93C31EBE68A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C644A3-69AF-4200-B651-A93C31EBE68A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C644A3-69AF-4200-B651-A93C31EBE68A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C644A3-69AF-4200-B651-A93C31EBE68A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FD96406-9051-4460-9B37-8C6881E0DF37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FD96406-9051-4460-9B37-8C6881E0DF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FD96406-9051-4460-9B37-8C6881E0DF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FD96406-9051-4460-9B37-8C6881E0DF37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A72B0E-86BF-46AA-BC74-12E28D7DEB0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A72B0E-86BF-46AA-BC74-12E28D7DEB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A72B0E-86BF-46AA-BC74-12E28D7DEB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A72B0E-86BF-46AA-BC74-12E28D7DEB0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +214,10 @@ Global
 		{B515B481-F98A-40DF-A0E7-6AE589CC9D95} = {7AE0DB25-E7F8-4A2E-BF9B-577771D823A6}
 		{85ACAB0C-1232-4D18-9636-FDAE75B95B22} = {04AA239D-CADF-4CFC-BD4E-1076E7015093}
 		{2AEF165B-1F6A-424A-95AE-D8182C84B58D} = {04AA239D-CADF-4CFC-BD4E-1076E7015093}
+		{697C7F9B-96B8-47BC-8FF8-379ECC4BDEFF} = {04AA239D-CADF-4CFC-BD4E-1076E7015093}
+		{51C644A3-69AF-4200-B651-A93C31EBE68A} = {04AA239D-CADF-4CFC-BD4E-1076E7015093}
+		{6FD96406-9051-4460-9B37-8C6881E0DF37} = {04AA239D-CADF-4CFC-BD4E-1076E7015093}
+		{99A72B0E-86BF-46AA-BC74-12E28D7DEB0D} = {04AA239D-CADF-4CFC-BD4E-1076E7015093}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {611D72BD-9F9B-485C-A4B7-14B98649BA32}

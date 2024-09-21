@@ -1,4 +1,4 @@
-﻿namespace Shopway.SourceGenerator.Tests.Unit.Utilities;
+﻿namespace Shopway.SourceGenerator.Base.Tests.Unit.Utilities;
 
 public static partial class Constants
 {

@@ -1,6 +1,6 @@
 ﻿using Shopway.SourceGenerator.Generators;
-using Shopway.SourceGenerator.Tests.Unit.Utilities;
-using static Shopway.SourceGenerator.Tests.Unit.Utilities.Constants;
+using Shopway.SourceGenerator.Base.Tests.Unit.Utilities;
+using static Shopway.SourceGenerator.Base.Tests.Unit.Utilities.Constants;
 
 namespace Shopway.SourceGenerator.Tests.Unit.GeneratorTests;
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using static Shopway.SourceGenerator.Utilities.Constants;
+using static Shopway.SourceGenerator.Base.Utilities.Constants;
 
-namespace Shopway.SourceGenerator;
+namespace Shopway.SourceGenerator.Base;
 
 public abstract class IncrementalGeneratorBase<TValue>
 (
