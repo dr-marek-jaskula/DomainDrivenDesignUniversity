@@ -1,10 +1,9 @@
 ﻿using Shopway.Application.Abstractions;
 using Shopway.Infrastructure.FuzzySearch;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Infrastructure.FuzzySearch;
 
-[Trait(nameof(UnitTest), UnitTest.Infrastructure)]
+[UnitTest.Infrastructure]
 public sealed class SymSpellFuzzySearchTests
 {
     private static readonly IFuzzySearch _fuzzySearch;

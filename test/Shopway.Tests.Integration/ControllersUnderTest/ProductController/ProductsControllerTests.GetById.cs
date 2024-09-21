@@ -4,7 +4,6 @@ using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Products;
 using Shopway.Tests.Integration.ControllersUnderTest.ProductController.Utilities;
 using Shopway.Tests.Integration.Utilities;
-using static Shopway.Tests.Integration.Constants.Constants;
 using static System.Net.HttpStatusCode;
 using Product = Shopway.Domain.Products.Product;
 
@@ -13,7 +12,7 @@ namespace Shopway.Tests.Integration.ControllersUnderTest.ProductController;
 public partial class ProductsControllerTests
 {
     [Fact]
-    [Trait(nameof(IntegrationTest), IntegrationTest.Api)]
+    [IntegrationTest.Api]
     public async Task GetById_ShouldReturnProduct_WhenProductExists()
     {
         //Arrange
@@ -33,7 +32,7 @@ public partial class ProductsControllerTests
     }
 
     [Fact]
-    [Trait(nameof(IntegrationTest), IntegrationTest.Api)]
+    [IntegrationTest.Api]
     public async Task GetById_ShouldReturnErrorResponse_WhenProductNotExists()
     {
         //Arrange

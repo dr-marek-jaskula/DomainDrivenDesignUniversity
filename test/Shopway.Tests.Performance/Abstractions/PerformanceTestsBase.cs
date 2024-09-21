@@ -8,12 +8,12 @@ using Shopway.Tests.Performance.Utilities;
 
 namespace Shopway.Tests.Performance.Abstractions;
 
-[CollectionDefinition(nameof(Constants.Constants.IntegrationTest.Performance))]
+[CollectionDefinition(nameof(Constants.Constants.Test.Performance))]
 public sealed class PerformanceTestsBaseCollection
     : ICollectionFixture<DatabaseFixture>;
 
-[Trait(nameof(Constants.Constants.IntegrationTest), Constants.Constants.IntegrationTest.Performance)]
-[Collection(nameof(Constants.Constants.IntegrationTest.Performance))]
+[IntegrationTest.Performance]
+[Collection(nameof(Constants.Constants.Test.Performance))]
 public abstract class PerformanceTestsBase(DatabaseFixture fixture, IHttpClientFactory httpClientFactory, IOptions<PerformanceTestOptions> options)
 {
     protected readonly HttpClient _httpClient = httpClientFactory.CreateClient(nameof(PerformanceTestsBase));

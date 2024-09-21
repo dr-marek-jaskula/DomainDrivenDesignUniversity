@@ -196,6 +196,7 @@ PublishScripts/
 *.nupkg
 # Do not ignore Shopway.SourceGenerator NuGet
 !Shopway.SourceGenerator.*.*.*.nupkg
+!Shopway.Tests.SourceGenerator.*.*.*.nupkg
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore

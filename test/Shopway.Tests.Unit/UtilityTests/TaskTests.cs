@@ -1,10 +1,9 @@
 ﻿using Shopway.Domain.Common.Utilities;
 using System.Diagnostics;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 
-[Trait(nameof(UnitTest), UnitTest.Utility)]
+[UnitTest.Utility]
 public sealed class TaskTests
 {
     [Fact]

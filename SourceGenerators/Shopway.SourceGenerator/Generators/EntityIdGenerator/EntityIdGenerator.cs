@@ -1,9 +1,10 @@
-﻿using Microsoft.CodeAnalysis.Text;
-using Microsoft.CodeAnalysis;
-using Shopway.SourceGenerator.Utilities;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using Shopway.SourceGenerator.Base;
+using Shopway.SourceGenerator.Base.Utilities;
 using System.Collections.Immutable;
 using System.Text;
-using static Shopway.SourceGenerator.Utilities.Constants;
+using static Shopway.SourceGenerator.Base.Utilities.Constants;
 
 namespace Shopway.SourceGenerator.Generators;
 
@@ -45,7 +46,7 @@ public class GenerateEntityIdAttribute : global::System.Attribute;
         {
             StringBuilder sb = new();
             var result = entityIdToGenerateEntry.Generate(sb);
-            context.AddSource(entityIdToGenerateEntry.Name + ".g.cs", SourceText.From(result, Encoding.UTF8));
+            context.AddSource(entityIdToGenerateEntry.Name + GeneratedFileExtension, SourceText.From(result, Encoding.UTF8));
         }
     }
 

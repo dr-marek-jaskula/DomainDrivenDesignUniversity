@@ -1,10 +1,9 @@
 ﻿using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.LayerTests.Domain.Common;
 
-[Trait(nameof(UnitTest), UnitTest.Domain)]
+[UnitTest.Domain]
 public sealed class ResultTests
 {
     [Fact]

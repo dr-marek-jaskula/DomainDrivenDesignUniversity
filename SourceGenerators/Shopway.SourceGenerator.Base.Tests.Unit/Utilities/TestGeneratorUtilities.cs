@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Shopway.SourceGenerator.Tests.Unit.Utilities;
+namespace Shopway.SourceGenerator.Base.Tests.Unit.Utilities;
 
 public static class TestGeneratorUtilities
 {

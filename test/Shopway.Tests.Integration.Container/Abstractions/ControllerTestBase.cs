@@ -5,7 +5,7 @@ using Shopway.Tests.Integration.Persistence;
 using Shopway.Tests.Integration.Utilities;
 using static RestSharp.Method;
 using static Shopway.Tests.Integration.Container.Constants.Constants.Header;
-using static Shopway.Tests.Integration.Container.Constants.Constants.IntegrationTest;
+using static Shopway.Tests.Integration.Container.Constants.Constants.Test;
 
 namespace Shopway.Tests.Integration.Abstractions;
 

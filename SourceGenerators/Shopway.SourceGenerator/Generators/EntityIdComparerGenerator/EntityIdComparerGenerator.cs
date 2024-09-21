@@ -1,9 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using Shopway.SourceGenerator.Utilities;
+using Shopway.SourceGenerator.Base;
+using Shopway.SourceGenerator.Base.Utilities;
 using System.Collections.Immutable;
 using System.Text;
-using static Shopway.SourceGenerator.Utilities.Constants;
+using static Shopway.SourceGenerator.Base.Utilities.Constants;
 
 namespace Shopway.SourceGenerator.Generators;
 
@@ -49,7 +50,7 @@ public class GenerateEntityIdComparerAttribute : global::System.Attribute
         {
             StringBuilder sb = new();
             var result = entityIdComparerToGenerateEntry.Generate(sb);
-            context.AddSource(entityIdComparerToGenerateEntry.IdName + ".g.cs", SourceText.From(result, Encoding.UTF8));
+            context.AddSource(entityIdComparerToGenerateEntry.IdName + GeneratedFileExtension, SourceText.From(result, Encoding.UTF8));
         }
     }
 

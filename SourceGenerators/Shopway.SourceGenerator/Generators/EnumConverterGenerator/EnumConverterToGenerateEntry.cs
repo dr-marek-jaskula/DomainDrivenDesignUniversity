@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using static Shopway.SourceGenerator.Utilities.Constants;
+using static Shopway.SourceGenerator.Base.Utilities.Constants;
 
 namespace Shopway.SourceGenerator.Generators;
 

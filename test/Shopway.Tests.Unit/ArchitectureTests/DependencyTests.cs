@@ -1,9 +1,8 @@
 ﻿using NetArchTest.Rules;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.ArchitectureTests;
 
-[Trait(nameof(UnitTest), UnitTest.Architecture)]
+[UnitTest.Architecture]
 public sealed class DependencyTests
 {
     [Fact]

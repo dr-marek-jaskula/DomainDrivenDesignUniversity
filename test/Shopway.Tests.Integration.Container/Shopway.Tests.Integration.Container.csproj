@@ -9,14 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-		<PackageReference Include="FluentAssertions" Version="6.12.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8" />
-		<PackageReference Include="NSubstitute" Version="5.1.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-    <PackageReference Include="RestSharp" Version="111.4.1" />
-    <PackageReference Include="Testcontainers" Version="3.9.0" />
-    <PackageReference Include="Testcontainers.MsSql" Version="3.9.0" />
-    <PackageReference Include="WireMock.Net" Version="1.6.0" />
+	<PackageReference Include="FluentAssertions" Version="6.12.1" />
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8" />
+	<PackageReference Include="NSubstitute" Version="5.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="RestSharp" Version="112.0.0" />
+    <PackageReference Include="Shopway.Tests.SourceGenerator" Version="1.0.7" />
+    <PackageReference Include="Testcontainers" Version="3.10.0" />
+    <PackageReference Include="Testcontainers.MsSql" Version="3.10.0" />
+    <PackageReference Include="WireMock.Net" Version="1.6.3" />
     <PackageReference Include="xunit" Version="2.9.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -39,4 +40,9 @@
 	  <ProjectReference Include="..\..\src\Shopway.App\Shopway.App.csproj" />
 	</ItemGroup>
 
+
+	<PropertyGroup>
+		<!-- Persist source generated files to obj -->
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+	</PropertyGroup>
 </Project>

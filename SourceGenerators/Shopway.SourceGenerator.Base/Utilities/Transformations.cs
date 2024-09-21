@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 
-namespace Shopway.SourceGenerator.Utilities;
+namespace Shopway.SourceGenerator.Base.Utilities;
 
 public static class Transformations
 {

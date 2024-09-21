@@ -1,10 +1,9 @@
 ﻿using Shopway.Domain.Users.Enumerations;
 using static Shopway.Domain.Common.Utilities.EnumUtilities;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 
-[Trait(nameof(UnitTest), UnitTest.Utility)]
+[UnitTest.Utility]
 public sealed class EnumUtilityTests
 {
     [Fact]

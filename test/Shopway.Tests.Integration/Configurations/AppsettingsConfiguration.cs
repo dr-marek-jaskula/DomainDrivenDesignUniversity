@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using static Shopway.Tests.Integration.Constants.Constants.IntegrationTest;
+using static Shopway.Tests.Integration.Constants.Constants.Test;
 
 namespace Shopway.Tests.Integration.Configurations;
 

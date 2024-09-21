@@ -1,4 +1,4 @@
-﻿namespace Shopway.SourceGenerator.Utilities;
+﻿namespace Shopway.SourceGenerator.Base.Utilities;
 
 public static class Constants
 {
@@ -12,6 +12,8 @@ public static class Constants
 
 #nullable enable
 ";
+
+    public const string GeneratedFileExtension = ".g.cs";
 
     public const string IdName = nameof(IdName);
     public const string IdNamespace = nameof(IdNamespace);

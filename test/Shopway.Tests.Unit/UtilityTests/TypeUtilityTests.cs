@@ -1,11 +1,10 @@
 ﻿using Shopway.Domain.Common.Errors;
 using Shopway.Domain.Common.Results;
 using static Shopway.Domain.Common.Results.ResultUtilities;
-using static Shopway.Tests.Unit.Constants.Constants;
 
 namespace Shopway.Tests.Unit.UtilityTests;
 
-[Trait(nameof(UnitTest), UnitTest.Utility)]
+[UnitTest.Utility]
 public sealed class TypeUtilityTests
 {
     private sealed class ResultTestData : TheoryData<Type>

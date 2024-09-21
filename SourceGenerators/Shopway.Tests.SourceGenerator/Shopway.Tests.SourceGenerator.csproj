@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<!-- We do not want to reference the source generator dll directly in consuming projects  -->
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<Description>dr-marek-jaskula source generator for generating xunit test traits</Description>
+		<PackageId>Shopway.Tests.SourceGenerator</PackageId>
+		<Version>1.0.7</Version>
+		<Authors>dr-marek-jaskula</Authors>
+
+		<!-- See https://github.com/dotnet/roslyn/issues/63290 -->
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>Latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- This ensures the library will be packaged as a source generator when we use "dotnet pack" -->
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Set the analyzer to the base source generator project -->
+		<Analyzer Include="..\Shopway.SourceGenerator.Base\bin\$(Configuration)\netstandard2.0\Shopway.SourceGenerator.Base.dll" />
+		<None Include="ReadMe.Test.SourceGenerator.md" Pack="true" PackagePath="\" />
+		<ProjectReference Include="..\Shopway.SourceGenerator.Base\Shopway.SourceGenerator.Base.csproj" PrivateAssets="all" />
+		<None Include="$(OutputPath)\Shopway.SourceGenerator.Base.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+		<None Include="$(OutputPath)\Shopway.SourceGenerator.Base.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
+
+</Project>

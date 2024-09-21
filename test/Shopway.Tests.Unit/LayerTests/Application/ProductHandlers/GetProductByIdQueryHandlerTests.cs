@@ -2,12 +2,11 @@ using Shopway.Application.Features.Products.Queries.GetProductById;
 using Shopway.Domain.Products;
 using Shopway.Tests.Unit.Abstractions;
 using Shopway.Tests.Unit.LayerTests.Application.ProductHandlers.Utilities;
-using static Shopway.Tests.Unit.Constants.Constants;
 using static System.Threading.CancellationToken;
 
 namespace Shopway.Tests.Unit.LayerTests.Application.ProductHandlers;
 
-[Trait(nameof(UnitTest), UnitTest.Application)]
+[UnitTest.Application]
 public sealed class GetProductByIdQueryHandlerTests : TestBase
 {
     /// <summary>
